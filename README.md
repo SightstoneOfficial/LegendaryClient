@@ -3,6 +3,22 @@ LegendaryClient
 
 Beautiful, fully-featured League of Legends client based off https://github.com/Snowl/ClientOfLegends2
 
+How to compile
+===========
+
+** You require Net 4.5 to compile this! **
+
+First, import the DLL's found in /DLLS. This includes sqlite, awesomium and PVPNetConnect.
+
+Next, compile it. It will crash at this point. This will be fixed once Kyoku is integrated, since required files aren't downloaded/copied on first run at the moment.
+
+* Find your installation of League of Legends (C:\Riot Games\League of Legends) and copy *"gameStats_en_US.sqlite" to the /bin folder of LegendaryClient. 
+
+* Next, create a folder called Assets. Inside this folder, create a file called bg.jpg. This is your login image. 
+
+* Finally, find your League of Legends installation folder and navigate to *"RADS\projects\lol_air_client\releases\0.0.1.53\deploy\assets\images"*. Copy the champions folder into your Assets folder. 
+
+LegendaryClient should work once this is complete. Your folder should look like this: http://i.imgur.com/MXMQG8Y.png
 In-Client Screenshots (90-100)% complete
 =====================
 

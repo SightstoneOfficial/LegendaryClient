@@ -1,0 +1,19 @@
+﻿<Page x:Class="LegendaryClient.Windows.PatcherPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="672" d:DesignWidth="1024"
+	Title="PatcherPage">
+
+    <Grid Background="#FF9B9B9B">
+        <Label Content="LegendaryClient Updater" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
+        <Button x:Name="SkipPatchButton" Content="Skip" HorizontalAlignment="Right" Margin="0,5,10,0" VerticalAlignment="Top" Width="150" Height="50" Click="SkipPatchButton_Click"/>
+        
+        <Label x:Name="CurrentProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,100" VerticalAlignment="Bottom" Foreground="White"/>
+        <ProgressBar x:Name="CurrentProgressBar" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,70" VerticalAlignment="Bottom"/>
+        <Label x:Name="TotalProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,40" VerticalAlignment="Bottom" Foreground="White"/>
+        <ProgressBar x:Name="TotalProgessBar" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,10" VerticalAlignment="Bottom"/>
+        </Grid>
+</Page>

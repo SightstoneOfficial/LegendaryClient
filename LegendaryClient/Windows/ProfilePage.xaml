@@ -1,0 +1,226 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:Controls="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.ProfilePage" 
+      mc:Ignorable="d" 
+      d:DesignHeight="672" d:DesignWidth="1024"
+	Title="ProfilePage">
+
+    <Page.Resources>
+        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#FF9B9B9B">
+        <Image HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="64" Source="/LegendaryClient;component/profileIcon.png">
+            <Image.Effect>
+                <DropShadowEffect/>
+            </Image.Effect>
+        </Image>
+        <Label x:Name="SummonerNameLabel" Content="?" HorizontalAlignment="Left" Margin="80,5,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
+        <Label x:Name="SummonerLevelLabel" Content="Level 0" HorizontalAlignment="Left" Margin="80,40,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
+        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Right" Height="23" Margin="0,30,90,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="180"/>
+        <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Right" Margin="0,31,10,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="SearchButton_Click"/>
+        <Grid Background="#FF505050" Margin="0,100,0,0">
+            <DockPanel x:Name="ProfileNavBar"
+                               Height="32"
+                               Background="#FF505050" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0">
+                <Button x:Name="IngameButton" Style="{StaticResource NoHoverStyle}"
+                                    Content="INGAME" 
+                                    Height="32" 
+                                    FontWeight="999" 
+                                    FontSize="16" 
+                                    VerticalAlignment="Top" 
+                                    Width="100" 
+                                    Background="#FF505050" 
+                                    Foreground="#FFAAAAAA" Click="IngameButton_Click"/>
+                <Button x:Name="OverviewButton" Style="{StaticResource NoHoverStyle}"
+                                    Content="OVERVIEW" 
+                                    Height="32" 
+                                    FontWeight="999" 
+                                    FontSize="16" 
+                                    VerticalAlignment="Top" 
+                                    Width="100" 
+                                    Background="#FF505050" 
+                                    Foreground="White" Click="OverviewButton_Click"/>
+                <Button x:Name="LeaguesButton" Style="{StaticResource NoHoverStyle}"
+                                    Content="LEAGUES" 
+                                    Height="32" 
+                                    FontWeight="999" 
+                                    FontSize="16" 
+                                    VerticalAlignment="Top" 
+                                    Width="100" 
+                                    Background="#FF505050" 
+                                    Foreground="White" Click="LeaguesButton_Click"/>
+                <Button x:Name="RecentGamesButton" Style="{StaticResource NoHoverStyle}"
+                                    Content="GAMES" 
+                                    Height="32" 
+                                    FontWeight="999" 
+                                    FontSize="16" 
+                                    VerticalAlignment="Top" 
+                                    Width="100" 
+                                    Background="#FF505050" 
+                                    Foreground="White" Click="RecentGamesButton_Click"/>
+                <Button Style="{StaticResource NoHoverStyle}"
+                                    Content="RUNES" 
+                                    Height="32" 
+                                    FontWeight="999" 
+                                    FontSize="16" 
+                                    VerticalAlignment="Top" 
+                                    Width="100" 
+                                    Background="#FF505050" 
+                                    Foreground="White"/>
+                <Button Style="{StaticResource NoHoverStyle}"
+                                    Content="MASTERIES" 
+                                    Height="32" 
+                                    FontWeight="999" 
+                                    FontSize="16" 
+                                    VerticalAlignment="Top" 
+                                    Width="100" 
+                                    Background="#FF505050" 
+                                    Foreground="White"/>
+                <Button x:Name="SkinButton" Style="{StaticResource NoHoverStyle}"
+                                    Content="SKINS" 
+                                    Height="32" 
+                                    FontWeight="999" 
+                                    FontSize="16" 
+                                    VerticalAlignment="Top" 
+                                    Width="100" 
+                                    Background="#FF505050" 
+                                    Foreground="White" Click="SkinButton_Click"/>
+                <Button x:Name="ChampionButton" Style="{StaticResource NoHoverStyle}"
+                                    Content="CHAMPIONS" 
+                                    Height="32" 
+                                    FontWeight="999" 
+                                    FontSize="16" 
+                                    VerticalAlignment="Top" 
+                                    Width="110" 
+                                    Background="#FF505050" 
+                                    Foreground="White" Click="ChampionButton_Click"/>
+            </DockPanel>
+            <TabControl x:Name="ProfileTabControl" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Stretch" Background="#FF505050" BorderBrush="{x:Null}" SelectedIndex="1">
+                <TabItem x:Name="IngameItem" Header="Main" Visibility="Collapsed">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid Background="#FF6497C1" Grid.Column="0"/>
+                        <Grid Background="#FFC16464" Grid.Column="1"/>
+                        
+                        <Button Height="40" Width="100" Content="Spectate" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-50,10" />
+                        <Label x:Name="BlueMMR" Content="1200" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#FF92EBFF" />
+                        <Label x:Name="RedMMR" Content="1200" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#FFFFC9C9" Grid.Column="1" />
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="OverviewItem" Header="Main" Visibility="Collapsed">
+                    <Grid Background="#FF9B9B9B">
+                        <ComboBox x:Name="OverviewComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="350" SelectionChanged="OverviewComboBox_SelectionChanged"/>
+                        <ListView x:Name="OverviewListView" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
+                            <ListView.View>
+                                <GridView  ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                                    <GridViewColumn x:Name="OverviewKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}"/>
+                                    <GridViewColumn x:Name="OverviewValueHeader" Header="Value" DisplayMemberBinding="{Binding Value}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="LeaguesItem" Header="Leagues" Visibility="Collapsed">
+                    <Grid Background="#FF9B9B9B">
+                        <Label x:Name="LeagueLabel" Content="League Name" HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold" FontSize="20" Background="{x:Null}"/>
+                        <ListView x:Name="LeagueListView" HorizontalAlignment="Stretch" Margin="10,50,250,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" SelectionChanged="LeagueListView_SelectionChanged">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn x:Name="RankHeader" Header="Rank" DisplayMemberBinding="{Binding Rank}"/>
+                                    <GridViewColumn x:Name="NameHeader"  Header="Name" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn x:Name="LeaguePointsHeader" Header="LP" DisplayMemberBinding="{Binding LeaguePoints}"/>
+                                    <GridViewColumn x:Name="HotStreakHeader" Header="HS" DisplayMemberBinding="{Binding HotStreak}"/>
+                                    <GridViewColumn x:Name="RecruitHeader" Header="Recruit" DisplayMemberBinding="{Binding Recruit}"/>
+                                    <GridViewColumn x:Name="VeteranHeader" Header="Veteran" DisplayMemberBinding="{Binding Veteran}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button x:Name="UpTierButton" Content="Up" HorizontalAlignment="Right" Margin="0,15,50,0" VerticalAlignment="Top" Width="40" Click="UpTierButton_Click"/>
+                        <Button x:Name="DownTierButton" Content="Down" HorizontalAlignment="Right" Margin="0,15,10,0" VerticalAlignment="Top" Width="40" Click="DownTierButton_Click"/>
+
+                        <ListView x:Name="TopChampListView" HorizontalAlignment="Right" Margin="0,0,10,50" Width="230" VerticalAlignment="Bottom" Height="155" Foreground="White" Background="#FF505050">
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                                    <GridViewColumn x:Name="TopChampKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}"/>
+                                    <GridViewColumn x:Name="TopChampValueHeader" Header="Value" DisplayMemberBinding="{Binding Value}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Bottom"  Margin="0, 0, 10, 10" Content="View more stats" Height="35" Width="230"/>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="RecentGamesItem" Header="Recent Games" Visibility="Collapsed">
+                    <Grid Background="#FF9B9B9B">
+                        <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" SelectionChanged="GamesListView_SelectionChanged">
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                                    <GridViewColumn />
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <ListView x:Name="BlueListView" HorizontalAlignment="Center" Height="64" Margin="300,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="310" Background="#66505050">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+                        <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="300,62,0,0" Foreground="White" FontSize="50"/>
+                        <ListView x:Name="PurpleListView" HorizontalAlignment="Center" Height="64" Margin="300,130,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="310" Background="#66505050">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+                        <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="320,200,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
+                            <ListView.View>
+                                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                                    <GridViewColumn x:Name="GameKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}"/>
+                                    <GridViewColumn x:Name="GameValueHeader" Header="Value" DisplayMemberBinding="{Binding Value}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Runes" Visibility="Collapsed">
+                    <Grid Background="#FF9B9B9B"/>
+                </TabItem>
+                <TabItem Header="Masteries" Visibility="Collapsed">
+                    <Grid Background="#FF9B9B9B"/>
+                </TabItem>
+                <TabItem x:Name="ChampionsItem" Header="Main" Visibility="Collapsed">
+                    <Grid Background="#FF9B9B9B">
+                        <ListView x:Name="ChampionListView" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="SkinsItem" Header="Main" Visibility="Collapsed">
+                    <Grid Background="#FF9B9B9B">
+                        <ListView x:Name="SkinListView" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050"  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+    </Grid>
+</Page>
