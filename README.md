@@ -40,3 +40,4 @@ Still-in Progress Screenshots
 ![Owned Skin List](http://i.imgur.com/hmlfsDv.png)
 ![Store](http://i.imgur.com/PlWoboH.jpg)
 ![Ingame](http://i.imgur.com/RMkdKNz.png)
+![Advanced Settings](http://i.imgur.com/xCo3SOe.png)
