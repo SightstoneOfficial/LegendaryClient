@@ -15,7 +15,7 @@
     </Page.Resources>
 
     <Grid Background="#FF9B9B9B">
-        <Image HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="64" Source="/LegendaryClient;component/profileIcon.png">
+        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="64">
             <Image.Effect>
                 <DropShadowEffect/>
             </Image.Effect>

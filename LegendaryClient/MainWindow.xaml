@@ -117,7 +117,9 @@
                                 VerticalAlignment="Top" 
                                 Width="100"  
                                 Background="#FF505050" 
-                                Foreground="#FFAAAAAA" HorizontalAlignment="Left"/>
+                                Foreground="#FFAAAAAA" 
+                                HorizontalAlignment="Left" Click="SettingsButton_Click"
+                                />
                     <Button x:Name="LogoutButton" Style="{StaticResource NoHoverStyle}"
                                 Content="PATCH" 
                                 Height="32" 

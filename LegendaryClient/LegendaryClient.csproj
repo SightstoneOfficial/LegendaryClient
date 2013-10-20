@@ -84,6 +84,7 @@
     <Compile Include="Logic\MMR\Values.cs" />
     <Compile Include="Logic\SQLite\championAbilities.cs" />
     <Compile Include="Logic\SQLite\champions.cs" />
+    <Compile Include="Logic\SQLite\championSearchTags.cs" />
     <Compile Include="Logic\SQLite\championSkins.cs" />
     <Compile Include="Logic\Client.cs" />
     <Compile Include="Logic\Region\BaseRegion.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Logic\Region\NA.cs" />
     <Compile Include="Logic\Region\OCE.cs" />
     <Compile Include="Logic\Region\RU.cs" />
+    <Compile Include="Logic\SQLite\keybindingEvents.cs" />
     <Compile Include="Logic\SQLite\SQLite.cs" />
     <Compile Include="Logic\SQLite\items.cs" />
     <Compile Include="Windows\ChampSelectPage.xaml.cs">
@@ -125,6 +127,9 @@
     </Compile>
     <Compile Include="Windows\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
@@ -188,6 +193,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ShopPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -219,11 +228,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="profileIcon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icon.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

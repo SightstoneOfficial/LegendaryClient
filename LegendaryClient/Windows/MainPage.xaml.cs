@@ -12,6 +12,7 @@ using LegendaryClient.Logic.Region;
 using System.Web.Script.Serialization;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Logic.Maps;
+using System.Windows.Media;
 
 namespace LegendaryClient.Windows
 {
@@ -30,6 +31,10 @@ namespace LegendaryClient.Windows
             SummonerLevelLabel.Content = "Level " + Client.LoginPacket.AllSummonerData.SummonerLevel.Level;
             BalanceLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " | RP: " + Client.LoginPacket.RpBalance;
             LocationLabel.Content = "Region: " + Client.LoginPacket.CompetitiveRegion;
+            int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
+            //TODO: Convert ProfileIconID to the decompiled images
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileImages", 137 + ".jpg"), UriKind.Absolute);
+            ProfileImage.Source = new BitmapImage(uriSource);
 
             SpectatorComboBox.SelectedValue = Client.LoginPacket.CompetitiveRegion;
             BaseRegion region = BaseRegion.GetRegion(Client.LoginPacket.CompetitiveRegion);

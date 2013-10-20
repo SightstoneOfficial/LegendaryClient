@@ -18,7 +18,7 @@
         <Button x:Name="QuitGameButton" Content="Quit Game" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="174" Click="QuitGameButton_Click"/>
         <ListView x:Name="BlueTeamListView" HorizontalAlignment="Left" Height="200" Margin="10,80,0,0" VerticalAlignment="Top" Width="350" Foreground="White" Background="#FF505050">
             <ListView.View>
-                <GridView  ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn Header="Player" DisplayMemberBinding="{Binding Username}"/>
                     <GridViewColumn>
                         <GridViewColumn.CellTemplate>

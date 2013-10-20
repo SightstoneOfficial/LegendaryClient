@@ -16,6 +16,14 @@ namespace LegendaryClient.Logic
     internal static class Client
     {
         /// <summary>
+        /// Latest champion for League of Legends login screen
+        /// </summary>
+        internal const int LatestChamp = 222;
+        /// <summary>
+        /// Latest version of League of Legends
+        /// </summary>
+        internal const string Version = "3.12.13_10_08_16_20";
+        /// <summary>
         /// The current directory the client is running from
         /// </summary>
         internal static string ExecutingDirectory = "";
@@ -39,6 +47,14 @@ namespace LegendaryClient.Logic
         /// The database of all the items
         /// </summary>
         internal static IEnumerable<items> Items;
+        /// <summary>
+        /// The database of all the search tags
+        /// </summary>
+        internal static IEnumerable<championSearchTags> SearchTags;
+        /// <summary>
+        /// The database of all the keybinding defaults & proper names
+        /// </summary>
+        internal static IEnumerable<keybindingEvents> Keybinds;
 
         #region WPF Tab Change
         /// <summary>

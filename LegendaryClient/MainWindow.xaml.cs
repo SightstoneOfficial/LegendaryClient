@@ -36,10 +36,10 @@ namespace LegendaryClient
             Client.EnableButtons.Add(PlayButton);
             Client.EnableButtons.Add(ProfileButton);
             Client.EnableButtons.Add(ShopButton);
+            Client.EnableButtons.Add(SettingsButton);
             //Buttons not implemented yet
             //Client.EnableButtons.Add(ChatButton);
             //Client.EnableButtons.Add(ReplayButton);
-            //Client.EnableButtons.Add(SettingsButton);
 
             Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             #endregion
@@ -124,6 +124,15 @@ namespace LegendaryClient
             {
                 ShopPage ShopPage = new ShopPage();
                 Client.SwitchPage(ShopPage, "SHOP");
+            }
+        }
+
+        private void SettingsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Client.IsLoggedIn)
+            {
+                SettingsPage SettingsPage = new SettingsPage();
+                Client.SwitchPage(SettingsPage, "SETTINGS");
             }
         }
     }

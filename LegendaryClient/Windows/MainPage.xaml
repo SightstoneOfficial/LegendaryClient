@@ -11,7 +11,7 @@
     <Grid Background="#FF9B9B9B">
         <TextBlock x:Name="TimeBonusWinLabel" HorizontalAlignment="Center" TextWrapping="WrapWithOverflow" Text="13:09" VerticalAlignment="Top" FontWeight="Bold" FontSize="48" Foreground="WhiteSmoke" Margin="0,0,0,0" FontFamily="Nyala"/>
         <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="First Win Bonus Time" VerticalAlignment="Top" Foreground="WhiteSmoke" Margin="0,50,0,0" FontWeight="Bold" FontSize="14"/>
-        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="64" Source="/LegendaryClient;component/profileIcon.png">
+        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="64">
             <Image.Effect>
                 <DropShadowEffect/>
             </Image.Effect>

@@ -36,6 +36,12 @@ namespace LegendaryClient.Windows
             Client.Items = from s in Client.SQLiteDatabase.Table<items>()
                            orderby s.name
                            select s;
+            Client.SearchTags = from s in Client.SQLiteDatabase.Table<championSearchTags>()
+                                orderby s.id
+                                select s;
+            Client.Keybinds = from s in Client.SQLiteDatabase.Table<keybindingEvents>()
+                                orderby s.id
+                                select s;
 
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedUsername))
             {
@@ -47,7 +53,7 @@ namespace LegendaryClient.Windows
                 RememberPasswordCheckbox.IsChecked = true;
                 LoginPasswordBox.Password = Properties.Settings.Default.SavedPassword;
             }
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "bg.jpg"), UriKind.Absolute);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
             LoginImage.Source = new BitmapImage(uriSource);
         }
 
@@ -70,7 +76,7 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnLogin += PVPNet_OnLogin;
             BaseRegion SelectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             Client.Region = SelectedRegion;
-            Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, "3.12.13_10_08_16_20");
+            Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
         }
 
         void PVPNet_OnLogin(object sender, string username, string ipAddress)

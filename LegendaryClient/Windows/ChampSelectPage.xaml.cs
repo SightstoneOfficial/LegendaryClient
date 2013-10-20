@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -38,7 +39,9 @@ namespace LegendaryClient.Windows
             GameDTO latestDTO = await Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState, Client.ChampSelectDTO.PickTurn);
             ChampSelect_OnMessageReceived(this, latestDTO);
 
-            foreach (ChampionDTO champ in Champions)
+            List<ChampionDTO> champList = new List<ChampionDTO>(Champions);
+
+            foreach (ChampionDTO champ in champList)
             {
                 if (champ.Owned || champ.FreeToPlay)
                 {

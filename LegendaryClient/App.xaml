@@ -27,8 +27,19 @@
             </Setter>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         </Style>
-
         
+
+        <Style x:Key="{x:Type ListViewItem}" TargetType="ListViewItem">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="NoDottedBorder" TargetType="{x:Type Frame}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         </Style>

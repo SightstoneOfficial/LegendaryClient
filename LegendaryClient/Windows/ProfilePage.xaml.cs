@@ -67,6 +67,10 @@ namespace LegendaryClient.Windows
             LeaguesButton.Foreground = brush;
 
             AccountId = Summoner.AcctId;
+            int ProfileIconID = Summoner.ProfileIconId;
+            //TODO: Convert ProfileIconID to the decompiled images
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileImages", 137 + ".jpg"), UriKind.Absolute);
+            ProfileImage.Source = new BitmapImage(uriSource);
 
             //Clear pages
             OverviewComboBox.Items.Clear();
@@ -92,7 +96,7 @@ namespace LegendaryClient.Windows
                 ChampionButton.IsEnabled = true;
                 SkinButton.IsEnabled = true;
                 //Put on own thread
-                //GotChamps(await Client.PVPNet.GetAvailableChampions());
+                GotChamps(await Client.PVPNet.GetAvailableChampions());
             }
             ChampionButton.Foreground = brush;
             SkinButton.Foreground = brush;
@@ -191,6 +195,10 @@ namespace LegendaryClient.Windows
                     {
                         PlayerStats.Remove(GameMode);
                     }
+                }
+                if (OverviewComboBox.Items.Count > 0)
+                {
+                    OverviewComboBox.SelectedIndex = 0;
                 }
             }));
         }
@@ -538,9 +546,12 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
+                    LeagueItem playerItem = LeagueListView.SelectedItem as LeagueItem;
+                    PublicSummoner t = await Client.PVPNet.GetSummonerByName(playerItem.Name);
+
                     TopChampListView.Items.Clear();
 
-                    AggregatedStats Stats = await Client.PVPNet.GetAggregatedStats(AccountId, "CLASSIC", "CURRENT");
+                    AggregatedStats Stats = await Client.PVPNet.GetAggregatedStats(t.AcctId, "CLASSIC", "CURRENT");
 
                     /*
                      * Stats:
@@ -633,7 +644,9 @@ namespace LegendaryClient.Windows
 
         private void GotChamps(ChampionDTO[] dto)
         {
-            foreach (ChampionDTO champ in dto)
+            List<ChampionDTO> champList = new List<ChampionDTO>(dto);
+
+            foreach (ChampionDTO champ in champList)
             {
                 if (champ.Owned || champ.FreeToPlay)
                 {
