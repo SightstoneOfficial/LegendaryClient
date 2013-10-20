@@ -15,6 +15,11 @@ namespace LegendaryClient.Logic.Region
             get { return "RU1"; }
         }
 
+        public override string ChatName
+        {
+            get { return "ru"; }
+        }
+
         public override PVPNetConnect.Region PVPRegion
         {
             get { return PVPNetConnect.Region.RU; }

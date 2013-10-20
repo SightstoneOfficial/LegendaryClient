@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using System.Windows.Media;
+using jabber.client;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect;
@@ -55,6 +57,29 @@ namespace LegendaryClient.Logic
         /// The database of all the keybinding defaults & proper names
         /// </summary>
         internal static IEnumerable<keybindingEvents> Keybinds;
+
+        internal static JabberClient ChatClient;
+
+        internal static RosterManager RostManager;
+        internal static PresenceManager PresManager;
+
+        internal static bool ChatClient_OnInvalidCertificate(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+
+        internal static void ChatClientConnect(object sender)
+        {
+            ChatClient.Presence(jabber.protocol.client.PresenceType.available,
+                "<body>" +
+                      "<profileIcon>668</profileIcon>" +
+                      "<level>30</level>" +
+                      "<wins>999</wins>" +
+                      "<statusMsg>test</statusMsg>" +
+                      "<gameStatus>outOfGame</gameStatus>" +
+                "</body>",
+                null, 0);
+        }
 
         #region WPF Tab Change
         /// <summary>

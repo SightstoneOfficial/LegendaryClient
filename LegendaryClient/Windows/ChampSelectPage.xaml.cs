@@ -13,6 +13,7 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using LegendaryClient.Controls;
 
 namespace LegendaryClient.Windows
 {
@@ -24,6 +25,10 @@ namespace LegendaryClient.Windows
         bool BanningPhase = false;
         ChampionDTO[] Champions;
         List<ChampionDTO> MyChamps = new List<ChampionDTO>();
+        GameTypeConfigDTO configType;
+        System.Windows.Forms.Timer CountdownTimer;
+        int counter;
+        bool HasLockedIn = false;
 
         public ChampSelectPage()
         {
@@ -37,7 +42,21 @@ namespace LegendaryClient.Windows
             Champions = await Client.PVPNet.GetAvailableChampions();
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
             GameDTO latestDTO = await Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState, Client.ChampSelectDTO.PickTurn);
+            if (latestDTO.GameTypeConfigId < 1) //Invalid config... abort!
+            {
+                Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+                return;
+            }
+            configType = Client.LoginPacket.GameTypeConfigs[latestDTO.GameTypeConfigId - 1];
+            counter = configType.MainPickTimerDuration - 5; //Seems to be a 5 second inconsistancy with riot and what they actually provide
+            CountdownTimer = new System.Windows.Forms.Timer();
+            CountdownTimer.Tick += new EventHandler(CountdownTimer_Tick);
+            CountdownTimer.Interval = 1000; // 1 second
+            CountdownTimer.Start();
+
             ChampSelect_OnMessageReceived(this, latestDTO);
+            ChatText.Text = "test" + Environment.NewLine + "yolo";
+
 
             List<ChampionDTO> champList = new List<ChampionDTO>(Champions);
 
@@ -61,6 +80,14 @@ namespace LegendaryClient.Windows
             }
         }
 
+        private void CountdownTimer_Tick(object sender, EventArgs e)
+        {
+            counter--;
+            if (counter <= 0)
+                return;
+            LobbyTimeLabel.Content = counter;
+        }
+
         private void ChampSelect_OnMessageReceived(object sender, object message)
         {
             if (message.GetType() == typeof (GameDTO))
@@ -71,6 +98,11 @@ namespace LegendaryClient.Windows
                 {
                     if (ChampDTO.GameState == "TEAM_SELECT")
                     {
+                        if (CountdownTimer != null)
+                        {
+                            CountdownTimer.Stop();
+                        }
+                        Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                         Client.ClearPage(this);
                         CustomGameLobbyPage page = new CustomGameLobbyPage();
                         Client.SwitchPage(page, "");
@@ -82,62 +114,56 @@ namespace LegendaryClient.Windows
                     }
                     else if (ChampDTO.GameState == "CHAMP_SELECT")
                     {
-                        ;
+                        if (!HasLockedIn)
+                        {
+                            GameStatusLabel.Content = "Your turn to pick!";
+                        }
+                        else
+                        {
+                            GameStatusLabel.Content = "Waiting for others to pick...";
+                        }
                     }
                     else if (ChampDTO.GameState == "POST_CHAMP_SELECT")
                     {
-
+                        GameStatusLabel.Content = "All players have picked!";
+                        counter = 10;
                     }
                     else if (ChampDTO.GameState == "START_REQUESTED")
                     {
+                        GameStatusLabel.Content = "The game is about to start!";
                         DodgeButton.IsEnabled = false; //Cannot dodge past this point!
                     }
-                    else
-                    {
-                        return;
-                    }
-                    #region Update Players REFACTOR THIS INSTANTLY
-                    foreach (Participant participant in ChampDTO.TeamOne) 
+
+                    #region Display players
+                    BlueListView.Items.Clear();
+                    PurpleListView.Items.Clear();
+                    foreach (Participant participant in ChampDTO.TeamOne.ToArray()) //Clone array so it doesn't get modified
                     {
                         try
                         {
+                            bool DisplayedPlayer = false;
                             PlayerParticipant player = participant as PlayerParticipant;
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
                             {
                                 if (selection.SummonerInternalName == player.SummonerInternalName)
                                 {
-                                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(selection.ChampionId).iconPath), UriKind.Absolute); 
-                                    switch (player.PickTurn)
+                                    DisplayedPlayer = true;
+                                    ChampSelectPlayer control = new ChampSelectPlayer();
+                                    if (selection.ChampionId != 0)
                                     {
-                                        case 1:
-                                            BluePlayer1.ChampionImage.Source = new BitmapImage(uriSource);
-                                            BluePlayer1.PlayerName.Content = player.SummonerName;
-                                            BluePlayer1.Visibility = Visibility.Visible;
-                                            break;
-                                        case 2:
-                                            BluePlayer2.ChampionImage.Source = new BitmapImage(uriSource);
-                                            BluePlayer2.PlayerName.Content = player.SummonerName;
-                                            BluePlayer2.Visibility = Visibility.Visible;
-                                            break;
-                                        case 3:
-                                            BluePlayer3.ChampionImage.Source = new BitmapImage(uriSource);
-                                            BluePlayer3.PlayerName.Content = player.SummonerName;
-                                            BluePlayer3.Visibility = Visibility.Visible;
-                                            break;
-                                        case 4:
-                                            BluePlayer4.ChampionImage.Source = new BitmapImage(uriSource);
-                                            BluePlayer4.PlayerName.Content = player.SummonerName;
-                                            BluePlayer4.Visibility = Visibility.Visible;
-                                            break;
-                                        case 5:
-                                            BluePlayer5.ChampionImage.Source = new BitmapImage(uriSource);
-                                            BluePlayer5.PlayerName.Content = player.SummonerName;
-                                            BluePlayer5.Visibility = Visibility.Visible;
-                                            break;
+                                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(selection.ChampionId).iconPath), UriKind.Absolute);
+                                        control.ChampionImage.Source = new BitmapImage(uriSource);
                                     }
-                                    //node.Nodes.Add(SummonerSpell.GetSpellName((int)selection.Spell1Id));
-                                    //node.Nodes.Add(SummonerSpell.GetSpellName((int)selection.Spell2Id));
+                                    control.PlayerName.Content = player.SummonerName;
+                                    BlueListView.Items.Add(control);
                                 }
+                            }
+                            if (!DisplayedPlayer)
+                            {
+                                DisplayedPlayer = true;
+                                ChampSelectPlayer control = new ChampSelectPlayer();
+                                control.PlayerName.Content = player.SummonerName;
+                                BlueListView.Items.Add(control);
                             }
                         }
                         catch
@@ -145,47 +171,34 @@ namespace LegendaryClient.Windows
                             //Robert
                         }
                     }
-                    foreach (Participant participant in ChampDTO.TeamTwo)
+
+                    foreach (Participant participant in ChampDTO.TeamTwo.ToArray()) //Clone array so it doesn't get modified
                     {
                         try
                         {
+                            bool DisplayedPlayer = false;
                             PlayerParticipant player = participant as PlayerParticipant;
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
                             {
                                 if (selection.SummonerInternalName == player.SummonerInternalName)
                                 {
-                                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(selection.ChampionId).iconPath), UriKind.Absolute);
-                                    switch (player.PickTurn)
+                                    DisplayedPlayer = true;
+                                    ChampSelectPlayer control = new ChampSelectPlayer();
+                                    if (selection.ChampionId != 0)
                                     {
-                                        case 1:
-                                            PurplePlayer1.ChampionImage.Source = new BitmapImage(uriSource);
-                                            PurplePlayer1.PlayerName.Content = player.SummonerName;
-                                            PurplePlayer1.Visibility = Visibility.Visible;
-                                            break;
-                                        case 2:
-                                            PurplePlayer2.ChampionImage.Source = new BitmapImage(uriSource);
-                                            PurplePlayer2.PlayerName.Content = player.SummonerName;
-                                            PurplePlayer2.Visibility = Visibility.Visible;
-                                            break;
-                                        case 3:
-                                            PurplePlayer3.ChampionImage.Source = new BitmapImage(uriSource);
-                                            PurplePlayer3.PlayerName.Content = player.SummonerName;
-                                            PurplePlayer3.Visibility = Visibility.Visible;
-                                            break;
-                                        case 4:
-                                            PurplePlayer4.ChampionImage.Source = new BitmapImage(uriSource);
-                                            PurplePlayer4.PlayerName.Content = player.SummonerName;
-                                            PurplePlayer4.Visibility = Visibility.Visible;
-                                            break;
-                                        case 5:
-                                            PurplePlayer5.ChampionImage.Source = new BitmapImage(uriSource);
-                                            PurplePlayer5.PlayerName.Content = player.SummonerName;
-                                            PurplePlayer5.Visibility = Visibility.Visible;
-                                            break;
+                                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(selection.ChampionId).iconPath), UriKind.Absolute);
+                                        control.ChampionImage.Source = new BitmapImage(uriSource);
                                     }
-                                    //node.Nodes.Add(SummonerSpell.GetSpellName((int)selection.Spell1Id));
-                                    //node.Nodes.Add(SummonerSpell.GetSpellName((int)selection.Spell2Id));
+                                    control.PlayerName.Content = player.SummonerName;
+                                    PurpleListView.Items.Add(control);
                                 }
+                            }
+                            if (!DisplayedPlayer)
+                            {
+                                DisplayedPlayer = true;
+                                ChampSelectPlayer control = new ChampSelectPlayer();
+                                control.PlayerName.Content = player.SummonerName;
+                                BlueListView.Items.Add(control);
                             }
                         }
                         catch
@@ -194,6 +207,7 @@ namespace LegendaryClient.Windows
                         }
                     }
                     #endregion
+
                 }));
                 #endregion
             }
@@ -282,7 +296,13 @@ namespace LegendaryClient.Windows
             if (ChampionSelectListView.SelectedItems.Count > 0)
             {
                 await Client.PVPNet.ChampionSelectCompleted();
+                HasLockedIn = true;
             }
+        }
+
+        private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

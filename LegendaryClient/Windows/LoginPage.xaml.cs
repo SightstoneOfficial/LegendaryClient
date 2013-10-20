@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using jabber.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
@@ -108,6 +109,29 @@ namespace LegendaryClient.Windows
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
+                Client.ChatClient = new JabberClient(); //Setup chat
+                Client.ChatClient.AutoReconnect = 30;
+                Client.ChatClient.KeepAlive = 10;
+                Client.ChatClient.NetworkHost = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
+                Client.ChatClient.Port = 5223;
+                Client.ChatClient.Server = "pvp.net";
+                Client.ChatClient.SSL = true;
+                Client.ChatClient.User = LoginUsernameBox.Text;
+                Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
+                Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
+                Client.ChatClient.Connect();
+
+                Client.RostManager = new RosterManager();
+                Client.RostManager.Stream = Client.ChatClient;
+                Client.RostManager.AutoSubscribe = true;
+                Client.RostManager.AutoAllow = jabber.client.AutoSubscriptionHanding.AllowAll;
+                //Client.RostManager.OnRosterBegin += new bedrock.ObjectHandler(rm_OnRosterBegin);
+                Client.RostManager.OnRosterEnd += new bedrock.ObjectHandler(Client.ChatClientConnect);
+                //Client.RostManager.OnRosterItem += new RosterItemHandler(rm_OnRosterItem);
+
+                Client.PresManager = new PresenceManager();
+                Client.PresManager.Stream = Client.ChatClient;
+
                 foreach (Button b in Client.EnableButtons)
                 {
                     BrushConverter bc = new BrushConverter();

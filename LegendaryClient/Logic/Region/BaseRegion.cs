@@ -7,6 +7,7 @@ namespace LegendaryClient.Logic.Region
     {
         public abstract string RegionName { get; }
         public abstract string InternalName { get; }
+        public abstract string ChatName { get; }
         public abstract PVPNetConnect.Region PVPRegion { get; }
         public abstract IPAddress[] PingAddresses { get; }
         public abstract Uri SpectatorLink { get; }

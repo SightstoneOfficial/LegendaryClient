@@ -55,6 +55,10 @@ namespace LegendaryClient
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Client.PVPNet != null)
+            {
+                Client.PVPNet.Disconnect();
+            }
             Environment.Exit(0);
         }
 

@@ -14,19 +14,26 @@
         <Label x:Name="LobbyTimeLabel" Content="Inf." HorizontalAlignment="Right" Margin="0,5,120,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
         <Button x:Name="DodgeButton" Content="Dodge" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="35" Width="100" Click="DodgeButton_Click"/>
         <Label Content="Blue Team" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
-        <local:ChampSelectPlayer x:Name="BluePlayer1" HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <local:ChampSelectPlayer x:Name="BluePlayer2" HorizontalAlignment="Left" Margin="10,170,0,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <local:ChampSelectPlayer x:Name="BluePlayer3" HorizontalAlignment="Left" Margin="10,260,0,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <local:ChampSelectPlayer x:Name="BluePlayer4" HorizontalAlignment="Left" Margin="10,350,0,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <local:ChampSelectPlayer x:Name="BluePlayer5" HorizontalAlignment="Left" Margin="10,440,0,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
+        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Margin="5,80,0,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="400" Width="140" Background="Transparent" BorderBrush="{x:Null}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
         
+        <Label Content="Search" HorizontalAlignment="Left" Margin="150,40,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
+        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="240,50,200,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged"/>
+
         <Label Content="Purple Team" HorizontalAlignment="Right" Margin="0,40,10,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22"  Foreground="White"/>
-        <local:ChampSelectPlayer x:Name="PurplePlayer1" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <local:ChampSelectPlayer x:Name="PurplePlayer2" HorizontalAlignment="Right" Margin="0,170,10,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <local:ChampSelectPlayer x:Name="PurplePlayer3" HorizontalAlignment="Right" Margin="0,260,10,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <local:ChampSelectPlayer x:Name="PurplePlayer4" HorizontalAlignment="Right" Margin="0,350,10,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <local:ChampSelectPlayer x:Name="PurplePlayer5" HorizontalAlignment="Right" Margin="0,440,10,0" VerticalAlignment="Top"  Width="125" Height="80" Visibility="Hidden"></local:ChampSelectPlayer>
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Height="200" Margin="145,80,145,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
+        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,80,5,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="400" Width="140" Background="Transparent" BorderBrush="{x:Null}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="145,80,145,340" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel/>
@@ -38,6 +45,10 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Button x:Name="LockInButton" Content="Lock In" Margin="0,285,0,0" VerticalAlignment="Top" Width="75" Click="LockInButton_Click"/>
+        <Button x:Name="LockInButton" Content="Lock In" Margin="0,340,150,300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" Height="30" Click="LockInButton_Click"/>
+
+        <TextBox x:Name="ChatText" HorizontalAlignment="Stretch" Height="250" Margin="150,0,150,40" TextWrapping="Wrap" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}"/>
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="150,0,300,10" TextWrapping="Wrap" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged"/>
+        <Button x:Name="ChatButton" Content="Send" Margin="0,0,150,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" Click="LockInButton_Click" IsDefault="True"/>
     </Grid>
 </Page>
