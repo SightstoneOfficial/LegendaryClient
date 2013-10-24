@@ -1,4 +1,4 @@
-﻿<Page xmlns:my="http://schemas.awesomium.com/winfx"  x:Class="LegendaryClient.Windows.ShopPage"
+﻿<Page x:Class="LegendaryClient.Windows.ShopPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,6 +8,6 @@
 	Title="ShopPage">
 
     <Grid Background="Black">
-        <my:WebControl x:Name="ShopBrowser" NavigationInfo="None" HorizontalAlignment="Stretch" />
+        <WebBrowser x:Name="ShopBrowser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
     </Grid>
 </Page>

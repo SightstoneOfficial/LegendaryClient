@@ -77,8 +77,7 @@ namespace LegendaryClient.Windows
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
                             Client.ChampSelectDTO = dto;
-                            ChampSelectPage ChampPage = new ChampSelectPage();
-                            Client.SwitchPage(ChampPage, "");
+                            Client.SwitchPage(new ChampSelectPage());
                         }));
                         LaunchedTeamSelect = true;
                     }
@@ -89,13 +88,10 @@ namespace LegendaryClient.Windows
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.QuitGame();
-            CustomGameLobbyPage clearPage = new CustomGameLobbyPage(); //Clear pages
-            Client.ClearPage(clearPage);
-            CreateCustomGamePage clearPage2 = new CreateCustomGamePage();
-            Client.ClearPage(clearPage2);
+            Client.ClearPage(new CustomGameLobbyPage()); //Clear pages
+            Client.ClearPage(new CreateCustomGamePage());
 
-            MainPage MainPage = new MainPage();
-            Client.SwitchPage(MainPage, "");
+            Client.SwitchPage(new MainPage());
         }
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)

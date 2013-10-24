@@ -1,5 +1,5 @@
-﻿using LegendaryClient.Forms;
-using System;
+﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,99 +7,49 @@ using System.Windows.Media;
 using LegendaryClient.Windows;
 using LegendaryClient.Logic;
 using PVPNetConnect;
-using System.Runtime.InteropServices;
+using MahApps.Metro.Controls;
+using MahApps.Metro;
 
 namespace LegendaryClient
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
+        Accent Steel = null;
         public MainWindow()
         {
             InitializeComponent();
-            #region Initialize Custom Window
-            TitleBar.MouseLeftButtonDown += (o, e) => DragMove();
-            new WindowResizer(this,
-                new WindowBorder(BorderPosition.TopLeft, topLeft),
-                new WindowBorder(BorderPosition.Top, top),
-                new WindowBorder(BorderPosition.TopRight, topRight),
-                new WindowBorder(BorderPosition.Right, right),
-                new WindowBorder(BorderPosition.BottomRight, bottomRight),
-                new WindowBorder(BorderPosition.Bottom, bottom),
-                new WindowBorder(BorderPosition.BottomLeft, bottomLeft),
-                new WindowBorder(BorderPosition.Left, left));
-            Client.EnableButtons = new List<Button>();
-
-            Client.EnableButtons.Add(LogoutButton);
-            Client.EnableButtons.Add(PlayButton);
-            Client.EnableButtons.Add(ProfileButton);
-            Client.EnableButtons.Add(ShopButton);
-            Client.EnableButtons.Add(SettingsButton);
-            //Buttons not implemented yet
-            //Client.EnableButtons.Add(ChatButton);
-            //Client.EnableButtons.Add(ReplayButton);
-
             Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            #endregion
             
             Client.PVPNet = new PVPNetConnection();
             Client.PVPNet.OnError += Client.PVPNet_OnError;
 
-            PatcherPage Patch = new PatcherPage();
+            Steel = new Accent("Steel", new Uri("pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml"));
+            if (Properties.Settings.Default.DarkTheme)
+            {
+                ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
+            }
+
             Client.Pages = new List<Page>();
             Client.Container = Container;
-            Client.SwitchPage(Patch, "PATCH");
+            Client.SwitchPage(new PatcherPage());
         }
 
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void ThemeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.PVPNet != null)
+            if (ThemeManager.ThemeIsDark)
             {
-                Client.PVPNet.Disconnect();
+                ThemeManager.ChangeTheme(this, Steel, Theme.Light);
+                Properties.Settings.Default.DarkTheme = false;
+                Properties.Settings.Default.Save();
             }
-            Environment.Exit(0);
-        }
-
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
-        #region Navigation Bar Buttons
-
-        private void LogoButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Client.IsLoggedIn)
+            else
             {
-                MainPage MainPage = new MainPage();
-                Client.SwitchPage(MainPage, "Snowl");
-            }
-        }
-
-        private void LogoutButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Client.IsLoggedIn)
-            {
-                foreach (Button b in Client.EnableButtons)
-                {
-                    BrushConverter bc = new BrushConverter();
-                    Brush brush = (Brush)bc.ConvertFrom("#FFAAAAAA");
-                    b.Foreground = brush;
-                    if ((string)b.Content == "LOGOUT")
-                    {
-                        //If it is the LOGIN button convert back to original
-                        bc = new BrushConverter();
-                        brush = (Brush)bc.ConvertFrom("#FFFFFF");
-                        b.Foreground = brush;
-                        b.Content = "LOGIN";
-                    }
-                }
-                Client.PVPNet.Disconnect();
-                LoginPage LoginPage = new LoginPage();
-                Client.SwitchPage(LoginPage, "LOGIN");
-                Client.IsLoggedIn = false;
+                ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
+                Properties.Settings.Default.DarkTheme = true;
+                Properties.Settings.Default.Save();
             }
         }
 
@@ -108,7 +58,7 @@ namespace LegendaryClient
             if (Client.IsLoggedIn)
             {
                 ProfilePage ProfilePage = new ProfilePage();
-                Client.SwitchPage(ProfilePage, "PROFILE");
+                Client.SwitchPage(ProfilePage);
             }
         }
 
@@ -117,17 +67,16 @@ namespace LegendaryClient
             if (Client.IsLoggedIn)
             {
                 PlayPage PlayPage = new PlayPage();
-                Client.SwitchPage(PlayPage, "PLAY");
+                Client.SwitchPage(PlayPage);
             }
         }
-        #endregion
 
         private void ShopButton_Click(object sender, RoutedEventArgs e)
         {
             if (Client.IsLoggedIn)
             {
                 ShopPage ShopPage = new ShopPage();
-                Client.SwitchPage(ShopPage, "SHOP");
+                Client.SwitchPage(ShopPage);
             }
         }
 
@@ -136,8 +85,22 @@ namespace LegendaryClient
             if (Client.IsLoggedIn)
             {
                 SettingsPage SettingsPage = new SettingsPage();
-                Client.SwitchPage(SettingsPage, "SETTINGS");
+                Client.SwitchPage(SettingsPage);
             }
+        }
+
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Client.IsLoggedIn)
+            {
+                MainPage MainPage = new MainPage();
+                Client.SwitchPage(MainPage);
+            }
+        }
+
+        private void ReplayButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

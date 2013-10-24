@@ -100,8 +100,7 @@ namespace LegendaryClient.Windows
             Client.GameID = GameID;
             Client.GameName = GameName;
 
-            CustomGameLobbyPage page = new CustomGameLobbyPage();
-            Client.SwitchPage(page, "");
+            Client.SwitchPage(new CustomGameLobbyPage());
         }
 
         private void CustomGameListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -104,8 +104,7 @@ namespace LegendaryClient.Windows
                         }
                         Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                         Client.ClearPage(this);
-                        CustomGameLobbyPage page = new CustomGameLobbyPage();
-                        Client.SwitchPage(page, "");
+                        Client.SwitchPage(new CustomGameLobbyPage());
                         return;
                     }
                     else if (ChampDTO.GameState == "PRE_CHAMP_SELECT")
@@ -280,15 +279,11 @@ namespace LegendaryClient.Windows
             //TODO - add messagebox
             await Client.PVPNet.QuitGame();
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-            CustomGameLobbyPage clearPage = new CustomGameLobbyPage(); //Clear pages
-            Client.ClearPage(clearPage);
-            CreateCustomGamePage clearPage2 = new CreateCustomGamePage();
-            Client.ClearPage(clearPage2);
-            ChampSelectPage clearPage3 = new ChampSelectPage();
-            Client.ClearPage(clearPage3);
+            Client.ClearPage(new CustomGameLobbyPage()); //Clear pages
+            Client.ClearPage(new CreateCustomGamePage());
+            Client.ClearPage(new ChampSelectPage());
 
-            MainPage MainPage = new MainPage();
-            Client.SwitchPage(MainPage, "");
+            Client.SwitchPage(new MainPage());
         }
 
         private async void LockInButton_Click(object sender, RoutedEventArgs e)

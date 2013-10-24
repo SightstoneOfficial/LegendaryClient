@@ -112,15 +112,9 @@ namespace LegendaryClient.Windows
                             }
                         }
                         ChampSelectPlayer control = new ChampSelectPlayer();
-                        Image champImage = new Image();
-                        champImage.Height = 58;
-                        champImage.Width = 58;
                         var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championId).iconPath), UriKind.Absolute);
-                        champImage.Source = new BitmapImage(uriSource);
-                        control.ChampionImage = champImage;
-                        control.ChampPlayer.Content = PlayerName;
-                        control.Width = 125;
-                        control.Height = 80;
+                        control.ChampionImage.Source = new BitmapImage(uriSource);
+                        control.PlayerName.Content = PlayerName;
                         if (teamId == 100)
                         {
                             BlueListView.Items.Add(control);

@@ -113,8 +113,7 @@ namespace LegendaryClient.Windows
                     Client.GameID = result.Id;
                     Client.GameName = result.Name;
                     Client.GameLobbyDTO = result;
-                    CustomGameLobbyPage page = new CustomGameLobbyPage();
-                    Client.SwitchPage(page, "");
+                    Client.SwitchPage(new CustomGameLobbyPage());
                 }
             }));
         }

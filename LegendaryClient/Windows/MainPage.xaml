@@ -8,53 +8,50 @@
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="MainPage">
 
-    <Grid Background="#FF9B9B9B">
-        <TextBlock x:Name="TimeBonusWinLabel" HorizontalAlignment="Center" TextWrapping="WrapWithOverflow" Text="13:09" VerticalAlignment="Top" FontWeight="Bold" FontSize="48" Foreground="WhiteSmoke" Margin="0,0,0,0" FontFamily="Nyala"/>
-        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="First Win Bonus Time" VerticalAlignment="Top" Foreground="WhiteSmoke" Margin="0,50,0,0" FontWeight="Bold" FontSize="14"/>
+    <Grid>
+        <TextBlock x:Name="TimeBonusWinLabel" HorizontalAlignment="Center" TextWrapping="WrapWithOverflow" Text="13:09" VerticalAlignment="Top" FontWeight="Bold" FontSize="48" Margin="0,0,0,0" FontFamily="Nyala"/>
+        <TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="First Win Bonus Time" VerticalAlignment="Top" Margin="0,50,0,0" FontWeight="Bold" FontSize="14"/>
         <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="64">
             <Image.Effect>
                 <DropShadowEffect/>
             </Image.Effect>
         </Image>
-        <Label x:Name="SummonerNameLabel" Content="?" HorizontalAlignment="Left" Margin="80,5,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
-        <Label x:Name="SummonerLevelLabel" Content="Level 0" HorizontalAlignment="Left" Margin="80,40,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
-        <Label x:Name="BalanceLabel" Content="IP: 0 | RP: 0" HorizontalAlignment="Right" Margin="0,5,10,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White" Grid.ColumnSpan="2"/>
-        <Label x:Name="LocationLabel" Content="Region: OCE" HorizontalAlignment="Right" Margin="0,40,10,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White" Grid.ColumnSpan="2"/>
-        <TextBox x:Name="BroadcastNotification" IsReadOnly="True" HorizontalAlignment="Stretch" Height="30" Margin="10,90,10,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" FontSize="18" Background="#FF505050" Foreground="White" SelectionBrush="{x:Null}" BorderBrush="{x:Null}"/>
+        <Label x:Name="SummonerNameLabel" Content="?" HorizontalAlignment="Left" Margin="80,5,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22"/>
+        <Label x:Name="SummonerLevelLabel" Content="Level 0" HorizontalAlignment="Left" Margin="80,40,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22"/>
+        <Label x:Name="BalanceLabel" Content="IP: 0 | RP: 0" HorizontalAlignment="Right" Margin="0,5,10,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Grid.ColumnSpan="2"/>
+        <Label x:Name="LocationLabel" Content="Region: OCE" HorizontalAlignment="Right" Margin="0,40,10,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="BroadcastNotification" IsReadOnly="True" Text="Ranked Queues are disabled in preparation for the 3.13 patch" HorizontalAlignment="Stretch" Height="30" Margin="10,90,10,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="18" SelectionBrush="{x:Null}" BorderBrush="{x:Null}"/>
 
-        <Grid x:Name="InGameGrid" HorizontalAlignment="Stretch" Height="50" Margin="0,120,0,0" VerticalAlignment="Top">
-            <Button Content="Return to Game" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150" Height="30"/>
-            <Button Content="Exit Game" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="150" Height="30"/>
-        </Grid>
-        <Grid HorizontalAlignment="Stretch" Margin="0,170,0,0" VerticalAlignment="Stretch" Background="#FF646464">
-            <ListView x:Name="BlueListView" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="175" Background="#FF9B9B9B">
+        <Separator VerticalAlignment="Top" Margin="0,130,0,0"/>
+        <Grid HorizontalAlignment="Stretch" Margin="0,130,0,0" VerticalAlignment="Stretch">
+            <ListView x:Name="BlueListView" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="125" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
-            <Label Content="Blue Bans" HorizontalAlignment="Left" Margin="200,5,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold"/>
-            <ListView x:Name="BlueBanListView" HorizontalAlignment="Left" Margin="200,30,0,10" VerticalAlignment="Top" Height="190" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="64" Background="#FF9B9B9B">
+            <Label Content="Blue Bans" HorizontalAlignment="Left" Margin="200,5,0,0" VerticalAlignment="Top" FontWeight="Bold"/>
+            <ListView x:Name="BlueBanListView" HorizontalAlignment="Left" Margin="200,30,0,10" VerticalAlignment="Top" Height="190" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="64" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
-            <Label Content="Featured Games" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White" Grid.ColumnSpan="2"/>
+            <Label Content="Featured Games" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Grid.ColumnSpan="2"/>
             <ComboBox x:Name="SpectatorComboBox" HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Top" Width="160" ItemsSource="{DynamicResource Regions}" SelectionChanged="SpectatorComboBox_SelectionChanged"/>
-            <Label x:Name="GameIdLabel" Content="Game ID" HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" Foreground="White" FontSize="16"/>
-            <Label x:Name="MapLabel" Content="Summoners Rift" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" Foreground="White" FontSize="16"/>
-            <Label Content="Purple Bans" HorizontalAlignment="Right" Margin="0,5,193,0" VerticalAlignment="Top" Foreground="White" FontWeight="Bold"/>
-            <ListView x:Name="PurpleBanListView" HorizontalAlignment="Right" Margin="0,30,200,10" VerticalAlignment="Top" Height="190"  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="64" Background="#FF9B9B9B">
+            <Label x:Name="GameIdLabel" Content="Game ID" HorizontalAlignment="Center" Margin="0,90,0,0" VerticalAlignment="Top" FontSize="16"/>
+            <Label x:Name="MapLabel" Content="Summoners Rift" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" FontSize="16"/>
+            <Label Content="Purple Bans" HorizontalAlignment="Right" Margin="0,5,193,0" VerticalAlignment="Top" FontWeight="Bold"/>
+            <ListView x:Name="PurpleBanListView" HorizontalAlignment="Right" Margin="0,30,200,10" VerticalAlignment="Top" Height="190" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="64" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
-            <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="175" Background="#FF9B9B9B">
+            <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,10,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="125" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel/>

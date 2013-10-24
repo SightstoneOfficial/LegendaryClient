@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Net.Security;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Windows.Controls;
 using System.Windows.Media;
 using jabber.client;
+using jabber.protocol.client;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect;
@@ -36,87 +39,101 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// The database of all the champions
         /// </summary>
-        internal static IEnumerable<champions> Champions;
+        internal static List<champions> Champions;
         /// <summary>
         /// The database of all the champion abilities
         /// </summary>
-        internal static IEnumerable<championAbilities> ChampionAbilities;
+        internal static List<championAbilities> ChampionAbilities;
         /// <summary>
         /// The database of all the champion skins
         /// </summary>
-        internal static IEnumerable<championSkins> ChampionSkins;
+        internal static List<championSkins> ChampionSkins;
         /// <summary>
         /// The database of all the items
         /// </summary>
-        internal static IEnumerable<items> Items;
+        internal static List<items> Items;
         /// <summary>
         /// The database of all the search tags
         /// </summary>
-        internal static IEnumerable<championSearchTags> SearchTags;
+        internal static List<championSearchTags> SearchTags;
         /// <summary>
         /// The database of all the keybinding defaults & proper names
         /// </summary>
-        internal static IEnumerable<keybindingEvents> Keybinds;
+        internal static List<keybindingEvents> Keybinds;
 
         internal static JabberClient ChatClient;
 
         internal static RosterManager RostManager;
         internal static PresenceManager PresManager;
 
-        internal static bool ChatClient_OnInvalidCertificate(object sender, System.Security.Cryptography.X509Certificates.X509Certificate certificate, System.Security.Cryptography.X509Certificates.X509Chain chain, System.Net.Security.SslPolicyErrors sslPolicyErrors)
+        internal static Dictionary<string, string> AllPlayers = new Dictionary<string, string>();
+        internal static Dictionary<string, string> Messages = new Dictionary<string, string>();
+
+        internal static bool ChatClient_OnInvalidCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }
 
+        internal static void ChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
+        {
+            Messages.Add(msg.From.User, msg.Body);
+        }
+
         internal static void ChatClientConnect(object sender)
         {
-            ChatClient.Presence(jabber.protocol.client.PresenceType.available,
+            SetChatHover(PresenceType.available, 30, 500, "im best in ozeeeeeeeeeeee", false);
+        }
+
+        internal static void SetChatHover(PresenceType Presence, int Level, int Wins, string statusMsg, bool inGame)
+        {
+            /*ChatClient.Presence(Presence,
                 "<body>" +
-                      "<profileIcon>668</profileIcon>" +
-                      "<level>30</level>" +
-                      "<wins>999</wins>" +
-                      "<statusMsg>test</statusMsg>" +
-                      "<gameStatus>outOfGame</gameStatus>" +
-                "</body>",
-                null, 0);
+                      "<level>" + Level + "</level>" +
+                      "<wins>" + Wins + "</wins>" +
+                      "<statusMsg>" + statusMsg + "</statusMsg>" +
+                      "<gameStatus>" + ((inGame == true) ? "inGame" : "outOfGame") + "</gameStatus>" +
+                "</body>", null, 0);*/
+            ChatClient.Presence(Presence, "<body>" +
+                "<profileIcon>552</profileIcon>" +
+                "<level>" + Level + "</level>" +
+                "<wins>" + Wins + "</wins>" +
+                "<leaves>52</leaves>" +
+                "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
+                //"<rankedLeagueName>Urgot&apos;s Patriots</rankedLeagueName>" +
+                "<rankedLeagueName>legendaryclientDOTcom</rankedLeagueName>" +
+                "<rankedLeagueDivision>I</rankedLeagueDivision>" +
+                "<rankedLeagueTier>BRONZE</rankedLeagueTier>" + 
+                "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>"+
+                "<rankedWins>287</rankedWins>" +
+                "<gameStatus>" + ((inGame == true) ? "inGame" : "outOfGame") + "</gameStatus>" +
+                "<statusMsg>best in oz m8</statusMsg>" + 
+            "</body>", null, 0);
+        }
+
+        internal static void RostManager_OnRosterItem(object sender, jabber.protocol.iq.Item ri)
+        {
+            if (!AllPlayers.ContainsKey(ri.JID.User))
+            {
+                AllPlayers.Add(ri.JID.User, ri.Nickname);
+            }
         }
 
         #region WPF Tab Change
         /// <summary>
         /// The container that contains the page to display
         /// </summary>
-        internal static Frame Container;
+        internal static ContentControl Container;
         /// <summary>
         /// Page cache to stop having to recreate all information if pages are overwritted
         /// </summary>
         internal static List<Page> Pages;
-        /// <summary>
-        /// All buttons to enable/disable when logging in-out/playing a game
-        /// </summary>
-        internal static List<Button> EnableButtons;
 
         /// <summary>
         /// Switches the contents of the frame to the requested page. Also sets background on
         /// the button on the top to show what section you are currently on.
         /// </summary>
-        internal static void SwitchPage(Page page, string ButtonContent)
+        internal static void SwitchPage(Page page)
         {
-            foreach (Button b in Client.EnableButtons)
-            {
-                if ((string)b.Content == ButtonContent)
-                {
-                    BrushConverter bc = new BrushConverter();
-                    Brush brush = (Brush)bc.ConvertFrom("#FF5A5A5A");
-                    b.Background = brush;
-                }
-                else
-                {
-                    BrushConverter bc = new BrushConverter();
-                    Brush brush = (Brush)bc.ConvertFrom("#FF505050");
-                    b.Background = brush;
-                }
-            }
-
             foreach (Page p in Pages) //Cache pages
             {
                 if (p.GetType() == page.GetType())

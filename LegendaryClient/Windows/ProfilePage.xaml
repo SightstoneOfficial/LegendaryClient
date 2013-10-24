@@ -28,7 +28,7 @@
             <DockPanel x:Name="ProfileNavBar"
                                Height="32"
                                Background="#FF505050" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0">
-                <Button x:Name="IngameButton" Style="{StaticResource NoHoverStyle}"
+                <Button x:Name="IngameButton"
                                     Content="INGAME" 
                                     Height="32" 
                                     FontWeight="999" 
@@ -37,7 +37,7 @@
                                     Width="100" 
                                     Background="#FF505050" 
                                     Foreground="#FFAAAAAA" Click="IngameButton_Click"/>
-                <Button x:Name="OverviewButton" Style="{StaticResource NoHoverStyle}"
+                <Button x:Name="OverviewButton"
                                     Content="OVERVIEW" 
                                     Height="32" 
                                     FontWeight="999" 
@@ -46,7 +46,7 @@
                                     Width="100" 
                                     Background="#FF505050" 
                                     Foreground="White" Click="OverviewButton_Click"/>
-                <Button x:Name="LeaguesButton" Style="{StaticResource NoHoverStyle}"
+                <Button x:Name="LeaguesButton"
                                     Content="LEAGUES" 
                                     Height="32" 
                                     FontWeight="999" 
@@ -55,8 +55,7 @@
                                     Width="100" 
                                     Background="#FF505050" 
                                     Foreground="White" Click="LeaguesButton_Click"/>
-                <Button x:Name="RecentGamesButton" Style="{StaticResource NoHoverStyle}"
-                                    Content="GAMES" 
+                <Button x:Name="RecentGamesButton" Content="GAMES" 
                                     Height="32" 
                                     FontWeight="999" 
                                     FontSize="16" 
@@ -64,8 +63,7 @@
                                     Width="100" 
                                     Background="#FF505050" 
                                     Foreground="White" Click="RecentGamesButton_Click"/>
-                <Button Style="{StaticResource NoHoverStyle}"
-                                    Content="RUNES" 
+                <Button Content="RUNES" 
                                     Height="32" 
                                     FontWeight="999" 
                                     FontSize="16" 
@@ -73,8 +71,7 @@
                                     Width="100" 
                                     Background="#FF505050" 
                                     Foreground="White"/>
-                <Button Style="{StaticResource NoHoverStyle}"
-                                    Content="MASTERIES" 
+                <Button Content="MASTERIES" 
                                     Height="32" 
                                     FontWeight="999" 
                                     FontSize="16" 
@@ -82,7 +79,7 @@
                                     Width="100" 
                                     Background="#FF505050" 
                                     Foreground="White"/>
-                <Button x:Name="SkinButton" Style="{StaticResource NoHoverStyle}"
+                <Button x:Name="SkinButton"
                                     Content="SKINS" 
                                     Height="32" 
                                     FontWeight="999" 
@@ -91,7 +88,7 @@
                                     Width="100" 
                                     Background="#FF505050" 
                                     Foreground="White" Click="SkinButton_Click"/>
-                <Button x:Name="ChampionButton" Style="{StaticResource NoHoverStyle}"
+                <Button x:Name="ChampionButton"
                                     Content="CHAMPIONS" 
                                     Height="32" 
                                     FontWeight="999" 
@@ -121,7 +118,7 @@
                         <ComboBox x:Name="OverviewComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="350" SelectionChanged="OverviewComboBox_SelectionChanged"/>
                         <ListView x:Name="OverviewListView" HorizontalAlignment="Stretch" Margin="10,40,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
                             <ListView.View>
-                                <GridView  ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                                     <GridViewColumn x:Name="OverviewKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}"/>
                                     <GridViewColumn x:Name="OverviewValueHeader" Header="Value" DisplayMemberBinding="{Binding Value}"/>
                                 </GridView>

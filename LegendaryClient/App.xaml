@@ -3,31 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!-- This style is used for buttons, to remove the WPF default 'animated' mouse over effect -->
-        <Style x:Key="NoHoverStyle" TargetType="Button">
-            <Setter Property="OverridesDefaultStyle" Value="True"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Name="border" 
-                            BorderThickness="0"
-                            Padding="4,2" 
-                            BorderBrush="DarkGray" 
-                            CornerRadius="3" 
-                            Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FF646464" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-        </Style>
         
+        <Style x:Key="ChatStatusStyle" TargetType="ComboBox">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
         <Style x:Key="{x:Type ListViewItem}" TargetType="ListViewItem">
             <Style.Triggers>
@@ -40,7 +26,11 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="NoDottedBorder" TargetType="{x:Type Frame}">
+        <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+
+        <Style x:Key="{x:Type ContentControl}" TargetType="{x:Type ContentControl}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         </Style>
 
@@ -82,6 +72,14 @@
             <sys:String>No Ban Draft</sys:String>
             <sys:String>Blind Draft</sys:String>-->
             <sys:String>Tournament Draft</sys:String>
+        </x:Array>
+
+        <x:Array x:Key="ChatStates" Type="sys:String"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>Online</sys:String>
+            <sys:String>Busy</sys:String>
+            <sys:String>Invisible</sys:String>
+            <sys:String>Offline</sys:String>
         </x:Array>
 
     </Application.Resources>

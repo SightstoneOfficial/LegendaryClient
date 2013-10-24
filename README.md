@@ -24,18 +24,19 @@ LegendaryClient should work once this is complete. Your folder should look like 
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/Gmc2aDn.jpg)
-![Create Game](http://i.imgur.com/TesXwHw.png)
+![Login](http://i.imgur.com/Gbi20rA.png)
+![Create Game](http://i.imgur.com/8MW1Wqz.png)
 ![Create Game2](http://i.imgur.com/F8a9cBE.png)
-![Profile](http://i.imgur.com/oRboGhW.png)
 ![Custom Game Search](http://i.imgur.com/U0KpVBr.png)
 
 Still-in Progress Screenshots 
 =============================
 
-![Main Screen](http://i.imgur.com/ifoZa0i.png)
-![Queueing up for game](http://i.imgur.com/rwaDuLV.png)
-![Champ Select](http://i.imgur.com/oi2kUhx.png)
+![Main Screen](http://i.imgur.com/UnMC9bI.png)
+![Profile](http://i.imgur.com/ArWGFXW.png)
+![Lobby Screen](http://i.imgur.com/Uq9lfRJ.png)
+![Queueing up for game](http://i.imgur.com/QsQy4z0.png)
+![Champ Select](http://i.imgur.com/DBiBRec.png)
 ![Champion List](http://i.imgur.com/GYDpTz8.png)
 ![Owned Skin List](http://i.imgur.com/hmlfsDv.png)
 ![Store](http://i.imgur.com/PlWoboH.jpg)

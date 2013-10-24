@@ -86,14 +86,12 @@ namespace LegendaryClient.Windows
 
         private void CreateCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateCustomGamePage page = new CreateCustomGamePage();
-            Client.SwitchPage(page, "");
+            Client.SwitchPage(new CreateCustomGamePage());
         }
 
         private void JoinCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
-            CustomGameListingPage page = new CustomGameListingPage();
-            Client.SwitchPage(page, "");
+            Client.SwitchPage(new CustomGameListingPage());
         }
     }
 }

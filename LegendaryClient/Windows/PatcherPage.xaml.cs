@@ -146,15 +146,7 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                foreach (Button b in Client.EnableButtons)
-                {
-                    if ((string)b.Content == "PATCH")
-                    {
-                        b.Content = "LOGIN";
-                    }
-                }
-                LoginPage LoginPage = new LoginPage();
-                Client.SwitchPage(LoginPage, "LOGIN");
+                Client.SwitchPage(new LoginPage());
             }));
         }
 

@@ -10,6 +10,6 @@
         <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="48" Margin="10,10,0,0" VerticalAlignment="Top" Width="48"/>
         <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="16" Margin="75,10,0,0" VerticalAlignment="Top" Width="16"/>
         <Image x:Name="SummonerSpell12" HorizontalAlignment="Left" Height="16" Margin="75,40,0,0" VerticalAlignment="Top" Width="16"/>
-        <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Stretch" Margin="0,53,0,0" VerticalAlignment="Top" Width="125" Foreground="White"/>
+        <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Stretch" Margin="0,53,0,0" VerticalAlignment="Top" Width="125"/>
     </Grid>
 </UserControl>

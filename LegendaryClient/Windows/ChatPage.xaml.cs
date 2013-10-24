@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LegendaryClient.Logic;
+using LegendaryClient.Controls;
 
 namespace LegendaryClient.Windows
 {
@@ -23,6 +25,15 @@ namespace LegendaryClient.Windows
         public ChatPage()
         {
             InitializeComponent();
+            ChatPlayer testPlayer = new ChatPlayer();
+            ChatPlayer testPlayer1 = new ChatPlayer();
+            ChatPlayer testPlayer2 = new ChatPlayer();
+            ChatPlayer testPlayer3 = new ChatPlayer();
+
+            ChatListView.Items.Add(testPlayer);
+            ChatListView.Items.Add(testPlayer1);
+            ChatListView.Items.Add(testPlayer2);
+            ChatListView.Items.Add(testPlayer3);
         }
     }
 }
