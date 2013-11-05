@@ -20,6 +20,11 @@ namespace LegendaryClient.Logic.Region
             get { return "ru"; }
         }
 
+        public override Uri NewsAddress
+        {
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/ru/ru_RU.js"); }
+        }
+
         public override PVPNetConnect.Region PVPRegion
         {
             get { return PVPNetConnect.Region.RU; }

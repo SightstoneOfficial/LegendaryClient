@@ -9,6 +9,7 @@ using LegendaryClient.Logic;
 using PVPNetConnect;
 using MahApps.Metro.Controls;
 using MahApps.Metro;
+using System.Windows.Interop;
 
 namespace LegendaryClient
 {
@@ -18,11 +19,13 @@ namespace LegendaryClient
     public partial class MainWindow : MetroWindow
     {
         Accent Steel = null;
+
         public MainWindow()
         {
             InitializeComponent();
             Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            
+
+            Client.InfoLabel = InfoLabel;
             Client.PVPNet = new PVPNetConnection();
             Client.PVPNet.OnError += Client.PVPNet_OnError;
 
@@ -32,7 +35,10 @@ namespace LegendaryClient
                 ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
             }
 
+            ChatContainer.Content = new ChatPage().Content;
+
             Client.Pages = new List<Page>();
+            Client.MainGrid = MainGrid;
             Client.Container = Container;
             Client.SwitchPage(new PatcherPage());
         }

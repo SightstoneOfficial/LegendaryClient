@@ -15,5 +15,6 @@
         <ProgressBar x:Name="CurrentProgressBar" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,70" VerticalAlignment="Bottom"/>
         <Label x:Name="TotalProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,40" VerticalAlignment="Bottom"/>
         <ProgressBar x:Name="TotalProgessBar" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,10" VerticalAlignment="Bottom"/>
-        </Grid>
+        <Label x:Name="CurrentStatusLabel" Content="Checking for updates..." HorizontalAlignment="Right" Margin="0,0,10,100" VerticalAlignment="Bottom"/>
+    </Grid>
 </Page>

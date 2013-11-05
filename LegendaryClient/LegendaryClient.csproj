@@ -54,6 +54,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity">
@@ -80,6 +81,15 @@
     </ApplicationDefinition>
     <Compile Include="Controls\ChatPlayer.xaml.cs">
       <DependentUpon>ChatPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LargeChatPlayer.xaml.cs">
+      <DependentUpon>LargeChatPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NewsItem.xaml.cs">
+      <DependentUpon>NewsItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PlayerChatBox.xaml.cs">
+      <DependentUpon>PlayerChatBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\RecentGameOverview.xaml.cs">
       <DependentUpon>RecentGameOverview.xaml</DependentUpon>
@@ -149,6 +159,18 @@
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\ChatPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LargeChatPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NewsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PlayerChatBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -254,7 +276,12 @@
   <ItemGroup>
     <Resource Include="Icon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="33.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="BackTex.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

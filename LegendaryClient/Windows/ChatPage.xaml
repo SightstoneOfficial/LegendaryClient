@@ -5,19 +5,33 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:LegendaryClient.Controls"
       mc:Ignorable="d" 
-      d:DesignHeight="672" d:DesignWidth="200"
+      d:DesignHeight="640" d:DesignWidth="200"
 	Title="ChatPage">
 
     <Page.Resources>
         <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
+        <Style x:Key="NoFocus" TargetType="{x:Type ListView}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        </Style>
+        <ContextMenu x:Key="PlayerChatMenu">
+            <MenuItem Header="Invite to Game"/>
+            <MenuItem Header="Send Message"/>
+            <MenuItem Header="View Profile"/>
+            <MenuItem Header="Invite to Chat"/>
+            <MenuItem Header="Remove Friend"/>
+            <MenuItem Header="Ignore Friend"/>
+            <MenuItem Header="Move Friend to Group"/>
+            <MenuItem Header="Edit Note"/>
+            <MenuItem Header="Spectate Game"/>
+        </ContextMenu>
     </Page.Resources>
 
-    <Grid Background="#FF363636">
-        <ComboBox HorizontalAlignment="Stretch" Margin="5,5,5,0" VerticalAlignment="Top" ItemsSource="{DynamicResource ChatStates}" SelectedIndex="0"/>
-        <local:TextBoxWatermarked Watermark="Set your status message" HorizontalAlignment="Stretch" Height="23" Margin="5,35,5,0" TextWrapping="NoWrap" VerticalAlignment="Top"></local:TextBoxWatermarked>
-        <ListView x:Name="ChatListView" HorizontalAlignment="Stretch" Margin="0,65,0,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Stretch" Background="#FF363636" BorderBrush="{x:Null}" Foreground="White">
+    <Grid Background="#FF0F0F0F">
+        <ComboBox x:Name="PresenceChanger" HorizontalAlignment="Stretch" Margin="5,5,5,0" VerticalAlignment="Top" ItemsSource="{DynamicResource ChatStates}" SelectedIndex="0" SelectionChanged="PresenceChanger_SelectionChanged"/>
+        <local:TextBoxWatermarked x:Name="StatusBox" HorizontalAlignment="Stretch" Height="23" Margin="5,35,5,0" TextWrapping="NoWrap" VerticalAlignment="Top" Watermark="Set your status message"/>
+        <ListView Style="{StaticResource NoFocus}" x:Name="ChatListView" HorizontalAlignment="Stretch" Margin="0,65,0,20" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="ChatListView_SelectionChanged">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn/>

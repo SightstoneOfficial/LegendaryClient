@@ -3,6 +3,8 @@ LegendaryClient
 
 Beautiful, fully-featured League of Legends client based off https://github.com/Snowl/ClientOfLegends2
 
+Still under heavy development! Lots of things don't work or don't look good...
+
 How to compile
 ===========
 
@@ -21,18 +23,17 @@ Next, compile it. It will crash at this point. This will be fixed once Kyoku is 
 * Finally, create a folder in Assets called profileImages, and add an image called 137.jpg in there.
 
 LegendaryClient should work once this is complete. Your folder should look like this: http://i.imgur.com/MXMQG8Y.png
+
 In-Client Screenshots (90-100)% complete
 =====================
 
 ![Login](http://i.imgur.com/Gbi20rA.png)
-![Create Game](http://i.imgur.com/8MW1Wqz.png)
-![Create Game2](http://i.imgur.com/F8a9cBE.png)
-![Custom Game Search](http://i.imgur.com/U0KpVBr.png)
+![News Screen](http://i.imgur.com/VZjEPmV.png)
 
 Still-in Progress Screenshots 
 =============================
 
-![Main Screen](http://i.imgur.com/UnMC9bI.png)
+![Chat](http://i.imgur.com/I7pilg2.png)
 ![Profile](http://i.imgur.com/ArWGFXW.png)
 ![Lobby Screen](http://i.imgur.com/Uq9lfRJ.png)
 ![Queueing up for game](http://i.imgur.com/QsQy4z0.png)
@@ -42,3 +43,6 @@ Still-in Progress Screenshots
 ![Store](http://i.imgur.com/PlWoboH.jpg)
 ![Ingame](http://i.imgur.com/RMkdKNz.png)
 ![Advanced Settings](http://i.imgur.com/xCo3SOe.png)
+![Create Game](http://i.imgur.com/8MW1Wqz.png)
+![Create Game2](http://i.imgur.com/F8a9cBE.png)
+![Custom Game Search](http://i.imgur.com/U0KpVBr.png)

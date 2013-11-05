@@ -20,6 +20,11 @@ namespace LegendaryClient.Logic.Region
             get { return "eun1"; }
         }
 
+        public override Uri NewsAddress
+        {
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/eune/en_GB.js"); }
+        }
+
         public override PVPNetConnect.Region PVPRegion
         {
             get { return PVPNetConnect.Region.EUN; }

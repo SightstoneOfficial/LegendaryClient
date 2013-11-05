@@ -51,6 +51,9 @@ namespace LegendaryClient.Windows
                 case "Blind Duplicate Pick (5X vs 5Y)":
                     gameConfig.GameTypeConfig = 14;
                     break;
+                case "Cap":
+                    gameConfig.GameTypeConfig = 12;
+                    break;
                 default: //Tournament Draft
                     gameConfig.GameTypeConfig = 6;
                     break;

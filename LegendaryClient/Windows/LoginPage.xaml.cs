@@ -143,10 +143,12 @@ namespace LegendaryClient.Windows
 
                 Client.PresManager = new PresenceManager();
                 Client.PresManager.Stream = Client.ChatClient;
+                Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
 
                 Client.SwitchPage(new MainPage());
                 Client.ClearPage(this);
             }));
         }
+
     }
 }

@@ -20,6 +20,12 @@ namespace LegendaryClient.Logic.Region
             get { return "kr"; }
         }
 
+        //No known news URI for Korea
+        public override Uri NewsAddress
+        {
+            get { return new Uri(""); }
+        }
+
         public override PVPNetConnect.Region PVPRegion
         {
             get { return PVPNetConnect.Region.KR; }

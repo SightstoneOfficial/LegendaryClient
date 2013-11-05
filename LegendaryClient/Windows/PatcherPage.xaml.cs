@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
@@ -47,7 +48,7 @@ namespace LegendaryClient.Windows
                 };
                 try
                 {
-                    client.DownloadStringAsync(new Uri("http://snowl.github.io/ClientOfLegends2/update.html"));
+                    VersionString = client.DownloadString(new Uri("http://snowl.github.io/ClientOfLegends2/update.html"));
                 }
                 catch
                 {
@@ -78,18 +79,15 @@ namespace LegendaryClient.Windows
                         Environment.Exit(0);
                     }*/
 
-                    /*if (versionArray[1] != CurrentKyokuMD5)
+                    if (versionArray[1] != CurrentKyokuMD5)
                     {
-                        this.Invoke(new MethodInvoker(delegate
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            CheckingForUpdatesLabel.Text = "Downloading latest Kyoku...";
+                            CurrentStatusLabel.Content = "Downloading latest Kyoku...";
                         }));
-                        using (WebClient client = new WebClient())
-                        {
-                            client.DownloadFile(versionArray[3], "KYOKU.ZIP");
-                        }
+                        client.DownloadFile(versionArray[3], "KYOKU.ZIP");
                         Directory.CreateDirectory("Patch");
-                        System.IO.Compression.ZipFile.ExtractToDirectory("KYOKU.ZIP", "Patch");
+                        ZipFile.ExtractToDirectory("KYOKU.ZIP", "Patch");
                         File.Delete("KYOKU.ZIP");
                         if (Directory.Exists("Patch"))
                         {
@@ -109,27 +107,26 @@ namespace LegendaryClient.Windows
                         Directory.Delete("Patch");
                     }
 
-                    KyokuProcess = new System.Diagnostics.Process();
+                    var KyokuProcess = new System.Diagnostics.Process();
                     KyokuProcess.StartInfo.UseShellExecute = false;
-                    KyokuProcess.StartInfo.RedirectStandardOutput = true;
+                    /*KyokuProcess.StartInfo.RedirectStandardOutput = true;
                     KyokuProcess.StartInfo.RedirectStandardError = true;
                     KyokuProcess.EnableRaisingEvents = true;
                     KyokuProcess.StartInfo.CreateNoWindow = true;
                     KyokuProcess.OutputDataReceived += p_OutputDataReceived;
-                    KyokuProcess.ErrorDataReceived += p_ErrorDataReceived;
+                    KyokuProcess.ErrorDataReceived += p_ErrorDataReceived;*/
                     KyokuProcess.StartInfo.FileName = Path.Combine(Directory.GetCurrentDirectory(), "Kyoku.exe");
-                    KyokuProcess.Start();
-                    KyokuProcess.BeginOutputReadLine();
-                    KyokuProcess.BeginErrorReadLine();
+                    //KyokuProcess.Start();
+                    /*KyokuProcess.BeginOutputReadLine();
+                    KyokuProcess.BeginErrorReadLine();*/
 
-                    while (!KyokuProcess.WaitForExit(1000)) { }
+                    /*while (!KyokuProcess.WaitForExit(1000)) { }
                     if (KyokuProcess.ExitCode != 991)
                     {
-                        this.Invoke(new MethodInvoker(delegate
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            CheckingForUpdatesLabel.Text = "League of Legends was unable to patch. You cannot play at this time.";
-                            KyokuOutput.AppendText(PercentageLabel.Text);
-                            UpdateBar.Value = 0;
+                            CurrentStatusLabel.Content = "League of Legends was unable to patch. You cannot play at this time.";
+                            CurrentProgressBar.Value = 0;
                         }));
                         return;
                     }

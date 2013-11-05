@@ -20,6 +20,11 @@ namespace LegendaryClient.Logic.Region
             get { return "oc1"; }
         }
 
+        public override Uri NewsAddress
+        {
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/oce/en_AU.js"); }
+        }
+
         public override PVPNetConnect.Region PVPRegion
         {
             get { return PVPNetConnect.Region.OCE; }
@@ -36,15 +41,14 @@ namespace LegendaryClient.Logic.Region
             }
         }
 
-        //No known spectator link, returning NA
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.na.lol.riotgames.com/observer-mode/rest/featured"); }
+            get { return new Uri("http://spectator.oc1.lol.riotgames.com/observer-mode/rest/featured"); }
         }
 
         public override Uri SpectatorIpAddress
         {
-            get { return new Uri("216.133.234.17:8088"); }
+            get { return new Uri("192.64.169.29:80"); }
         }
     }
 }
