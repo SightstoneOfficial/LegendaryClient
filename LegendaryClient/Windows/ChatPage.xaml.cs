@@ -62,6 +62,11 @@ namespace LegendaryClient.Windows
                 {
                     Client.CurrentStatus = StatusBox.Text;
                 }
+                else if (StatusBox.Text == "Set your status message")
+                {
+                    Client.CurrentStatus = "Online";
+                }
+
                 if (Client.UpdatePlayers)
                 {
                     Client.UpdatePlayers = false;
@@ -72,6 +77,7 @@ namespace LegendaryClient.Windows
                         if (ChatPlayerPair.Value.Level != 0)
                         {
                             ChatPlayer player = new ChatPlayer();
+                            player.Width = 250;
                             player.Tag = ChatPlayerPair.Value;
                             player.PlayerName.Content = ChatPlayerPair.Value.Username;
                             player.LevelLabel.Content = ChatPlayerPair.Value.Level;
@@ -106,7 +112,7 @@ namespace LegendaryClient.Windows
             }
             PlayerItem.Tag = playerItem;
             PlayerItem.PlayerName.Content = playerItem.Username;
-            PlayerItem.PlayerLeague.Content = playerItem.LeagueTier;
+            PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;
             if (playerItem.RankedWins == 0)
                 PlayerItem.PlayerWins.Content = playerItem.Wins + " Normal Wins";
             else
@@ -129,7 +135,7 @@ namespace LegendaryClient.Windows
             double YMargin = MouseLocation.Y;
             if (YMargin + 155 > Client.MainGrid.ActualHeight)
                 YMargin = Client.MainGrid.ActualHeight - 155;
-            PlayerItem.Margin = new Thickness(0, YMargin, 225, 0);
+            PlayerItem.Margin = new Thickness(0, YMargin, 250, 0);
         }
 
         private void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -143,7 +149,7 @@ namespace LegendaryClient.Windows
                     ChatListView.Items.Remove(ChatBox);
                 }
                 ChatBox = new PlayerChatBox();
-                ChatBox.Width = 200;
+                ChatBox.Width = 225;
                 ChatBox.Player = (ChatPlayerItem)((ChatPlayer)ChatListView.SelectedItem).Tag;
                 ChatListView.Items.Insert(ChatListView.SelectedIndex + 1, ChatBox);
             }

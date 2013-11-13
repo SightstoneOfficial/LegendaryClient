@@ -61,7 +61,16 @@ namespace LegendaryClient.Windows
             foreach (GameItem item in allItems)
             {
                 if (item.GameName.ToLower().Contains(SearchTextBox.Text.ToLower()))
+                {
+                    if (PrivateCheckbox.IsChecked != true)
+                    {
+                        if (item.Private == "Y")
+                        {
+                            continue;
+                        }
+                    }
                     tempItems.Add(item);
+                }
             }
             CustomGameListView.Items.Clear(); // clear list items before adding 
             foreach (GameItem item in tempItems)
@@ -132,6 +141,11 @@ namespace LegendaryClient.Windows
                     }
                 }
             }
+        }
+
+        private void PrivateCheckbox_Click(object sender, RoutedEventArgs e)
+        {
+            LimitGames();
         }
     }
 

@@ -8,12 +8,12 @@
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="ChampSelectPage">
 
-    <Grid Background="#FF9B9B9B">
+    <Grid>
         <Image x:Name="BackgroundSplash" Stretch="UniformToFill" Opacity=".40" />
-        <Label x:Name="GameStatusLabel" Content="Loading Champ Select..." HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
-        <Label x:Name="LobbyTimeLabel" Content="Inf." HorizontalAlignment="Right" Margin="0,5,120,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
+        <Label x:Name="GameStatusLabel" Content="Loading Champ Select..." HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
+        <Label x:Name="LobbyTimeLabel" Content="Inf." HorizontalAlignment="Right" Margin="0,5,120,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
         <Button x:Name="DodgeButton" Content="Dodge" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="35" Width="100" Click="DodgeButton_Click"/>
-        <Label Content="Blue Team" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
+        <Label Content="Blue Team" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
         <ListView x:Name="BlueListView" HorizontalAlignment="Left" Margin="5,80,0,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="400" Width="140" Background="Transparent" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -22,10 +22,10 @@
             </ListView.ItemsPanel>
         </ListView>
         
-        <Label Content="Search" HorizontalAlignment="Left" Margin="150,40,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
+        <Label Content="Search" HorizontalAlignment="Left" Margin="150,40,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
         <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="240,50,200,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged"/>
 
-        <Label Content="Purple Team" HorizontalAlignment="Right" Margin="0,40,10,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22"  Foreground="White"/>
+        <Label Content="Purple Team" HorizontalAlignment="Right" Margin="0,40,10,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
         <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,80,5,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="400" Width="140" Background="Transparent" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

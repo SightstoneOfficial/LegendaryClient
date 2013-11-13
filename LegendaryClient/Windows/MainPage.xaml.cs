@@ -103,11 +103,12 @@ namespace LegendaryClient.Windows
             ;
 
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
-            /*LocationLabel.Content = "Region: " + Client.LoginPacket.CompetitiveRegion;
+            //LocationLabel.Content = "Region: " + Client.LoginPacket.CompetitiveRegion;
             int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
             //TODO: Convert ProfileIconID to the decompiled images
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileImages", 137 + ".jpg"), UriKind.Absolute);
-            ProfileImage.Source = new BitmapImage(uriSource);*/
+            //var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileIcon548.dds");
+            //System.Drawing.Bitmap src = DevIL.DevIL.LoadBitmap(uriSource) as System.Drawing.Bitmap;
+            //ProfileImage.Source = ToWpfBitmap(src);
         }
 
         #region News
@@ -205,7 +206,7 @@ namespace LegendaryClient.Windows
                 string spectatorJSON = "";
                 using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
                 {
-                    spectatorJSON = client.DownloadString(region.SpectatorLink);
+                    spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
                 }
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
@@ -230,8 +231,10 @@ namespace LegendaryClient.Windows
             PurpleBanListView.Items.Clear();
             BlueListView.Items.Clear();
             PurpleListView.Items.Clear();
+            int GameId = 0;
             var objectGame = gameList[SelectedGame];
             Dictionary<string, object> SpectatorGame = objectGame as Dictionary<string, object>;
+            ImageGrid.Children.Clear();
             foreach (KeyValuePair<string, object> pair in SpectatorGame)
             {
                 if (pair.Key == "participants")
@@ -266,16 +269,26 @@ namespace LegendaryClient.Windows
                         control.PlayerName.Content = PlayerName;
 
                         Image m = new Image();
-                        m.Width = 100;
+                        Canvas.SetZIndex(m, -2); //Put background behind everything
                         m.Stretch = Stretch.None;
+                        m.Width = 100;
+                        m.Opacity = 0.50;
                         m.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                         m.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
                         m.Margin = new System.Windows.Thickness(i++ * 100, 0, 0, 0);
-                        m.ClipToBounds = true;
-                        Canvas.SetZIndex(m, -2); //Put background behind everything
-                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championId).splashPath), UriKind.Absolute);
-                        m.Source = new BitmapImage(uriSource);
-                        SpectatorRegionGrid.Children.Add(m);
+                        System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(new System.Drawing.Point(100, 0), new System.Drawing.Size(100, 560));
+                        System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championId).portraitPath)) as System.Drawing.Bitmap;
+                        System.Drawing.Bitmap target = new System.Drawing.Bitmap(cropRect.Width, cropRect.Height);
+
+                        using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(target))
+                        {
+                            g.DrawImage(src, new System.Drawing.Rectangle(0, 0, target.Width, target.Height), 
+                                            cropRect,
+                                            System.Drawing.GraphicsUnit.Pixel);
+                        }
+
+                        m.Source = ToWpfBitmap(target);
+                        ImageGrid.Children.Add(m);
 
                         if (teamId == 100)
                         {
@@ -289,7 +302,7 @@ namespace LegendaryClient.Windows
                 }
                 if (pair.Key == "gameId")
                 {
-                    GameIdLabel.Content = "Game ID " + (int)pair.Value;
+                    GameId = (int)pair.Value;
                 }
                 if (pair.Key == "mapId")
                 {
@@ -334,6 +347,21 @@ namespace LegendaryClient.Windows
                     }
                 }
             }
+
+            try
+            {
+                BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
+                string spectatorJSON = "";
+                string url = region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName.ToLower() + "/" + GameId + "/token";
+                using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
+                {
+                    spectatorJSON = client.DownloadString(region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName + "/" + GameId + "/token");
+                }
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
+                MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
+            }
+            catch { MMRLabel.Content = "N/A"; }
         }
 
         private void NextGameButton_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -361,5 +389,24 @@ namespace LegendaryClient.Windows
         }
 
         #endregion
+
+        public BitmapSource ToWpfBitmap(System.Drawing.Bitmap bitmap)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                stream.Position = 0;
+                BitmapImage result = new BitmapImage();
+                result.BeginInit();
+                // According to MSDN, "The default OnDemand cache option retains access to the stream until the image is needed."
+                // Force the bitmap to load right now so we can dispose the stream.
+                result.CacheOption = BitmapCacheOption.OnLoad;
+                result.StreamSource = stream;
+                result.EndInit();
+                result.Freeze();
+                return result;
+            }
+        }
     }
 }

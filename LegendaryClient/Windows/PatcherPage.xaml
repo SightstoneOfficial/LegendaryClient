@@ -8,7 +8,7 @@
 	Title="PatcherPage">
 
     <Grid>
-        <Label Content="LegendaryClient Updater" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22"/>
+        <Label Content="LegendaryClient Updater" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
         <Button x:Name="SkipPatchButton" Content="Skip" HorizontalAlignment="Right" Margin="0,5,10,0" VerticalAlignment="Top" Width="150" Height="50" Click="SkipPatchButton_Click"/>
         
         <Label x:Name="CurrentProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,100" VerticalAlignment="Bottom"/>

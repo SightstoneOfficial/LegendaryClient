@@ -7,8 +7,8 @@
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="CustomGameListingPage">
 
-    <Grid Background="#FF9B9B9B">
-        <Label Content="Search Custom Games" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="22" Foreground="White"/>
+    <Grid>
+        <Label Content="Search Custom Games" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
         <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="10,50,150,0" TextWrapping="NoWrap" VerticalAlignment="Top" Foreground="White" Background="#FF646464" TextChanged="SearchTextBox_TextChanged"/>
         <Button x:Name="RefreshButton" Content="Refresh" HorizontalAlignment="Right" Margin="0,52,10,0" VerticalAlignment="Top" Width="100" Click="RefreshButton_Click"/>
         <!--TODO Style ListView-->
@@ -26,8 +26,9 @@
             </ListView.View>
         </ListView>
 
-        <Label Content="Password" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Foreground="White" FontSize="18" />
+        <Label Content="Password" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" FontWeight="ExtraLight" FontSize="18" />
         <TextBox x:Name="PasswordTextBox" HorizontalAlignment="Left" Height="23" Margin="100,0,0,15" TextWrapping="NoWrap" VerticalAlignment="Bottom" Width="200" Foreground="White" Background="#FF646464" TextChanged="PasswordTextBox_TextChanged" IsReadOnly="True"/>
         <Button x:Name="JoinGameButton" Content="Join Game" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="150" Height="30" Click="JoinGameButton_Click" IsEnabled="False"/>
+        <CheckBox x:Name="PrivateCheckbox" Content="Show Private Games" HorizontalAlignment="Right" Margin="0,0,180,15" FontSize="16" FontWeight="ExtraLight" VerticalAlignment="Bottom" RenderTransformOrigin="0.5,0.5" IsChecked="True" Click="PrivateCheckbox_Click"/>
     </Grid>
 </Page>

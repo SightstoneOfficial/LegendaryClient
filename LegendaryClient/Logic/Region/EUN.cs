@@ -12,7 +12,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string InternalName
         {
-            get { return "EUN"; }
+            get { return "EUN1"; }
         }
 
         public override string ChatName
@@ -44,7 +44,7 @@ namespace LegendaryClient.Logic.Region
         }
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest/featured"); }
+            get { return new Uri("http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest/"); }
         }
 
         public override Uri SpectatorIpAddress

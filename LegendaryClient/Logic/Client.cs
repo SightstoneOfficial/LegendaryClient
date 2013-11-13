@@ -130,7 +130,7 @@ namespace LegendaryClient.Logic
         internal static void SetChatHover(PresenceType Presence, double Level, int Wins, string statusMsg, bool inGame)
         {
             ChatClient.Presence(Presence, "<body>" +
-                "<profileIcon>552</profileIcon>" +
+                "<profileIcon>0</profileIcon>" +
                 "<level>" + Level + "</level>" +
                 "<wins>" + Wins + "</wins>" +
                 "<leaves>52</leaves>" +
@@ -233,17 +233,11 @@ namespace LegendaryClient.Logic
                                     break;
                                 case "rankedLeagueTier":
                                     reader.Read();
-                                    if (String.IsNullOrEmpty(Player.LeagueTier))
-                                        Player.LeagueTier = reader.Value;
-                                    else
-                                        Player.LeagueTier = reader.Value + " " + Player.LeagueTier;
+                                    Player.LeagueTier = reader.Value;
                                     break;
                                 case "rankedLeagueDivision":
                                     reader.Read();
-                                    if (String.IsNullOrEmpty(Player.LeagueTier))
-                                        Player.LeagueTier = reader.Value;
-                                    else
-                                        Player.LeagueTier = Player.LeagueTier + " " + reader.Value;
+                                    Player.LeagueDivision = reader.Value;
                                     break;
                             }
                             #endregion
@@ -259,6 +253,7 @@ namespace LegendaryClient.Logic
 
         internal static Grid MainGrid;
         internal static Label InfoLabel;
+        internal static ContentControl ChatContainer;
 
         #region WPF Tab Change
         /// <summary>
@@ -368,6 +363,7 @@ namespace LegendaryClient.Logic
         public int RankedWins { get; set; }
         public int Leaves { get; set; }
         public string LeagueTier { get; set; }
+        public string LeagueDivision { get; set; }
         public string LeagueName { get; set; }
         public bool InGame { get; set; }
         public long Timestamp { get; set; }
