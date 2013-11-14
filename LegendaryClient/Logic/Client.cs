@@ -30,7 +30,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Latest version of League of Legends
         /// </summary>
-        internal const string Version = "3.13.13_10_28_21_11";
+        internal static string Version = "3.00.00";
         /// <summary>
         /// The current directory the client is running from
         /// </summary>

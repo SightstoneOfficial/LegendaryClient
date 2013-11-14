@@ -37,9 +37,6 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DevIL.NET">
-      <HintPath>..\DLLS\DevIL.NET.dll</HintPath>
-    </Reference>
     <Reference Include="jabber-net">
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
     </Reference>
@@ -53,6 +50,10 @@
     <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -120,6 +121,14 @@
     <Compile Include="Logic\SQLite\SQLite.cs" />
     <Compile Include="Logic\SQLite\items.cs" />
     <Compile Include="Logic\PlayerSpell\SummonerSpell.cs" />
+    <Compile Include="Logic\SWF\SWFCompression.cs" />
+    <Compile Include="Logic\SWF\SWFReader.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\DoABC.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\End.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\RecordHeader.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\Rect.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\Tag.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\TagCodes.cs" />
     <Compile Include="Windows\ChampSelectPage.xaml.cs">
       <DependentUpon>ChampSelectPage.xaml</DependentUpon>
     </Compile>

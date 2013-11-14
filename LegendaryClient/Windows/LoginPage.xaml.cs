@@ -13,6 +13,8 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using LegendaryClient.Logic.SWF;
+using LegendaryClient.Logic.SWF.SWFTypes;
 
 namespace LegendaryClient.Windows
 {
@@ -45,6 +47,24 @@ namespace LegendaryClient.Windows
             Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
                                 orderby s.id
                                select s).ToList();
+
+            //Retrieve latest client version
+            SWFReader reader = new SWFReader("ClientLibCommon.dat");
+            foreach (Tag tag in reader.Tags)
+            {
+                if (tag is DoABC)
+                {
+                    DoABC abcTag = (DoABC)tag;
+                    if (abcTag.Name.Contains("riotgames/platform/gameclient/application/Version"))
+                    {
+                        var str = System.Text.Encoding.Default.GetString(abcTag.ABCData);
+                        //Ugly hack ahead - turn back now!
+                        string[] firstSplit = str.Split((char)6);
+                        string[] secondSplit = firstSplit[0].Split((char)19);
+                        Client.Version = secondSplit[1];
+                    }
+                }
+            }
 
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedUsername))
             {
