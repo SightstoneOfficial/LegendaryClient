@@ -7,14 +7,14 @@
              d:DesignHeight="50" d:DesignWidth="250">
     <Grid>
         <Rectangle Fill="#02000000" />  <!-- Allow entire control to be hovered over -->
-        <Image HorizontalAlignment="Left" Height="40" Margin="5,5,0,0" VerticalAlignment="Top" Width="40" Source="/LegendaryClient;component/Icon.ico"/>
+        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="40" Margin="5,5,0,0" VerticalAlignment="Top" Width="40" Source="/LegendaryClient;component/Icon.ico"/>
         <Label x:Name="LevelLabel" Content="30" HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="SemiBold">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="1"/>
             </Label.Effect>
         </Label>
-        
-        <Label x:Name="PlayerName" Content="Snowl" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Top" Foreground="White"/>
+
+        <Label x:Name="PlayerName" Content="Snowl" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White"/>
         <Label x:Name="PlayerStatus" Content="Test status" HorizontalAlignment="Left" Margin="45,20,0,0" VerticalAlignment="Top" Foreground="White"/>
 
     </Grid>

@@ -63,6 +63,7 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity">
       <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -162,8 +163,29 @@
     <Compile Include="Windows\ProfilePage.xaml.cs">
       <DependentUpon>ProfilePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Profile\Champions.xaml.cs">
+      <DependentUpon>Champions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Profile\Ingame.xaml.cs">
       <DependentUpon>Ingame.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Profile\Leagues.xaml.cs">
+      <DependentUpon>Leagues.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Profile\Masteries.xaml.cs">
+      <DependentUpon>Masteries.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Profile\MatchHistory.xaml.cs">
+      <DependentUpon>MatchHistory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Profile\Overview.xaml.cs">
+      <DependentUpon>Overview.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Profile\Runes.xaml.cs">
+      <DependentUpon>Runes.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Profile\Skins.xaml.cs">
+      <DependentUpon>Skins.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -251,7 +273,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\Profile\Champions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\Profile\Ingame.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Profile\Leagues.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Profile\Masteries.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Profile\MatchHistory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Profile\Overview.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Profile\Runes.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Profile\Skins.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

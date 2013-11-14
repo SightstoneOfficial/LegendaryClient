@@ -36,6 +36,13 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             InGameContainer.Content = new Ingame();
+            OverviewContainer.Content = new Overview();
+            LeaguesContainer.Content = new Leagues();
+            MatchHistoryContainer.Content = new MatchHistory();
+            ChampionsContainer.Content = new Champions();
+            RunesContainer.Content = new Runes();
+            MasteriesContainer.Content = new Masteries();
+            SkinsContainer.Content = new Skins();
             GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
@@ -58,9 +65,17 @@ namespace LegendaryClient.Windows
 
             int ProfileIconID = Summoner.ProfileIconId;
             //TODO: Convert ProfileIconID to the decompiled images
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileImages", 137 + ".jpg"), UriKind.Absolute);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);
             ProfileImage.Source = new BitmapImage(uriSource);
+
+            MatchHistory history = MatchHistoryContainer.Content as MatchHistory;
+            history.Update(Summoner.AcctId);
         }
 
+        public class KeyValueItem
+        {
+            public object Key { get; set; }
+            public object Value { get; set; }
+        }
     }
 }

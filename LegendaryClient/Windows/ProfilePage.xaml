@@ -30,56 +30,32 @@
                 </Frame>
             </TabItem>
             <TabItem Header="Overview">
-                <Grid/>
+                <Frame x:Name="OverviewContainer">
+                </Frame>
             </TabItem>
             <TabItem Header="Leagues">
-                <Grid/>
+                <Frame x:Name="LeaguesContainer">
+                </Frame>
             </TabItem>
             <TabItem Header="Match History">
-                <Grid>
-                    <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
-                        <ListView.View>
-                            <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                                <GridViewColumn />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <ListView x:Name="BlueListView" HorizontalAlignment="Center" Height="64" Margin="300,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="310" Background="#66505050">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
-                    <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="300,62,0,0" FontWeight="ExtraLight" FontSize="50"/>
-                    <ListView x:Name="PurpleListView" HorizontalAlignment="Center" Height="64" Margin="300,130,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="310" Background="#66505050">
-                        <ListView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <WrapPanel/>
-                            </ItemsPanelTemplate>
-                        </ListView.ItemsPanel>
-                    </ListView>
-                    <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="320,200,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
-                        <ListView.View>
-                            <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                                <GridViewColumn x:Name="GameKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}"/>
-                                <GridViewColumn x:Name="GameValueHeader" Header="Value" DisplayMemberBinding="{Binding Value}"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                </Grid>
+                <Frame x:Name="MatchHistoryContainer">
+                </Frame>
             </TabItem>
             <TabItem Header="Champions">
-                <Grid/>
+                <Frame x:Name="ChampionsContainer">
+                </Frame>
             </TabItem>
             <TabItem Header="Runes">
-                <Grid/>
+                <Frame x:Name="RunesContainer">
+                </Frame>
             </TabItem>
             <TabItem Header="Masteries">
-                <Grid/>
+                <Frame x:Name="MasteriesContainer">
+                </Frame>
             </TabItem>
             <TabItem Header="Skins">
-                <Grid/>
+                <Frame x:Name="SkinsContainer">
+                </Frame>
             </TabItem>
         </TabControl>
 

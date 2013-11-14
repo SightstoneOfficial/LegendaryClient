@@ -11,12 +11,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 using LegendaryClient.Logic;
 using LegendaryClient.Controls;
 using System.Windows.Threading;
 using System.Threading;
 using jabber.protocol.client;
+using System.IO;
 
 namespace LegendaryClient.Windows
 {
@@ -82,6 +82,8 @@ namespace LegendaryClient.Windows
                             player.PlayerName.Content = ChatPlayerPair.Value.Username;
                             player.LevelLabel.Content = ChatPlayerPair.Value.Level;
                             player.PlayerStatus.Content = ChatPlayerPair.Value.Status;
+                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ChatPlayerPair.Value.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
+                            player.ProfileImage.Source = new BitmapImage(uriSource);
                             player.ContextMenu = (ContextMenu)Resources["PlayerChatMenu"];
                             player.MouseMove += ChatPlayerMouseOver;
                             player.MouseLeave += player_MouseLeave;
@@ -119,16 +121,17 @@ namespace LegendaryClient.Windows
                 PlayerItem.PlayerWins.Content = playerItem.RankedWins + " Ranked Wins";
             PlayerItem.LevelLabel.Content = playerItem.Level;
             PlayerItem.UsingLegendary.Visibility = playerItem.UsingLegendary ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", playerItem.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
+            PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
             if (playerItem.Status != null)
             {
-                PlayerItem.PlayerStatus.Content = playerItem.Status.Replace("∟", "");
+                PlayerItem.PlayerStatus.Text = playerItem.Status.Replace("∟", "");
             }
             else
             {
-                PlayerItem.PlayerStatus.Content = "";
+                PlayerItem.PlayerStatus.Text = "";
             }
             PlayerItem.Width = 250;
-            PlayerItem.Height = 150;
             PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             Point MouseLocation = e.GetPosition(Client.MainGrid);

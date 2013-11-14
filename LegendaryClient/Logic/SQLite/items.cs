@@ -36,5 +36,15 @@
         public double flatEXPBonus { get; set; }
         public double percentEXPBonus { get; set; }
         public double epicness { get; set; }
+
+        public static items GetItem(int id)
+        {
+            foreach (items c in Client.Items)
+            {
+                if (c.id == id)
+                    return c;
+            }
+            return null;
+        }
     }
 }

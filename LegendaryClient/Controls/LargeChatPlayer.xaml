@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="150" d:DesignWidth="250">
+             d:DesignHeight="110" d:DesignWidth="250">
     <Grid Background="#E5000000">
-        <Image x:Name="ProfilePicture" HorizontalAlignment="Left" Height="60" Margin="5,5,0,0" VerticalAlignment="Top" Width="60" Source="/LegendaryClient;component/Icon.ico"/>
+        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="60" Margin="5,5,0,0" VerticalAlignment="Top" Width="60" Source="/LegendaryClient;component/Icon.ico"/>
         <Image x:Name="UsingLegendary" HorizontalAlignment="Right" Height="20" Margin="5,5,0,0" VerticalAlignment="Top" Width="20" Source="/LegendaryClient;component/Icon.ico"/>
         <Label x:Name="LevelLabel" Content="30" HorizontalAlignment="Left" Margin="5,40,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="SemiBold">
             <Label.Effect>
@@ -16,9 +16,10 @@
 
         <Label x:Name="PlayerName" Content="Snowl" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="24" FontWeight="ExtraLight"/>
         <Label x:Name="PlayerLeague" Content="SILVER III" HorizontalAlignment="Left" Margin="65,35,0,0" VerticalAlignment="Top" Foreground="White" FontSize="16" FontWeight="ExtraLight"/>
-        <Label x:Name="PlayerWins" Content="1000 Normal Wins" HorizontalAlignment="Left" Margin="0,65,0,0" VerticalAlignment="Top" Foreground="#FFB3FF96" FontSize="15" FontWeight="ExtraLight"/>
-
-        <Label x:Name="PlayerStatus" Content="Test status" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Bottom" Foreground="White"/>
+        <Label x:Name="PlayerWins" Content="1000 Normal Wins" HorizontalAlignment="Left" Margin="0,65,0,0" VerticalAlignment="Top" Foreground="#FFB3FF96" FontSize="15" FontWeight="SemiBold"/>
+        <Label HorizontalAlignment="Stretch" Margin="0,85,0,0" VerticalAlignment="Top" Foreground="White">
+            <TextBlock x:Name="PlayerStatus" Text="Test Status" TextWrapping="WrapWithOverflow"/>
+        </Label>
 
     </Grid>
 </UserControl>

@@ -49,6 +49,7 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
             int length = System.Convert.ToInt32(rh.TagLength);
             actionRecord = binaryReader.ReadBytes(length);
 
+            //This doesn't read correctly but it reads as good as we need
             using (BinaryReader b = new BinaryReader(new MemoryStream(actionRecord)))
             {
                 Flags = b.ReadUInt32();

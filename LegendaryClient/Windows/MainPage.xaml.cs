@@ -106,9 +106,8 @@ namespace LegendaryClient.Windows
             //LocationLabel.Content = "Region: " + Client.LoginPacket.CompetitiveRegion;
             int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
             //TODO: Convert ProfileIconID to the decompiled images
-            //var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileIcon548.dds");
-            //System.Drawing.Bitmap src = DevIL.DevIL.LoadBitmap(uriSource) as System.Drawing.Bitmap;
-            //ProfileImage.Source = ToWpfBitmap(src);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);
+            ProfileImage.Source = new BitmapImage(uriSource);
         }
 
         #region News

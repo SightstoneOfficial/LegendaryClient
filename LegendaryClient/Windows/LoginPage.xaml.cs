@@ -58,7 +58,7 @@ namespace LegendaryClient.Windows
                     if (abcTag.Name.Contains("riotgames/platform/gameclient/application/Version"))
                     {
                         var str = System.Text.Encoding.Default.GetString(abcTag.ABCData);
-                        //Ugly hack ahead - turn back now!
+                        //Ugly hack ahead - turn back now! (http://pastebin.com/yz1X4HBg)
                         string[] firstSplit = str.Split((char)6);
                         string[] secondSplit = firstSplit[0].Split((char)19);
                         Client.Version = secondSplit[1];
