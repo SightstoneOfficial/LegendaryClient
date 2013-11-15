@@ -57,7 +57,6 @@ namespace LegendaryClient.Windows
             ChampSelect_OnMessageReceived(this, latestDTO);
             ChatText.Text = "test" + Environment.NewLine + "yolo";
 
-
             List<ChampionDTO> champList = new List<ChampionDTO>(Champions);
 
             foreach (ChampionDTO champ in champList)

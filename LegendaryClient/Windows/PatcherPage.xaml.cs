@@ -79,7 +79,7 @@ namespace LegendaryClient.Windows
                         Environment.Exit(0);
                     }*/
 
-                    if (versionArray[1] != CurrentKyokuMD5)
+                    /*if (versionArray[1] != CurrentKyokuMD5)
                     {
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
@@ -105,7 +105,7 @@ namespace LegendaryClient.Windows
                             dir.Delete(true);
                         }
                         Directory.Delete("Patch");
-                    }
+                    }*/
 
                     var KyokuProcess = new System.Diagnostics.Process();
                     KyokuProcess.StartInfo.UseShellExecute = false;

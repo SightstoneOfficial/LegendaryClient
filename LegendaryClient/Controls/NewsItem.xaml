@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="120" d:DesignWidth="800">
     <Grid Background="#33646464">
-        <Image x:Name="PromoImage" HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Source="/LegendaryClient;component/33.jpg" Stretch="UniformToFill"/>
+        <Image x:Name="PromoImage" HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Stretch="UniformToFill"/>
         <Label x:Name="NewsTitle" Content="Announcing Season 3 Rewards!" HorizontalAlignment="Left" Margin="115,5,0,0" VerticalAlignment="Top" FontSize="28" FontWeight="ExtraLight"/>
         <Label MaxWidth="850" HorizontalAlignment="Stretch" Margin="115,50,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="ExtraLight" Height="65">
             <TextBlock x:Name="DescriptionLabel" Text="Learn more about how you nab end-of-season rewards, and check out a sneak peek of what you can earn." TextWrapping="WrapWithOverflow"/>

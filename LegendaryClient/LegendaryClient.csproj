@@ -43,41 +43,26 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="muzzle">
-      <HintPath>..\DLLS\muzzle.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationFramework.Aero2" />
-    <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
-    </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\DLLS\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -86,6 +71,9 @@
     </ApplicationDefinition>
     <Compile Include="Controls\ChatPlayer.xaml.cs">
       <DependentUpon>ChatPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\JoinQueue.xaml.cs">
+      <DependentUpon>JoinQueue.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\LargeChatPlayer.xaml.cs">
       <DependentUpon>LargeChatPlayer.xaml</DependentUpon>
@@ -194,6 +182,10 @@
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\ChatPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\JoinQueue.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -344,12 +336,31 @@
     <Resource Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="33.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="BackTex.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\PVPNetConnect\PVPNetConnect.csproj">
+      <Project>{93dcbebf-c652-40ed-a003-cff421f68b4f}</Project>
+      <Name>PVPNetConnect</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="netlib.Dns.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="sqlite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="wLib.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="xinput9_1_0.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zlib.net.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

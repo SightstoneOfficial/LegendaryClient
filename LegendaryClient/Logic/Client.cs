@@ -349,7 +349,9 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// When an error occurs while connected. Currently un-used
         /// </summary>
-        internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error) { }
+        internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error) {
+            ;
+        }
         #endregion
     }
 

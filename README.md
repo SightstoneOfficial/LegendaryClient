@@ -39,7 +39,7 @@ Still-in Progress Screenshots
 ![Chat](http://i.imgur.com/I7pilg2.png)
 ![Profile](http://puu.sh/5hXmZ.jpg)
 ![Lobby Screen](http://puu.sh/5hXog.jpg)
-![Queueing up for game](http://puu.sh/5hXoP.jpg)
+![Queueing up for game](http://i.imgur.com/OGbFfJS.png)
 ![Champ Select](http://i.imgur.com/DBiBRec.png)
 ![Champion List](http://i.imgur.com/GYDpTz8.png)
 ![Owned Skin List](http://i.imgur.com/hmlfsDv.png)

@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using LegendaryClient.Windows;
 using LegendaryClient.Logic;
-using PVPNetConnect;
-using MahApps.Metro.Controls;
+using LegendaryClient.Windows;
 using MahApps.Metro;
-using System.Windows.Interop;
+using MahApps.Metro.Controls;
+using PVPNetConnect;
 
 namespace LegendaryClient
 {

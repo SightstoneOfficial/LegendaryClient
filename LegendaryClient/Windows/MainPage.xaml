@@ -16,7 +16,7 @@
 
     <Grid>
         <Border BorderThickness="1"  HorizontalAlignment="Left" VerticalAlignment="Top"  BorderBrush="Black">
-            <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="100" Margin="0,0,0,0" VerticalAlignment="Top" Width="100" Source="/LegendaryClient;component/33.jpg"/>
+            <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="100" Margin="0,0,0,0" VerticalAlignment="Top" Width="100"/>
         </Border>
         <Label x:Name="SummonerNameLabel" Content="Summoner Name" HorizontalAlignment="Left" Margin="110,5,0,0" VerticalAlignment="Top" FontSize="22"/>
         
@@ -87,5 +87,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="540,62,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+        <TextBox x:Name="bwaera" HorizontalAlignment="Left" Height="23" Margin="540,44,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Page>

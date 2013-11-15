@@ -6,11 +6,26 @@
       mc:Ignorable="d" 
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="PlayPage">
+    
+    <Page.Resources>
+        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+    </Page.Resources>
 
     <Grid>
+        
+        <!--<ListView x:Name="QueueListView" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,100,0,70" VerticalAlignment="Stretch" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                    <GridViewColumn />
+                </GridView>
+            </ListView.View>
+        </ListView>-->
         <Rectangle x:Name="PingRectangle" Fill="#FF9B9B9B" HorizontalAlignment="Right" Height="42" Margin="0,0,10,10" VerticalAlignment="Bottom" Width="100"/>
         <Label x:Name="PingLabel" Content="Checking Ping..." HorizontalAlignment="Right" Margin="0,0,120,15" VerticalAlignment="Bottom" FontWeight="ExtraLight" FontSize="20"/>
         <Button x:Name="CreateCustomGameButton" Content="Create Custom Game" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="140" Height="42" Click="CreateCustomGameButton_Click"/>
         <Button x:Name="JoinCustomGameButton" Content="Join Custom Games" HorizontalAlignment="Left" Margin="155,0,0,10" VerticalAlignment="Bottom" Width="140" Height="42" Click="JoinCustomGameButton_Click"/>
+        <ListBox x:Name="QueueListView" HorizontalAlignment="Stretch" Height="600" Margin="0,0,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Page>

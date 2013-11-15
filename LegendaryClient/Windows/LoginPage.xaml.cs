@@ -132,7 +132,7 @@ namespace LegendaryClient.Windows
         private void GotLoginPacket(LoginDataPacket packet)
         {
             Client.LoginPacket = packet;
-            Client.PVPNet.OnError -= PVPNet_OnError;
+            //Client.PVPNet.OnError -= PVPNet_OnError;
             Client.GameConfigs = packet.GameTypeConfigs;
             Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
             Client.PVPNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
