@@ -70,5 +70,29 @@ namespace LegendaryClient.Properties {
                 this["DarkTheme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StatusMsg {
+            get {
+                return ((string)(this["StatusMsg"]));
+            }
+            set {
+                this["StatusMsg"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ChatStatus {
+            get {
+                return ((string)(this["ChatStatus"]));
+            }
+            set {
+                this["ChatStatus"] = value;
+            }
+        }
     }
 }

@@ -77,7 +77,7 @@
             </TabItem>
             <TabItem Header="News">
                 <Grid>
-                    <ListView x:Name="NewsItemListView" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Background="{x:Null}" SelectionChanged="NewsItemListView_SelectionChanged">
+                    <ListView x:Name="NewsItemListView" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Background="{x:Null}" SelectionChanged="NewsItemListView_SelectionChanged" BorderBrush="{x:Null}" Foreground="{x:Null}">
                         <ListView.View>
                             <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                                 <GridViewColumn />
@@ -87,7 +87,5 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="540,62,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
-        <TextBox x:Name="bwaera" HorizontalAlignment="Left" Height="23" Margin="540,44,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Page>

@@ -81,6 +81,9 @@
     <Compile Include="Controls\NewsItem.xaml.cs">
       <DependentUpon>NewsItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\NotificationPlayer.xaml.cs">
+      <DependentUpon>NotificationPlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PlayerChatBox.xaml.cs">
       <DependentUpon>PlayerChatBox.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,9 @@
     <Compile Include="Windows\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\NotificationPage.xaml.cs">
+      <DependentUpon>NotificationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\PatcherPage.xaml.cs">
       <DependentUpon>PatcherPage.xaml</DependentUpon>
     </Compile>
@@ -194,6 +200,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NewsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NotificationPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -250,6 +260,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NotificationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

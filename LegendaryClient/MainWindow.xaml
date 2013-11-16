@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="LegendaryClient" Height="768" Width="1366" MinHeight="768" MinWidth="1366"
-        ShowIconOnTitleBar="True" SaveWindowPosition="True" Icon="Icon.ico" ResizeMode="CanResizeWithGrip" TitleCaps="False">
+        ShowIconOnTitleBar="True" SaveWindowPosition="True" Icon="Icon.ico" TitleCaps="False">
 
     <Controls:MetroWindow.WindowCommands>
         <Controls:WindowCommands>
@@ -34,7 +34,8 @@
         <Grid.Background>
             <ImageBrush ImageSource="BackTex.png" TileMode="FlipY" Stretch="Uniform" AlignmentY="Top" Viewport="0,0,150,150" ViewportUnits="Absolute" Opacity="0.4"/>
         </Grid.Background>
-        <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0"/>
-        <ContentControl x:Name="ChatContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" />
+        <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,40"/>
+        <ContentControl x:Name="ChatContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" Margin="0,0,0,40" />
+        <ContentControl x:Name="NotificationContainer" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Height="40" Margin="0,0,0,0"/>
     </Grid>
 </Controls:MetroWindow>

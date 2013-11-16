@@ -45,7 +45,7 @@ namespace LegendaryClient.Windows
             GetNews(region);
         }
 
-        private async void GotPlayerData(LoginDataPacket packet)
+        private void GotPlayerData(LoginDataPacket packet)
         {
             AllSummonerData PlayerData = packet.AllSummonerData;
             SummonerNameLabel.Content = PlayerData.Summoner.Name;
@@ -406,15 +406,6 @@ namespace LegendaryClient.Windows
                 result.Freeze();
                 return result;
             }
-        }
-
-        private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-            var x = new MatchMakerParams();
-            x.QueueIds = new int[]{ 16};
-            x.InvitationId = 1233913414;
-            Client.PVPNet.AttachToQueue(x);
         }
     }
 }

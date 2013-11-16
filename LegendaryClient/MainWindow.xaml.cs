@@ -33,6 +33,7 @@ namespace LegendaryClient
             }
 
             ChatContainer.Content = new ChatPage().Content;
+            NotificationContainer.Content = new NotificationPage().Content;
 
             Client.Pages = new List<Page>();
             Client.MainGrid = MainGrid;

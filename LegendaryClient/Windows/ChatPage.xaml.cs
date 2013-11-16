@@ -27,11 +27,12 @@ namespace LegendaryClient.Windows
     {
         static System.Timers.Timer UpdateTimer;
         LargeChatPlayer PlayerItem;
-        PlayerChatBox ChatBox;
 
         public ChatPage()
         {
             InitializeComponent();
+            if (Properties.Settings.Default.StatusMsg != "Set your status message")
+            StatusBox.Text = Properties.Settings.Default.StatusMsg;
             UpdateTimer = new System.Timers.Timer(1000);
             UpdateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateChat);
             UpdateTimer.Enabled = true;
@@ -66,6 +67,9 @@ namespace LegendaryClient.Windows
                 {
                     Client.CurrentStatus = "Online";
                 }
+
+                Properties.Settings.Default.StatusMsg = StatusBox.Text;
+                Properties.Settings.Default.Save();
 
                 if (Client.UpdatePlayers)
                 {
@@ -147,15 +151,15 @@ namespace LegendaryClient.Windows
             {
                 if (ChatListView.SelectedItem is PlayerChatBox)
                     return;
-                if (ChatBox != null)
-                {
-                    ChatListView.Items.Remove(ChatBox);
-                }
-                ChatBox = new PlayerChatBox();
-                ChatBox.Width = 225;
-                ChatBox.Player = (ChatPlayerItem)((ChatPlayer)ChatListView.SelectedItem).Tag;
-                ChatListView.Items.Insert(ChatListView.SelectedIndex + 1, ChatBox);
+                ChatPlayer player = (ChatPlayer) ChatListView.SelectedItem;
+                ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
+                NotificationPlayer ChatPlayer = new NotificationPlayer();
+                ChatPlayer.Tag = playerItem;
+                ChatPlayer.Margin = new Thickness(5, 0, 5, 0);
+                ChatPlayer.PlayerNameLabel.Content = playerItem.Username;
+                Client.ChatListView.Items.Add(ChatPlayer);
             }
         }
+
     }
 }

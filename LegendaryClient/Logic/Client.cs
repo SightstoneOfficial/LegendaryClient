@@ -11,6 +11,7 @@ using jabber.client;
 using jabber.protocol.client;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Windows;
 using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
@@ -254,6 +255,7 @@ namespace LegendaryClient.Logic
         internal static Grid MainGrid;
         internal static Label InfoLabel;
         internal static ContentControl ChatContainer;
+        internal static ListView ChatListView;
 
         #region WPF Tab Change
         /// <summary>
@@ -265,12 +267,15 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static List<Page> Pages;
 
+        internal static bool IsOnPlayPage = false;
+
         /// <summary>
         /// Switches the contents of the frame to the requested page. Also sets background on
         /// the button on the top to show what section you are currently on.
         /// </summary>
         internal static void SwitchPage(Page page)
         {
+            IsOnPlayPage = page is PlayPage;
             foreach (Page p in Pages) //Cache pages
             {
                 if (p.GetType() == page.GetType())
