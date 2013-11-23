@@ -98,9 +98,8 @@ namespace LegendaryClient.Windows
             Properties.Settings.Default.Region = (string)RegionComboBox.SelectedValue;
             Properties.Settings.Default.Save();
 
-            LoginGrid.Visibility = Visibility.Hidden;
+            HideGrid.Visibility = Visibility.Hidden;
             ErrorTextBox.Visibility = Visibility.Hidden;
-            WelcomeLabel.Visibility = Visibility.Hidden;
             LoggingInLabel.Visibility = Visibility.Visible;
             LoggingInProgressRing.Visibility = Visibility.Visible;
             Client.PVPNet.OnError += PVPNet_OnError;
@@ -120,9 +119,8 @@ namespace LegendaryClient.Windows
             //Display error message
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                LoginGrid.Visibility = Visibility.Visible;
+                HideGrid.Visibility = Visibility.Visible;
                 ErrorTextBox.Visibility = Visibility.Visible;
-                WelcomeLabel.Visibility = Visibility.Visible;
                 LoggingInProgressRing.Visibility = Visibility.Hidden;
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 ErrorTextBox.Text = error.Message;
@@ -141,8 +139,9 @@ namespace LegendaryClient.Windows
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                Client.ChatContainer.Visibility = System.Windows.Visibility.Visible;
-                Client.Container.Margin = new Thickness(0, 0, 250, 40);
+                //Client.ChatContainer.Visibility = System.Windows.Visibility.Visible;
+                //Client.NotificationContainer.Visibility = System.Windows.Visibility.Visible;
+                //Client.Container.Margin = new Thickness(0, 0, 250, 40);
 
                 Client.ChatClient = new JabberClient(); //Setup chat
                 Client.ChatClient.AutoReconnect = 30;

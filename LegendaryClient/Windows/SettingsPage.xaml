@@ -6,66 +6,47 @@
       mc:Ignorable="d" 
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="SettingsPage">
+    
 
-    <Page.Resources>
-        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility" Value="Collapsed" />
-        </Style>
-
-        <Style x:Key="DisableHeaderButton" TargetType="Button">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding File}" Value="">
-                    <Setter Property="Visibility" Value="Hidden"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-        
-        <Style x:Key="DisableHeaderTextbox" TargetType="TextBox">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding File}" Value="">
-                    <Setter Property="Visibility" Value="Hidden"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
-
-    <Grid Background="#FF9B9B9B">
-        <TabControl x:Name="SettingsTabControl" HorizontalAlignment="Stretch" Margin="10,10,10,10" VerticalAlignment="Stretch" Background="#FF9B9B9B" BorderBrush="{x:Null}" SelectedIndex="1">
-            <TabItem x:Name="AdvancedItem" Header="Main" Visibility="Collapsed">
-                <Grid Background="#FF9B9B9B">
-                    <ListView x:Name="FilesListView" HorizontalAlignment="Left" Margin="10,30,0,0" Width="300" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" SelectionChanged="FilesListView_SelectionChanged">
-                        <ListView.View>
-                            <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                                <GridViewColumn />
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <ListView x:Name="CFGListView" HorizontalAlignment="Stretch" Margin="320,30,0,0" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050"  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        <ListView.View>
-                            <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                                <GridViewColumn x:Name="SettingHeader" Header="Setting" DisplayMemberBinding="{Binding Setting}"/>
-                                <GridViewColumn>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBox Style="{StaticResource DisableHeaderTextbox}" Margin="0" VerticalAlignment="Center" Width="300" Text="{Binding Value}" />
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{StaticResource DisableHeaderButton}" Content="Save Setting" Margin="0" VerticalAlignment="Center" Tag="{Binding File}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+    <Grid>
+        <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <TabItem Header="LegendaryClient">
+                <Grid/>
+            </TabItem>
+            <TabItem Header="Video">
+                <Grid>
+                    <ComboBox x:Name="ResolutionComboBox" HorizontalAlignment="Left" Margin="130,10,0,0" VerticalAlignment="Top" Width="200"/>
+                    <Label Content="Resolution" HorizontalAlignment="Left" Margin="10,7,0,0" FontWeight="ExtraLight" FontSize="16" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="WindowModeComboBox" HorizontalAlignment="Left" Margin="130,40,0,0" VerticalAlignment="Top" Width="200" ItemsSource="{DynamicResource WindowStates}"/>
+                    <Label Content="Window Mode" HorizontalAlignment="Left" Margin="10,37,0,0" FontWeight="ExtraLight" FontSize="16" VerticalAlignment="Top"/>
                 </Grid>
+            </TabItem>
+            <TabItem Header="Audio">
+                <Grid>
+                    <CheckBox x:Name="MuteAllSoundCheckBox" Content="Mute All Sounds" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
+                    <Label Content="Master Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,38,0,0" VerticalAlignment="Top"/>
+                    <Slider x:Name="MasterVolumeSlider" HorizontalAlignment="Stretch" Margin="180,45,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100"/>
+                    <Label Content="Music Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,98,0,0" VerticalAlignment="Top"/>
+                    <Slider x:Name="MusicVolumeSlider" HorizontalAlignment="Stretch" Margin="180,105,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100"/>
+                    <Label Content="FX Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,158,0,0" VerticalAlignment="Top"/>
+                    <Slider x:Name="FxVolumeSlider" HorizontalAlignment="Stretch" Margin="180,165,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100"/>
+                    <Label Content="Voice Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,218,0,0" VerticalAlignment="Top"/>
+                    <Slider x:Name="VoiceVolumeSlider" HorizontalAlignment="Stretch" Margin="180,225,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100"/>
+                    <Label Content="Announcer Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,278,0,0" VerticalAlignment="Top"/>
+                    <Slider x:Name="AnnouncerVolumeSlider" HorizontalAlignment="Stretch" Margin="180,285,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100"/>
+
+                </Grid>
+            </TabItem>
+            <TabItem Header="Interface">
+                <Grid/>
+            </TabItem>
+            <TabItem Header="Game">
+                <Grid/>
+            </TabItem>
+            <TabItem Header="Advanced">
+                <Grid/>
             </TabItem>
         </TabControl>
 
-        <Label Content="Advanced Settings" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="40" Width="300" Foreground="White" FontSize="20" FontWeight="Bold"/>
-        <Button Content="Basic Settings" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="100" Height="35"/>
     </Grid>
 </Page>

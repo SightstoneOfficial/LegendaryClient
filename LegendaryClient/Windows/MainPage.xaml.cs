@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using System.Collections;
+using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.Region;
 using System.Web.Script.Serialization;
 using LegendaryClient.Logic.SQLite;
@@ -15,7 +16,6 @@ using LegendaryClient.Logic.Maps;
 using System.Windows.Media;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
 using PVPNetConnect;
@@ -246,6 +246,8 @@ namespace LegendaryClient.Windows
                         Dictionary<string, object> playerInfo = objectPlayer as Dictionary<string, object>;
                         int teamId = 100;
                         int championId = 0;
+                        int spell1Id = 0;
+                        int spell2Id = 0;
                         string PlayerName = "";
                         foreach (KeyValuePair<string, object> playerPair in playerInfo)
                         {
@@ -261,10 +263,22 @@ namespace LegendaryClient.Windows
                             {
                                 PlayerName = playerPair.Value as string;
                             }
+                            if (playerPair.Key == "spell1Id")
+                            {
+                                spell1Id = (int)playerPair.Value;
+                            }
+                            if (playerPair.Key == "spell2Id")
+                            {
+                                spell2Id = (int)playerPair.Value;
+                            }
                         }
                         ChampSelectPlayer control = new ChampSelectPlayer();
                         var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championId).iconPath), UriKind.Absolute);
                         control.ChampionImage.Source = new BitmapImage(uriSource);
+                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
+                        control.SummonerSpell1.Source = new BitmapImage(uriSource);
+                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
+                        control.SummonerSpell2.Source = new BitmapImage(uriSource);
                         control.PlayerName.Content = PlayerName;
 
                         Image m = new Image();

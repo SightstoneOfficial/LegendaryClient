@@ -37,6 +37,12 @@
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Awesomium.Core, Version=1.7.2.2, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="awesomium.windows.controls, Version=1.7.2.2, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="jabber-net">
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
     </Reference>
@@ -81,12 +87,6 @@
     <Compile Include="Controls\NewsItem.xaml.cs">
       <DependentUpon>NewsItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\NotificationPlayer.xaml.cs">
-      <DependentUpon>NotificationPlayer.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\PlayerChatBox.xaml.cs">
-      <DependentUpon>PlayerChatBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\RecentGameOverview.xaml.cs">
       <DependentUpon>RecentGameOverview.xaml</DependentUpon>
     </Compile>
@@ -96,6 +96,7 @@
     <Compile Include="Logic\Maps\Map8.cs" />
     <Compile Include="Logic\Maps\Map12.cs" />
     <Compile Include="Logic\Maps\BaseMap.cs" />
+    <Compile Include="Logic\Patcher\RiotPatcher.cs" />
     <Compile Include="Logic\SQLite\championAbilities.cs" />
     <Compile Include="Logic\SQLite\champions.cs" />
     <Compile Include="Logic\SQLite\championSearchTags.cs" />
@@ -200,14 +201,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NewsItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\NotificationPlayer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\PlayerChatBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -374,6 +367,9 @@
     <Content Include="zlib.net.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logic\Game\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

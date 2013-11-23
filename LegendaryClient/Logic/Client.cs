@@ -27,9 +27,9 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Latest champion for League of Legends login screen
         /// </summary>
-        internal const int LatestChamp = 222;
+        internal const int LatestChamp = 75;
         /// <summary>
-        /// Latest version of League of Legends
+        /// Latest version of League of Legends. Retrieved from ClientLibCommon.dat
         /// </summary>
         internal static string Version = "3.00.00";
         /// <summary>
@@ -64,6 +64,8 @@ namespace LegendaryClient.Logic
         /// The database of all the keybinding defaults & proper names
         /// </summary>
         internal static List<keybindingEvents> Keybinds;
+
+        internal static List<string> Whitelist; 
 
         internal static JabberClient ChatClient;
 
@@ -114,12 +116,16 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
         {
-            if (AllPlayers.ContainsKey(msg.From.User))
+            if (AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
                 AllPlayers[msg.From.User].Messages.Add(AllPlayers[msg.From.User].Username + ": " + msg.Body);
         }
 
         internal static void ChatClientConnect(object sender)
         {
+            while (ChatClient.IsAuthenticated)
+            {
+                //Wait for authentication
+            }
             SetChatHover(CurrentPresence, LoginPacket.AllSummonerData.SummonerLevel.Level, 500, CurrentStatus, false);
         }
 
@@ -254,7 +260,8 @@ namespace LegendaryClient.Logic
 
         internal static Grid MainGrid;
         internal static Label InfoLabel;
-        internal static ContentControl ChatContainer;
+        //internal static ContentControl ChatContainer;
+        //internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
 
         #region WPF Tab Change

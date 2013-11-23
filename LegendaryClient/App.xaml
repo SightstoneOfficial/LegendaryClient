@@ -38,6 +38,13 @@
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
         </Style>
 
+        <x:Array x:Key="WindowStates" Type="sys:String"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>Fullscreen</sys:String>
+            <sys:String>Windowed</sys:String>
+            <sys:String>Borderless</sys:String>
+        </x:Array>
+        
         <x:Array x:Key="Regions" Type="sys:String"
                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
             <sys:String>BR</sys:String>
@@ -71,12 +78,12 @@
             <sys:String>Blind Pick</sys:String>
             <sys:String>All Random</sys:String>
             <sys:String>Tournament Draft</sys:String>
+            <sys:String>Blind Duplicate Pick (5X vs 5Y)</sys:String>
             <!-- Modes unavailable to the public-->
             <!--<sys:String>Open Pick</sys:String>
-            <sys:String>Simultaneous Pick</sys:String>
-            <sys:String>Blind Duplicate Pick (5X vs 5Y)</sys:String>
-            <sys:String>Capture the Flag</sys:String>
             <sys:String>Infinite Time Blind Pick</sys:String>
+            <sys:String>Infinite Time Blind PickTest</sys:String>
+            <sys:String>Cap</sys:String>
             <sys:String>No Ban Draft</sys:String>
             <sys:String>Blind Draft</sys:String>-->
         </x:Array>

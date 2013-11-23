@@ -122,6 +122,8 @@ namespace LegendaryClient.Windows
                     return "Bot 3v3 Beginner";
                 case "matching-queue-ODINBOT-5x5-game-queue":
                     return "Dominion Bot 5v5 Beginner";
+                case "matching-queue-ONEFORALL-5x5-game-queue":
+                    return "One For All 5v5";
                 default:
                     return InternalQueue;
             }

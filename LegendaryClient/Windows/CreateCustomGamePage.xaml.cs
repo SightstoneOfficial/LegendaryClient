@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
+using System.Web.UI.WebControls.Expressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
@@ -17,7 +19,7 @@ namespace LegendaryClient.Windows
         public CreateCustomGamePage()
         {
             InitializeComponent();
-
+            Client.Whitelist = new List<string>();
             NameTextBox.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + "'s game";
         }
 
@@ -189,6 +191,43 @@ namespace LegendaryClient.Windows
                 TournamentCodeTextbox.Text += "/" + System.Convert.ToBase64String(plainTextBytes);
             }
             catch { }
+        }
+
+        private void WhitelistAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(WhiteListTextBox.Text))
+            {
+                if (!Client.Whitelist.Contains(WhiteListTextBox.Text.ToLower()))
+                {
+                    Client.Whitelist.Add(WhiteListTextBox.Text.ToLower());
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        WhitelistListBox.Items.Add(WhiteListTextBox.Text);
+                    }));
+                }
+            }
+        }
+
+        private void WhitelistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (WhitelistListBox.SelectedIndex != -1)
+            {
+                WhitelistRemoveButton.IsEnabled = true;
+            }
+        }
+
+        private void WhitelistRemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WhitelistListBox.SelectedIndex != -1)
+            {
+                if (Client.Whitelist.Count == 1)
+                    WhitelistRemoveButton.IsEnabled = false;
+                Client.Whitelist.Remove(WhitelistListBox.SelectedValue.ToString().ToLower());
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    WhitelistListBox.Items.Remove(WhitelistListBox.SelectedValue);
+                }));
+            }
         }
     }
 }

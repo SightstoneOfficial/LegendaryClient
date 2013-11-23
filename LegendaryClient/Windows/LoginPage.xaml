@@ -9,14 +9,10 @@
 	Title="LoginPage">
     <Grid Background="Black" Margin="0">
         <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2" />
-        
-        <Label x:Name="WelcomeLabel" Content="Login to League of Legends" HorizontalAlignment="Left"  VerticalAlignment="Bottom" FontSize="24" FontWeight="Bold" Foreground="White" Margin="25,0,0,290">
-            <Label.Effect>
-                <DropShadowEffect ShadowDepth="3"/>
-            </Label.Effect>
-        </Label>
-        <Grid HorizontalAlignment="Left" Height="230" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50">
-            <Grid x:Name="LoginGrid" HorizontalAlignment="Left" Height="230" VerticalAlignment="Top" Width="350">
+       
+        <Grid x:Name="HideGrid" HorizontalAlignment="Left" Height="280" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
+            <Label x:Name="WelcomeLabel" Content="Login to League of Legends" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,0"/>
+            <Grid x:Name="LoginGrid" HorizontalAlignment="Left" Height="230" Margin="0,50,0,0" VerticalAlignment="Top" Width="350">
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="White" Margin="10,10,0,0" FontSize="18" FontWeight="Bold"/>
                 <TextBox x:Name="LoginUsernameBox" TextWrapping="NoWrap" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,40,0,0" FontSize="16"/>
                 <CheckBox x:Name="RememberUsernameCheckbox" Content="Remember Username" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Foreground="White" IsChecked="True"/>
@@ -42,7 +38,7 @@
             </Label.Effect>
         </Label>
 
-        <TextBox x:Name="ErrorTextBox" Text="Error" HorizontalAlignment="Left" VerticalAlignment="Bottom" TextWrapping="NoWrap" IsReadOnly="True" Width="350" Height="20" FontSize="12" FontWeight="999" Foreground="#FFFF7373" Margin="25,0,0,15" Background="{x:Null}" Panel.ZIndex="-1" BorderBrush="{x:Null}" Visibility="Hidden">
+        <TextBox x:Name="ErrorTextBox" Text="Error" HorizontalAlignment="Left" VerticalAlignment="Bottom" TextWrapping="NoWrap" IsReadOnly="True" Width="350" Height="20" FontSize="12" FontWeight="999" Foreground="#FFFF7373" Margin="20,0,0,15" Background="#7F000000" Panel.ZIndex="-1" BorderBrush="{x:Null}" Visibility="Hidden">
             <TextBox.Effect>
                 <DropShadowEffect ShadowDepth="3"/>
             </TextBox.Effect>

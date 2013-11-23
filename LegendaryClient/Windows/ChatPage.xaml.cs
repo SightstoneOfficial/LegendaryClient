@@ -149,7 +149,7 @@ namespace LegendaryClient.Windows
         {
             if (ChatListView.SelectedIndex != -1)
             {
-                if (ChatListView.SelectedItem is PlayerChatBox)
+                /*if (ChatListView.SelectedItem is PlayerChatBox)
                     return;
                 ChatPlayer player = (ChatPlayer) ChatListView.SelectedItem;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
@@ -157,7 +157,7 @@ namespace LegendaryClient.Windows
                 ChatPlayer.Tag = playerItem;
                 ChatPlayer.Margin = new Thickness(5, 0, 5, 0);
                 ChatPlayer.PlayerNameLabel.Content = playerItem.Username;
-                Client.ChatListView.Items.Add(ChatPlayer);
+                Client.ChatListView.Items.Add(ChatPlayer);*/
             }
         }
 

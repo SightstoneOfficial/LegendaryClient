@@ -10,14 +10,18 @@
     <Grid>
         <Label Content="Create a Custom Game" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
         <Label Content="Map" HorizontalAlignment="Left" Margin="10,120,0,420" VerticalAlignment="Center" FontSize="14" FontWeight="ExtraLight"/>
-        <ListBox x:Name="MapListBox" HorizontalAlignment="Left" Height="140" Margin="10,0,0,120" VerticalAlignment="Center" Width="170" SelectedIndex="0" SelectionChanged="MapListBox_SelectionChanged">
+        <ListBox x:Name="MapListBox" HorizontalAlignment="Left" Height="140" Margin="10,0,0,120" VerticalAlignment="Center" Width="250" SelectedIndex="0" SelectionChanged="MapListBox_SelectionChanged">
             <Label Content="Summoners Rift" Margin="0,0,0,0"/>
             <Label Content="The Crystal Scar" Margin="0,0,0,0"/>
             <Label Content="The Twisted Treeline" Margin="0,0,0,0"/>
             <Label Content="Howling Abyss" Margin="0,0,0,0"/>
         </ListBox>
         <Label Content="Whitelist" HorizontalAlignment="Right" Margin="0,120,10,420" VerticalAlignment="Center" FontSize="14" FontWeight="ExtraLight"/>
-        <ListBox HorizontalAlignment="Right" Height="140" Margin="0,0,10,120" VerticalAlignment="Center" Width="170"/>
+        <ListBox x:Name="WhitelistListBox" HorizontalAlignment="Right" Height="140" Margin="0,0,10,120" VerticalAlignment="Center" Width="250" SelectionChanged="WhitelistListBox_SelectionChanged"/>
+        <TextBox x:Name="WhiteListTextBox" HorizontalAlignment="Right" Height="23" Margin="0,60,140,0" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120"/>
+        <Button x:Name="WhitelistAddButton" Content="Add" HorizontalAlignment="Right" Margin="0,60,70,0" VerticalAlignment="Center" Width="50" Click="WhitelistAddButton_Click"/>
+        <Button x:Name="WhitelistRemoveButton" Content="Remove" HorizontalAlignment="Right" Margin="0,60,10,0" VerticalAlignment="Center" Width="50" IsEnabled="False" Click="WhitelistRemoveButton_Click"/>
+
         <Label Content="Team Size" HorizontalAlignment="Center" Margin="0,0,200,300" VerticalAlignment="Center" FontSize="14"/>
         <ComboBox x:Name="TeamSizeComboBox" HorizontalAlignment="Center" Margin="0,0,150,250" VerticalAlignment="Center" Width="120" ItemsSource="{DynamicResource TeamSizes}" SelectedIndex="4" SelectionChanged="TeamSizeComboBox_SelectionChanged"/>
         <Label Content="Allow Spectators" HorizontalAlignment="Center" Margin="110,0,0,300" VerticalAlignment="Center" FontSize="14"/>

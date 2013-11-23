@@ -10,9 +10,9 @@ How to compile
 
 ** You require Net 4.5 to compile this! **
 
-First, import the DLL's found in /DLLS. This includes sqlite, awesomium and PVPNetConnect.
+First, import the DLL's found in /DLLS. This includes sqlite, MahApps.Metro, SharpZipLib, jabber-net, Awesomium and PVPNetConnect.
 
-Next, compile it. It will crash at this point. This will be fixed once Kyoku is integrated, since required files aren't downloaded/copied on first run at the moment.
+Next, compile it. It will crash at this point. This will be fixed once the patcher is integrated, since required files aren't downloaded/copied on first run at the moment.
 
 * Find your installation of League of Legends (C:\Riot Games\League of Legends) and copy *"gameStats_en_US.sqlite" to the /bin folder of LegendaryClient. 
 
@@ -29,23 +29,18 @@ LegendaryClient should work once this is complete. Your folder should look like 
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/Gbi20rA.png)
-![News Screen](http://i.imgur.com/VZjEPmV.png)
-![Featured Games](http://i.imgur.com/AmGkyl3.jpg)
+![Login](http://i.imgur.com/KlRS9G2.jpg)
+![News Screen](http://i.imgur.com/rpGDhZ1.png)
+![Featured Games](http://i.imgur.com/UTuh1e8.png)
+![Store](http://i.imgur.com/VvdjTrA.png)
 
 Still-in Progress Screenshots 
 =============================
 
-![Chat](http://i.imgur.com/I7pilg2.png)
-![Profile](http://puu.sh/5hXmZ.jpg)
-![Lobby Screen](http://puu.sh/5hXog.jpg)
-![Queueing up for game](http://i.imgur.com/OGbFfJS.png)
-![Champ Select](http://i.imgur.com/DBiBRec.png)
-![Champion List](http://i.imgur.com/GYDpTz8.png)
-![Owned Skin List](http://i.imgur.com/hmlfsDv.png)
-![Store](http://i.imgur.com/PlWoboH.jpg)
-![Ingame](http://i.imgur.com/RMkdKNz.png)
-![Advanced Settings](http://i.imgur.com/xCo3SOe.png)
-![Create Game](http://puu.sh/5hXnw.jpg)
-![Create Game2](http://i.imgur.com/F8a9cBE.png)
-![Custom Game Search](http://puu.sh/5hXps.png)
+![Queue](http://i.imgur.com/BuDdtyd.png)
+![ChampSelect](http://i.imgur.com/mLLLSLJ.png)
+![CustomGameCreate](http://i.imgur.com/AZ74Y7L.png)
+![SearchCustomGames](http://i.imgur.com/1j5Yw8c.png)
+![CustomGameLobby](http://i.imgur.com/YA8JLTa.png)
+![Profile](http://i.imgur.com/1Oag2Rf.png)
+![Settings](http://i.imgur.com/ZTktZTY.png)

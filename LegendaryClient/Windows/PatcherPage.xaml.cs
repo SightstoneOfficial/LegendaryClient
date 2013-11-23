@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
@@ -32,7 +31,6 @@ namespace LegendaryClient.Windows
             Thread bgThead = new Thread(() =>
             {
                 string CurrentMD5 = GetMd5();
-                string CurrentKyokuMD5 = GetMd5(true);
                 string VersionString = "";
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += (o, e) =>
@@ -62,75 +60,20 @@ namespace LegendaryClient.Windows
                 if (VersionString.Split('|').Length == 5)
                 {
                     string[] versionArray = VersionString.Split('|');
-                    /*if (versionArray[0] != CurrentMD5)
+                    if (versionArray[0] != CurrentMD5)
                     {
-                        this.Invoke(new MethodInvoker(delegate
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            CheckingForUpdatesLabel.Text = "Downloading latest Client of Legends...";
+                            CurrentStatusLabel.Content = "Downloading latest LegendaryClient...";
                         }));
-                        using (WebClient client = new WebClient())
-                        {
-                            client.DownloadFile(versionArray[2], "COL.ZIP");
-                        }
+
+                        client.DownloadFile(versionArray[2], "COL.ZIP");
                         Directory.CreateDirectory("Patch");
                         System.IO.Compression.ZipFile.ExtractToDirectory("COL.ZIP", "Patch");                    
                         File.Delete("COL.ZIP");
                         System.Diagnostics.Process.Start("Patcher.exe");
                         Environment.Exit(0);
-                    }*/
-
-                    /*if (versionArray[1] != CurrentKyokuMD5)
-                    {
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            CurrentStatusLabel.Content = "Downloading latest Kyoku...";
-                        }));
-                        client.DownloadFile(versionArray[3], "KYOKU.ZIP");
-                        Directory.CreateDirectory("Patch");
-                        ZipFile.ExtractToDirectory("KYOKU.ZIP", "Patch");
-                        File.Delete("KYOKU.ZIP");
-                        if (Directory.Exists("Patch"))
-                        {
-                            foreach (string newPath in Directory.GetFiles("Patch", "*.*", SearchOption.AllDirectories))
-                                File.Copy(newPath, newPath.Replace("Patch", "."), true);
-                        }
-                        System.IO.DirectoryInfo PatchInfo = new DirectoryInfo("Patch");
-
-                        foreach (FileInfo file in PatchInfo.GetFiles())
-                        {
-                            file.Delete();
-                        }
-                        foreach (DirectoryInfo dir in PatchInfo.GetDirectories())
-                        {
-                            dir.Delete(true);
-                        }
-                        Directory.Delete("Patch");
-                    }*/
-
-                    var KyokuProcess = new System.Diagnostics.Process();
-                    KyokuProcess.StartInfo.UseShellExecute = false;
-                    /*KyokuProcess.StartInfo.RedirectStandardOutput = true;
-                    KyokuProcess.StartInfo.RedirectStandardError = true;
-                    KyokuProcess.EnableRaisingEvents = true;
-                    KyokuProcess.StartInfo.CreateNoWindow = true;
-                    KyokuProcess.OutputDataReceived += p_OutputDataReceived;
-                    KyokuProcess.ErrorDataReceived += p_ErrorDataReceived;*/
-                    KyokuProcess.StartInfo.FileName = Path.Combine(Directory.GetCurrentDirectory(), "Kyoku.exe");
-                    //KyokuProcess.Start();
-                    /*KyokuProcess.BeginOutputReadLine();
-                    KyokuProcess.BeginErrorReadLine();*/
-
-                    /*while (!KyokuProcess.WaitForExit(1000)) { }
-                    if (KyokuProcess.ExitCode != 991)
-                    {
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            CurrentStatusLabel.Content = "League of Legends was unable to patch. You cannot play at this time.";
-                            CurrentProgressBar.Value = 0;
-                        }));
-                        return;
                     }
-                    KyokuProcess = null;*/
                 }
 
                 FinishPatching();
@@ -147,28 +90,14 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        private string GetMd5(bool IsKyoku = false)
+        private string GetMd5()
         {
             MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
             FileInfo fi = null;
             FileStream stream = null;
-            if (!IsKyoku)
-            {
-                fi = new FileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
-                stream = File.Open(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName, FileMode.Open, FileAccess.Read);
-            }
-            else
-            {
-                if (File.Exists("Kyoku.exe"))
-                {
-                    fi = new FileInfo("Kyoku.exe");
-                    stream = File.Open("Kyoku.exe", FileMode.Open, FileAccess.Read);
-                }
-                else
-                {
-                    return "";
-                }
-            }
+
+            fi = new FileInfo(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            stream = File.Open(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName, FileMode.Open, FileAccess.Read);
 
             md5.ComputeHash(stream);
 

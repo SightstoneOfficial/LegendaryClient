@@ -36,7 +36,7 @@ namespace LegendaryClient.Windows
                 if (dto.GameState == "TEAM_SELECT")
                 {
                     LaunchedTeamSelect = false;
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                     {
                         BlueTeamListView.Items.Clear();
                         PurpleTeamListView.Items.Clear();
@@ -49,6 +49,13 @@ namespace LegendaryClient.Windows
                                 PlayerParticipant player = playerTeam1 as PlayerParticipant;
                                 BlueTeamListView.Items.Add(
                                     new PlayerItem { Username = player.SummonerName, Participant = player});
+                                if (Client.Whitelist.Count > 0)
+                                {
+                                    if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
+                                    {
+                                        await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                    }
+                                }
                             }
                             catch
                             {
@@ -62,6 +69,13 @@ namespace LegendaryClient.Windows
                                 PlayerParticipant player = playerTeam2 as PlayerParticipant;
                                 PurpleTeamListView.Items.Add(
                                     new PlayerItem { Username = player.SummonerName, Participant = player});
+                                if (Client.Whitelist.Count > 0)
+                                {
+                                    if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
+                                    {
+                                        await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                    }
+                                }
                             }
                             catch
                             {
@@ -103,11 +117,6 @@ namespace LegendaryClient.Windows
         {
             var button = sender as Button;
             PlayerParticipant BanPlayer = (PlayerParticipant)button.Tag;
-            var Teamid = new TeamId();
-            if (BanPlayer.PickTurn % 2 != 0) //If player pick is odd they are on the left
-                Teamid.FullId = "100";
-            else
-                Teamid.FullId = "200";
             await Client.PVPNet.BanUserFromGame(Client.GameID, BanPlayer.AccountId);
         }
 

@@ -32,13 +32,14 @@ namespace LegendaryClient
                 ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
             }
 
-            ChatContainer.Content = new ChatPage().Content;
-            NotificationContainer.Content = new NotificationPage().Content;
+            //ChatContainer.Content = new ChatPage().Content;
+            //NotificationContainer.Content = new NotificationPage().Content;
 
             Client.Pages = new List<Page>();
             Client.MainGrid = MainGrid;
             Client.Container = Container;
-            Client.ChatContainer = ChatContainer;
+            //Client.ChatContainer = ChatContainer;
+            //Client.NotificationContainer = NotificationContainer;
             Client.SwitchPage(new PatcherPage());
         }
 
@@ -87,11 +88,11 @@ namespace LegendaryClient
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
-            {
+            //if (Client.IsLoggedIn)
+            //{
                 SettingsPage SettingsPage = new SettingsPage();
                 Client.SwitchPage(SettingsPage);
-            }
+            //}
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
