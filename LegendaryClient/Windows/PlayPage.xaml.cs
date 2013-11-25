@@ -12,6 +12,7 @@ using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using Timer = System.Timers.Timer;
+using PVPNetConnect.RiotObjects.Platform.Game;
 
 namespace LegendaryClient.Windows
 {
@@ -20,14 +21,17 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class PlayPage : Page
     {
+        int i = 0;
         static Timer PingTimer;
         Dictionary<double, JoinQueue> configs = new Dictionary<double, JoinQueue>();
+        Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
 
         public PlayPage()
         {
             InitializeComponent();
             Client.IsOnPlayPage = true;
-            PingTimer = new Timer(10000);
+            i = 10;
+            PingTimer = new Timer(1000);
             PingTimer.Elapsed += new ElapsedEventHandler(PingElapsed);
             PingTimer.Enabled = true;
             PingElapsed(1, null);
@@ -35,6 +39,20 @@ namespace LegendaryClient.Windows
 
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                var keys = new List<Button>(ButtonTimers.Keys);
+                foreach (Button pair in keys)
+                {
+                    ButtonTimers[pair] = ButtonTimers[pair] + 1;
+                    TimeSpan time = TimeSpan.FromSeconds(ButtonTimers[pair]);
+                    Button realButton = (Button)pair.Tag;
+                    realButton.Content = string.Format("Leave Queue ({0:D2}:{1:D2})", time.Minutes, time.Seconds);
+                }
+            }));
+            if (i++ < 10) //Ping every 10 seconds
+                return;
+            i = 0;
             if (!Client.IsOnPlayPage)
                 return;
             double PingAverage = HighestPingTime(Client.Region.PingAddresses);
@@ -79,7 +97,9 @@ namespace LegendaryClient.Windows
                         item = configs[config.Id];
                     }
                     item.Height = 80;
-                    item.QueueLabel.Content = InternalQueueToPretty(config.CacheName);
+                    item.QueueButton.Tag = config;
+                    item.QueueButton.Click += QueueButton_Click;
+                    item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
                     QueueInfo t = await Client.PVPNet.GetQueueInformation(config.Id);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                     TimeSpan time = TimeSpan.FromMilliseconds(t.WaitTime);
@@ -94,39 +114,29 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        internal string InternalQueueToPretty(string InternalQueue)
+        void QueueButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (InternalQueue)
-            {
-                case "matching-queue-NORMAL-5x5-game-queue":
-                    return "Normal 5v5";
-                case "matching-queue-NORMAL-3x3-game-queue":
-                    return "Normal 3v3";
-                case "matching-queue-NORMAL-5x5-draft-game-queue":
-                    return "Draft 5v5";
-                case "matching-queue-RANKED_SOLO-5x5-game-queue":
-                    return "Ranked 5v5";
-                case "matching-queue-RANKED_TEAM-3x3-game-queue":
-                    return "Ranked Team 5v5";
-                case "matching-queue-RANKED_TEAM-5x5-game-queue":
-                    return "Ranked Team 3v3";
-                case "matching-queue-ODIN-5x5-game-queue":
-                    return "Dominion 5v5";
-                case "matching-queue-ARAM-5x5-game-queue":
-                    return "ARAM 5v5";
-                case "matching-queue-BOT-5x5-game-queue":
-                    return "Bot 5v5 Beginner";
-                case "matching-queue-ODIN-5x5-draft-game-queue":
-                    return "Dominion Draft 5v5";
-                case "matching-queue-BOT_TT-3x3-game-queue":
-                    return "Bot 3v3 Beginner";
-                case "matching-queue-ODINBOT-5x5-game-queue":
-                    return "Dominion Bot 5v5 Beginner";
-                case "matching-queue-ONEFORALL-5x5-game-queue":
-                    return "One For All 5v5";
-                default:
-                    return InternalQueue;
-            }
+            Button item = (Button)sender;
+            Button fakeButton = new Button(); //We require a unique button to add to the dictionary
+            fakeButton.Tag = item;
+            GameQueueConfig config = (GameQueueConfig)item.Tag;
+            item.Content = "Leave Queue (0:00)";
+            ButtonTimers.Add(fakeButton, 0);
+
+            MatchMakerParams parameters = new MatchMakerParams();
+            parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
+            Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(GotMatch));
+        }
+
+        private void GotMatch(SearchingForMatchNotification result)
+        {
+            Client.PVPNet.OnMessageReceived += GotQueuePop;
+        }
+
+        void GotQueuePop(object sender, object message)
+        {
+            GameDTO Queue = message as GameDTO;
+            ;
         }
 
         internal double HighestPingTime(IPAddress[] Addresses)

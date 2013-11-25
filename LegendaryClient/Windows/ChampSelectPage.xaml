@@ -61,8 +61,14 @@
         <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Left" Margin="895,0,0,300" VerticalAlignment="Bottom" Width="100" Height="30" Click="EditMasteriesButton_Click"/>
         <Button x:Name="LockInButton" Content="Lock In" Margin="0,340,150,300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="30" Click="LockInButton_Click"/>
 
-        <TextBox x:Name="ChatText" HorizontalAlignment="Stretch" Height="250" Margin="150,0,150,40" TextWrapping="Wrap" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}"/>
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Height="250" Margin="150,0,150,40" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="150,0,300,10" TextWrapping="Wrap" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged"/>
-        <Button x:Name="ChatButton" Content="Send" Margin="0,0,150,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" Click="LockInButton_Click" IsDefault="True"/>
+        <Button x:Name="ChatButton" Content="Send" Margin="0,0,150,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130"  IsDefault="True" Click="ChatButton_Click"/>
     </Grid>
 </Page>

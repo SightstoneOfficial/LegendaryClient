@@ -18,6 +18,8 @@ using PVPNetConnect.RiotObjects.Platform.Game;
 using LegendaryClient.Controls;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace LegendaryClient.Windows
 {
@@ -83,6 +85,8 @@ namespace LegendaryClient.Windows
             LatestDto = latestDTO;
 
             List<ChampionDTO> champList = new List<ChampionDTO>(Champions);
+
+            champList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
             foreach (ChampionDTO champ in champList)
             {
@@ -377,6 +381,24 @@ namespace LegendaryClient.Windows
         private void RuneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void ChatButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ChatTextBox.Text == "!~dev")
+            {
+                //Activate dev stuff in champ select
+            }
+            else
+            {
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = ChatTextBox.Text + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                ChatTextBox.Text = "";
+            }
         }
     }
 }

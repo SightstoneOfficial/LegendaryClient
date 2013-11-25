@@ -45,7 +45,7 @@
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
-                    <Label Content="Blue Bans" HorizontalAlignment="Left" Margin="200,5,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White"/>
+                    <Label Content="Blue Bans" HorizontalAlignment="Left" Margin="200,5,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White"/>
                     <ListView x:Name="BlueBanListView" HorizontalAlignment="Left" Margin="200,30,0,10" VerticalAlignment="Top" Height="64" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="190" BorderBrush="{x:Null}" Background="{x:Null}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
