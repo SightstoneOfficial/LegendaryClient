@@ -92,6 +92,9 @@
     <Compile Include="Controls\NewsItem.xaml.cs">
       <DependentUpon>NewsItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\QueuePopPlayer.xaml.cs">
+      <DependentUpon>QueuePopPlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\RecentGameOverview.xaml.cs">
       <DependentUpon>RecentGameOverview.xaml</DependentUpon>
     </Compile>
@@ -157,6 +160,9 @@
     <Compile Include="Windows\MasteriesOverlay.xaml.cs">
       <DependentUpon>MasteriesOverlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\MessageOverlay.xaml.cs">
+      <DependentUpon>MessageOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\NotificationPage.xaml.cs">
       <DependentUpon>NotificationPage.xaml</DependentUpon>
     </Compile>
@@ -193,6 +199,9 @@
     <Compile Include="Windows\Profile\Skins.xaml.cs">
       <DependentUpon>Skins.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\QueuePopOverlay.xaml.cs">
+      <DependentUpon>QueuePopOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\RunesOverlay.xaml.cs">
       <DependentUpon>RunesOverlay.xaml</DependentUpon>
     </Compile>
@@ -222,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NewsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\QueuePopPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -285,6 +298,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\MessageOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\NotificationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -330,6 +347,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\Profile\Skins.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\QueuePopOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

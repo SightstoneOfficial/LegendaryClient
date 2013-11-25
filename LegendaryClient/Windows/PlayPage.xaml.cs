@@ -58,6 +58,7 @@ namespace LegendaryClient.Windows
             double PingAverage = HighestPingTime(Client.Region.PingAddresses);
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
+                //Ping
                 PingLabel.Content = Math.Round(PingAverage).ToString() + "ms";
                 if (PingAverage == 0)
                 {
@@ -84,6 +85,7 @@ namespace LegendaryClient.Windows
                     PingRectangle.Fill = brush;
                 }
 
+                //Queues
                 GameQueueConfig[] OpenQueues = await Client.PVPNet.GetAvailableQueues();
                 Array.Sort(OpenQueues, delegate(GameQueueConfig config, GameQueueConfig config2)
                 {
@@ -114,29 +116,58 @@ namespace LegendaryClient.Windows
             }));
         }
 
+        Button LastSender;
         void QueueButton_Click(object sender, RoutedEventArgs e)
         {
-            Button item = (Button)sender;
-            Button fakeButton = new Button(); //We require a unique button to add to the dictionary
-            fakeButton.Tag = item;
-            GameQueueConfig config = (GameQueueConfig)item.Tag;
-            item.Content = "Leave Queue (0:00)";
-            ButtonTimers.Add(fakeButton, 0);
-
+            LastSender = (Button)sender;
+            GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
-            Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(GotMatch));
+            Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
         }
 
-        private void GotMatch(SearchingForMatchNotification result)
+        private void EnteredQueue(SearchingForMatchNotification result)
         {
+            if (result.PlayerJoinFailures != null)
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    MessageOverlay message = new MessageOverlay();
+                    message.MessageTitle.Content = "Failed to join queue";
+                    message.MessageTextBox.Text = result.PlayerJoinFailures[0].ReasonFailed;
+                    if (result.PlayerJoinFailures[0].ReasonFailed == "QUEUE_DODGER")
+                    {
+                        message.MessageTextBox.Text = "Unable to join the queue due to you recently dodging a game." + Environment.NewLine;
+                        TimeSpan time = TimeSpan.FromMilliseconds(result.PlayerJoinFailures[0].PenaltyRemainingTime);
+                        message.MessageTextBox.Text = "You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
+                    }
+                    Client.OverlayContainer.Content = message.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                }));
+                return;
+            }
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                Button item = LastSender;
+                Button fakeButton = new Button(); //We require a unique button to add to the dictionary
+                fakeButton.Tag = item;
+                GameQueueConfig config = (GameQueueConfig)item.Tag;
+                item.Content = "Leave Queue (0:00)";
+                ButtonTimers.Add(fakeButton, 0);
+            }));
             Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 
         void GotQueuePop(object sender, object message)
         {
             GameDTO Queue = message as GameDTO;
-            ;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+            }));
+            Client.PVPNet.OnMessageReceived -= GotQueuePop;
         }
 
         internal double HighestPingTime(IPAddress[] Addresses)
@@ -170,6 +201,11 @@ namespace LegendaryClient.Windows
         private void JoinCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
             Client.SwitchPage(new CustomGameListingPage());
+        }
+
+        private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
         }
     }
 }

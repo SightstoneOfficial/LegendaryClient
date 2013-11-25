@@ -254,41 +254,6 @@ namespace LegendaryClient.Logic
             }
         }
 
-        internal static string InternalQueueToPretty(string InternalQueue)
-        {
-            switch (InternalQueue)
-            {
-                case "matching-queue-NORMAL-5x5-game-queue":
-                    return "Normal 5v5";
-                case "matching-queue-NORMAL-3x3-game-queue":
-                    return "Normal 3v3";
-                case "matching-queue-NORMAL-5x5-draft-game-queue":
-                    return "Draft 5v5";
-                case "matching-queue-RANKED_SOLO-5x5-game-queue":
-                    return "Ranked 5v5";
-                case "matching-queue-RANKED_TEAM-3x3-game-queue":
-                    return "Ranked Team 5v5";
-                case "matching-queue-RANKED_TEAM-5x5-game-queue":
-                    return "Ranked Team 3v3";
-                case "matching-queue-ODIN-5x5-game-queue":
-                    return "Dominion 5v5";
-                case "matching-queue-ARAM-5x5-game-queue":
-                    return "ARAM 5v5";
-                case "matching-queue-BOT-5x5-game-queue":
-                    return "Bot 5v5 Beginner";
-                case "matching-queue-ODIN-5x5-draft-game-queue":
-                    return "Dominion Draft 5v5";
-                case "matching-queue-BOT_TT-3x3-game-queue":
-                    return "Bot 3v3 Beginner";
-                case "matching-queue-ODINBOT-5x5-game-queue":
-                    return "Dominion Bot 5v5 Beginner";
-                case "matching-queue-ONEFORALL-5x5-game-queue":
-                    return "One For All 5v5";
-                default:
-                    return InternalQueue;
-            }
-        }
-
         internal static Grid MainGrid;
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
@@ -392,11 +357,47 @@ namespace LegendaryClient.Logic
         /// When connected to a game retrieve details to connect to
         /// </summary>
         internal static PlayerCredentialsDto CurrentGame;
+        internal static bool AutoAcceptQueue;
         /// <summary>
         /// When an error occurs while connected. Currently un-used
         /// </summary>
         internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error) {
             ;
+        }
+
+        internal static string InternalQueueToPretty(string InternalQueue)
+        {
+            switch (InternalQueue)
+            {
+                case "matching-queue-NORMAL-5x5-game-queue":
+                    return "Normal 5v5";
+                case "matching-queue-NORMAL-3x3-game-queue":
+                    return "Normal 3v3";
+                case "matching-queue-NORMAL-5x5-draft-game-queue":
+                    return "Draft 5v5";
+                case "matching-queue-RANKED_SOLO-5x5-game-queue":
+                    return "Ranked 5v5";
+                case "matching-queue-RANKED_TEAM-3x3-game-queue":
+                    return "Ranked Team 5v5";
+                case "matching-queue-RANKED_TEAM-5x5-game-queue":
+                    return "Ranked Team 3v3";
+                case "matching-queue-ODIN-5x5-game-queue":
+                    return "Dominion 5v5";
+                case "matching-queue-ARAM-5x5-game-queue":
+                    return "ARAM 5v5";
+                case "matching-queue-BOT-5x5-game-queue":
+                    return "Bot 5v5 Beginner";
+                case "matching-queue-ODIN-5x5-draft-game-queue":
+                    return "Dominion Draft 5v5";
+                case "matching-queue-BOT_TT-3x3-game-queue":
+                    return "Bot 3v3 Beginner";
+                case "matching-queue-ODINBOT-5x5-game-queue":
+                    return "Dominion Bot 5v5 Beginner";
+                case "matching-queue-ONEFORALL-5x5-game-queue":
+                    return "One For All 5v5";
+                default:
+                    return InternalQueue;
+            }
         }
         #endregion
     }
