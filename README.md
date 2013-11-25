@@ -38,7 +38,7 @@ Still-in Progress Screenshots
 =============================
 
 ![Queue](http://i.imgur.com/BuDdtyd.png)
-![QueuePop](http://i.imgur.com/jSAnOIn.png)
+![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/uePXsUm.jpg)
 ![CustomGameCreate](http://i.imgur.com/AZ74Y7L.png)
 ![SearchCustomGames](http://i.imgur.com/1j5Yw8c.png)

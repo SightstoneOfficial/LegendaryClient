@@ -291,7 +291,8 @@ namespace LegendaryClient.Logic
                 }
             }
             Container.Content = page.Content;
-            Pages.Add(page);
+            if (!(page is FakePage))
+                Pages.Add(page);
         }
 
         /// <summary>
@@ -357,7 +358,8 @@ namespace LegendaryClient.Logic
         /// When connected to a game retrieve details to connect to
         /// </summary>
         internal static PlayerCredentialsDto CurrentGame;
-        internal static bool AutoAcceptQueue;
+        internal static bool AutoAcceptQueue = false;
+        internal static object LastPageContent;
         /// <summary>
         /// When an error occurs while connected. Currently un-used
         /// </summary>

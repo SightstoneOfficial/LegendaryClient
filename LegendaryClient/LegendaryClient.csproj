@@ -151,6 +151,9 @@
     <Compile Include="Windows\CustomGameLobbyPage.xaml.cs">
       <DependentUpon>CustomGameLobbyPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\FakePage.xaml.cs">
+      <DependentUpon>FakePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -283,6 +286,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\CustomGameLobbyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FakePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -25,6 +25,7 @@ namespace LegendaryClient.Windows
         static Timer PingTimer;
         Dictionary<double, JoinQueue> configs = new Dictionary<double, JoinQueue>();
         Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
+        List<double> Queues = new List<double>();
 
         public PlayPage()
         {
@@ -47,7 +48,7 @@ namespace LegendaryClient.Windows
                     ButtonTimers[pair] = ButtonTimers[pair] + 1;
                     TimeSpan time = TimeSpan.FromSeconds(ButtonTimers[pair]);
                     Button realButton = (Button)pair.Tag;
-                    realButton.Content = string.Format("Leave Queue ({0:D2}:{1:D2})", time.Minutes, time.Seconds);
+                    realButton.Content = string.Format("{0:D2}:{1:D2}", time.Minutes, time.Seconds);
                 }
             }));
             if (i++ < 10) //Ping every 10 seconds
@@ -106,7 +107,7 @@ namespace LegendaryClient.Windows
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                     TimeSpan time = TimeSpan.FromMilliseconds(t.WaitTime);
                     string answer = string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds);
-                    item.WaitTimeLabel.Content = "Wait Time: " + answer;
+                    item.WaitTimeLabel.Content = "Avg Wait Time: " + answer;
                     if (!configs.ContainsKey(config.Id))
                     {
                         configs.Add(config.Id, item);
@@ -121,6 +122,11 @@ namespace LegendaryClient.Windows
         {
             LastSender = (Button)sender;
             GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
+            if (Queues.Contains(config.Id))
+            {
+                return;
+            }
+            Queues.Add(config.Id);
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
             Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
@@ -153,7 +159,7 @@ namespace LegendaryClient.Windows
                 Button fakeButton = new Button(); //We require a unique button to add to the dictionary
                 fakeButton.Tag = item;
                 GameQueueConfig config = (GameQueueConfig)item.Tag;
-                item.Content = "Leave Queue (0:00)";
+                item.Content = "00:00";
                 ButtonTimers.Add(fakeButton, 0);
             }));
             Client.PVPNet.OnMessageReceived += GotQueuePop;
@@ -206,6 +212,19 @@ namespace LegendaryClient.Windows
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
+        }
+
+        private async void LeaveQueuesButton_Click(object sender, RoutedEventArgs e)
+        {
+            var keys = new List<Button>(ButtonTimers.Keys);
+            foreach (Button pair in keys)
+            {
+                Button realButton = (Button)pair.Tag;
+                realButton.Content = "Queue";
+            }
+            ButtonTimers = new Dictionary<Button, int>();
+            Queues = new List<double>();
+            await Client.PVPNet.PurgeFromQueues();
         }
     }
 }

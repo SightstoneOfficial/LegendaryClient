@@ -28,5 +28,6 @@
         <Button x:Name="JoinCustomGameButton" Content="Join Custom Games" HorizontalAlignment="Left" Margin="155,0,0,10" VerticalAlignment="Bottom" Width="140" Height="42" Click="JoinCustomGameButton_Click"/>
         <ListBox x:Name="QueueListView" HorizontalAlignment="Stretch" Margin="0,0,0,90" VerticalAlignment="Stretch"/>
         <CheckBox x:Name="AutoAcceptCheckBox" Content="Auto Accept Queue" HorizontalAlignment="Right" Margin="0,0,10,65" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked"/>
+        <Button x:Name="LeaveQueuesButton" Content="Leave Queues" HorizontalAlignment="Right" Margin="0,0,150,57" VerticalAlignment="Bottom" Width="96" Height="28" Click="LeaveQueuesButton_Click"/>
     </Grid>
 </Page>

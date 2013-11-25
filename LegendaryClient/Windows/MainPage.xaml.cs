@@ -46,7 +46,7 @@ namespace LegendaryClient.Windows
             GetNews(region);
         }
 
-        private void GotPlayerData(LoginDataPacket packet)
+        private async void GotPlayerData(LoginDataPacket packet)
         {
             AllSummonerData PlayerData = packet.AllSummonerData;
             SummonerNameLabel.Content = PlayerData.Summoner.Name;

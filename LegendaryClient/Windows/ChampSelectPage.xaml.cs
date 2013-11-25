@@ -133,7 +133,9 @@ namespace LegendaryClient.Windows
                         }
                         Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                         Client.ClearPage(this);
-                        Client.SwitchPage(new CustomGameLobbyPage());
+                        FakePage fakePage = new FakePage();
+                        fakePage.Content = Client.LastPageContent;
+                        Client.SwitchPage(fakePage);
                         return;
                     }
                     else if (ChampDTO.GameState == "PRE_CHAMP_SELECT")

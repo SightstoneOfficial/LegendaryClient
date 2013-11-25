@@ -91,6 +91,7 @@ namespace LegendaryClient.Windows
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
                             Client.ChampSelectDTO = dto;
+                            Client.LastPageContent = Client.Container.Content;
                             Client.SwitchPage(new ChampSelectPage());
                         }));
                         LaunchedTeamSelect = true;

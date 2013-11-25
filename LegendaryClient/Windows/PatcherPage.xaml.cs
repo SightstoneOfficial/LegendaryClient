@@ -32,7 +32,7 @@ namespace LegendaryClient.Windows
         {
             Thread bgThead = new Thread(() =>
             {
-                string CurrentMD5 = GetMd5();
+                /*string CurrentMD5 = GetMd5();
                 string VersionString = "";
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += (o, e) =>
@@ -80,7 +80,7 @@ namespace LegendaryClient.Windows
                     RiotPatcher patcher = new RiotPatcher();
                     string s = patcher.GetDragon();
                     //client.DownloadFileAsync(s.ToUri(), "test.tgz");
-                }
+                }*/
 
                 FinishPatching();
             });
