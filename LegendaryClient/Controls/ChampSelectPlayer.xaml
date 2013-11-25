@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="80" d:DesignWidth="125">
     <Grid Background="#194B4B4B">
-        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="48" Margin="10,10,0,0" VerticalAlignment="Top" Width="48"/>
+        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="48" Margin="10,10,0,0" VerticalAlignment="Top" Width="48" Source="/LegendaryClient;component/NONE.png"/>
         <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="22" Margin="75,10,0,0" VerticalAlignment="Top" Width="22"/>
         <Image x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="22" Margin="75,35,0,0" VerticalAlignment="Top" Width="22"/>
         <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Stretch" Margin="0,53,0,0" VerticalAlignment="Top" Width="125"/>

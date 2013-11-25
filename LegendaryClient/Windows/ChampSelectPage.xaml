@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:LegendaryClient.Controls"
       mc:Ignorable="d" 
-      d:DesignHeight="672" d:DesignWidth="1024"
+      d:DesignHeight="768" d:DesignWidth="1280"
 	Title="ChampSelectPage">
 
     <Grid>
@@ -21,7 +21,7 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        
+
         <Label Content="Search" HorizontalAlignment="Left" Margin="150,40,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22"/>
         <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="240,50,200,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged"/>
 
@@ -45,7 +45,21 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <Button x:Name="LockInButton" Content="Lock In" Margin="0,340,150,300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" Height="30" Click="LockInButton_Click"/>
+        <Button x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="40" Margin="150,0,0,295" VerticalAlignment="Bottom" Width="40" Click="SummonerSpell_Click">
+            <StackPanel>
+                <Image x:Name="SummonerSpell1Image" Height="32" Width="32"/>
+            </StackPanel>
+        </Button>
+        <Button x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="40" Margin="195,340,0,295" VerticalAlignment="Bottom" Width="40" Click="SummonerSpell_Click">
+            <StackPanel>
+                <Image x:Name="SummonerSpell2Image" Height="32" Width="32"/>
+            </StackPanel>
+        </Button>
+        <ComboBox x:Name="MasteryComboBox" HorizontalAlignment="Left" Margin="240,0,0,300" VerticalAlignment="Bottom" Width="280" Height="30" SelectionChanged="MasteryComboBox_SelectionChanged"/>
+        <Button x:Name="EditRunesButton" Content="Edit Runes" HorizontalAlignment="Left" Margin="525,0,0,300" VerticalAlignment="Bottom" Width="75" Height="30" Click="EditRunesButton_Click"/>
+        <ComboBox x:Name="RuneComboBox" HorizontalAlignment="Left" Margin="610,0,0,300" VerticalAlignment="Bottom" Width="280" Height="30" SelectionChanged="RuneComboBox_SelectionChanged"/>
+        <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Left" Margin="895,0,0,300" VerticalAlignment="Bottom" Width="100" Height="30" Click="EditMasteriesButton_Click"/>
+        <Button x:Name="LockInButton" Content="Lock In" Margin="0,340,150,300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="30" Click="LockInButton_Click"/>
 
         <TextBox x:Name="ChatText" HorizontalAlignment="Stretch" Height="250" Margin="150,0,150,40" TextWrapping="Wrap" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}"/>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="150,0,300,10" TextWrapping="Wrap" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged"/>

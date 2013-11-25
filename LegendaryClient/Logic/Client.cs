@@ -122,11 +122,7 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClientConnect(object sender)
         {
-            while (ChatClient.IsAuthenticated)
-            {
-                //Wait for authentication
-            }
-            SetChatHover(CurrentPresence, LoginPacket.AllSummonerData.SummonerLevel.Level, 500, CurrentStatus, false);
+            SetChatHover();
         }
 
         internal static void SendMessage(string User, string Message)
@@ -134,22 +130,22 @@ namespace LegendaryClient.Logic
             ChatClient.Message(User, Message);
         }
 
-        internal static void SetChatHover(PresenceType Presence, double Level, int Wins, string statusMsg, bool inGame)
+        internal static void SetChatHover()
         {
-            ChatClient.Presence(Presence, "<body>" +
-                "<profileIcon>0</profileIcon>" +
-                "<level>" + Level + "</level>" +
-                "<wins>" + Wins + "</wins>" +
+            ChatClient.Presence(CurrentPresence, "<body>" +
+                "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
+                "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
+                "<wins>" + 500 + "</wins>" +
                 "<leaves>52</leaves>" +
-                (Level >= 30 ?
+                (LoginPacket.AllSummonerData.SummonerLevel.Level >= 30 ?
                 "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
                 "<rankedLeagueName>Urgot&apos;s Patriots</rankedLeagueName>" +
                 "<rankedLeagueDivision>I</rankedLeagueDivision>" +
                 "<rankedLeagueTier>BRONZE</rankedLeagueTier>" + 
                 "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>"+
                 "<rankedWins>287</rankedWins>" : "") +
-                "<gameStatus>" + ((inGame == true) ? "inGame" : "outOfGame") + "</gameStatus>" +
-                "<statusMsg>" + statusMsg + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
+                "<gameStatus>" + ((false == true) ? "inGame" : "outOfGame") + "</gameStatus>" +
+                "<statusMsg>" + CurrentStatus + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
             "</body>", null, 0);
         }
 
@@ -260,9 +256,12 @@ namespace LegendaryClient.Logic
 
         internal static Grid MainGrid;
         internal static Label InfoLabel;
+        internal static ContentControl OverlayContainer;
         //internal static ContentControl ChatContainer;
         //internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
+
+        internal static Image MainPageProfileImage;
 
         #region WPF Tab Change
         /// <summary>

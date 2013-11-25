@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using LegendaryClient.Controls;
@@ -100,14 +101,12 @@ namespace LegendaryClient.Windows
                 #endregion
             }
 
-            ;
-
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
             //LocationLabel.Content = "Region: " + Client.LoginPacket.CompetitiveRegion;
             int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
-            //TODO: Convert ProfileIconID to the decompiled images
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);
             ProfileImage.Source = new BitmapImage(uriSource);
+            Client.MainPageProfileImage = ProfileImage;
         }
 
         #region News
@@ -421,5 +420,23 @@ namespace LegendaryClient.Windows
                 return result;
             }
         }
+
+        private void HoverLabel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            Client.OverlayContainer.Content = new ChooseProfilePicturePage().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
+        private void HoverLabel_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            HoverLabel.HoverLabel.Content = "Change";
+            HoverLabel.Opacity = 100;
+        }
+
+        private void HoverLabel_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            HoverLabel.Opacity = 0;
+        }
+
     }
 }

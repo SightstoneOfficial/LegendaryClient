@@ -13,26 +13,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LegendaryClient.Logic;
+using LegendaryClient.Windows.Profile;
 
-namespace LegendaryClient.Windows.Profile
+namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for Masteries.xaml
+    /// Interaction logic for RunesOverlay.xaml
     /// </summary>
-    public partial class Masteries : Page
+    public partial class RunesOverlay : Page
     {
-        public Masteries()
+        public RunesOverlay()
         {
             InitializeComponent();
-            int i = 1;
-            foreach (var MasteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
-            {
-                Button b = new Button();
-                b.Content = i++;
-                b.Width = 28;
-                b.Margin = new Thickness(2, 0, 2, 0);
-                MasteryPageListView.Items.Add(b);
-            }
+            Container.Content = new Runes().Content;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Visibility = Visibility.Hidden;
         }
     }
 }

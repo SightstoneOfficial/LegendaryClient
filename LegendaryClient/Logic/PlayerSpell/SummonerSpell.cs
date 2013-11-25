@@ -24,11 +24,54 @@ namespace LegendaryClient.Logic.PlayerSpell
         {
             return (SummonerSpells)Enum.Parse(typeof(SummonerSpells), spellName, true);
         }
+
+        public static bool CanUseSpell(int SpellId, double Level, string GameMode)
+        {
+            if (Client.LoginPacket.ClientSystemStates.InactiveSpellIdList.Contains(SpellId))
+                return false;
+            switch (GameMode)
+            {
+                case "CLASSIC":
+                    if (Client.LoginPacket.ClientSystemStates.InactiveClassicSpellIdList.Contains(SpellId))
+                        return false;
+                    break;
+                case "ARAM":
+                    if (Client.LoginPacket.ClientSystemStates.InactiveAramSpellIdList.Contains(SpellId))
+                        return false;
+                    break;
+                case "ODIN":
+                    if (Client.LoginPacket.ClientSystemStates.InactiveOdinSpellIdList.Contains(SpellId))
+                        return false;
+                    break;
+                default:
+                    break;
+            }
+            switch (SpellId)
+            {
+                case 1:
+                    return Level >= 2;
+                case 2:
+                    return Level >= 10;
+                case 3:
+                    return Level >= 8;
+                case 4:
+                    return Level >= 12;
+                case 11:
+                    return Level >= 3;
+                case 12:
+                    return Level >= 2;
+                case 14:
+                    return Level >= 8;
+                case 21:
+                    return Level >= 6;
+                default:
+                    return true;
+            }
+        }
     }
 
     public enum NameToImage
     {
-        NONE = 0,
         Boost = 1,
         Clairvoyance = 2,
         Exhaust = 3,

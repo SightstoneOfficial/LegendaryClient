@@ -10,10 +10,14 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Windows.Profile;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using LegendaryClient.Controls;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
 
 namespace LegendaryClient.Windows
 {
@@ -23,7 +27,10 @@ namespace LegendaryClient.Windows
     public partial class ChampSelectPage : Page
     {
         bool BanningPhase = false;
+        GameDTO LatestDto;
         ChampionDTO[] Champions;
+        MasteryBookDTO MyMasteries;
+        SpellBookDTO MyRunes;
         List<ChampionDTO> MyChamps = new List<ChampionDTO>();
         GameTypeConfigDTO configType;
         System.Windows.Forms.Timer CountdownTimer;
@@ -40,6 +47,23 @@ namespace LegendaryClient.Windows
         {
             Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
             Champions = await Client.PVPNet.GetAvailableChampions();
+            MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
+            MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
+
+            foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
+            {
+                MasteryComboBox.Items.Add(MasteryPage.Name);
+                if (MasteryPage.Current)
+                    MasteryComboBox.SelectedItem = MasteryPage.Name;
+            }
+
+            foreach (SpellBookPageDTO RunePage in MyRunes.BookPages)
+            {
+                RuneComboBox.Items.Add(RunePage.Name);
+                if (RunePage.Current)
+                    RuneComboBox.SelectedItem = RunePage.Name;
+            }
+
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
             GameDTO latestDTO = await Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState, Client.ChampSelectDTO.PickTurn);
             if (latestDTO.GameTypeConfigId < 1) //Invalid config... abort!
@@ -55,7 +79,8 @@ namespace LegendaryClient.Windows
             CountdownTimer.Start();
 
             ChampSelect_OnMessageReceived(this, latestDTO);
-            ChatText.Text = "test" + Environment.NewLine + "yolo";
+
+            LatestDto = latestDTO;
 
             List<ChampionDTO> champList = new List<ChampionDTO>(Champions);
 
@@ -93,6 +118,7 @@ namespace LegendaryClient.Windows
             {
                 #region In Champion Select
                 GameDTO ChampDTO = message as GameDTO;
+                LatestDto = ChampDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     if (ChampDTO.GameState == "TEAM_SELECT")
@@ -152,13 +178,26 @@ namespace LegendaryClient.Windows
                                         var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(selection.ChampionId).iconPath), UriKind.Absolute);
                                         control.ChampionImage.Source = new BitmapImage(uriSource);
                                     }
+                                    if (selection.Spell1Id != 0)
+                                    {
+                                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)selection.Spell1Id)), UriKind.Absolute);
+                                        control.SummonerSpell1.Source = new BitmapImage(uriSource);
+                                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)selection.Spell2Id)), UriKind.Absolute);
+                                        control.SummonerSpell2.Source = new BitmapImage(uriSource);
+                                    }
+                                    if (player.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                                    {
+                                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)selection.Spell1Id)), UriKind.Absolute);
+                                        SummonerSpell1Image.Source = new BitmapImage(uriSource);
+                                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)selection.Spell2Id)), UriKind.Absolute);
+                                        SummonerSpell2Image.Source = new BitmapImage(uriSource);
+                                    }
                                     control.PlayerName.Content = player.SummonerName;
                                     BlueListView.Items.Add(control);
                                 }
                             }
                             if (!DisplayedPlayer)
                             {
-                                DisplayedPlayer = true;
                                 ChampSelectPlayer control = new ChampSelectPlayer();
                                 control.PlayerName.Content = player.SummonerName;
                                 BlueListView.Items.Add(control);
@@ -187,13 +226,26 @@ namespace LegendaryClient.Windows
                                         var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(selection.ChampionId).iconPath), UriKind.Absolute);
                                         control.ChampionImage.Source = new BitmapImage(uriSource);
                                     }
+                                    if (selection.Spell1Id != 0)
+                                    {
+                                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)selection.Spell1Id)), UriKind.Absolute);
+                                        control.SummonerSpell1.Source = new BitmapImage(uriSource);
+                                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)selection.Spell2Id)), UriKind.Absolute);
+                                        control.SummonerSpell2.Source = new BitmapImage(uriSource);
+                                    }
+                                    if (player.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                                    {
+                                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)selection.Spell1Id)), UriKind.Absolute);
+                                        SummonerSpell1Image.Source = new BitmapImage(uriSource);
+                                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)selection.Spell2Id)), UriKind.Absolute);
+                                        SummonerSpell2Image.Source = new BitmapImage(uriSource);
+                                    }
                                     control.PlayerName.Content = player.SummonerName;
                                     PurpleListView.Items.Add(control);
                                 }
                             }
                             if (!DisplayedPlayer)
                             {
-                                DisplayedPlayer = true;
                                 ChampSelectPlayer control = new ChampSelectPlayer();
                                 control.PlayerName.Content = player.SummonerName;
                                 BlueListView.Items.Add(control);
@@ -295,6 +347,34 @@ namespace LegendaryClient.Windows
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void EditMasteriesButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new MasteriesOverlay().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
+        private void EditRunesButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new RunesOverlay().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
+        private void SummonerSpell_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new SelectSummonerSpells(LatestDto.GameMode).Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
+        private void MasteryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void RuneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }

@@ -6,7 +6,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Awesomium.Core;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.Patcher;
 
 namespace LegendaryClient.Windows
 {
@@ -74,6 +76,10 @@ namespace LegendaryClient.Windows
                         System.Diagnostics.Process.Start("Patcher.exe");
                         Environment.Exit(0);
                     }
+
+                    RiotPatcher patcher = new RiotPatcher();
+                    string s = patcher.GetDragon();
+                    //client.DownloadFileAsync(s.ToUri(), "test.tgz");
                 }
 
                 FinishPatching();

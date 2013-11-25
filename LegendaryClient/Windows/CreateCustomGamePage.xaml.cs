@@ -34,6 +34,7 @@ namespace LegendaryClient.Windows
         {
             try
             {
+                NameInvalidLabel.Visibility = Visibility.Hidden;
                 PracticeGameConfig gameConfig = new PracticeGameConfig();
                 gameConfig.GameName = NameTextBox.Text;
                 gameConfig.GamePassword = PasswordTextBox.Text;
@@ -61,7 +62,7 @@ namespace LegendaryClient.Windows
                     case "Blind Duplicate Pick (5X vs 5Y)":
                         gameConfig.GameTypeConfig = 14;
                         break;
-                    case "Cap":
+                    case "Captain Pick":
                         gameConfig.GameTypeConfig = 12;
                         break;
                     default: //Tournament Draft
@@ -172,7 +173,6 @@ namespace LegendaryClient.Windows
             try
             {
                 PracticeGameConfig gameConfig = GenerateGameConfig();
-                TournamentCodeTextbox.Text = "";
                 TournamentCodeTextbox.Text = "pvpnet://lol/customgame/joinorcreate";
                 TournamentCodeTextbox.Text += "/map" + gameConfig.GameMap.MapId;
                 TournamentCodeTextbox.Text += "/pick" + gameConfig.GameTypeConfig;
@@ -185,7 +185,7 @@ namespace LegendaryClient.Windows
                 else
                     json = "{ \"name\": \"" + gameConfig.GameName + "\", \"password\": \"" + gameConfig.GamePassword + "\" }";
 
-                //Also report to get riot to send a report back, and extra to have data sent so you can identify it (passbackDataPacket)
+                //Also "report" to get riot to send a report back, and "extra" to have data sent so you can identify it (passbackDataPacket)
 
                 var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
                 TournamentCodeTextbox.Text += "/" + System.Convert.ToBase64String(plainTextBytes);
@@ -204,6 +204,7 @@ namespace LegendaryClient.Windows
                     {
                         WhitelistListBox.Items.Add(WhiteListTextBox.Text);
                     }));
+                    WhiteListTextBox.Text = "";
                 }
             }
         }

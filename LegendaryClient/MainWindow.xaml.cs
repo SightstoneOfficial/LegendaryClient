@@ -38,6 +38,7 @@ namespace LegendaryClient
             Client.Pages = new List<Page>();
             Client.MainGrid = MainGrid;
             Client.Container = Container;
+            Client.OverlayContainer = OverlayContainer;
             //Client.ChatContainer = ChatContainer;
             //Client.NotificationContainer = NotificationContainer;
             Client.SwitchPage(new PatcherPage());
