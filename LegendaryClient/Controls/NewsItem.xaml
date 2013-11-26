@@ -1,15 +1,15 @@
 ﻿<UserControl x:Class="LegendaryClient.Controls.NewsItem"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
              d:DesignHeight="120" d:DesignWidth="800">
     <Grid Background="#33646464">
-        <Image x:Name="PromoImage" HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Stretch="UniformToFill"/>
-        <Label x:Name="NewsTitle" Content="Announcing Season 3 Rewards!" HorizontalAlignment="Left" Margin="115,5,0,0" VerticalAlignment="Top" FontSize="28" FontWeight="ExtraLight"/>
+        <Image x:Name="PromoImage" HorizontalAlignment="Left" Height="100" Margin="10,10,0,0" VerticalAlignment="Top" Width="100" Stretch="UniformToFill" />
+        <Label x:Name="NewsTitle" Content="Announcing Season 3 Rewards!" HorizontalAlignment="Left" Margin="115,5,0,0" VerticalAlignment="Top" FontSize="28" FontWeight="ExtraLight" />
         <Label MaxWidth="850" HorizontalAlignment="Stretch" Margin="115,50,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="ExtraLight" Height="65">
-            <TextBlock x:Name="DescriptionLabel" Text="Learn more about how you nab end-of-season rewards, and check out a sneak peek of what you can earn." TextWrapping="WrapWithOverflow"/>
+            <TextBlock x:Name="DescriptionLabel" Text="Learn more about how you nab end-of-season rewards, and check out a sneak peek of what you can earn." TextWrapping="WrapWithOverflow" />
         </Label>
     </Grid>
 </UserControl>

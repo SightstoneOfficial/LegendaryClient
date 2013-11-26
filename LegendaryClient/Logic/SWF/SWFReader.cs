@@ -1,22 +1,25 @@
-﻿using System;
+﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using LegendaryClient.Logic.SWF.SWFTypes;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using LegendaryClient.Logic.SWF.SWFTypes;
 
 namespace LegendaryClient.Logic.SWF
 {
     public class SWFReader
     {
         public SWFCompression SWFCompressionType { get; private set; }
+
         public byte SWFVersion { get; private set; }
+
         public UInt32 FileSize { get; private set; }
+
         public UInt16 FrameRate { get; private set; }
+
         public UInt16 FrameCount { get; private set; }
+
         public List<Tag> Tags { get; set; }
+
         private BinaryReader SWFBinary;
 
         public SWFReader(string SWFFile)
@@ -77,7 +80,7 @@ namespace LegendaryClient.Logic.SWF
 
             byte[] UncompressedData = new byte[size];
             SWFBinary.BaseStream.Position = 0;
-            SWFBinary.Read(UncompressedData, 0, 8); 
+            SWFBinary.Read(UncompressedData, 0, 8);
 
             byte[] CompressedData = SWFBinary.ReadBytes(size);
             Inflater zipInflator = new Inflater();
@@ -96,12 +99,14 @@ namespace LegendaryClient.Logic.SWF
                 case 'C':
                     SWFCompressionType = SWFCompression.Zlib;
                     break;
+
                 case 'Z':
                     SWFCompressionType = SWFCompression.LZMA;
                     throw new Exception("Cannot decompress this SWF type!");
                 case 'F':
                     SWFCompressionType = SWFCompression.Uncompressed;
                     break;
+
                 default:
                     throw new Exception("Unknown SWFCompression type");
             }
@@ -121,6 +126,7 @@ namespace LegendaryClient.Logic.SWF
         }
 
         #region Extention Buffer Methods
+
         internal static uint ReadUnsignedBits(BinaryReader b, uint bits)
         {
             uint v = 0;
@@ -162,6 +168,7 @@ namespace LegendaryClient.Logic.SWF
 
             return v;
         }
-        #endregion
+
+        #endregion Extention Buffer Methods
     }
 }

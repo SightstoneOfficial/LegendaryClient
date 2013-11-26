@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Net.Security;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Xml;
-using jabber.client;
+﻿using jabber.client;
 using jabber.protocol.client;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
@@ -16,6 +7,14 @@ using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using SQLite;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Windows;
+using System.Windows.Controls;
+using System.Xml;
 
 namespace LegendaryClient.Logic
 {
@@ -28,48 +27,59 @@ namespace LegendaryClient.Logic
         /// Latest champion for League of Legends login screen
         /// </summary>
         internal const int LatestChamp = 75;
+
         /// <summary>
         /// Latest version of League of Legends. Retrieved from ClientLibCommon.dat
         /// </summary>
         internal static string Version = "3.00.00";
+
         /// <summary>
         /// The current directory the client is running from
         /// </summary>
         internal static string ExecutingDirectory = "";
+
         /// <summary>
         /// Riot's database with all the client data
         /// </summary>
         internal static SQLiteConnection SQLiteDatabase;
+
         /// <summary>
         /// The database of all the champions
         /// </summary>
         internal static List<champions> Champions;
+
         /// <summary>
         /// The database of all the champion abilities
         /// </summary>
         internal static List<championAbilities> ChampionAbilities;
+
         /// <summary>
         /// The database of all the champion skins
         /// </summary>
         internal static List<championSkins> ChampionSkins;
+
         /// <summary>
         /// The database of all the items
         /// </summary>
         internal static List<items> Items;
+
         /// <summary>
         /// The database of all the search tags
         /// </summary>
         internal static List<championSearchTags> SearchTags;
+
         /// <summary>
         /// The database of all the keybinding defaults & proper names
         /// </summary>
         internal static List<keybindingEvents> Keybinds;
 
-        internal static List<string> Whitelist; 
+        internal static List<string> Whitelist;
 
+        #region Chat
         internal static JabberClient ChatClient;
 
         internal static PresenceType _CurrentPresence;
+
         internal static PresenceType CurrentPresence
         {
             get { return _CurrentPresence; }
@@ -87,6 +97,7 @@ namespace LegendaryClient.Logic
         }
 
         internal static string _CurrentStatus;
+
         internal static string CurrentStatus
         {
             get { return _CurrentStatus; }
@@ -141,8 +152,8 @@ namespace LegendaryClient.Logic
                 "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
                 "<rankedLeagueName>Urgot&apos;s Patriots</rankedLeagueName>" +
                 "<rankedLeagueDivision>I</rankedLeagueDivision>" +
-                "<rankedLeagueTier>BRONZE</rankedLeagueTier>" + 
-                "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>"+
+                "<rankedLeagueTier>BRONZE</rankedLeagueTier>" +
+                "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
                 "<rankedWins>287</rankedWins>" : "") +
                 "<gameStatus>" + ((false == true) ? "inGame" : "outOfGame") + "</gameStatus>" +
                 "<statusMsg>" + CurrentStatus + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
@@ -181,6 +192,7 @@ namespace LegendaryClient.Logic
                         if (reader.IsStartElement())
                         {
                             #region Parse Presence
+
                             switch (reader.Name)
                             {
                                 case "profileIcon":
@@ -197,10 +209,12 @@ namespace LegendaryClient.Logic
                                     reader.Read();
                                     Player.Wins = Convert.ToInt32(reader.Value);
                                     break;
+
                                 case "leaves":
                                     reader.Read();
                                     Player.Leaves = Convert.ToInt32(reader.Value);
                                     break;
+
                                 case "rankedWins":
                                     reader.Read();
                                     Player.RankedWins = Convert.ToInt32(reader.Value);
@@ -219,6 +233,7 @@ namespace LegendaryClient.Logic
                                         Player.UsingLegendary = true;
                                     }
                                     break;
+
                                 case "gameStatus":
                                     reader.Read();
                                     string gameStatus = reader.Value;
@@ -234,16 +249,19 @@ namespace LegendaryClient.Logic
                                     reader.Read();
                                     Player.LeagueName = reader.Value;
                                     break;
+
                                 case "rankedLeagueTier":
                                     reader.Read();
                                     Player.LeagueTier = reader.Value;
                                     break;
+
                                 case "rankedLeagueDivision":
                                     reader.Read();
                                     Player.LeagueDivision = reader.Value;
                                     break;
                             }
-                            #endregion
+
+                            #endregion Parse Presence
                         }
                     }
                 }
@@ -254,9 +272,12 @@ namespace LegendaryClient.Logic
             }
         }
 
+        #endregion
+
         internal static Grid MainGrid;
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
+
         //internal static ContentControl ChatContainer;
         //internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
@@ -264,10 +285,12 @@ namespace LegendaryClient.Logic
         internal static Image MainPageProfileImage;
 
         #region WPF Tab Change
+
         /// <summary>
         /// The container that contains the page to display
         /// </summary>
         internal static ContentControl Container;
+
         /// <summary>
         /// Page cache to stop having to recreate all information if pages are overwritted
         /// </summary>
@@ -310,60 +333,74 @@ namespace LegendaryClient.Logic
             }
         }
 
-        #endregion
+        #endregion WPF Tab Change
 
         #region League Of Legends Logic
+
         /// <summary>
         /// Main connection to the League of Legends server
         /// </summary>
         internal static PVPNetConnection PVPNet;
+
         /// <summary>
         /// Packet recieved when initially logged on. Cached so the packet doesn't
         /// need to requested multiple times, causing slowdowns
         /// </summary>
         internal static LoginDataPacket LoginPacket;
+
         /// <summary>
         /// All enabled game configurations for the user
         /// </summary>
         internal static List<GameTypeConfigDTO> GameConfigs;
+
         /// <summary>
         /// The region the user is connecting to
         /// </summary>
         internal static BaseRegion Region;
+
         /// <summary>
         /// Is the client logged in to the League of Legends server
         /// </summary>
         internal static bool IsLoggedIn = false;
+
         /// <summary>
         /// Is the player in game at the moment
         /// </summary>
         internal static bool InGame = false;
+
         /// <summary>
         /// GameID of the current game that the client is connected to
         /// </summary>
         internal static double GameID = 0;
+
         /// <summary>
         /// Game Name of the current game that the client is connected to
         /// </summary>
         internal static string GameName = "";
+
         /// <summary>
         /// The DTO of the game lobby when connected to a custom game
         /// </summary>
         internal static GameDTO GameLobbyDTO;
+
         /// <summary>
         /// When going into champion select reuse the last DTO to set up data
         /// </summary>
         internal static GameDTO ChampSelectDTO;
+
         /// <summary>
         /// When connected to a game retrieve details to connect to
         /// </summary>
         internal static PlayerCredentialsDto CurrentGame;
+
         internal static bool AutoAcceptQueue = false;
         internal static object LastPageContent;
+
         /// <summary>
         /// When an error occurs while connected. Currently un-used
         /// </summary>
-        internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error) {
+        internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error)
+        {
             ;
         }
 
@@ -373,55 +410,104 @@ namespace LegendaryClient.Logic
             {
                 case "matching-queue-NORMAL-5x5-game-queue":
                     return "Normal 5v5";
+
                 case "matching-queue-NORMAL-3x3-game-queue":
                     return "Normal 3v3";
+
                 case "matching-queue-NORMAL-5x5-draft-game-queue":
                     return "Draft 5v5";
+
                 case "matching-queue-RANKED_SOLO-5x5-game-queue":
                     return "Ranked 5v5";
+
                 case "matching-queue-RANKED_TEAM-3x3-game-queue":
                     return "Ranked Team 5v5";
+
                 case "matching-queue-RANKED_TEAM-5x5-game-queue":
                     return "Ranked Team 3v3";
+
                 case "matching-queue-ODIN-5x5-game-queue":
                     return "Dominion 5v5";
+
                 case "matching-queue-ARAM-5x5-game-queue":
                     return "ARAM 5v5";
+
                 case "matching-queue-BOT-5x5-game-queue":
                     return "Bot 5v5 Beginner";
+
                 case "matching-queue-ODIN-5x5-draft-game-queue":
                     return "Dominion Draft 5v5";
+
                 case "matching-queue-BOT_TT-3x3-game-queue":
                     return "Bot 3v3 Beginner";
+
                 case "matching-queue-ODINBOT-5x5-game-queue":
                     return "Dominion Bot 5v5 Beginner";
+
                 case "matching-queue-ONEFORALL-5x5-game-queue":
                     return "One For All 5v5";
+
                 default:
                     return InternalQueue;
             }
         }
-        #endregion
+
+        #endregion League Of Legends Logic
+
+        internal static MainWindow MainWin;
+        internal static void FocusClient()
+        {
+            if (!MainWin.IsVisible)
+            {
+                MainWin.Show();
+            }
+
+            if (MainWin.WindowState == WindowState.Minimized)
+            {
+                MainWin.WindowState = WindowState.Normal;
+            }
+
+            MainWin.Activate();
+            MainWin.Topmost = true;  // important
+            MainWin.Topmost = false; // important
+            MainWin.Focus();         // important
+        }
     }
 
     public class ChatPlayerItem
     {
         public string Id { get; set; }
+
         public string Username { get; set; }
+
         public int ProfileIcon { get; set; }
+
         public int Level { get; set; }
+
         public int Wins { get; set; }
+
         public int RankedWins { get; set; }
+
         public int Leaves { get; set; }
+
         public string LeagueTier { get; set; }
+
         public string LeagueDivision { get; set; }
+
         public string LeagueName { get; set; }
+
         public bool InGame { get; set; }
+
         public long Timestamp { get; set; }
+
         public bool Busy { get; set; }
+
         public string Champion { get; set; }
+
         public string Status { get; set; }
+
         public bool UsingLegendary { get; set; }
+
         public List<string> Messages = new List<string>();
     }
 }

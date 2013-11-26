@@ -1,10 +1,9 @@
-﻿using System.Threading;
+﻿using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Team;
 
 namespace LegendaryClient.Windows
 {
@@ -13,7 +12,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class CustomGameLobbyPage : Page
     {
-        bool LaunchedTeamSelect = false;
+        private bool LaunchedTeamSelect = false;
 
         public CustomGameLobbyPage()
         {
@@ -28,7 +27,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        void GameLobby_OnMessageReceived(object sender, object message)
+        private void GameLobby_OnMessageReceived(object sender, object message)
         {
             if (message.GetType() == typeof(GameDTO))
             {
@@ -48,7 +47,7 @@ namespace LegendaryClient.Windows
                             {
                                 PlayerParticipant player = playerTeam1 as PlayerParticipant;
                                 BlueTeamListView.Items.Add(
-                                    new PlayerItem { Username = player.SummonerName, Participant = player});
+                                    new PlayerItem { Username = player.SummonerName, Participant = player });
                                 if (Client.Whitelist.Count > 0)
                                 {
                                     if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
@@ -68,7 +67,7 @@ namespace LegendaryClient.Windows
                             {
                                 PlayerParticipant player = playerTeam2 as PlayerParticipant;
                                 PurpleTeamListView.Items.Add(
-                                    new PlayerItem { Username = player.SummonerName, Participant = player});
+                                    new PlayerItem { Username = player.SummonerName, Participant = player });
                                 if (Client.Whitelist.Count > 0)
                                 {
                                     if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
@@ -111,7 +110,7 @@ namespace LegendaryClient.Windows
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.SwitchTeams(Client.GameID);   
+            await Client.PVPNet.SwitchTeams(Client.GameID);
         }
 
         private async void KickAndBan_Click(object sender, RoutedEventArgs e)

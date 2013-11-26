@@ -1,28 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Threading;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Controls;
-using System.Windows.Threading;
-using System.Windows.Media.Imaging;
-using System.Security.Cryptography.X509Certificates;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using System.Threading.Tasks;
+﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows.Profile;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
+using System;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace LegendaryClient.Windows
 {
@@ -31,7 +14,6 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ProfilePage : Page
     {
-
         public ProfilePage()
         {
             InitializeComponent();
@@ -75,6 +57,7 @@ namespace LegendaryClient.Windows
         public class KeyValueItem
         {
             public object Key { get; set; }
+
             public object Value { get; set; }
         }
     }

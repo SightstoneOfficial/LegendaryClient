@@ -1,14 +1,10 @@
-﻿using System;
+﻿using LegendaryClient.Logic;
 using System.IO;
-using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using Awesomium.Core;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Patcher;
 
 namespace LegendaryClient.Windows
 {
@@ -71,7 +67,7 @@ namespace LegendaryClient.Windows
 
                         client.DownloadFile(versionArray[2], "COL.ZIP");
                         Directory.CreateDirectory("Patch");
-                        System.IO.Compression.ZipFile.ExtractToDirectory("COL.ZIP", "Patch");                    
+                        System.IO.Compression.ZipFile.ExtractToDirectory("COL.ZIP", "Patch");
                         File.Delete("COL.ZIP");
                         System.Diagnostics.Process.Start("Patcher.exe");
                         Environment.Exit(0);
@@ -116,6 +112,5 @@ namespace LegendaryClient.Windows
             }
             return rtrn.ToUpper();
         }
-
     }
 }

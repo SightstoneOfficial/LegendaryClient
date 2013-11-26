@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Icon;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Icon;
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Icon;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Icon;
 
 namespace LegendaryClient.Windows
 {

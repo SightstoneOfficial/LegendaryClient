@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LegendaryClient.Logic.SWF.SWFTypes
 {
     public class Tag
     {
         public byte[] Data { get; private set; }
+
         internal int TagCode { get; set; }
 
-        public Tag (byte[] data) 
-		{
-			Data = data;
-			Bytecode = new BytecodeHolder(this);
-		}
-		
-		public Tag () 
-		{
-			Data = new byte[0];
+        public Tag(byte[] data)
+        {
+            Data = data;
             Bytecode = new BytecodeHolder(this);
-		}
+        }
+
+        public Tag()
+        {
+            Data = new byte[0];
+            Bytecode = new BytecodeHolder(this);
+        }
 
         public virtual int ActionRecCount
         {
@@ -41,7 +38,6 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
             }
             set
             {
-
             }
         }
 
@@ -49,7 +45,7 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
         {
         }
 
-		private BytecodeHolder Bytecode;
+        private BytecodeHolder Bytecode;
 
         public TagCodes GetTagCode()
         {
@@ -61,59 +57,72 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
             return val;
         }
 
-		public virtual IEnumerator GetEnumerator() {
-			return (IEnumerator) new BytecodeEnumerator(this);
-		}				
+        public virtual IEnumerator GetEnumerator()
+        {
+            return (IEnumerator)new BytecodeEnumerator(this);
+        }
 
-		public class BytecodeHolder {
-			public byte[] this[int index] {
-				get {
-					return tag[index];
-				}
-			}
+        public class BytecodeHolder
+        {
+            public byte[] this[int index]
+            {
+                get
+                {
+                    return tag[index];
+                }
+            }
 
-			public int Count {
-				get {
-					return tag.ActionRecCount;
-				}
-			}
-			
-			private Tag tag;
+            public int Count
+            {
+                get
+                {
+                    return tag.ActionRecCount;
+                }
+            }
 
-			internal BytecodeHolder(Tag t) {
-				tag = t;
-			}
-		}
-		
-		public class BytecodeEnumerator : IEnumerator {
-			
-			private int index = -1;
-			private Tag tag;
-			
-			internal BytecodeEnumerator(Tag tag) {
-				this.tag = tag;
-				this.index = -1;
-			}	
-			
-			public void Reset() {
-				index = -1;
-			}
-			
-			public bool MoveNext() {
-				if (index>tag.ActionRecCount) throw new InvalidOperationException();
-				return ++index < tag.ActionRecCount;
-			}
+            private Tag tag;
 
-			public byte[] Current {
-				get {
-					if (index>=tag.ActionRecCount) throw new InvalidOperationException();				
-					return (tag[index]);
-				}
-			}
+            internal BytecodeHolder(Tag t)
+            {
+                tag = t;
+            }
+        }
 
-			object IEnumerator.Current {
-				get { return this.Current; }
-			}
-		}
+        public class BytecodeEnumerator : IEnumerator
+        {
+            private int index = -1;
+            private Tag tag;
+
+            internal BytecodeEnumerator(Tag tag)
+            {
+                this.tag = tag;
+                this.index = -1;
+            }
+
+            public void Reset()
+            {
+                index = -1;
+            }
+
+            public bool MoveNext()
+            {
+                if (index > tag.ActionRecCount) throw new InvalidOperationException();
+                return ++index < tag.ActionRecCount;
+            }
+
+            public byte[] Current
+            {
+                get
+                {
+                    if (index >= tag.ActionRecCount) throw new InvalidOperationException();
+                    return (tag[index]);
+                }
+            }
+
+            object IEnumerator.Current
+            {
+                get { return this.Current; }
+            }
+        }
     }
 }

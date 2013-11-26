@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        
+
         <Style x:Key="ChatStatusStyle" TargetType="ComboBox">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="Transparent" />
                 </Trigger>
                 <Trigger Property="IsSelected" Value="true">
-                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Background" Value="Transparent" />
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -21,21 +21,21 @@
                     <Setter Property="Background" Value="Transparent" />
                 </Trigger>
                 <Trigger Property="IsSelected" Value="true">
-                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Background" Value="Transparent" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
         <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
 
         <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
 
         <Style x:Key="{x:Type ContentControl}" TargetType="{x:Type ContentControl}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
 
         <x:Array x:Key="WindowStates" Type="sys:String"
@@ -44,7 +44,7 @@
             <sys:String>Windowed</sys:String>
             <sys:String>Borderless</sys:String>
         </x:Array>
-        
+
         <x:Array x:Key="Regions" Type="sys:String"
                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
             <sys:String>BR</sys:String>
@@ -95,6 +95,5 @@
             <sys:String>Invisible</sys:String>
             <sys:String>Offline</sys:String>
         </x:Array>
-
     </Application.Resources>
 </Application>

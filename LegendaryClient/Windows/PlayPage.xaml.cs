@@ -1,4 +1,8 @@
-﻿using System;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Matchmaking;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -8,11 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using Timer = System.Timers.Timer;
-using PVPNetConnect.RiotObjects.Platform.Game;
 
 namespace LegendaryClient.Windows
 {
@@ -21,11 +21,11 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class PlayPage : Page
     {
-        int i = 0;
-        static Timer PingTimer;
-        Dictionary<double, JoinQueue> configs = new Dictionary<double, JoinQueue>();
-        Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
-        List<double> Queues = new List<double>();
+        private int i = 0;
+        private static Timer PingTimer;
+        private Dictionary<double, JoinQueue> configs = new Dictionary<double, JoinQueue>();
+        private Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
+        private List<double> Queues = new List<double>();
 
         public PlayPage()
         {
@@ -117,8 +117,9 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        Button LastSender;
-        void QueueButton_Click(object sender, RoutedEventArgs e)
+        private Button LastSender;
+
+        private void QueueButton_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
@@ -138,6 +139,9 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
+                    Button item = LastSender;
+                    GameQueueConfig config = (GameQueueConfig)item.Tag;
+                    Queues.Remove(config.Id);
                     MessageOverlay message = new MessageOverlay();
                     message.MessageTitle.Content = "Failed to join queue";
                     message.MessageTextBox.Text = result.PlayerJoinFailures[0].ReasonFailed;
@@ -158,14 +162,13 @@ namespace LegendaryClient.Windows
                 Button item = LastSender;
                 Button fakeButton = new Button(); //We require a unique button to add to the dictionary
                 fakeButton.Tag = item;
-                GameQueueConfig config = (GameQueueConfig)item.Tag;
                 item.Content = "00:00";
                 ButtonTimers.Add(fakeButton, 0);
             }));
             Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 
-        void GotQueuePop(object sender, object message)
+        private void GotQueuePop(object sender, object message)
         {
             GameDTO Queue = message as GameDTO;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>

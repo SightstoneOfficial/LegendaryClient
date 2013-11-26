@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using LegendaryClient.Logic;
+﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using PVPNetConnect;
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace LegendaryClient
 {
@@ -15,7 +15,7 @@ namespace LegendaryClient
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        Accent Steel = null;
+        private Accent Steel = null;
 
         public MainWindow()
         {
@@ -39,6 +39,7 @@ namespace LegendaryClient
             Client.MainGrid = MainGrid;
             Client.Container = Container;
             Client.OverlayContainer = OverlayContainer;
+            Client.MainWin = this;
             //Client.ChatContainer = ChatContainer;
             //Client.NotificationContainer = NotificationContainer;
             Client.SwitchPage(new PatcherPage());
@@ -91,8 +92,8 @@ namespace LegendaryClient
         {
             //if (Client.IsLoggedIn)
             //{
-                SettingsPage SettingsPage = new SettingsPage();
-                Client.SwitchPage(SettingsPage);
+            SettingsPage SettingsPage = new SettingsPage();
+            Client.SwitchPage(SettingsPage);
             //}
         }
 
@@ -107,7 +108,6 @@ namespace LegendaryClient
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

@@ -1,28 +1,28 @@
-﻿using System;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
+using LegendaryClient.Logic.PlayerSpell;
+using LegendaryClient.Logic.Region;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Leagues.Pojo;
+using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using System.Collections;
-using LegendaryClient.Logic.PlayerSpell;
-using LegendaryClient.Logic.Region;
-using System.Web.Script.Serialization;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Logic.Maps;
 using System.Windows.Media;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using PVPNetConnect;
-using System.Linq;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Threading;
 
 namespace LegendaryClient.Windows
 {
@@ -60,8 +60,10 @@ namespace LegendaryClient.Windows
             else
             {
                 #region Get Current Tier
+
                 Client.PVPNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, new SummonerLeaguesDTO.Callback(
-                    delegate(SummonerLeaguesDTO result) {
+                    delegate(SummonerLeaguesDTO result)
+                    {
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
                             string CurrentLP = "0";
@@ -98,7 +100,8 @@ namespace LegendaryClient.Windows
                         }));
                     })
                 );
-                #endregion
+
+                #endregion Get Current Tier
             }
 
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
@@ -110,6 +113,7 @@ namespace LegendaryClient.Windows
         }
 
         #region News
+
         private void GetNews(BaseRegion region)
         {
             BackgroundWorker worker = new BackgroundWorker();
@@ -162,7 +166,7 @@ namespace LegendaryClient.Windows
                     {
                         BitmapImage promoImage = new BitmapImage();
                         promoImage.BeginInit(); //Download image
-                        promoImage.UriSource = new Uri((string)kvPair.Value, UriKind.RelativeOrAbsolute); 
+                        promoImage.UriSource = new Uri((string)kvPair.Value, UriKind.RelativeOrAbsolute);
                         promoImage.CacheOption = BitmapCacheOption.OnLoad;
                         promoImage.EndInit();
                         item.PromoImage.Source = promoImage;
@@ -173,7 +177,7 @@ namespace LegendaryClient.Windows
                     }
                 }
                 NewsItemListView.Items.Add(item);
-            }            
+            }
         }
 
         private void NewsItemListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -184,9 +188,11 @@ namespace LegendaryClient.Windows
                 System.Diagnostics.Process.Start((string)item.Tag); //Launch the news article in browser
             }
         }
-        #endregion
+
+        #endregion News
 
         #region Featured Games
+
         private void SpectatorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SpectatorComboBox.SelectedIndex != -1 && SpectatorComboBox.SelectedValue != null)
@@ -294,7 +300,7 @@ namespace LegendaryClient.Windows
 
                         using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(target))
                         {
-                            g.DrawImage(src, new System.Drawing.Rectangle(0, 0, target.Width, target.Height), 
+                            g.DrawImage(src, new System.Drawing.Rectangle(0, 0, target.Width, target.Height),
                                             cropRect,
                                             System.Drawing.GraphicsUnit.Pixel);
                         }
@@ -400,7 +406,7 @@ namespace LegendaryClient.Windows
             ParseSpectatorGames();
         }
 
-        #endregion
+        #endregion Featured Games
 
         public BitmapSource ToWpfBitmap(System.Drawing.Bitmap bitmap)
         {
@@ -437,6 +443,5 @@ namespace LegendaryClient.Windows
         {
             HoverLabel.Opacity = 0;
         }
-
     }
 }

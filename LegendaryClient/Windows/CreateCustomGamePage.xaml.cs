@@ -1,13 +1,12 @@
-﻿using System;
+﻿using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Game.Map;
+using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Web.UI.WebControls.Expressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Game.Map;
 
 namespace LegendaryClient.Windows
 {
@@ -44,27 +43,35 @@ namespace LegendaryClient.Windows
                     case "Blind Pick":
                         gameConfig.GameTypeConfig = 1;
                         break;
+
                     case "No Ban Draft":
                         gameConfig.GameTypeConfig = 3;
                         break;
+
                     case "All Random":
                         gameConfig.GameTypeConfig = 4;
                         break;
+
                     case "Open Pick":
                         gameConfig.GameTypeConfig = 5;
                         break;
+
                     case "Blind Draft":
                         gameConfig.GameTypeConfig = 7;
                         break;
+
                     case "Infinite Time Blind Pick":
                         gameConfig.GameTypeConfig = 11;
                         break;
+
                     case "Blind Duplicate Pick (5X vs 5Y)":
                         gameConfig.GameTypeConfig = 14;
                         break;
+
                     case "Captain Pick":
                         gameConfig.GameTypeConfig = 12;
                         break;
+
                     default: //Tournament Draft
                         gameConfig.GameTypeConfig = 6;
                         break;
@@ -75,10 +82,12 @@ namespace LegendaryClient.Windows
                         gameConfig.GameMap = GameMap.TheCrystalScar;
                         gameConfig.GameMode = "ODIN";
                         break;
+
                     case "Howling Abyss":
                         gameConfig.GameMap = GameMap.HowlingAbyss;
                         gameConfig.GameMode = "ARAM";
                         break;
+
                     case "The Twisted Treeline":
                         gameConfig.GameMap = GameMap.TheTwistedTreeline;
                         gameConfig.GameMode = "CLASSIC";
@@ -90,6 +99,7 @@ namespace LegendaryClient.Windows
                             return gameConfig;
                         }
                         break;
+
                     default:
                         gameConfig.GameMap = GameMap.SummonersRift;
                         gameConfig.GameMode = "CLASSIC";
@@ -100,12 +110,15 @@ namespace LegendaryClient.Windows
                     case "None":
                         gameConfig.AllowSpectators = "NONE";
                         break;
+
                     case "Lobby Only":
                         gameConfig.AllowSpectators = "LOBBYONLY";
                         break;
+
                     case "Friends List Only":
                         gameConfig.AllowSpectators = "DROPINONLY";
                         break;
+
                     default:
                         gameConfig.AllowSpectators = "ALL";
                         break;
@@ -137,6 +150,7 @@ namespace LegendaryClient.Windows
         }
 
         #region Spectator Code functions
+
         private void TeamSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GenerateSpectatorCode();
@@ -166,7 +180,8 @@ namespace LegendaryClient.Windows
         {
             GenerateSpectatorCode();
         }
-        #endregion
+
+        #endregion Spectator Code functions
 
         private void GenerateSpectatorCode()
         {

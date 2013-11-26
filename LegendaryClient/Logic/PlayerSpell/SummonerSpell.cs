@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LegendaryClient.Logic.PlayerSpell
 {
@@ -35,14 +32,17 @@ namespace LegendaryClient.Logic.PlayerSpell
                     if (Client.LoginPacket.ClientSystemStates.InactiveClassicSpellIdList.Contains(SpellId))
                         return false;
                     break;
+
                 case "ARAM":
                     if (Client.LoginPacket.ClientSystemStates.InactiveAramSpellIdList.Contains(SpellId))
                         return false;
                     break;
+
                 case "ODIN":
                     if (Client.LoginPacket.ClientSystemStates.InactiveOdinSpellIdList.Contains(SpellId))
                         return false;
                     break;
+
                 default:
                     break;
             }
@@ -50,20 +50,28 @@ namespace LegendaryClient.Logic.PlayerSpell
             {
                 case 1:
                     return Level >= 2;
+
                 case 2:
                     return Level >= 10;
+
                 case 3:
                     return Level >= 8;
+
                 case 4:
                     return Level >= 12;
+
                 case 11:
                     return Level >= 3;
+
                 case 12:
                     return Level >= 2;
+
                 case 14:
                     return Level >= 8;
+
                 case 21:
                     return Level >= 6;
+
                 default:
                     return true;
             }

@@ -1,24 +1,18 @@
-﻿using System;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Threading;
-using System.Xml;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -27,8 +21,8 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class MatchHistory : Page
     {
-        List<PlayerGameStats> GameStats = new List<PlayerGameStats>();
-        LargeChatPlayer PlayerItem;
+        private List<PlayerGameStats> GameStats = new List<PlayerGameStats>();
+        private LargeChatPlayer PlayerItem;
 
         public MatchHistory()
         {
@@ -209,7 +203,7 @@ namespace LegendaryClient.Windows.Profile
             }
         }
 
-        void img_MouseLeave(object sender, MouseEventArgs e)
+        private void img_MouseLeave(object sender, MouseEventArgs e)
         {
             if (PlayerItem != null)
             {
@@ -218,7 +212,7 @@ namespace LegendaryClient.Windows.Profile
             }
         }
 
-        void img_MouseMove(object sender, MouseEventArgs e)
+        private void img_MouseMove(object sender, MouseEventArgs e)
         {
             Image item = (Image)sender;
             ProfilePage.KeyValueItem playerItem = (ProfilePage.KeyValueItem)item.Tag;
@@ -278,6 +272,5 @@ namespace LegendaryClient.Windows.Profile
             }
             return String.Join(" ", words);
         }
-
     }
 }

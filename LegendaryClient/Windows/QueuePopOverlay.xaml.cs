@@ -3,23 +3,13 @@ using LegendaryClient.Logic;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 
 namespace LegendaryClient.Windows
@@ -30,12 +20,13 @@ namespace LegendaryClient.Windows
     public partial class QueuePopOverlay : Page
     {
         public bool ReverseString = false;
-        static System.Timers.Timer QueueTimer;
+        private static System.Timers.Timer QueueTimer;
         public int TimeLeft = 12;
 
         public QueuePopOverlay(GameDTO InitialDTO)
         {
             InitializeComponent();
+            Client.FocusClient();
             InitializePop(InitialDTO);
             TimeLeft = InitialDTO.JoinTimerDuration;
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
@@ -55,7 +46,7 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void PVPNet_OnMessageReceived(object sender, object message)
+        private void PVPNet_OnMessageReceived(object sender, object message)
         {
             if (message.GetType() == typeof(GameDTO))
             {
@@ -68,9 +59,11 @@ namespace LegendaryClient.Windows
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         return;
                     }
-                    else if (QueueDTO.GameState != "CHAMP_SELECT")
+                    else if (QueueDTO.GameState == "CHAMP_SELECT")
                     {
                         string s = QueueDTO.GameState;
+                        Client.ChampSelectDTO = QueueDTO;
+                        Client.GameID = QueueDTO.Id;
                         Client.ChampSelectDTO = QueueDTO;
                         Client.LastPageContent = Client.Container.Content;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;

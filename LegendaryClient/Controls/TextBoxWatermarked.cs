@@ -13,6 +13,7 @@ namespace LegendaryClient.Controls
             get { return (string)GetValue(WaterMarkProperty); }
             set { SetValue(WaterMarkProperty, value); }
         }
+
         public static readonly DependencyProperty WaterMarkProperty =
             DependencyProperty.Register("Watermark", typeof(string), typeof(TextBoxWatermarked), new PropertyMetadata(new PropertyChangedCallback(OnWatermarkChanged)));
 
@@ -73,6 +74,5 @@ namespace LegendaryClient.Controls
                 if (_textBinding != null) SetBinding(TextProperty, _textBinding);
             }
         }
-
     }
 }

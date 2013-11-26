@@ -1,9 +1,9 @@
 ﻿<Page x:Class="LegendaryClient.Windows.Profile.Ingame"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      mc:Ignorable="d" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
       d:DesignHeight="672" d:DesignWidth="924"
 	Title="Ingame">
 
@@ -12,8 +12,8 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        <Grid Background="#FF6497C1" Grid.Column="0"/>
-        <Grid Background="#FFC16464" Grid.Column="1"/>
+        <Grid Background="#FF6497C1" Grid.Column="0" />
+        <Grid Background="#FFC16464" Grid.Column="1" />
 
         <Button Height="40" Width="100" Content="Spectate" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,-50,10" />
         <Label x:Name="BlueMMR" Content="1200" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold" Foreground="#FF92EBFF" />

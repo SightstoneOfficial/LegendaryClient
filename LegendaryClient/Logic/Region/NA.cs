@@ -32,13 +32,14 @@ namespace LegendaryClient.Logic.Region
 
         public override IPAddress[] PingAddresses
         {
-            get { 
+            get
+            {
                 return new IPAddress[]
                 {
                     IPAddress.Parse("216.52.241.254"),
                     IPAddress.Parse("64.7.194.1"),
                     IPAddress.Parse("66.150.148.1")
-                }; 
+                };
             }
         }
 

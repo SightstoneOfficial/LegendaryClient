@@ -1,19 +1,18 @@
 ﻿<Page x:Class="LegendaryClient.Windows.QueuePopOverlay"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      mc:Ignorable="d" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1280"
 	Title="QueuePopOverlay">
 
-
     <Grid Background="#B2000000">
         <Grid HorizontalAlignment="Center" Width="750" Height="700" Margin="0,0,0,0" VerticalAlignment="Center" Background="#FF2B2B2B">
-            <Label Content="Queue Pop!" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top"/>
-            <Label x:Name="TimerLabel" Content="12" HorizontalAlignment="Right" Margin="0,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top"/>
-            <ListBox x:Name="Team1ListBox" HorizontalAlignment="Left" Margin="0,90,0,0" Width="350" Height="550" VerticalAlignment="Top"/>
-            <ListBox x:Name="Team2ListBox" HorizontalAlignment="Right" Margin="0,90,0,0" Width="350" Height="550" VerticalAlignment="Top"/>
+            <Label Content="Queue Pop!" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
+            <Label x:Name="TimerLabel" Content="12" HorizontalAlignment="Right" Margin="0,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
+            <ListBox x:Name="Team1ListBox" HorizontalAlignment="Left" Margin="0,90,0,0" Width="350" Height="550" VerticalAlignment="Top" />
+            <ListBox x:Name="Team2ListBox" HorizontalAlignment="Right" Margin="0,90,0,0" Width="350" Height="550" VerticalAlignment="Top" />
             <Button x:Name="AcceptButton" Content="Accept Queue" HorizontalAlignment="Stretch" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="30" Click="AcceptButton_Click" />
         </Grid>
     </Grid>

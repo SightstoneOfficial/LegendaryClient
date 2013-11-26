@@ -1,9 +1,9 @@
 ﻿<Page x:Class="LegendaryClient.Windows.Profile.Runes"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      mc:Ignorable="d" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1280"
 	Title="Runes">
 
@@ -11,11 +11,10 @@
         <ListView x:Name="RunePageListView" HorizontalAlignment="Stretch" Margin="10,10,40,0" VerticalAlignment="Top" Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#19000000" Grid.ColumnSpan="2">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel/>
+                    <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200"/>
-
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200" />
     </Grid>
 </Page>

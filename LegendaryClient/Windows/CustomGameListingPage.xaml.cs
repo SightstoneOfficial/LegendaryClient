@@ -1,11 +1,10 @@
-﻿using System;
+﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
+using PVPNetConnect.RiotObjects.Platform.Game.Practice;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Maps;
-using PVPNetConnect.RiotObjects.Platform.Game.Practice;
 
 namespace LegendaryClient.Windows
 {
@@ -14,7 +13,8 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class CustomGameListingPage : Page
     {
-        List<GameItem> allItems = new List<GameItem>();
+        private List<GameItem> allItems = new List<GameItem>();
+
         public CustomGameListingPage()
         {
             InitializeComponent();
@@ -72,7 +72,7 @@ namespace LegendaryClient.Windows
                     tempItems.Add(item);
                 }
             }
-            CustomGameListView.Items.Clear(); // clear list items before adding 
+            CustomGameListView.Items.Clear(); // clear list items before adding
             foreach (GameItem item in tempItems)
             {
                 CustomGameListView.Items.Add(item);
@@ -152,12 +152,19 @@ namespace LegendaryClient.Windows
     public class GameItem
     {
         public string GameName { get; set; }
+
         public string GameOwner { get; set; }
+
         public string Slots { get; set; }
+
         public int Spectators { get; set; }
+
         public double Id { get; set; }
+
         public string Map { get; set; }
+
         public string Private { get; set; }
+
         public string Type { get; set; }
     }
 }

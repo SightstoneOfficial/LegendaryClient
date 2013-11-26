@@ -1,46 +1,46 @@
 ﻿<Page x:Class="LegendaryClient.Windows.LoginPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="LoginPage">
     <Grid Background="Black" Margin="0">
         <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2" />
-       
+
         <Grid x:Name="HideGrid" HorizontalAlignment="Left" Height="280" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
-            <Label x:Name="WelcomeLabel" Content="Login to League of Legends" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,0"/>
+            <Label x:Name="WelcomeLabel" Content="Login to League of Legends" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" />
             <Grid x:Name="LoginGrid" HorizontalAlignment="Left" Height="230" Margin="0,50,0,0" VerticalAlignment="Top" Width="350">
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="White" Margin="10,10,0,0" FontSize="18" FontWeight="Bold"/>
-                <TextBox x:Name="LoginUsernameBox" TextWrapping="NoWrap" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,40,0,0" FontSize="16"/>
-                <CheckBox x:Name="RememberUsernameCheckbox" Content="Remember Username" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Foreground="White" IsChecked="True"/>
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Foreground="White" Margin="10,90,0,0" FontSize="18" FontWeight="Bold"/>
-                <PasswordBox x:Name="LoginPasswordBox" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,120,0,0" FontSize="16"/>
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="White" Margin="10,10,0,0" FontSize="18" FontWeight="Bold" />
+                <TextBox x:Name="LoginUsernameBox" TextWrapping="NoWrap" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,40,0,0" FontSize="16" />
+                <CheckBox x:Name="RememberUsernameCheckbox" Content="Remember Username" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Foreground="White" IsChecked="True" />
+                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Foreground="White" Margin="10,90,0,0" FontSize="18" FontWeight="Bold" />
+                <PasswordBox x:Name="LoginPasswordBox" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,120,0,0" FontSize="16" />
                 <CheckBox x:Name="RememberPasswordCheckbox" Content="Remember Password" HorizontalAlignment="Right" Margin="0,160,10,0" VerticalAlignment="Top" Foreground="White" />
                 <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Stretch" Margin="10,180,10,0" VerticalAlignment="Top" Height="41" Click="LoginButton_Click" IsDefault="True" />
-                <ComboBox x:Name="RegionComboBox" ItemsSource="{DynamicResource Regions}" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="4"/>
+                <ComboBox x:Name="RegionComboBox" ItemsSource="{DynamicResource Regions}" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="4" />
             </Grid>
             <Grid.Effect>
-                <DropShadowEffect/>
+                <DropShadowEffect />
             </Grid.Effect>
         </Grid>
 
         <Controls:ProgressRing x:Name="LoggingInProgressRing" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,100" Visibility="Hidden">
             <Controls:ProgressRing.Effect>
-                <DropShadowEffect/>
+                <DropShadowEffect />
             </Controls:ProgressRing.Effect>
         </Controls:ProgressRing>
         <Label x:Name="LoggingInLabel" Content="Logging in..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" FontWeight="Bold" Foreground="White" Visibility="Hidden">
             <Label.Effect>
-                <DropShadowEffect/>
+                <DropShadowEffect />
             </Label.Effect>
         </Label>
 
         <TextBox x:Name="ErrorTextBox" Text="Error" HorizontalAlignment="Left" VerticalAlignment="Bottom" TextWrapping="NoWrap" IsReadOnly="True" Width="350" Height="20" FontSize="12" FontWeight="999" Foreground="#FFFF7373" Margin="20,0,0,15" Background="#7F000000" Panel.ZIndex="-1" BorderBrush="{x:Null}" Visibility="Hidden">
             <TextBox.Effect>
-                <DropShadowEffect ShadowDepth="3"/>
+                <DropShadowEffect ShadowDepth="3" />
             </TextBox.Effect>
         </TextBox>
     </Grid>

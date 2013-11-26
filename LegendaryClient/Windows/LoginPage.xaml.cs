@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using System.Linq;
-using jabber.client;
+﻿using jabber.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using LegendaryClient.Logic.SWF;
 using LegendaryClient.Logic.SWF.SWFTypes;
+using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using System;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Windows
 {
@@ -33,19 +31,19 @@ namespace LegendaryClient.Windows
                                 orderby s.name
                                 select s).ToList();
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
-                                   orderby s.name
-                                   select s).ToList();
+                                    orderby s.name
+                                    select s).ToList();
             Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
-                                       orderby s.name
-                                       select s).ToList();
+                                        orderby s.name
+                                        select s).ToList();
             Client.Items = (from s in Client.SQLiteDatabase.Table<items>()
-                           orderby s.name
+                            orderby s.name
                             select s).ToList();
             Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
-                                orderby s.id
-                                select s).ToList();
+                                 orderby s.id
+                                 select s).ToList();
             Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
-                                orderby s.id
+                               orderby s.id
                                select s).ToList();
 
             //Retrieve latest client version
@@ -109,12 +107,12 @@ namespace LegendaryClient.Windows
             Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
         }
 
-        void PVPNet_OnLogin(object sender, string username, string ipAddress)
+        private void PVPNet_OnLogin(object sender, string username, string ipAddress)
         {
             Client.PVPNet.GetLoginDataPacketForUser(new LoginDataPacket.Callback(GotLoginPacket));
         }
 
-        void PVPNet_OnError(object sender, PVPNetConnect.Error error)
+        private void PVPNet_OnError(object sender, PVPNetConnect.Error error)
         {
             //Display error message
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -171,6 +169,5 @@ namespace LegendaryClient.Windows
                 Client.ClearPage(this);
             }));
         }
-
     }
 }

@@ -1,22 +1,16 @@
-﻿using System;
+﻿using jabber.protocol.client;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using LegendaryClient.Logic;
-using LegendaryClient.Controls;
 using System.Windows.Threading;
-using System.Threading;
-using jabber.protocol.client;
-using System.IO;
 
 namespace LegendaryClient.Windows
 {
@@ -25,14 +19,14 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ChatPage : Page
     {
-        static System.Timers.Timer UpdateTimer;
-        LargeChatPlayer PlayerItem;
+        private static System.Timers.Timer UpdateTimer;
+        private LargeChatPlayer PlayerItem;
 
         public ChatPage()
         {
             InitializeComponent();
             if (Properties.Settings.Default.StatusMsg != "Set your status message")
-            StatusBox.Text = Properties.Settings.Default.StatusMsg;
+                StatusBox.Text = Properties.Settings.Default.StatusMsg;
             UpdateTimer = new System.Timers.Timer(1000);
             UpdateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateChat);
             UpdateTimer.Enabled = true;
@@ -48,6 +42,7 @@ namespace LegendaryClient.Windows
                     case "Online":
                         Client.CurrentPresence = PresenceType.available;
                         break;
+
                     case "Invisible":
                         Client.CurrentPresence = PresenceType.invisible;
                         break;
@@ -55,8 +50,8 @@ namespace LegendaryClient.Windows
             }
         }
 
-        void UpdateChat(object sender, System.Timers.ElapsedEventArgs e)
-        {                
+        private void UpdateChat(object sender, System.Timers.ElapsedEventArgs e)
+        {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (Client.CurrentStatus != StatusBox.Text && StatusBox.Text != "Set your status message")
@@ -98,7 +93,7 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void player_MouseLeave(object sender, MouseEventArgs e)
+        private void player_MouseLeave(object sender, MouseEventArgs e)
         {
             if (PlayerItem != null)
             {
@@ -107,7 +102,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        void ChatPlayerMouseOver(object sender, MouseEventArgs e)
+        private void ChatPlayerMouseOver(object sender, MouseEventArgs e)
         {
             ChatPlayer item = (ChatPlayer)sender;
             ChatPlayerItem playerItem = (ChatPlayerItem)item.Tag;
@@ -160,6 +155,5 @@ namespace LegendaryClient.Windows
                 Client.ChatListView.Items.Add(ChatPlayer);*/
             }
         }
-
     }
 }

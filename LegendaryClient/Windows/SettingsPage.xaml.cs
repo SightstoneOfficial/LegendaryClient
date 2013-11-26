@@ -1,20 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using LegendaryClient.Logic;
 
 namespace LegendaryClient.Windows
 {
@@ -24,20 +12,24 @@ namespace LegendaryClient.Windows
     public partial class SettingsPage : Page
     {
         #region DLL Stuff
+
         [DllImport("user32.dll")]
         public static extern bool EnumDisplaySettings(
               string deviceName, int modeNum, ref DEVMODE devMode);
-        const int ENUM_CURRENT_SETTINGS = -1;
 
-        const int ENUM_REGISTRY_SETTINGS = -2;
+        private const int ENUM_CURRENT_SETTINGS = -1;
+
+        private const int ENUM_REGISTRY_SETTINGS = -2;
 
         [StructLayout(LayoutKind.Sequential)]
         public struct DEVMODE
         {
             private const int CCHDEVICENAME = 0x20;
             private const int CCHFORMNAME = 0x20;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
             public string dmDeviceName;
+
             public short dmSpecVersion;
             public short dmDriverVersion;
             public short dmSize;
@@ -52,8 +44,10 @@ namespace LegendaryClient.Windows
             public short dmYResolution;
             public short dmTTOption;
             public short dmCollate;
+
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
             public string dmFormName;
+
             public short dmLogPixels;
             public int dmBitsPerPel;
             public int dmPelsWidth;
@@ -69,9 +63,10 @@ namespace LegendaryClient.Windows
             public int dmPanningWidth;
             public int dmPanningHeight;
         }
-        #endregion
 
-        private List<string> Resolutions = new List<string>(); 
+        #endregion DLL Stuff
+
+        private List<string> Resolutions = new List<string>();
 
         public SettingsPage()
         {
