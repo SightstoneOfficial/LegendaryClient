@@ -52,18 +52,29 @@ namespace LegendaryClient.Windows
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
 
+            int i = 0;
             foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
             {
-                MasteryComboBox.Items.Add(MasteryPage.Name);
+                string MasteryPageName = MasteryPage.Name;
+                if (MasteryPageName.StartsWith("@@"))
+                {
+                    MasteryPageName = "Mastery Page " + ++i;
+                }
+                MasteryComboBox.Items.Add(MasteryPageName);
                 if (MasteryPage.Current)
-                    MasteryComboBox.SelectedItem = MasteryPage.Name;
+                    MasteryComboBox.SelectedItem = MasteryPageName;
             }
-
+            i = 0;
             foreach (SpellBookPageDTO RunePage in MyRunes.BookPages)
             {
-                RuneComboBox.Items.Add(RunePage.Name);
+                string RunePageName = RunePage.Name;
+                if (RunePageName.StartsWith("@@"))
+                {
+                    RunePageName = "Rune Page " + ++i;
+                }
+                RuneComboBox.Items.Add(RunePageName);
                 if (RunePage.Current)
-                    RuneComboBox.SelectedItem = RunePage.Name;
+                    RuneComboBox.SelectedItem = RunePageName;
             }
 
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
@@ -93,6 +104,9 @@ namespace LegendaryClient.Windows
 
             LatestDto = latestDTO;
 
+            ChampionSelectListView.Visibility = Visibility.Visible;
+            AfterChampionSelectGrid.Visibility = Visibility.Hidden;
+
             List<ChampionDTO> champList = new List<ChampionDTO>(Champions);
 
             champList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
@@ -105,13 +119,15 @@ namespace LegendaryClient.Windows
 
                     //Add to ListView
                     ListViewItem item = new ListViewItem();
-                    Image champImage = new Image();
-                    champImage.Height = 58;
-                    champImage.Width = 58;
+                    ChampionImage championImage = new ChampionImage();
                     var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(champ.ChampionId).iconPath), UriKind.Absolute);
-                    champImage.Source = new BitmapImage(uriSource);
-                    item.Content = champImage;
+                    championImage.ChampImage.Source = new BitmapImage(uriSource);
+                    if (champ.FreeToPlay)
+                        championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
+                    championImage.Width = 64;
+                    championImage.Height = 64;
                     item.Tag = champ.ChampionId;
+                    item.Content = championImage.Content;
                     ChampionSelectListView.Items.Add(item);
                 }
             }
@@ -133,9 +149,9 @@ namespace LegendaryClient.Windows
 
                 GameDTO ChampDTO = message as GameDTO;
                 LatestDto = ChampDTO;
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
-                    List<Participant> AllParticipants = ChampDTO.TeamOne;
+                    List<Participant> AllParticipants = new List<Participant>(ChampDTO.TeamOne.ToArray());
                     AllParticipants.AddRange(ChampDTO.TeamTwo);
                     foreach (Participant p in AllParticipants)
                     {
@@ -148,6 +164,7 @@ namespace LegendaryClient.Windows
                                 {
                                     ChampionSelectListView.IsHitTestVisible = true;
                                     ChampionSelectListView.Opacity = 1;
+                                    GameStatusLabel.Content = "Your turn to pick!";
                                     break;
                                 }
                             }
@@ -157,6 +174,7 @@ namespace LegendaryClient.Windows
                             ChampionSelectListView.IsHitTestVisible = false;
                             ChampionSelectListView.Opacity = 0.5;
                         }
+                        GameStatusLabel.Content = "Waiting for others to pick...";
                     }
 
                     if (ChampDTO.GameState == "TEAM_SELECT")
@@ -181,43 +199,36 @@ namespace LegendaryClient.Windows
                         PurpleBanListView.Visibility = Visibility.Visible;
                         GameStatusLabel.Content = "Bans are on-going";
 
+                        ChampionBanInfoDTO[] BannedChamps = await Client.PVPNet.GetChampionsForBan();
+
+                        #region Render Bans
                         BlueBanListView.Items.Clear();
                         PurpleBanListView.Items.Clear();
-
                         foreach (var x in ChampDTO.BannedChampions)
                         {
-                            ListViewItem item = new ListViewItem();
                             Image champImage = new Image();
                             champImage.Height = 58;
                             champImage.Width = 58;
                             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(x.ChampionId).iconPath), UriKind.Absolute);
                             champImage.Source = new BitmapImage(uriSource);
-                            item.Content = champImage;
-                            item.Tag = x.ChampionId;
                             if (x.TeamId == 100)
                             {
-                                BlueBanListView.Items.Add(item);
+                                BlueBanListView.Items.Add(champImage);
                             }
                             else
                             {
-                                PurpleBanListView.Items.Add(item);
+                                PurpleBanListView.Items.Add(champImage);
                             }
                         }
+                        #endregion
                     }
                     else if (ChampDTO.GameState == "CHAMP_SELECT")
                     {
                         BanningPhase = false;
-                        if (!HasLockedIn)
-                        {
-                            GameStatusLabel.Content = "Your turn to pick!";
-                        }
-                        else
-                        {
-                            GameStatusLabel.Content = "Waiting for others to pick...";
-                        }
                     }
                     else if (ChampDTO.GameState == "POST_CHAMP_SELECT")
                     {
+                        HasLockedIn = true;
                         GameStatusLabel.Content = "All players have picked!";
                         counter = 10;
                     }
@@ -231,9 +242,10 @@ namespace LegendaryClient.Windows
 
                     BlueListView.Items.Clear();
                     PurpleListView.Items.Clear();
+                    int i = 0;
                     foreach (Participant participant in ChampDTO.TeamOne.ToArray()) //Clone array so it doesn't get modified
                     {
-                        try
+                        if (participant is PlayerParticipant)
                         {
                             bool DisplayedPlayer = false;
                             PlayerParticipant player = participant as PlayerParticipant;
@@ -244,6 +256,10 @@ namespace LegendaryClient.Windows
                                     DisplayedPlayer = true;
                                     ChampSelectPlayer control = RenderPlayer(selection, player);
                                     BlueListView.Items.Add(control);
+                                    if (HasLockedIn && selection.SummonerInternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName)
+                                    {
+                                        RenderLockInGrid(selection);
+                                    }
                                 }
                             }
                             if (!DisplayedPlayer)
@@ -254,15 +270,23 @@ namespace LegendaryClient.Windows
                                 BlueListView.Items.Add(control);
                             }
                         }
-                        catch
+                        else if (participant is ObfuscatedParticipant)
                         {
-                            //Robert
+                            ChampSelectPlayer control = new ChampSelectPlayer();
+                            control.PlayerName.Content = "Summoner " + ++i;
+                            BlueListView.Items.Add(control);
+                        }
+                        else
+                        {
+                            ChampSelectPlayer control = new ChampSelectPlayer();
+                            control.PlayerName.Content = "Unknown Summoner";
+                            BlueListView.Items.Add(control);
                         }
                     }
 
                     foreach (Participant participant in ChampDTO.TeamTwo.ToArray()) //Clone array so it doesn't get modified
                     {
-                        try
+                        if (participant is PlayerParticipant)
                         {
                             bool DisplayedPlayer = false;
                             PlayerParticipant player = participant as PlayerParticipant;
@@ -273,6 +297,10 @@ namespace LegendaryClient.Windows
                                     DisplayedPlayer = true;
                                     ChampSelectPlayer control = RenderPlayer(selection, player);
                                     PurpleListView.Items.Add(control);
+                                    if (HasLockedIn && selection.SummonerInternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName)
+                                    {
+                                        RenderLockInGrid(selection);
+                                    }
                                 }
                             }
                             if (!DisplayedPlayer)
@@ -280,12 +308,20 @@ namespace LegendaryClient.Windows
                                 DisplayedPlayer = true;
                                 ChampSelectPlayer control = new ChampSelectPlayer();
                                 control.PlayerName.Content = player.SummonerName;
-                                BlueListView.Items.Add(control);
+                                PurpleListView.Items.Add(control);
                             }
                         }
-                        catch
+                        else if (participant is ObfuscatedParticipant)
                         {
-                            //Robert
+                            ChampSelectPlayer control = new ChampSelectPlayer();
+                            control.PlayerName.Content = "Summoner " + ++i;
+                            BlueListView.Items.Add(control);
+                        }
+                        else
+                        {
+                            ChampSelectPlayer control = new ChampSelectPlayer();
+                            control.PlayerName.Content = "Unknown Summoner";
+                            BlueListView.Items.Add(control);
                         }
                     }
 
@@ -303,6 +339,31 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
 
                 #endregion Launching Game
+            }
+        }
+
+        internal void RenderLockInGrid(PlayerChampionSelectionDTO selection)
+        {
+            ChampionSelectListView.Visibility = Visibility.Hidden;
+            AfterChampionSelectGrid.Visibility = Visibility.Visible;
+
+            champions Champion = champions.GetChampion(selection.ChampionId);
+
+            ChampNameLabel.Content = Champion.displayName;
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath), UriKind.Absolute);
+            ChampSplashImage.Source = new BitmapImage(uriSource);
+            foreach (ChampionDTO champ in Champions)
+            {
+                if (champ.ChampionId == selection.ChampionId)
+                {
+                    foreach (ChampionSkinDTO skin in champ.ChampionSkins)
+                    {
+                        if (skin.Owned)
+                        {
+                            //SkinComboBox.Items.Add(Skins.GetSkinName(skin.SkinId).Replace("_", " "));
+                        }
+                    }
+                }
             }
         }
 
@@ -342,6 +403,8 @@ namespace LegendaryClient.Windows
                     if (item.Tag != null)
                     {
                         await Client.PVPNet.SelectChampion((int)item.Tag);
+
+                        //TODO: Fix stupid animation glitch on left hand side
                         DoubleAnimation fadingAnimation = new DoubleAnimation();
                         fadingAnimation.From = 0.4;
                         fadingAnimation.To = 0;
@@ -359,21 +422,6 @@ namespace LegendaryClient.Windows
                         };
 
                         BackgroundSplash.BeginAnimation(Image.OpacityProperty, fadingAnimation);
-                        /*SkinComboBox.Items.Clear();
-                        SkinComboBox.Text = "";
-                        foreach (ChampionDTO champ in Champions)
-                        {
-                            if (champ.ChampionId == (int)e.Item.Tag)
-                            {
-                                foreach (ChampionSkinDTO skin in champ.ChampionSkins)
-                                {
-                                    if (skin.Owned)
-                                    {
-                                        SkinComboBox.Items.Add(Skins.GetSkinName(skin.SkinId).Replace("_", " "));
-                                    }
-                                }
-                            }
-                        }*/
                     }
                 }
                 else
@@ -384,6 +432,11 @@ namespace LegendaryClient.Windows
                     }
                 }
             }
+        }
+
+        private async void SkinSelectListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
 
         private async void DodgeButton_Click(object sender, RoutedEventArgs e)
@@ -442,6 +495,8 @@ namespace LegendaryClient.Windows
             if (ChatTextBox.Text == "!~dev")
             {
                 DevMode = !DevMode;
+                ChampionSelectListView.IsHitTestVisible = true;
+                ChampionSelectListView.Opacity = 1;
             }
             else
             {

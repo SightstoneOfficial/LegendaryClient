@@ -21,7 +21,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Height="350" Margin="320,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="64" Background="#66505050">
+        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Height="350" Margin="320,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="84" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -29,7 +29,7 @@
             </ListView.ItemsPanel>
         </ListView>
         <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="300,62,0,0" FontWeight="ExtraLight" FontSize="50" Foreground="White" />
-        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Height="350" Margin="300,10,10,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="64" Background="#66505050">
+        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Height="350" Margin="300,10,10,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="84" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -37,7 +37,7 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="ItemsListView" HorizontalAlignment="Center" Height="64" Margin="305,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="430" Background="#66505050">
+        <ListView x:Name="ItemsListView" HorizontalAlignment="Center" Height="64" Margin="305,10,0,0" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="530" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />

@@ -52,7 +52,7 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="145,80,145,340" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
+        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="145,80,145,340" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" Visibility="Hidden">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -64,6 +64,24 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+
+        <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="145,80,145,340" VerticalAlignment="Stretch" Background="#66505050">
+            <Image x:Name="ChampSplashImage" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="191" Stretch="UniformToFill"/>
+            <Label x:Name="ChampNameLabel" Content="Aatrox" FontSize="40" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="196,5,0,0" VerticalAlignment="Top"/>
+            <ListView x:Name="SkinSelectListView" HorizontalAlignment="Stretch" Margin="500,0,0,0" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <EventSetter Event="PreviewMouseDown" Handler="SkinSelectListView_PreviewMouseDown" />
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </Grid>
+
         <Button x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="40" Margin="150,0,0,295" VerticalAlignment="Bottom" Width="40" Click="SummonerSpell_Click">
             <StackPanel>
                 <Image x:Name="SummonerSpell1Image" Height="32" Width="32" />
