@@ -1,0 +1,151 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 10,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "getMyLeaguePositionsAndProgress",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": []
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "leaguesServiceProxy",
+              "messageId": "B069DCBB-B7DE-1535-DB52-97900F6BC587",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 326,
+        "StreamId": 0,
+        "Timer": 100,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 100,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 10,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "B069DCBB-B7DE-1535-DB52-97900F6BC587",
+              "CorrelationIdBytes": "°iÜ»·Þ\u00155ÛR—\u000fkÅ‡",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "summonerLeagues": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "previousDayLeaguePosition": 6,
+                      "timeLastDecayMessageShown": 0.0,
+                      "hotStreak": false,
+                      "leagueName": "Urgot's Patriots",
+                      "miniSeries": null,
+                      "tier": "SILVER",
+                      "freshBlood": false,
+                      "qualifiedTierReward": true,
+                      "lastPlayed": 1384827190762.0,
+                      "playerOrTeamId": "222908",
+                      "gameWinForReward": 0,
+                      "leaguePoints": 77,
+                      "demotionWarning": 0,
+                      "inactive": false,
+                      "rank": "III",
+                      "veteran": true,
+                      "queueType": "RANKED_SOLO_5x5",
+                      "losses": 278,
+                      "timeUntilDecay": 8639218517722.0,
+                      "displayDecayWarning": false,
+                      "playerOrTeamName": "Snowl",
+                      "wins": 290,
+                      "TypeName": "com.riotgames.platform.leagues.client.dto.SummonerLeagueItemDTO"
+                    }
+                  ]
+                },
+                "highestTierQueueType": "RANKED_SOLO_5x5",
+                "teamReward": 0,
+                "teamTotalWin": 0,
+                "highestTierParticipantId": "222908",
+                "TypeName": "com.riotgames.platform.leagues.client.dto.SummonerLeagueItemAndProgressDTO"
+              },
+              "ClientId": "9406D09A-160B-D1B9-857E-A1C7BE74062D",
+              "ClientIdBytes": "”\u0006Ðš\u0016\u000bÑ¹…~¡Ç¾t\u0006-",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "9406D27F-ED08-06F6-05E1-942F7C4D8EBB",
+              "MessageIdBytes": "”\u0006Òí\b\u0006ö\u0005á”/|MŽ»",
+              "TimeStamp": 1385522273085,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 772,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 38,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "savePreferences",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSRequestTimeout": 60,
+                "DSId": "94846AE2-AB1B-3B11-C555-29CD1502C46A",
+                "DSEndpoint": "my-rtmps"
+              },
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "timestamp": NaN,
+                    "responseStatus": null,
+                    "version": 1,
+                    "enabled": true,
+                    "preferences": {
+                      "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                      "$values": [
+                        "Quickbinds*evtCastAvatarSpell2smart*0",
+                        "Quickbinds*evtCastAvatarSpell1smart*0",
+                        "Quickbinds*evtCastSpell1smart*0",
+                        "Quickbinds*evtCastSpell4smart*0",
+                        "Quickbinds*evtCastSpell3smart*0",
+                        "Quickbinds*evtUseItem5smart*0",
+                        "Quickbinds*evtUseItem4smart*0",
+                        "Quickbinds*evtCastSpell2smart*0",
+                        "Quickbinds*evtUseItem6smart*0",
+                        "Quickbinds*evtUseItem1smart*0",
+                        "Quickbinds*evtUseItem3smart*0",
+                        "Quickbinds*evtUseItem2smart*0",
+                        "GameEvents*evtUseItem3*[3]",
+                        "GameEvents*evtUseItem2*[2]",
+                        "GameEvents*evtUseItem1*[1]",
+                        "GameEvents*evtPlayerAttackMoveClick*[Shift] [Button 2]",
+                        "GameEvents*evtEmoteLaugh*[Ctrl][4],[t]",
+                        "GameEvents*evtPlayerAttackMove*[a],[x]",
+                        "GameEvents*evtPlayerMoveClick*[Button 2]"
+                      ]
+                    },
+                    "preferenceKey": "KEY_BINDINGS",
+                    "futureData": null,
+                    "dataVersion": null,
+                    "TypeName": "com.riotgames.platform.playerpreference.dto.PlayerPreferencesDto"
+                  }
+                ]
+              },
+              "messageId": "0DEF7C65-CAFC-8E59-CAB8-97C502D1A209",
+              "timestamp": 0,
+              "destination": "playerPreferencesService",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 1191,
+        "StreamId": 0,
+        "Timer": 6152,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 6152,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 22,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "0DEF7C65-CAFC-8E59-CAB8-97C502D1A209",
+              "CorrelationIdBytes": "\rï|eÊüŽYÊ¸—Å\u0002Ñ¢\t",
+              "Body": null,
+              "ClientId": "94881676-E509-0F7D-3622-EB3DFC79E303",
+              "ClientIdBytes": "”ˆ\u0016vå\t\u000f}6\"ë=üyã\u0003",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "94881679-560F-FFF4-8927-E9F5ECE59B1F",
+              "MessageIdBytes": "”ˆ\u0016yV\u000fÿô‰'éõìå›\u001f",
+              "TimeStamp": 1385525743030,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 95,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

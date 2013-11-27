@@ -1,0 +1,259 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 12,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "createDefaultSummoner",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSRequestTimeout": 60,
+                "DSId": "94846AE2-AB1B-3B11-C555-29CD1502C46A",
+                "DSEndpoint": "my-rtmps"
+              },
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  "heyigotmoreswagt"
+                ]
+              },
+              "messageId": "C0B3AB11-7D44-92A2-DAAF-97C419B803DE",
+              "timestamp": 0,
+              "destination": "summonerService",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 330,
+        "StreamId": 0,
+        "Timer": 35817,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 35817,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 12,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "C0B3AB11-7D44-92A2-DAAF-97C419B803DE",
+              "CorrelationIdBytes": "À³«\u0011}D’¢Ú¯—Ä\u0019¸\u0003Þ",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "spellBook": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "bookPagesJson": null,
+                  "dataVersion": 0,
+                  "bookPages": {
+                    "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                    "$values": [
+                      {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "dataVersion": 0,
+                        "pageId": 3632416.0,
+                        "name": "@@!PaG3!@@3632416",
+                        "current": false,
+                        "slotEntries": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": []
+                        },
+                        "createDate": "\/Date(1385525683384)\/",
+                        "summonerId": 1411247.0,
+                        "futureData": null,
+                        "TypeName": "com.riotgames.platform.summoner.spellbook.SpellBookPageDTO"
+                      },
+                      {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "dataVersion": 0,
+                        "pageId": 3632417.0,
+                        "name": "@@!PaG3!@@3632417",
+                        "current": false,
+                        "slotEntries": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": []
+                        },
+                        "createDate": "\/Date(1385525683384)\/",
+                        "summonerId": 1411247.0,
+                        "futureData": null,
+                        "TypeName": "com.riotgames.platform.summoner.spellbook.SpellBookPageDTO"
+                      }
+                    ]
+                  },
+                  "dateString": "Tue Nov 26 20:14:43 PST 2013",
+                  "summonerId": 1411247.0,
+                  "futureData": null,
+                  "TypeName": "com.riotgames.platform.summoner.spellbook.SpellBookDTO"
+                },
+                "dataVersion": 0,
+                "summonerDefaultSpells": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "dataVersion": 0,
+                  "summonerDefaultSpellsJson": null,
+                  "summonerDefaultSpellMap": {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "TypeName": null
+                  },
+                  "summonerId": 1411247.0,
+                  "futureData": null,
+                  "TypeName": "com.riotgames.platform.summoner.SummonerDefaultSpells"
+                },
+                "summonerTalentsAndPoints": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "talentPoints": 1,
+                  "dataVersion": 0,
+                  "modifyDate": null,
+                  "createDate": null,
+                  "summonerId": 1411247.0,
+                  "futureData": null,
+                  "TypeName": "com.riotgames.platform.summoner.SummonerTalentsAndPoints"
+                },
+                "summoner": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "internalName": "heyigotmoreswagt",
+                  "previousSeasonHighestTier": "UNRANKED",
+                  "acctId": 200679700.0,
+                  "helpFlag": false,
+                  "sumId": 1411247.0,
+                  "profileIconId": -1,
+                  "displayEloQuestionaire": true,
+                  "lastGameDate": null,
+                  "advancedTutorialFlag": false,
+                  "revisionDate": "\/Date(1385525683358)\/",
+                  "revisionId": 0.0,
+                  "futureData": null,
+                  "dataVersion": 0,
+                  "name": "heyigotmoreswagt",
+                  "nameChangeFlag": false,
+                  "tutorialFlag": false,
+                  "TypeName": "com.riotgames.platform.summoner.Summoner"
+                },
+                "masteryBook": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "bookPagesJson": null,
+                  "dataVersion": 0,
+                  "bookPages": {
+                    "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                    "$values": [
+                      {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "talentEntries": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": []
+                        },
+                        "dataVersion": 0,
+                        "pageId": 3911744.0,
+                        "name": "@@!PaG3!@@3911744",
+                        "current": false,
+                        "createDate": "\/Date(1385525683390)\/",
+                        "summonerId": 1411247.0,
+                        "futureData": null,
+                        "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookPageDTO"
+                      }
+                    ]
+                  },
+                  "dateString": "Tue Nov 26 20:14:43 PST 2013",
+                  "summonerId": 1411247.0,
+                  "futureData": null,
+                  "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookDTO"
+                },
+                "summonerLevelAndPoints": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "infPoints": 0.0,
+                  "dataVersion": 0,
+                  "expPoints": 0.0,
+                  "summonerLevel": 1.0,
+                  "summonerId": 1411247.0,
+                  "futureData": null,
+                  "TypeName": "com.riotgames.platform.summoner.SummonerLevelAndPoints"
+                },
+                "summonerLevel": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "expTierMod": 1.0,
+                  "grantRp": 0.0,
+                  "expForLoss": 43.0,
+                  "dataVersion": 1,
+                  "summonerTier": 1.0,
+                  "infTierMod": 1.0,
+                  "expToNextLevel": 90.0,
+                  "expForWin": 72.0,
+                  "summonerLevel": 1.0,
+                  "futureData": null,
+                  "TypeName": "com.riotgames.platform.summoner.SummonerLevel"
+                },
+                "futureData": null,
+                "TypeName": "com.riotgames.platform.summoner.AllSummonerData"
+              },
+              "ClientId": "9485DD52-360C-B9D8-CDC5-EED6022BC366",
+              "ClientIdBytes": "”…ÝR6\f¹ØÍÅîÖ\u0002+Ãf",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "9485DDC2-8409-461D-46C7-5C0015D8F8B3",
+              "MessageIdBytes": "”…ÝÂ„\tF\u001dFÇ\\\u0000\u0015Øø³",
+              "TimeStamp": 1385525683396,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 1792,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

@@ -1,0 +1,689 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 55,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "selectDefaultSpellBookPage",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "slotEntries": {
+                      "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                      "$values": [
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5412,
+                          "runeSlotId": 29,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5412,
+                          "runeSlotId": 30,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5412,
+                          "runeSlotId": 28,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 2,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 3,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 1,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 24,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 25,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 22,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 8,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 9,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 23,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 6,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 20,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 7,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 21,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 4,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5245,
+                          "runeSlotId": 5,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 19,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 27,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5275,
+                          "runeSlotId": 26,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 18,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 17,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 16,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 15,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 14,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 13,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 12,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 11,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        },
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeId": 5317,
+                          "runeSlotId": 10,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                        }
+                      ]
+                    },
+                    "createDate": "\/Date(1270181978000)\/",
+                    "pageId": 318080,
+                    "current": false,
+                    "name": "ADC ",
+                    "summonerId": 222908,
+                    "nameChanged": {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "TypeName": null
+                    },
+                    "dataVersion": null,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.summoner.spellbook.SpellBookPageDTO"
+                  }
+                ]
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "spellBookService",
+              "messageId": "D2EB2EAB-6F2F-F7BD-F6BC-97926AA514EE",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 880,
+        "StreamId": 0,
+        "Timer": 352,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 352,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 27,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "D2EB2EAB-6F2F-F7BD-F6BC-97926AA514EE",
+              "CorrelationIdBytes": "Òë.«o/÷½ö¼—’j¥\u0014î",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "dataVersion": 0,
+                "pageId": 318080.0,
+                "name": "ADC ",
+                "current": true,
+                "slotEntries": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5412,
+                      "runeSlotId": 29,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5412,
+                      "runeSlotId": 30,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5412,
+                      "runeSlotId": 28,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 2,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 3,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 1,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 24,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 25,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 8,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 22,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 23,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 9,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 6,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 20,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 7,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 21,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 4,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5245,
+                      "runeSlotId": 5,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 19,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 27,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5275,
+                      "runeSlotId": 26,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 18,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 17,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 16,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 15,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 14,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 13,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 12,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 11,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "dataVersion": 0,
+                      "runeId": 5317,
+                      "runeSlotId": 10,
+                      "runeSlot": null,
+                      "rune": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.spellbook.SlotEntry"
+                    }
+                  ]
+                },
+                "createDate": "\/Date(1270181978000)\/",
+                "summonerId": 222908.0,
+                "futureData": null,
+                "TypeName": "com.riotgames.platform.summoner.spellbook.SpellBookPageDTO"
+              },
+              "ClientId": "940C910B-E31D-011A-882B-A9267552B5EF",
+              "ClientIdBytes": "”\f‘\u000bã\u001d\u0001\u001aˆ+©&uRµï",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "940C9115-A70E-F914-4FF6-264BA5DF0E33",
+              "MessageIdBytes": "”\f‘\u0015§\u000eù\u0014Oö&K¥ß\u000e3",
+              "TimeStamp": 1385522427287,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 757,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

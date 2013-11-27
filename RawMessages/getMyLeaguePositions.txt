@@ -1,0 +1,145 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 14,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "getMyLeaguePositions",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": []
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "leaguesServiceProxy",
+              "messageId": "65607788-82BC-8CE2-5D78-97901338B234",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 315,
+        "StreamId": 0,
+        "Timer": 51,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 51,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 14,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "65607788-82BC-8CE2-5D78-97901338B234",
+              "CorrelationIdBytes": "e`wˆ‚¼Œâ]x—\u00138²4",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "summonerLeagues": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "previousDayLeaguePosition": 6,
+                      "timeLastDecayMessageShown": 0.0,
+                      "hotStreak": false,
+                      "leagueName": "Urgot's Patriots",
+                      "miniSeries": null,
+                      "tier": "SILVER",
+                      "freshBlood": false,
+                      "lastPlayed": 1384827190762.0,
+                      "playerOrTeamId": "222908",
+                      "leaguePoints": 77,
+                      "demotionWarning": 0,
+                      "inactive": false,
+                      "rank": "III",
+                      "veteran": true,
+                      "queueType": "RANKED_SOLO_5x5",
+                      "losses": 278,
+                      "timeUntilDecay": 8639218516826.0,
+                      "displayDecayWarning": false,
+                      "playerOrTeamName": "Snowl",
+                      "wins": 290,
+                      "TypeName": "com.riotgames.leagues.pojo.LeagueItemDTO"
+                    }
+                  ]
+                },
+                "TypeName": "com.riotgames.platform.leagues.client.dto.SummonerLeagueItemsDTO"
+              },
+              "ClientId": "9406DA82-B508-E905-0143-E09CDBA1BDA1",
+              "ClientIdBytes": "”\u0006Ú‚µ\bé\u0005\u0001CàœÛ¡½¡",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "9406DAA7-540A-2C3B-A1E0-11DB07FE5640",
+              "MessageIdBytes": "”\u0006Ú§T\n,;¡à\u0011Û\u0007þV@",
+              "TimeStamp": 1385522273940,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 621,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

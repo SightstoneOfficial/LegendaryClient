@@ -1,0 +1,214 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 131,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "useRuneCombiner",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  3,
+                  {
+                    "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                    "$values": [
+                      {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 3,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "imagePath": "y_3_3.png",
+                        "gameCode": 0,
+                        "uses": 0,
+                        "description": null,
+                        "baseType": "RUNE",
+                        "duration": 0,
+                        "displayDescription": "+0.76% attack speed",
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "value": 0.007642,
+                              "displayName": "Attack Speed %",
+                              "effectType": 1,
+                              "effectCategory": 3,
+                              "name": "PercentAttackSpeedMod",
+                              "dataVersion": null,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "tier": 3,
+                        "itemId": 5307,
+                        "displayName": "Greater Seal of Attack Speed",
+                        "toolTip": null,
+                        "name": null,
+                        "dataVersion": null,
+                        "futureData": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 3,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "imagePath": "y_3_3.png",
+                        "gameCode": 0,
+                        "uses": 0,
+                        "description": null,
+                        "baseType": "RUNE",
+                        "duration": 0,
+                        "displayDescription": "+0.76% attack speed",
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "value": 0.007642,
+                              "displayName": "Attack Speed %",
+                              "effectType": 1,
+                              "effectCategory": 3,
+                              "name": "PercentAttackSpeedMod",
+                              "dataVersion": null,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "tier": 3,
+                        "itemId": 5307,
+                        "displayName": "Greater Seal of Attack Speed",
+                        "toolTip": null,
+                        "name": null,
+                        "dataVersion": null,
+                        "futureData": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "inventoryService",
+              "messageId": "CB412058-653A-926B-8C9B-97BFC2EEC90F",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 837,
+        "StreamId": 0,
+        "Timer": 578,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 578,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 83,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "CB412058-653A-926B-8C9B-97BFC2EEC90F",
+              "CorrelationIdBytes": "ËA Xe:’kŒ›—¿ÂîÉ\u000f",
+              "Body": {
+                "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                "$values": [
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "runeId": 5251,
+                    "quantity": 1,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.catalog.runes.RuneQuantity"
+                  }
+                ]
+              },
+              "ClientId": "947B4589-E71B-9014-25C5-71F979FE52A5",
+              "ClientIdBytes": "”{E‰ç\u001b\u0014%ÅqùyþR¥",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "947B46DA-D10A-D0F9-92F9-A562270964B8",
+              "MessageIdBytes": "”{FÚÑ\nÐù’ù¥b'\td¸",
+              "TimeStamp": 1385525399137,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 233,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}
