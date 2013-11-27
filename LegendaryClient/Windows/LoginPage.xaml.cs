@@ -102,6 +102,7 @@ namespace LegendaryClient.Windows
             LoggingInProgressRing.Visibility = Visibility.Visible;
             Client.PVPNet.OnError += PVPNet_OnError;
             Client.PVPNet.OnLogin += PVPNet_OnLogin;
+            Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
             BaseRegion SelectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             Client.Region = SelectedRegion;
             Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
@@ -125,6 +126,7 @@ namespace LegendaryClient.Windows
             }));
         }
 
+        #pragma warning disable 4014 //Code does not need to be awaited
         private void GotLoginPacket(LoginDataPacket packet)
         {
             Client.LoginPacket = packet;

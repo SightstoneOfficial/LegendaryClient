@@ -5,7 +5,7 @@
       "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
       "CmdData": null,
       "Data": null,
-      "InvokeId": 57,
+      "InvokeId": 34,
       "ServiceCall": {
         "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
         "Result": null,
@@ -19,6 +19,12 @@
               "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
               "source": null,
               "operation": "saveMasteryBook",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "94DE219F-8819-CC3B-0DD4-0751C6EBDFC6",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
               "body": {
                 "$type": "System.Object[], mscorlib",
                 "$values": [
@@ -27,6 +33,146 @@
                     "bookPages": {
                       "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
                       "$values": [
+                        {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "talentEntries": {
+                            "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                            "$values": [
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4362,
+                                "rank": 1,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4322,
+                                "rank": 3,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4344,
+                                "rank": 2,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4352,
+                                "rank": 1,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4314,
+                                "rank": 1,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4113,
+                                "rank": 4,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4331,
+                                "rank": 3,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4123,
+                                "rank": 3,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4312,
+                                "rank": 3,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4111,
+                                "rank": 1,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4313,
+                                "rank": 3,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4133,
+                                "rank": 1,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4342,
+                                "rank": 1,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4353,
+                                "rank": 2,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              },
+                              {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "talentId": 4341,
+                                "rank": 1,
+                                "dataVersion": null,
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
+                              }
+                            ]
+                          },
+                          "pageId": 3630434,
+                          "nameChanged": {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "TypeName": null
+                          },
+                          "summonerId": 222908,
+                          "current": false,
+                          "name": "AP Support",
+                          "createDate": null,
+                          "dataVersion": null,
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookPageDTO"
+                        },
                         {
                           "$type": "FluorineFx.ASObject, FluorineFx",
                           "talentEntries": {
@@ -146,155 +292,15 @@
                               }
                             ]
                           },
-                          "createDate": "\/Date(1385068738811)\/",
                           "pageId": 3630430,
+                          "nameChanged": {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "TypeName": null
+                          },
+                          "summonerId": 222908,
                           "current": true,
                           "name": "AD Agressive",
-                          "summonerId": 222908,
-                          "nameChanged": {
-                            "$type": "FluorineFx.ASObject, FluorineFx",
-                            "TypeName": null
-                          },
-                          "dataVersion": null,
-                          "futureData": null,
-                          "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookPageDTO"
-                        },
-                        {
-                          "$type": "FluorineFx.ASObject, FluorineFx",
-                          "talentEntries": {
-                            "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
-                            "$values": [
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4362,
-                                "rank": 1,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4322,
-                                "rank": 3,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4344,
-                                "rank": 2,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4352,
-                                "rank": 1,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4314,
-                                "rank": 1,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4113,
-                                "rank": 4,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4331,
-                                "rank": 3,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4123,
-                                "rank": 3,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4312,
-                                "rank": 3,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4111,
-                                "rank": 1,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4313,
-                                "rank": 3,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4133,
-                                "rank": 1,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4353,
-                                "rank": 2,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4342,
-                                "rank": 1,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              },
-                              {
-                                "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4341,
-                                "rank": 1,
-                                "dataVersion": null,
-                                "futureData": null,
-                                "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
-                              }
-                            ]
-                          },
-                          "createDate": null,
-                          "pageId": 3630434,
-                          "current": false,
-                          "name": "AP Support",
-                          "summonerId": 222908,
-                          "nameChanged": {
-                            "$type": "FluorineFx.ASObject, FluorineFx",
-                            "TypeName": null
-                          },
+                          "createDate": "\/Date(1385068738811)\/",
                           "dataVersion": null,
                           "futureData": null,
                           "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookPageDTO"
@@ -402,16 +408,16 @@
                               },
                               {
                                 "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4231,
-                                "rank": 1,
+                                "talentId": 4312,
+                                "rank": 3,
                                 "dataVersion": null,
                                 "futureData": null,
                                 "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
                               },
                               {
                                 "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4312,
-                                "rank": 3,
+                                "talentId": 4231,
+                                "rank": 1,
                                 "dataVersion": null,
                                 "futureData": null,
                                 "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
@@ -434,15 +440,15 @@
                               }
                             ]
                           },
-                          "createDate": null,
                           "pageId": 3630432,
-                          "current": false,
-                          "name": "Tank",
-                          "summonerId": 222908,
                           "nameChanged": {
                             "$type": "FluorineFx.ASObject, FluorineFx",
                             "TypeName": null
                           },
+                          "summonerId": 222908,
+                          "current": false,
+                          "name": "Tank",
+                          "createDate": null,
                           "dataVersion": null,
                           "futureData": null,
                           "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookPageDTO"
@@ -566,16 +572,16 @@
                               },
                               {
                                 "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4342,
-                                "rank": 1,
+                                "talentId": 4353,
+                                "rank": 2,
                                 "dataVersion": null,
                                 "futureData": null,
                                 "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
                               },
                               {
                                 "$type": "FluorineFx.ASObject, FluorineFx",
-                                "talentId": 4353,
-                                "rank": 2,
+                                "talentId": 4342,
+                                "rank": 1,
                                 "dataVersion": null,
                                 "futureData": null,
                                 "TypeName": "com.riotgames.platform.summoner.masterybook.TalentEntry"
@@ -590,15 +596,15 @@
                               }
                             ]
                           },
-                          "createDate": null,
                           "pageId": 3630433,
-                          "current": false,
-                          "name": "Tank Support",
-                          "summonerId": 222908,
                           "nameChanged": {
                             "$type": "FluorineFx.ASObject, FluorineFx",
                             "TypeName": null
                           },
+                          "summonerId": 222908,
+                          "current": false,
+                          "name": "Tank Support",
+                          "createDate": null,
                           "dataVersion": null,
                           "futureData": null,
                           "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookPageDTO"
@@ -730,15 +736,15 @@
                               }
                             ]
                           },
-                          "createDate": null,
                           "pageId": 3630431,
-                          "current": false,
-                          "name": "AP Agressive",
-                          "summonerId": 222908,
                           "nameChanged": {
                             "$type": "FluorineFx.ASObject, FluorineFx",
                             "TypeName": null
                           },
+                          "summonerId": 222908,
+                          "current": false,
+                          "name": "AP Agressive",
+                          "createDate": null,
                           "dataVersion": null,
                           "futureData": null,
                           "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookPageDTO"
@@ -748,22 +754,22 @@
                     "summonerId": 222908,
                     "sortByPageId": {
                       "$type": "FluorineFx.ASObject, FluorineFx",
-                      "unique": false,
+                      "compareFunction": null,
                       "fields": {
                         "$type": "System.Object[], mscorlib",
                         "$values": [
                           {
                             "$type": "FluorineFx.ASObject, FluorineFx",
-                            "descending": false,
                             "caseInsensitive": false,
-                            "numeric": null,
-                            "name": "pageId",
+                            "descending": false,
                             "compareFunction": null,
+                            "name": "pageId",
+                            "numeric": null,
                             "TypeName": null
                           }
                         ]
                       },
-                      "compareFunction": null,
+                      "unique": false,
                       "TypeName": null
                     },
                     "dateString": "Thu Nov 21 13:18:58 PST 2013",
@@ -773,16 +779,10 @@
                   }
                 ]
               },
-              "headers": {
-                "$type": "FluorineFx.ASObject, FluorineFx",
-                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
-                "DSRequestTimeout": 60,
-                "DSEndpoint": "my-rtmps"
-              },
               "timestamp": 0,
               "destination": "masteryBookService",
-              "messageId": "39A01DB5-B3D7-76DC-8723-97926F3FFDEC",
               "clientId": null,
+              "messageId": "4D1DD9D5-1865-11B0-FAA8-97E8E93F3ABC",
               "timeToLive": 0
             }
           ]
@@ -798,11 +798,11 @@
         "DataType": 17,
         "Size": 1666,
         "StreamId": 0,
-        "Timer": 231,
+        "Timer": 2501,
         "IsTimerRelative": true
       },
       "Object": null,
-      "Timestamp": 231,
+      "Timestamp": 2501,
       "ExtendedTimestamp": -1,
       "DataType": 17,
       "Source": null,
@@ -812,7 +812,7 @@
       "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
       "CmdData": null,
       "Data": null,
-      "InvokeId": 29,
+      "InvokeId": 34,
       "ServiceCall": {
         "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
         "Result": null,
@@ -824,8 +824,8 @@
           "$values": [
             {
               "$type": "DSK, LoLNotes",
-              "CorrelationId": "39A01DB5-B3D7-76DC-8723-97926F3FFDEC",
-              "CorrelationIdBytes": "9 \u001dµ³×vÜ‡#—’o?ýì",
+              "CorrelationId": "4D1DD9D5-1865-11B0-FAA8-97E8E93F3ABC",
+              "CorrelationIdBytes": "M\u001dÙÕ\u0018e\u0011°ú¨—èé?:¼",
               "Body": {
                 "$type": "FluorineFx.ASObject, FluorineFx",
                 "bookPagesJson": null,
@@ -960,8 +960,8 @@
                           },
                           {
                             "$type": "FluorineFx.ASObject, FluorineFx",
-                            "rank": 1,
-                            "talentId": 4342,
+                            "rank": 2,
+                            "talentId": 4353,
                             "dataVersion": 0,
                             "talent": null,
                             "summonerId": -1.0,
@@ -970,8 +970,8 @@
                           },
                           {
                             "$type": "FluorineFx.ASObject, FluorineFx",
-                            "rank": 2,
-                            "talentId": 4353,
+                            "rank": 1,
+                            "talentId": 4342,
                             "dataVersion": 0,
                             "talent": null,
                             "summonerId": -1.0,
@@ -1282,8 +1282,8 @@
                           },
                           {
                             "$type": "FluorineFx.ASObject, FluorineFx",
-                            "rank": 3,
-                            "talentId": 4312,
+                            "rank": 1,
+                            "talentId": 4231,
                             "dataVersion": 0,
                             "talent": null,
                             "summonerId": -1.0,
@@ -1292,8 +1292,8 @@
                           },
                           {
                             "$type": "FluorineFx.ASObject, FluorineFx",
-                            "rank": 1,
-                            "talentId": 4231,
+                            "rank": 3,
+                            "talentId": 4312,
                             "dataVersion": 0,
                             "talent": null,
                             "summonerId": -1.0,
@@ -1478,8 +1478,8 @@
                           },
                           {
                             "$type": "FluorineFx.ASObject, FluorineFx",
-                            "rank": 2,
-                            "talentId": 4353,
+                            "rank": 1,
+                            "talentId": 4342,
                             "dataVersion": 0,
                             "talent": null,
                             "summonerId": -1.0,
@@ -1488,8 +1488,8 @@
                           },
                           {
                             "$type": "FluorineFx.ASObject, FluorineFx",
-                            "rank": 1,
-                            "talentId": 4342,
+                            "rank": 2,
+                            "talentId": 4353,
                             "dataVersion": 0,
                             "talent": null,
                             "summonerId": -1.0,
@@ -1690,13 +1690,13 @@
                 "futureData": null,
                 "TypeName": "com.riotgames.platform.summoner.masterybook.MasteryBookDTO"
               },
-              "ClientId": "940C9D2D-5B0C-36BB-1525-50C9CE53AA85",
-              "ClientIdBytes": "”\f-[\f6»\u0015%PÉÎSª…",
+              "ClientId": "94DFBDE7-F729-67EE-82DB-E5531AA45013",
+              "ClientIdBytes": "”ß½ç÷)gî‚ÛåS\u001a¤P\u0013",
               "Destination": null,
               "Headers": null,
-              "MessageId": "940C9D37-1F09-A938-BE96-A80181CC0315",
-              "MessageIdBytes": "”\f7\u001f\t©8¾–¨\u0001Ì\u0003\u0015",
-              "TimeStamp": 1385522428559,
+              "MessageId": "94DFBE6B-CD3A-9895-9152-A10A92F66114",
+              "MessageIdBytes": "”ß¾kÍ:˜•‘R¡\n’öa\u0014",
+              "TimeStamp": 1385528096029,
               "TimeToLive": 0
             }
           ]

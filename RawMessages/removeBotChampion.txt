@@ -1,0 +1,317 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 85,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "removeBotChampion",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "94DE219F-8819-CC3B-0DD4-0751C6EBDFC6",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  37,
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "champion": {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "ownedByYourTeam": true,
+                      "skinName": "Sona",
+                      "banned": false,
+                      "displayName": "Sona",
+                      "freeToPlay": false,
+                      "championData": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "passiveIcon": "Sona_PowerChordCharged.dds",
+                        "abilityIcon1": "Sona_HymnofValor.dds",
+                        "abilityIcon2": "Sona_AriaofPerseverance.dds",
+                        "abilityIcon3": "Sona_SongofDiscord.dds",
+                        "skinInfo": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "37001": {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "skinId": 37001,
+                            "skinIndex": 1,
+                            "name": "MuseSona",
+                            "TypeName": null
+                          },
+                          "37002": {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "skinId": 37002,
+                            "skinIndex": 2,
+                            "name": "MetalSona",
+                            "TypeName": null
+                          },
+                          "37003": {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "skinId": 37003,
+                            "skinIndex": 3,
+                            "name": "SilentNightSona",
+                            "TypeName": null
+                          },
+                          "37004": {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "skinId": 37004,
+                            "skinIndex": 4,
+                            "name": "GuqinSona",
+                            "TypeName": null
+                          },
+                          "37005": {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "skinId": 37005,
+                            "skinIndex": 5,
+                            "name": "PaxSona",
+                            "TypeName": null
+                          },
+                          "TypeName": null
+                        },
+                        "abilityIcon4": "Sona_Crescendo.dds",
+                        "championId": 37,
+                        "searchTags": {
+                          "$type": "System.Object[], mscorlib",
+                          "$values": [
+                            "support"
+                          ]
+                        },
+                        "attackRank": 5,
+                        "searchTagsSecondary": {
+                          "$type": "System.Object[], mscorlib",
+                          "$values": [
+                            "mage"
+                          ]
+                        },
+                        "defenseRank": 2,
+                        "skinName": "Sona",
+                        "magicRank": 8,
+                        "difficultyRank": 1,
+                        "TypeName": null
+                      },
+                      "searchTags": {
+                        "$type": "System.Object[], mscorlib",
+                        "$values": [
+                          "support"
+                        ]
+                      },
+                      "secondarySearchTags": {
+                        "$type": "System.Object[], mscorlib",
+                        "$values": [
+                          "mage"
+                        ]
+                      },
+                      "botEnabled": true,
+                      "championId": 37,
+                      "owned": true,
+                      "championSkins": {
+                        "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                        "$values": [
+                          {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "lastSelected": false,
+                            "championId": 37,
+                            "owned": false,
+                            "freeToPlayReward": false,
+                            "skinIndex": 3,
+                            "skinId": 37003,
+                            "stillObtainable": false,
+                            "purchaseDate": 0,
+                            "endDate": 0,
+                            "winCountRemaining": 0,
+                            "dataVersion": null,
+                            "futureData": null,
+                            "TypeName": "com.riotgames.platform.catalog.champion.ChampionSkinDTO"
+                          },
+                          {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "lastSelected": false,
+                            "championId": 37,
+                            "owned": false,
+                            "freeToPlayReward": false,
+                            "skinIndex": 4,
+                            "skinId": 37004,
+                            "stillObtainable": true,
+                            "purchaseDate": 0,
+                            "endDate": 0,
+                            "winCountRemaining": 0,
+                            "dataVersion": null,
+                            "futureData": null,
+                            "TypeName": "com.riotgames.platform.catalog.champion.ChampionSkinDTO"
+                          },
+                          {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "lastSelected": false,
+                            "championId": 37,
+                            "owned": false,
+                            "freeToPlayReward": false,
+                            "skinIndex": 1,
+                            "skinId": 37001,
+                            "stillObtainable": true,
+                            "purchaseDate": 0,
+                            "endDate": 0,
+                            "winCountRemaining": 0,
+                            "dataVersion": null,
+                            "futureData": null,
+                            "TypeName": "com.riotgames.platform.catalog.champion.ChampionSkinDTO"
+                          },
+                          {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "lastSelected": false,
+                            "championId": 37,
+                            "owned": false,
+                            "freeToPlayReward": false,
+                            "skinIndex": 2,
+                            "skinId": 37002,
+                            "stillObtainable": true,
+                            "purchaseDate": 0,
+                            "endDate": 0,
+                            "winCountRemaining": 0,
+                            "dataVersion": null,
+                            "futureData": null,
+                            "TypeName": "com.riotgames.platform.catalog.champion.ChampionSkinDTO"
+                          },
+                          {
+                            "$type": "FluorineFx.ASObject, FluorineFx",
+                            "lastSelected": true,
+                            "championId": 37,
+                            "owned": true,
+                            "freeToPlayReward": false,
+                            "skinIndex": 5,
+                            "skinId": 37005,
+                            "stillObtainable": true,
+                            "purchaseDate": 1374394443000.0,
+                            "endDate": 0,
+                            "winCountRemaining": 0,
+                            "dataVersion": null,
+                            "futureData": null,
+                            "TypeName": "com.riotgames.platform.catalog.champion.ChampionSkinDTO"
+                          }
+                        ]
+                      },
+                      "freeToPlayReward": false,
+                      "active": true,
+                      "ownedByEnemyTeam": true,
+                      "description": "Maven of the Strings",
+                      "purchaseDate": 1307689431000.0,
+                      "endDate": 0,
+                      "winCountRemaining": 0,
+                      "dataVersion": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.catalog.champion.ChampionDTO"
+                    },
+                    "botSkillLevel": 0,
+                    "botSkillLevelName": "Basic",
+                    "teamId": "100",
+                    "pickTurn": 0,
+                    "badges": 0,
+                    "teamName": null,
+                    "summonerName": "Sona bot",
+                    "pickMode": 0,
+                    "isGameOwner": false,
+                    "isMe": false,
+                    "team": 0,
+                    "summonerInternalName": "bot_Sona_100",
+                    "dataVersion": null,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.BotParticipant"
+                  }
+                ]
+              },
+              "timestamp": 0,
+              "destination": "gameService",
+              "clientId": null,
+              "messageId": "7992D7CB-80DA-AB27-DC02-97EDDDC83DC9",
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 1647,
+        "StreamId": 0,
+        "Timer": 4197,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 4197,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 73,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "7992D7CB-80DA-AB27-DC02-97EDDDC83DC9",
+              "CorrelationIdBytes": "y’×Ë€Ú«'Ü\u0002—íÝÈ=É",
+              "Body": null,
+              "ClientId": "94EBD585-FE08-80D8-E92E-D9759550D13C",
+              "ClientIdBytes": "”ëÕ…þ\b€Øé.Ùu•PÑ<",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "94EBD58F-C219-8128-43E6-8CB6F10E908D",
+              "MessageIdBytes": "”ëÕÂ\u0019(CæŒ¶ñ\u000e",
+              "TimeStamp": 1385528420578,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 95,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

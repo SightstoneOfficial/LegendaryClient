@@ -97,9 +97,9 @@
                 <Image x:Name="SummonerSpell2Image" Height="32" Width="32" />
             </StackPanel>
         </Button>
-        <ComboBox x:Name="MasteryComboBox" HorizontalAlignment="Left" Margin="240,458,0,0" VerticalAlignment="Top" Width="280" Height="30" SelectionChanged="MasteryComboBox_SelectionChanged" />
+        <ComboBox x:Name="MasteryComboBox" HorizontalAlignment="Left" Margin="610,458,0,0" VerticalAlignment="Top" Width="280" Height="30" SelectionChanged="MasteryComboBox_SelectionChanged" />
         <Button x:Name="EditRunesButton" Content="Edit Runes" HorizontalAlignment="Left" Margin="525,458,0,0" VerticalAlignment="Top" Width="75" Height="30" Click="EditRunesButton_Click" />
-        <ComboBox x:Name="RuneComboBox" HorizontalAlignment="Left" Margin="610,458,0,0" VerticalAlignment="Top" Width="280" Height="30" SelectionChanged="RuneComboBox_SelectionChanged" />
+        <ComboBox x:Name="RuneComboBox" HorizontalAlignment="Left" Margin="240,458,0,0" VerticalAlignment="Top" Width="280" Height="30" SelectionChanged="RuneComboBox_SelectionChanged" />
         <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Left" Margin="895,458,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="EditMasteriesButton_Click" />
         <Button x:Name="LockInButton" Content="Lock In" Margin="0,458,150,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" Height="30" Click="LockInButton_Click" />
 

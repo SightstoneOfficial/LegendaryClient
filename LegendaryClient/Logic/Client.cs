@@ -6,6 +6,7 @@ using LegendaryClient.Windows;
 using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Messaging;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -402,6 +403,15 @@ namespace LegendaryClient.Logic
         internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error)
         {
             ;
+        }
+        
+        internal static void OnMessageReceived(object sender, object message)
+        {
+            if (message is StoreAccountBalanceNotification)
+            {
+                StoreAccountBalanceNotification newBalance = (StoreAccountBalanceNotification)message;
+                InfoLabel.Content = "IP: " + newBalance.Ip + " ∙ RP: " + newBalance.Rp;
+            }
         }
 
         internal static string InternalQueueToPretty(string InternalQueue)

@@ -1,0 +1,1152 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 219,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "getChampionsForBan",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "94DE219F-8819-CC3B-0DD4-0751C6EBDFC6",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": []
+              },
+              "timestamp": 0,
+              "destination": "gameService",
+              "clientId": null,
+              "messageId": "D00D0AFF-903F-9F2F-D79A-97F4E5B03275",
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 305,
+        "StreamId": 0,
+        "Timer": 505,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 505,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 159,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "D00D0AFF-903F-9F2F-D79A-97F4E5B03275",
+              "CorrelationIdBytes": "Ð\r\nÿ?Ÿ/×š—ôå°2u",
+              "Body": {
+                "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                "$values": [
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 1,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 2,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 3,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 4,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 5,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 6,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 7,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 8,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 9,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 10,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 11,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 12,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 13,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 14,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 15,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 17,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 16,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 19,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 18,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 21,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 20,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 23,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 22,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 266,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 25,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 24,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 267,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 27,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 26,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 29,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 28,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 31,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 30,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 34,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 35,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 32,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 33,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 38,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 39,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 36,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 37,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 42,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 43,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 40,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 41,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 44,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 45,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 51,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 50,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 48,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 55,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 54,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 53,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 59,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 58,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 57,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 56,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 63,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 62,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 61,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 60,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 68,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 69,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 64,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 67,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 76,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 77,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 78,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 79,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 72,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 74,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 75,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 85,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 84,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 86,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 81,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 80,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 83,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 82,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 92,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 89,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 91,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 90,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 102,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 103,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 101,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 98,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 99,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 96,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 110,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 111,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 106,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 107,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 104,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 105,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 119,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 117,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 115,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 114,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 113,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 112,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 126,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 122,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 121,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 120,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 143,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 412,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 131,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": true,
+                    "championId": 133,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 134,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 154,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 222,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 238,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 236,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  },
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "dataVersion": 0,
+                    "enemyOwned": false,
+                    "championId": 254,
+                    "owned": true,
+                    "futureData": null,
+                    "TypeName": "com.riotgames.platform.game.ChampionBanInfoDTO"
+                  }
+                ]
+              },
+              "ClientId": "94FCFFB6-1A09-31D5-EA3C-8E55AC70609D",
+              "ClientIdBytes": "”üÿ¶\u001a\t1Õê<ŽU¬p`",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "94FCFFC2-4F28-776B-8767-16820DEDBA30",
+              "MessageIdBytes": "”üÿÂO(wk‡g\u0016‚\ríº0",
+              "TimeStamp": 1385528881343,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 1280,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}
