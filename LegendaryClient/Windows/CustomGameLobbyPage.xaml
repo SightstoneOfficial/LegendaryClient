@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
-      d:DesignHeight="672" d:DesignWidth="1024"
+      d:DesignHeight="768" d:DesignWidth="1280"
 	Title="CustomGameLobbyPage">
 
     <Page.Resources>
@@ -15,36 +15,37 @@
 
     <Grid>
         <Label x:Name="GameName" Content="Game Name" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <Button x:Name="QuitGameButton" Content="Quit Game" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="174" Click="QuitGameButton_Click" />
-        <ListView x:Name="BlueTeamListView" HorizontalAlignment="Left" Height="200" Margin="10,80,0,0" VerticalAlignment="Top" Width="350" Foreground="White" Background="#FF505050">
-            <ListView.View>
-                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                    <GridViewColumn Header="Player" DisplayMemberBinding="{Binding Username}" />
-                    <GridViewColumn>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Kick and Ban" Margin="0" VerticalAlignment="Center" Click="KickAndBan_Click" Tag="{Binding Participant}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
+        <Button x:Name="QuitGameButton" Content="Quit Game" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="174" Click="QuitGameButton_Click" Grid.Column="1" />
+
+        <Label Content="Blue Team" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
+        <Label Content="Purple Team" HorizontalAlignment="Left" Margin="450,40,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
+
+        <ListView x:Name="BlueTeamListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="350" Margin="10,80,0,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
         </ListView>
-        <ListView x:Name="PurpleTeamListView" HorizontalAlignment="Right" Height="200" Margin="0,80,10,0" VerticalAlignment="Top" Width="350" Foreground="White" Background="#FF505050">
-            <ListView.View>
-                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                    <GridViewColumn Header="Player" DisplayMemberBinding="{Binding Username}" />
-                    <GridViewColumn>
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Kick and Ban" Margin="0" VerticalAlignment="Center" Click="KickAndBan_Click" Tag="{Binding Participant}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
+        <ListView x:Name="PurpleTeamListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="350" Margin="450,80,0,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}" Grid.ColumnSpan="2">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
         </ListView>
-        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Right" Margin="0,285,10,0" VerticalAlignment="Top" Width="100" Click="StartGameButton_Click" />
-        <Button x:Name="SwitchTeamsButton" Content="Switch Teams" HorizontalAlignment="Center" Margin="0,285,0,0" VerticalAlignment="Top" Width="100" Click="SwitchTeamsButton_Click" />
+        <Button x:Name="SwitchTeamsButton" Content="Switch Teams" HorizontalAlignment="Left" Margin="10,440,0,0" VerticalAlignment="Top" Width="840" Click="SwitchTeamsButton_Click" />
+        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="650,475,0,0" VerticalAlignment="Top" Width="200" Click="StartGameButton_Click" />
+
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="10,510,0,40" Width="840" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="5,0,0,10" Width="700" TextWrapping="Wrap" VerticalAlignment="Bottom" />
+        <Button x:Name="ChatButton" Content="Send" Margin="720,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="130" IsDefault="True" Height="24" />
+
     </Grid>
 </Page>

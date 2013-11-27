@@ -347,11 +347,34 @@ namespace LegendaryClient.Windows
             ChampionSelectListView.Visibility = Visibility.Hidden;
             AfterChampionSelectGrid.Visibility = Visibility.Visible;
 
+            LockInButton.Content = "Locked In";
+
             champions Champion = champions.GetChampion(selection.ChampionId);
 
-            ChampNameLabel.Content = Champion.displayName;
+            ListViewItem item = new ListViewItem();
+            Image skinImage = new Image();
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath), UriKind.Absolute);
-            ChampSplashImage.Source = new BitmapImage(uriSource);
+            skinImage.Source = new BitmapImage(uriSource);
+            skinImage.Width = 191;
+            skinImage.Stretch = Stretch.UniformToFill;
+            item.Tag = "0:" + Champion.id; //Hack
+            item.Content = skinImage;
+            SkinSelectListView.Items.Add(item);
+
+            List<championAbilities> Abilities = championAbilities.GetAbilities(selection.ChampionId);
+            foreach (championAbilities ability in Abilities)
+            {
+                ChampionAbility championAbility = new ChampionAbility();
+                uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "abilities", ability.iconPath), UriKind.Absolute);
+                championAbility.AbilityImage.Source = new BitmapImage(uriSource);
+                championAbility.AbilityHotKey.Content = ability.hotkey;
+                championAbility.AbilityName.Content = ability.name;
+                championAbility.AbilityDescription.Text = ability.description;
+                championAbility.Width = 375;
+                championAbility.Height = 75;
+                AbilityListView.Items.Add(championAbility);
+            }
+
             foreach (ChampionDTO champ in Champions)
             {
                 if (champ.ChampionId == selection.ChampionId)
@@ -360,7 +383,15 @@ namespace LegendaryClient.Windows
                     {
                         if (skin.Owned)
                         {
-                            //SkinComboBox.Items.Add(Skins.GetSkinName(skin.SkinId).Replace("_", " "));
+                            item = new ListViewItem();
+                            skinImage = new Image();
+                            uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath), UriKind.Absolute);
+                            skinImage.Source = new BitmapImage(uriSource);
+                            skinImage.Width = 191;
+                            skinImage.Stretch = Stretch.UniformToFill;
+                            item.Tag = skin.SkinId;
+                            item.Content = skinImage;
+                            SkinSelectListView.Items.Add(item);
                         }
                     }
                 }
@@ -436,7 +467,31 @@ namespace LegendaryClient.Windows
 
         private async void SkinSelectListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            var item = sender as ListViewItem;
+            if (item != null)
+            {
+                if (item.Tag != null)
+                {
+                    if (item.Tag is string)
+                    {
+                        string[] splitItem = ((string)item.Tag).Split(':');
+                        int championId = Convert.ToInt32(splitItem[1]);
+                        champions Champion = champions.GetChampion(championId);
+                        await Client.PVPNet.SelectChampionSkin(championId, 0);
+                        TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                        tr.Text = "Selected Default " + Champion.name + " as skin" + Environment.NewLine;
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    }
+                    else
+                    {
+                        championSkins skin = championSkins.GetSkin((int)item.Tag);
+                        await Client.PVPNet.SelectChampionSkin(skin.championId, skin.id);
+                        TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                        tr.Text = "Selected " + skin.name + " as skin" + Environment.NewLine;
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    }
+                }
+            }
         }
 
         private async void DodgeButton_Click(object sender, RoutedEventArgs e)
@@ -497,9 +552,26 @@ namespace LegendaryClient.Windows
                 DevMode = !DevMode;
                 ChampionSelectListView.IsHitTestVisible = true;
                 ChampionSelectListView.Opacity = 1;
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = "DEV MODE: " + DevMode;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             }
             else
             {
+                if (DevMode)
+                {
+                    if (ChatTextBox.Text == "!~champ")
+                    {
+                        ChampionSelectListView.Visibility = Visibility.Visible;
+                        AfterChampionSelectGrid.Visibility = Visibility.Hidden;
+                    }
+                    else if (ChatTextBox.Text == "!~skin")
+                    {
+                        ChampionSelectListView.Visibility = Visibility.Hidden;
+                        AfterChampionSelectGrid.Visibility = Visibility.Visible;
+                    }
+                    return;
+                }
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);

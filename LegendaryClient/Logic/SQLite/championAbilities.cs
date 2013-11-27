@@ -1,4 +1,5 @@
-﻿namespace LegendaryClient.Logic.SQLite
+﻿using System.Collections.Generic;
+namespace LegendaryClient.Logic.SQLite
 {
     public class championAbilities
     {
@@ -25,5 +26,16 @@
         public string description { get; set; }
 
         public string hotkey { get; set; }
+
+        public static List<championAbilities> GetAbilities(int champId)
+        {
+            List<championAbilities> abilitylist = new List<championAbilities>();
+            foreach (championAbilities c in Client.ChampionAbilities)
+            {
+                if (c.championId == champId)
+                    abilitylist.Add(c);
+            }
+            return abilitylist;
+        }
     }
 }

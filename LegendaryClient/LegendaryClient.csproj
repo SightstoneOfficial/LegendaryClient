@@ -77,11 +77,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\ChampionAbility.xaml.cs">
+      <DependentUpon>ChampionAbility.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ChatPlayer.xaml.cs">
       <DependentUpon>ChatPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomLobbyPlayer.xaml.cs">
+      <DependentUpon>CustomLobbyPlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\HoverOverLabel.xaml.cs">
       <DependentUpon>HoverOverLabel.xaml</DependentUpon>
@@ -220,11 +226,19 @@
     <Compile Include="Windows\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\ChampionAbility.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ChampionImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ChatPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CustomLobbyPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

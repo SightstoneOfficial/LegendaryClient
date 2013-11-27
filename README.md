@@ -20,7 +20,7 @@ Next, compile it. It will crash at this point. This will be fixed once the patch
 
 * Next, create a folder called Assets.
 
-* Next, find your League of Legends installation folder and navigate to *"RADS\projects\lol_air_client\releases\0.0.1.53\deploy\assets\images"*. Copy the champions folder into your Assets folder. 
+* Next, find your League of Legends installation folder and navigate to *"RADS\projects\lol_air_client\releases\0.0.1.53\deploy\assets\images"*. Copy the champions & abilities folder into your Assets folder. 
 
 * Finally, go to http://ddragon.leagueoflegends.com/tool/ and download the latest dragontail. Open it and export the files in [version]/img into your Assets folder.
  
@@ -39,9 +39,10 @@ Still-in Progress Screenshots
 
 ![Queue](http://i.imgur.com/BuDdtyd.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
-![ChampSelect](http://i.imgur.com/uePXsUm.jpg)
+![ChampSelect](http://i.imgur.com/HTnoXqX.jpg)
+![ChampSelect2](http://i.imgur.com/T4VCs0K.png)
 ![CustomGameCreate](http://i.imgur.com/AZ74Y7L.png)
 ![SearchCustomGames](http://i.imgur.com/1j5Yw8c.png)
-![CustomGameLobby](http://i.imgur.com/YA8JLTa.png)
+![CustomGameLobby](http://i.imgur.com/Ht64V8n.png)
 ![Profile](http://i.imgur.com/1Oag2Rf.png)
 ![Settings](http://i.imgur.com/ZTktZTY.png)

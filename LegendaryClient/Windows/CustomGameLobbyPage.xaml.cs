@@ -1,8 +1,12 @@
-﻿using LegendaryClient.Logic;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using System;
+using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace LegendaryClient.Windows
@@ -43,11 +47,12 @@ namespace LegendaryClient.Windows
                         //Update ListBoxes
                         foreach (Participant playerTeam1 in dto.TeamOne)
                         {
-                            try
+                            if (playerTeam1 is PlayerParticipant)
                             {
                                 PlayerParticipant player = playerTeam1 as PlayerParticipant;
-                                BlueTeamListView.Items.Add(
-                                    new PlayerItem { Username = player.SummonerName, Participant = player });
+                                CustomLobbyPlayer lobbyPlayer = RenderPlayer(player);
+                                BlueTeamListView.Items.Add(lobbyPlayer);
+
                                 if (Client.Whitelist.Count > 0)
                                 {
                                     if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
@@ -55,19 +60,16 @@ namespace LegendaryClient.Windows
                                         await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
                                     }
                                 }
-                            }
-                            catch
-                            {
-                                //Robert
                             }
                         }
                         foreach (Participant playerTeam2 in dto.TeamTwo)
                         {
-                            try
+                            if (playerTeam2 is PlayerParticipant)
                             {
                                 PlayerParticipant player = playerTeam2 as PlayerParticipant;
-                                PurpleTeamListView.Items.Add(
-                                    new PlayerItem { Username = player.SummonerName, Participant = player });
+                                CustomLobbyPlayer lobbyPlayer = RenderPlayer(player);
+                                PurpleTeamListView.Items.Add(lobbyPlayer);
+
                                 if (Client.Whitelist.Count > 0)
                                 {
                                     if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
@@ -75,10 +77,6 @@ namespace LegendaryClient.Windows
                                         await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
                                     }
                                 }
-                            }
-                            catch
-                            {
-                                //Robert
                             }
                         }
                     }));
@@ -97,6 +95,24 @@ namespace LegendaryClient.Windows
                     }
                 }
             }
+        }
+
+        private CustomLobbyPlayer RenderPlayer(PlayerParticipant player)
+        {
+            CustomLobbyPlayer lobbyPlayer = new CustomLobbyPlayer();
+            lobbyPlayer.PlayerName.Content = player.SummonerName;
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", player.ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
+            lobbyPlayer.ProfileImage.Source = new BitmapImage(uriSource);
+            //lobbyPlayer.OwnerLabel.Visibility = Visibility.Visible;
+            lobbyPlayer.Width = 400;
+            lobbyPlayer.Margin = new Thickness(0, 0, 0, 5);
+            if (player.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId)
+            {
+                lobbyPlayer.BanButton.Visibility = Visibility.Hidden;
+            }
+            lobbyPlayer.BanButton.Tag = player;
+            lobbyPlayer.BanButton.Click += KickAndBan_Click;
+            return lobbyPlayer;
         }
 
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)

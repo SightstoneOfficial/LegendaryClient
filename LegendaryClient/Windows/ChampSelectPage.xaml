@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:LegendaryClient.Controls"
       mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1280"
+      d:DesignHeight="738" d:DesignWidth="1280"
 	Title="ChampSelectPage">
 
     <Grid>
@@ -52,7 +52,7 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="145,80,145,340" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" Visibility="Hidden">
+        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="145,80,145,0" Height="370" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -65,10 +65,15 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="145,80,145,340" VerticalAlignment="Stretch" Background="#66505050">
-            <Image x:Name="ChampSplashImage" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="191" Stretch="UniformToFill"/>
-            <Label x:Name="ChampNameLabel" Content="Aatrox" FontSize="40" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="196,5,0,0" VerticalAlignment="Top"/>
-            <ListView x:Name="SkinSelectListView" HorizontalAlignment="Stretch" Margin="500,0,0,0" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050">
+        <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="145,80,145,0" Height="370" VerticalAlignment="Top" Background="#66505050" Visibility="Hidden">
+            <ListView x:Name="AbilityListView" HorizontalAlignment="Left" Width="390" Margin="5,5,00,5" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" BorderBrush="{x:Null}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+            <ListView x:Name="SkinSelectListView" HorizontalAlignment="Stretch" Margin="400,0,0,0" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
@@ -82,30 +87,30 @@
             </ListView>
         </Grid>
 
-        <Button x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="40" Margin="150,0,0,295" VerticalAlignment="Bottom" Width="40" Click="SummonerSpell_Click">
+        <Button x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="40" Margin="150,453,0,0" VerticalAlignment="Top" Width="40" Click="SummonerSpell_Click">
             <StackPanel>
                 <Image x:Name="SummonerSpell1Image" Height="32" Width="32" />
             </StackPanel>
         </Button>
-        <Button x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="40" Margin="195,340,0,295" VerticalAlignment="Bottom" Width="40" Click="SummonerSpell_Click">
+        <Button x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="40" Margin="195,453,0,0" VerticalAlignment="Top" Width="40" Click="SummonerSpell_Click">
             <StackPanel>
                 <Image x:Name="SummonerSpell2Image" Height="32" Width="32" />
             </StackPanel>
         </Button>
-        <ComboBox x:Name="MasteryComboBox" HorizontalAlignment="Left" Margin="240,0,0,300" VerticalAlignment="Bottom" Width="280" Height="30" SelectionChanged="MasteryComboBox_SelectionChanged" />
-        <Button x:Name="EditRunesButton" Content="Edit Runes" HorizontalAlignment="Left" Margin="525,0,0,300" VerticalAlignment="Bottom" Width="75" Height="30" Click="EditRunesButton_Click" />
-        <ComboBox x:Name="RuneComboBox" HorizontalAlignment="Left" Margin="610,0,0,300" VerticalAlignment="Bottom" Width="280" Height="30" SelectionChanged="RuneComboBox_SelectionChanged" />
-        <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Left" Margin="895,0,0,300" VerticalAlignment="Bottom" Width="100" Height="30" Click="EditMasteriesButton_Click" />
-        <Button x:Name="LockInButton" Content="Lock In" Margin="0,340,150,300" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="120" Height="30" Click="LockInButton_Click" />
+        <ComboBox x:Name="MasteryComboBox" HorizontalAlignment="Left" Margin="240,458,0,0" VerticalAlignment="Top" Width="280" Height="30" SelectionChanged="MasteryComboBox_SelectionChanged" />
+        <Button x:Name="EditRunesButton" Content="Edit Runes" HorizontalAlignment="Left" Margin="525,458,0,0" VerticalAlignment="Top" Width="75" Height="30" Click="EditRunesButton_Click" />
+        <ComboBox x:Name="RuneComboBox" HorizontalAlignment="Left" Margin="610,458,0,0" VerticalAlignment="Top" Width="280" Height="30" SelectionChanged="RuneComboBox_SelectionChanged" />
+        <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Left" Margin="895,458,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="EditMasteriesButton_Click" />
+        <Button x:Name="LockInButton" Content="Lock In" Margin="0,458,150,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" Height="30" Click="LockInButton_Click" />
 
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Height="250" Margin="150,0,150,40" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="150,500,150,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
-        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="150,0,300,10" TextWrapping="Wrap" VerticalAlignment="Bottom" TextChanged="SearchTextBox_TextChanged" />
-        <Button x:Name="ChatButton" Content="Send" Margin="0,0,150,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130"  IsDefault="True" Click="ChatButton_Click" />
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="150,0,300,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
+        <Button x:Name="ChatButton" Content="Send" Margin="0,0,150,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" />
     </Grid>
 </Page>

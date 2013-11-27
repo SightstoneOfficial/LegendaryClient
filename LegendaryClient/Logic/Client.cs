@@ -73,7 +73,7 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static List<keybindingEvents> Keybinds;
 
-        internal static List<string> Whitelist;
+        internal static List<string> Whitelist = new List<string>();
 
         #region Chat
         internal static JabberClient ChatClient;
@@ -457,11 +457,6 @@ namespace LegendaryClient.Logic
         internal static MainWindow MainWin;
         internal static void FocusClient()
         {
-            if (!MainWin.IsVisible)
-            {
-                MainWin.Show();
-            }
-
             if (MainWin.WindowState == WindowState.Minimized)
             {
                 MainWin.WindowState = WindowState.Normal;
