@@ -1,7 +1,7 @@
 LegendaryClient
 ===============
 
-Beautiful, fully-featured League of Legends client based off https://github.com/Snowl/ClientOfLegends2
+Beautiful, fully-featured League of Legends client.
 
 Still under heavy development! Lots of things don't work or don't look good...
 

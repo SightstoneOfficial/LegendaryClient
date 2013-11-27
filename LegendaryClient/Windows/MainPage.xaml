@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:LegendaryClient.Controls"
       mc:Ignorable="d"
-      d:DesignHeight="570" d:DesignWidth="1024"
+      d:DesignHeight="768" d:DesignWidth="1280"
 	Title="MainPage">
 
     <Page.Resources>

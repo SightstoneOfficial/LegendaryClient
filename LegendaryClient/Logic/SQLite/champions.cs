@@ -85,5 +85,15 @@
             }
             return null;
         }
+
+        public static champions GetChampion(string name)
+        {
+            foreach (champions c in Client.Champions)
+            {
+                if (c.name == name)
+                    return c;
+            }
+            return null;
+        }
     }
 }

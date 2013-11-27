@@ -7,6 +7,7 @@ using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Platform.Broadcast;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Game.Message;
 using PVPNetConnect.RiotObjects.Platform.Messaging;
 using SQLite;
 using System;
@@ -14,8 +15,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using System.Xml;
 
 namespace LegendaryClient.Logic
@@ -408,15 +411,39 @@ namespace LegendaryClient.Logic
         
         internal static void OnMessageReceived(object sender, object message)
         {
-            if (message is StoreAccountBalanceNotification)
+            MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                StoreAccountBalanceNotification newBalance = (StoreAccountBalanceNotification)message;
-                InfoLabel.Content = "IP: " + newBalance.Ip + " ∙ RP: " + newBalance.Rp;
-            }
-            else if (message is BroadcastNotification)
-            {
-                ;
-            }
+                if (message is StoreAccountBalanceNotification)
+                {
+                    StoreAccountBalanceNotification newBalance = (StoreAccountBalanceNotification)message;
+                    InfoLabel.Content = "IP: " + newBalance.Ip + " ∙ RP: " + newBalance.Rp;
+                }
+                else if (message is BroadcastNotification)
+                {
+                    ;
+                }
+                else if (message is GameNotification)
+                {
+                    GameNotification notification = (GameNotification)message;
+                    MessageOverlay messageOver = new MessageOverlay();
+                    messageOver.MessageTitle.Content = notification.Type;
+                    switch (notification.Type)
+                    {
+                        case "PLAYER_BANNED_FROM_GAME":
+                            messageOver.MessageTitle.Content = "Banned from custom game";
+                            messageOver.MessageTextBox.Text = "You have been banned from this custom game!";
+                            break;
+                        default:
+                            messageOver.MessageTextBox.Text = notification.MessageCode + Environment.NewLine;
+                            messageOver.MessageTextBox.Text = Convert.ToString(notification.MessageArgument);
+                            break;
+                    }
+                    Client.OverlayContainer.Content = messageOver.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                    Client.ClearPage(new CustomGameLobbyPage());
+                    Client.SwitchPage(new MainPage());
+                }
+            }));
         }
 
         internal static string InternalQueueToPretty(string InternalQueue)

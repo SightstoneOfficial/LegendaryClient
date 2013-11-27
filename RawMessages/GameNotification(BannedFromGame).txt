@@ -1,0 +1,65 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 0,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "receive",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSA, LoLNotes",
+              "CorrelationId": null,
+              "CorrelationIdBytes": null,
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "messageCode": "PG-0021",
+                "messageArgument": null,
+                "type": "PLAYER_BANNED_FROM_GAME",
+                "TypeName": "com.riotgames.platform.game.message.GameNotification"
+              },
+              "ClientId": "gn-200006292",
+              "ClientIdBytes": null,
+              "Destination": "messagingDestination",
+              "Headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSSubtopic": "gn-200006292"
+              },
+              "MessageId": "7be6ebeb-66d5-4ce6-984c-630aa2d86f67",
+              "MessageIdBytes": null,
+              "TimeStamp": 1385542795787,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 244,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

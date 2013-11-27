@@ -151,6 +151,14 @@ namespace LegendaryClient.Windows
                 LatestDto = ChampDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
+                    ListViewItem[] ChampionArray = new ListViewItem[ChampionSelectListView.Items.Count];
+                    ChampionSelectListView.Items.CopyTo(ChampionArray, 0);
+                    foreach (ListViewItem y in ChampionArray)
+                    {
+                        y.IsHitTestVisible = true;
+                        y.Opacity = 1;
+                    }
+
                     List<Participant> AllParticipants = new List<Participant>(ChampDTO.TeamOne.ToArray());
                     AllParticipants.AddRange(ChampDTO.TeamTwo);
                     foreach (Participant p in AllParticipants)
@@ -219,6 +227,14 @@ namespace LegendaryClient.Windows
                             {
                                 PurpleBanListView.Items.Add(champImage);
                             }
+
+                            foreach (ListViewItem y in ChampionArray)
+                            {
+                                if ((int)y.Tag == x.ChampionId)
+                                {
+                                    ChampionSelectListView.Items.Remove(y);
+                                }
+                            }
                         }
                         #endregion
                     }
@@ -243,85 +259,72 @@ namespace LegendaryClient.Windows
                     BlueListView.Items.Clear();
                     PurpleListView.Items.Clear();
                     int i = 0;
-                    foreach (Participant participant in ChampDTO.TeamOne.ToArray()) //Clone array so it doesn't get modified
+                    bool PurpleSide = false;
+                    foreach (Participant participant in AllParticipants)
                     {
+                        i++;
+                        ChampSelectPlayer control = new ChampSelectPlayer();
                         if (participant is PlayerParticipant)
                         {
-                            bool DisplayedPlayer = false;
                             PlayerParticipant player = participant as PlayerParticipant;
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
                             {
-                                if (selection.SummonerInternalName == player.SummonerInternalName)
+                                #region Disable picking selected champs
+                                if (!configType.DuplicatePick)
                                 {
-                                    DisplayedPlayer = true;
-                                    ChampSelectPlayer control = RenderPlayer(selection, player);
-                                    BlueListView.Items.Add(control);
-                                    if (HasLockedIn && selection.SummonerInternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName)
+                                    foreach (ListViewItem y in ChampionArray)
                                     {
-                                        RenderLockInGrid(selection);
+                                        if ((int)y.Tag == selection.ChampionId)
+                                        {
+                                            y.IsHitTestVisible = false;
+                                            y.Opacity = 0.5;
+                                        }
                                     }
                                 }
-                            }
-                            if (!DisplayedPlayer)
-                            {
-                                DisplayedPlayer = true;
-                                ChampSelectPlayer control = new ChampSelectPlayer();
-                                control.PlayerName.Content = player.SummonerName;
-                                BlueListView.Items.Add(control);
-                            }
-                        }
-                        else if (participant is ObfuscatedParticipant)
-                        {
-                            ChampSelectPlayer control = new ChampSelectPlayer();
-                            control.PlayerName.Content = "Summoner " + ++i;
-                            BlueListView.Items.Add(control);
-                        }
-                        else
-                        {
-                            ChampSelectPlayer control = new ChampSelectPlayer();
-                            control.PlayerName.Content = "Unknown Summoner";
-                            BlueListView.Items.Add(control);
-                        }
-                    }
+                                #endregion
 
-                    foreach (Participant participant in ChampDTO.TeamTwo.ToArray()) //Clone array so it doesn't get modified
-                    {
-                        if (participant is PlayerParticipant)
-                        {
-                            bool DisplayedPlayer = false;
-                            PlayerParticipant player = participant as PlayerParticipant;
-                            foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
-                            {
                                 if (selection.SummonerInternalName == player.SummonerInternalName)
                                 {
-                                    DisplayedPlayer = true;
-                                    ChampSelectPlayer control = RenderPlayer(selection, player);
-                                    PurpleListView.Items.Add(control);
+                                    control = RenderPlayer(selection, player);
                                     if (HasLockedIn && selection.SummonerInternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName)
                                     {
                                         RenderLockInGrid(selection);
                                     }
                                 }
                             }
-                            if (!DisplayedPlayer)
-                            {
-                                DisplayedPlayer = true;
-                                ChampSelectPlayer control = new ChampSelectPlayer();
-                                control.PlayerName.Content = player.SummonerName;
-                                PurpleListView.Items.Add(control);
-                            }
                         }
                         else if (participant is ObfuscatedParticipant)
                         {
-                            ChampSelectPlayer control = new ChampSelectPlayer();
-                            control.PlayerName.Content = "Summoner " + ++i;
+                            control.PlayerName.Content = "Summoner " + i;
+                        }
+                        else if (participant is BotParticipant)
+                        {
+                            BotParticipant bot = participant as BotParticipant;
+                            string botChamp = bot.SummonerName.Split(' ')[0]; //Why is this internal name rito?
+                            champions botSelectedChamp = champions.GetChampion(botChamp);
+                            PlayerParticipant part = new PlayerParticipant();
+                            PlayerChampionSelectionDTO selection = new PlayerChampionSelectionDTO();
+                            selection.ChampionId = botSelectedChamp.id;
+                            part.SummonerName = botSelectedChamp.displayName + " bot";
+                            control = RenderPlayer(selection, part);
+                        }
+                        else
+                        {
+                            control.PlayerName.Content = "Unknown Summoner";
+                        }
+                        if (i > ChampDTO.TeamOne.Count)
+                        {
+                            i = 0;
+                            PurpleSide = true;
+                        }
+
+                        if (!PurpleSide)
+                        {
                             BlueListView.Items.Add(control);
                         }
                         else
                         {
-                            ChampSelectPlayer control = new ChampSelectPlayer();
-                            control.PlayerName.Content = "Unknown Summoner";
-                            BlueListView.Items.Add(control);
+                            PurpleListView.Items.Add(control);
                         }
                     }
 
@@ -351,6 +354,7 @@ namespace LegendaryClient.Windows
 
             champions Champion = champions.GetChampion(selection.ChampionId);
 
+            //Render default skin
             ListViewItem item = new ListViewItem();
             Image skinImage = new Image();
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath), UriKind.Absolute);
