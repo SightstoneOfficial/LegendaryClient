@@ -4,6 +4,7 @@ using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Broadcast;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Messaging;
@@ -411,6 +412,10 @@ namespace LegendaryClient.Logic
             {
                 StoreAccountBalanceNotification newBalance = (StoreAccountBalanceNotification)message;
                 InfoLabel.Content = "IP: " + newBalance.Ip + " ∙ RP: " + newBalance.Rp;
+            }
+            else if (message is BroadcastNotification)
+            {
+                ;
             }
         }
 
