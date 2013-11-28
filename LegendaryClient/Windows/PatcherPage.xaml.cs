@@ -210,7 +210,7 @@ namespace LegendaryClient.Windows
                 }
                 #endregion
 
-                //FinishPatching();
+                FinishPatching();
             });
 
             bgThead.Start();
