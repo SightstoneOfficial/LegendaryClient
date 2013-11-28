@@ -62,7 +62,7 @@ namespace LegendaryClient.Windows
                 }
                 MasteryComboBox.Items.Add(MasteryPageName);
                 if (MasteryPage.Current)
-                    MasteryComboBox.SelectedItem = MasteryPageName;
+                    MasteryComboBox.SelectedItem = MasteryPageName + " "; //Dont waste two calls at the start of champ select
             }
             i = 0;
             foreach (SpellBookPageDTO RunePage in MyRunes.BookPages)
@@ -74,7 +74,7 @@ namespace LegendaryClient.Windows
                 }
                 RuneComboBox.Items.Add(RunePageName);
                 if (RunePage.Current)
-                    RuneComboBox.SelectedItem = RunePageName;
+                    RuneComboBox.SelectedItem = RunePageName + " ";
             }
 
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
@@ -206,6 +206,7 @@ namespace LegendaryClient.Windows
                         BlueBanListView.Visibility = Visibility.Visible;
                         PurpleBanListView.Visibility = Visibility.Visible;
                         GameStatusLabel.Content = "Bans are on-going";
+                        counter = configType.BanTimerDuration;
 
                         ChampionBanInfoDTO[] BannedChamps = await Client.PVPNet.GetChampionsForBan();
 
@@ -270,14 +271,19 @@ namespace LegendaryClient.Windows
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
                             {
                                 #region Disable picking selected champs
-                                if (!configType.DuplicatePick)
+                                foreach (ListViewItem y in ChampionArray)
                                 {
-                                    foreach (ListViewItem y in ChampionArray)
+                                    if ((int)y.Tag == selection.ChampionId)
                                     {
-                                        if ((int)y.Tag == selection.ChampionId)
+                                        y.IsHitTestVisible = false;
+                                        y.Opacity = 0.5;
+                                        if (configType != null)
                                         {
-                                            y.IsHitTestVisible = false;
-                                            y.Opacity = 0.5;
+                                            if (configType.DuplicatePick)
+                                            {
+                                                y.IsHitTestVisible = true;
+                                                y.Opacity = 1;
+                                            }
                                         }
                                     }
                                 }
@@ -340,7 +346,6 @@ namespace LegendaryClient.Windows
                 PlayerCredentialsDto dto = message as PlayerCredentialsDto;
                 Client.CurrentGame = dto;
                 Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-
                 #endregion Launching Game
             }
         }
@@ -353,6 +358,8 @@ namespace LegendaryClient.Windows
             LockInButton.Content = "Locked In";
 
             champions Champion = champions.GetChampion(selection.ChampionId);
+
+            SkinSelectListView.Items.Clear();
 
             //Render default skin
             ListViewItem item = new ListViewItem();
@@ -541,12 +548,40 @@ namespace LegendaryClient.Windows
             Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
-        private void MasteryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void MasteryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            bool HasChanged = false;
+            int i = 0;
+            MasteryBookDTO bookDTO = new MasteryBookDTO();
+            bookDTO.SummonerId = Client.LoginPacket.AllSummonerData.Summoner.SumId;
+            bookDTO.BookPages = new List<MasteryBookPageDTO>();
+            foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
+            {
+                string MasteryPageName = MasteryPage.Name;
+                if (MasteryPageName.StartsWith("@@"))
+                {
+                    MasteryPageName = "Mastery Page " + ++i;
+                }
+                MasteryPage.Current = false;
+                if (MasteryPageName == (string)MasteryComboBox.SelectedItem)
+                {
+                    MasteryPage.Current = true;
+                    HasChanged = true;
+                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = "Selected " + MasteryPageName + " as Mastery Page" + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                }
+                bookDTO.BookPages.Add(MasteryPage);
+            }
+            if (HasChanged)
+            {
+                await Client.PVPNet.SaveMasteryBook(bookDTO);
+            }
         }
 
         private void RuneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+
         }
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)

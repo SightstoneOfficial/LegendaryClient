@@ -5,26 +5,10 @@ Beautiful, fully-featured League of Legends client.
 
 Still under heavy development! Lots of things don't work or don't look good...
 
-How to compile
-===========
+Prerequisites
+=============
 
-** You require Net 4.5 to compile this! **
-
-First, import the DLL's found in /DLLS. This includes sqlite, MahApps.Metro, SharpZipLib, jabber-net, Awesomium and PVPNetConnect.
-
-Next, compile it. It will crash at this point. This will be fixed once the patcher is integrated, since required files aren't downloaded/copied on first run at the moment.
-
-* Find your installation of League of Legends (C:\Riot Games\League of Legends) and copy *"gameStats_en_US.sqlite" to the /bin folder of LegendaryClient. 
-
-* Also, while you are there, copy *"ClientLibCommon.dat" to the /bin folder of LegendaryClient.
-
-* Next, create a folder called Assets.
-
-* Next, find your League of Legends installation folder and navigate to *"RADS\projects\lol_air_client\releases\0.0.1.53\deploy\assets\images"*. Copy the champions & abilities folder into your Assets folder. 
-
-* Finally, go to http://ddragon.leagueoflegends.com/tool/ and download the latest dragontail. Open it and export the files in [version]/img into your Assets folder.
- 
-LegendaryClient should work once this is complete. Your folder should look like this: http://puu.sh/5hXhV.png and http://puu.sh/5hXif.png
+Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version, but it will retrieve your current data.
 
 In-Client Screenshots (90-100)% complete
 =====================

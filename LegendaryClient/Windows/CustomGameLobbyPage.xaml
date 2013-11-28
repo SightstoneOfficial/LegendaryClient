@@ -35,7 +35,7 @@
             </ListView.ItemsPanel>
         </ListView>
         <Button x:Name="SwitchTeamsButton" Content="Switch Teams" HorizontalAlignment="Left" Margin="10,440,0,0" VerticalAlignment="Top" Width="840" Click="SwitchTeamsButton_Click" />
-        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="650,475,0,0" VerticalAlignment="Top" Width="200" Click="StartGameButton_Click" />
+        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="650,475,0,0" VerticalAlignment="Top" Width="200" Click="StartGameButton_Click" IsEnabled="False" />
 
         <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="10,510,0,40" Width="840" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>

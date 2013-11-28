@@ -494,6 +494,21 @@ namespace LegendaryClient.Logic
             }
         }
 
+        internal static void LaunchGame(bool Spectator)
+        {
+            string GameDirectory = Path.Combine(ExecutingDirectory, "RADS", "solutions", "lol_game_client_sln", "releases", "0.0.1.0", "deploy");
+
+            var p = new System.Diagnostics.Process();
+            p.StartInfo.WorkingDirectory = GameDirectory;
+            p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            p.StartInfo.Arguments = "\"8394\" \"LoLLauncher.exe\" \"" + "" + "\" \"" +
+                CurrentGame.ServerIp + " " +
+                CurrentGame.ServerPort + " " +
+                CurrentGame.EncryptionKey + " " +
+                CurrentGame.SummonerId + "\"";
+            p.Start();
+        }
+
         #endregion League Of Legends Logic
 
         internal static MainWindow MainWin;

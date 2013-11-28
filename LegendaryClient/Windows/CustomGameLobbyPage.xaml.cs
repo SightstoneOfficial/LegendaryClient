@@ -1,7 +1,9 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -17,6 +19,8 @@ namespace LegendaryClient.Windows
     public partial class CustomGameLobbyPage : Page
     {
         private bool LaunchedTeamSelect = false;
+        private bool IsOwner;
+        private double OptomisticLock;
 
         public CustomGameLobbyPage()
         {
@@ -38,20 +42,29 @@ namespace LegendaryClient.Windows
                 GameDTO dto = message as GameDTO;
                 if (dto.GameState == "TEAM_SELECT")
                 {
+                    OptomisticLock = dto.OptimisticLock;
                     LaunchedTeamSelect = false;
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                     {
                         BlueTeamListView.Items.Clear();
                         PurpleTeamListView.Items.Clear();
 
-                        //Update ListBoxes
-                        foreach (Participant playerTeam1 in dto.TeamOne)
+                        List<Participant> AllParticipants = new List<Participant>(dto.TeamOne.ToArray());
+                        AllParticipants.AddRange(dto.TeamTwo);
+
+                        int i = 0;
+                        bool PurpleSide = false;
+
+                        foreach (Participant playerTeam in AllParticipants)
                         {
-                            if (playerTeam1 is PlayerParticipant)
+                            i++;
+                            CustomLobbyPlayer lobbyPlayer = new CustomLobbyPlayer();
+                            if (playerTeam is PlayerParticipant)
                             {
-                                PlayerParticipant player = playerTeam1 as PlayerParticipant;
-                                CustomLobbyPlayer lobbyPlayer = RenderPlayer(player);
-                                BlueTeamListView.Items.Add(lobbyPlayer);
+                                PlayerParticipant player = playerTeam as PlayerParticipant;
+                                lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
+                                IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
+                                StartGameButton.IsEnabled = IsOwner;
 
                                 if (Client.Whitelist.Count > 0)
                                 {
@@ -61,22 +74,20 @@ namespace LegendaryClient.Windows
                                     }
                                 }
                             }
-                        }
-                        foreach (Participant playerTeam2 in dto.TeamTwo)
-                        {
-                            if (playerTeam2 is PlayerParticipant)
-                            {
-                                PlayerParticipant player = playerTeam2 as PlayerParticipant;
-                                CustomLobbyPlayer lobbyPlayer = RenderPlayer(player);
-                                PurpleTeamListView.Items.Add(lobbyPlayer);
 
-                                if (Client.Whitelist.Count > 0)
-                                {
-                                    if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                    {
-                                        await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
-                                    }
-                                }
+                            if (i > dto.TeamOne.Count)
+                            {
+                                i = 0;
+                                PurpleSide = true;
+                            }
+
+                            if (!PurpleSide)
+                            {
+                                BlueTeamListView.Items.Add(lobbyPlayer);
+                            }
+                            else
+                            {
+                                PurpleTeamListView.Items.Add(lobbyPlayer);
                             }
                         }
                     }));
@@ -97,16 +108,20 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private CustomLobbyPlayer RenderPlayer(PlayerParticipant player)
+        private CustomLobbyPlayer RenderPlayer(PlayerParticipant player, bool IsOwner)
         {
             CustomLobbyPlayer lobbyPlayer = new CustomLobbyPlayer();
             lobbyPlayer.PlayerName.Content = player.SummonerName;
+
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", player.ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
             lobbyPlayer.ProfileImage.Source = new BitmapImage(uriSource);
-            //lobbyPlayer.OwnerLabel.Visibility = Visibility.Visible;
+
+            if (IsOwner)
+                lobbyPlayer.OwnerLabel.Visibility = Visibility.Visible;
             lobbyPlayer.Width = 400;
             lobbyPlayer.Margin = new Thickness(0, 0, 0, 5);
-            if (player.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId)
+            if ((player.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId) ||
+                (player.SummonerId != Client.LoginPacket.AllSummonerData.Summoner.SumId && !this.IsOwner))
             {
                 lobbyPlayer.BanButton.Visibility = Visibility.Hidden;
             }
@@ -138,7 +153,7 @@ namespace LegendaryClient.Windows
 
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.StartChampionSelection(Client.GameID, BlueTeamListView.Items.Count + PurpleTeamListView.Items.Count);
+            await Client.PVPNet.StartChampionSelection(Client.GameID, OptomisticLock);
         }
     }
 

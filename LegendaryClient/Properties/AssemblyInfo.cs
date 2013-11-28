@@ -6,11 +6,11 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("LegendaryClient")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("League of Legends Client")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("da.viddiaz.com")]
 [assembly: AssemblyProduct("LegendaryClient")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

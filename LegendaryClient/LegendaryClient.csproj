@@ -39,9 +39,11 @@
   <ItemGroup>
     <Reference Include="Awesomium.Core">
       <HintPath>..\DLLS\Awesomium.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="awesomium.windows.controls">
       <HintPath>..\DLLS\awesomium.windows.controls.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="jabber-net">
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
