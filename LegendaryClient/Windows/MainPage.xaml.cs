@@ -370,10 +370,10 @@ namespace LegendaryClient.Windows
             {
                 BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
                 string spectatorJSON = "";
-                string url = region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName.ToLower() + "/" + GameId + "/token";
+                string url = region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName + "/" + GameId + "/token";
                 using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
                 {
-                    spectatorJSON = client.DownloadString(region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName + "/" + GameId + "/token");
+                    spectatorJSON = client.DownloadString(url);
                 }
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);

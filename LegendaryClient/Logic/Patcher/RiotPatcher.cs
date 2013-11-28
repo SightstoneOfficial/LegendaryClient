@@ -41,7 +41,7 @@ namespace LegendaryClient.Logic.Patcher
             return airVersions.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
         }
 
-        public void GetCurrentAirInstall(string Location)
+        public string GetCurrentAirInstall(string Location)
         {
             System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
             DirectoryInfo dInfo = new DirectoryInfo(Location);
@@ -50,7 +50,7 @@ namespace LegendaryClient.Logic.Patcher
             {
                 subdirs = dInfo.GetDirectories();
             }
-            catch { return; }
+            catch { return "0.0.0.0"; }
             string latestVersion = "0.0.1";
             foreach (DirectoryInfo info in subdirs)
             {
@@ -73,6 +73,7 @@ namespace LegendaryClient.Logic.Patcher
             var VersionAIR = File.Create(Path.Combine("Assets", "VERSION_AIR"));
             VersionAIR.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
             VersionAIR.Close();
+            return latestVersion;
         }
 
         void Copy(string sourceDir, string targetDir)

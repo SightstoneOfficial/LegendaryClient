@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using LegendaryClient.Logic;
+using System.Windows.Controls;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -10,6 +11,11 @@ namespace LegendaryClient.Windows.Profile
         public Overview()
         {
             InitializeComponent();
+        }
+
+        public void Update(double AccountId)
+        {
+            //Client.PVPNet.RetrievePlayerStatsByAccountId(accountId, "CURRENT", PlayerLifetimeStats.Callback
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LegendaryClient.Logic;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
@@ -72,6 +73,43 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             InsertDefaultValues();
+
+            StatsCheckbox.IsChecked = Properties.Settings.Default.GatherStatistics;
+            ErrorCheckbox.IsChecked = Properties.Settings.Default.SendErrors;
+
+            #region AboutTextbox
+            AboutTextBox.Text =
+@"Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com) 
+All rights reserved.
+
+This client is open-source and can be found at http://legendaryclient.com
+
+Thanks to " + Client.LoginPacket.AllSummonerData.Summoner.Name + @". Using this client means the most to me. Thank you very much!
+
+Thanks to all the people at #riotcontrol, especially raler (for providing PVPNetConnect).
+Thanks to all the people who done the RTMPS work. Your help has been invaluable.
+
+Thanks Riot for providing a pretty awesome game. It might not be perfect, but I have wasted many hours on it.
+
+Thanks to all the people who have supported me (excluding gort).
+
+No infringing copyrighted data is distributed with this program.
+
+Uses Data Dragon QA Interface & l3cdn.
+
+External libraries:
+Awesomium
+jabber-net
+MahApps.Metro
+PVPNetConnect
+SharpZipLib
+sqlite
+zlib
+
+Donations are accepted at:
+Bitcoin: 1Pq5HWenYoNkHKbKcRjQXshuFeSmkkXH5d
+Litecoin: LWMujPiDyfDoQt33cL6FHmMt78fYmjhzGB";
+            #endregion
         }
 
         public void InsertDefaultValues()
@@ -93,5 +131,19 @@ namespace LegendaryClient.Windows
             ResolutionComboBox.SelectedIndex = ResolutionComboBox.Items.Count - 1;
             WindowModeComboBox.SelectedIndex = 0;
         }
+
+        private void StatsCheckbox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Properties.Settings.Default.GatherStatistics = (bool)StatsCheckbox.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void ErrorCheckbox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Properties.Settings.Default.SendErrors = (bool)ErrorCheckbox.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+
     }
 }

@@ -204,10 +204,20 @@ namespace LegendaryClient.Windows
                         {
                             CurrentProgressLabel.Content = "Copying Air Assets";
                         }));
-                        patcher.GetCurrentAirInstall(AirLocation);
+                        AirVersion = patcher.GetCurrentAirInstall(AirLocation);
                         LogTextBox("Retrieved currently installed Air Assets");
+                        LogTextBox("Current Air Assets Version: " + AirVersion);
                     }
                 }
+
+                if (AirVersion != LatestAIR)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        CurrentProgressLabel.Content = "Retrieving Air Assets";
+                    }));
+                }
+
                 #endregion
 
                 FinishPatching();

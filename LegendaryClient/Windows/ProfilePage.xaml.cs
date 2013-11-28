@@ -1,5 +1,6 @@
 ﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows.Profile;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System;
 using System.IO;
@@ -46,12 +47,28 @@ namespace LegendaryClient.Windows
             SummonerLevelLabel.Content = "Level " + Summoner.SummonerLevel;
 
             int ProfileIconID = Summoner.ProfileIconId;
-            //TODO: Convert ProfileIconID to the decompiled images
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);
             ProfileImage.Source = new BitmapImage(uriSource);
 
+            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(s);
+            if (n.GameName != null)
+            {
+                InGameHeader.Visibility = Visibility.Visible;
+                InGameHeader.IsSelected = true;
+                Ingame ingame = InGameContainer.Content as Ingame;
+                ingame.Update(n);
+            }
+            else
+            {
+                InGameHeader.Visibility = Visibility.Collapsed;
+                OverviewHeader.IsSelected = true;
+            }
+
             MatchHistory history = MatchHistoryContainer.Content as MatchHistory;
             history.Update(Summoner.AcctId);
+
+            Overview overview = OverviewContainer.Content as Overview;
+            overview.Update(Summoner.AcctId);
         }
 
         public class KeyValueItem
