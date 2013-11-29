@@ -25,6 +25,9 @@
         <Label x:Name="PlayerCurrentProgressLabel" Style="{x:Null}" Content="75LP" HorizontalAlignment="Left" Margin="115,62,0,0" VerticalAlignment="Top" Foreground="Black" FontWeight="Bold" />
         <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Gold V" HorizontalAlignment="Left" Margin="215,62,0,0" VerticalAlignment="Top" Foreground="Black" FontWeight="Bold" />
         <Label x:Name="PlayerAimProgressLabel" Style="{x:Null}" Content="100LP" HorizontalAlignment="Left" Margin="320,62,0,0" VerticalAlignment="Top" Foreground="Black" FontWeight="Bold" />
+
+        <TextBox x:Name="BroadcastMessage" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,20,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="#7F000000" BorderBrush="{x:Null}" Foreground="White" />
+
         <TabControl HorizontalAlignment="Stretch" Margin="10,110,10,10" VerticalAlignment="Stretch" Width="1000">
             <TabItem Header="Featured Games">
                 <Grid x:Name="SpectatorRegionGrid" Background="Black">
@@ -44,7 +47,7 @@
                             </ItemsPanelTemplate>
                         </ListView.ItemsPanel>
                     </ListView>
-                    <Label Content="Blue Bans" HorizontalAlignment="Left" Margin="200,5,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
+                    <Label x:Name="BlueBansLabel" Content="Blue Bans" HorizontalAlignment="Left" Margin="200,5,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
                     <ListView x:Name="BlueBanListView" HorizontalAlignment="Left" Margin="200,30,0,10" VerticalAlignment="Top" Height="64" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="190" BorderBrush="{x:Null}" Background="{x:Null}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -55,7 +58,7 @@
                     <ComboBox x:Name="SpectatorComboBox" HorizontalAlignment="Center" Margin="0,60,0,0" VerticalAlignment="Top" Width="160" ItemsSource="{DynamicResource Regions}" SelectionChanged="SpectatorComboBox_SelectionChanged" />
                     <Label x:Name="MMRLabel" Content="MMR" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" FontSize="26" FontWeight="ExtraLight" Foreground="White" />
                     <Label x:Name="MapLabel" Content="Summoners Rift" HorizontalAlignment="Center" Margin="0,120,0,0" VerticalAlignment="Top" FontSize="16" Foreground="White" />
-                    <Label Content="Purple Bans" HorizontalAlignment="Right" Margin="0,5,210,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
+                    <Label x:Name="PurpleBansLabel" Content="Purple Bans" HorizontalAlignment="Right" Margin="0,5,210,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
                     <ListView x:Name="PurpleBanListView" HorizontalAlignment="Right" Margin="0,30,200,10" VerticalAlignment="Top" Height="64" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="190" BorderBrush="{x:Null}" Background="{x:Null}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
@@ -87,6 +90,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="fakeend" Content="Fake end of game" HorizontalAlignment="Left" Margin="779,62,0,0" VerticalAlignment="Top" Width="273" Click="fakeend_Click"/>
+        <Button x:Name="fakeend" Content="Fake end of game" HorizontalAlignment="Left" Margin="1145,111,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click"/>
     </Grid>
 </Page>

@@ -25,8 +25,8 @@ namespace LegendaryClient.Windows
         {
             TimeSpan t = TimeSpan.FromSeconds(Statistics.GameLength);
             TimeLabel.Content = string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
-            TypeLabel.Content = Statistics.GameMode;
-
+            ModeLabel.Content = Statistics.GameMode;
+            TypeLabel.Content = Statistics.GameType;
 
             championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);

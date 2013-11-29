@@ -105,6 +105,12 @@ namespace LegendaryClient.Windows
                 #endregion Get Current Tier
             }
 
+            if (packet.BroadcastNotification.BroadcastMessages.Length > 0)
+            {
+                Dictionary<string, object> Message = packet.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
+                BroadcastMessage.Text = Convert.ToString(Message["content"]);
+            }
+
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
             //LocationLabel.Content = "Region: " + Client.LoginPacket.CompetitiveRegion;
             int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
@@ -232,6 +238,8 @@ namespace LegendaryClient.Windows
                 return;
             if (gameList.Count <= 0)
                 return;
+            BlueBansLabel.Visibility = Visibility.Hidden;
+            PurpleBansLabel.Visibility = Visibility.Hidden;
             BlueBanListView.Items.Clear();
             PurpleBanListView.Items.Clear();
             BlueListView.Items.Clear();
@@ -330,6 +338,11 @@ namespace LegendaryClient.Windows
                 if (pair.Key == "bannedChampions")
                 {
                     ArrayList keyArray = pair.Value as ArrayList;
+                    if (keyArray.Count > 0)
+                    {
+                        BlueBansLabel.Visibility = Visibility.Visible;
+                        PurpleBansLabel.Visibility = Visibility.Visible;
+                    }
                     foreach (Dictionary<string, object> keyArrayP in keyArray)
                     {
                         int cid = 0;

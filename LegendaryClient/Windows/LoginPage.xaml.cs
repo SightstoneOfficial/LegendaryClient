@@ -1,5 +1,6 @@
 ﻿using jabber.client;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Logic.SWF;
@@ -36,15 +37,13 @@ namespace LegendaryClient.Windows
             Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
                                         orderby s.name
                                         select s).ToList();
-            Client.Items = (from s in Client.SQLiteDatabase.Table<items>()
-                            orderby s.name
-                            select s).ToList();
             Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
                                  orderby s.id
                                  select s).ToList();
             Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
                                orderby s.id
                                select s).ToList();
+            Client.Items = Items.PopulateItems();
 
             //Retrieve latest client version
             SWFReader reader = new SWFReader("ClientLibCommon.dat");

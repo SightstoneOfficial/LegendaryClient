@@ -113,6 +113,7 @@
       <DependentUpon>RecentGameOverview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextBoxWatermarked.cs" />
+    <Compile Include="Logic\JSON\Items.cs" />
     <Compile Include="Logic\Maps\Map1.cs" />
     <Compile Include="Logic\Maps\Map10.cs" />
     <Compile Include="Logic\Maps\Map8.cs" />
@@ -468,9 +469,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logic\Game\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

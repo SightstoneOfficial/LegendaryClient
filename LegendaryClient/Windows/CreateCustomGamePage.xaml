@@ -9,6 +9,8 @@
 
     <Grid>
         <Label Content="Create a Custom Game" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
+        <Label x:Name="MapLabel" Content="Summoners Rift" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="NameInvalidLabel" Content="Name is not unique!" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Foreground="#FFFF9898" FontWeight="ExtraLight" FontSize="20" Visibility="Hidden" />
         <Label Content="Map" HorizontalAlignment="Left" Margin="10,120,0,420" VerticalAlignment="Center" FontSize="14" FontWeight="ExtraLight" />
         <ListBox x:Name="MapListBox" HorizontalAlignment="Left" Height="140" Margin="10,0,0,120" VerticalAlignment="Center" Width="250" SelectedIndex="0" SelectionChanged="MapListBox_SelectionChanged">
             <Label Content="Summoners Rift" Margin="0,0,0,0" />
@@ -33,7 +35,6 @@
         <Label Content="Password" HorizontalAlignment="Center" Margin="0,0,200,0" VerticalAlignment="Center" FontSize="14" />
         <TextBox x:Name="PasswordTextBox" TextWrapping="NoWrap" Text=""  HorizontalAlignment="Center" Margin="0,50,15,0" VerticalAlignment="Center" Width="255" TextChanged="PasswordTextBox_TextChanged" />
         <Button x:Name="CreateGameButton" Content="Create Game" HorizontalAlignment="Center" Margin="0,150,15,0" VerticalAlignment="Center" Width="255" Click="CreateGameButton_Click" />
-        <Label x:Name="NameInvalidLabel" Content="Name is not unique!" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Foreground="#FFFF9898" FontWeight="ExtraLight" FontSize="20" Visibility="Hidden" />
         <TextBox x:Name="TournamentCodeTextbox" HorizontalAlignment="Stretch" Height="23" Margin="10,0,10,10" IsReadOnly="True" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Label Content="Tournament Code Generator" HorizontalAlignment="Left" Margin="10,0,0,40" VerticalAlignment="Bottom" />
     </Grid>

@@ -107,7 +107,7 @@ namespace LegendaryClient.Windows.Profile
             if (GamesListView.SelectedIndex != -1)
             {
                 PlayerGameStats stats = GameStats[GamesListView.SelectedIndex];
-                ;
+
                 Dictionary<double, string> IDtoName = new Dictionary<double, string>();
                 List<double> SummonerIDs = new List<double>();
                 foreach (FellowPlayerInfo info in stats.FellowPlayers)
@@ -222,11 +222,6 @@ namespace LegendaryClient.Windows.Profile
                 Client.MainGrid.Children.Add(PlayerItem);
             }
             PlayerItem.Tag = playerItem;
-
-            if (Convert.ToInt32(playerItem.Value) == 3040) //Seraph's Embrace not in gamestats_en_US.sqlite?
-            {
-                playerItem.Value = 3003;
-            }
 
             items Item = items.GetItem(Convert.ToInt32(playerItem.Value));
 

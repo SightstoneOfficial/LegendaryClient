@@ -12,6 +12,8 @@
 
         public int price { get; set; }
 
+        public int sellprice { get; set; }
+
         public double flatHPPoolMod { get; set; }
 
         public double flatMPPoolMod { get; set; }

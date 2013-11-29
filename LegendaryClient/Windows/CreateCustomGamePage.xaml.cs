@@ -169,6 +169,7 @@ namespace LegendaryClient.Windows
         private void MapListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GenerateSpectatorCode();
+            MapLabel.Content = ((Label)MapListBox.SelectedItem).Content;
         }
 
         private void PasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -218,8 +219,8 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         WhitelistListBox.Items.Add(WhiteListTextBox.Text);
+                        WhiteListTextBox.Text = "";
                     }));
-                    WhiteListTextBox.Text = "";
                 }
             }
         }
