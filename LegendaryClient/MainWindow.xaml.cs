@@ -32,16 +32,16 @@ namespace LegendaryClient
                 ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
             }
 
-            //ChatContainer.Content = new ChatPage().Content;
-            //NotificationContainer.Content = new NotificationPage().Content;
+            ChatContainer.Content = new ChatPage().Content;
+            NotificationContainer.Content = new NotificationPage().Content;
 
             Client.Pages = new List<Page>();
             Client.MainGrid = MainGrid;
             Client.Container = Container;
             Client.OverlayContainer = OverlayContainer;
             Client.MainWin = this;
-            //Client.ChatContainer = ChatContainer;
-            //Client.NotificationContainer = NotificationContainer;
+            Client.ChatContainer = ChatContainer;
+            Client.NotificationContainer = NotificationContainer;
             Client.SwitchPage(new PatcherPage());
         }
 

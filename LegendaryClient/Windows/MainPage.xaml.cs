@@ -105,7 +105,7 @@ namespace LegendaryClient.Windows
                 #endregion Get Current Tier
             }
 
-            if (packet.BroadcastNotification.BroadcastMessages.Length > 0)
+            if (packet.BroadcastNotification.BroadcastMessages != null)
             {
                 Dictionary<string, object> Message = packet.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
                 BroadcastMessage.Text = Convert.ToString(Message["content"]);

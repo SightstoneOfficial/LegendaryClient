@@ -13,5 +13,17 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Client.ChatListView = ChatListView;
         }
+
+        private void ChatButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (Client.ChatContainer.Visibility == System.Windows.Visibility.Hidden)
+            {
+                Client.ChatContainer.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
     }
 }

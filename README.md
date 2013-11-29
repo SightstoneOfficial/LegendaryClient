@@ -13,13 +13,22 @@ Currently you must have an up-to-date installation of League of Legends. It will
 In-Client Screenshots (90-100)% complete
 =====================
 
+http://i.imgur.com/BAN9o6X.png
+**Super lightweight footprint**
+
 ![Login](http://i.imgur.com/KlRS9G2.jpg)
-![News Screen](http://i.imgur.com/rpGDhZ1.png)
-![Featured Games](http://i.imgur.com/UTuh1e8.png)
+![News Screen](http://i.imgur.com/UagU9fw.png)
+![Featured Games](http://i.imgur.com/lvFTsXP.png)
 ![Store](http://i.imgur.com/VvdjTrA.png)
 
 Still-in Progress Screenshots 
 =============================
+
+![Chat](http://i.imgur.com/cRUiLxn.jpg)
+
+With multiple chat states:
+![ChatStates](http://i.imgur.com/TY96nl5.png)
+
 
 ![Queue](http://i.imgur.com/BuDdtyd.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
@@ -28,5 +37,5 @@ Still-in Progress Screenshots
 ![CustomGameCreate](http://i.imgur.com/AZ74Y7L.png)
 ![SearchCustomGames](http://i.imgur.com/1j5Yw8c.png)
 ![CustomGameLobby](http://i.imgur.com/Ht64V8n.png)
-![Profile](http://i.imgur.com/1Oag2Rf.png)
+![Profile](http://i.imgur.com/BSLpms5.png)
 ![Settings](http://i.imgur.com/ZTktZTY.png)

@@ -82,6 +82,7 @@ namespace LegendaryClient.Windows.Profile
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 StatsComboBox.Items.Clear();
+                StatsListView.Items.Clear();
                 foreach (PlayerStatSummary x in stats.PlayerStatSummaries.PlayerStatSummarySet)
                 {
                     if (x.AggregatedStats.Stats.Count > 0)

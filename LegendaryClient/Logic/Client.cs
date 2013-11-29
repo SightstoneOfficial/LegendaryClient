@@ -283,8 +283,8 @@ namespace LegendaryClient.Logic
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
 
-        //internal static ContentControl ChatContainer;
-        //internal static ContentControl NotificationContainer;
+        internal static ContentControl ChatContainer;
+        internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
 
         internal static Image MainPageProfileImage;

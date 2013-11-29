@@ -41,16 +41,16 @@
                 <Frame x:Name="MatchHistoryContainer">
                 </Frame>
             </TabItem>
-            <TabItem Header="Champions">
-                <Frame x:Name="ChampionsContainer">
-                </Frame>
-            </TabItem>
             <TabItem Header="Runes">
                 <Frame x:Name="RunesContainer">
                 </Frame>
             </TabItem>
             <TabItem Header="Masteries">
                 <Frame x:Name="MasteriesContainer">
+                </Frame>
+            </TabItem>
+            <TabItem Header="Champions">
+                <Frame x:Name="ChampionsContainer">
                 </Frame>
             </TabItem>
             <TabItem Header="Skins">

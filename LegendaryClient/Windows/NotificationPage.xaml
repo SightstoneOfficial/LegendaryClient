@@ -13,9 +13,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="#FF444444">
-
-        <Button Content="0" FontWeight="ExtraLight" HorizontalAlignment="Right" Margin="0,3,3,0" VerticalAlignment="Top" Width="50" FontSize="16" />
+    <Grid Background="#CC576573">
         <ListView x:Name="ChatListView" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="1,0,250,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -23,5 +21,6 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+        <Button x:Name="ChatButton" Content="Chat" HorizontalAlignment="Right" Margin="0,2,5,2" VerticalAlignment="Stretch" Width="75" Click="ChatButton_Click"/>
     </Grid>
 </Page>

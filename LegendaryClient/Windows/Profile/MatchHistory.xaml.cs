@@ -5,6 +5,7 @@ using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,6 +40,10 @@ namespace LegendaryClient.Windows.Profile
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 GamesListView.Items.Clear();
+                BlueListView.Items.Clear();
+                ItemsListView.Items.Clear();
+                PurpleListView.Items.Clear();
+                GameStatsListView.Items.Clear();
                 GameStats = result.GameStatistics;
                 GameStats.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
                 foreach (PlayerGameStats Game in GameStats)
@@ -226,24 +231,36 @@ namespace LegendaryClient.Windows.Profile
             items Item = items.GetItem(Convert.ToInt32(playerItem.Value));
 
             PlayerItem.PlayerName.Content = Item.name;
-            PlayerItem.PlayerWins.Content = Item.price + " gold";
+
+            PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            if (PlayerItem.PlayerName.DesiredSize.Width > 250) //Make title fit in item
+                PlayerItem.Width = PlayerItem.PlayerName.DesiredSize.Width;
+            else
+                PlayerItem.Width = 250;
+
+            PlayerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
             PlayerItem.PlayerLeague.Content = "Item ID " + Item.id;
             PlayerItem.LevelLabel.Content = "";
             PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
-            PlayerItem.PlayerStatus.Text = Item.description;
+
+            string ParsedDescription = Item.description;
+            ParsedDescription = ParsedDescription.Replace("<br>", Environment.NewLine);
+            ParsedDescription = Regex.Replace(ParsedDescription, "<.*?>", string.Empty);
+            PlayerItem.PlayerStatus.Text = ParsedDescription;
 
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"), UriKind.RelativeOrAbsolute);
             PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
 
-            PlayerItem.Width = 250;
             PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+            PlayerItem.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             Point MouseLocation = e.GetPosition(Client.MainGrid);
+
             double YMargin = MouseLocation.Y;
-            if (YMargin + 155 > Client.MainGrid.ActualHeight)
-                YMargin = Client.MainGrid.ActualHeight - 155;
 
             double XMargin = MouseLocation.X;
+            if (XMargin + PlayerItem.Width + 10 > Client.MainGrid.ActualWidth)
+                XMargin = Client.MainGrid.ActualWidth - PlayerItem.Width - 10;
 
             PlayerItem.Margin = new Thickness(XMargin + 5, YMargin + 5, 0, 0);
         }
