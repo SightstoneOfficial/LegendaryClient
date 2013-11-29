@@ -97,6 +97,9 @@
     <Compile Include="Controls\JoinQueue.xaml.cs">
       <DependentUpon>JoinQueue.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\KudosItem.xaml.cs">
+      <DependentUpon>KudosItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LargeChatPlayer.xaml.cs">
       <DependentUpon>LargeChatPlayer.xaml</DependentUpon>
     </Compile>
@@ -161,6 +164,9 @@
     </Compile>
     <Compile Include="Windows\CustomGameLobbyPage.xaml.cs">
       <DependentUpon>CustomGameLobbyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\EndOfGamePage.xaml.cs">
+      <DependentUpon>EndOfGamePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\FakePage.xaml.cs">
       <DependentUpon>FakePage.xaml</DependentUpon>
@@ -252,6 +258,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\KudosItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\LargeChatPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -309,6 +319,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\CustomGameLobbyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\EndOfGamePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

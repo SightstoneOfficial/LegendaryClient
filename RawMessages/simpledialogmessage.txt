@@ -1,0 +1,75 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 0,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "receive",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSA, LoLNotes",
+              "CorrelationId": null,
+              "CorrelationIdBytes": null,
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "titleCode": "leagues",
+                "accountId": 200006292.0,
+                "dataVersion": 0,
+                "msgId": "125707704",
+                "params": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    "{\"leagueItem\":{\"playerOrTeamId\":\"222908\",\"playerOrTeamName\":\"Snowl\",\"leagueName\":\"Urgot's Patriots\",\"queueType\":\"RANKED_SOLO_5x5\",\"tier\":\"SILVER\",\"rank\":\"III\",\"leaguePoints\":95,\"previousDayLeaguePosition\":5,\"wins\":291,\"losses\":278,\"lastPlayed\":1385704806989,\"timeUntilDecay\":8639913599826,\"timeLastDecayMessageShown\":0,\"miniSeries\":null,\"displayDecayWarning\":false,\"demotionWarning\":0,\"totalPlayed\":569,\"hotStreak\":false,\"veteran\":true,\"freshBlood\":false,\"inactive\":false},\"notifyReason\":\"LEAGUE_POINTS_UPDATE\",\"leaguePointsDelta\":18,\"gameId\":125707704}"
+                  ]
+                },
+                "type": "leagues",
+                "futureData": null,
+                "bodyCode": "notification",
+                "TypeName": "com.riotgames.platform.messaging.persistence.SimpleDialogMessage"
+              },
+              "ClientId": "cn-200006292",
+              "ClientIdBytes": null,
+              "Destination": "messagingDestination",
+              "Headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSSubtopic": "cn-200006292"
+              },
+              "MessageId": "a40aae79-e59d-4918-886d-f1164aa74c65",
+              "MessageIdBytes": null,
+              "TimeStamp": 1385704807179,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 903,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

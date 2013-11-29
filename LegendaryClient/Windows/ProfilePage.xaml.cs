@@ -68,7 +68,7 @@ namespace LegendaryClient.Windows
             history.Update(Summoner.AcctId);
 
             Overview overview = OverviewContainer.Content as Overview;
-            overview.Update(Summoner.AcctId);
+            overview.Update(Summoner.SummonerId, Summoner.AcctId);
         }
 
         public class KeyValueItem

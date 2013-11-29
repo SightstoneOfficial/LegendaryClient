@@ -93,8 +93,6 @@ Thanks Riot for providing a pretty awesome game. It might not be perfect, but I 
 
 Thanks to all the people who have supported me (excluding gort).
 
-No infringing copyrighted data is distributed with this program.
-
 Uses Data Dragon QA Interface & l3cdn.
 
 External libraries:
