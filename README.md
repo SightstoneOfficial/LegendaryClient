@@ -8,13 +8,10 @@ Still under heavy development! Lots of things don't work or don't look good...
 Prerequisites
 =============
 
-Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version, but it will retrieve your current data.
+Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version, but it will retrieve your current data from your current installation
 
 In-Client Screenshots (90-100)% complete
 =====================
-
-http://i.imgur.com/BAN9o6X.png
-**Super lightweight footprint**
 
 ![Login](http://i.imgur.com/KlRS9G2.jpg)
 ![News Screen](http://i.imgur.com/UagU9fw.png)
@@ -25,11 +22,6 @@ Still-in Progress Screenshots
 =============================
 
 ![Chat](http://i.imgur.com/cRUiLxn.jpg)
-
-With multiple chat states:
-![ChatStates](http://i.imgur.com/TY96nl5.png)
-
-
 ![Queue](http://i.imgur.com/BuDdtyd.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/HTnoXqX.jpg)
@@ -39,3 +31,14 @@ With multiple chat states:
 ![CustomGameLobby](http://i.imgur.com/Ht64V8n.png)
 ![Profile](http://i.imgur.com/BSLpms5.png)
 ![Settings](http://i.imgur.com/ZTktZTY.png)
+
+Other Features
+======
+
+**Super lightweight footprint**
+
+![Footprint](http://i.imgur.com/BAN9o6X.png)
+
+**Multiple chat states:**
+
+![ChatStates](http://i.imgur.com/TY96nl5.png)
