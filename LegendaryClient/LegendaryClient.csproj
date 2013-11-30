@@ -113,6 +113,8 @@
       <DependentUpon>RecentGameOverview.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextBoxWatermarked.cs" />
+    <Compile Include="Controls\WindowsExensions.cs" />
+    <Compile Include="Logic\ChatPrefixes.cs" />
     <Compile Include="Logic\JSON\Items.cs" />
     <Compile Include="Logic\Maps\Map1.cs" />
     <Compile Include="Logic\Maps\Map10.cs" />

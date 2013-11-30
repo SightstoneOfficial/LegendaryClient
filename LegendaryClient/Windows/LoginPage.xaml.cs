@@ -1,4 +1,5 @@
 ﻿using jabber.client;
+using jabber.connection;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Region;
@@ -164,6 +165,9 @@ namespace LegendaryClient.Windows
                 Client.PresManager = new PresenceManager();
                 Client.PresManager.Stream = Client.ChatClient;
                 Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
+
+                Client.ConfManager = new ConferenceManager();
+                Client.ConfManager.Stream = Client.ChatClient;
 
                 Client.SwitchPage(new MainPage());
                 Client.ClearPage(this);

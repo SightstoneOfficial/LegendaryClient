@@ -90,6 +90,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="fakeend" Content="Fake end of game" HorizontalAlignment="Left" Margin="1145,111,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click" Visibility="Hidden"/>
+        <Button x:Name="fakeend" Content="Fake end of game" HorizontalAlignment="Left" Margin="1145,111,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click"/>
+        <TextBox x:Name="Textbox" HorizontalAlignment="Left" Height="23" Margin="1131,44,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="awer" Content="myvbuyt" HorizontalAlignment="Left" Margin="1145,88,0,0" VerticalAlignment="Top" Width="75" Click="awer_Click"/>
     </Grid>
 </Page>

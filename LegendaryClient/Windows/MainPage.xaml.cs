@@ -1,4 +1,5 @@
-﻿using LegendaryClient.Controls;
+﻿using jabber.connection;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.PlayerSpell;
@@ -109,6 +110,20 @@ namespace LegendaryClient.Windows
             {
                 Dictionary<string, object> Message = packet.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
                 BroadcastMessage.Text = Convert.ToString(Message["content"]);
+            }
+
+            foreach (PlayerStatSummary x in packet.PlayerStatSummaries.PlayerStatSummarySet)
+            {
+                if (x.PlayerStatSummaryTypeString == "Unranked")
+                {
+                    Client.AmountOfWins = x.Wins;
+                }
+                if (x.PlayerStatSummaryTypeString == "RankedSolo5x5")
+                {
+                    Client.IsRanked = true;
+                    Client.AmountOfWins = x.Wins;
+                    break;
+                }
             }
 
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
@@ -591,6 +606,18 @@ namespace LegendaryClient.Windows
             EndOfGamePage test = new EndOfGamePage(fakeStats);
             Client.OverlayContainer.Visibility = Visibility.Visible;
             Client.OverlayContainer.Content = test.Content;
+
+            string ObfuscatedName = Client.GetObfuscatedChatroomName(Textbox.Text, ChatPrefixes.Arranging_Game);
+            string JID = Client.GetChatroomJID(ObfuscatedName, "", false);
+            Room newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+            newRoom.Join();
+
+            ;
+        }
+
+        private void awer_Click(object sender, RoutedEventArgs e)
+        {
+            Client.PVPNet.AcceptInviteForMatchmakingGame(Convert.ToDouble(Textbox.Text));
         }
     }
 }

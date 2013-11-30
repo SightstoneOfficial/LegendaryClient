@@ -1,5 +1,7 @@
 ﻿using jabber.client;
+using jabber.connection;
 using jabber.protocol.client;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
@@ -14,7 +16,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Security;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -121,6 +125,7 @@ namespace LegendaryClient.Logic
 
         internal static RosterManager RostManager;
         internal static PresenceManager PresManager;
+        internal static ConferenceManager ConfManager;
         internal static bool UpdatePlayers = true;
 
         internal static Dictionary<string, ChatPlayerItem> AllPlayers = new Dictionary<string, ChatPlayerItem>();
@@ -133,7 +138,10 @@ namespace LegendaryClient.Logic
         internal static void ChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
         {
             if (AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
+            {
                 AllPlayers[msg.From.User].Messages.Add(AllPlayers[msg.From.User].Username + ": " + msg.Body);
+                MainWin.FlashWindow();
+            }
         }
 
         internal static void ChatClientConnect(object sender)
@@ -151,15 +159,14 @@ namespace LegendaryClient.Logic
             ChatClient.Presence(CurrentPresence, "<body>" +
                 "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
                 "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
-                "<wins>" + 500 + "</wins>" +
-                "<leaves>52</leaves>" +
-                (LoginPacket.AllSummonerData.SummonerLevel.Level >= 30 ?
+                "<wins>" + AmountOfWins + "</wins>" +
+                (IsRanked ?
                 "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
                 "<rankedLeagueName>Urgot&apos;s Patriots</rankedLeagueName>" +
                 "<rankedLeagueDivision>I</rankedLeagueDivision>" +
                 "<rankedLeagueTier>BRONZE</rankedLeagueTier>" +
                 "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
-                "<rankedWins>287</rankedWins>" : "") +
+                "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
                 "<gameStatus>" + ((false == true) ? "inGame" : "outOfGame") + "</gameStatus>" +
                 "<statusMsg>" + CurrentStatus + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
             "</body>", null, 0);
@@ -277,6 +284,43 @@ namespace LegendaryClient.Logic
             }
         }
 
+        //Why do you even have to do this, riot?
+        internal static string GetObfuscatedChatroomName(string Subject, string Type)
+        {
+            int a = 0;
+            byte[] data = System.Text.Encoding.UTF8.GetBytes(Subject);
+            byte[] result;
+            SHA1 sha = new SHA1CryptoServiceProvider();
+            result = sha.ComputeHash(data);
+            string obfuscatedName = "";
+            int incrementThing = 0;
+            while (incrementThing < result.Length)
+            {
+                a = result[incrementThing];
+                obfuscatedName = obfuscatedName + Convert.ToString(((uint)(a & 240) >> 4), 16);
+                obfuscatedName = obfuscatedName + Convert.ToString(a & 15, 16);
+                incrementThing = incrementThing + 1;
+            }
+            obfuscatedName = Regex.Replace(obfuscatedName, @"/\s+/gx", "");
+            obfuscatedName = Regex.Replace(obfuscatedName, @"/[^a-zA-Z0-9_~]/gx", "");
+            return Type + "~" + obfuscatedName;
+        }
+
+        internal static string GetChatroomJID(string ObfuscatedChatroomName, string password, bool IsTypePublic)
+        {
+            string ConferenceName = "conference";
+
+            if (!IsTypePublic)
+                ConferenceName = "sec";
+
+            if (String.IsNullOrEmpty(password))
+                ConferenceName = "lvl";
+
+            return ObfuscatedChatroomName + "@" + ConferenceName + ".pvp.net";
+        }
+
+        internal static int AmountOfWins; //Calculate wins for presence
+        internal static bool IsRanked;
         #endregion
 
         internal static Grid MainGrid;
@@ -524,6 +568,8 @@ namespace LegendaryClient.Logic
             MainWin.Topmost = false; // important
             MainWin.Focus();         // important
         }
+
+
     }
 
     public class ChatPlayerItem
