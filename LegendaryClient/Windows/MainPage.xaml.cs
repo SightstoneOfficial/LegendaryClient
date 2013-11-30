@@ -604,20 +604,14 @@ namespace LegendaryClient.Windows
             }
 
             EndOfGamePage test = new EndOfGamePage(fakeStats);
-            Client.OverlayContainer.Visibility = Visibility.Visible;
-            Client.OverlayContainer.Content = test.Content;
+            //Client.OverlayContainer.Visibility = Visibility.Visible;
+            //Client.OverlayContainer.Content = test.Content;
 
-            string ObfuscatedName = Client.GetObfuscatedChatroomName(Textbox.Text, ChatPrefixes.Arranging_Game);
-            string JID = Client.GetChatroomJID(ObfuscatedName, "", false);
+            string ObfuscatedName = Client.GetObfuscatedChatroomName(Textbox.Text, ChatPrefixes.Public);
+            string JID = Client.GetChatroomJID(ObfuscatedName, "", true);
             Room newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
             newRoom.Join();
-
-            ;
-        }
-
-        private void awer_Click(object sender, RoutedEventArgs e)
-        {
-            Client.PVPNet.AcceptInviteForMatchmakingGame(Convert.ToDouble(Textbox.Text));
         }
     }
 }

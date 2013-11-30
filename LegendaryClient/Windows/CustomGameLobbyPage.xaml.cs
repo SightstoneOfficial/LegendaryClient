@@ -1,4 +1,5 @@
-﻿using LegendaryClient.Controls;
+﻿using jabber.connection;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Game;
@@ -18,9 +19,10 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class CustomGameLobbyPage : Page
     {
-        private bool LaunchedTeamSelect = false;
+        private bool LaunchedTeamSelect;
         private bool IsOwner;
         private double OptomisticLock;
+        private bool HasConnectedToChat;
 
         public CustomGameLobbyPage()
         {
@@ -40,6 +42,17 @@ namespace LegendaryClient.Windows
             if (message.GetType() == typeof(GameDTO))
             {
                 GameDTO dto = message as GameDTO;
+                if (!HasConnectedToChat)
+                {
+                    HasConnectedToChat = true;
+                    string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.RoomName, ChatPrefixes.Arranging_Practice);
+                    string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);
+                    Room newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+                    newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                    newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+                    newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                    newRoom.Join(dto.RoomPassword);
+                }
                 if (dto.GameState == "TEAM_SELECT")
                 {
                     OptomisticLock = dto.OptimisticLock;
@@ -106,6 +119,16 @@ namespace LegendaryClient.Windows
                     }
                 }
             }
+        }
+
+        void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
+        {
+            ;
+        }
+
+        void newRoom_OnRoomMessage(object sender, jabber.protocol.client.Message msg)
+        {
+            ;
         }
 
         private CustomLobbyPlayer RenderPlayer(PlayerParticipant player, bool IsOwner)

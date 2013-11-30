@@ -34,7 +34,7 @@
         <ListView Style="{StaticResource NoFocus}" x:Name="ChatListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" Margin="0,65,0,0" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="ChatListView_SelectionChanged">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                    <GridViewColumn />
+                    <GridViewColumn Width="250" />
                 </GridView>
             </ListView.View>
         </ListView>

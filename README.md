@@ -10,6 +10,21 @@ Prerequisites
 
 Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version, but it will retrieve your current data from your current installation
 
+Build it yourself
+=================
+
+You need these DLLS:
+
+* Awesomium
+* MahApps.Metro
+* SharpZipLib
+* Sqlite
+
+You must compile these DLLS yourself:
+
+* https://github.com/bladecoding/Jabber-net
+* https://github.com/Snowl/PVPNetConnect
+
 In-Client Screenshots (90-100)% complete
 =====================
 
@@ -24,8 +39,8 @@ Still-in Progress Screenshots
 ![Chat](http://i.imgur.com/cRUiLxn.jpg)
 ![Queue](http://i.imgur.com/BuDdtyd.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
-![ChampSelect](http://i.imgur.com/HTnoXqX.jpg)
-![ChampSelect2](http://i.imgur.com/T4VCs0K.png)
+![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)
+![ChampSelect2](http://i.imgur.com/FBK2dw3.jpg)
 ![CustomGameCreate](http://i.imgur.com/AZ74Y7L.png)
 ![SearchCustomGames](http://i.imgur.com/1j5Yw8c.png)
 ![CustomGameLobby](http://i.imgur.com/Ht64V8n.png)

@@ -156,7 +156,12 @@ namespace LegendaryClient.Logic
 
         internal static void SetChatHover()
         {
-            ChatClient.Presence(CurrentPresence, "<body>" +
+            ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
+        }
+
+        internal static string GetPresence()
+        {
+            return "<body>" +
                 "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
                 "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
                 "<wins>" + AmountOfWins + "</wins>" +
@@ -169,7 +174,7 @@ namespace LegendaryClient.Logic
                 "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
                 "<gameStatus>" + ((false == true) ? "inGame" : "outOfGame") + "</gameStatus>" +
                 "<statusMsg>" + CurrentStatus + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
-            "</body>", null, 0);
+            "</body>";
         }
 
         internal static void RostManager_OnRosterItem(object sender, jabber.protocol.iq.Item ri)
@@ -287,19 +292,19 @@ namespace LegendaryClient.Logic
         //Why do you even have to do this, riot?
         internal static string GetObfuscatedChatroomName(string Subject, string Type)
         {
-            int a = 0;
+            int bitHack = 0;
             byte[] data = System.Text.Encoding.UTF8.GetBytes(Subject);
             byte[] result;
             SHA1 sha = new SHA1CryptoServiceProvider();
             result = sha.ComputeHash(data);
             string obfuscatedName = "";
-            int incrementThing = 0;
-            while (incrementThing < result.Length)
+            int incrementValue = 0;
+            while (incrementValue < result.Length)
             {
-                a = result[incrementThing];
-                obfuscatedName = obfuscatedName + Convert.ToString(((uint)(a & 240) >> 4), 16);
-                obfuscatedName = obfuscatedName + Convert.ToString(a & 15, 16);
-                incrementThing = incrementThing + 1;
+                bitHack = result[incrementValue];
+                obfuscatedName = obfuscatedName + Convert.ToString(((uint)(bitHack & 240) >> 4), 16);
+                obfuscatedName = obfuscatedName + Convert.ToString(bitHack & 15, 16);
+                incrementValue = incrementValue + 1;
             }
             obfuscatedName = Regex.Replace(obfuscatedName, @"/\s+/gx", "");
             obfuscatedName = Regex.Replace(obfuscatedName, @"/[^a-zA-Z0-9_~]/gx", "");
@@ -308,15 +313,13 @@ namespace LegendaryClient.Logic
 
         internal static string GetChatroomJID(string ObfuscatedChatroomName, string password, bool IsTypePublic)
         {
-            string ConferenceName = "conference";
-
             if (!IsTypePublic)
-                ConferenceName = "sec";
+                return ObfuscatedChatroomName + "@sec.pvp.net";
 
             if (String.IsNullOrEmpty(password))
-                ConferenceName = "lvl";
+                return ObfuscatedChatroomName + "@lvl.pvp.net";
 
-            return ObfuscatedChatroomName + "@" + ConferenceName + ".pvp.net";
+            return ObfuscatedChatroomName + "@conference.pvp.net";
         }
 
         internal static int AmountOfWins; //Calculate wins for presence

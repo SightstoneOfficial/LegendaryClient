@@ -1,4 +1,5 @@
-﻿using LegendaryClient.Controls;
+﻿using jabber.connection;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
@@ -37,6 +38,7 @@ namespace LegendaryClient.Windows
         private int counter;
         private bool HasLockedIn = false;
         private bool DevMode = false;
+        private Room Chatroom;
 
         public ChampSelectPage()
         {
@@ -104,6 +106,14 @@ namespace LegendaryClient.Windows
 
             LatestDto = latestDTO;
 
+            string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
+            Chatroom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+            Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            Chatroom.OnPresenceError += Chatroom_OnPresenceError;
+            Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
+            Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
+            Chatroom.Join(latestDTO.RoomPassword);
+
             ChampionSelectListView.Visibility = Visibility.Visible;
             AfterChampionSelectGrid.Visibility = Visibility.Hidden;
 
@@ -131,6 +141,11 @@ namespace LegendaryClient.Windows
                     ChampionSelectListView.Items.Add(item);
                 }
             }
+        }
+
+        void Chatroom_OnPresenceError(Room room, jabber.protocol.client.Presence pres)
+        {
+            ;
         }
 
         private void CountdownTimer_Tick(object sender, EventArgs e)
@@ -617,8 +632,35 @@ namespace LegendaryClient.Windows
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                Chatroom.PublicMessage(ChatTextBox.Text);
                 ChatTextBox.Text = "";
             }
+        }
+
+        void Chatroom_OnRoomMessage(object sender, jabber.protocol.client.Message msg)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if (msg.Body != "This room is not anonymous")
+                {
+                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.From.Resource + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                }
+            }));
+        }
+
+        void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            }));
         }
     }
 }
