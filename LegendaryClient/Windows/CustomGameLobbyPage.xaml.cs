@@ -1,6 +1,7 @@
 ﻿using jabber.connection;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
@@ -45,6 +46,12 @@ namespace LegendaryClient.Windows
             if (message.GetType() == typeof(GameDTO))
             {
                 GameDTO dto = message as GameDTO;
+                BaseMap map = BaseMap.GetMap(dto.MapId);
+                MapLabel.Content = map.DisplayName;
+                ModeLabel.Content = TitleCaseString(dto.GameMode);
+                GameTypeConfigDTO configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
+                TypeLabel.Content = GetGameMode(configType.Id);
+                SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
                 if (!HasConnectedToChat)
                 {
                     HasConnectedToChat = true;
@@ -208,6 +215,62 @@ namespace LegendaryClient.Windows
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.StartChampionSelection(Client.GameID, OptomisticLock);
+        }
+
+        public static string GetGameMode(int i)
+        {
+            switch (i)
+            {
+                case 1:
+                    return "Blind Pick";
+
+                case 3:
+                    return "No Ban Draft";
+
+                case 4:
+                    return "All Random";
+
+                case 5:
+                    return "Open Pick";
+
+                case 6:
+                    return "Tournament Draft";
+
+                case 7:
+                    return "Blind Draft";
+
+                case 11:
+                    return "Infinite Time Blind Pick";
+
+                case 12:
+                    return "Captain Pick";
+
+                case 14:
+                    return "One for All";
+
+                default:
+                    return Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;
+            }
+        }
+
+        public static String TitleCaseString(String s)
+        {
+            if (s == null) return s;
+
+            String[] words = s.Split(' ');
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i].Length == 0) continue;
+
+                Char firstChar = Char.ToUpper(words[i][0]);
+                String rest = "";
+                if (words[i].Length > 1)
+                {
+                    rest = words[i].Substring(1).ToLower();
+                }
+                words[i] = firstChar + rest;
+            }
+            return String.Join(" ", words);
         }
     }
 

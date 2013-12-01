@@ -96,7 +96,7 @@ namespace LegendaryClient.Windows
                 Client.OverlayContainer.Visibility = Visibility.Visible;
                 return;
             }
-            configType = Client.LoginPacket.GameTypeConfigs[latestDTO.GameTypeConfigId - 1]; //TODO: Fix this
+            configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDTO.GameTypeConfigId);
             counter = configType.MainPickTimerDuration - 5; //Seems to be a 5 second inconsistancy with riot and what they actually provide
             CountdownTimer = new System.Windows.Forms.Timer();
             CountdownTimer.Tick += new EventHandler(CountdownTimer_Tick);

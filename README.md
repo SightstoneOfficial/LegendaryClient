@@ -36,14 +36,14 @@ In-Client Screenshots (90-100)% complete
 Still-in Progress Screenshots 
 =============================
 
-![Chat](http://i.imgur.com/cRUiLxn.jpg)
+![Chat](http://i.imgur.com/9ktGmam.jpg)
 ![Queue](http://i.imgur.com/BuDdtyd.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)
 ![ChampSelect2](http://i.imgur.com/FBK2dw3.jpg)
-![CustomGameCreate](http://i.imgur.com/AZ74Y7L.png)
+![CustomGameCreate](http://i.imgur.com/vig8S6P.png)
 ![SearchCustomGames](http://i.imgur.com/1j5Yw8c.png)
-![CustomGameLobby](http://i.imgur.com/Ht64V8n.png)
+![CustomGameLobby](http://i.imgur.com/Z345BSm.png)
 ![Profile](http://i.imgur.com/BSLpms5.png)
 ![Settings](http://i.imgur.com/ZTktZTY.png)
 

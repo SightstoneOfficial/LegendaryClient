@@ -24,6 +24,7 @@ namespace LegendaryClient
 
             Client.InfoLabel = InfoLabel;
             Client.PVPNet = new PVPNetConnection();
+            Client.PVPNet.KeepDelegatesOnLogout = false;
             Client.PVPNet.OnError += Client.PVPNet_OnError;
 
             Steel = new Accent("Steel", new Uri("pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml"));

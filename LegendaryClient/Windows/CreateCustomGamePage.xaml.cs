@@ -64,7 +64,7 @@ namespace LegendaryClient.Windows
                         gameConfig.GameTypeConfig = 11;
                         break;
 
-                    case "Blind Duplicate Pick (5X vs 5Y)":
+                    case "One for All":
                         gameConfig.GameTypeConfig = 14;
                         break;
 
