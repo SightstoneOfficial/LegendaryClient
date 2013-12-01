@@ -49,12 +49,7 @@ namespace LegendaryClient.Windows.Profile
                 foreach (PlayerGameStats Game in GameStats)
                 {
                     RecentGameOverview item = new RecentGameOverview();
-                    var uriSource =
-                        new Uri(
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                                champions.GetChampion((int)Math.Round(Game.ChampionId)).iconPath),
-                            UriKind.Absolute);
-                    item.ChampionImage.Source = new BitmapImage(uriSource);
+                    item.ChampionImage.Source = champions.GetChampion((int)Math.Round(Game.ChampionId)).icon;
                     bool Lose = false;
                     double Deaths = 0;
                     double Kills = 0;
@@ -130,37 +125,28 @@ namespace LegendaryClient.Windows.Profile
                 ItemsListView.Items.Clear();
 
                 //Add self to game players
-                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion((int)Math.Round(stats.ChampionId)).iconPath), UriKind.Absolute);
                 Image img = new Image();
                 img.Width = 58;
                 img.Height = 58;
-                img.Source = new BitmapImage(uriSource);
+                img.Source = champions.GetChampion((int)Math.Round(stats.ChampionId)).icon;
                 BlueListView.Items.Add(img);
 
                 foreach (FellowPlayerInfo info in stats.FellowPlayers)
                 {
                     if (info.TeamId == stats.TeamId)
                     {
-                        uriSource = new Uri(
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                                    champions.GetChampion((int)Math.Round(info.ChampionId)).iconPath),
-                                UriKind.Absolute);
                         Image i = new Image();
                         i.Width = 58;
                         i.Height = 58;
-                        i.Source = new BitmapImage(uriSource);
+                        i.Source = champions.GetChampion((int)Math.Round(info.ChampionId)).icon;
                         BlueListView.Items.Add(i);
                     }
                     else
                     {
-                        uriSource = new Uri(
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                                    champions.GetChampion((int)Math.Round(info.ChampionId)).iconPath),
-                                UriKind.Absolute);
                         Image i = new Image();
                         i.Width = 58;
                         i.Height = 58;
-                        i.Source = new BitmapImage(uriSource);
+                        i.Source = champions.GetChampion((int)Math.Round(info.ChampionId)).icon;
                         PurpleListView.Items.Add(i);
                     }
                 }
@@ -184,7 +170,7 @@ namespace LegendaryClient.Windows.Profile
                                 Key = TitleCaseString(Stat.StatType.Replace('_', ' ')),
                                 Value = Stat.Value.ToString()
                             };
-                            uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"), UriKind.Absolute);
+                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"), UriKind.Absolute);
                             img = new Image();
                             img.Width = 58;
                             img.Height = 58;

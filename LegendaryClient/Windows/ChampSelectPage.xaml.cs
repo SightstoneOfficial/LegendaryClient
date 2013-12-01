@@ -130,8 +130,7 @@ namespace LegendaryClient.Windows
                     //Add to ListView
                     ListViewItem item = new ListViewItem();
                     ChampionImage championImage = new ChampionImage();
-                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(champ.ChampionId).iconPath), UriKind.Absolute);
-                    championImage.ChampImage.Source = new BitmapImage(uriSource);
+                    championImage.ChampImage.Source = champions.GetChampion(champ.ChampionId).icon;
                     if (champ.FreeToPlay)
                         championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
                     championImage.Width = 64;
@@ -228,8 +227,7 @@ namespace LegendaryClient.Windows
                             Image champImage = new Image();
                             champImage.Height = 58;
                             champImage.Width = 58;
-                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(x.ChampionId).iconPath), UriKind.Absolute);
-                            champImage.Source = new BitmapImage(uriSource);
+                            champImage.Source = champions.GetChampion(x.ChampionId).icon;
                             if (x.TeamId == 100)
                             {
                                 BlueBanListView.Items.Add(champImage);
@@ -440,8 +438,7 @@ namespace LegendaryClient.Windows
             ChampSelectPlayer control = new ChampSelectPlayer();
             if (selection.ChampionId != 0)
             {
-                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(selection.ChampionId).iconPath), UriKind.Absolute);
-                control.ChampionImage.Source = new BitmapImage(uriSource);
+                control.ChampionImage.Source = champions.GetChampion(selection.ChampionId).icon;
             }
             if (selection.Spell1Id != 0)
             {

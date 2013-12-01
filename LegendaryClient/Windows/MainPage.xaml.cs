@@ -304,9 +304,8 @@ namespace LegendaryClient.Windows
                             }
                         }
                         ChampSelectPlayer control = new ChampSelectPlayer();
-                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championId).iconPath), UriKind.Absolute);
-                        control.ChampionImage.Source = new BitmapImage(uriSource);
-                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
+                        control.ChampionImage.Source = champions.GetChampion(championId).icon;
+                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
                         control.SummonerSpell1.Source = new BitmapImage(uriSource);
                         uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
                         control.SummonerSpell2.Source = new BitmapImage(uriSource);
@@ -379,11 +378,7 @@ namespace LegendaryClient.Windows
                         Image champImage = new Image();
                         champImage.Height = 58;
                         champImage.Width = 58;
-                        var uriSource =
-                            new Uri(
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                                    champions.GetChampion(cid).iconPath), UriKind.Absolute);
-                        champImage.Source = new BitmapImage(uriSource);
+                        champImage.Source = champions.GetChampion(cid).icon;
                         item.Content = champImage;
                         if (teamId == 100)
                         {

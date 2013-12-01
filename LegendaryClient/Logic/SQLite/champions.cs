@@ -1,4 +1,5 @@
-﻿namespace LegendaryClient.Logic.SQLite
+﻿using System.Windows.Media.Imaging;
+namespace LegendaryClient.Logic.SQLite
 {
     public class champions
     {
@@ -11,6 +12,8 @@
         public string title { get; set; }
 
         public string iconPath { get; set; }
+
+        public BitmapImage icon { get; set; }
 
         public string portraitPath { get; set; }
 

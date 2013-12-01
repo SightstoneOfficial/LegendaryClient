@@ -93,7 +93,6 @@
             <sys:String>Online</sys:String>
             <sys:String>Busy</sys:String>
             <sys:String>Invisible</sys:String>
-            <sys:String>Offline</sys:String>
         </x:Array>
     </Application.Resources>
 </Application>

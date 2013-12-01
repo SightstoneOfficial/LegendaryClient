@@ -32,6 +32,11 @@ namespace LegendaryClient.Windows
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
                                 orderby s.name
                                 select s).ToList();
+            foreach (champions c in Client.Champions)
+            {
+                var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath), UriKind.Absolute);
+                c.icon = new BitmapImage(Source);
+            }
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
                                     orderby s.name
                                     select s).ToList();

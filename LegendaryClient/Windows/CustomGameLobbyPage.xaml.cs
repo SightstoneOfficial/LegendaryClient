@@ -46,14 +46,16 @@ namespace LegendaryClient.Windows
             if (message.GetType() == typeof(GameDTO))
             {
                 GameDTO dto = message as GameDTO;
-                BaseMap map = BaseMap.GetMap(dto.MapId);
-                MapLabel.Content = map.DisplayName;
-                ModeLabel.Content = TitleCaseString(dto.GameMode);
-                GameTypeConfigDTO configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
-                TypeLabel.Content = GetGameMode(configType.Id);
-                SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
                 if (!HasConnectedToChat)
                 {
+                    //Run once
+                    BaseMap map = BaseMap.GetMap(dto.MapId);
+                    MapLabel.Content = map.DisplayName;
+                    ModeLabel.Content = TitleCaseString(dto.GameMode);
+                    GameTypeConfigDTO configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
+                    TypeLabel.Content = GetGameMode(configType.Id);
+                    SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
+
                     HasConnectedToChat = true;
                     string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
                     string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);

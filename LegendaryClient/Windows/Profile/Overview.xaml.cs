@@ -68,8 +68,7 @@ namespace LegendaryClient.Windows.Profile
                         player.LevelLabel.Visibility = System.Windows.Visibility.Hidden;
                         player.PlayerName.Content = Champion.displayName;
                         player.PlayerStatus.Content = info.TotalGamesPlayed + " games played";
-                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Champion.id).iconPath), UriKind.Absolute);
-                        player.ProfileImage.Source = new BitmapImage(uriSource);
+                        player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
                         TopChampionsListView.Items.Add(player);
                     }
                 }
