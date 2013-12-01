@@ -45,7 +45,7 @@
             </RichTextBox.Resources>
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="5,0,0,10" Width="700" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Button x:Name="ChatButton" Content="Send" Margin="720,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="130" IsDefault="True" Height="24" />
+        <Button x:Name="ChatButton" Content="Send" Margin="720,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="130" IsDefault="True" Height="24" Click="ChatButton_Click" />
 
     </Grid>
 </Page>

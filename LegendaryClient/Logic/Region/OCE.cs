@@ -46,9 +46,9 @@ namespace LegendaryClient.Logic.Region
             get { return new Uri("http://spectator.oc1.lol.riotgames.com/observer-mode/rest/"); }
         }
 
-        public override Uri SpectatorIpAddress
+        public override string SpectatorIpAddress
         {
-            get { return new Uri("192.64.169.29:80"); }
+            get { return "192.64.169.29"; }
         }
     }
 }

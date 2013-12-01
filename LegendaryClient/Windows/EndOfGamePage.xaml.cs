@@ -28,9 +28,9 @@ namespace LegendaryClient.Windows
             ModeLabel.Content = Statistics.GameMode;
             TypeLabel.Content = Statistics.GameType;
 
-            championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
-            SkinImage.Source = new BitmapImage(uriSource);
+            //championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
+            //var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
+            //SkinImage.Source = new BitmapImage(uriSource);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

@@ -12,8 +12,9 @@
             <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" />
             <Button x:Name="ProfileButton" Content="profile" Click="ProfileButton_Click" />
             <Button x:Name="ShopButton" Content="shop" Click="ShopButton_Click" />
-            <Button x:Name="ReplayButton" Content="replays" Click="ReplayButton_Click" />
+            <!--<Button x:Name="ReplayButton" Content="replays" Click="ReplayButton_Click" />-->
             <Button x:Name="SettingsButton" Content="settings" Click="SettingsButton_Click" />
+            <Button x:Name="LogoutButton" Content="logout" Click="LogoutButton_Click" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.WindowCommands>
 

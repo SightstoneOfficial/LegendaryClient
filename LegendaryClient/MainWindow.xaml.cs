@@ -90,11 +90,11 @@ namespace LegendaryClient
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            //if (Client.IsLoggedIn)
-            //{
-            SettingsPage SettingsPage = new SettingsPage();
-            Client.SwitchPage(SettingsPage);
-            //}
+            if (Client.IsLoggedIn)
+            {
+                SettingsPage SettingsPage = new SettingsPage();
+                Client.SwitchPage(SettingsPage);
+            }
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
@@ -108,6 +108,23 @@ namespace LegendaryClient
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
+        }
+
+        #pragma warning disable 4014 //Code does not need to be awaited
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Client.IsLoggedIn)
+            {
+                LoginPage page = new LoginPage();
+                Client.Pages.Clear();
+                Client.PVPNet.QuitGame();
+                Client.PVPNet.Disconnect();
+                Client.ChatClient.Close();
+                Client.IsLoggedIn = false;
+                Client.NotificationContainer.Visibility = Visibility.Hidden;
+                Client.Container.Margin = new Thickness(0, 0, 0, 0);
+                Client.SwitchPage(page);
+            }
         }
     }
 }

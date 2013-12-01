@@ -26,7 +26,7 @@
         <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Gold V" HorizontalAlignment="Left" Margin="215,62,0,0" VerticalAlignment="Top" Foreground="Black" FontWeight="Bold" />
         <Label x:Name="PlayerAimProgressLabel" Style="{x:Null}" Content="100LP" HorizontalAlignment="Left" Margin="320,62,0,0" VerticalAlignment="Top" Foreground="Black" FontWeight="Bold" />
 
-        <TextBox x:Name="BroadcastMessage" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,20,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="#7F000000" BorderBrush="{x:Null}" Foreground="White" />
+        <TextBox x:Name="BroadcastMessage" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,20,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="#7F000000" BorderBrush="{x:Null}" Foreground="White" />
 
         <TabControl HorizontalAlignment="Stretch" Margin="10,110,10,10" VerticalAlignment="Stretch" Width="1000">
             <TabItem Header="Featured Games">
@@ -74,7 +74,7 @@
                         </ListView.ItemsPanel>
                     </ListView>
                     <Button x:Name="PrevGameButton" Content="Prev" HorizontalAlignment="Left" Margin="200,0,0,10" VerticalAlignment="Bottom" Width="75" Height="40" Click="PrevGameButton_Click" IsEnabled="False" />
-                    <Button Content="Spectate" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="200" Height="40" />
+                    <Button x:Name="SpectateButton" Content="Spectate" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="200" Height="40" Click="SpectateButton_Click" />
                     <Button x:Name="NextGameButton" Content="Next" HorizontalAlignment="Right" Margin="0,0,200,10" VerticalAlignment="Bottom" Width="75" Height="40" Click="NextGameButton_Click" />
                 </Grid>
             </TabItem>
@@ -91,6 +91,5 @@
             </TabItem>
         </TabControl>
         <Button x:Name="fakeend" Content="Fake end of game" HorizontalAlignment="Left" Margin="1145,111,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click"/>
-        <TextBox x:Name="Textbox" HorizontalAlignment="Left" Height="23" Margin="1131,44,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Page>

@@ -7,6 +7,7 @@ using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
+using PVPNetConnect.RiotObjects.Platform.Broadcast;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
@@ -50,6 +51,7 @@ namespace LegendaryClient.Windows
 
         private void GotPlayerData(LoginDataPacket packet)
         {
+            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             AllSummonerData PlayerData = packet.AllSummonerData;
             SummonerNameLabel.Content = PlayerData.Summoner.Name;
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
@@ -411,6 +413,42 @@ namespace LegendaryClient.Windows
             catch { MMRLabel.Content = "N/A"; }
         }
 
+        private void SpectateButton_Click(object sender, RoutedEventArgs e)
+        {
+            var objectGame = gameList[SelectedGame];
+            Dictionary<string, object> SpectatorGame = objectGame as Dictionary<string, object>;
+            string key = "";
+            int gameId = 0;
+            string platformId = "";
+
+            foreach (KeyValuePair<string, object> pair in SpectatorGame)
+            {
+                if (pair.Key == "gameId")
+                {
+                    gameId = (int)pair.Value;
+                }
+                if (pair.Key == "observers")
+                {
+                    Dictionary<string, object> keyArray = pair.Value as Dictionary<string, object>;
+                    foreach (KeyValuePair<string, object> keyArrayPair in keyArray)
+                    {
+                        if (keyArrayPair.Key == "encryptionKey")
+                        {
+                            key = keyArrayPair.Value as string;
+                        }
+                    }
+                }
+                if (pair.Key == "platformId")
+                {
+                    platformId = pair.Value as string;
+                }
+            }
+
+            BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
+
+            Client.LaunchSpectatorGame(region.SpectatorIpAddress, key, gameId, platformId);
+        }
+
         private void NextGameButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             NextGameButton.IsEnabled = true;
@@ -471,6 +509,29 @@ namespace LegendaryClient.Windows
         private void HoverLabel_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             HoverLabel.Opacity = 0;
+        }
+
+        void PVPNet_OnMessageReceived(object sender, object message)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if (message is BroadcastNotification)
+                {
+                    BroadcastNotification notif = message as BroadcastNotification;
+                    if (notif.BroadcastMessages != null)
+                    {
+                        Dictionary<string, object> Message = notif.BroadcastMessages[0] as Dictionary<string, object>;
+                        if ((bool)Message["active"] == true)
+                        {
+                            BroadcastMessage.Text = Convert.ToString(Message["content"]);
+                        }
+                        else
+                        {
+                            BroadcastMessage.Text = "";
+                        }
+                    }
+                }
+            }));
         }
 
         private void fakeend_Click(object sender, RoutedEventArgs e)
@@ -604,14 +665,8 @@ namespace LegendaryClient.Windows
             }
 
             EndOfGamePage test = new EndOfGamePage(fakeStats);
-            //Client.OverlayContainer.Visibility = Visibility.Visible;
-            //Client.OverlayContainer.Content = test.Content;
-
-            string ObfuscatedName = Client.GetObfuscatedChatroomName(Textbox.Text, ChatPrefixes.Public);
-            string JID = Client.GetChatroomJID(ObfuscatedName, "", true);
-            Room newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
-            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            newRoom.Join();
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+            Client.OverlayContainer.Content = test.Content;
         }
     }
 }

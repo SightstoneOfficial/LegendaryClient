@@ -11,6 +11,7 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
 using PVPNetConnect.RiotObjects.Platform.Messaging;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -465,10 +466,6 @@ namespace LegendaryClient.Logic
                     StoreAccountBalanceNotification newBalance = (StoreAccountBalanceNotification)message;
                     InfoLabel.Content = "IP: " + newBalance.Ip + " ∙ RP: " + newBalance.Rp;
                 }
-                else if (message is BroadcastNotification)
-                {
-                    ;
-                }
                 else if (message is GameNotification)
                 {
                     GameNotification notification = (GameNotification)message;
@@ -489,6 +486,13 @@ namespace LegendaryClient.Logic
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                     Client.ClearPage(new CustomGameLobbyPage());
                     Client.SwitchPage(new MainPage());
+                }
+                else if (message is EndOfGameStats)
+                {
+                    EndOfGameStats stats = message as EndOfGameStats;
+                    EndOfGamePage EndOfGame = new EndOfGamePage(stats);
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                    Client.OverlayContainer.Content = EndOfGame.Content;
                 }
             }));
         }
@@ -541,9 +545,31 @@ namespace LegendaryClient.Logic
             }
         }
 
-        internal static void LaunchGame(bool Spectator)
+        internal static string GetGameDirectory()
         {
-            string GameDirectory = Path.Combine(ExecutingDirectory, "RADS", "solutions", "lol_game_client_sln", "releases", "0.0.1.0", "deploy");
+            string Directory = Path.Combine(ExecutingDirectory, "RADS", "solutions", "lol_game_client_sln", "releases");
+
+            DirectoryInfo dInfo = new DirectoryInfo(Directory);
+            DirectoryInfo[] subdirs = null;
+            try
+            {
+                subdirs = dInfo.GetDirectories();
+            }
+            catch { return "0.0.0"; }
+            string latestVersion = "0.0.1";
+            foreach (DirectoryInfo info in subdirs)
+            {
+                latestVersion = info.Name;
+            }
+
+            Directory = Path.Combine(Directory, latestVersion, "deploy");
+
+            return Directory;
+        }
+
+        internal static void LaunchGame()
+        {
+            string GameDirectory = GetGameDirectory();
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;
@@ -553,6 +579,21 @@ namespace LegendaryClient.Logic
                 CurrentGame.ServerPort + " " +
                 CurrentGame.EncryptionKey + " " +
                 CurrentGame.SummonerId + "\"";
+            p.Start();
+        }
+
+        internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)
+        {
+            string GameDirectory = GetGameDirectory();
+
+            var p = new System.Diagnostics.Process();
+            p.StartInfo.WorkingDirectory = GameDirectory;
+            p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            p.StartInfo.Arguments = "\"8393\" \"LoLLauncher.exe\" \"\" \"spectator "
+                + SpectatorServer + " " 
+                + Key + " "
+                + GameId + " "
+                + Platform + "\"";
             p.Start();
         }
 

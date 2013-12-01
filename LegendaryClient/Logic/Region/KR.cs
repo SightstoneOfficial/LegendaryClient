@@ -47,9 +47,9 @@ namespace LegendaryClient.Logic.Region
             get { return new Uri("http://QFKR1PROXY.kassad.in:8088/observer-mode/rest/"); }
         }
 
-        public override Uri SpectatorIpAddress
+        public override string SpectatorIpAddress
         {
-            get { return new Uri("110.45.191.11:80"); }
+            get { return "110.45.191.11"; }
         }
     }
 }

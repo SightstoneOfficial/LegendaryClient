@@ -9,6 +9,8 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -23,6 +25,7 @@ namespace LegendaryClient.Windows
         private bool IsOwner;
         private double OptomisticLock;
         private bool HasConnectedToChat;
+        private Room newRoom;
 
         public CustomGameLobbyPage()
         {
@@ -45,9 +48,9 @@ namespace LegendaryClient.Windows
                 if (!HasConnectedToChat)
                 {
                     HasConnectedToChat = true;
-                    string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.RoomName, ChatPrefixes.Arranging_Practice);
+                    string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
                     string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);
-                    Room newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+                    newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
                     newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
                     newRoom.OnRoomMessage += newRoom_OnRoomMessage;
                     newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
@@ -123,12 +126,40 @@ namespace LegendaryClient.Windows
 
         void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
-            ;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            }));
         }
 
         void newRoom_OnRoomMessage(object sender, jabber.protocol.client.Message msg)
         {
-            ;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if (msg.Body != "This room is not anonymous")
+                {
+                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.From.Resource + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                }
+            }));
+        }
+
+        private void ChatButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+            tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+            tr.Text = ChatTextBox.Text + Environment.NewLine;
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+            newRoom.PublicMessage(ChatTextBox.Text);
+            ChatTextBox.Text = "";
         }
 
         private CustomLobbyPlayer RenderPlayer(PlayerParticipant player, bool IsOwner)

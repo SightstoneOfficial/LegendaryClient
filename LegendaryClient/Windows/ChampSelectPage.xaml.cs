@@ -38,6 +38,7 @@ namespace LegendaryClient.Windows
         private int counter;
         private bool HasLockedIn = false;
         private bool DevMode = false;
+        private bool HasLaunchedGame = false;
         private Room Chatroom;
 
         public ChampSelectPage()
@@ -95,7 +96,7 @@ namespace LegendaryClient.Windows
                 Client.OverlayContainer.Visibility = Visibility.Visible;
                 return;
             }
-            configType = Client.LoginPacket.GameTypeConfigs[latestDTO.GameTypeConfigId - 1];
+            configType = Client.LoginPacket.GameTypeConfigs[latestDTO.GameTypeConfigId - 1]; //TODO: Fix this
             counter = configType.MainPickTimerDuration - 5; //Seems to be a 5 second inconsistancy with riot and what they actually provide
             CountdownTimer = new System.Windows.Forms.Timer();
             CountdownTimer.Tick += new EventHandler(CountdownTimer_Tick);
@@ -109,7 +110,6 @@ namespace LegendaryClient.Windows
             string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
             Chatroom = Client.ConfManager.GetRoom(new jabber.JID(JID));
             Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            Chatroom.OnPresenceError += Chatroom_OnPresenceError;
             Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
             Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
             Chatroom.Join(latestDTO.RoomPassword);
@@ -141,11 +141,6 @@ namespace LegendaryClient.Windows
                     ChampionSelectListView.Items.Add(item);
                 }
             }
-        }
-
-        void Chatroom_OnPresenceError(Room room, jabber.protocol.client.Presence pres)
-        {
-            ;
         }
 
         private void CountdownTimer_Tick(object sender, EventArgs e)
@@ -361,6 +356,22 @@ namespace LegendaryClient.Windows
                 PlayerCredentialsDto dto = message as PlayerCredentialsDto;
                 Client.CurrentGame = dto;
                 Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+
+                if (!HasLaunchedGame)
+                {
+                    HasLaunchedGame = true;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        Client.SwitchPage(new MainPage());
+                        if (CountdownTimer != null)
+                        {
+                            CountdownTimer.Stop();
+                        }
+                        Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+                        Client.ClearPage(this);
+                    }));
+                    Client.LaunchGame();
+                }
                 #endregion Launching Game
             }
         }
