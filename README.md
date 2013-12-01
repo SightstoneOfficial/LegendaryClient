@@ -45,6 +45,7 @@ Still-in Progress Screenshots
 ![SearchCustomGames](http://i.imgur.com/1j5Yw8c.png)
 ![CustomGameLobby](http://i.imgur.com/Z345BSm.png)
 ![Profile](http://i.imgur.com/BSLpms5.png)
+![Skins](http://i.imgur.com/Lsz3x4d.jpg)
 ![Settings](http://i.imgur.com/ZTktZTY.png)
 
 Other Features

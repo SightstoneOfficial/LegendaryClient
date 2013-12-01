@@ -64,6 +64,17 @@ namespace LegendaryClient.Windows
                 OverviewHeader.IsSelected = true;
             }
 
+            if (Summoner.InternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName)
+            {
+                ChampionsTab.Visibility = System.Windows.Visibility.Visible;
+                SkinsTab.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+            {
+                ChampionsTab.Visibility = System.Windows.Visibility.Hidden;
+                SkinsTab.Visibility = System.Windows.Visibility.Hidden;
+            }
+
             MatchHistory history = MatchHistoryContainer.Content as MatchHistory;
             history.Update(Summoner.AcctId);
 
@@ -76,6 +87,23 @@ namespace LegendaryClient.Windows
             public object Key { get; set; }
 
             public object Value { get; set; }
+        }
+
+        private void TabContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch ((string)((TabItem)TabContainer.SelectedItem).Header)
+            {
+                case "Champions":
+                    Champions champions = ChampionsContainer.Content as Champions;
+                    champions.Update();
+                    break;
+                case "Skins":
+                    Skins skins = SkinsContainer.Content as Skins;
+                    skins.Update();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

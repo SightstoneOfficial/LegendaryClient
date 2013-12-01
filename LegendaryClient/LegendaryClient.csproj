@@ -106,6 +106,12 @@
     <Compile Include="Controls\NewsItem.xaml.cs">
       <DependentUpon>NewsItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ProfileChampionImage.xaml.cs">
+      <DependentUpon>ProfileChampionImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProfileSkinImage.xaml.cs">
+      <DependentUpon>ProfileSkinImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\QueuePopPlayer.xaml.cs">
       <DependentUpon>QueuePopPlayer.xaml</DependentUpon>
     </Compile>
@@ -270,6 +276,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NewsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ProfileChampionImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ProfileSkinImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -24,7 +24,7 @@
         <Label x:Name="SummonerLevelLabel" Content="Level 0" HorizontalAlignment="Left" Margin="80,40,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
         <TextBox x:Name="SearchTextBox" HorizontalAlignment="Right" Height="23" Margin="0,30,90,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="180" />
         <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Right" Margin="0,31,10,0" VerticalAlignment="Top" Width="75" IsDefault="True" Click="SearchButton_Click" />
-        <TabControl HorizontalAlignment="Stretch" Margin="10,100,0,0" VerticalAlignment="Stretch">
+        <TabControl x:Name="TabContainer" HorizontalAlignment="Stretch" Margin="10,100,0,0" VerticalAlignment="Stretch" SelectionChanged="TabContainer_SelectionChanged">
             <TabItem x:Name="InGameHeader" Header="Ingame" Visibility="Collapsed">
                 <Frame x:Name="InGameContainer">
                 </Frame>
@@ -49,11 +49,11 @@
                 <Frame x:Name="MasteriesContainer">
                 </Frame>
             </TabItem>
-            <TabItem Header="Champions">
+            <TabItem x:Name="ChampionsTab" Header="Champions">
                 <Frame x:Name="ChampionsContainer">
                 </Frame>
             </TabItem>
-            <TabItem Header="Skins">
+            <TabItem x:Name="SkinsTab" Header="Skins">
                 <Frame x:Name="SkinsContainer">
                 </Frame>
             </TabItem>

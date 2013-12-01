@@ -82,7 +82,8 @@ namespace LegendaryClient.Windows
 
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
             GameDTO latestDTO = await Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState, Client.ChampSelectDTO.PickTurn);
-            if (latestDTO.GameTypeConfigId < 1 || latestDTO.GameTypeConfigId > Client.LoginPacket.GameTypeConfigs.Count) //Invalid config... abort!
+            configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDTO.GameTypeConfigId);
+            if (configType == null) //Invalid config... abort!
             {
                 Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                 await Client.PVPNet.QuitGame();
@@ -96,7 +97,6 @@ namespace LegendaryClient.Windows
                 Client.OverlayContainer.Visibility = Visibility.Visible;
                 return;
             }
-            configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDTO.GameTypeConfigId);
             counter = configType.MainPickTimerDuration - 5; //Seems to be a 5 second inconsistancy with riot and what they actually provide
             CountdownTimer = new System.Windows.Forms.Timer();
             CountdownTimer.Tick += new EventHandler(CountdownTimer_Tick);
@@ -521,7 +521,7 @@ namespace LegendaryClient.Windows
                         championSkins skin = championSkins.GetSkin((int)item.Tag);
                         await Client.PVPNet.SelectChampionSkin(skin.championId, skin.id);
                         TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "Selected " + skin.name + " as skin" + Environment.NewLine;
+                        tr.Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     }
                 }

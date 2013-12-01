@@ -184,7 +184,6 @@ namespace LegendaryClient.Windows.Profile
                     }
                 }
 
-                //Resize Columns
                 if (double.IsNaN(GameKeyHeader.Width))
                     GameKeyHeader.Width = GameKeyHeader.ActualWidth;
                 if (double.IsNaN(GameValueHeader.Width))

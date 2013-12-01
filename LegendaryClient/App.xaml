@@ -94,5 +94,13 @@
             <sys:String>Busy</sys:String>
             <sys:String>Invisible</sys:String>
         </x:Array>
+
+        <x:Array x:Key="ChampionComboBoxFilters" Type="sys:String"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>All</sys:String>
+            <sys:String>Available</sys:String>
+            <sys:String>Owned</sys:String>
+            <sys:String>Not Owned</sys:String>
+        </x:Array>
     </Application.Resources>
 </Application>
