@@ -37,7 +37,7 @@
         </Grid.Background>
         <ContentControl x:Name="OverlayContainer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" Panel.ZIndex="1" Visibility="Hidden" />
         <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" />
-        <ContentControl x:Name="ChatContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" Margin="0,0,0,50" />
-        <ContentControl x:Name="NotificationContainer" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Visibility="Hidden" Height="50" />
+        <ContentControl x:Name="ChatContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" Margin="0,0,0,40" />
+        <ContentControl x:Name="NotificationContainer" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Visibility="Hidden" Height="40" />
     </Grid>
 </Controls:MetroWindow>

@@ -30,21 +30,27 @@ namespace LegendaryClient.Windows
 
         private void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            NotificationChatPlayer item = (NotificationChatPlayer)ChatListView.SelectedItem;
-            if (Client.ChatItem == null)
+            if (ChatListView.SelectedIndex != -1)
             {
-                Client.ChatItem = new ChatItem();
-                Client.MainGrid.Children.Add(Client.ChatItem);
+                NotificationChatPlayer item = (NotificationChatPlayer)ChatListView.SelectedItem;
+                if (Client.ChatItem == null)
+                {
+                    Client.ChatItem = new ChatItem();
+                    Client.MainGrid.Children.Add(Client.ChatItem);
+                }
+ 
+                Client.ChatItem.PlayerLabelName.Content = item.PlayerLabelName.Content;
+
+                Client.ChatItem.Update();
+
+                Client.ChatItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                Client.ChatItem.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+
+                Point relativePoint = item.TransformToAncestor(Client.MainWin).Transform(new Point(0, 0));
+
+                Client.ChatItem.Margin = new System.Windows.Thickness(relativePoint.X, 0, 0, 40);
+                ChatListView.SelectedIndex = -1;
             }
-
-            Client.ChatItem.PlayerLabelName.Content = item.PlayerLabelName.Content;
-
-            Client.ChatItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            Client.ChatItem.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-            
-            Point relativePoint = item.TransformToAncestor(Client.MainWin).Transform(new Point(0, 0));
-
-            Client.ChatItem.Margin = new System.Windows.Thickness(relativePoint.X, 0, 0, 50);
         }
     }
 }

@@ -145,6 +145,7 @@ namespace LegendaryClient.Windows
             if (ChatListView.SelectedIndex != -1)
             {
                 ChatPlayer player = (ChatPlayer)ChatListView.SelectedItem;
+                ChatListView.SelectedIndex = -1;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
                 foreach (NotificationChatPlayer x in Client.ChatListView.Items)
                 {
@@ -156,7 +157,6 @@ namespace LegendaryClient.Windows
                 ChatPlayer.Margin = new Thickness(1, 0, 1, 0);
                 ChatPlayer.PlayerLabelName.Content = playerItem.Username;
                 Client.ChatListView.Items.Add(ChatPlayer);
-                ChatListView.SelectedIndex = -1;
             }
         }
     }

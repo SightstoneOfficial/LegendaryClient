@@ -9,18 +9,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PVPNetConnect", "..\PVPNetC
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_DisablePatch|Any CPU = Debug_DisablePatch|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Debug_DisablePatch|Any CPU.ActiveCfg = Debug_DisablePatch|Any CPU
+		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Debug_DisablePatch|Any CPU.Build.0 = Debug_DisablePatch|Any CPU
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.Debug_DisablePatch|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.Debug_DisablePatch|Any CPU.Build.0 = Debug|Any CPU
 		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Debug_DisablePatch|Any CPU.ActiveCfg = Debug|Any CPU
+		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Debug_DisablePatch|Any CPU.Build.0 = Debug|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -28,8 +35,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

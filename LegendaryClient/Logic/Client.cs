@@ -140,7 +140,7 @@ namespace LegendaryClient.Logic
         {
             if (AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
             {
-                AllPlayers[msg.From.User].Messages.Add(AllPlayers[msg.From.User].Username + ": " + msg.Body);
+                AllPlayers[msg.From.User].Messages.Add(AllPlayers[msg.From.User].Username + "|" + msg.Body);
                 MainWin.FlashWindow();
             }
         }

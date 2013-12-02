@@ -35,6 +35,7 @@ namespace LegendaryClient.Windows
             {
                 LogTextBox("Starting Patcher");
 
+#if !Nopatch
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += (o, e) =>
                 {
@@ -219,6 +220,8 @@ namespace LegendaryClient.Windows
                 }
 
                 #endregion
+
+#endif
 
                 FinishPatching();
             });

@@ -28,6 +28,12 @@ namespace LegendaryClient.Controls
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Client.ChatItem != null)
+            {
+                Client.MainGrid.Children.Remove(Client.ChatItem);
+                Client.ChatItem = null;
+            }
+
             Client.ChatListView.Items.Remove(this);
         }
     }
