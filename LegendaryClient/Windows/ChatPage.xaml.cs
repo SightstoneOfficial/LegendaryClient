@@ -144,15 +144,19 @@ namespace LegendaryClient.Windows
         {
             if (ChatListView.SelectedIndex != -1)
             {
-                /*if (ChatListView.SelectedItem is PlayerChatBox)
-                    return;
-                ChatPlayer player = (ChatPlayer) ChatListView.SelectedItem;
+                ChatPlayer player = (ChatPlayer)ChatListView.SelectedItem;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
-                NotificationPlayer ChatPlayer = new NotificationPlayer();
+                foreach (NotificationChatPlayer x in Client.ChatListView.Items)
+                {
+                    if ((string)x.PlayerLabelName.Content == playerItem.Username)
+                        return;
+                }
+                NotificationChatPlayer ChatPlayer = new NotificationChatPlayer();
                 ChatPlayer.Tag = playerItem;
-                ChatPlayer.Margin = new Thickness(5, 0, 5, 0);
-                ChatPlayer.PlayerNameLabel.Content = playerItem.Username;
-                Client.ChatListView.Items.Add(ChatPlayer);*/
+                ChatPlayer.Margin = new Thickness(1, 0, 1, 0);
+                ChatPlayer.PlayerLabelName.Content = playerItem.Username;
+                Client.ChatListView.Items.Add(ChatPlayer);
+                ChatListView.SelectedIndex = -1;
             }
         }
     }

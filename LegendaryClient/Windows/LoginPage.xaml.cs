@@ -145,7 +145,7 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 Client.NotificationContainer.Visibility = System.Windows.Visibility.Visible;
-                Client.Container.Margin = new Thickness(0, 0, 0, 30);
+                Client.Container.Margin = new Thickness(0, 0, 0, 50);
 
                 Client.ChatClient = new JabberClient(); //Setup chat
                 Client.ChatClient.AutoReconnect = 30;

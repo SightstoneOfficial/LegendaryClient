@@ -85,6 +85,9 @@
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ChatItem.xaml.cs">
+      <DependentUpon>ChatItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ChatPlayer.xaml.cs">
       <DependentUpon>ChatPlayer.xaml</DependentUpon>
     </Compile>
@@ -105,6 +108,9 @@
     </Compile>
     <Compile Include="Controls\NewsItem.xaml.cs">
       <DependentUpon>NewsItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NotificationChatPlayer.xaml.cs">
+      <DependentUpon>NotificationChatPlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProfileChampionImage.xaml.cs">
       <DependentUpon>ProfileChampionImage.xaml</DependentUpon>
@@ -251,6 +257,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ChatItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ChatPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -276,6 +286,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NewsItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NotificationChatPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -471,6 +485,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="chat.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -334,6 +334,7 @@ namespace LegendaryClient.Logic
         internal static ContentControl ChatContainer;
         internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
+        internal static ChatItem ChatItem;
 
         internal static Image MainPageProfileImage;
 

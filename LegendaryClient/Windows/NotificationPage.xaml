@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
-      d:DesignHeight="30" d:DesignWidth="800"
+      d:DesignHeight="50" d:DesignWidth="800"
 	Title="NotificationPage">
 
     <Page.Resources>
@@ -14,13 +14,17 @@
     </Page.Resources>
 
     <Grid Background="#CC576573">
-        <ListView x:Name="ChatListView" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="1,0,250,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}">
+        <ListView x:Name="ChatListView" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="1,0,250,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="ChatListView_SelectionChanged">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button x:Name="ChatButton" Content="Chat" HorizontalAlignment="Right" Margin="0,2,5,2" VerticalAlignment="Stretch" Width="75" Click="ChatButton_Click"/>
+        <Button x:Name="ChatButton" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,5,4" VerticalAlignment="Stretch" Width="75" Click="ChatButton_Click">
+            <StackPanel>
+                <Image Source="/LegendaryClient;component/chat.png" Stretch="None" />
+            </StackPanel>
+        </Button>
     </Grid>
 </Page>
