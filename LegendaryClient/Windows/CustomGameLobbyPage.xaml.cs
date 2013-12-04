@@ -46,90 +46,87 @@ namespace LegendaryClient.Windows
             if (message.GetType() == typeof(GameDTO))
             {
                 GameDTO dto = message as GameDTO;
-                if (!HasConnectedToChat)
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
-                    //Run once
-                    BaseMap map = BaseMap.GetMap(dto.MapId);
-                    MapLabel.Content = map.DisplayName;
-                    ModeLabel.Content = TitleCaseString(dto.GameMode);
-                    GameTypeConfigDTO configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
-                    TypeLabel.Content = GetGameMode(configType.Id);
-                    SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
-
-                    HasConnectedToChat = true;
-                    string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
-                    string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);
-                    newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
-                    newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-                    newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-                    newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-                    newRoom.Join(dto.RoomPassword);
-                }
-                if (dto.GameState == "TEAM_SELECT")
-                {
-                    OptomisticLock = dto.OptimisticLock;
-                    LaunchedTeamSelect = false;
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
+                    if (!HasConnectedToChat)
                     {
-                        BlueTeamListView.Items.Clear();
-                        PurpleTeamListView.Items.Clear();
+                        //Run once
+                        BaseMap map = BaseMap.GetMap(dto.MapId);
+                        MapLabel.Content = map.DisplayName;
+                        ModeLabel.Content = TitleCaseString(dto.GameMode);
+                        GameTypeConfigDTO configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
+                        TypeLabel.Content = GetGameMode(configType.Id);
+                        SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
 
-                        List<Participant> AllParticipants = new List<Participant>(dto.TeamOne.ToArray());
-                        AllParticipants.AddRange(dto.TeamTwo);
+                        HasConnectedToChat = true;
+                        string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
+                        string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);
+                        newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+                        newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                        newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+                        newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                        newRoom.Join(dto.RoomPassword);
+                    }
+                    if (dto.GameState == "TEAM_SELECT")
+                    {
+                        OptomisticLock = dto.OptimisticLock;
+                        LaunchedTeamSelect = false;
+                            BlueTeamListView.Items.Clear();
+                            PurpleTeamListView.Items.Clear();
 
-                        int i = 0;
-                        bool PurpleSide = false;
+                            List<Participant> AllParticipants = new List<Participant>(dto.TeamOne.ToArray());
+                            AllParticipants.AddRange(dto.TeamTwo);
 
-                        foreach (Participant playerTeam in AllParticipants)
-                        {
-                            i++;
-                            CustomLobbyPlayer lobbyPlayer = new CustomLobbyPlayer();
-                            if (playerTeam is PlayerParticipant)
+                            int i = 0;
+                            bool PurpleSide = false;
+
+                            foreach (Participant playerTeam in AllParticipants)
                             {
-                                PlayerParticipant player = playerTeam as PlayerParticipant;
-                                lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
-                                StartGameButton.IsEnabled = IsOwner;
-
-                                if (Client.Whitelist.Count > 0)
+                                i++;
+                                CustomLobbyPlayer lobbyPlayer = new CustomLobbyPlayer();
+                                if (playerTeam is PlayerParticipant)
                                 {
-                                    if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
+                                    PlayerParticipant player = playerTeam as PlayerParticipant;
+                                    lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
+                                    IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
+                                    StartGameButton.IsEnabled = IsOwner;
+
+                                    if (Client.Whitelist.Count > 0)
                                     {
-                                        await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                        if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
+                                        {
+                                            await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                        }
                                     }
                                 }
-                            }
 
-                            if (i > dto.TeamOne.Count)
-                            {
-                                i = 0;
-                                PurpleSide = true;
-                            }
+                                if (i > dto.TeamOne.Count)
+                                {
+                                    i = 0;
+                                    PurpleSide = true;
+                                }
 
-                            if (!PurpleSide)
-                            {
-                                BlueTeamListView.Items.Add(lobbyPlayer);
+                                if (!PurpleSide)
+                                {
+                                    BlueTeamListView.Items.Add(lobbyPlayer);
+                                }
+                                else
+                                {
+                                    PurpleTeamListView.Items.Add(lobbyPlayer);
+                                }
                             }
-                            else
-                            {
-                                PurpleTeamListView.Items.Add(lobbyPlayer);
-                            }
-                        }
-                    }));
-                }
-                else if (dto.GameState == "CHAMP_SELECT" || dto.GameState == "PRE_CHAMP_SELECT")
-                {
-                    if (!LaunchedTeamSelect)
+                    }
+                    else if (dto.GameState == "CHAMP_SELECT" || dto.GameState == "PRE_CHAMP_SELECT")
                     {
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        if (!LaunchedTeamSelect)
                         {
                             Client.ChampSelectDTO = dto;
                             Client.LastPageContent = Client.Container.Content;
                             Client.SwitchPage(new ChampSelectPage());
-                        }));
-                        LaunchedTeamSelect = true;
+                            LaunchedTeamSelect = true;
+                        }
                     }
-                }
+                }));
             }
         }
 

@@ -13,6 +13,7 @@ namespace LegendaryClient.Windows
         public NotificationPage()
         {
             InitializeComponent();
+            Client.StatusLabel = StatusLabel;
             Client.ChatListView = ChatListView;
         }
 
@@ -38,6 +39,8 @@ namespace LegendaryClient.Windows
                     Client.ChatItem = new ChatItem();
                     Client.MainGrid.Children.Add(Client.ChatItem);
                 }
+
+                Panel.SetZIndex(Client.ChatItem, 3);
  
                 Client.ChatItem.PlayerLabelName.Content = item.PlayerLabelName.Content;
 

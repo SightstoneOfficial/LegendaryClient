@@ -1,4 +1,5 @@
-﻿using LegendaryClient.Controls;
+﻿using jabber.protocol.client;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Matchmaking;

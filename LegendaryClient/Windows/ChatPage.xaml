@@ -17,13 +17,10 @@
         </Style>
         <ContextMenu x:Key="PlayerChatMenu">
             <MenuItem Header="Invite to Game" />
-            <MenuItem Header="Send Message" />
-            <MenuItem Header="View Profile" />
+            <MenuItem x:Name="ProfileItem" Header="View Profile" Click="ProfileItem_Click" />
             <MenuItem Header="Invite to Chat" />
             <MenuItem Header="Remove Friend" />
             <MenuItem Header="Ignore Friend" />
-            <MenuItem Header="Move Friend to Group" />
-            <MenuItem Header="Edit Note" />
             <MenuItem Header="Spectate Game" />
         </ContextMenu>
     </Page.Resources>

@@ -15,7 +15,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ProfilePage : Page
     {
-        public ProfilePage()
+        public ProfilePage(string Name = "")
         {
             InitializeComponent();
             InGameContainer.Content = new Ingame();
@@ -26,7 +26,14 @@ namespace LegendaryClient.Windows
             RunesContainer.Content = new Runes();
             MasteriesContainer.Content = new Masteries();
             SkinsContainer.Content = new Skins();
-            GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+            if (String.IsNullOrEmpty(Name))
+            {
+                GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+            }
+            else
+            {
+                GetSummonerProfile(Name);
+            }
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)

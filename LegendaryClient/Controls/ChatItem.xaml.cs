@@ -109,7 +109,7 @@ namespace LegendaryClient.Controls
             tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
             ChatText.ScrollToEnd();
 
-            Client.ChatClient.Message(JID, ChatTextBox.Text);
+            Client.ChatClient.Message(JID, Environment.NewLine + ChatTextBox.Text);
 
             ChatTextBox.Text = "";
         }

@@ -290,6 +290,16 @@ namespace LegendaryClient.Logic
             }
         }
 
+        internal static void Message(string To, string Message, ChatSubjects Subject)
+        {
+            Message msg = new Message(Client.ChatClient.Document);
+            msg.Type = MessageType.normal;
+            msg.To = To + "@pvp.net";
+            msg.Subject = ((ChatSubjects)Subject).ToString();
+            msg.Body = Message;
+            Client.ChatClient.Write(msg);
+        }
+
         //Why do you even have to do this, riot?
         internal static string GetObfuscatedChatroomName(string Subject, string Type)
         {
@@ -328,9 +338,10 @@ namespace LegendaryClient.Logic
         #endregion
 
         internal static Grid MainGrid;
+        internal static Label StatusLabel;
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
-
+        internal static Button PlayButton;
         internal static ContentControl ChatContainer;
         internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
@@ -466,6 +477,8 @@ namespace LegendaryClient.Logic
                 {
                     StoreAccountBalanceNotification newBalance = (StoreAccountBalanceNotification)message;
                     InfoLabel.Content = "IP: " + newBalance.Ip + " ∙ RP: " + newBalance.Rp;
+                    Client.LoginPacket.IpBalance = newBalance.Ip;
+                    Client.LoginPacket.RpBalance = newBalance.Rp;
                 }
                 else if (message is GameNotification)
                 {
@@ -580,7 +593,7 @@ namespace LegendaryClient.Logic
                 CurrentGame.ServerPort + " " +
                 CurrentGame.EncryptionKey + " " +
                 CurrentGame.SummonerId + "\"";
-            p.Start();
+            //p.Start();
         }
 
         internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)
@@ -613,8 +626,6 @@ namespace LegendaryClient.Logic
             MainWin.Topmost = false; // important
             MainWin.Focus();         // important
         }
-
-
     }
 
     public class ChatPlayerItem

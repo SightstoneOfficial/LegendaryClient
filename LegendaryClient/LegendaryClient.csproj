@@ -104,6 +104,9 @@
     <Compile Include="Controls\CustomLobbyPlayer.xaml.cs">
       <DependentUpon>CustomLobbyPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EndOfGamePlayer.xaml.cs">
+      <DependentUpon>EndOfGamePlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\HoverOverLabel.xaml.cs">
       <DependentUpon>HoverOverLabel.xaml</DependentUpon>
     </Compile>
@@ -137,6 +140,7 @@
     <Compile Include="Controls\TextBoxWatermarked.cs" />
     <Compile Include="Controls\WindowsExensions.cs" />
     <Compile Include="Logic\ChatPrefixes.cs" />
+    <Compile Include="Logic\ChatSubjects.cs" />
     <Compile Include="Logic\JSON\Items.cs" />
     <Compile Include="Logic\Maps\Map1.cs" />
     <Compile Include="Logic\Maps\Map10.cs" />
@@ -276,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\CustomLobbyPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\EndOfGamePlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

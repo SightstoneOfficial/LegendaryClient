@@ -129,7 +129,6 @@ namespace LegendaryClient.Windows
             }
 
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
-            //LocationLabel.Content = "Region: " + Client.LoginPacket.CompetitiveRegion;
             int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);
             ProfileImage.Source = new BitmapImage(uriSource);
@@ -144,7 +143,7 @@ namespace LegendaryClient.Windows
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
             {
                 string newsJSON = "";
-                using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
+                using (WebClient client = new WebClient())
                 {
                     newsJSON = client.DownloadString(region.NewsAddress);
                 }
@@ -232,7 +231,7 @@ namespace LegendaryClient.Windows
             worker.DoWork += delegate(object s, DoWorkEventArgs args)
             {
                 string spectatorJSON = "";
-                using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
+                using (WebClient client = new WebClient())
                 {
                     spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
                 }
@@ -397,7 +396,7 @@ namespace LegendaryClient.Windows
                 BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
                 string spectatorJSON = "";
                 string url = region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName + "/" + GameId + "/token";
-                using (WebClient client = new WebClient()) // WebClient class inherits IDisposable
+                using (WebClient client = new WebClient())
                 {
                     spectatorJSON = client.DownloadString(url);
                 }
@@ -531,137 +530,7 @@ namespace LegendaryClient.Windows
 
         private void fakeend_Click(object sender, RoutedEventArgs e)
         {
-            EndOfGameStats fakeStats = new EndOfGameStats();
-            fakeStats.TalentPointsGained = 0;
-            fakeStats.Ranked = false;
-            fakeStats.LeveledUp = false;
-            fakeStats.SkinIndex = 4007;
-            fakeStats.QueueBonusEarned = 14;
-            fakeStats.GameType = "MATCHED_GAME";
-            fakeStats.ExperienceEarned = 0;
-            fakeStats.ImbalancedTeamsNoPoints = false;
-            fakeStats.BasePoints = 32;
-            fakeStats.ReportGameId = 22036662;
-            fakeStats.Difficulty = null;
-            fakeStats.GameLength = 1411;
-            fakeStats.BoostXpEarned = 0;
-            fakeStats.Invalid = false;
-            fakeStats.OtherTeamInfo = null;
-            fakeStats.RoomName = "endGame22036662";
-            fakeStats.CustomMinutesLeftToday = 120;
-            fakeStats.UserId = 200006292;
-            fakeStats.CoOpVsAiMinutesLeftToday = 180;
-            fakeStats.LoyaltyBoostIpEarned = 0;
-            fakeStats.RpEarned = 0;
-            fakeStats.CompletionBonusPoints = 0;
-            fakeStats.CoOpVsAiMsecsUntilReset = 0;
-            fakeStats.BoostIpEarned = 0;
-            fakeStats.ExperienceTotal = 23;
-            fakeStats.GameId = 125432223;
-            fakeStats.TimeUntilNextFirstWinBonus = 0;
-            fakeStats.LoyaltyBoostXpEarned = 0;
-            fakeStats.RoomPassword = "CCebDkpkYhVjrSRB";
-            fakeStats.Elo = 0;
-            fakeStats.IpEarned = 0;
-            fakeStats.FirstWinBonus = 0;
-            fakeStats.SendStatsToTournamentProvider = false;
-            fakeStats.EloChange = 0;
-            fakeStats.GameMode = "ARAM";
-            fakeStats.QueueType = "ARAM_UNRANKED_5x5";
-            fakeStats.OdinBonusIp = 0;
-            fakeStats.IpTotal = 295513;
-            fakeStats.CustomMsecsUntilReset = -1;
-            fakeStats.TeamPlayerParticipantStats = new List<PlayerParticipantStatsSummary>();
-            fakeStats.OtherTeamPlayerParticipantStats = new List<PlayerParticipantStatsSummary>();
-            
-            for (int i = 0; i < 10; i++)
-            {
-                PlayerParticipantStatsSummary fakePlayer = new PlayerParticipantStatsSummary();
-                fakePlayer.SkinName = "Lucian";
-                fakePlayer.GameId = 22035552;
-                fakePlayer.ProfileIconId = 550;
-                fakePlayer.Elo = 0;
-                fakePlayer.Leaver = false;
-                fakePlayer.Leaves = 3;
-                fakePlayer.TeamId = 200;
-                fakePlayer.EloChange = 0;
-                fakePlayer.Level = 30;
-                fakePlayer.BotPlayer = false;
-                fakePlayer.UserId = 331458;
-                fakePlayer.Spell2Id = 4;
-                fakePlayer.Spell1Id = 21;
-                fakePlayer.Losses = 59;
-                fakePlayer.SummonerName = "AO li AO";
-                fakePlayer.Wins = 64;
-                fakePlayer.Statistics = new List<RawStatDTO>();
-                RawStatDTO Item0 = new RawStatDTO();
-                Item0.StatTypeName = "ITEM0";
-                Item0.Value = 3181;
-                fakePlayer.Statistics.Add(Item0);
-                RawStatDTO Item1 = new RawStatDTO();
-                Item1.StatTypeName = "ITEM1";
-                Item1.Value = 3046;
-                fakePlayer.Statistics.Add(Item1);
-                RawStatDTO Item2 = new RawStatDTO();
-                Item2.StatTypeName = "ITEM2";
-                Item2.Value = 3006;
-                fakePlayer.Statistics.Add(Item2);
-                RawStatDTO Item3 = new RawStatDTO();
-                Item3.StatTypeName = "ITEM3";
-                Item3.Value = 3031;
-                fakePlayer.Statistics.Add(Item3);
-                RawStatDTO Item4 = new RawStatDTO();
-                Item4.StatTypeName = "ITEM4";
-                Item4.Value = 1055;
-                fakePlayer.Statistics.Add(Item4);
-                RawStatDTO Item5 = new RawStatDTO();
-                Item5.StatTypeName = "ITEM5";
-                Item5.Value = 1036;
-                fakePlayer.Statistics.Add(Item5);
-                RawStatDTO Item6 = new RawStatDTO();
-                Item6.StatTypeName = "ITEM6";
-                Item6.Value = 0;
-                fakePlayer.Statistics.Add(Item6);
-                RawStatDTO GOLDEARNED = new RawStatDTO();
-                GOLDEARNED.StatTypeName = "GOLD_EARNED";
-                GOLDEARNED.Value = 11736;
-                fakePlayer.Statistics.Add(GOLDEARNED);
-                RawStatDTO Assists = new RawStatDTO();
-                Assists.StatTypeName = "ASSISTS";
-                Assists.Value = 23;
-                RawStatDTO NUMDEATHS = new RawStatDTO();
-                NUMDEATHS.StatTypeName = "NUM_DEATHS";
-                NUMDEATHS.Value = 23;
-                fakePlayer.Statistics.Add(NUMDEATHS);
-                RawStatDTO LEVEL = new RawStatDTO();
-                LEVEL.StatTypeName = "LEVEL";
-                LEVEL.Value = 17;
-                fakePlayer.Statistics.Add(LEVEL);
-                RawStatDTO CHAMPIONSKILLED = new RawStatDTO();
-                CHAMPIONSKILLED.StatTypeName = "CHAMPIONS_KILLED";
-                CHAMPIONSKILLED.Value = 7;
-                fakePlayer.Statistics.Add(CHAMPIONSKILLED);
-                RawStatDTO MinionsKILLED = new RawStatDTO();
-                MinionsKILLED.StatTypeName = "MINIONS_KILLED";
-                MinionsKILLED.Value = 60;
-                fakePlayer.Statistics.Add(MinionsKILLED);
-                RawStatDTO WIN = new RawStatDTO();
-                WIN.StatTypeName = "WIN";
-                WIN.Value = 1;
-                fakePlayer.Statistics.Add(WIN);
-                if (i > 5)
-                {
-                    fakeStats.OtherTeamPlayerParticipantStats.Add(fakePlayer);
-                }
-                else
-                {
-                    fakeStats.TeamPlayerParticipantStats.Add(fakePlayer);
-                }
-            }
-
-            EndOfGamePage test = new EndOfGamePage(fakeStats);
-            Client.OverlayContainer.Visibility = Visibility.Visible;
-            Client.OverlayContainer.Content = test.Content;
+            Client.PVPNet.SimulateEndOfGame();
         }
     }
 }

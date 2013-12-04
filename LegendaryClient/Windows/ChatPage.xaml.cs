@@ -21,6 +21,7 @@ namespace LegendaryClient.Windows
     {
         private static System.Timers.Timer UpdateTimer;
         private LargeChatPlayer PlayerItem;
+        private ChatPlayerItem LastPlayerItem;
 
         public ChatPage()
         {
@@ -147,6 +148,7 @@ namespace LegendaryClient.Windows
                 ChatPlayer player = (ChatPlayer)ChatListView.SelectedItem;
                 ChatListView.SelectedIndex = -1;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
+                LastPlayerItem = playerItem;
                 foreach (NotificationChatPlayer x in Client.ChatListView.Items)
                 {
                     if ((string)x.PlayerLabelName.Content == playerItem.Username)
@@ -158,6 +160,11 @@ namespace LegendaryClient.Windows
                 ChatPlayer.PlayerLabelName.Content = playerItem.Username;
                 Client.ChatListView.Items.Add(ChatPlayer);
             }
+        }
+
+        private void ProfileItem_Click(object sender, RoutedEventArgs e)
+        {
+            Client.SwitchPage(new ProfilePage(LastPlayerItem.Username));
         }
     }
 }

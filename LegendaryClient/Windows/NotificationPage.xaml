@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
-      d:DesignHeight="50" d:DesignWidth="800"
+      d:DesignHeight="40" d:DesignWidth="800"
 	Title="NotificationPage">
 
     <Page.Resources>
@@ -21,7 +21,19 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button x:Name="ChatButton" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,5,4" VerticalAlignment="Stretch" Width="75" Click="ChatButton_Click">
+
+        <Grid HorizontalAlignment="Right" ScrollViewer.VerticalScrollBarVisibility="Disabled" Width="135" Margin="0,0,115,0" Background="#4C000000" Visibility="Collapsed">
+            <Label x:Name="StatusLabel"  Content="In Game" HorizontalAlignment="Center" FontWeight="ExtraLight" Margin="0,0,0,0" VerticalAlignment="Center" FontSize="16"/>
+            <Button Style="{x:Null}" Content="X" HorizontalAlignment="Left" Margin="5,0,0,0" Foreground="Black" VerticalAlignment="Center" Width="25"/>
+            <Button Style="{x:Null}" Content="←" HorizontalAlignment="Right" Margin="0,0,5,0" Foreground="Black" VerticalAlignment="Center" Width="25"/>
+        </Grid>
+
+        <Button x:Name="ChatButton" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,60,4" VerticalAlignment="Stretch" Width="50" Click="ChatButton_Click">
+            <StackPanel>
+                <Image Source="/LegendaryClient;component/chat.png" Stretch="None" />
+            </StackPanel>
+        </Button>
+        <Button x:Name="NotificationButton" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,5,4" VerticalAlignment="Stretch" Width="50" Click="ChatButton_Click">
             <StackPanel>
                 <Image Source="/LegendaryClient;component/chat.png" Stretch="None" />
             </StackPanel>
