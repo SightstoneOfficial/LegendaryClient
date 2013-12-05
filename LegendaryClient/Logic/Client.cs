@@ -593,7 +593,7 @@ namespace LegendaryClient.Logic
                 CurrentGame.ServerPort + " " +
                 CurrentGame.EncryptionKey + " " +
                 CurrentGame.SummonerId + "\"";
-            //p.Start();
+            p.Start();
         }
 
         internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)

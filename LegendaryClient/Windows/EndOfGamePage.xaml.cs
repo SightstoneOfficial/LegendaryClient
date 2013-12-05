@@ -93,6 +93,8 @@ namespace LegendaryClient.Windows
                 PlayersListView.Items.Add(playerStats);
             }
 
+            PlayersListView.Items.Insert(AllParticipants.Count / 2, new Separator());
+
             championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
             var skinSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
             SkinImage.Source = new BitmapImage(skinSource);

@@ -95,9 +95,9 @@ namespace LegendaryClient.Windows.Profile
                     if (champ.FreeToPlay)
                         championImage.FreeToPlayLabel.Visibility = System.Windows.Visibility.Visible;
                     championImage.ChampName.Content = champion.displayName;
-                    if (!champ.Owned)
+                    if (!champ.Owned && !champ.FreeToPlay)
                     {
-                        item.Opacity = 0.7;
+                        championImage.ChampImage.Opacity = 0.5;
                     }
                     item.Tag = champ.ChampionId;
                     item.Content = championImage.Content;

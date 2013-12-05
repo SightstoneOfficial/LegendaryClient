@@ -128,6 +128,11 @@ namespace LegendaryClient.Windows
                 }
             }
 
+            if (packet.ReconnectInfo != null)
+            {
+                ;
+            }
+
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
             int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);

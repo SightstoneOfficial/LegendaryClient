@@ -39,6 +39,13 @@ namespace LegendaryClient.Windows
                     Client.ChatItem = new ChatItem();
                     Client.MainGrid.Children.Add(Client.ChatItem);
                 }
+                else
+                {
+                    Client.MainGrid.Children.Remove(Client.ChatItem);
+                    Client.ChatItem = null;
+                    ChatListView.SelectedIndex = -1;
+                    return;
+                }
 
                 Panel.SetZIndex(Client.ChatItem, 3);
  
