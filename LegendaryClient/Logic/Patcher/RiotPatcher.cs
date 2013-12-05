@@ -76,7 +76,7 @@ namespace LegendaryClient.Logic.Patcher
             return latestVersion;
         }
 
-        void Copy(string sourceDir, string targetDir)
+        private void Copy(string sourceDir, string targetDir)
         {
             Directory.CreateDirectory(targetDir);
 

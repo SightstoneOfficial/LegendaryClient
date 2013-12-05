@@ -48,7 +48,7 @@ namespace LegendaryClient.Windows
                 }
 
                 Panel.SetZIndex(Client.ChatItem, 3);
- 
+
                 Client.ChatItem.PlayerLabelName.Content = item.PlayerLabelName.Content;
 
                 Client.ChatItem.Update();

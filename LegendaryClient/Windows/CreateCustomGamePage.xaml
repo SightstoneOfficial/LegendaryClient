@@ -9,7 +9,7 @@
 
     <Grid>
         <Label Content="Create a Custom Game" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <Label x:Name="MapLabel" Content="Summoners Rift" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="MapLabel" Content="Summoners Rift" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
         <Label x:Name="NameInvalidLabel" Content="Name is not unique!" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Foreground="#FFFF9898" FontWeight="ExtraLight" FontSize="20" Visibility="Hidden" />
         <Label Content="Map" HorizontalAlignment="Left" Margin="10,120,0,420" VerticalAlignment="Center" FontSize="14" FontWeight="ExtraLight" />
         <ListBox x:Name="MapListBox" HorizontalAlignment="Left" Height="140" Margin="10,0,0,120" VerticalAlignment="Center" Width="250" SelectedIndex="0" SelectionChanged="MapListBox_SelectionChanged">

@@ -1,10 +1,6 @@
-﻿using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Patcher;
+﻿using LegendaryClient.Logic;
 using System;
 using System.IO;
-using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows;
@@ -50,6 +46,7 @@ namespace LegendaryClient.Windows
                 };
 
                 #region LegendaryClient
+
                 string CurrentMD5 = GetMd5();
                 LogTextBox("MD5: " + CurrentMD5);
                 string VersionString = "";
@@ -92,7 +89,8 @@ namespace LegendaryClient.Windows
                 }
 #endif
                 LogTextBox("LegendaryClient is up to date");
-                #endregion
+
+                #endregion LegendaryClient
 
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -101,6 +99,7 @@ namespace LegendaryClient.Windows
                 }));
 
                 #region DDragon
+
                 System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
                 if (!Directory.Exists("Assets"))
                 {
@@ -155,7 +154,8 @@ namespace LegendaryClient.Windows
                     VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
                     VersionDDragon.Close();
                 }
-                #endregion
+
+                #endregion DDragon
 
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -164,6 +164,7 @@ namespace LegendaryClient.Windows
                 }));
 
                 #region lol_air_client
+
                 if (!File.Exists(Path.Combine("Assets", "VERSION_AIR")))
                 {
                     var VersionAIR = File.Create(Path.Combine("Assets", "VERSION_AIR"));
@@ -219,7 +220,7 @@ namespace LegendaryClient.Windows
                     }));
                 }
 
-                #endregion
+                #endregion lol_air_client
 
 #endif
 
@@ -245,7 +246,7 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void Copy(string sourceDir, string targetDir)
+        private void Copy(string sourceDir, string targetDir)
         {
             Directory.CreateDirectory(targetDir);
 

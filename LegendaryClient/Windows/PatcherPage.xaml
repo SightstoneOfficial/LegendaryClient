@@ -18,10 +18,10 @@
         <Button x:Name="SkipPatchButton" Content="Skip" HorizontalAlignment="Right" Margin="0,5,10,0" VerticalAlignment="Top" Width="150" Height="50" Click="SkipPatchButton_Click" />
 
         <Label x:Name="CurrentProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,100" VerticalAlignment="Bottom" />
-        <ProgressBar x:Name="CurrentProgressBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,70" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" IsIndeterminate="True"/>
+        <ProgressBar x:Name="CurrentProgressBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,70" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" IsIndeterminate="True" />
         <Label x:Name="TotalProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,40" VerticalAlignment="Bottom" />
-        <ProgressBar x:Name="TotalProgessBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,10" VerticalAlignment="Bottom" Foreground="#FF9C9C9C"/>
+        <ProgressBar x:Name="TotalProgessBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,10" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" />
         <Label x:Name="CurrentStatusLabel" Content="Checking for updates..." HorizontalAlignment="Right" Margin="0,0,10,100" VerticalAlignment="Bottom" />
-        <TextBox x:Name="PatchTextBox" HorizontalAlignment="Stretch" Margin="10,60,10,130" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Stretch" Background="#FF2E2E2E" BorderBrush="{x:Null}" Foreground="White"/>
+        <TextBox x:Name="PatchTextBox" HorizontalAlignment="Stretch" Margin="10,60,10,130" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Stretch" Background="#FF2E2E2E" BorderBrush="{x:Null}" Foreground="White" />
     </Grid>
 </Page>

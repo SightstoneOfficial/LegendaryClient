@@ -20,8 +20,8 @@
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
-        </ListView> 
-        <Label x:Name="TopChampionsLabel" Content="Top Champions (0 Ranked Games)" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Right" Margin="0,265,10,0" VerticalAlignment="Top" Foreground="White"/>
+        </ListView>
+        <Label x:Name="TopChampionsLabel" Content="Top Champions (0 Ranked Games)" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Right" Margin="0,265,10,0" VerticalAlignment="Top" Foreground="White" />
         <ListView x:Name="TopChampionsListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="170" Margin="10,300,10,0" VerticalAlignment="Top" Width="280" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -30,9 +30,9 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Button Content="View Champion Stats" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Right" Margin="0,480,10,0" VerticalAlignment="Top" Height="50" Width="280"/>
+        <Button x:Name="ViewAggregatedStatsButton" Content="View Champion Stats" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Right" Margin="0,480,10,0" VerticalAlignment="Top" Height="50" Width="280" Click="ViewAggregatedStatsButton_Click" />
 
-        <ComboBox x:Name="StatsComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="300" SelectionChanged="StatsComboBox_SelectionChanged"/>
+        <ComboBox x:Name="StatsComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="300" SelectionChanged="StatsComboBox_SelectionChanged" />
         <ListView x:Name="StatsListView" HorizontalAlignment="Stretch" Margin="10,40,300,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">

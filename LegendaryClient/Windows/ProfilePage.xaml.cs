@@ -104,10 +104,12 @@ namespace LegendaryClient.Windows
                     Champions champions = ChampionsContainer.Content as Champions;
                     champions.Update();
                     break;
+
                 case "Skins":
                     Skins skins = SkinsContainer.Content as Skins;
                     skins.Update();
                     break;
+
                 default:
                     break;
             }

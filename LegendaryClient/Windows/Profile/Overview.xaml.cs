@@ -1,19 +1,14 @@
-﻿using LegendaryClient.Logic;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Harassment;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using System.Text.RegularExpressions;
-using PVPNetConnect.RiotObjects.Platform.Harassment;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic.SQLite;
-using System.Windows.Media.Imaging;
-using System.IO;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -22,7 +17,8 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class Overview : Page
     {
-        List<PlayerStatSummary> Summaries = new List<PlayerStatSummary>();
+        private List<PlayerStatSummary> Summaries = new List<PlayerStatSummary>();
+        private double AccId;
 
         public Overview()
         {
@@ -31,6 +27,7 @@ namespace LegendaryClient.Windows.Profile
 
         public async void Update(double SummonerId, double AccountId)
         {
+            AccId = AccountId;
             LcdsResponseString TotalKudos = await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + SummonerId + "}");
             RenderKudos(TotalKudos);
             ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(AccountId, "CLASSIC");
@@ -55,12 +52,14 @@ namespace LegendaryClient.Windows.Profile
 
         public void RenderTopPlayedChampions(ChampionStatInfo[] TopChampions)
         {
+            ViewAggregatedStatsButton.IsEnabled = false;
             TopChampionsListView.Items.Clear();
             if (TopChampions.Count() > 0)
             {
                 TopChampionsLabel.Content = "Top Champions (" + TopChampions[0].TotalGamesPlayed + " Ranked Games)";
                 foreach (ChampionStatInfo info in TopChampions)
                 {
+                    ViewAggregatedStatsButton.IsEnabled = true;
                     if (info.ChampionId != 0.0)
                     {
                         ChatPlayer player = new ChatPlayer();
@@ -128,6 +127,13 @@ namespace LegendaryClient.Windows.Profile
                     ValueHeader.Width = double.NaN;
                 }));
             }
+        }
+
+        private async void ViewAggregatedStatsButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            AggregatedStats x = await Client.PVPNet.GetAggregatedStats(AccId, "CLASSIC", "3");
+            Client.OverlayContainer.Content = new AggregatedStatsOverlay(x).Content;
+            Client.OverlayContainer.Visibility = System.Windows.Visibility.Visible;
         }
 
         public static String TitleCaseString(String s)

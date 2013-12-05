@@ -33,14 +33,14 @@ namespace LegendaryClient.Controls
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
 
-        #endregion
+        #endregion Window Flashing API Stuff
 
         public static void FlashWindow(this Window win, UInt32 count = UInt32.MaxValue)
         {
             win.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 WindowInteropHelper h = new WindowInteropHelper(win);
-            
+
                 FLASHWINFO info = new FLASHWINFO
                 {
                     hwnd = h.Handle,
@@ -48,7 +48,7 @@ namespace LegendaryClient.Controls
                     uCount = count,
                     dwTimeout = 0
                 };
-            
+
                 info.cbSize = Convert.ToUInt32(Marshal.SizeOf(info));
                 FlashWindowEx(ref info);
             }));

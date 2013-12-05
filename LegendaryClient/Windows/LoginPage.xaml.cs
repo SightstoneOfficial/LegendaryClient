@@ -131,7 +131,8 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        #pragma warning disable 4014 //Code does not need to be awaited
+#pragma warning disable 4014 //Code does not need to be awaited
+
         private void GotLoginPacket(LoginDataPacket packet)
         {
             Client.LoginPacket = packet;

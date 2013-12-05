@@ -58,6 +58,7 @@ namespace LegendaryClient.Windows.Profile
                             control.SummonerSpell2.Source = new BitmapImage(uriSource);
 
                             #region Generate Background
+
                             Image m = new Image();
                             Canvas.SetZIndex(m, -2);
                             m.Stretch = Stretch.None;
@@ -79,7 +80,8 @@ namespace LegendaryClient.Windows.Profile
 
                             m.Source = ToWpfBitmap(target);
                             ImageGrid.Children.Add(m);
-                            #endregion
+
+                            #endregion Generate Background
                         }
                     }
 

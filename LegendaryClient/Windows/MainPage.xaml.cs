@@ -1,5 +1,4 @@
-﻿using jabber.connection;
-using LegendaryClient.Controls;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.PlayerSpell;
@@ -72,6 +71,7 @@ namespace LegendaryClient.Windows
                         {
                             string CurrentLP = "0";
                             string CurrentTier = "Gold V";
+                            bool InPromo = false;
                             if (result.SummonerLeagues.Count <= 0)
                             {
                                 CurrentLP = "";
@@ -92,6 +92,7 @@ namespace LegendaryClient.Windows
                                             if (miniSeries != null)
                                             {
                                                 Series = (string)miniSeries["progress"];
+                                                InPromo = true;
                                             }
                                             CurrentLP = (player.LeaguePoints == 100 ? Series : Convert.ToString(player.LeaguePoints));
                                         }
@@ -99,8 +100,16 @@ namespace LegendaryClient.Windows
                                 }
                             }
                             PlayerProgressLabel.Content = CurrentTier;
-                            PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
-                            PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
+                            if (!InPromo)
+                            {
+                                PlayerCurrentProgressLabel.Content = CurrentLP;
+                                PlayerProgressBar.Value = 100;
+                            }
+                            else
+                            {
+                                PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
+                                PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
+                            }
                         }));
                     })
                 );
@@ -510,7 +519,7 @@ namespace LegendaryClient.Windows
             HoverLabel.Opacity = 0;
         }
 
-        void PVPNet_OnMessageReceived(object sender, object message)
+        private void PVPNet_OnMessageReceived(object sender, object message)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {

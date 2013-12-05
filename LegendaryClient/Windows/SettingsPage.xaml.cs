@@ -78,8 +78,9 @@ namespace LegendaryClient.Windows
             ErrorCheckbox.IsChecked = Properties.Settings.Default.SendErrors;
 
             #region AboutTextbox
+
             AboutTextBox.Text =
-@"Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com) 
+@"Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com)
 All rights reserved.
 
 This client is open-source and can be found at http://legendaryclient.com
@@ -107,7 +108,8 @@ zlib
 Donations are accepted at:
 Bitcoin: 1Pq5HWenYoNkHKbKcRjQXshuFeSmkkXH5d
 Litecoin: LWMujPiDyfDoQt33cL6FHmMt78fYmjhzGB";
-            #endregion
+
+            #endregion AboutTextbox
         }
 
         public void InsertDefaultValues()
@@ -141,7 +143,5 @@ Litecoin: LWMujPiDyfDoQt33cL6FHmMt78fYmjhzGB";
             Properties.Settings.Default.SendErrors = (bool)ErrorCheckbox.IsChecked;
             Properties.Settings.Default.Save();
         }
-
-
     }
 }

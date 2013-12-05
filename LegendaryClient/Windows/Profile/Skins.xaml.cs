@@ -1,12 +1,12 @@
-﻿using LegendaryClient.Logic;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-using System.Collections.Generic;
-using System.Windows.Controls;
-using System.Linq;
-using LegendaryClient.Controls;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace LegendaryClient.Windows.Profile
@@ -17,7 +17,6 @@ namespace LegendaryClient.Windows.Profile
     public partial class Skins : Page
     {
         private List<ChampionDTO> ChampionList;
-
 
         public Skins()
         {

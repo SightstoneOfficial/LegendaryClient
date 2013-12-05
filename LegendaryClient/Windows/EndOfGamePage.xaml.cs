@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-
 namespace LegendaryClient.Windows
 {
     /// <summary>
@@ -68,21 +67,27 @@ namespace LegendaryClient.Windows
                                 playerStats.GoldLabel.Content = string.Format("{0:N1}k", stat.Value / 1000);
                             }
                             break;
+
                         case "MINIONS_KILLED":
                             playerStats.CSLabel.Content = stat.Value;
                             break;
+
                         case "LEVEL":
                             playerStats.LevelLabel.Content = stat.Value;
                             break;
+
                         case "CHAMPIONS_KILLED":
                             ChampionsKilled = stat.Value;
                             break;
+
                         case "ASSISTS":
                             Assists = stat.Value;
                             break;
+
                         case "NUM_DEATHS":
                             Deaths = stat.Value;
                             break;
+
                         default:
                             break;
                     }

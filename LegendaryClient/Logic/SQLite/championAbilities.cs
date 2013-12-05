@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 namespace LegendaryClient.Logic.SQLite
 {
     public class championAbilities

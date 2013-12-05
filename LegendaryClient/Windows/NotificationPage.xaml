@@ -23,9 +23,9 @@
         </ListView>
 
         <Grid HorizontalAlignment="Right" ScrollViewer.VerticalScrollBarVisibility="Disabled" Width="135" Margin="0,0,115,0" Background="#4C000000" Visibility="Collapsed">
-            <Label x:Name="StatusLabel"  Content="In Game" HorizontalAlignment="Center" FontWeight="ExtraLight" Margin="0,0,0,0" VerticalAlignment="Center" FontSize="16"/>
-            <Button Style="{x:Null}" Content="X" HorizontalAlignment="Left" Margin="5,0,0,0" Foreground="Black" VerticalAlignment="Center" Width="25"/>
-            <Button Style="{x:Null}" Content="←" HorizontalAlignment="Right" Margin="0,0,5,0" Foreground="Black" VerticalAlignment="Center" Width="25"/>
+            <Label x:Name="StatusLabel"  Content="In Game" HorizontalAlignment="Center" FontWeight="ExtraLight" Margin="0,0,0,0" VerticalAlignment="Center" FontSize="16" />
+            <Button Style="{x:Null}" Content="X" HorizontalAlignment="Left" Margin="5,0,0,0" Foreground="Black" VerticalAlignment="Center" Width="25" />
+            <Button Style="{x:Null}" Content="←" HorizontalAlignment="Right" Margin="0,0,5,0" Foreground="Black" VerticalAlignment="Center" Width="25" />
         </Grid>
 
         <Button x:Name="ChatButton" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,60,4" VerticalAlignment="Stretch" Width="50" Click="ChatButton_Click">
@@ -33,6 +33,6 @@
                 <Image Source="/LegendaryClient;component/chat.png" Stretch="None" />
             </StackPanel>
         </Button>
-        <Button x:Name="NotificationButton" Style="{x:Null}" Content="!" Foreground="Black" FontSize="20" HorizontalAlignment="Right" Margin="0,4,5,4" VerticalAlignment="Stretch" Width="50" Click="ChatButton_Click"/>
+        <Button x:Name="NotificationButton" Style="{x:Null}" Content="!" Foreground="Black" FontSize="20" HorizontalAlignment="Right" Margin="0,4,5,4" VerticalAlignment="Stretch" Width="50" Click="ChatButton_Click" />
     </Grid>
 </Page>

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media.Imaging;
+
 namespace LegendaryClient.Logic.SQLite
 {
     public class champions

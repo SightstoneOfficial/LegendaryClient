@@ -1,12 +1,12 @@
 ﻿<UserControl x:Class="LegendaryClient.Controls.ChampionImage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
              d:DesignHeight="64" d:DesignWidth="64">
     <Grid>
-        <Image x:Name="ChampImage" HorizontalAlignment="Left" Height="64" Margin="0,0,0,0" VerticalAlignment="Top" Width="64"/>
+        <Image x:Name="ChampImage" HorizontalAlignment="Left" Height="64" Margin="0,0,0,0" VerticalAlignment="Top" Width="64" />
         <Label x:Name="FreeToPlayLabel" Content="Free" HorizontalAlignment="Left" Margin="0,32,0,0" VerticalAlignment="Top" Foreground="White" Background="#4C0C0C0C" FontWeight="SemiBold" FontSize="16" Visibility="Hidden">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="1" />

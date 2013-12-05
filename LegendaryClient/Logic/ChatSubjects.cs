@@ -6,6 +6,7 @@
         /// Hack, doesn't use the enum value
         /// </summary>
         GAME_INVITE_OWNER_CANCELED,
+
         GAME_INVITE_ALLOW_DISABLED,
         GAME_FULL_INVITE_REJECTED,
         GAME_INVITE_ALLOW_ENABLED,

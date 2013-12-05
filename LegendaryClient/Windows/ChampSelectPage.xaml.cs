@@ -220,6 +220,7 @@ namespace LegendaryClient.Windows
                         ChampionBanInfoDTO[] BannedChamps = await Client.PVPNet.GetChampionsForBan();
 
                         #region Render Bans
+
                         BlueBanListView.Items.Clear();
                         PurpleBanListView.Items.Clear();
                         foreach (var x in ChampDTO.BannedChampions)
@@ -245,7 +246,8 @@ namespace LegendaryClient.Windows
                                 }
                             }
                         }
-                        #endregion
+
+                        #endregion Render Bans
                     }
                     else if (ChampDTO.GameState == "CHAMP_SELECT")
                     {
@@ -279,6 +281,7 @@ namespace LegendaryClient.Windows
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
                             {
                                 #region Disable picking selected champs
+
                                 foreach (ListViewItem y in ChampionArray)
                                 {
                                     if ((int)y.Tag == selection.ChampionId)
@@ -295,7 +298,8 @@ namespace LegendaryClient.Windows
                                         }
                                     }
                                 }
-                                #endregion
+
+                                #endregion Disable picking selected champs
 
                                 if (selection.SummonerInternalName == player.SummonerInternalName)
                                 {
@@ -370,6 +374,7 @@ namespace LegendaryClient.Windows
                     }));
                     Client.LaunchGame();
                 }
+
                 #endregion Launching Game
             }
         }
@@ -604,7 +609,6 @@ namespace LegendaryClient.Windows
 
         private void RuneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)
@@ -645,7 +649,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        void Chatroom_OnRoomMessage(object sender, jabber.protocol.client.Message msg)
+        private void Chatroom_OnRoomMessage(object sender, jabber.protocol.client.Message msg)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
@@ -661,7 +665,7 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
+        private void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
