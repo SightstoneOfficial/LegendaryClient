@@ -52,7 +52,7 @@ namespace LegendaryClient.Windows
                         //Run once
                         BaseMap map = BaseMap.GetMap(dto.MapId);
                         MapLabel.Content = map.DisplayName;
-                        ModeLabel.Content = TitleCaseString(dto.GameMode);
+                        ModeLabel.Content = Client.TitleCaseString(dto.GameMode);
                         GameTypeConfigDTO configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
                         TypeLabel.Content = GetGameMode(configType.Id);
                         SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
@@ -249,26 +249,6 @@ namespace LegendaryClient.Windows
                 default:
                     return Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;
             }
-        }
-
-        public static String TitleCaseString(String s)
-        {
-            if (s == null) return s;
-
-            String[] words = s.Split(' ');
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (words[i].Length == 0) continue;
-
-                Char firstChar = Char.ToUpper(words[i][0]);
-                String rest = "";
-                if (words[i].Length > 1)
-                {
-                    rest = words[i].Substring(1).ToLower();
-                }
-                words[i] = firstChar + rest;
-            }
-            return String.Join(" ", words);
         }
     }
 

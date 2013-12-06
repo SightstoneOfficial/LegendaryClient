@@ -50,6 +50,7 @@ namespace LegendaryClient.Windows
                                orderby s.id
                                select s).ToList();
             Client.Items = Items.PopulateItems();
+            Client.Masteries = Masteries.PopulateMasteries();
 
             //Retrieve latest client version
             SWFReader reader = new SWFReader("ClientLibCommon.dat");

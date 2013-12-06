@@ -100,7 +100,7 @@ namespace LegendaryClient.Windows
                                 }
                             }
                             PlayerProgressLabel.Content = CurrentTier;
-                            if (!InPromo)
+                            if (InPromo)
                             {
                                 PlayerCurrentProgressLabel.Content = CurrentLP;
                                 PlayerProgressBar.Value = 100;

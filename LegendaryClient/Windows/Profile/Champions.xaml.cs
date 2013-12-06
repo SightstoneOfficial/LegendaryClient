@@ -90,8 +90,6 @@ namespace LegendaryClient.Windows.Profile
                     (OwnedChampions && champ.Owned) ||
                     (NotOwnedChampions && !champ.Owned))
                 {
-                    //Add to ListView
-                    ListViewItem item = new ListViewItem();
                     ProfileChampionImage championImage = new ProfileChampionImage();
                     champions champion = champions.GetChampion(champ.ChampionId);
                     championImage.ChampImage.Source = champion.icon;
@@ -102,9 +100,7 @@ namespace LegendaryClient.Windows.Profile
                     {
                         championImage.ChampImage.Opacity = 0.5;
                     }
-                    item.Tag = champ.ChampionId;
-                    item.Content = championImage.Content;
-                    ChampionSelectListView.Items.Add(item);
+                    ChampionSelectListView.Items.Add(championImage);
                 }
             }
         }

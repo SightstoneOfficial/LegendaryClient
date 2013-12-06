@@ -23,16 +23,14 @@ namespace LegendaryClient.Windows
             {
                 if (!SummonerSpell.CanUseSpell((int)Spell, Client.LoginPacket.AllSummonerData.SummonerLevel.Level, GameMode))
                     continue;
-                ListViewItem item = new ListViewItem();
                 Image champImage = new Image();
                 champImage.Height = 64;
                 champImage.Width = 64;
                 champImage.Margin = new Thickness(5, 5, 5, 5);
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + Spell.ToString() + ".png"), UriKind.Absolute);
                 champImage.Source = new BitmapImage(uriSource);
-                item.Content = champImage;
-                item.Tag = (int)Spell;
-                SummonerSpellListView.Items.Add(item);
+                champImage.Tag = (int)Spell;
+                SummonerSpellListView.Items.Add(champImage);
             }
         }
 
@@ -40,7 +38,7 @@ namespace LegendaryClient.Windows
         {
             if (SummonerSpellListView.SelectedIndex != -1)
             {
-                ListViewItem item = (ListViewItem)SummonerSpellListView.SelectedItem;
+                Image item = (Image)SummonerSpellListView.SelectedItem;
                 int spellId = Convert.ToInt32(item.Tag);
                 NameToImage spellName = (NameToImage)spellId;
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spellName + ".png"), UriKind.Absolute);

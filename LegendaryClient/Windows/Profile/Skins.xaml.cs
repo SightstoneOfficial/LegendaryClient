@@ -60,7 +60,6 @@ namespace LegendaryClient.Windows.Profile
             {
                 if (skin.Owned)
                 {
-                    ListViewItem item = new ListViewItem();
                     ProfileSkinImage skinImage = new ProfileSkinImage();
                     championSkins championSkin = championSkins.GetSkin(skin.SkinId);
                     var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath), UriKind.Absolute);
@@ -68,9 +67,8 @@ namespace LegendaryClient.Windows.Profile
                     if (!skin.StillObtainable)
                         skinImage.LimitedLabel.Visibility = System.Windows.Visibility.Visible;
                     skinImage.SkinName.Content = championSkin.displayName;
-                    item.Content = skinImage.Content;
-                    item.Margin = new System.Windows.Thickness(5, 0, 5, 0);
-                    SkinSelectListView.Items.Add(item);
+                    skinImage.Margin = new System.Windows.Thickness(5, 0, 5, 0);
+                    SkinSelectListView.Items.Add(skinImage);
                 }
             }
         }

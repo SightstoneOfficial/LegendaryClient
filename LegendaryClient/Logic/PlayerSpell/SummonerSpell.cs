@@ -46,6 +46,7 @@ namespace LegendaryClient.Logic.PlayerSpell
                 default:
                     break;
             }
+
             switch (SpellId)
             {
                 case 1:

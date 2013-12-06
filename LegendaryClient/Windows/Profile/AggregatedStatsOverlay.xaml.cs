@@ -17,14 +17,16 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class AggregatedStatsOverlay : Page
     {
+        Boolean IsOwnPlayer;
         List<AggregatedChampion> ChampionStats;
         AggregatedChampion AllStats;
 
         AggregatedChampion SelectedStats;
 
-        public AggregatedStatsOverlay(AggregatedStats stats)
+        public AggregatedStatsOverlay(AggregatedStats stats, Boolean IsSelf)
         {
             InitializeComponent();
+            IsOwnPlayer = IsSelf;
             AllStats = new AggregatedChampion();
             ChampionStats = new List<AggregatedChampion>();
             ParseStats(stats);
@@ -55,15 +57,15 @@ namespace LegendaryClient.Windows
                     continue;
                 ProfilePage.KeyValueItem item = new ProfilePage.KeyValueItem
                 {
-                    Key = TitleCaseString(string.Concat(field.Name.Select(e => Char.IsUpper(e) ? " " + e : e.ToString())).TrimStart(' ')),
+                    Key = Client.TitleCaseString(string.Concat(field.Name.Select(e => Char.IsUpper(e) ? " " + e : e.ToString())).TrimStart(' ')),
                     Value = field.GetValue(SelectedStats)
                 };
 
                 if (((string)item.Key).Contains("Time"))
                 {
-                    TimeSpan span = TimeSpan.FromSeconds((double)item.Value);
-                    if (((string)item.Key).Contains("Time Played")) //Special case
-                        span = TimeSpan.FromMinutes((double)item.Value);
+                    TimeSpan span = TimeSpan.FromMinutes((double)item.Value);
+                    if (((string)item.Key).Contains("Time Spent Living"))
+                        span = TimeSpan.FromSeconds((double)item.Value);
                     item.Value = string.Format("{0:D2}d:{1:D2}m:{2:D2}s", span.Days, span.Minutes, span.Seconds);
                 }
 
@@ -96,7 +98,7 @@ namespace LegendaryClient.Windows
                 }
 
                 var type = typeof(AggregatedChampion);
-                string fieldName = TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
+                string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
                 var f = type.GetField(fieldName);
                 f.SetValue(Champion, stat.Value);
             }
@@ -128,32 +130,13 @@ namespace LegendaryClient.Windows
             Client.OverlayContainer.Visibility = Visibility.Hidden;
         }
 
-        public static String TitleCaseString(String s)
-        {
-            if (s == null) return s;
-
-            String[] words = s.Split(' ');
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (words[i].Length == 0) continue;
-
-                Char firstChar = Char.ToUpper(words[i][0]);
-                String rest = "";
-                if (words[i].Length > 1)
-                {
-                    rest = words[i].Substring(1).ToLower();
-                }
-                words[i] = firstChar + rest;
-            }
-            return String.Join(" ", words);
-        }
-
         private void ChampionsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (((ListViewItem)ChampionsListView.SelectedItem).Tag != null)
             {
                 SelectedStats = (AggregatedChampion)((ListViewItem)ChampionsListView.SelectedItem).Tag;
-                HideGrid.Visibility = System.Windows.Visibility.Hidden;
+                if (!IsOwnPlayer)
+                    HideGrid.Visibility = System.Windows.Visibility.Hidden;
                 DisplayStats();
             }
         }

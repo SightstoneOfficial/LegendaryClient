@@ -15,10 +15,38 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200" />
-        <Button Content="Save Masteries" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Width="200" />
-        <Button Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,150,0,0" VerticalAlignment="Top" Width="200" />
-        <Button Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" Width="200" />
-        <Button Content="Return All Points" HorizontalAlignment="Left" Margin="10,210,0,0" VerticalAlignment="Top" Width="200" />
+        <TextBox x:Name="MasteryTextBox" HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200" />
+
+        <Label x:Name="UsedLabel" Foreground="White" Content="Points Used: 0" HorizontalAlignment="Left" Margin="10,70,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
+        <Label x:Name="FreeLabel" Foreground="White" Content="Points Free: 0" HorizontalAlignment="Left" Margin="10,110,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
+        
+        <Button Content="Save Masteries" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="200" />
+        <Button Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="200" />
+        <Button Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Width="200" />
+        <Button Content="Return All Points" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Width="200" />
+
+        <ListView x:Name="OffenseListView" HorizontalAlignment="Left" Height="450" Margin="240,50,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="320" Background="#66505050">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <ListView x:Name="DefenseListView" HorizontalAlignment="Left" Height="450" Margin="580,50,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="320" Background="#66505050">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <ListView x:Name="UtilityListView" HorizontalAlignment="Left" Height="450" Margin="920,50,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="320" Background="#66505050">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </Grid>
 </Page>

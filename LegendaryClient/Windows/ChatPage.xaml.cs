@@ -111,29 +111,30 @@ namespace LegendaryClient.Windows
             {
                 PlayerItem = new LargeChatPlayer();
                 Client.MainGrid.Children.Add(PlayerItem);
+                PlayerItem.Tag = playerItem;
+                PlayerItem.PlayerName.Content = playerItem.Username;
+                PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;
+                if (playerItem.RankedWins == 0)
+                    PlayerItem.PlayerWins.Content = playerItem.Wins + " Normal Wins";
+                else
+                    PlayerItem.PlayerWins.Content = playerItem.RankedWins + " Ranked Wins";
+                PlayerItem.LevelLabel.Content = playerItem.Level;
+                PlayerItem.UsingLegendary.Visibility = playerItem.UsingLegendary ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", playerItem.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
+                PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
+                if (playerItem.Status != null)
+                {
+                    PlayerItem.PlayerStatus.Text = playerItem.Status.Replace("∟", "");
+                }
+                else
+                {
+                    PlayerItem.PlayerStatus.Text = "";
+                }
+                PlayerItem.Width = 250;
+                PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             }
-            PlayerItem.Tag = playerItem;
-            PlayerItem.PlayerName.Content = playerItem.Username;
-            PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;
-            if (playerItem.RankedWins == 0)
-                PlayerItem.PlayerWins.Content = playerItem.Wins + " Normal Wins";
-            else
-                PlayerItem.PlayerWins.Content = playerItem.RankedWins + " Ranked Wins";
-            PlayerItem.LevelLabel.Content = playerItem.Level;
-            PlayerItem.UsingLegendary.Visibility = playerItem.UsingLegendary ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", playerItem.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
-            PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
-            if (playerItem.Status != null)
-            {
-                PlayerItem.PlayerStatus.Text = playerItem.Status.Replace("∟", "");
-            }
-            else
-            {
-                PlayerItem.PlayerStatus.Text = "";
-            }
-            PlayerItem.Width = 250;
-            PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-            PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+
             Point MouseLocation = e.GetPosition(Client.MainGrid);
             double YMargin = MouseLocation.Y;
             if (YMargin + 155 > Client.MainGrid.ActualHeight)

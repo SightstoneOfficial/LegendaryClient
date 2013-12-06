@@ -108,7 +108,7 @@ namespace LegendaryClient.Windows.Profile
                     {
                         ProfilePage.KeyValueItem item = new ProfilePage.KeyValueItem
                         {
-                            Key = TitleCaseString(stat.StatType.Replace('_', ' ')),
+                            Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
                             Value = stat.Value.ToString()
                         };
                         StatsListView.Items.Add(item);
@@ -132,28 +132,8 @@ namespace LegendaryClient.Windows.Profile
         private async void ViewAggregatedStatsButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             AggregatedStats x = await Client.PVPNet.GetAggregatedStats(AccId, "CLASSIC", "3");
-            Client.OverlayContainer.Content = new AggregatedStatsOverlay(x).Content;
+            Client.OverlayContainer.Content = new AggregatedStatsOverlay(x, AccId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = System.Windows.Visibility.Visible;
-        }
-
-        public static String TitleCaseString(String s)
-        {
-            if (s == null) return s;
-
-            String[] words = s.Split(' ');
-            for (int i = 0; i < words.Length; i++)
-            {
-                if (words[i].Length == 0) continue;
-
-                Char firstChar = Char.ToUpper(words[i][0]);
-                String rest = "";
-                if (words[i].Length > 1)
-                {
-                    rest = words[i].Substring(1).ToLower();
-                }
-                words[i] = firstChar + rest;
-            }
-            return String.Join(" ", words);
         }
     }
 }

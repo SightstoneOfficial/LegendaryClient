@@ -119,6 +119,9 @@
     <Compile Include="Controls\LargeChatPlayer.xaml.cs">
       <DependentUpon>LargeChatPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\MasteryItem.xaml.cs">
+      <DependentUpon>MasteryItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NewsItem.xaml.cs">
       <DependentUpon>NewsItem.xaml</DependentUpon>
     </Compile>
@@ -142,6 +145,7 @@
     <Compile Include="Logic\ChatPrefixes.cs" />
     <Compile Include="Logic\ChatSubjects.cs" />
     <Compile Include="Logic\JSON\Items.cs" />
+    <Compile Include="Logic\JSON\Masteries.cs" />
     <Compile Include="Logic\Maps\Map1.cs" />
     <Compile Include="Logic\Maps\Map10.cs" />
     <Compile Include="Logic\Maps\Map8.cs" />
@@ -162,6 +166,7 @@
     <Compile Include="Logic\Region\OCE.cs" />
     <Compile Include="Logic\Region\RU.cs" />
     <Compile Include="Logic\SQLite\keybindingEvents.cs" />
+    <Compile Include="Logic\SQLite\masteries.cs" />
     <Compile Include="Logic\SQLite\SQLite.cs" />
     <Compile Include="Logic\SQLite\items.cs" />
     <Compile Include="Logic\PlayerSpell\SummonerSpell.cs" />
@@ -303,6 +308,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LargeChatPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MasteryItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

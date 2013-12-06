@@ -9,5 +9,6 @@
 
     <Grid Background="Black">
         <my:WebControl x:Name="ShopBrowser" HorizontalAlignment="Center" VerticalAlignment="Center" Height="680" Width="1250" />
+        <Button x:Name="RefreshButton" Content="Refresh" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="55" Click="RefreshButton_Click"/>
     </Grid>
 </Page>

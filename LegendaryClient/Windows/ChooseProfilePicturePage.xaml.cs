@@ -25,29 +25,25 @@ namespace LegendaryClient.Windows
             SummonerIconInventoryDTO PlayerIcons = await Client.PVPNet.GetSummonerIconInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
             foreach (Icon ic in PlayerIcons.SummonerIcons)
             {
-                ListViewItem item = new ListViewItem();
                 Image champImage = new Image();
                 champImage.Height = 64;
                 champImage.Width = 64;
                 champImage.Margin = new Thickness(5, 5, 5, 5);
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ic.IconId + ".png"), UriKind.Absolute);
                 champImage.Source = new BitmapImage(uriSource);
-                item.Content = champImage;
-                item.Tag = ic.IconId;
-                SummonerIconListView.Items.Add(item);
+                champImage.Tag = ic.IconId;
+                SummonerIconListView.Items.Add(champImage);
             }
             for (int i = 0; i < 29; i++)
             {
-                ListViewItem item = new ListViewItem();
                 Image champImage = new Image();
                 champImage.Height = 64;
                 champImage.Width = 64;
                 champImage.Margin = new Thickness(5, 5, 5, 5);
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", i + ".png"), UriKind.Absolute);
                 champImage.Source = new BitmapImage(uriSource);
-                item.Content = champImage;
-                item.Tag = i;
-                SummonerIconListView.Items.Add(item);
+                champImage.Tag = i;
+                SummonerIconListView.Items.Add(champImage);
             }
         }
 
@@ -60,7 +56,7 @@ namespace LegendaryClient.Windows
         {
             if (SummonerIconListView.SelectedItem != null)
             {
-                ListViewItem m = (ListViewItem)SummonerIconListView.SelectedItem;
+                Image m = (Image)SummonerIconListView.SelectedItem;
                 int SummonerIcon = Convert.ToInt32(m.Tag);
                 await Client.PVPNet.UpdateProfileIconId(SummonerIcon);
                 Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId = SummonerIcon;

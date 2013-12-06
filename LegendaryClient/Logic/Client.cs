@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
 
@@ -71,6 +72,11 @@ namespace LegendaryClient.Logic
         /// The database of all the items
         /// </summary>
         internal static List<items> Items;
+
+        /// <summary>
+        /// The database of all masteries
+        /// </summary>
+        internal static List<masteries> Masteries;
 
         /// <summary>
         /// The database of all the search tags
@@ -628,6 +634,43 @@ namespace LegendaryClient.Logic
             MainWin.Topmost = true;  // important
             MainWin.Topmost = false; // important
             MainWin.Focus();         // important
+        }
+
+        public static String TitleCaseString(String s)
+        {
+            if (s == null) return s;
+
+            String[] words = s.Split(' ');
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i].Length == 0) continue;
+
+                Char firstChar = Char.ToUpper(words[i][0]);
+                String rest = "";
+                if (words[i].Length > 1)
+                {
+                    rest = words[i].Substring(1).ToLower();
+                }
+                words[i] = firstChar + rest;
+            }
+            return String.Join(" ", words);
+        }
+
+        public static BitmapSource ToWpfBitmap(System.Drawing.Bitmap bitmap)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
+
+                stream.Position = 0;
+                BitmapImage result = new BitmapImage();
+                result.BeginInit();
+                result.CacheOption = BitmapCacheOption.OnLoad;
+                result.StreamSource = stream;
+                result.EndInit();
+                result.Freeze();
+                return result;
+            }
         }
     }
 
