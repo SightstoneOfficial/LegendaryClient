@@ -1,6 +1,10 @@
-﻿using LegendaryClient.Logic;
+﻿using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.Patcher;
 using System;
 using System.IO;
+using System.Net;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Windows;
