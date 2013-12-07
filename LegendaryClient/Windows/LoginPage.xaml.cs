@@ -148,8 +148,8 @@ namespace LegendaryClient.Windows
             {
                 Client.NotificationContainer.Visibility = System.Windows.Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
-
-                Client.ChatClient = new JabberClient(); //Setup chat
+                
+                //Setup chat
                 Client.ChatClient.AutoReconnect = 30;
                 Client.ChatClient.KeepAlive = 10;
                 Client.ChatClient.NetworkHost = "chat." + Client.Region.ChatName + ".lol.riotgames.com";

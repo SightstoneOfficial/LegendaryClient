@@ -157,6 +157,7 @@ namespace LegendaryClient.Windows
                 }
                 NotificationChatPlayer ChatPlayer = new NotificationChatPlayer();
                 ChatPlayer.Tag = playerItem;
+                ChatPlayer.PlayerName = playerItem.Username;
                 ChatPlayer.Margin = new Thickness(1, 0, 1, 0);
                 ChatPlayer.PlayerLabelName.Content = playerItem.Username;
                 Client.ChatListView.Items.Add(ChatPlayer);

@@ -15,20 +15,20 @@
     </Page.Resources>
 
     <Grid>
-        <Border BorderThickness="1"  HorizontalAlignment="Left" VerticalAlignment="Top"  BorderBrush="Black">
+        <Border BorderThickness="1"  HorizontalAlignment="Left" Margin="27,30,0,0" VerticalAlignment="Top"  BorderBrush="Black">
             <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="100" Margin="0,0,0,0" VerticalAlignment="Top" Width="100" />
         </Border>
-        <local:HoverOverLabel x:Name="HoverLabel" HorizontalAlignment="Left" Margin="0,0,0,0" Height="100" Width="100" VerticalAlignment="Top" MouseDown="HoverLabel_MouseDown" MouseEnter="HoverLabel_MouseEnter" MouseLeave="HoverLabel_MouseLeave" Opacity="0" />
-        <Label x:Name="SummonerNameLabel" Content="Summoner Name" HorizontalAlignment="Left" Margin="110,5,0,0" VerticalAlignment="Top" FontSize="22" />
+        <local:HoverOverLabel x:Name="HoverLabel" HorizontalAlignment="Left" Margin="27,30,0,0" Height="100" Width="100" VerticalAlignment="Top" MouseDown="HoverLabel_MouseDown" MouseEnter="HoverLabel_MouseEnter" MouseLeave="HoverLabel_MouseLeave" Opacity="0" />
+        <Label x:Name="SummonerNameLabel" Content="Summoner Name" HorizontalAlignment="Left" Margin="165,40,0,0" VerticalAlignment="Top" FontSize="22" />
 
-        <ProgressBar x:Name="PlayerProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="30" Margin="115,60,0,0" VerticalAlignment="Top" Width="250" Value="75" Foreground="#FF9C9C9C" />
-        <Label x:Name="PlayerCurrentProgressLabel" Style="{x:Null}" Content="75LP" HorizontalAlignment="Left" Margin="115,62,0,0" VerticalAlignment="Top" Foreground="Black" FontWeight="Bold" />
-        <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Gold V" HorizontalAlignment="Left" Margin="215,62,0,0" VerticalAlignment="Top" Foreground="Black" FontWeight="Bold" />
-        <Label x:Name="PlayerAimProgressLabel" Style="{x:Null}" Content="100LP" HorizontalAlignment="Left" Margin="320,62,0,0" VerticalAlignment="Top" Foreground="Black" FontWeight="Bold" />
+        <ProgressBar x:Name="PlayerProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="23" Margin="170,80,0,0" VerticalAlignment="Top" Width="250" Value="75" Foreground="#FF9C9C9C" />
+        <Label x:Name="PlayerCurrentProgressLabel" Style="{x:Null}" Content="75LP" HorizontalAlignment="Left" Margin="170,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
+        <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Gold V" HorizontalAlignment="Left" Margin="265,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
+        <Label x:Name="PlayerAimProgressLabel" Style="{x:Null}" Content="100LP" HorizontalAlignment="Left" Margin="365,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
 
-        <TextBox x:Name="BroadcastMessage" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,20,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="#7F000000" BorderBrush="{x:Null}" Foreground="White" />
+        <TextBox x:Name="BroadcastMessage" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,40,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="#7F000000" BorderBrush="{x:Null}" Foreground="White" />
 
-        <TabControl HorizontalAlignment="Stretch" Margin="10,110,10,10" VerticalAlignment="Stretch" Width="1000">
+        <TabControl HorizontalAlignment="Stretch" Margin="30,110,10,10" VerticalAlignment="Stretch" Width="1000">
             <TabItem Header="Featured Games">
                 <Grid x:Name="SpectatorRegionGrid" Background="Black">
                     <Border BorderBrush="Black" BorderThickness="1" CornerRadius="1">
@@ -36,10 +36,9 @@
                             <DropShadowEffect BlurRadius="10" ShadowDepth="5" />
                         </Border.Effect>
                     </Border>
-
+                    
                     <Grid x:Name="ImageGrid" Background="Black">
                     </Grid>
-
                     <ListView x:Name="BlueListView" HorizontalAlignment="Left" Margin="10,10,0,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="125" BorderBrush="{x:Null}" Background="{x:Null}">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>

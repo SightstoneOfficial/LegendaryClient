@@ -6,7 +6,8 @@
              mc:Ignorable="d"
              Height="28" MinWidth="150">
     <Grid>
-        <Rectangle Fill="#66505050" Stroke="#FF646464">
+        <Rectangle x:Name="BlinkRectangle" Fill="#FFFFD100" HorizontalAlignment="Stretch" Height="3" Margin="0,0,0,0" Panel.ZIndex="1" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Rectangle Fill="#99C3C3C3" Stroke="#FF646464">
             <Rectangle.Effect>
                 <DropShadowEffect ShadowDepth="3" />
             </Rectangle.Effect>

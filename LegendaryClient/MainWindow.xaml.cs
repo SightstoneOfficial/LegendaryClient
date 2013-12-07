@@ -1,4 +1,5 @@
-﻿using LegendaryClient.Logic;
+﻿using jabber.client;
+using LegendaryClient.Logic;
 using LegendaryClient.Windows;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
@@ -33,6 +34,7 @@ namespace LegendaryClient
                 ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
             }
 
+            Client.ChatClient = new JabberClient();
             ChatContainer.Content = new ChatPage().Content;
             NotificationContainer.Content = new NotificationPage().Content;
 

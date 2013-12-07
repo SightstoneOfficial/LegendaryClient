@@ -146,7 +146,8 @@ namespace LegendaryClient.Logic
         {
             if (AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
             {
-                AllPlayers[msg.From.User].Messages.Add(AllPlayers[msg.From.User].Username + "|" + msg.Body);
+                ChatPlayerItem chatItem = AllPlayers[msg.From.User];
+                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
                 MainWin.FlashWindow();
             }
         }
@@ -176,7 +177,7 @@ namespace LegendaryClient.Logic
                 "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
                 "<rankedLeagueName>Urgot&apos;s Patriots</rankedLeagueName>" +
                 "<rankedLeagueDivision>I</rankedLeagueDivision>" +
-                "<rankedLeagueTier>BRONZE</rankedLeagueTier>" +
+                "<rankedLeagueTier>CHALLENGER</rankedLeagueTier>" +
                 "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
                 "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
                 "<gameStatus>" + ((false == true) ? "inGame" : "outOfGame") + "</gameStatus>" +

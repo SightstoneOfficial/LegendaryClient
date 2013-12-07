@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1280"
+      d:DesignHeight="548" d:DesignWidth="1280"
 	Title="Masteries">
 
     <Grid>
@@ -20,10 +20,10 @@
         <Label x:Name="UsedLabel" Foreground="White" Content="Points Used: 0" HorizontalAlignment="Left" Margin="10,70,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
         <Label x:Name="FreeLabel" Foreground="White" Content="Points Free: 0" HorizontalAlignment="Left" Margin="10,110,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
         
-        <Button Content="Save Masteries" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="200" />
-        <Button Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="200" />
-        <Button Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Width="200" />
-        <Button Content="Return All Points" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Width="200" />
+        <Button x:Name="SaveButton" Content="Save Masteries" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="200" />
+        <Button x:Name="RevertButton" Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="200" />
+        <Button x:Name="DeleteButton" Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Width="200" />
+        <Button x:Name="ReturnButton" Content="Return All Points" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Width="200" Click="ReturnButton_Click" />
 
         <ListView x:Name="OffenseListView" HorizontalAlignment="Left" Height="450" Margin="240,50,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="320" Background="#66505050">
             <ListView.ItemsPanel>
@@ -48,5 +48,8 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+        <Label x:Name="OffenseLabel" Content="Offense: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="240,505,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="DefenseLabel" Content="Defense: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="580,505,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="UtilityLabel" Content="Utility: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="920,505,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Page>

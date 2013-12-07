@@ -520,6 +520,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="chat.png" />
+    <Resource Include="backgrounds-ipad-tablet-simple-metal-texture-seamless.jpg" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

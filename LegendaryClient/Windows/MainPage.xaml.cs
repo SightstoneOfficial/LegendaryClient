@@ -328,7 +328,7 @@ namespace LegendaryClient.Windows
                         Canvas.SetZIndex(m, -2); //Put background behind everything
                         m.Stretch = Stretch.None;
                         m.Width = 100;
-                        m.Opacity = 0.50;
+                        m.Opacity = 0.30;
                         m.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                         m.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
                         m.Margin = new System.Windows.Thickness(i++ * 100, 0, 0, 0);

@@ -21,7 +21,7 @@
             <TabControl HorizontalAlignment="Right" Width="920" Margin="150,0,0,0" VerticalAlignment="Stretch">
                 <TabItem Header="Overview" Foreground="White">
                     <Grid>
-                        <ListView x:Name="PlayersListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,0,10,0" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+                        <ListView x:Name="PlayersListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,0,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel />
@@ -35,5 +35,16 @@
                 </TabItem>
             </TabControl>
         </Grid>
+
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="30,435,0,65" Width="300" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="30,0,0,30" Width="200" TextWrapping="Wrap" VerticalAlignment="Bottom" />
+        <Button x:Name="ChatButton" Content="Send" Margin="240,0,0,30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" />
+
     </Grid>
 </Page>

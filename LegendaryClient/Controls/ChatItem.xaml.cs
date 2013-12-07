@@ -1,10 +1,12 @@
 ﻿using LegendaryClient.Logic;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Controls
 {
@@ -16,6 +18,22 @@ namespace LegendaryClient.Controls
         public ChatItem()
         {
             InitializeComponent();
+            Client.ChatClient.OnMessage += ChatClient_OnMessage;
+        }
+
+        public void ChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
+        {
+            if (Client.AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
+            {
+                ChatPlayerItem chatItem = Client.AllPlayers[msg.From.User];
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    if ((string)Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
+                    {
+                        Update();
+                    }
+                }));
+            }
         }
 
         public void Update()
@@ -31,7 +49,7 @@ namespace LegendaryClient.Controls
                 }
             }
 
-            foreach (string x in tempItem.Messages)
+            foreach (string x in tempItem.Messages.ToArray())
             {
                 string[] Message = x.Split('|');
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
@@ -56,6 +74,7 @@ namespace LegendaryClient.Controls
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             Client.MainGrid.Children.Remove(Client.ChatItem);
+            Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
             Client.ChatItem = null;
         }
 
@@ -73,6 +92,7 @@ namespace LegendaryClient.Controls
             }
 
             Client.MainGrid.Children.Remove(Client.ChatItem);
+            Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
             Client.ChatItem = null;
 
             Client.ChatListView.Items.Remove(tempPlayer);

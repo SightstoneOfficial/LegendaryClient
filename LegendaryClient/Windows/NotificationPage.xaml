@@ -13,7 +13,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="#CC576573">
+    <Grid Background="#FF141414">
         <ListView x:Name="ChatListView" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="1,0,250,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="ChatListView_SelectionChanged">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

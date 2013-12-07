@@ -3,11 +3,13 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -18,6 +20,10 @@ namespace LegendaryClient.Windows.Profile
     {
         private MasteryBookPageDTO SelectedBook;
         private LargeChatPlayer PlayerItem;
+        private int UsedPoints = 0;
+        private int OffenseUsedPoints = 0;
+        private int DefenseUsedPoints = 0;
+        private int UtilityUsedPoints = 0;
 
         public Masteries()
         {
@@ -58,9 +64,16 @@ namespace LegendaryClient.Windows.Profile
             DefenseListView.Items.Clear();
             UtilityListView.Items.Clear();
 
-            int UsedPoints = 0;
+            UsedPoints = 0;
+            OffenseUsedPoints = 0;
+            DefenseUsedPoints = 0;
+            UtilityUsedPoints = 0;
             foreach (masteries Mastery in Client.Masteries)
             {
+                bool IsOffense = false;
+                bool IsDefense = false;
+                bool IsUtility = false;
+
                 MasteryItem item = new MasteryItem();
                 item.RankLabel.Content = "0/" + Mastery.ranks;
                 item.MasteryImage.Source = Mastery.icon;
@@ -78,14 +91,40 @@ namespace LegendaryClient.Windows.Profile
                 switch (Mastery.tree)
                 {
                     case "Offense":
+                        OffenseUsedPoints += Mastery.selectedRank;
+                        IsOffense = true;
                         OffenseListView.Items.Add(item);
                         break;
                     case "Defense":
+                        DefenseUsedPoints += Mastery.selectedRank;
+                        IsDefense = true;
                         DefenseListView.Items.Add(item);
                         break;
                     default:
+                        UtilityUsedPoints += Mastery.selectedRank;
+                        IsUtility = true;
                         UtilityListView.Items.Add(item);
                         break;
+                }
+
+                //Add spaces
+                if (Mastery.id == 4152 ||
+                    Mastery.id == 4222 ||
+                    Mastery.id == 4253 ||
+                    Mastery.id == 4314 ||
+                    Mastery.id == 4344 ||
+                    Mastery.id == 4353)
+                {
+                    Rectangle rect = new Rectangle();
+                    rect.Width = 64;
+                    rect.Height = 64;
+                    rect.Margin = new Thickness(2, 2, 2, 2);
+                    if (IsOffense)
+                        OffenseListView.Items.Add(rect);
+                    if (IsDefense)
+                        DefenseListView.Items.Add(rect);
+                    if (IsUtility)
+                        UtilityListView.Items.Add(rect);
                 }
 
                 item.Tag = Mastery;
@@ -98,6 +137,9 @@ namespace LegendaryClient.Windows.Profile
 
             UsedLabel.Content = "Points Used: " + UsedPoints;
             FreeLabel.Content = "Points Free: " + (Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints - UsedPoints);
+            OffenseLabel.Content = "Offense: " + OffenseUsedPoints;
+            DefenseLabel.Content = "Defense: " + DefenseUsedPoints;
+            UtilityLabel.Content = "Utility: " + UtilityUsedPoints;
         }
 
         void item_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -106,6 +148,14 @@ namespace LegendaryClient.Windows.Profile
             masteries playerItem = (masteries)item.Tag;
             if (playerItem.selectedRank == 0)
                 return;
+
+            //Temp check - make it so you can remove masteries even if they are above mastery if enough points in tree
+            List<masteries> FilteredMasteries = Client.Masteries.FindAll(x => x.tree == playerItem.tree && x.treeRow > playerItem.treeRow);
+            foreach (masteries checkMastery in FilteredMasteries)
+            {
+                if (checkMastery.selectedRank > 0)
+                    return;
+            }
             playerItem.selectedRank -= 1;
             RenderMasteries();
         }
@@ -114,8 +164,36 @@ namespace LegendaryClient.Windows.Profile
         {
             MasteryItem item = (MasteryItem)sender; 
             masteries playerItem = (masteries)item.Tag;
+            //Max rank
             if (playerItem.selectedRank == playerItem.ranks)
                 return;
+            //Has enough points in tree
+            switch (playerItem.tree)
+            {
+                case "Offense":
+                    if (OffenseUsedPoints < playerItem.treeRow * 4)
+                        return;
+                    break;
+                case "Defense":
+                    if (DefenseUsedPoints < playerItem.treeRow * 4)
+                        return;
+                    break;
+                default:
+                    if (UtilityUsedPoints < playerItem.treeRow * 4)
+                        return;
+                    break;
+            }
+            //Has enough points overall
+            if (UsedPoints >= Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints)
+                return;
+            //If it has a prerequisite mastery, check if points in it
+            if (playerItem.prereq != 0)
+            {
+                masteries prereqMastery = Client.Masteries.Find(x => playerItem.prereq == x.id);
+                if (prereqMastery.selectedRank != prereqMastery.ranks)
+                    return;
+            }
+
             playerItem.selectedRank += 1;
             RenderMasteries();
         }
@@ -138,6 +216,8 @@ namespace LegendaryClient.Windows.Profile
                 PlayerItem = new LargeChatPlayer();
                 Client.MainGrid.Children.Add(PlayerItem);
 
+                Panel.SetZIndex(PlayerItem, 4);
+
                 //Only load once
                 PlayerItem.ProfileImage.Source = playerItem.icon;
                 PlayerItem.PlayerName.Content = playerItem.name;
@@ -149,7 +229,34 @@ namespace LegendaryClient.Windows.Profile
                     PlayerItem.Width = 250;
 
                 PlayerItem.PlayerWins.Content = "Requires " + playerItem.treeRow * 4 + " points in " + playerItem.tree;
-                PlayerItem.PlayerLeague.Content = "";
+                
+                bool IsAtRequirement = true;
+                switch (playerItem.tree)
+                {
+                    case "Offense":
+                        if (OffenseUsedPoints < playerItem.treeRow * 4)
+                            IsAtRequirement = false;
+                        break;
+                    case "Defense":
+                        if (DefenseUsedPoints < playerItem.treeRow * 4)
+                            IsAtRequirement = false;
+                        break;
+                    default:
+                        if (UtilityUsedPoints < playerItem.treeRow * 4)
+                            IsAtRequirement = false;
+                        break;
+                }
+
+                if (IsAtRequirement)
+                {
+                    if (playerItem.prereq != 0)
+                    {
+                        masteries prereqMastery = Client.Masteries.Find(x => playerItem.prereq == x.id);
+                        PlayerItem.PlayerWins.Content = "Requires " + prereqMastery.ranks + " points in " + prereqMastery.name;
+                    }
+                }
+
+                PlayerItem.PlayerLeague.Content = playerItem.id;
                 PlayerItem.LevelLabel.Content = playerItem.selectedRank + "/" + playerItem.ranks;
                 PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
 
@@ -171,6 +278,15 @@ namespace LegendaryClient.Windows.Profile
                 XMargin = Client.MainGrid.ActualWidth - PlayerItem.Width - 10;
 
             PlayerItem.Margin = new Thickness(XMargin + 5, YMargin + 5, 0, 0);
+        }
+
+        private void ReturnButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (masteries mastery in Client.Masteries)
+            {
+                mastery.selectedRank = 0;
+            }
+            RenderMasteries();
         }
     }
 }
