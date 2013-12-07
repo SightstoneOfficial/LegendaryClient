@@ -1,6 +1,7 @@
 ﻿using jabber.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,6 +10,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -81,9 +83,21 @@ namespace LegendaryClient.Windows
                             player.Tag = ChatPlayerPair.Value;
                             player.PlayerName.Content = ChatPlayerPair.Value.Username;
                             player.LevelLabel.Content = ChatPlayerPair.Value.Level;
+                            BrushConverter bc = new BrushConverter();
+                            Brush brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
                             player.PlayerStatus.Content = ChatPlayerPair.Value.Status;
+                            player.PlayerStatus.Foreground = brush;
                             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ChatPlayerPair.Value.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
                             player.ProfileImage.Source = new BitmapImage(uriSource);
+
+                            if (ChatPlayerPair.Value.Champion != null)
+                            {
+                                champions InGameChamp = champions.GetChampion(ChatPlayerPair.Value.Champion);
+                                brush = (Brush)bc.ConvertFrom("#FFFFFF99");
+                                player.PlayerStatus.Content = "In Game as " + InGameChamp.displayName;
+                                player.PlayerStatus.Foreground = brush;
+                            }
+
                             player.ContextMenu = (ContextMenu)Resources["PlayerChatMenu"];
                             player.MouseMove += ChatPlayerMouseOver;
                             player.MouseLeave += player_MouseLeave;

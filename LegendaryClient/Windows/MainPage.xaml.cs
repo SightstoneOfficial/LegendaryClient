@@ -343,7 +343,7 @@ namespace LegendaryClient.Windows
                                             System.Drawing.GraphicsUnit.Pixel);
                         }
 
-                        m.Source = ToWpfBitmap(target);
+                        m.Source = Client.ToWpfBitmap(target);
                         ImageGrid.Children.Add(m);
 
                         if (teamId == 100)
@@ -482,25 +482,6 @@ namespace LegendaryClient.Windows
         }
 
         #endregion Featured Games
-
-        public BitmapSource ToWpfBitmap(System.Drawing.Bitmap bitmap)
-        {
-            using (MemoryStream stream = new MemoryStream())
-            {
-                bitmap.Save(stream, System.Drawing.Imaging.ImageFormat.Bmp);
-
-                stream.Position = 0;
-                BitmapImage result = new BitmapImage();
-                result.BeginInit();
-                // According to MSDN, "The default OnDemand cache option retains access to the stream until the image is needed."
-                // Force the bitmap to load right now so we can dispose the stream.
-                result.CacheOption = BitmapCacheOption.OnLoad;
-                result.StreamSource = stream;
-                result.EndInit();
-                result.Freeze();
-                return result;
-            }
-        }
 
         private void HoverLabel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

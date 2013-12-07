@@ -262,10 +262,10 @@ namespace LegendaryClient.Logic
                                 case "gameStatus":
                                     reader.Read();
                                     string gameStatus = reader.Value;
-                                    Player.InGame = (gameStatus != "outOfGame");
+                                    Player.InGame = (gameStatus == "inGame");
                                     break;
 
-                                case "skinName": //No idea what this is
+                                case "skinname":
                                     reader.Read();
                                     Player.Champion = reader.Value;
                                     break;
