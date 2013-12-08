@@ -7,7 +7,6 @@
              Height="50" Width="250">
     <Grid>
         <Rectangle Fill="#02000000" />
-        <Image x:Name="ChampionImage" Opacity="0.4" Stretch="None"/>
         <!-- Allow entire control to be hovered over -->
         <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="40" Margin="5,5,0,0" VerticalAlignment="Top" Width="40" Source="/LegendaryClient;component/Icon.ico" />
         <Label x:Name="LevelLabel" Content="30" HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top" Foreground="White" FontWeight="SemiBold">

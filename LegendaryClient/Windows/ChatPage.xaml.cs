@@ -90,11 +90,31 @@ namespace LegendaryClient.Windows
                             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ChatPlayerPair.Value.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
                             player.ProfileImage.Source = new BitmapImage(uriSource);
 
-                            if (ChatPlayerPair.Value.Champion != null)
+                            if (ChatPlayerPair.Value.GameStatus != "outOfGame")
                             {
-                                champions InGameChamp = champions.GetChampion(ChatPlayerPair.Value.Champion);
+                                switch (ChatPlayerPair.Value.GameStatus)
+                                {
+                                    case "inGame":
+                                        champions InGameChamp = champions.GetChampion(ChatPlayerPair.Value.Champion);
+                                        if (InGameChamp != null)
+                                            player.PlayerStatus.Content = "In Game as " + InGameChamp.displayName;
+                                        else
+                                            player.PlayerStatus.Content = "In Game";
+                                        break;
+                                    case "hostingPracticeGame":
+                                        player.PlayerStatus.Content = "Creating Custom Game";
+                                        break;
+                                    case "inQueue":
+                                        player.PlayerStatus.Content = "In Queue";
+                                        break;
+                                    case "spectating":
+                                        player.PlayerStatus.Content = "Spectating";
+                                        break;
+                                    case "championSelect":
+                                        player.PlayerStatus.Content = "In Champion Select";
+                                        break;
+                                }
                                 brush = (Brush)bc.ConvertFrom("#FFFFFF99");
-                                player.PlayerStatus.Content = "In Game as " + InGameChamp.displayName;
                                 player.PlayerStatus.Foreground = brush;
                             }
 
@@ -144,6 +164,20 @@ namespace LegendaryClient.Windows
                 {
                     PlayerItem.PlayerStatus.Text = "";
                 }
+
+                if (playerItem.GameStatus != "outOfGame")
+                {
+                    switch (playerItem.GameStatus)
+                    {
+                        case "inGame":
+                                champions InGameChamp = champions.GetChampion(playerItem.Champion);
+                                PlayerItem.InGameStatus.Text = "In Game" + Environment.NewLine +
+                                                               "Playing as " + InGameChamp.displayName;
+                            break;
+                    }
+                    PlayerItem.InGameStatus.Visibility = System.Windows.Visibility.Visible;
+                }
+
                 PlayerItem.Width = 250;
                 PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                 PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;

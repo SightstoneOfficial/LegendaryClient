@@ -14,6 +14,7 @@ using PVPNetConnect.RiotObjects.Platform.Statistics;
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Security;
 using System.Security.Cryptography;
@@ -101,12 +102,15 @@ namespace LegendaryClient.Logic
             get { return _CurrentPresence; }
             set
             {
-                _CurrentPresence = value;
-                if (ChatClient != null)
+                if (_CurrentPresence != value)
                 {
-                    if (ChatClient.IsAuthenticated)
+                    _CurrentPresence = value;
+                    if (ChatClient != null)
                     {
-                        ChatClientConnect(null);
+                        if (ChatClient.IsAuthenticated)
+                        {
+                            ChatClientConnect(null);
+                        }
                     }
                 }
             }
@@ -119,12 +123,15 @@ namespace LegendaryClient.Logic
             get { return _CurrentStatus; }
             set
             {
-                _CurrentStatus = value;
-                if (ChatClient != null)
+                if (_CurrentStatus != value)
                 {
-                    if (ChatClient.IsAuthenticated)
+                    _CurrentStatus = value;
+                    if (ChatClient != null)
                     {
-                        ChatClientConnect(null);
+                        if (ChatClient.IsAuthenticated)
+                        {
+                            ChatClientConnect(null);
+                        }
                     }
                 }
             }
@@ -206,6 +213,7 @@ namespace LegendaryClient.Logic
             string Presence = s[0].Status;
             if (Presence == null)
                 return;
+            Debug.WriteLine(Presence);
             if (Client.AllPlayers.ContainsKey(bare.User))
             {
                 UpdatePlayers = true;
@@ -261,8 +269,7 @@ namespace LegendaryClient.Logic
 
                                 case "gameStatus":
                                     reader.Read();
-                                    string gameStatus = reader.Value;
-                                    Player.InGame = (gameStatus == "inGame");
+                                    Player.GameStatus = reader.Value;
                                     break;
 
                                 case "skinname":
@@ -697,7 +704,7 @@ namespace LegendaryClient.Logic
 
         public string LeagueName { get; set; }
 
-        public bool InGame { get; set; }
+        public string GameStatus { get; set; }
 
         public long Timestamp { get; set; }
 
