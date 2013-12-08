@@ -631,6 +631,7 @@ namespace LegendaryClient.Logic
 
         internal static MainWindow MainWin;
 
+        #region Public Helper Methods
         internal static void FocusClient()
         {
             if (MainWin.WindowState == WindowState.Minimized)
@@ -680,6 +681,15 @@ namespace LegendaryClient.Logic
                 return result;
             }
         }
+
+        public static DateTime JavaTimeStampToDateTime(double javaTimeStamp)
+        {
+            // Java timestamp is millisecods past epoch
+            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp / 1000)).ToLocalTime();
+            return dtDateTime;
+        }
+        #endregion Public Helper Methods
     }
 
     public class ChatPlayerItem

@@ -36,7 +36,7 @@ In-Client Screenshots (90-100)% complete
 Still-in Progress Screenshots 
 =============================
 
-![Chat](http://puu.sh/5EqTZ.jpg)
+![Chat](http://puu.sh/5FVHS.png)
 ![Queue](http://i.imgur.com/BuDdtyd.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)

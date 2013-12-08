@@ -39,6 +39,7 @@ namespace LegendaryClient.Windows.Profile
 
         public void GotRecentGames(RecentGames result)
         {
+            GameStats.Clear();
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
             foreach (PlayerGameStats Game in result.GameStatistics)
             {

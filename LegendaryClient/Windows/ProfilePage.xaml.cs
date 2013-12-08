@@ -26,6 +26,7 @@ namespace LegendaryClient.Windows
             RunesContainer.Content = new Runes();
             MasteriesContainer.Content = new Masteries();
             SkinsContainer.Content = new Skins();
+
             if (String.IsNullOrEmpty(Name))
             {
                 GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);

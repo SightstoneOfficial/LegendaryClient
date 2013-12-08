@@ -167,12 +167,35 @@ namespace LegendaryClient.Windows
 
                 if (playerItem.GameStatus != "outOfGame")
                 {
+                    TimeSpan elapsed = new TimeSpan();
+                    if (playerItem.Timestamp != 0)
+                    {
+                        elapsed = DateTime.Now.Subtract(Client.JavaTimeStampToDateTime(playerItem.Timestamp));
+                    }
                     switch (playerItem.GameStatus)
                     {
                         case "inGame":
-                                champions InGameChamp = champions.GetChampion(playerItem.Champion);
+                            champions InGameChamp = champions.GetChampion(playerItem.Champion);
+                            if (InGameChamp != null)
                                 PlayerItem.InGameStatus.Text = "In Game" + Environment.NewLine +
-                                                               "Playing as " + InGameChamp.displayName;
+                                                               "Playing as " + InGameChamp.displayName + Environment.NewLine +
+                                                               "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds) ;
+                            else
+                                PlayerItem.InGameStatus.Text = "In Game";
+                            break;
+                        case "hostingPracticeGame":
+                            PlayerItem.InGameStatus.Text = "Creating Custom Game";
+                            break;
+                        case "inQueue":
+                            PlayerItem.InGameStatus.Text = "In Queue" + Environment.NewLine +
+                                                           "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds) ;
+                            break;
+                        case "spectating":
+                            PlayerItem.InGameStatus.Text = "Spectating";
+                            break;
+                        case "championSelect":
+                            PlayerItem.InGameStatus.Text = "In Champion Select" + Environment.NewLine +
+                                                           "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds);
                             break;
                     }
                     PlayerItem.InGameStatus.Visibility = System.Windows.Visibility.Visible;
@@ -185,8 +208,8 @@ namespace LegendaryClient.Windows
 
             Point MouseLocation = e.GetPosition(Client.MainGrid);
             double YMargin = MouseLocation.Y;
-            if (YMargin + 155 > Client.MainGrid.ActualHeight)
-                YMargin = Client.MainGrid.ActualHeight - 155;
+            if (YMargin + 195 > Client.MainGrid.ActualHeight)
+                YMargin = Client.MainGrid.ActualHeight - 195;
             PlayerItem.Margin = new Thickness(0, YMargin, 250, 0);
         }
 
