@@ -226,6 +226,71 @@ namespace LegendaryClient.Windows
 
                 #endregion lol_air_client
 
+                #region lol_game_client
+
+                if (!Directory.Exists("RADS"))
+                {
+                    Directory.CreateDirectory("RADS");
+                }
+
+                if (!File.Exists(Path.Combine("RADS", "VERSION_LOL")))
+                {
+                    var VersionGAME = File.Create(Path.Combine("RADS", "VERSION_LOL"));
+                    VersionGAME.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
+                    VersionGAME.Close();
+                }
+
+                string LatestGame = patcher.GetLatestGame();
+                LogTextBox("League Of Legends Version: " + LatestGame);
+                string GameVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
+                LogTextBox("Current League of Legends Version: " + GameVersion);
+                RetrieveCurrentInstallation = false;
+                string GameLocation = "";
+
+                if (GameVersion == "0.0.0.0")
+                {
+                    LogTextBox("Checking for existing League of Legends Installation");
+                    GameLocation = Path.Combine("League of Legends", "RADS");
+                    if (Directory.Exists(AirLocation))
+                    {
+                        RetrieveCurrentInstallation = true;
+                    }
+                    else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", GameLocation)))
+                    {
+                        RetrieveCurrentInstallation = true;
+                        GameLocation = Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", GameLocation);
+                    }
+                    else
+                    {
+                        LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
+                            + Client.ExecutingDirectory
+                            + " to make the patching process quicker");
+                    }
+
+                    if (RetrieveCurrentInstallation)
+                    {
+                        LogTextBox("Getting League Of Legends from " + GameLocation);
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        {
+                            CurrentProgressLabel.Content = "Copying League of Legends";
+                        }));
+                        GameVersion = patcher.GetCurrentGameInstall(GameLocation);
+                        LogTextBox("Retrieved currently installed League of Legends");
+                        LogTextBox("Current League of Legends Version: " + GameLocation);
+                    }
+                }
+
+                if (GameVersion != LatestGame)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        CurrentProgressLabel.Content = "Retrieving League of Legends";
+                    }));
+                }
+
+                #endregion lol_game_client
+
+
 #endif
 
                 FinishPatching();
@@ -255,7 +320,7 @@ namespace LegendaryClient.Windows
             Directory.CreateDirectory(targetDir);
 
             foreach (var file in Directory.GetFiles(sourceDir))
-                File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)));
+                File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), true);
 
             foreach (var directory in Directory.GetDirectories(sourceDir))
                 Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));

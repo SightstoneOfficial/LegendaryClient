@@ -20,6 +20,7 @@ namespace LegendaryClient.Windows
     public partial class QueuePopOverlay : Page
     {
         public bool ReverseString = false;
+        public bool HasStartedChampSelect = false;
         private static System.Timers.Timer QueueTimer;
         public int TimeLeft = 12;
 
@@ -61,6 +62,8 @@ namespace LegendaryClient.Windows
                     }
                     else if (QueueDTO.GameState == "CHAMP_SELECT")
                     {
+                        HasStartedChampSelect = true;
+                        Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         string s = QueueDTO.GameState;
                         Client.ChampSelectDTO = QueueDTO;
                         Client.GameID = QueueDTO.Id;
@@ -69,6 +72,7 @@ namespace LegendaryClient.Windows
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.SwitchPage(new ChampSelectPage());
                     }
+
                     int i = 0;
                     string PlayerParticipantStatus = (string)QueueDTO.StatusOfParticipants;
                     if (ReverseString)

@@ -41,6 +41,16 @@ namespace LegendaryClient.Logic.Patcher
             return airVersions.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
         }
 
+        public string GetLatestGame()
+        {
+            string gameVersions = "";
+            using (WebClient client = new WebClient())
+            {
+                gameVersions = client.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
+            }
+            return gameVersions.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+        }
+
         public string GetCurrentAirInstall(string Location)
         {
             System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
@@ -76,12 +86,37 @@ namespace LegendaryClient.Logic.Patcher
             return latestVersion;
         }
 
+        public string GetCurrentGameInstall(string GameLocation)
+        {
+            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+            DirectoryInfo dInfo = new DirectoryInfo(Path.Combine(GameLocation, "projects", "lol_game_client", "filearchives"));
+            DirectoryInfo[] subdirs = null;
+            try
+            {
+                subdirs = dInfo.GetDirectories();
+            }
+            catch { return "0.0.0.0"; }
+            string latestVersion = "0.0.1";
+            foreach (DirectoryInfo info in subdirs)
+            {
+                latestVersion = info.Name;
+            }
+
+            Copy(Path.Combine(GameLocation, "projects", "lol_game_client"), Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client"));
+            File.Copy(Path.Combine(GameLocation, "RiotRadsIO.dll"), Path.Combine(Client.ExecutingDirectory, "RADS", "RiotRadsIO.dll"));
+
+            var VersionAIR = File.Create(Path.Combine("RADS", "VERSION_LOL"));
+            VersionAIR.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
+            VersionAIR.Close();
+            return latestVersion;
+        }
+
         private void Copy(string sourceDir, string targetDir)
         {
             Directory.CreateDirectory(targetDir);
 
             foreach (var file in Directory.GetFiles(sourceDir))
-                File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)));
+                File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), true);
 
             foreach (var directory in Directory.GetDirectories(sourceDir))
                 Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
