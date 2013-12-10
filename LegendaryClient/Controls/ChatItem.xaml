@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:LegendaryClient.Controls"
              mc:Ignorable="d"
              Height="350" Width="350">
-    <Grid>
+    <Grid local:AccessKeyScoper.IsAccessKeyScope="True">
         <Rectangle Fill="#99505050" Stroke="#FF646464">
             <Rectangle.Effect>
                 <DropShadowEffect ShadowDepth="3" />

@@ -145,6 +145,7 @@ namespace LegendaryClient.Windows
             {
                 PlayerItem = new LargeChatPlayer();
                 Client.MainGrid.Children.Add(PlayerItem);
+                Panel.SetZIndex(PlayerItem, 5);
                 PlayerItem.Tag = playerItem;
                 PlayerItem.PlayerName.Content = playerItem.Username;
                 PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;

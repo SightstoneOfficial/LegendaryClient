@@ -182,12 +182,12 @@ namespace LegendaryClient.Logic
                 "<wins>" + AmountOfWins + "</wins>" +
                 (IsRanked ?
                 "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
-                "<rankedLeagueName>Urgot&apos;s Patriots</rankedLeagueName>" +
-                "<rankedLeagueDivision>I</rankedLeagueDivision>" +
-                "<rankedLeagueTier>CHALLENGER</rankedLeagueTier>" +
+                "<rankedLeagueName>" + LeagueName + "</rankedLeagueName>" +
+                "<rankedLeagueDivision>" + Tier + "</rankedLeagueDivision>" +
+                "<rankedLeagueTier>" + TierName + "</rankedLeagueTier>" +
                 "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
                 "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
-                "<gameStatus>" + ((false == true) ? "inGame" : "outOfGame") + "</gameStatus>" +
+                "<gameStatus>outOfGame</gameStatus>" +
                 "<statusMsg>" + CurrentStatus + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
             "</body>";
         }
@@ -349,6 +349,9 @@ namespace LegendaryClient.Logic
 
         internal static int AmountOfWins; //Calculate wins for presence
         internal static bool IsRanked;
+        internal static string TierName;
+        internal static string Tier;
+        internal static string LeagueName;
 
         #endregion Chat
 

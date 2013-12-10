@@ -62,59 +62,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                #region Get Current Tier
-
-                Client.PVPNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, new SummonerLeaguesDTO.Callback(
-                    delegate(SummonerLeaguesDTO result)
-                    {
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            string CurrentLP = "0";
-                            string CurrentTier = "Gold V";
-                            bool InPromo = false;
-                            if (result.SummonerLeagues.Count <= 0)
-                            {
-                                CurrentLP = "";
-                                CurrentTier = "Level 30";
-                            }
-                            else
-                            {
-                                foreach (LeagueListDTO leagues in result.SummonerLeagues)
-                                {
-                                    CurrentTier = leagues.Tier + " " + leagues.RequestorsRank;
-                                    List<LeagueItemDTO> players = leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == leagues.RequestorsRank).ToList();
-                                    foreach (LeagueItemDTO player in players)
-                                    {
-                                        if (player.PlayerOrTeamName == PlayerData.Summoner.Name)
-                                        {
-                                            TypedObject miniSeries = player.MiniSeries as TypedObject;
-                                            string Series = "";
-                                            if (miniSeries != null)
-                                            {
-                                                Series = (string)miniSeries["progress"];
-                                                InPromo = true;
-                                            }
-                                            CurrentLP = (player.LeaguePoints == 100 ? Series : Convert.ToString(player.LeaguePoints));
-                                        }
-                                    }
-                                }
-                            }
-                            PlayerProgressLabel.Content = CurrentTier;
-                            if (InPromo)
-                            {
-                                PlayerCurrentProgressLabel.Content = CurrentLP;
-                                PlayerProgressBar.Value = 100;
-                            }
-                            else
-                            {
-                                PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
-                                PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
-                            }
-                        }));
-                    })
-                );
-
-                #endregion Get Current Tier
+                Client.PVPNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
             }
 
             if (packet.BroadcastNotification.BroadcastMessages != null)
@@ -127,6 +75,7 @@ namespace LegendaryClient.Windows
             {
                 if (x.PlayerStatSummaryTypeString == "Unranked")
                 {
+                    Client.IsRanked = false;
                     Client.AmountOfWins = x.Wins;
                 }
                 if (x.PlayerStatSummaryTypeString == "RankedSolo5x5")
@@ -147,6 +96,63 @@ namespace LegendaryClient.Windows
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);
             ProfileImage.Source = new BitmapImage(uriSource);
             Client.MainPageProfileImage = ProfileImage;
+        }
+
+        private void GotLeaguesForPlayer(SummonerLeaguesDTO result)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                string CurrentLP = "";
+                string CurrentTier = "";
+                bool InPromo = false;
+                if (result.SummonerLeagues.Count > 0)
+                {
+                    foreach (LeagueListDTO leagues in result.SummonerLeagues)
+                    {
+                        if (leagues.Queue == "RANKED_SOLO_5x5")
+                        {
+                            Client.Tier = leagues.RequestorsRank;
+                            Client.TierName = leagues.Tier;
+                            Client.LeagueName = leagues.Name;
+                            CurrentTier = leagues.Tier + " " + leagues.RequestorsRank;
+                            List<LeagueItemDTO> players = leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == leagues.RequestorsRank).ToList();
+                            foreach (LeagueItemDTO player in players)
+                            {
+                                if (player.PlayerOrTeamName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                                {
+                                    TypedObject miniSeries = player.MiniSeries as TypedObject;
+                                    string Series = "";
+                                    if (miniSeries != null)
+                                    {
+                                        Series = (string)miniSeries["progress"];
+                                        InPromo = true;
+                                    }
+                                    CurrentLP = (player.LeaguePoints == 100 ? Series : Convert.ToString(player.LeaguePoints));
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    PlayerProgressBar.Value = 100;
+                    PlayerProgressLabel.Content = "Level 30";
+                    PlayerCurrentProgressLabel.Content = "";
+                    PlayerAimProgressLabel.Content = "";
+                }
+
+                PlayerProgressLabel.Content = CurrentTier;
+                if (InPromo)
+                {
+                    PlayerCurrentProgressLabel.Content = CurrentLP;
+                    PlayerProgressBar.Value = 100;
+                }
+                else
+                {
+                    PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
+                    PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
+                }
+            }));
         }
 
         #region News
