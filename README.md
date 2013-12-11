@@ -28,16 +28,16 @@ You must compile these DLLS yourself:
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/KlRS9G2.jpg)
-![News Screen](http://i.imgur.com/UagU9fw.png)
-![Featured Games](http://i.imgur.com/lvFTsXP.png)
-![Store](http://i.imgur.com/VvdjTrA.png)
+![Login](http://i.imgur.com/QcSZeOG.jpg)
+![News Screen](http://i.imgur.com/jJKtmNk.png)
+![Featured Games](http://i.imgur.com/p4LgrQf.png)
+![Store](http://i.imgur.com/raXcBfv.png)
 
 Still-in Progress Screenshots 
 =============================
 
 ![Chat](http://puu.sh/5FVHS.png)
-![Queue](http://i.imgur.com/BuDdtyd.png)
+![Queue](http://i.imgur.com/ZpZiyJ5.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)
 ![ChampSelect2](http://i.imgur.com/FBK2dw3.jpg)
@@ -59,3 +59,7 @@ Other Features
 **Multiple chat states:**
 
 ![ChatStates](http://i.imgur.com/TY96nl5.png)
+
+**View other teams champions in ARAM**
+
+![AramHack](http://i.imgur.com/3t3uNsU.png)

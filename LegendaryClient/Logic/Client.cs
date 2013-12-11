@@ -187,7 +187,7 @@ namespace LegendaryClient.Logic
                 "<rankedLeagueTier>" + TierName + "</rankedLeagueTier>" +
                 "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
                 "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
-                "<gameStatus>outOfGame</gameStatus>" +
+                "<gameStatus>" + GameStatus + "</gameStatus>" +
                 "<statusMsg>" + CurrentStatus + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
             "</body>";
         }
@@ -352,6 +352,7 @@ namespace LegendaryClient.Logic
         internal static string TierName;
         internal static string Tier;
         internal static string LeagueName;
+        internal static string GameStatus = "outOfGame";
 
         #endregion Chat
 

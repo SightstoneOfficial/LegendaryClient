@@ -251,7 +251,7 @@ namespace LegendaryClient.Windows
                 {
                     LogTextBox("Checking for existing League of Legends Installation");
                     GameLocation = Path.Combine("League of Legends", "RADS");
-                    if (Directory.Exists(AirLocation))
+                    if (Directory.Exists(GameLocation))
                     {
                         RetrieveCurrentInstallation = true;
                     }

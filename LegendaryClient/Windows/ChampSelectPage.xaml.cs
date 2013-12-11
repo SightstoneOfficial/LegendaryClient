@@ -5,6 +5,7 @@ using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
 using System;
@@ -50,6 +51,7 @@ namespace LegendaryClient.Windows
         private async void StartChampSelect()
         {
             Client.FocusClient();
+            Champions = new ChampionDTO[0];
             Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
             Champions = await Client.PVPNet.GetAvailableChampions();
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
@@ -271,13 +273,25 @@ namespace LegendaryClient.Windows
                     PurpleListView.Items.Clear();
                     int i = 0;
                     bool PurpleSide = false;
+
+                    //Aram hack, view other players champions & names (thanks to Andrew)
+                    List<PlayerChampionSelectionDTO> OtherPlayers = new List<PlayerChampionSelectionDTO>(ChampDTO.PlayerChampionSelections.ToArray());
+                    bool AreWePurpleSide = false;
+
                     foreach (Participant participant in AllParticipants)
                     {
+                        Participant tempParticipant = participant;
                         i++;
                         ChampSelectPlayer control = new ChampSelectPlayer();
-                        if (participant is PlayerParticipant)
+                        if (tempParticipant is AramPlayerParticipant)
                         {
-                            PlayerParticipant player = participant as PlayerParticipant;
+                            tempParticipant = new PlayerParticipant(tempParticipant.GetBaseTypedObject());
+                        }
+
+                        if (tempParticipant is PlayerParticipant)
+                        {
+                            PlayerParticipant player = tempParticipant as PlayerParticipant;
+
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
                             {
                                 #region Disable picking selected champs
@@ -303,21 +317,24 @@ namespace LegendaryClient.Windows
 
                                 if (selection.SummonerInternalName == player.SummonerInternalName)
                                 {
+                                    OtherPlayers.Remove(selection);
                                     control = RenderPlayer(selection, player);
                                     if (HasLockedIn && selection.SummonerInternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName)
                                     {
+                                        if (PurpleSide)
+                                            AreWePurpleSide = true;
                                         RenderLockInGrid(selection);
                                     }
                                 }
                             }
                         }
-                        else if (participant is ObfuscatedParticipant)
+                        else if (tempParticipant is ObfuscatedParticipant)
                         {
                             control.PlayerName.Content = "Summoner " + i;
                         }
-                        else if (participant is BotParticipant)
+                        else if (tempParticipant is BotParticipant)
                         {
-                            BotParticipant bot = participant as BotParticipant;
+                            BotParticipant bot = tempParticipant as BotParticipant;
                             string botChamp = bot.SummonerName.Split(' ')[0]; //Why is this internal name rito?
                             champions botSelectedChamp = champions.GetChampion(botChamp);
                             PlayerParticipant part = new PlayerParticipant();
@@ -343,6 +360,36 @@ namespace LegendaryClient.Windows
                         else
                         {
                             PurpleListView.Items.Add(control);
+                        }
+                    }
+
+                    //Do aram hack!
+                    if (OtherPlayers.Count > 0)
+                    {
+                        if (AreWePurpleSide)
+                        {
+                            BlueListView.Items.Clear();
+                        }
+                        else
+                        {
+                            PurpleListView.Items.Clear();
+                        }
+
+                        foreach (PlayerChampionSelectionDTO hackSelection in OtherPlayers)
+                        {
+                            ChampSelectPlayer control = new ChampSelectPlayer();
+                            PlayerParticipant player = new PlayerParticipant();
+                            player.SummonerName = hackSelection.SummonerInternalName;
+                            control = RenderPlayer(hackSelection, player);
+
+                            if (AreWePurpleSide)
+                            {
+                                BlueListView.Items.Add(control);
+                            }
+                            else
+                            {
+                                PurpleListView.Items.Add(control);
+                            }
                         }
                     }
 
