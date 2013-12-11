@@ -35,7 +35,6 @@ namespace LegendaryClient.Windows
             {
                 LogTextBox("Starting Patcher");
 
-#if !Nopatch
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += (o, e) =>
                 {
@@ -289,9 +288,6 @@ namespace LegendaryClient.Windows
                 }
 
                 #endregion lol_game_client
-
-
-#endif
 
                 FinishPatching();
             });
