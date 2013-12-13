@@ -44,11 +44,14 @@ namespace LegendaryClient.Windows
 
         public async void GetSummonerProfile(string s)
         {
-            PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(s);
+            PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(String.IsNullOrWhiteSpace(s) ? Client.LoginPacket.AllSummonerData.Summoner.Name : s);
             if (String.IsNullOrWhiteSpace(Summoner.Name))
             {
-                SummonerNameLabel.Content = "No Summoner Found";
-                SummonerLevelLabel.Content = "Level -1";
+                MessageOverlay overlay = new MessageOverlay();
+                overlay.MessageTitle.Content = "No Summoner Found";
+                overlay.MessageTextBox.Text = "The summoner \"" + s + "\" does not exist.";
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
                 return;
             }
             SummonerNameLabel.Content = Summoner.Name;
