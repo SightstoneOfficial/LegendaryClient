@@ -6,6 +6,7 @@ using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
@@ -89,6 +90,8 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static List<keybindingEvents> Keybinds;
 
+        internal static ChampionDTO[] PlayerChampions;
+
         internal static List<string> Whitelist = new List<string>();
 
         #region Chat
@@ -151,6 +154,21 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
         {
+            if (msg.Subject != null)
+            {
+                MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    ChatSubjects subject = (ChatSubjects) Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
+                    NotificationPopup pop = new NotificationPopup(subject, msg);
+                    pop.Height = 230;
+                    pop.HorizontalAlignment = HorizontalAlignment.Right;
+                    pop.VerticalAlignment = VerticalAlignment.Bottom;
+                    Client.NotificationGrid.Children.Add(pop);
+                }));
+
+                return;
+            }
+
             if (AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
             {
                 ChatPlayerItem chatItem = AllPlayers[msg.From.User];
@@ -357,12 +375,14 @@ namespace LegendaryClient.Logic
         #endregion Chat
 
         internal static Grid MainGrid;
+        internal static Grid NotificationGrid;
         internal static Label StatusLabel;
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
         internal static Button PlayButton;
         internal static ContentControl ChatContainer;
-        internal static ContentControl NotificationContainer;
+        internal static ContentControl StatusContainer;
+        internal static ContentControl NotificationOverlayContainer;
         internal static ListView ChatListView;
         internal static ChatItem ChatItem;
 
@@ -490,7 +510,7 @@ namespace LegendaryClient.Logic
 
         internal static void OnMessageReceived(object sender, object message)
         {
-            MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 if (message is StoreAccountBalanceNotification)
                 {
@@ -527,6 +547,10 @@ namespace LegendaryClient.Logic
                     EndOfGamePage EndOfGame = new EndOfGamePage(stats);
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                     Client.OverlayContainer.Content = EndOfGame.Content;
+                }
+                else if (message is StoreFulfillmentNotification)
+                {
+                    PlayerChampions = await PVPNet.GetAvailableChampions();
                 }
             }));
         }

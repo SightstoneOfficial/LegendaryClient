@@ -122,6 +122,9 @@
     <Compile Include="Controls\NotificationChatPlayer.xaml.cs">
       <DependentUpon>NotificationChatPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\NotificationPopup.xaml.cs">
+      <DependentUpon>NotificationPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ProfileChampionImage.xaml.cs">
       <DependentUpon>ProfileChampionImage.xaml</DependentUpon>
     </Compile>
@@ -215,8 +218,8 @@
     <Compile Include="Windows\MessageOverlay.xaml.cs">
       <DependentUpon>MessageOverlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\NotificationPage.xaml.cs">
-      <DependentUpon>NotificationPage.xaml</DependentUpon>
+    <Compile Include="Windows\StatusPage.xaml.cs">
+      <DependentUpon>StatusPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\PatcherPage.xaml.cs">
       <DependentUpon>PatcherPage.xaml</DependentUpon>
@@ -318,6 +321,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\NotificationPopup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ProfileChampionImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -406,7 +413,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\NotificationPage.xaml">
+    <Page Include="Windows\StatusPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,11 +9,11 @@ using System.Windows.Threading;
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for NotificationPage.xaml
+    /// Interaction logic for StatusPage.xaml
     /// </summary>
-    public partial class NotificationPage : Page
+    public partial class StatusPage : Page
     {
-        public NotificationPage()
+        public StatusPage()
         {
             InitializeComponent();
             Client.StatusLabel = StatusLabel;
@@ -24,6 +24,12 @@ namespace LegendaryClient.Windows
         //Blink and add to notification list if messaged
         void ChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
         {
+            //If is special message, don't show popup
+            if (msg.Subject != null)
+            {
+                return;
+            }
+
             if (Client.AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
             {
                 ChatPlayerItem chatItem = Client.AllPlayers[msg.From.User];
@@ -69,10 +75,12 @@ namespace LegendaryClient.Windows
             if (Client.ChatContainer.Visibility == System.Windows.Visibility.Hidden)
             {
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Visible;
+                Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 260, 50);
             }
             else
             {
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
+                Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 10, 50);
             }
         }
 

@@ -40,6 +40,7 @@ namespace LegendaryClient.Windows
         private bool HasLockedIn = false;
         private bool DevMode = false;
         private bool HasLaunchedGame = false;
+        private bool QuickLoad = false; //Don't load masteries and runes on load at start
         private Room Chatroom;
 
         public ChampSelectPage()
@@ -51,13 +52,11 @@ namespace LegendaryClient.Windows
         private async void StartChampSelect()
         {
             Client.FocusClient();
-            Champions = new ChampionDTO[0];
-            Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
-            Champions = await Client.PVPNet.GetAvailableChampions();
+            Champions = Client.PlayerChampions;
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
 
-            int i = 0;
+            /*int i = 0;
             foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
             {
                 string MasteryPageName = MasteryPage.Name;
@@ -67,7 +66,7 @@ namespace LegendaryClient.Windows
                 }
                 MasteryComboBox.Items.Add(MasteryPageName);
                 if (MasteryPage.Current)
-                    MasteryComboBox.SelectedItem = MasteryPageName + " "; //Dont waste two calls at the start of champ select
+                    MasteryComboBox.SelectedValue = MasteryPageName;
             }
             i = 0;
             foreach (SpellBookPageDTO RunePage in MyRunes.BookPages)
@@ -79,8 +78,10 @@ namespace LegendaryClient.Windows
                 }
                 RuneComboBox.Items.Add(RunePageName);
                 if (RunePage.Current)
-                    RuneComboBox.SelectedItem = RunePageName + " ";
-            }
+                    RuneComboBox.SelectedValue = RunePageName;
+            }*/
+
+            QuickLoad = true;
 
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
             GameDTO latestDTO = await Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState, Client.ChampSelectDTO.PickTurn);
@@ -105,8 +106,6 @@ namespace LegendaryClient.Windows
             CountdownTimer.Interval = 1000; // 1 second
             CountdownTimer.Start();
 
-            ChampSelect_OnMessageReceived(this, latestDTO);
-
             LatestDto = latestDTO;
 
             string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
@@ -115,9 +114,6 @@ namespace LegendaryClient.Windows
             Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
             Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
             Chatroom.Join(latestDTO.RoomPassword);
-
-            ChampionSelectListView.Visibility = Visibility.Visible;
-            AfterChampionSelectGrid.Visibility = Visibility.Hidden;
 
             List<ChampionDTO> champList = new List<ChampionDTO>(Champions);
 
@@ -142,6 +138,9 @@ namespace LegendaryClient.Windows
                     ChampionSelectListView.Items.Add(item);
                 }
             }
+
+            ChampSelect_OnMessageReceived(this, latestDTO);
+            Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
         }
 
         private void CountdownTimer_Tick(object sender, EventArgs e)
@@ -259,7 +258,10 @@ namespace LegendaryClient.Windows
                     {
                         HasLockedIn = true;
                         GameStatusLabel.Content = "All players have picked!";
-                        counter = 10;
+                        if (configType != null)
+                            counter = configType.PostPickTimerDuration - 5;
+                        else
+                            counter = 10;
                     }
                     else if (ChampDTO.GameState == "START_REQUESTED")
                     {
@@ -291,6 +293,7 @@ namespace LegendaryClient.Windows
                         if (tempParticipant is PlayerParticipant)
                         {
                             PlayerParticipant player = tempParticipant as PlayerParticipant;
+                            control.PlayerName.Content = player.SummonerName;
 
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
                             {
@@ -436,6 +439,7 @@ namespace LegendaryClient.Windows
             champions Champion = champions.GetChampion(selection.ChampionId);
 
             SkinSelectListView.Items.Clear();
+            AbilityListView.Items.Clear();
 
             //Render default skin
             ListViewItem item = new ListViewItem();
@@ -625,6 +629,9 @@ namespace LegendaryClient.Windows
 
         private async void MasteryComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!QuickLoad) //Make loading quicker
+                return;
+
             bool HasChanged = false;
             int i = 0;
             MasteryBookDTO bookDTO = new MasteryBookDTO();

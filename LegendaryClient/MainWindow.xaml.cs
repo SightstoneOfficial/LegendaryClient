@@ -36,16 +36,28 @@ namespace LegendaryClient
 
             Client.ChatClient = new JabberClient();
             ChatContainer.Content = new ChatPage().Content;
-            NotificationContainer.Content = new NotificationPage().Content;
+            StatusContainer.Content = new StatusPage().Content;
+            NotificationOverlayContainer.Content = new FakePage().Content;
+
+            Grid NotificationTempGrid = null;
+            foreach (var x in NotificationOverlayContainer.GetChildObjects())
+            {
+                if (x is Grid)
+                {
+                    NotificationTempGrid = x as Grid;
+                }
+            }
 
             Client.PlayButton = PlayButton;
             Client.Pages = new List<Page>();
             Client.MainGrid = MainGrid;
+            Client.NotificationGrid = NotificationTempGrid;
+            Client.MainWin = this;
             Client.Container = Container;
             Client.OverlayContainer = OverlayContainer;
-            Client.MainWin = this;
             Client.ChatContainer = ChatContainer;
-            Client.NotificationContainer = NotificationContainer;
+            Client.StatusContainer = StatusContainer;
+            Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SwitchPage(new PatcherPage());
         }
 
@@ -125,7 +137,7 @@ namespace LegendaryClient
                 Client.PVPNet.Disconnect();
                 Client.ChatClient.Close();
                 Client.IsLoggedIn = false;
-                Client.NotificationContainer.Visibility = Visibility.Hidden;
+                Client.StatusContainer.Visibility = Visibility.Hidden;
                 Client.Container.Margin = new Thickness(0, 0, 0, 0);
                 Client.SwitchPage(page);
             }

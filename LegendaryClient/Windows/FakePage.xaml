@@ -7,6 +7,6 @@
       d:DesignHeight="300" d:DesignWidth="300"
 	Title="FakePage">
 
-    <Grid>
+    <Grid x:Name="FakeGrid">
     </Grid>
 </Page>

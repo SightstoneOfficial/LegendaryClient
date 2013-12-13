@@ -134,9 +134,10 @@ namespace LegendaryClient.Windows
 
 #pragma warning disable 4014 //Code does not need to be awaited
 
-        private void GotLoginPacket(LoginDataPacket packet)
+        private async void GotLoginPacket(LoginDataPacket packet)
         {
             Client.LoginPacket = packet;
+            Client.PlayerChampions = await Client.PVPNet.GetAvailableChampions();
             Client.PVPNet.OnError -= PVPNet_OnError;
             Client.GameConfigs = packet.GameTypeConfigs;
             Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
@@ -146,7 +147,7 @@ namespace LegendaryClient.Windows
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                Client.NotificationContainer.Visibility = System.Windows.Visibility.Visible;
+                Client.StatusContainer.Visibility = System.Windows.Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
                 
                 //Setup chat
