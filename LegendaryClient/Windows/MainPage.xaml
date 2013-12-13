@@ -26,7 +26,7 @@
         <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Gold V" HorizontalAlignment="Left" Margin="265,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
         <Label x:Name="PlayerAimProgressLabel" Style="{x:Null}" Content="100LP" HorizontalAlignment="Left" Margin="365,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
 
-        <TextBox x:Name="BroadcastMessage" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,40,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="#7F000000" BorderBrush="{x:Null}" Foreground="White" />
+        <TextBox x:Name="BroadcastMessage" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,52,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" BorderThickness="0" />
 
         <TabControl HorizontalAlignment="Stretch" Margin="30,110,10,10" VerticalAlignment="Stretch" Width="1000">
             <TabItem Header="Featured Games">

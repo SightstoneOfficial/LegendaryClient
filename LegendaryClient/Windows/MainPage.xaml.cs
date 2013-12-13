@@ -105,7 +105,7 @@ namespace LegendaryClient.Windows
                 string CurrentLP = "";
                 string CurrentTier = "";
                 bool InPromo = false;
-                if (result.SummonerLeagues.Count > 0)
+                if (result.SummonerLeagues != null && result.SummonerLeagues.Count > 0)
                 {
                     foreach (LeagueListDTO leagues in result.SummonerLeagues)
                     {
