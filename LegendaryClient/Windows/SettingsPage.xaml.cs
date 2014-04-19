@@ -87,6 +87,7 @@ All rights reserved.
 
 Thanks to " + Client.LoginPacket.AllSummonerData.Summoner.Name + @". Using this client means the most to me. Thank you very much!
 
+Big thanks to Snowl. Created most of this client.
 Thanks to all the people at #riotcontrol, especially raler (for providing PVPNetConnect).
 Thanks to all the people who done the RTMPS work. Your help has been invaluable.
 
