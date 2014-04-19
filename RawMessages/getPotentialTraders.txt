@@ -1,0 +1,125 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 53,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "getPotentialTraders",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": []
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "lcdsChampionTradeService",
+              "messageId": "E97E543B-C268-6A56-CADD-9792559166AB",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 319,
+        "StreamId": 0,
+        "Timer": 794,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 794,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 25,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "E97E543B-C268-6A56-CADD-9792559166AB",
+              "CorrelationIdBytes": "é~T;ÂhjVÊÝ—’U‘f«",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "potentialTraders": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    "aoliao",
+                    "thebigdano",
+                    "wowjohn",
+                    "alectus"
+                  ]
+                },
+                "TypeName": "com.riotgames.platform.trade.api.contract.PotentialTradersDTO"
+              },
+              "ClientId": "940C5D0A-E60E-4138-66B0-D3A3274D2B01",
+              "ClientIdBytes": "”\f]\næ\u000eA8f°Ó£'M+\u0001",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "940C5DBD-1F0E-48A3-E7E1-9F77569B8EEA",
+              "MessageIdBytes": "”\f]½\u001f\u000eH£çáŸwV›Žê",
+              "TimeStamp": 1385522421903,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 253,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 98,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "callKudos",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "95035746-6D1B-BF0D-0690-F698082E174B",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  "{\"receiverId\":466972,\"kudosType\":1,\"gameId\":22042116,\"giverId\":222908,\"commandName\":\"GIVE\"}"
+                ]
+              },
+              "timeToLive": 0,
+              "clientId": null,
+              "destination": "clientFacadeService",
+              "messageId": "981073BA-7467-9B8B-8E4B-9819ED4D8568",
+              "timestamp": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 398,
+        "StreamId": 0,
+        "Timer": 12678,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 12678,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 58,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "981073BA-7467-9B8B-8E4B-9819ED4D8568",
+              "CorrelationIdBytes": "˜\u0010sºtg›‹ŽK˜\u0019íM…h",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "value": "{\"returnCode\":\"OKAY\"}",
+                "TypeName": "com.riotgames.platform.harassment.LcdsResponseString"
+              },
+              "ClientId": "955767A1-DA0A-66FD-F4D9-8FFA30E2D828",
+              "ClientIdBytes": "•Wg¡Ú\nfýôÙú0âØ(",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "955767C6-790B-A567-061D-89DA34C3FA87",
+              "MessageIdBytes": "•WgÆy\u000b¥g\u0006\u001d‰Ú4Ãú‡",
+              "TimeStamp": 1385531308169,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 179,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

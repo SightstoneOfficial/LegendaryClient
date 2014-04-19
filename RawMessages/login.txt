@@ -1,0 +1,149 @@
+﻿{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 2,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "login",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "partnerCredentials": null,
+                    "securityAnswer": null,
+                    "authToken": "{\"fingerprint\":\"*strip*\",\"timestamp\":*strip*,\"account_id\":200006292,\"signature\":\"*strip*",\"resources\":\"lol\",\"account_name\":\"snowl\",\"other\":\"*strip*"}",
+                    "domain": "lolclient.lol.riotgames.com",
+                    "oldPassword": null,
+                    "ipAddress": "10.20.52.243",
+                    "locale": "en_AU",
+                    "password": "*strip*",
+                    "clientVersion": "3.14.13_11_19_11_32",
+                    "username": "snowl",
+                    "operatingSystem": "Windows 8",
+                    "TypeName": "com.riotgames.platform.login.AuthenticationCredentials"
+                  }
+                ]
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "loginService",
+              "messageId": "D022E09C-F4DC-D45C-CDEF-978FFA716F69",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 1026,
+        "StreamId": 0,
+        "Timer": 2961,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 2961,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 2,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "D022E09C-F4DC-D45C-CDEF-978FFA716F69",
+              "CorrelationIdBytes": "Ð\"àœôÜÔ\\Íï—úqoi",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "token": "7182876d-a025-41d8-9805-93ecab01b30a",
+                "password": "*strip*",
+                "accountSummary": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "groupCount": 0,
+                  "username": "snowl",
+                  "accountId": 200006292.0,
+                  "summonerInternalName": null,
+                  "dataVersion": 0,
+                  "admin": false,
+                  "hasBetaAccess": true,
+                  "summonerName": null,
+                  "partnerMode": false,
+                  "needsPasswordReset": false,
+                  "futureData": null,
+                  "TypeName": "com.riotgames.platform.account.AccountSummary"
+                },
+                "TypeName": "com.riotgames.platform.login.Session"
+              },
+              "ClientId": "9406B90B-D00E-D4AD-AADA-82AAEC4662D0",
+              "ClientIdBytes": "”\u0006¹\u000bÐ\u000eÔ­ªÚ‚ªìFbÐ",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "9406BA3A-8C0B-6515-63DE-40062C50149C",
+              "MessageIdBytes": "”\u0006º:Œ\u000be\u0015cÞ@\u0006,P\u0014œ",
+              "TimeStamp": 1385522270540,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 442,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

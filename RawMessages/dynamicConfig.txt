@@ -1,0 +1,64 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 0,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "receive",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSA, LoLNotes",
+              "CorrelationId": null,
+              "CorrelationIdBytes": null,
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "configs": "{\"SeasonReward\":{\"Maximum_team_reward_level\":3,\"ServiceCallEnabled\":true,\"QualificationWarningEnabled\":false,\"Minimum_win_team_reward_level_2\":35,\"Minimum_win_team_reward_level_1\":10,\"Minimum_win_team_reward_level_3\":75},\"String\":{\"String\":null},\"GameInvites\":{\"ServiceEnabled\":false},\"DisabledChampions\":{\"CLASSIC\":\"[]\",\"RANKED_TEAM_5x5\":\"[]\",\"ONEFORALL\":\"[]\",\"NORMAL\":\"[]\",\"NORMAL_3x3\":\"[]\",\"ARAM_UNRANKED_5x5\":\"[]\",\"ARAM\":\"[]\",\"RANKED_SOLO_5x5\":\"[]\",\"ONEFORALL_5x5\":\"[30,17,134]\",\"BOT\":\"[]\",\"ODIN\":\"[]\"},\"ChampionTradeService\":{\"Enabled\":true},\"GuestSlots\":{\"Enabled\":null},\"GameTimerSync\":{\"Enabled\":false},\"DockedPrompt\":{\"EnabledNewDockedPromptRenderer\":true}}",
+                "delta": false,
+                "TypeName": "com.riotgames.platform.client.dynamic.configuration.ClientDynamicConfigurationNotification"
+              },
+              "ClientId": "cn-200006292",
+              "ClientIdBytes": null,
+              "Destination": "messagingDestination",
+              "Headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSSubtopic": "cn-200006292"
+              },
+              "MessageId": "e8d968e3-f02f-4020-920b-8fd277f26ea3",
+              "MessageIdBytes": null,
+              "TimeStamp": 1385522271010,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 899,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+﻿<Page
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:Controls="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.ReplayPage"
+      mc:Ignorable="d"
+      d:DesignHeight="672" d:DesignWidth="1024"
+	Title="CustomGameListingPage">
+
+    <Grid>
+        <Label Content="Watch Replays" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
+        <!--TODO Style ListView-->
+        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="0,105,0,0" VerticalAlignment="Stretch" Width="420">
+            <StackPanel x:Name="GamePanel" />
+        </ScrollViewer>
+        <Controls:TextBoxWatermarked HorizontalAlignment="Left" TextWrapping="Wrap" Text="" Watermark="Paste Spectator Command" VerticalAlignment="Top" Margin="10,49,0,0" Width="410"/>
+        <Button Content="Download" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="345,49,0,0"/>
+        <Label Content="Starting Replay Download" Margin="10,71,604,575"/>
+    </Grid>
+</Page>

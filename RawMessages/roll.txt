@@ -1,0 +1,126 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 59,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "roll",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": []
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "lcdsRerollService",
+              "messageId": "37DC4BC7-58D0-146D-281E-979315A7B724",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 297,
+        "StreamId": 0,
+        "Timer": 38941,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 38941,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 31,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "37DC4BC7-58D0-146D-281E-979315A7B724",
+              "CorrelationIdBytes": "7ÜKÇXÐ\u0014m(\u001e—“\u0015§·$",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "championId": 107,
+                "pointSummary": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "pointsToNextRoll": 250.0,
+                  "maxRolls": 2,
+                  "numberOfRolls": 1,
+                  "pointsCostToRoll": 250.0,
+                  "currentPoints": 250.0,
+                  "TypeName": "com.riotgames.platform.reroll.pojo.PointSummary"
+                },
+                "TypeName": "com.riotgames.platform.reroll.pojo.RollResult"
+              },
+              "ClientId": "940E31F1-F60B-0705-68C7-96CB1B8A14F8",
+              "ClientIdBytes": "”\u000e1ñö\u000b\u0007\u0005hÇ–Ë\u001bŠ\u0014ø",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "940E3267-2619-4D9D-699B-380E5A598474",
+              "MessageIdBytes": "”\u000e2g&\u0019Mi›8\u000eZY„t",
+              "TimeStamp": 1385522471046,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 321,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

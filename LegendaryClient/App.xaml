@@ -1,0 +1,106 @@
+﻿<Application x:Class="LegendaryClient.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+
+        <Style x:Key="ChatStatusStyle" TargetType="ComboBox">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="Transparent" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="{x:Type ListViewItem}" TargetType="ListViewItem">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Transparent" />
+                </Trigger>
+                <Trigger Property="IsSelected" Value="true">
+                    <Setter Property="Background" Value="Transparent" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+
+        <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+
+        <Style x:Key="{x:Type ContentControl}" TargetType="{x:Type ContentControl}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+
+        <x:Array x:Key="WindowStates" Type="sys:String"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>Fullscreen</sys:String>
+            <sys:String>Windowed</sys:String>
+            <sys:String>Borderless</sys:String>
+        </x:Array>
+
+        <x:Array x:Key="Regions" Type="sys:String"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>BR</sys:String>
+            <sys:String>EUN</sys:String>
+            <sys:String>EUW</sys:String>
+            <sys:String>KR</sys:String>
+            <sys:String>NA</sys:String>
+            <sys:String>OCE</sys:String>
+            <sys:String>RU</sys:String>
+        </x:Array>
+
+        <x:Array x:Key="TeamSizes" Type="sys:Int32"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:Int32>1</sys:Int32>
+            <sys:Int32>2</sys:Int32>
+            <sys:Int32>3</sys:Int32>
+            <sys:Int32>4</sys:Int32>
+            <sys:Int32>5</sys:Int32>
+        </x:Array>
+
+        <x:Array x:Key="SpectatorStates" Type="sys:String"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>None</sys:String>
+            <sys:String>All</sys:String>
+            <sys:String>Lobby Only</sys:String>
+            <sys:String>Friends List Only</sys:String>
+        </x:Array>
+
+        <x:Array x:Key="CustomGameTypes" Type="sys:String"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>Blind Pick</sys:String>
+            <sys:String>All Random</sys:String>
+            <sys:String>Tournament Draft</sys:String>
+            <sys:String>One for All</sys:String>
+            <!-- Modes unavailable to the public-->
+            <!--<sys:String>Open Pick</sys:String>
+            <sys:String>Infinite Time Blind Pick</sys:String>
+            <sys:String>Infinite Time Blind PickTest</sys:String>
+            <sys:String>Captain Pick</sys:String>
+            <sys:String>No Ban Draft</sys:String>
+            <sys:String>Blind Draft</sys:String>-->
+        </x:Array>
+
+        <x:Array x:Key="ChatStates" Type="sys:String"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>Online</sys:String>
+            <sys:String>Busy</sys:String>
+            <sys:String>Invisible</sys:String>
+        </x:Array>
+
+        <x:Array x:Key="ChampionComboBoxFilters" Type="sys:String"
+                xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>All</sys:String>
+            <sys:String>Available</sys:String>
+            <sys:String>Owned</sys:String>
+            <sys:String>Not Owned</sys:String>
+        </x:Array>
+    </Application.Resources>
+</Application>

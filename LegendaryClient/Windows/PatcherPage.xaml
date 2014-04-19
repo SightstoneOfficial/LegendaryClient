@@ -1,0 +1,27 @@
+﻿<Page x:Class="LegendaryClient.Windows.PatcherPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="672" d:DesignWidth="1024"
+	Title="PatcherPage">
+
+    <Page.Resources>
+        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+    </Page.Resources>
+
+    <Grid>
+        <Label Content="LegendaryClient Updater" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
+        <Button x:Name="SkipPatchButton" Content="Skip" HorizontalAlignment="Right" Margin="0,5,10,0" VerticalAlignment="Top" Width="150" Height="50" Click="SkipPatchButton_Click" IsEnabled="False" />
+
+        <Label x:Name="CurrentProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,100" VerticalAlignment="Bottom" />
+        <ProgressBar x:Name="CurrentProgressBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,70" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" IsIndeterminate="True" />
+        <Label x:Name="TotalProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,40" VerticalAlignment="Bottom" />
+        <ProgressBar x:Name="TotalProgessBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,10" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" />
+        <Label x:Name="CurrentStatusLabel" Content="Checking for updates..." HorizontalAlignment="Right" Margin="0,0,10,100" VerticalAlignment="Bottom" />
+        <TextBox x:Name="PatchTextBox" HorizontalAlignment="Stretch" Margin="10,60,10,130" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Stretch" Background="#FF2E2E2E" BorderBrush="{x:Null}" Foreground="White" />
+    </Grid>
+</Page>
