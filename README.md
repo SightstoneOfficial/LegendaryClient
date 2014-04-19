@@ -24,10 +24,10 @@ You need these DLLS:
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/aG5XoQ0)
-![News Screen](http://i.imgur.com/Y4ZJ0fk)
-![Featured Games](http://i.imgur.com/Y4ZJ0fk)
-![Store](http://i.imgur.com/1Bq26WV)
+![Login](http://i.imgur.com/aG5XoQ0.png)
+![News Screen](http://i.imgur.com/Y4ZJ0fk.png)
+![Featured Games](http://i.imgur.com/Y4ZJ0fk.png)
+![Store](http://i.imgur.com/1Bq26WV.png)
 
 Still-in Progress Screenshots 
 =============================
