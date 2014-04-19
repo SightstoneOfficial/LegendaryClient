@@ -19,19 +19,15 @@ You need these DLLS:
 * MahApps.Metro
 * SharpZipLib
 * Sqlite
-
-You must compile these DLLS yourself:
-
-* https://github.com/bladecoding/Jabber-net
-* https://github.com/Snowl/PVPNetConnect
+* PVPNetConnect
 
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/QcSZeOG.jpg)
-![News Screen](http://i.imgur.com/jJKtmNk.png)
-![Featured Games](http://i.imgur.com/p4LgrQf.png)
-![Store](http://i.imgur.com/raXcBfv.png)
+![Login](http://i.imgur.com/aG5XoQ0)
+![News Screen](http://i.imgur.com/Y4ZJ0fk)
+![Featured Games](http://i.imgur.com/Y4ZJ0fk)
+![Store](http://i.imgur.com/1Bq26WV)
 
 Still-in Progress Screenshots 
 =============================
@@ -62,7 +58,7 @@ Other Features
 
 **View other teams champions in ARAM**
 
-![AramHack](http://i.imgur.com/3t3uNsU.png)
+![AramHack](http://i.imgur.com/9tPrxGy)
 
 Please Note
 ======
