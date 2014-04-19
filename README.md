@@ -26,7 +26,7 @@ In-Client Screenshots (90-100)% complete
 
 ![Login](http://i.imgur.com/aG5XoQ0.png)
 ![News Screen](http://i.imgur.com/Y4ZJ0fk.png)
-![Featured Games](http://i.imgur.com/Y4ZJ0fk.png)
+![Match History](http://i.imgur.com/03K5nmC)
 ![Store](http://i.imgur.com/1Bq26WV.png)
 
 Still-in Progress Screenshots 
