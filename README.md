@@ -19,19 +19,15 @@ You need these DLLS:
 * MahApps.Metro
 * SharpZipLib
 * Sqlite
-
-You must compile these DLLS yourself:
-
-* https://github.com/bladecoding/Jabber-net
-* https://github.com/Snowl/PVPNetConnect
+* PVPNetConnect
 
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/QcSZeOG.jpg)
-![News Screen](http://i.imgur.com/jJKtmNk.png)
-![Featured Games](http://i.imgur.com/p4LgrQf.png)
-![Store](http://i.imgur.com/raXcBfv.png)
+![Login](http://i.imgur.com/aG5XoQ0.png)
+![News Screen](http://i.imgur.com/Y4ZJ0fk.png)
+![Match History](http://i.imgur.com/03K5nmC)
+![Store](http://i.imgur.com/1Bq26WV.png)
 
 Still-in Progress Screenshots 
 =============================
@@ -62,4 +58,8 @@ Other Features
 
 **View other teams champions in ARAM**
 
-![AramHack](http://i.imgur.com/3t3uNsU.png)
+![AramHack](http://i.imgur.com/9tPrxGy)
+
+Please Note
+======
+LegendaryClient isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
