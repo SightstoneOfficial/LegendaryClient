@@ -7,7 +7,7 @@
              d:DesignHeight="100" d:DesignWidth="300">
     <Grid>
         <Label x:Name="PlayerLabel" Content="Snowl" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top" />
-        <Label x:Name="RankLabel" Content="Diamond I" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Bottom" />
+        <Label x:Name="RankLabel" Content="Diamond I" HorizontalAlignment="Left" Margin="0,0,0,29" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Bottom" />
         <CheckBox x:Name="ReadyCheckBox" Content="" HorizontalAlignment="Right" Margin="0,0,0,0" IsHitTestVisible="false" VerticalAlignment="Center">
             <CheckBox.LayoutTransform>
                 <ScaleTransform ScaleX="4" ScaleY="4" />
