@@ -38,7 +38,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Latest champion for League of Legends login screen
         /// </summary>
-        internal const int LatestChamp = 157;
+        internal const int LatestChamp = 161;
 
         /// <summary>
         /// Latest version of League of Legends. Retrieved from ClientLibCommon.dat
