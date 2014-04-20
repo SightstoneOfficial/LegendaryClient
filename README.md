@@ -5,6 +5,10 @@ Beautiful, fully-featured League of Legends client.
 
 Still under heavy development! Lots of things don't work or don't look good...
 
+https://www.youtube.com/watch?v=rVWdHeQcGwM&feature=youtu.be
+
+LegendaryClient Aram Game
+
 Prerequisites
 =============
 
