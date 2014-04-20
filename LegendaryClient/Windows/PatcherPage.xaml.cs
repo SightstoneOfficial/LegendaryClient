@@ -94,7 +94,7 @@ namespace LegendaryClient.Windows
                 }
 #endif
                 //LogTextBox("LegendaryClient is up to date");
-                LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
+                //LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
                 LogTextBox("LegendaryClient is up to date");
 
                 #endregion LegendaryClient

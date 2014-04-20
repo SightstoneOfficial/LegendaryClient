@@ -36,6 +36,11 @@ namespace LegendaryClient.Logic
     internal static class Client
     {
         /// <summary>
+        /// The database of all runes
+        /// </summary>
+        internal static List<runes> Runes;
+
+        /// <summary>
         /// Latest champion for League of Legends login screen
         /// </summary>
         internal const int LatestChamp = 161;
@@ -716,6 +721,25 @@ namespace LegendaryClient.Logic
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp / 1000)).ToLocalTime();
             return dtDateTime;
+        }
+        public static void Log(String lines, String type = "LOG")
+        {
+            /*
+            System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
+            file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
+            file.Close();*/
+        }
+
+        //Get Image
+        public static BitmapImage GetImage(string Address)
+        {
+            Uri UriSource = new Uri(Address, UriKind.RelativeOrAbsolute);
+            if (!File.Exists(Address) && !Address.StartsWith("/LegendaryClient;component"))
+            {
+                //Log("Cannot find " + Address, "WARN");
+                UriSource = new Uri("/LegendaryClient;component/NONE.png", UriKind.RelativeOrAbsolute);
+            }
+            return new BitmapImage(UriSource);
         }
         #endregion Public Helper Methods
     }

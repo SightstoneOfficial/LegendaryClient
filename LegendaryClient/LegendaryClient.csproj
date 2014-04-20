@@ -155,6 +155,9 @@
     <Compile Include="Controls\RecentGameOverview.xaml.cs">
       <DependentUpon>RecentGameOverview.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RuneItem.xaml.cs">
+      <DependentUpon>RuneItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TextBoxWatermarked.cs" />
     <Compile Include="Controls\WindowsExensions.cs" />
     <Compile Include="Controls\AccessKeyScoper.cs" />
@@ -162,6 +165,7 @@
     <Compile Include="Logic\ChatSubjects.cs" />
     <Compile Include="Logic\JSON\Items.cs" />
     <Compile Include="Logic\JSON\Masteries.cs" />
+    <Compile Include="Logic\JSON\Runes.cs" />
     <Compile Include="Logic\Maps\Map1.cs" />
     <Compile Include="Logic\Maps\Map10.cs" />
     <Compile Include="Logic\Maps\Map8.cs" />
@@ -184,6 +188,7 @@
     <Compile Include="Logic\Region\RU.cs" />
     <Compile Include="Logic\SQLite\keybindingEvents.cs" />
     <Compile Include="Logic\SQLite\masteries.cs" />
+    <Compile Include="Logic\SQLite\runes.cs" />
     <Compile Include="Logic\SQLite\SQLite.cs" />
     <Compile Include="Logic\SQLite\items.cs" />
     <Compile Include="Logic\PlayerSpell\SummonerSpell.cs" />
@@ -379,6 +384,10 @@
     <Page Include="Controls\ReplayItem.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\RuneItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\SmallChampionItem.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -579,6 +588,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="NONE.png" />
+    <Resource Include="ReplayControls\noise.png" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

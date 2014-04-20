@@ -8,13 +8,104 @@
 	Title="Runes">
 
     <Grid>
-        <ListView x:Name="RunePageListView" HorizontalAlignment="Stretch" Margin="10,10,40,0" VerticalAlignment="Top" Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#19000000" Grid.ColumnSpan="2">
+        <ListView x:Name="RunePageListView" HorizontalAlignment="Stretch" Margin="10,10,40,0" VerticalAlignment="Top" Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#19000000" Grid.ColumnSpan="2" SelectionChanged="RunePageListView_SelectionChanged" Foreground="White">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200" />
+        <TextBox x:Name="RuneTextBox" HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200" />
+        <!--
+        <Label x:Name="UsedLabel" Foreground="White" Content="Points Used: 0" HorizontalAlignment="Left" Margin="10,70,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
+        <Label x:Name="FreeLabel" Foreground="White" Content="Points Free: 0" HorizontalAlignment="Left" Margin="10,110,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
+
+        <Button x:Name="SaveButton" Content="Save Masteries" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="200" Click="SaveButton_Click" />
+        <Button x:Name="RevertButton" Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="200" Click="RevertButton_Click" />
+
+        <Button x:Name="DeleteButton" Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Width="200" />
+        <Button x:Name="ReturnButton" Content="Return All Points" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Width="200" Click="ReturnButton_Click" />
+-->
+        <ListView x:Name="RedListView" HorizontalAlignment="Left" Height="220" Margin="516,45,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="238" Background="#66505050">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <ListView x:Name="YellowListView" HorizontalAlignment="Left" Height="220" Margin="760,45,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="238" Background="#66505050">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Height="220" Margin="1002,45,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="238" Background="#66505050">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <ListView x:Name="BlackListView" HorizontalAlignment="Left" Height="78" Margin="516,340,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="238" Background="#66505050">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <Label x:Name="MarksLabel" Content="Marks" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="517,265,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="SealsLabel" Content="Seals" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="761,265,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="GlyphsLabel" Content="Glyphs" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="1003,265,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="QuintsLabel" Content="Quintessences" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="517,423,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="RuneFilterComboBox" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="RuneFilterComboBox_SelectionChanged">
+            <Label Content="All"/>
+            <Label Content="Attack"/>
+            <Label Content="Magic"/>
+            <Label Content="Defense"/>
+            <Label Content="Utility"/>
+        </ComboBox>
+        <ListView x:Name="AvailableRuneList" HorizontalAlignment="Left" Height="438" Margin="10,100,0,0" VerticalAlignment="Top" Width="501" MouseDoubleClick="AvailableRuneList_DoubleClickOrRightClick" MouseRightButtonUp="AvailableRuneList_DoubleClickOrRightClick" Foreground="White" FontSize="16" Background="#66505050">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Rune"/>
+                    <GridViewColumn Header="#" Width="40">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock >
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}/{1}">
+                                            <Binding Path=".Used"></Binding>
+                                            <Binding Path=".Owned"></Binding>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Name And Effect" Width="300">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock >
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}&#x0a;{1}">
+                                            <Binding Path=".Tag.name"></Binding>
+                                            <Binding Path=".Tag.description"></Binding>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <Grid Height="100" Width="100"/>
+        </ListView>
+        <Label x:Name="StatsLabel" Content="" Foreground="White" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="852,324,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="SaveRunes" Content="Save Rune Page" HorizontalAlignment="Left" Margin="264,45,0,0" VerticalAlignment="Top" Width="200" Click="SaveRunes_Click" />
+        <Button x:Name="ClearRunes" Content="Clear Rune Page" HorizontalAlignment="Left" Margin="264,73,0,0" VerticalAlignment="Top" Width="200" Click="ClearRunes_Click" />
     </Grid>
 </Page>
