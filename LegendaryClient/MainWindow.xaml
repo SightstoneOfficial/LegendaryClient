@@ -12,7 +12,7 @@
             <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" />
             <Button x:Name="ProfileButton" Content="profile" Click="ProfileButton_Click" />
             <Button x:Name="ShopButton" Content="shop" Click="ShopButton_Click" />
-            <Button x:Name="ReplayButton" Content="replays" Click="ReplayButton_Click" />
+            <!--<Button x:Name="ReplayButton" Content="replays" Click="ReplayButton_Click" />-->
             <Button x:Name="SettingsButton" Content="settings" Click="SettingsButton_Click" />
             <Button x:Name="LogoutButton" Content="logout" Click="LogoutButton_Click" />
         </Controls:WindowCommands>
@@ -36,6 +36,7 @@
             <ImageBrush ImageSource="BackTex.png" TileMode="FlipY" Stretch="Uniform" AlignmentY="Top" Viewport="0,0,150,150" ViewportUnits="Absolute" Opacity="0.4" />
         </Grid.Background>
 
+        <ContentControl x:Name="NotificationContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" Panel.ZIndex="3" Margin="0,0,0,40" />
         <ContentControl x:Name="ChatContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" Panel.ZIndex="3" Margin="0,0,0,40" />
         <ContentControl x:Name="StatusContainer" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Visibility="Hidden" Panel.ZIndex="3" Height="40" />
         <ContentControl x:Name="OverlayContainer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,40" Panel.ZIndex="2" Visibility="Hidden" />

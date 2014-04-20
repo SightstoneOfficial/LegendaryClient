@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Windows.Media.Imaging;
 namespace LegendaryClient.Logic.SQLite
-{   
+{
     public class masteries
     {
         public int id { get; set; }

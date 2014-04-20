@@ -122,21 +122,21 @@ namespace LegendaryClient.Windows
         /// Queue bool
         /// </summary>
         private Button LastSender;
-        
+
 
         private async void QueueButton_Click(object sender, RoutedEventArgs e)
         {
             //To leave all other queues
             {
-            var keys = new List<Button>(ButtonTimers.Keys);
-            foreach (Button pair in keys)
-            {
-                Button realButton = (Button)pair.Tag;
-                realButton.Content = "Queue";
-            }
-            ButtonTimers = new Dictionary<Button, int>();
-            Queues = new List<double>();
-            await Client.PVPNet.PurgeFromQueues();
+                var keys = new List<Button>(ButtonTimers.Keys);
+                foreach (Button pair in keys)
+                {
+                    Button realButton = (Button)pair.Tag;
+                    realButton.Content = "Queue";
+                }
+                ButtonTimers = new Dictionary<Button, int>();
+                Queues = new List<double>();
+                await Client.PVPNet.PurgeFromQueues();
             }
             //To Start Queueing
             LastSender = (Button)sender;

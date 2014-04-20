@@ -77,7 +77,6 @@ namespace LegendaryClient.Logic.Patcher
                 File.Copy(Path.Combine(AirLocation, "assets", "data", "gameStats", "gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
             }
 
-            Copy(Path.Combine(AirLocation, "assets", "images", "abilities"), Path.Combine(Client.ExecutingDirectory, "Assets", "abilities"));
             Copy(Path.Combine(AirLocation, "assets", "images", "champions"), Path.Combine(Client.ExecutingDirectory, "Assets", "champions"));
 
             var VersionAIR = File.Create(Path.Combine("Assets", "VERSION_AIR"));
@@ -103,7 +102,10 @@ namespace LegendaryClient.Logic.Patcher
             }
 
             string ParentDirectory = Directory.GetParent(GameLocation).FullName;
-            Copy(Path.Combine(ParentDirectory, "Config"), Path.Combine(Client.ExecutingDirectory, "Config"));
+            if (Directory.Exists(Path.Combine(ParentDirectory, "Config")))
+            {
+                Copy(Path.Combine(ParentDirectory, "Config"), Path.Combine(Client.ExecutingDirectory, "Config"));
+            }
 
             Copy(Path.Combine(GameLocation, "projects", "lol_game_client"), Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client"));
             File.Copy(Path.Combine(GameLocation, "RiotRadsIO.dll"), Path.Combine(Client.ExecutingDirectory, "RADS", "RiotRadsIO.dll"));

@@ -1,5 +1,6 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
@@ -11,7 +12,6 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -43,9 +43,9 @@ namespace LegendaryClient.Windows.Profile
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
             foreach (PlayerGameStats Game in result.GameStatistics)
             {
-                Game.GameType = Client.TitleCaseString(Game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
+                Game.QueueType = Client.TitleCaseString(Game.QueueType.Replace("ODIN", "Dominion").Replace("UNRANKED", "").Replace("_5x5", "").Replace("_", " ")).Replace("Aram", "ARAM").Trim();
                 MatchStats Match = new MatchStats();
-                
+
                 foreach (RawStat Stat in Game.Statistics)
                 {
                     var type = typeof(MatchStats);
@@ -72,14 +72,14 @@ namespace LegendaryClient.Windows.Profile
                     champions GameChamp = champions.GetChampion((int)Math.Round(stats.Game.ChampionId));
                     item.ChampionImage.Source = GameChamp.icon;
                     item.ChampionNameLabel.Content = GameChamp.displayName;
-                    item.ScoreLabel.Content = 
+                    item.ScoreLabel.Content =
                         string.Format("{0}/{1}/{2} ({3})",
                         stats.ChampionsKilled,
                         stats.NumDeaths,
                         stats.Assists,
-                        stats.Game.GameType);
+                        stats.Game.QueueType);
 
-                    item.CreepScoreLabel.Content = stats.MinionsKilled + " minions";
+                    item.MapLabel.Content = BaseMap.GetMap(stats.Game.GameMapId).DisplayName;
                     item.DateLabel.Content = stats.Game.CreateDate;
                     item.IPEarnedLabel.Content = "+" + stats.Game.IpEarned + " IP";
                     item.PingLabel.Content = stats.Game.UserServerPing + "ms";
@@ -154,11 +154,11 @@ namespace LegendaryClient.Windows.Profile
 
                     if (((string)item.Key).StartsWith("Item"))
                     {
-                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"), UriKind.Absolute);
+                        var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png");
                         img = new Image();
                         img.Width = 58;
                         img.Height = 58;
-                        img.Source = new BitmapImage(uriSource);
+                        img.Source = Client.GetImage(uriSource);
                         img.Tag = item;
                         img.MouseMove += img_MouseMove;
                         img.MouseLeave += img_MouseLeave;
@@ -217,8 +217,8 @@ namespace LegendaryClient.Windows.Profile
                 ParsedDescription = Regex.Replace(ParsedDescription, "<.*?>", string.Empty);
                 PlayerItem.PlayerStatus.Text = ParsedDescription;
 
-                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"), UriKind.RelativeOrAbsolute);
-                PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
+                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png");
+                PlayerItem.ProfileImage.Source = Client.GetImage(uriSource);
 
                 PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
@@ -280,6 +280,16 @@ namespace LegendaryClient.Windows.Profile
         public double TotalHeal = 0;
         public double NeutralMinionsKilledYourJungle = 0;
         public double NeutralMinionsKilledEnemyJungle = 0;
+        public double CombatPlayerScore = 0;
+        public double NodeNeutralize = 0;
+        public double TotalPlayerScore = 0;
+        public double ObjectivePlayerScore = 0;
+        public double NodeCapture = 0;
+        public double TotalScoreRank = 0;
+        public double VictoryPointTotal = 0;
+        public double TeamObjective = 0;
+        public double NodeNeutralizeAssist = 0;
+        public double NodeCaptureAssist = 0;
         public PlayerGameStats Game = null;
     }
 }

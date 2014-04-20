@@ -4,10 +4,10 @@ using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
 
 //While this is in the Profile folder, the namespace is LegendaryClient.Windows
 namespace LegendaryClient.Windows
@@ -42,13 +42,9 @@ namespace LegendaryClient.Windows
             WinsLabel.Content = SelectedStats.TotalSessionsWon;
             LossesLabel.Content = SelectedStats.TotalSessionsPlayed - SelectedStats.TotalSessionsWon;
             if (SelectedStats.TotalSessionsPlayed != 0)
-            {
                 RatioLabel.Content = string.Format("{0:0.00}%", (SelectedStats.TotalSessionsWon / SelectedStats.TotalSessionsPlayed) * 100);
-            }
             else
-            {
                 RatioLabel.Content = "100%";
-            }
 
             Type classType = typeof(AggregatedChampion);
             foreach (FieldInfo field in classType.GetFields(BindingFlags.Public | BindingFlags.Instance))
@@ -73,13 +69,9 @@ namespace LegendaryClient.Windows
             }
 
             if (double.IsNaN(KeyHeader.Width))
-            {
                 KeyHeader.Width = KeyHeader.ActualWidth;
-            }
             if (double.IsNaN(ValueHeader.Width))
-            {
                 ValueHeader.Width = ValueHeader.ActualWidth;
-            }
             KeyHeader.Width = double.NaN;
             ValueHeader.Width = double.NaN;
         }
@@ -111,16 +103,14 @@ namespace LegendaryClient.Windows
             {
                 if (ChampionStat.ChampionId != 0)
                 {
-                    ListViewItem item = new ListViewItem();
                     ProfileChampionImage championImage = new ProfileChampionImage();
-                    champions champ = champions.GetChampion((int)ChampionStat.ChampionId);
-                    championImage.ChampImage.Source = champ.icon;
-                    championImage.ChampName.Content = champ.displayName;
+                    champions champion = champions.GetChampion((int)ChampionStat.ChampionId);
+                    championImage.DataContext = champion;
+
                     championImage.Width = 96;
                     championImage.Height = 84;
-                    item.Tag = ChampionStat;
-                    item.Content = championImage.Content;
-                    ChampionsListView.Items.Add(item);
+                    championImage.Tag = ChampionStat;
+                    ChampionsListView.Items.Add(championImage);
                 }
             }
         }
@@ -132,9 +122,9 @@ namespace LegendaryClient.Windows
 
         private void ChampionsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (((ListViewItem)ChampionsListView.SelectedItem).Tag != null)
+            if (((ProfileChampionImage)ChampionsListView.SelectedItem).Tag != null)
             {
-                SelectedStats = (AggregatedChampion)((ListViewItem)ChampionsListView.SelectedItem).Tag;
+                SelectedStats = (AggregatedChampion)((ProfileChampionImage)ChampionsListView.SelectedItem).Tag;
                 if (!IsOwnPlayer)
                     HideGrid.Visibility = System.Windows.Visibility.Hidden;
                 DisplayStats();

@@ -33,9 +33,9 @@
 
         <Label Content="Search" HorizontalAlignment="Left" Margin="150,40,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
         <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="240,50,200,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
-
+        
         <Label Content="Purple Team" HorizontalAlignment="Right" Margin="0,40,10,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,80,5,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="400" Width="140" Background="Transparent" BorderBrush="{x:Null}">
+        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,80,0,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="400" Width="140" Background="Transparent" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -52,7 +52,9 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="145,80,145,0" Height="370" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
+        <local:TradeControl x:Name="PlayerTradeControl" HorizontalAlignment="Left" Margin="150,85,0,0" Height="200" Width="300" Panel.ZIndex="1" VerticalAlignment="Top" Visibility="Hidden" />
+
+        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="145,80,145,0" Height="370" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -66,7 +68,7 @@
         </ListView>
 
         <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="145,80,145,0" Height="370" VerticalAlignment="Top" Background="#66505050" Visibility="Hidden">
-            <ListView x:Name="AbilityListView" HorizontalAlignment="Left" Width="390" Margin="5,5,00,5" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" BorderBrush="{x:Null}">
+            <ListView x:Name="AbilityListView" HorizontalAlignment="Left" Width="390" Margin="5,5,0,5" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />

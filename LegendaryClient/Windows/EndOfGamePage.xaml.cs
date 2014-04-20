@@ -40,10 +40,10 @@ namespace LegendaryClient.Windows
                 playerStats.ChampImage.Source = Champ.icon;
                 playerStats.ChampLabel.Content = Champ.name;
                 playerStats.PlayerLabel.Content = summary.SummonerName;
-                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id)), UriKind.Absolute);
-                playerStats.Spell1Image.Source = new BitmapImage(uriSource);
-                uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id)), UriKind.Absolute);
-                playerStats.Spell2Image.Source = new BitmapImage(uriSource);
+                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id));
+                playerStats.Spell1Image.Source = Client.GetImage(uriSource);
+                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id));
+                playerStats.Spell2Image.Source = Client.GetImage(uriSource);
 
                 double ChampionsKilled = 0;
                 double Assists = 0;
@@ -54,8 +54,8 @@ namespace LegendaryClient.Windows
                     if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
                     {
                         Image item = new Image();
-                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"), UriKind.Absolute);
-                        item.Source = new BitmapImage(uriSource);
+                        uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png");
+                        item.Source = Client.GetImage(uriSource);
                         playerStats.ItemsListView.Items.Add(item);
                     }
 
@@ -100,9 +100,9 @@ namespace LegendaryClient.Windows
 
             PlayersListView.Items.Insert(AllParticipants.Count / 2, new Separator());
 
-            championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
-            var skinSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
-            SkinImage.Source = new BitmapImage(skinSource);
+            /*championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
+            var skinSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath);
+            SkinImage.Source = Client.GetImage(skinSource);*/
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

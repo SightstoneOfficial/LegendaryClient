@@ -27,6 +27,7 @@ namespace LegendaryClient.Windows
         public QueuePopOverlay(GameDTO InitialDTO)
         {
             InitializeComponent();
+            Client.IsInGame = true;
             Client.FocusClient();
             InitializePop(InitialDTO);
             TimeLeft = InitialDTO.JoinTimerDuration;
@@ -58,6 +59,7 @@ namespace LegendaryClient.Windows
                     {
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                        Client.IsInGame = false;
                         return;
                     }
                     else if (QueueDTO.GameState == "CHAMP_SELECT")
@@ -95,6 +97,21 @@ namespace LegendaryClient.Windows
                                 player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
                             }
                             player.ReadyCheckBox.IsChecked = true;
+                            player.ReadyCheckBox.Foreground = System.Windows.Media.Brushes.Green;
+                        }
+                        else if (c == '2')
+                        {
+                            QueuePopPlayer player = null;
+                            if (i < (PlayerParticipantStatus.Length / 2)) //Team 1
+                            {
+                                player = (QueuePopPlayer)Team1ListBox.Items[i];
+                            }
+                            else //Team 2
+                            {
+                                player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
+                            }
+                            player.ReadyCheckBox.IsChecked = null;
+                            player.ReadyCheckBox.Foreground = System.Windows.Media.Brushes.Red;
                         }
                         i++;
                     }

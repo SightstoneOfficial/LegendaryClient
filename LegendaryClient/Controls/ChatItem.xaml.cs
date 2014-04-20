@@ -23,7 +23,7 @@ namespace LegendaryClient.Controls
 
         public void ChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
         {
-            if (Client.AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
+            if (Client.AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body) && Client.ChatItem != null)
             {
                 ChatPlayerItem chatItem = Client.AllPlayers[msg.From.User];
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>

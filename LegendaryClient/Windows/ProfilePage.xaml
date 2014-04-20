@@ -33,7 +33,7 @@
                 <Frame x:Name="OverviewContainer">
                 </Frame>
             </TabItem>
-            <TabItem Header="Leagues">
+            <TabItem x:Name="LeagueHeader" Header="Leagues">
                 <Frame x:Name="LeaguesContainer">
                 </Frame>
             </TabItem>

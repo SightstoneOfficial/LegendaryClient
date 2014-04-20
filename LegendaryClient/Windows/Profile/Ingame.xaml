@@ -43,6 +43,6 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button Content="Spectate" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="400" Height="40" />
+        <Button x:Name="SpectateButton" Content="Spectate" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="400" Height="40" Click="SpectateButton_Click" />
     </Grid>
 </Page>

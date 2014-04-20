@@ -6,6 +6,8 @@ using MahApps.Metro.Controls;
 using PVPNetConnect;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -21,7 +23,14 @@ namespace LegendaryClient
         public MainWindow()
         {
             InitializeComponent();
-            Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            Client.ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            //Set up logging before we do anything
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "lcdebug.log")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "lcdebug.log"));
+            }
 
             Client.InfoLabel = InfoLabel;
             Client.PVPNet = new PVPNetConnection();
@@ -38,6 +47,7 @@ namespace LegendaryClient
             ChatContainer.Content = new ChatPage().Content;
             StatusContainer.Content = new StatusPage().Content;
             NotificationOverlayContainer.Content = new FakePage().Content;
+            NotificationContainer.Content = new NotificationsPage().Content;
 
             Grid NotificationTempGrid = null;
             foreach (var x in NotificationOverlayContainer.GetChildObjects())
@@ -57,10 +67,10 @@ namespace LegendaryClient
             Client.OverlayContainer = OverlayContainer;
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;
+            Client.NotificationContainer = NotificationContainer;
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SwitchPage(new PatcherPage());
         }
-
 
         void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
@@ -135,14 +145,8 @@ namespace LegendaryClient
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
-            {
-                ReplayPage ReplayPage = new ReplayPage();
-                Client.SwitchPage(ReplayPage);
-            }
         }
 
-        #pragma warning disable 4014 //Code does not need to be awaited
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoLogin = false;
@@ -150,14 +154,15 @@ namespace LegendaryClient
             {
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
-                Client.PVPNet.QuitGame();
+                Client.QuitCurrentGame();
                 Client.PVPNet.Disconnect();
                 Client.ChatClient.Close();
                 Client.IsLoggedIn = false;
                 Client.StatusContainer.Visibility = Visibility.Hidden;
                 Client.Container.Margin = new Thickness(0, 0, 0, 0);
-                Client.SwitchPage(new LoginPage());
+                Client.SwitchPage(page);
             }
         }
+
     }
 }

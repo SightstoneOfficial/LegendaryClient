@@ -38,6 +38,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>4014</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -47,33 +48,31 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>4014</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Awesomium.Core, Version=1.7.4.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Awesomium.Core, Version=1.7.2.2, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
       <HintPath>..\DLLS\Awesomium.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="awesomium.windows.controls, Version=1.7.4.1, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="awesomium.windows.controls, Version=1.7.2.2, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
       <HintPath>..\DLLS\awesomium.windows.controls.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="jabber-net">
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MahApps.Metro">
-      <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net45\MahApps.Metro.dll</HintPath>
+      <HintPath>..\..\..\LegendaryClient-28d1ed8941b14b1bb813e809a282fde015a1b184\LegendaryClient\bin\Release\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
-    </Reference>
-    <Reference Include="rtmp-sharp">
-      <HintPath>..\..\Coding\League Of Legends\LegendaryClient-master\DLLS\rtmp-sharp.dll</HintPath>
+      <HintPath>..\..\LcV2\ShortLC\LegendaryClient\bin\Debug\PVPNetConnect.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -104,6 +103,9 @@
     <Compile Include="Controls\ChampionAbility.xaml.cs">
       <DependentUpon>ChampionAbility.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ChampionDetailAbility.xaml.cs">
+      <DependentUpon>ChampionDetailAbility.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
     </Compile>
@@ -122,6 +124,9 @@
     <Compile Include="Controls\HoverOverLabel.xaml.cs">
       <DependentUpon>HoverOverLabel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InvitePlayer.xaml.cs">
+      <DependentUpon>InvitePlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\JoinQueue.xaml.cs">
       <DependentUpon>JoinQueue.xaml</DependentUpon>
     </Compile>
@@ -130,6 +135,9 @@
     </Compile>
     <Compile Include="Controls\LargeChatPlayer.xaml.cs">
       <DependentUpon>LargeChatPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\LeagueItem.xaml.cs">
+      <DependentUpon>LeagueItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MasteryItem.xaml.cs">
       <DependentUpon>MasteryItem.xaml</DependentUpon>
@@ -159,10 +167,14 @@
       <DependentUpon>RuneItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TextBoxWatermarked.cs" />
+    <Compile Include="Controls\TradeControl.xaml.cs">
+      <DependentUpon>TradeControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WindowsExensions.cs" />
     <Compile Include="Controls\AccessKeyScoper.cs" />
     <Compile Include="Logic\ChatPrefixes.cs" />
     <Compile Include="Logic\ChatSubjects.cs" />
+    <Compile Include="Logic\JSON\Champions.cs" />
     <Compile Include="Logic\JSON\Items.cs" />
     <Compile Include="Logic\JSON\Masteries.cs" />
     <Compile Include="Logic\JSON\Runes.cs" />
@@ -172,8 +184,6 @@
     <Compile Include="Logic\Maps\Map12.cs" />
     <Compile Include="Logic\Maps\BaseMap.cs" />
     <Compile Include="Logic\Patcher\RiotPatcher.cs" />
-    <Compile Include="Logic\ReplayRecorder.cs" />
-    <Compile Include="Logic\SQLite\championAbilities.cs" />
     <Compile Include="Logic\SQLite\champions.cs" />
     <Compile Include="Logic\SQLite\championSearchTags.cs" />
     <Compile Include="Logic\SQLite\championSkins.cs" />
@@ -189,6 +199,7 @@
     <Compile Include="Logic\SQLite\keybindingEvents.cs" />
     <Compile Include="Logic\SQLite\masteries.cs" />
     <Compile Include="Logic\SQLite\runes.cs" />
+    <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\SQLite.cs" />
     <Compile Include="Logic\SQLite\items.cs" />
     <Compile Include="Logic\PlayerSpell\SummonerSpell.cs" />
@@ -200,14 +211,14 @@
     <Compile Include="Logic\SWF\SWFTypes\Rect.cs" />
     <Compile Include="Logic\SWF\SWFTypes\Tag.cs" />
     <Compile Include="Logic\SWF\SWFTypes\TagCodes.cs" />
-    <Compile Include="Windows\InGame.xaml.cs">
-      <DependentUpon>InGame.xaml</DependentUpon>
+    <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
+      <DependentUpon>ChampionDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\InGameHomeOverlay.xaml.cs">
-      <DependentUpon>InGameHomeOverlay.xaml</DependentUpon>
+    <Compile Include="Windows\InvitePlayersPage.xaml.cs">
+      <DependentUpon>InvitePlayersPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\NonExistantPage.xaml.cs">
-      <DependentUpon>NonExistantPage.xaml</DependentUpon>
+    <Compile Include="Windows\NotificationsPage.xaml.cs">
+      <DependentUpon>NotificationsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Profile\AggregatedStatsOverlay.xaml.cs">
       <DependentUpon>AggregatedStatsOverlay.xaml</DependentUpon>
@@ -251,8 +262,8 @@
     <Compile Include="Windows\MessageOverlay.xaml.cs">
       <DependentUpon>MessageOverlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ReplayPage.xaml.cs">
-      <DependentUpon>ReplayPage.xaml</DependentUpon>
+    <Compile Include="Windows\QueuePage.xaml.cs">
+      <DependentUpon>QueuePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\StatusPage.xaml.cs">
       <DependentUpon>StatusPage.xaml</DependentUpon>
@@ -305,7 +316,14 @@
     <Compile Include="Windows\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\TeamQueuePage.xaml.cs">
+      <DependentUpon>TeamQueuePage.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\ChampionAbility.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ChampionDetailAbility.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -333,6 +351,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\InvitePlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\JoinQueue.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -342,6 +364,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LargeChatPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LeagueItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -361,10 +387,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PlayerItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\ProfileChampionImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,19 +403,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ReplayItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\RuneItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SmallChampionItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Controls\Steel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TradeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -409,15 +427,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\InGame.xaml">
+    <Page Include="Windows\ChampionDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\InGameHomeOverlay.xaml">
+    <Page Include="Windows\InvitePlayersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\NonExistantPage.xaml">
+    <Page Include="Windows\NotificationsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -477,7 +495,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\ReplayPage.xaml">
+    <Page Include="Windows\QueuePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -549,6 +567,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\TeamQueuePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -584,14 +606,17 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="chat.png" />
+    <Resource Include="Background.jpg" />
+    <Resource Include="Locked.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="NONE.png" />
-    <Resource Include="ReplayControls\noise.png" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Unlocked.png" />
+    <Resource Include="trade.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

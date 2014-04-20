@@ -18,6 +18,8 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class PatcherPage : Page
     {
+        Thread bgThread;
+
         public PatcherPage()
         {
             InitializeComponent();
@@ -26,15 +28,14 @@ namespace LegendaryClient.Windows
 
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.SwitchPage(new LoginPage());
+            FinishPatching(true);
         }
 
         private void StartPatcher()
         {
-            Thread bgThead = new Thread(() =>
+            bgThread = new Thread(() =>
             {
                 LogTextBox("Starting Patcher");
-                LogTextBox("LegendaryClient tested for League of Legends V 4.5.13");
 
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += (o, e) =>
@@ -57,13 +58,13 @@ namespace LegendaryClient.Windows
                 try
                 {
                     VersionString = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
-                    
                 }
                 catch
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         CurrentProgressLabel.Content = "Could not retrieve update files!";
+                        Client.Log("Couldn't get update files for LegendaryClient");
                     }));
                     return;
                 }
@@ -71,6 +72,7 @@ namespace LegendaryClient.Windows
                 string[] VersionSplit = VersionString.Split('|');
 
                 LogTextBox("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
+                Client.Log("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
 
 #if !DEBUG //Dont patch client while in DEBUG
                 if (VersionSplit.Length == 3)
@@ -90,12 +92,11 @@ namespace LegendaryClient.Windows
                         File.Delete("COL.ZIP");
                         System.Diagnostics.Process.Start("Patcher.exe");
                         Environment.Exit(0);*/
-                    }
+                /*    }
                 }
 #endif
-                //LogTextBox("LegendaryClient is up to date");
-                //LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
                 LogTextBox("LegendaryClient is up to date");
+                Client.Log("LC Patched");
 
                 #endregion LegendaryClient
 
@@ -116,16 +117,18 @@ namespace LegendaryClient.Windows
                 {
                     var VersionLOL = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
                     VersionLOL.Write(encoding.GetBytes("0.0.0"), 0, encoding.GetBytes("0.0.0").Length);
-                    
                     VersionLOL.Close();
                 }
-                
 
                 RiotPatcher patcher = new RiotPatcher();
                 string DDragonDownloadURL = patcher.GetDragon();
+                if (!DDragonDownloadURL.StartsWith("http:"))
+                    DDragonDownloadURL = "http:" + DDragonDownloadURL;
                 LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
+                Client.Version = patcher.DDragonVersion;
                 string DDragonVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
                 LogTextBox("Current DataDragon Version: " + DDragonVersion);
+                Client.Log("DD: " + patcher.DDragonVersion + "|" + DDragonVersion);
 
                 if (patcher.DDragonVersion != DDragonVersion)
                 {
@@ -161,7 +164,6 @@ namespace LegendaryClient.Windows
 
                     var VersionDDragon = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
                     VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
-                    Client.Version = DDragonVersion;
                     VersionDDragon.Close();
                 }
 
@@ -188,6 +190,7 @@ namespace LegendaryClient.Windows
                 LogTextBox("Current Air Assets Version: " + AirVersion);
                 bool RetrieveCurrentInstallation = false;
                 string AirLocation = "";
+                Client.Log("AIR: " + LatestAIR + "|" + AirVersion);
 
                 if (AirVersion == "0.0.0.0")
                 {
@@ -211,6 +214,7 @@ namespace LegendaryClient.Windows
 
                     if (RetrieveCurrentInstallation)
                     {
+                        Client.Log("Got previous installation: " + AirLocation);
                         LogTextBox("Getting Air Assets from " + AirLocation);
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
@@ -219,11 +223,6 @@ namespace LegendaryClient.Windows
                         AirVersion = patcher.GetCurrentAirInstall(AirLocation);
                         LogTextBox("Retrieved currently installed Air Assets");
                         LogTextBox("Current Air Assets Version: " + AirVersion);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            TotalProgressLabel.Content = "60%";
-                            TotalProgessBar.Value = 60;
-                        }));
                     }
                 }
 
@@ -231,7 +230,6 @@ namespace LegendaryClient.Windows
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        SkipPatchButton.IsEnabled = true;
                         CurrentProgressLabel.Content = "Retrieving Air Assets";
                     }));
                 }
@@ -250,12 +248,6 @@ namespace LegendaryClient.Windows
                     var VersionGAME = File.Create(Path.Combine("RADS", "VERSION_LOL"));
                     VersionGAME.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
                     VersionGAME.Close();
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        TotalProgressLabel.Content = "70%";
-                        TotalProgessBar.Value = 70;
-                    }));
-                    
                 }
 
                 string LatestGame = patcher.GetLatestGame();
@@ -295,15 +287,7 @@ namespace LegendaryClient.Windows
                         GameVersion = patcher.GetCurrentGameInstall(GameLocation);
                         LogTextBox("Retrieved currently installed League of Legends");
                         LogTextBox("Current League of Legends Version: " + GameLocation);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            TotalProgressLabel.Content = "80%";
-                            TotalProgessBar.Value = 80;
-                        }));
-                        
                     }
-                    
-                    
                 }
 
                 if (GameVersion != LatestGame)
@@ -316,34 +300,20 @@ namespace LegendaryClient.Windows
 
                 #endregion lol_game_client
 
-                
-
                 FinishPatching();
             });
-
-            bgThead.Start();
+            bgThread.IsBackground = true;
+            bgThread.Start();
         }
 
-        private void FinishPatching()
+        private void FinishPatching(bool Force = false)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                TotalProgressLabel.Content = "100%";
-                TotalProgessBar.Value = 100;
-                SkipPatchButton.Content = "Play";
-                CurrentProgressLabel.Content = "Finished Patching";
-                CurrentStatusLabel.Content = "Ready To Play";
-                SkipPatchButton.IsEnabled = true;
-            }));
-            
-            LogTextBox("Legendary Client Has Finished Patching");
-
-            
-            /*
+            if (Force)
+                bgThread.Abort();
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 Client.SwitchPage(new LoginPage());
-            }));*/
+            }));
         }
 
         private void LogTextBox(string s)
@@ -385,7 +355,5 @@ namespace LegendaryClient.Windows
             }
             return rtrn.ToUpper();
         }
-        //internal static string DDragonVersion = DDragonVersion;
-        
     }
 }

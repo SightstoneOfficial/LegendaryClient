@@ -20,7 +20,7 @@
         <Label HorizontalAlignment="Stretch" Margin="0,85,0,10" VerticalAlignment="Top" Foreground="White">
             <TextBlock x:Name="PlayerStatus" Text="Test Status" TextWrapping="WrapWithOverflow" />
         </Label>
-        
+
         <Label HorizontalAlignment="Stretch" Margin="0,100,0,0" VerticalAlignment="Bottom" Foreground="White">
             <TextBlock x:Name="InGameStatus" Text="In game as Shyvana" TextWrapping="WrapWithOverflow" Foreground="#FFFFFF99" Visibility="Collapsed"/>
         </Label>

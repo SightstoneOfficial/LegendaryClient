@@ -8,9 +8,9 @@ using System.Windows;
 [assembly: AssemblyTitle("LegendaryClient")]
 [assembly: AssemblyDescription("League of Legends Client")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Legendary Coding")]
+[assembly: AssemblyCompany("da.viddiaz.com")]
 [assembly: AssemblyProduct("LegendaryClient")]
-[assembly: AssemblyCopyright("Copyright (c) 2013-2014, Eddy5641/Snowl (Eddy V - legendarycoding.weebly.com)")]
+[assembly: AssemblyCopyright("Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -46,6 +46,5 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.0.1")]
-[assembly: AssemblyFileVersion("1.0.0.1")]
-//switch this to 1.1.0.0 after replay fix
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

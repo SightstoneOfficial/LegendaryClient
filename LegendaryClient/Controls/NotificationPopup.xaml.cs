@@ -1,20 +1,12 @@
 ﻿using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
+using LegendaryClient.Windows;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Xml;
 
 namespace LegendaryClient.Controls
@@ -30,6 +22,7 @@ namespace LegendaryClient.Controls
         int ProfileIconId = 0;
         int MapId = 0;
         int QueueId = 0;
+        int GameId = 0;
         string GameType;
 
         public NotificationPopup(ChatSubjects subject, Message Message)
@@ -39,6 +32,7 @@ namespace LegendaryClient.Controls
             MessageData = Message;
             NotificationTypeLabel.Content = Client.TitleCaseString(Enum.GetName(typeof(ChatSubjects), subject).Replace("_", " "));
 
+            //TODO: Get name from id
             ChatPlayerItem Player = Client.AllPlayers[Message.From.User];
             using (XmlReader reader = XmlReader.Create(new StringReader(Message.Body)))
             {
@@ -70,6 +64,10 @@ namespace LegendaryClient.Controls
                                 reader.Read();
                                 QueueId = Convert.ToInt32(reader.Value);
                                 break;
+                            case "gameId":
+                                reader.Read();
+                                GameId = Convert.ToInt32(reader.Value);
+                                break;
                         }
 
                         #endregion Parse Popup
@@ -77,19 +75,54 @@ namespace LegendaryClient.Controls
                 }
             }
 
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
-            ProfileImage.Source = new BitmapImage(uriSource);
+            var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconId + ".png");
+            ProfileImage.Source = Client.GetImage(uriSource);
 
             NotificationTextBox.Text = Player.Username + " has invited you to a game" + Environment.NewLine
                                      + "Hosted on " + BaseMap.GetMap(MapId).DisplayName + Environment.NewLine
                                      + "Game Type: " + Client.TitleCaseString(GameType).Replace("_", " ") + Environment.NewLine;
         }
 
+        public NotificationPopup(ChatSubjects subject, string Message)
+        {
+            InitializeComponent();
+            Subject = subject;
+            NotificationTypeLabel.Content = Client.TitleCaseString(Enum.GetName(typeof(ChatSubjects), subject).Replace("_", " "));
+            NotificationTextBox.Text = Message;
+        }
+
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            /*
-            Client.MainGrid.Children.Remove(Client.ChatItem);
-            Client.ChatListView.Items.Remove(tempPlayer);*/
+            this.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        private void DeclineButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.Message(MessageData.From.User, MessageData.Body, ChatSubjects.GAME_INVITE_REJECT);
+            this.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        private void AcceptButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Subject == ChatSubjects.PRACTICE_GAME_INVITE)
+            {
+                Client.Message(MessageData.From.User, MessageData.Body, ChatSubjects.PRACTICE_GAME_INVITE_ACCEPT);
+                Client.PVPNet.JoinGame(GameId);
+
+                Client.InGame = true;
+                Client.GameID = GameId;
+                Client.GameName = "Joined game";
+
+                Client.SwitchPage(new CustomGameLobbyPage());
+                this.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else if (Subject == ChatSubjects.GAME_INVITE)
+            {
+                Client.Message(MessageData.From.User, MessageData.Body, ChatSubjects.GAME_INVITE_ACCEPT);
+
+                Client.SwitchPage(new TeamQueuePage(MessageData, false));
+                this.Visibility = System.Windows.Visibility.Hidden;
+            }
         }
     }
 }

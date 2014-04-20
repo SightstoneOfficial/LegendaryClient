@@ -78,9 +78,9 @@
             <sys:String>Blind Pick</sys:String>
             <sys:String>All Random</sys:String>
             <sys:String>Tournament Draft</sys:String>
-            <sys:String>One for All</sys:String>
             <!-- Modes unavailable to the public-->
-            <!--<sys:String>Open Pick</sys:String>
+            <!--<sys:String>One for All</sys:String>
+            <sys:String>Open Pick</sys:String>
             <sys:String>Infinite Time Blind Pick</sys:String>
             <sys:String>Infinite Time Blind PickTest</sys:String>
             <sys:String>Captain Pick</sys:String>

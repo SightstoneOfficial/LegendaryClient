@@ -1,12 +1,16 @@
 ﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows.Profile;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Windows
 {
@@ -57,9 +61,18 @@ namespace LegendaryClient.Windows
             SummonerNameLabel.Content = Summoner.Name;
             SummonerLevelLabel.Content = "Level " + Summoner.SummonerLevel;
 
+            if (Summoner.SummonerLevel < 30)
+            {
+                LeagueHeader.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else
+            {
+                Client.PVPNet.GetAllLeaguesForPlayer(Summoner.SummonerId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
+            }
+
             int ProfileIconID = Summoner.ProfileIconId;
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);
-            ProfileImage.Source = new BitmapImage(uriSource);
+            var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png");
+            ProfileImage.Source = Client.GetImage(uriSource);
 
             PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(s);
             if (n.GameName != null)
@@ -91,6 +104,23 @@ namespace LegendaryClient.Windows
 
             Overview overview = OverviewContainer.Content as Overview;
             overview.Update(Summoner.SummonerId, Summoner.AcctId);
+        }
+
+        private void GotLeaguesForPlayer(SummonerLeaguesDTO result)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if (result.SummonerLeagues != null && result.SummonerLeagues.Count > 0)
+                {
+                    LeagueHeader.Visibility = System.Windows.Visibility.Visible;
+                    Leagues overview = LeaguesContainer.Content as Leagues;
+                    overview.Update(result);
+                }
+                else
+                {
+                    LeagueHeader.Visibility = System.Windows.Visibility.Collapsed;
+                }
+            }));
         }
 
         public class KeyValueItem
