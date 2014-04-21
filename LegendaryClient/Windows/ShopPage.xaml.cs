@@ -31,7 +31,7 @@ namespace LegendaryClient.Windows
         {
             RefreshBrowser();
         }
-        /*
+        
         private void ShopBrowser_NativeViewInitialized(object sender, WebViewEventArgs e)
         {
             JSObject JSHook = ShopBrowser.CreateGlobalJavascriptObject("parentSandboxBridge");
@@ -54,7 +54,7 @@ namespace LegendaryClient.Windows
             }
 
             e.Result = new JSValue(buddyList);
-        }*/
+        }
 
         public void OnItemClick(object sender, JavascriptMethodEventArgs e)
         {
