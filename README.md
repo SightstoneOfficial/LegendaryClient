@@ -9,6 +9,8 @@ https://www.youtube.com/watch?v=rVWdHeQcGwM&feature=youtu.be
 
 LegendaryClient Aram Game
 
+Master Is Unstable Use DevTest
+
 Prerequisites
 =============
 
