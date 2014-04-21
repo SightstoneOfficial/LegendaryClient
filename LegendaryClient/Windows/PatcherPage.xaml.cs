@@ -28,7 +28,7 @@ namespace LegendaryClient.Windows
 
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
-            FinishPatching(true);
+            Client.SwitchPage(new LoginPage());
         }
 
         private void StartPatcher()
@@ -308,11 +308,12 @@ namespace LegendaryClient.Windows
 
         private void FinishPatching(bool Force = false)
         {
-            if (Force)
-                bgThread.Abort();
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                Client.SwitchPage(new LoginPage());
+                SkipPatchButton.Content = "Play";
+                SkipPatchButton.IsEnabled = true;
+                TotalProgressLabel.Content = "100%";
+                TotalProgessBar.Value = 100;
             }));
         }
 

@@ -8,7 +8,7 @@ using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
-using PVPNetConnect.RiotObjects.Platform.Trade;
+//using PVPNetConnect.RiotObjects.Platform.Trade;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -75,7 +75,7 @@ namespace LegendaryClient.Windows
         private List<ChampionBanInfoDTO> ChampionsForBan;
         private MasteryBookDTO MyMasteries;
         private SpellBookDTO MyRunes;
-        private PotentialTradersDTO CanTradeWith;
+        //private PotentialTradersDTO CanTradeWith;
         private GameTypeConfigDTO configType;
         private System.Windows.Forms.Timer CountdownTimer;
         private int counter;
@@ -324,7 +324,7 @@ namespace LegendaryClient.Windows
                     else if (ChampDTO.GameState == "POST_CHAMP_SELECT")
                     {
                         //Post game has started. Allow trading
-                        CanTradeWith = await Client.PVPNet.GetPotentialTraders();
+                        //CanTradeWith = await Client.PVPNet.GetPotentialTraders();
                         HasLockedIn = true;
                         GameStatusLabel.Content = "All players have picked!";
                         if (configType != null)
@@ -502,6 +502,7 @@ namespace LegendaryClient.Windows
 
                 #endregion Launching Game
             }
+                /*
             else if (message.GetType() == typeof(TradeContractDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -538,7 +539,7 @@ namespace LegendaryClient.Windows
                         Client.NotificationGrid.Children.Add(pop);
                     }
                 }));
-            }
+            }*/
         }
 
         /// <summary>
@@ -701,10 +702,14 @@ namespace LegendaryClient.Windows
                 control.Opacity = 1;
             }
             //If trading with this player is possible
+
+            /*
             if (CanTradeWith != null && (CanTradeWith.PotentialTraders.Contains(player.SummonerInternalName) || DevMode))
             {
                 control.TradeButton.Visibility = System.Windows.Visibility.Visible;
             }
+            */
+
             //If this player is duo/trio/quadra queued with players
             if (player.TeamParticipantId != null && (double)player.TeamParticipantId != 0)
             {
@@ -733,7 +738,7 @@ namespace LegendaryClient.Windows
         private async void TradeButton_Click(object sender, RoutedEventArgs e)
         {
             KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant> p = (KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>)((Button)sender).Tag;
-            await Client.PVPNet.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
+            //await Client.PVPNet.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
 
             PlayerTradeControl.Visibility = System.Windows.Visibility.Visible;
             champions MyChampion = champions.GetChampion((int)MyChampId);
