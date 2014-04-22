@@ -169,6 +169,10 @@ namespace LegendaryClient.Windows
                         TimeSpan time = TimeSpan.FromMilliseconds(result.PlayerJoinFailures[0].PenaltyRemainingTime);
                         message.MessageTextBox.Text = "You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
                     }
+                    else if (result.PlayerJoinFailures[0].ReasonFailed == "RANKED_MIN_LEVEL")
+                    {
+                        message.MessageTextBox.Text = "You do not meet the requirements for this queue." + Environment.NewLine;
+                    }
                     Client.OverlayContainer.Content = message.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
