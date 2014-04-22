@@ -72,7 +72,7 @@
     </Reference>
     <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
+      <HintPath>bin\Release\PVPNetConnect.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -261,9 +261,6 @@
     </Compile>
     <Compile Include="Windows\MessageOverlay.xaml.cs">
       <DependentUpon>MessageOverlay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\QueuePage.xaml.cs">
-      <DependentUpon>QueuePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\StatusPage.xaml.cs">
       <DependentUpon>StatusPage.xaml</DependentUpon>
@@ -492,10 +489,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\MessageOverlay.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\QueuePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

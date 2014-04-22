@@ -119,8 +119,20 @@ namespace LegendaryClient.Windows
 
         private Button LastSender;
 
-        private void QueueButton_Click(object sender, RoutedEventArgs e)
+        private async void QueueButton_Click(object sender, RoutedEventArgs e)
         {
+            //so you can only be in one queue
+            var keys = new List<Button>(ButtonTimers.Keys);
+            foreach (Button pair in keys)
+            {
+                Button realButton = (Button)pair.Tag;
+                realButton.Content = "Queue";
+            }
+            ButtonTimers = new Dictionary<Button, int>();
+            Queues = new List<double>();
+            await Client.PVPNet.PurgeFromQueues();
+
+
             LastSender = (Button)sender;
             GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
             if (Queues.Contains(config.Id))
@@ -150,6 +162,10 @@ namespace LegendaryClient.Windows
                         message.MessageTextBox.Text = "Unable to join the queue due to you recently dodging a game." + Environment.NewLine;
                         TimeSpan time = TimeSpan.FromMilliseconds(result.PlayerJoinFailures[0].PenaltyRemainingTime);
                         message.MessageTextBox.Text = "You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
+                    }
+                    else if (result.PlayerJoinFailures[0].ReasonFailed == "RANKED_MIN_LEVEL")
+                    {
+                        message.MessageTextBox.Text = "You do not meet the level requirements for this queue! Please wait until you are a higher level.";
                     }
                     Client.OverlayContainer.Content = message.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
