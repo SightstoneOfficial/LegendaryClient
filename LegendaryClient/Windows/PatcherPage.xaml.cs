@@ -161,7 +161,8 @@ namespace LegendaryClient.Windows
 
                     var VersionDDragon = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
                     VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
-                    Client.Version = DDragonVersion;
+                    //Client.Version = DDragonVersion;
+                    
                     VersionDDragon.Close();
                 }
 

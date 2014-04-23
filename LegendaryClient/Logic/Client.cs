@@ -48,7 +48,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Latest version of League of Legends. Retrieved from ClientLibCommon.dat
         /// </summary>
-        internal static string Version = "3.00.00";
+        internal static string Version = "4.6.test";
 
         /// <summary>
         /// The current directory the client is running from

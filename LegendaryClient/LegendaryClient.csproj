@@ -68,10 +68,6 @@
       <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
-    </Reference>
     <Reference Include="rtmp-sharp">
       <HintPath>..\..\Coding\League Of Legends\LegendaryClient-master\DLLS\rtmp-sharp.dll</HintPath>
     </Reference>
@@ -589,6 +585,7 @@
     </Content>
     <Resource Include="NONE.png" />
     <Resource Include="ReplayControls\noise.png" />
+    <Content Include="PVPNetConnect.csproj" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -615,6 +612,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PVPNetConnect-master\PVPNetConnect.csproj">
+      <Project>{93dcbebf-c652-40ed-a003-cff421f68b4f}</Project>
+      <Name>PVPNetConnect</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
