@@ -10,9 +10,9 @@
         <Border BorderBrush="#FFC7C7C7" BorderThickness="1" />
 
         <Grid>
-            <!--<Grid.Background>
-                <ImageBrush ImageSource="/LegendaryReplays;component/noise.png" Viewport="0,0,100,100" ViewportUnits="Absolute" TileMode="Tile" Stretch="None" AlignmentX="Left" AlignmentY="Top"  />
-            </Grid.Background>-->
+            <Grid.Background>
+                <ImageBrush ImageSource="/LegendaryClient;component/noise.png" Viewport="0,0,100,100" ViewportUnits="Absolute" TileMode="Tile" Stretch="None" AlignmentX="Left" AlignmentY="Top"  />
+            </Grid.Background>
         </Grid>
         <Label x:Name="GameId" Content="0" HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Top"/>
         <Label x:Name="GameType" Content="classic" HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Bottom"/>

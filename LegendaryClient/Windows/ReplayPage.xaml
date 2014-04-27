@@ -11,12 +11,13 @@
     <Grid>
         <Label Content="Watch Replays" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
         <!--TODO Style ListView-->
-        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="0,108,0,0" VerticalAlignment="Stretch" Width="420">
+        <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="0,143,0,0" VerticalAlignment="Stretch" Width="420">
             <StackPanel x:Name="GamePanel" />
         </ScrollViewer>
-        <Controls:TextBoxWatermarked x:Name="User" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" Watermark="Paste Spectator Command" VerticalAlignment="Top" Margin="10,49,0,0" Width="410" Height="24"/>
-        <Button x:Name="Download" Content="Download" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="345,49,0,0" Height="24" FontSize="11" RenderTransformOrigin="4.307,2.45"/>
-        <Label Content="Starting Replay Download" Margin="10,78,604,568" Visibility="Hidden"/>
-        <Button Content="Switch Command to Username" HorizontalAlignment="Left" VerticalAlignment="Top" Width="193" Margin="831,0,0,0" Height="34" Click="Button_Click"/>
+        <Controls:TextBoxWatermarked x:Name="Command" Text="" TextChanged="Command_TextChanged" HorizontalAlignment="Left" TextWrapping="Wrap" Watermark="Paste Spectator Command" VerticalAlignment="Top" Margin="10,49,0,0" Width="410" Height="24"/>
+        <Button x:Name="Download" Visibility="Hidden" Click="Download_Click" Content="Download" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="345,49,0,0" Height="24" FontSize="11" RenderTransformOrigin="4.307,2.45"/>
+        <Label x:Name="HintLabel" Content="" Margin="10,78,604,568"/>
+        <Button x:Name="Username" Click="Username_Click" Content="Switch Command to Username" HorizontalAlignment="Left" VerticalAlignment="Top" Width="410" Margin="10,104,0,0" Height="34" Visibility="Visible"/>
+        <Button x:Name="Commandname" Click="Commandname_Click" Content="Switch Username to Command" HorizontalAlignment="Left" VerticalAlignment="Top" Width="410" Margin="10,104,0,0" Height="34" Visibility="Hidden"/>
     </Grid>
 </Page>
