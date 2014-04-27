@@ -617,7 +617,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PVPNetConnect-master\PVPNetConnect.csproj">
+    <ProjectReference Include="..\PVPNetConnect\PVPNetConnect.csproj">
       <Project>{93dcbebf-c652-40ed-a003-cff421f68b4f}</Project>
       <Name>PVPNetConnect</Name>
     </ProjectReference>
