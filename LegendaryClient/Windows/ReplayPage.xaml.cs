@@ -23,6 +23,12 @@ namespace LegendaryClient.Windows
         public ReplayPage()
         {
             InitializeComponent();
+            
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
