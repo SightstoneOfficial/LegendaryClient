@@ -178,7 +178,7 @@ namespace LegendaryClient.Logic
             {
                 ChatPlayerItem chatItem = AllPlayers[msg.From.User];
                 chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
-                MainWin.FlashWindow();
+                //MainWin.FlashWindow();
             }
         }
 

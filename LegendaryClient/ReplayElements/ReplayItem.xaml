@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Elements="clr-namespace:LegendaryReplays.Elements" x:Class="LegendaryReplays.ReplayItem"
+             xmlns:Elements="clr-namespace:LegendaryClient.Elements" x:Class="LegendaryClient.Elements.ReplayItem"
              mc:Ignorable="d"
              Height="100" Width="400">
     <Grid>

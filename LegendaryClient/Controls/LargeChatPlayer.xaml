@@ -7,7 +7,7 @@
              d:DesignWidth="250">
     <Grid Background="#E5000000">
         <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="60" Margin="5,5,0,0" VerticalAlignment="Top" Width="60" Source="/LegendaryClient;component/Icon.ico" />
-        <Image x:Name="UsingLegendary" HorizontalAlignment="Right" Height="20" Margin="5,5,0,0" VerticalAlignment="Top" Width="20" Source="/LegendaryClient;component/Icon.ico" />
+        <Image x:Name="UsingLegendary" HorizontalAlignment="Right" Height="20" Margin="5,5,0,0" VerticalAlignment="Top" Width="20" Visibility="Visible" Source="/LegendaryClient;component/Icon.ico" />
         <Label x:Name="LevelLabel" Content="30" HorizontalAlignment="Left" Margin="4,40,0,0" VerticalAlignment="Top" Background="#4C0C0C0C" Foreground="White" FontWeight="SemiBold">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="1" />

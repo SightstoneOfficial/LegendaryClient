@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LegendaryClient.Elements;
+using LegendaryClient.Properties;
+using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using LegendaryClient.Logic.Replays;
 using System.Windows.Threading;
-using System.IO;
-//using System.IO.Path;
+using LegendaryClient.Logic.Replays;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
-using LegendaryReplays;
 using RtmpSharp.IO;
-using LegendaryReplays.Elements;
 
 namespace LegendaryClient.Windows
 {
@@ -29,75 +22,39 @@ namespace LegendaryClient.Windows
     public partial class ReplayPage : Page
     {
         ReplayRecorder recorder;
+        SerializationContext context;
+        EndOfGameStats selectedStats;
+
         public ReplayPage()
         {
             InitializeComponent();
             Download.Visibility = Visibility.Hidden;
-        }
 
-        private void Download_Click(object sender, RoutedEventArgs e)
-        {
-            //HintLabel.Margin = new Thickness(0, 30, 365, 0);
-            HintLabel.Content = "retrieving replay";
-            //var fadeLabelInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
-            //HintLabel.BeginAnimation(Label.OpacityProperty, fadeLabelInAnimation);
+            if (!Directory.Exists("cabinet"))
+                Directory.CreateDirectory("cabinet");
 
-            string SpectatorCommand = Command.Text;
-            string[] RemoveExcessInfo = SpectatorCommand.Split(new string[1] { "spectator " }, StringSplitOptions.None);
-
-            if (RemoveExcessInfo.Length != 2)
+            var waitAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.5));
+            waitAnimation.Completed += (o, e) =>
             {
-                HintLabel.Visibility = Visibility.Visible;
-                HintLabel.Content = "invalid command";
-                //HintLabel.Margin = new Thickness(0, 60, 365, 0);
-                return;
-            }
+                var showAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
+                //ReplayGrid.BeginAnimation(Grid.OpacityProperty, showAnimation);
+            };
+            //ReplayGrid.BeginAnimation(Grid.OpacityProperty, waitAnimation);
 
-            string[] Info = RemoveExcessInfo[1].Replace("\"", "").Split(' ');
+            Command.TextChanged += Command_TextChanged;
 
-            if (Info.Length != 4)
-            {
-                HintLabel.Visibility = Visibility.Visible;
-                HintLabel.Content = "invalid command";
-                //HintLabel.Margin = new Thickness(0, 60, 150, 0);
-                return;
-            }
+            #region Register Context
+            context = new SerializationContext();
 
-            Command.Text = "";
+            //Convert replay end of game stats to parsable object
+            context.Register(typeof(EndOfGameStats));
+            context.Register(typeof(PlayerParticipantStatsSummary));
+            context.Register(typeof(RawStatDTO));
+            #endregion Register Context
 
-            int GameId = Convert.ToInt32(Info[2]);
-
-            recorder = new ReplayRecorder(Info[0], GameId, Info[3], Info[1]);
-            recorder.OnReplayRecorded += recorder_OnReplayRecorded;
-            recorder.OnGotChunk += recorder_OnGotChunk;
-
-            //var fadeGridOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
-            //InputGrid.BeginAnimation(Grid.OpacityProperty, fadeGridOutAnimation);
-            //InputGrid.Visibility = Visibility.Hidden;
+            UpdateReplays();
         }
-        void recorder_OnGotChunk(int ChunkId)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
-            {
-                HintLabel.Content = "retrieving replay (got chunk " + ChunkId + ")";
-            }));
-        }
-
-        void recorder_OnReplayRecorded()
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
-            {
-                HintLabel.Visibility = Visibility.Hidden;
-                //HintLabel.Margin = new Thickness(0, 30, 365, 0);
-                Command.Watermark = "replay downloaded";
-                //var fadeGridInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
-                //InputGrid.BeginAnimation(Grid.OpacityProperty, fadeGridInAnimation);
-                //InputGrid.Visibility = Visibility.Visible;
-                //UpdateReplays();
-            }));
-        }
-
-
+        
         private void Username_Click(object sender, RoutedEventArgs e)
         {
             Commandname.Visibility = System.Windows.Visibility.Visible;
@@ -107,7 +64,6 @@ namespace LegendaryClient.Windows
             Command.Text = "Enter Username Here";
             Command.Watermark = "Enter Username Here";
             Download.Visibility = Visibility.Hidden;
-            HintLabel.Visibility = Visibility.Hidden;
         }
 
         private void Commandname_Click(object sender, RoutedEventArgs e)
@@ -119,7 +75,6 @@ namespace LegendaryClient.Windows
             Command.Text = "Paste Spectator Command";
             Command.Watermark = "Paste Spectator Command";
             Download.Visibility = Visibility.Hidden;
-            HintLabel.Visibility = Visibility.Hidden;
         }
 
         void Command_TextChanged(object sender, TextChangedEventArgs e)
@@ -127,69 +82,25 @@ namespace LegendaryClient.Windows
             if (Command.Text.Length == 0)
             {
                 Download.Visibility = Visibility.Hidden;
-                HintLabel.Visibility = Visibility.Hidden;
-                //var fadeButtonOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
-                //fadeButtonOutAnimation.Completed += (x, y) => Download.Visibility = Visibility.Hidden;
-                //Download.BeginAnimation(Button.OpacityProperty, fadeButtonOutAnimation);
+                var fadeButtonOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
+                fadeButtonOutAnimation.Completed += (x, y) => Download.Visibility = Visibility.Hidden;
+                Download.BeginAnimation(Button.OpacityProperty, fadeButtonOutAnimation);
             }
             
             else if (Command.Text.Length > 1)
             {
                 Download.Visibility = Visibility.Visible;
-                HintLabel.Visibility = Visibility.Hidden;
             }
             else if (Command.Text.Length == 1)
             {
 
                 Download.Visibility = Visibility.Visible;
-                HintLabel.Visibility = Visibility.Hidden;
-                //var fadeButtonInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
-                //Download.BeginAnimation(Button.OpacityProperty, fadeButtonInAnimation);
+                var fadeButtonInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
+                Download.BeginAnimation(Button.OpacityProperty, fadeButtonInAnimation);
             }
         }
 
 
-        void item_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            ReplayItem item = (ReplayItem)sender;
-            EndOfGameStats stats = (EndOfGameStats)item.Tag;
-            selectedStats = stats;
-
-            //ReplayOverviewGrid.Visibility = Visibility.Visible;
-            //var fadeGridInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
-            //ReplayOverviewGrid.BeginAnimation(Grid.OpacityProperty, fadeGridInAnimation);
-
-            GameId.Content = stats.Difficulty;
-            GameType.Content = stats.GameMode.ToLower();
-            double seconds = stats.GameLength % 60;
-            double minutes = stats.GameLength / 60;
-            GameTime.Content = string.Format("{0:0}:{1:00}", minutes, seconds);
-
-            TeamOnePanel.Children.Clear();
-            TeamTwoPanel.Children.Clear();
-
-            foreach (PlayerParticipantStatsSummary summary in stats.TeamPlayerParticipantStats)
-            {
-                PlayerItem player = new PlayerItem();
-                player.PlayerNameLabel.Content = summary.SummonerName;
-
-                Uri UriSource = new Uri("/LegendaryReplays;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                player.ChampionIcon.ChampionImage.Source = new BitmapImage(UriSource);
-
-                TeamOnePanel.Children.Add(player);
-            }
-
-            foreach (PlayerParticipantStatsSummary summary in stats.OtherTeamPlayerParticipantStats)
-            {
-                PlayerItem player = new PlayerItem();
-                player.PlayerNameLabel.Content = summary.SummonerName;
-
-                Uri UriSource = new Uri("/LegendaryReplays;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                player.ChampionIcon.ChampionImage.Source = new BitmapImage(UriSource);
-
-                TeamTwoPanel.Children.Add(player);
-            }
-        }
         void UpdateReplays()
         {
             GamePanel.Children.Clear();
@@ -203,9 +114,9 @@ namespace LegendaryClient.Windows
             foreach (DirectoryInfo di in directories)
             {
                 string d = di.Name;
-                if (!File.Exists(System.IO.Path.Combine("cabinet", d, "token")) ||
-                    !File.Exists(System.IO.Path.Combine("cabinet", d, "key")) ||
-                    !File.Exists(System.IO.Path.Combine("cabinet", d, "endOfGameStats")))
+                if (!File.Exists(Path.Combine("cabinet", d, "token")) ||
+                    !File.Exists(Path.Combine("cabinet", d, "key")) ||
+                    !File.Exists(Path.Combine("cabinet", d, "endOfGameStats")))
                     continue;
 
                 byte[] Base64Stats = Convert.FromBase64String(File.ReadAllText(Path.Combine("cabinet", d, "endOfGameStats")));
@@ -233,7 +144,7 @@ namespace LegendaryClient.Windows
                     image.Width = 38;
                     image.Height = 38;
 
-                    Uri UriSource = new Uri("/LegendaryClient;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
+                    Uri UriSource = new Uri("/LegendaryClient;component/Assets/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
                     image.ChampionImage.Source = new BitmapImage(UriSource);
 
                     item.TeamOnePanel.Children.Add(image);
@@ -245,7 +156,7 @@ namespace LegendaryClient.Windows
                     image.Width = 38;
                     image.Height = 38;
 
-                    Uri UriSource = new Uri("/LegendaryClient;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
+                    Uri UriSource = new Uri("/LegendaryClient;component/Assets/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
                     image.ChampionImage.Source = new BitmapImage(UriSource);
 
                     item.TeamTwoPanel.Children.Add(image);
@@ -255,6 +166,203 @@ namespace LegendaryClient.Windows
 
                 //Insert on top
                 GamePanel.Children.Insert(0, item);
+            }
+        }
+
+        void item_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ReplayItem item = (ReplayItem)sender;
+            EndOfGameStats stats = (EndOfGameStats)item.Tag;
+            selectedStats = stats;
+
+            ReplayOverviewGrid.Visibility = Visibility.Visible;
+            var fadeGridInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
+            ReplayOverviewGrid.BeginAnimation(Grid.OpacityProperty, fadeGridInAnimation);
+
+            GameId.Content = stats.Difficulty;
+            GameType.Content = stats.GameMode.ToLower();
+            double seconds = stats.GameLength % 60;
+            double minutes = stats.GameLength / 60;
+            GameTime.Content = string.Format("{0:0}:{1:00}", minutes, seconds);
+
+            TeamOnePanel.Children.Clear();
+            TeamTwoPanel.Children.Clear();
+
+            foreach (PlayerParticipantStatsSummary summary in stats.TeamPlayerParticipantStats)
+            {
+                PlayerItemReplay player = new PlayerItemReplay();
+                player.PlayerNameLabel.Content = summary.SummonerName;
+
+                Uri UriSource = new Uri("/LegendaryReplays;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
+                player.ChampionIcon.ChampionImage.Source = new BitmapImage(UriSource);
+
+                TeamOnePanel.Children.Add(player);
+            }
+
+            foreach (PlayerParticipantStatsSummary summary in stats.OtherTeamPlayerParticipantStats)
+            {
+                PlayerItemReplay player = new PlayerItemReplay();
+                player.PlayerNameLabel.Content = summary.SummonerName;
+
+                Uri UriSource = new Uri("/LegendaryReplays;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
+                player.ChampionIcon.ChampionImage.Source = new BitmapImage(UriSource);
+
+                TeamTwoPanel.Children.Add(player);
+            }
+        }
+        
+        private void Download_Click(object sender, RoutedEventArgs e)
+        {
+            HintLabel.Content = "retrieving replay";
+            HintLabel.Visibility = Visibility.Visible;
+            var fadeLabelInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
+            HintLabel.BeginAnimation(Label.OpacityProperty, fadeLabelInAnimation);
+
+            string SpectatorCommand = Command.Text;
+            string[] RemoveExcessInfo = SpectatorCommand.Split(new string[1] { "spectator " }, StringSplitOptions.None);
+
+            if (RemoveExcessInfo.Length != 2)
+            {
+                HintLabel.Content = "invalid command";
+                HintLabel.Visibility = Visibility.Visible;
+                return;
+            }
+
+            string[] Info = RemoveExcessInfo[1].Replace("\"", "").Split(' ');
+
+            if (Info.Length != 4)
+            {
+                HintLabel.Content = "invalid command";
+                HintLabel.Visibility = Visibility.Visible;
+                return;
+            }
+
+            Command.Text = "";
+
+            int GameId = Convert.ToInt32(Info[2]);
+
+            recorder = new ReplayRecorder(Info[0], GameId, Info[3], Info[1]);
+            recorder.OnReplayRecorded += recorder_OnReplayRecorded;
+            recorder.OnGotChunk += recorder_OnGotChunk;
+
+            var fadeGridOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
+            Command.Visibility = Visibility.Hidden;
+            Download.Visibility = Visibility.Hidden;
+        }
+
+        void recorder_OnGotChunk(int ChunkId)
+        {
+            HintLabel.Visibility = Visibility.Visible;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
+            {
+                HintLabel.Content = "retrieving replay (got chunk " + ChunkId + ")";
+            }));
+        }
+
+        void recorder_OnReplayRecorded()
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
+            {
+                HintLabel.Margin = new Thickness(0, 30, 365, 0);
+                Command.Watermark = "replay downloaded";
+                var fadeGridInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
+                Command.Visibility = Visibility.Visible;
+                Download.Visibility = Visibility.Visible;
+                UpdateReplays();
+            }));
+        }
+
+        private void ExitButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void SettingsButton_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //FindLolWindow window = new FindLolWindow();
+            //window.ShowDialog();
+        }
+
+        private void WatchReplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            string Directory = Path.Combine(@"RADS/projects/lol_game_client/releases");
+            if (String.IsNullOrEmpty(Directory))
+            {
+                MessageBoxResult result = MessageBox.Show("You need to set your League of Legends installation location in settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            ProcessStartInfo Replay = new ProcessStartInfo();
+            Replay.FileName = "ReplayHandler.exe";
+            Replay.Arguments = selectedStats.Difficulty.Replace('-', ' ');
+            Process.Start(Replay);
+
+            //string Directory = Path.Combine(@"RADS/projects/lol_game_client/releases");
+
+            DirectoryInfo dInfo = new DirectoryInfo(Directory);
+            DirectoryInfo[] subdirs = null;
+            try
+            {
+                subdirs = dInfo.GetDirectories();
+            }
+            catch { MessageBoxResult result = MessageBox.Show("Could not find League of Legends", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return; }
+            string latestVersion = "0.0.1";
+            foreach (DirectoryInfo info in subdirs)
+            {
+                latestVersion = info.Name;
+            }
+
+            Directory = Path.Combine(Directory, latestVersion, "deploy");
+
+            if (!File.Exists(Path.Combine(Directory, "League of Legends.exe")))
+            {
+                MessageBoxResult result = MessageBox.Show("Could not find League of Legends", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return;
+            }
+
+            string[] details = selectedStats.Difficulty.Split('-');
+            var p = new System.Diagnostics.Process();
+            p.StartInfo.WorkingDirectory = Directory;
+            p.StartInfo.FileName = Path.Combine(Directory, "League of Legends.exe");
+            p.StartInfo.Arguments = "\"8393\" \"LoLLauncher.exe\" \"\" \"spectator "
+                + "127.0.0.1:5651" + " "
+                + File.ReadAllText(Path.Combine("cabinet", selectedStats.Difficulty, "key")) + " "
+                + details[0] + " "
+                + details[1] + "\"";
+            p.Start();
+        }
+    }
+
+    public class FocusVisualTreeChanger
+    {
+        public static bool GetIsChanged(DependencyObject obj)
+        {
+            return (bool)obj.GetValue(IsChangedProperty);
+        }
+
+        public static void SetIsChanged(DependencyObject obj, bool value)
+        {
+            obj.SetValue(IsChangedProperty, value);
+        }
+
+        public static readonly DependencyProperty IsChangedProperty =
+            DependencyProperty.RegisterAttached("IsChanged", typeof(bool), typeof(FocusVisualTreeChanger), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits, IsChangedCallback));
+
+        private static void IsChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (true.Equals(e.NewValue))
+            {
+                FrameworkContentElement contentElement = d as FrameworkContentElement;
+                if (contentElement != null)
+                {
+                    contentElement.FocusVisualStyle = null;
+                    return;
+                }
+
+                FrameworkElement element = d as FrameworkElement;
+                if (element != null)
+                {
+                    element.FocusVisualStyle = null;
+                }
             }
         }
     }
