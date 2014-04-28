@@ -11,6 +11,8 @@ LegendaryClient Aram Game
 
 Master Is Unstable Use DevTest
 
+opps, looks like master got recked. Don't download this
+
 Prerequisites
 =============
 
