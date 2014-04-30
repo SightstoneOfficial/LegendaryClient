@@ -1,0 +1,147 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 19,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "attachToQueue",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "languages": null,
+                    "botDifficulty": "",
+                    "teamId": null,
+                    "queueIds": {
+                      "$type": "System.Object[], mscorlib",
+                      "$values": [
+                        65
+                      ]
+                    },
+                    "invitationId": null,
+                    "lastMaestroMessage": null,
+                    "team": null,
+                    "TypeName": "com.riotgames.platform.matchmaking.MatchMakerParams"
+                  }
+                ]
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "matchmakerService",
+              "messageId": "E20611AC-D39D-69A7-814E-979036C7577A",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 449,
+        "StreamId": 0,
+        "Timer": 4783,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 4783,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 19,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "E20611AC-D39D-69A7-814E-979036C7577A",
+              "CorrelationIdBytes": "â\u0006\u0011¬Ói§N—6ÇWz",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "playerJoinFailures": null,
+                "ghostGameSummoners": null,
+                "joinedQueues": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "waitTime": 117071.0,
+                      "queueId": 65.0,
+                      "queueLength": 98,
+                      "TypeName": "com.riotgames.platform.matchmaking.QueueInfo"
+                    }
+                  ]
+                },
+                "TypeName": "com.riotgames.platform.matchmaking.SearchingForMatchNotification"
+              },
+              "ClientId": "94072FD8-690B-7009-5F3C-07A57A5558F9",
+              "ClientIdBytes": "”\u0007/Øi\u000bp\t_<\u0007¥zUXù",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "94072FFA-972D-1BB2-C658-AB1DCB9B89A3",
+              "MessageIdBytes": "”\u0007/ú—-\u001b²ÆX«\u001dË›‰£",
+              "TimeStamp": 1385522282887,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 351,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

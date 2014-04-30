@@ -1,0 +1,125 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 103,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "reportPlayer",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "95035746-6D1B-BF0D-0690-F698082E174B",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "reportedSummonerId": 283980,
+                    "ipAddress": null,
+                    "gameId": 22042116,
+                    "reportSource": "GAME",
+                    "comment": "THIS IS A TEST (this report won't go through)",
+                    "reportingSummonerId": 222908,
+                    "offense": "UNSKILLED_PLAYER",
+                    "TypeName": "com.riotgames.platform.harassment.HarassmentReport"
+                  }
+                ]
+              },
+              "timeToLive": 0,
+              "clientId": null,
+              "destination": "clientFacadeService",
+              "messageId": "88245DAF-E019-CD7E-CD2A-981ADB6242D3",
+              "timestamp": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 530,
+        "StreamId": 0,
+        "Timer": 25864,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 25864,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 63,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "88245DAF-E019-CD7E-CD2A-981ADB6242D3",
+              "CorrelationIdBytes": "ˆ$]¯à\u0019Í~Í*˜\u001aÛbBÓ",
+              "Body": null,
+              "ClientId": "9559ACE5-900B-5226-793A-E98469DBCB15",
+              "ClientIdBytes": "•Y¬å\u000bR&y:é„iÛË\u0015",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "9559ACE8-010C-946C-0EFB-FC937496480A",
+              "MessageIdBytes": "•Y¬è\u0001\f”l\u000eûü“t–H\n",
+              "TimeStamp": 1385531369105,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 95,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

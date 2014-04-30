@@ -1,0 +1,22 @@
+﻿<Page x:Class="LegendaryClient.Windows.Profile.Skins"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="768" d:DesignWidth="1280"
+	Title="Skins">
+
+    <Grid>
+        <Label Content="Search" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Foreground="White" />
+        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="100,20,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
+
+        <ListView x:Name="SkinSelectListView" HorizontalAlignment="Stretch" Margin="10,50,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" SelectionChanged="SkinSelectListView_SelectionChanged">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+    </Grid>
+</Page>

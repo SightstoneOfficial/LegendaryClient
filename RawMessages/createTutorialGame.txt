@@ -1,0 +1,220 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 19,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "createTutorialGame",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSRequestTimeout": 60,
+                "DSId": "94846AE2-AB1B-3B11-C555-29CD1502C46A",
+                "DSEndpoint": "my-rtmps"
+              },
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  0
+                ]
+              },
+              "messageId": "C8581345-CCCC-520A-AD15-97C4C05EF276",
+              "timestamp": 0,
+              "destination": "gameService",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 307,
+        "StreamId": 0,
+        "Timer": 12029,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 12029,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 19,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "C8581345-CCCC-520A-AD15-97C4C05EF276",
+              "CorrelationIdBytes": "ÈX\u0013EÌÌR\n­\u0015—ÄÀ^òv",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "spectatorsAllowed": "NONE",
+                "passwordSet": false,
+                "practiceGameRewardsDisabledReasons": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": []
+                },
+                "gameType": "TUTORIAL_GAME",
+                "gameTypeConfigId": 10,
+                "glmGameId": null,
+                "gameState": "CHAMP_SELECT",
+                "glmHost": null,
+                "observers": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": []
+                },
+                "statusOfParticipants": null,
+                "glmSecurePort": 0,
+                "id": 21878795.0,
+                "ownerSummary": null,
+                "teamTwoPickOutcome": null,
+                "teamTwo": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": []
+                },
+                "bannedChampions": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": []
+                },
+                "dataVersion": 0,
+                "roomName": "uC7qDY8rxX6QvGsA45MI1WCaxyvebT8w@sec",
+                "name": "Tutorial Game 21878795",
+                "spectatorDelay": 0,
+                "teamOne": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "accountId": 200679700.0,
+                      "queueRating": 0,
+                      "botDifficulty": "NONE",
+                      "minor": false,
+                      "locale": null,
+                      "partnerId": "",
+                      "lastSelectedSkinIndex": 0,
+                      "profileIconId": 21,
+                      "rankedTeamGuest": false,
+                      "summonerId": 1411247.0,
+                      "dataVersion": 0,
+                      "selectedRole": null,
+                      "pickMode": 1,
+                      "teamParticipantId": null,
+                      "timeAddedToQueue": null,
+                      "index": 0,
+                      "originalAccountNumber": 200679700.0,
+                      "summonerInternalName": "heyigotmoreswagt",
+                      "teamOwner": false,
+                      "futureData": null,
+                      "badges": 0,
+                      "pickTurn": 1,
+                      "clientInSynch": true,
+                      "summonerName": "heyigotmoreswagt",
+                      "originalPlatformId": "OC1",
+                      "selectedPosition": null,
+                      "TypeName": "com.riotgames.platform.game.PlayerParticipant"
+                    }
+                  ]
+                },
+                "terminatedCondition": "NOT_TERMINATED",
+                "queueTypeName": "NONE",
+                "glmPort": 0,
+                "passbackUrl": null,
+                "roomPassword": "RTpe1bbDhQc3hvZU",
+                "optimisticLock": 2.0,
+                "teamOnePickOutcome": null,
+                "maxNumPlayers": 4,
+                "queuePosition": 0,
+                "terminatedConditionString": "NOT_TERMINATED",
+                "futureData": null,
+                "gameMode": "TUTORIAL",
+                "expiryTime": 0.0,
+                "mapId": 12,
+                "banOrder": null,
+                "pickTurn": 1,
+                "gameStateString": "CHAMP_SELECT",
+                "playerChampionSelections": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "summonerInternalName": "heyigotmoreswagt",
+                      "dataVersion": 0,
+                      "spell2Id": -1.0,
+                      "selectedSkinIndex": 0,
+                      "championId": 0,
+                      "spell1Id": -1.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.game.PlayerChampionSelectionDTO"
+                    }
+                  ]
+                },
+                "joinTimerDuration": 0,
+                "passbackDataPacket": null,
+                "TypeName": "com.riotgames.platform.game.GameDTO"
+              },
+              "ClientId": "9487742D-7C0A-F69D-A8CB-0ADBC4540162",
+              "ClientIdBytes": "”‡t-|\nö¨Ë\nÛÄT\u0001b",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "948774DF-B50D-3066-296E-661255A6602B",
+              "MessageIdBytes": "”‡tßµ\r0f)nf\u0012U¦`+",
+              "TimeStamp": 1385525726085,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 1543,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

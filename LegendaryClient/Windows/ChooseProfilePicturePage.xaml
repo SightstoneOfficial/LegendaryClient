@@ -1,0 +1,25 @@
+﻿<Page x:Class="LegendaryClient.Windows.ChooseProfilePicturePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="768" d:DesignWidth="1280"
+	Title="ChooseProfilePicturePage">
+
+    <Grid Background="#B2000000">
+        <Grid HorizontalAlignment="Center" Width="1100" Height="400" Margin="0,0,0,0" VerticalAlignment="Center" Background="#FF2B2B2B">
+            <Label Content="Choose A Summoner Icon" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
+            <ListView x:Name="SummonerIconListView" HorizontalAlignment="Stretch" Margin="20,70,20,50" BorderBrush="{x:Null}" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+
+            <Button x:Name="CancelButton" Content="Cancel" HorizontalAlignment="Right" Margin="0,0,180,10" VerticalAlignment="Bottom" Width="150" Height="30" Click="CancelButton_Click" />
+            <Button x:Name="SetButton" Content="Set" HorizontalAlignment="Right" Margin="0,0,20,10" VerticalAlignment="Bottom" Width="150" Height="30" Click="SetButton_Click" />
+        </Grid>
+    </Grid>
+</Page>

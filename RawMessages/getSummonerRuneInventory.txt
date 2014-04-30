@@ -1,0 +1,1896 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 12,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "getSummonerRuneInventory",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  222908
+                ]
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "summonerRuneService",
+              "messageId": "6827F726-7323-0FD3-AC7F-979010ADC767",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 323,
+        "StreamId": 0,
+        "Timer": 2,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 2,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 12,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "6827F726-7323-0FD3-AC7F-979010ADC767",
+              "CorrelationIdBytes": "h'÷&s#\u000fÓ¬—\u0010­Çg",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "dataVersion": 0,
+                "summonerRunesJson": null,
+                "dateString": "Thu Jun 27 20:58:33 PDT 2013",
+                "summonerRunes": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5367,
+                      "quantity": 3,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5367,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 7,
+                          "dataVersion": 0,
+                          "name": "Black",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5367,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 68,
+                              "itemEffectId": 370,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 68,
+                                "gameCode": "rFlatGoldPer10Mod",
+                                "dataVersion": 0,
+                                "name": "rFlatGoldPer10Mod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 7,
+                                  "dataVersion": 0,
+                                  "name": "Black",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "1.0000",
+                              "itemId": 5367,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+1 gold / 10 sec.",
+                        "name": "Greater Quintessence of Gold",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5300,
+                      "quantity": 1,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5300,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 5,
+                          "dataVersion": 0,
+                          "name": "Blue",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5300,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 4,
+                              "itemEffectId": 303,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 4,
+                                "gameCode": "rFlatMPModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rFlatMPModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 5,
+                                  "dataVersion": 0,
+                                  "name": "Blue",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "1.4167",
+                              "itemId": 5300,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+1.42 mana per level (+25.56 at champion level 18)",
+                        "name": "Greater Glyph of Scaling Mana",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1380366649000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1380366649000)\/",
+                      "runeId": 5275,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5275,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 5,
+                          "dataVersion": 0,
+                          "name": "Blue",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5275,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 24,
+                              "itemEffectId": 278,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 24,
+                                "gameCode": "FlatPhysicalDamageMod",
+                                "dataVersion": 0,
+                                "name": "FlatPhysicalDamageMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.2835",
+                              "itemId": 5275,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.28 attack damage",
+                        "name": "Greater Glyph of Attack Damage",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5298,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5298,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 5,
+                          "dataVersion": 0,
+                          "name": "Blue",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5298,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 28,
+                              "itemEffectId": 301,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 28,
+                                "gameCode": "rFlatMagicDamageModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rFlatMagicDamageModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 5,
+                                  "dataVersion": 0,
+                                  "name": "Blue",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.1731",
+                              "itemId": 5298,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.17 ability power per level (+3.06 at champion level 18)",
+                        "name": "Greater Glyph of Scaling Ability Power",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5363,
+                      "quantity": 3,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5363,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 7,
+                          "dataVersion": 0,
+                          "name": "Black",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5363,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 70,
+                              "itemEffectId": 366,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 70,
+                                "gameCode": "rFlatMagicPenetrationMod",
+                                "dataVersion": 0,
+                                "name": "rFlatMagicPenetrationMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "2.0100",
+                              "itemId": 5363,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+2.01 magic penetration",
+                        "name": "Greater Quintessence of Magic Penetration",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5273,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5273,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 1,
+                          "dataVersion": 0,
+                          "name": "Red",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5273,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 70,
+                              "itemEffectId": 276,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 70,
+                                "gameCode": "rFlatMagicPenetrationMod",
+                                "dataVersion": 0,
+                                "name": "rFlatMagicPenetrationMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.8700",
+                              "itemId": 5273,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.87 magic penetration",
+                        "name": "Greater Mark of Magic Penetration",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5307,
+                      "quantity": 6,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5307,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 3,
+                          "dataVersion": 0,
+                          "name": "Yellow",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5307,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 37,
+                              "itemEffectId": 310,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 37,
+                                "gameCode": "PercentAttackSpeedMod",
+                                "dataVersion": 0,
+                                "name": "PercentAttackSpeedMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.0076",
+                              "itemId": 5307,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.76% attack speed",
+                        "name": "Greater Seal of Attack Speed",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5311,
+                      "quantity": 2,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5311,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 3,
+                          "dataVersion": 0,
+                          "name": "Yellow",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5311,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 44,
+                              "itemEffectId": 314,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 44,
+                                "gameCode": "FlatCritChanceMod",
+                                "dataVersion": 0,
+                                "name": "FlatCritChanceMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.0042",
+                              "itemId": 5311,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.42% critical chance",
+                        "name": "Greater Seal of Critical Chance",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5296,
+                      "quantity": 1,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5296,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 5,
+                          "dataVersion": 0,
+                          "name": "Blue",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5296,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 61,
+                              "itemEffectId": 299,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 61,
+                                "gameCode": "rPercentCooldownModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rPercentCooldownModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 5,
+                                  "dataVersion": 0,
+                                  "name": "Blue",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "-0.0006",
+                              "itemId": 5296,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "-0.06% cooldowns per level (-1.11% at champion level 18)",
+                        "name": "Greater Glyph of Scaling Cooldown Reduction",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5347,
+                      "quantity": 1,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5347,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 7,
+                          "dataVersion": 0,
+                          "name": "Black",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5347,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 15,
+                              "itemEffectId": 350,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 15,
+                                "gameCode": "FlatArmorMod",
+                                "dataVersion": 0,
+                                "name": "FlatArmorMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 3,
+                                  "dataVersion": 0,
+                                  "name": "Yellow",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "4.2632",
+                              "itemId": 5347,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+4.26 armor",
+                        "name": "Greater Quintessence of Armor",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5289,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5289,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 5,
+                          "dataVersion": 0,
+                          "name": "Blue",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5289,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 53,
+                              "itemEffectId": 292,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 53,
+                                "gameCode": "FlatSpellBlockMod",
+                                "dataVersion": 0,
+                                "name": "FlatSpellBlockMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 5,
+                                  "dataVersion": 0,
+                                  "name": "Blue",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "1.3400",
+                              "itemId": 5289,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+1.34 magic resist",
+                        "name": "Greater Glyph of Magic Resist",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5306,
+                      "quantity": 1,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5306,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 3,
+                          "dataVersion": 0,
+                          "name": "Yellow",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5306,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 25,
+                              "itemEffectId": 309,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 25,
+                                "gameCode": "rFlatPhysicalDamageModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rFlatPhysicalDamageModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.0608",
+                              "itemId": 5306,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.06 attack damage per level (+1.09 at champion level 18)",
+                        "name": "Greater Seal of Scaling Attack Damage",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5317,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5317,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 3,
+                          "dataVersion": 0,
+                          "name": "Yellow",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5317,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 15,
+                              "itemEffectId": 320,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 15,
+                                "gameCode": "FlatArmorMod",
+                                "dataVersion": 0,
+                                "name": "FlatArmorMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 3,
+                                  "dataVersion": 0,
+                                  "name": "Yellow",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "1.4068",
+                              "itemId": 5317,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+1.41 armor",
+                        "name": "Greater Seal of Armor",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5366,
+                      "quantity": 1,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5366,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 7,
+                          "dataVersion": 0,
+                          "name": "Black",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5366,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 65,
+                              "itemEffectId": 369,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 65,
+                                "gameCode": "rPercentTimeDeadMod",
+                                "dataVersion": 0,
+                                "name": "rPercentTimeDeadMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 7,
+                                  "dataVersion": 0,
+                                  "name": "Black",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.0500",
+                              "itemId": 5366,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "-5% time dead",
+                        "name": "Greater Quintessence of Revival",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1382076992000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1382076992000)\/",
+                      "runeId": 5245,
+                      "quantity": 10,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5245,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 1,
+                          "dataVersion": 0,
+                          "name": "Red",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5245,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 24,
+                              "itemEffectId": 248,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 24,
+                                "gameCode": "FlatPhysicalDamageMod",
+                                "dataVersion": 0,
+                                "name": "FlatPhysicalDamageMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.9450",
+                              "itemId": 5245,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.95 attack damage",
+                        "name": "Greater Mark of Attack Damage",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5276,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5276,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 5,
+                          "dataVersion": 0,
+                          "name": "Blue",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5276,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 25,
+                              "itemEffectId": 279,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 25,
+                                "gameCode": "rFlatPhysicalDamageModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rFlatPhysicalDamageModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.0405",
+                              "itemId": 5276,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.04 attack damage per level (+0.73 at champion level 18)",
+                        "name": "Greater Glyph of Scaling Attack Damage",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5309,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5309,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 3,
+                          "dataVersion": 0,
+                          "name": "Yellow",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5309,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 47,
+                              "itemEffectId": 312,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 47,
+                                "gameCode": "FlatCritDamageMod",
+                                "dataVersion": 0,
+                                "name": "FlatCritDamageMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.0078",
+                              "itemId": 5309,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.78% critical damage",
+                        "name": "Greater Seal of Critical Damage",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5295,
+                      "quantity": 10,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5295,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 5,
+                          "dataVersion": 0,
+                          "name": "Blue",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5295,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 60,
+                              "itemEffectId": 298,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 60,
+                                "gameCode": "rPercentCooldownMod",
+                                "dataVersion": 0,
+                                "name": "rPercentCooldownMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 5,
+                                  "dataVersion": 0,
+                                  "name": "Blue",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "-0.0083",
+                              "itemId": 5295,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "-0.83% cooldowns",
+                        "name": "Greater Glyph of Cooldown Reduction",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5412,
+                      "quantity": 3,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5412,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 7,
+                          "dataVersion": 0,
+                          "name": "Black",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5412,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 78,
+                              "itemEffectId": 393,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 78,
+                                "gameCode": "PercentLifeStealMod",
+                                "dataVersion": 0,
+                                "name": "PercentLifeStealMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.0200",
+                              "itemId": 5412,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+2% Lifesteal.",
+                        "name": "Greater Quintessence of Life Steal",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1384909093000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1384909093000)\/",
+                      "runeId": 5328,
+                      "quantity": 10,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5328,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 3,
+                          "dataVersion": 0,
+                          "name": "Yellow",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5328,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 28,
+                              "itemEffectId": 331,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 28,
+                                "gameCode": "rFlatMagicDamageModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rFlatMagicDamageModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 5,
+                                  "dataVersion": 0,
+                                  "name": "Blue",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.1038",
+                              "itemId": 5328,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.1 ability power per level (+1.8 at champion level 18)",
+                        "name": "Greater Seal of Scaling Ability Power",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5011,
+                      "quantity": 1,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 1,
+                        "itemId": 5011,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 1,
+                          "dataVersion": 0,
+                          "name": "Red",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5011,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 1,
+                              "itemEffectId": 14,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 1,
+                                "gameCode": "FlatHPPoolMod",
+                                "dataVersion": 0,
+                                "name": "FlatHPPoolMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 3,
+                                  "dataVersion": 0,
+                                  "name": "Yellow",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "1.9305",
+                              "itemId": 5011,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+1.93 health",
+                        "name": "Lesser Mark of Health",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1384909118000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1384909118000)\/",
+                      "runeId": 5236,
+                      "quantity": 1,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 2,
+                        "itemId": 5236,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 7,
+                          "dataVersion": 0,
+                          "name": "Black",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5236,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 28,
+                              "itemEffectId": 239,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 28,
+                                "gameCode": "rFlatMagicDamageModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rFlatMagicDamageModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 5,
+                                  "dataVersion": 0,
+                                  "name": "Blue",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.3365",
+                              "itemId": 5236,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.34 ability power per level (+6.12 at champion level 18)",
+                        "name": "Quintessence of Scaling Ability Power",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5336,
+                      "quantity": 3,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5336,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 7,
+                          "dataVersion": 0,
+                          "name": "Black",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5336,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 25,
+                              "itemEffectId": 339,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 25,
+                                "gameCode": "rFlatPhysicalDamageModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rFlatPhysicalDamageModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.2500",
+                              "itemId": 5336,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.25 attack damage per level (+4.5 at champion level 18)",
+                        "name": "Greater Quintessence of Scaling Attack Damage",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1384909100000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1384909100000)\/",
+                      "runeId": 5358,
+                      "quantity": 1,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5358,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 7,
+                          "dataVersion": 0,
+                          "name": "Black",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5358,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 28,
+                              "itemEffectId": 361,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 28,
+                                "gameCode": "rFlatMagicDamageModPerLevel",
+                                "dataVersion": 0,
+                                "name": "rFlatMagicDamageModPerLevel",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 5,
+                                  "dataVersion": 0,
+                                  "name": "Blue",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.4327",
+                              "itemId": 5358,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.43 ability power per level (+7.74 at champion level 18)",
+                        "name": "Greater Quintessence of Scaling Ability Power",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5281,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5281,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 5,
+                          "dataVersion": 0,
+                          "name": "Blue",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5281,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 44,
+                              "itemEffectId": 284,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 44,
+                                "gameCode": "FlatCritChanceMod",
+                                "dataVersion": 0,
+                                "name": "FlatCritChanceMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 1,
+                                  "dataVersion": 0,
+                                  "name": "Red",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.0028",
+                              "itemId": 5281,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.28% critical chance",
+                        "name": "Greater Glyph of Critical Chance",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    },
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "purchased": "\/Date(1372391913000)\/",
+                      "dataVersion": 0,
+                      "purchaseDate": "\/Date(1372391913000)\/",
+                      "runeId": 5257,
+                      "quantity": 9,
+                      "rune": {
+                        "$type": "FluorineFx.ASObject, FluorineFx",
+                        "imagePath": null,
+                        "toolTip": null,
+                        "tier": 3,
+                        "itemId": 5257,
+                        "runeType": {
+                          "$type": "FluorineFx.ASObject, FluorineFx",
+                          "runeTypeId": 1,
+                          "dataVersion": 0,
+                          "name": "Red",
+                          "futureData": null,
+                          "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                        },
+                        "futureData": null,
+                        "duration": 0,
+                        "gameCode": 5257,
+                        "itemEffects": {
+                          "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                          "$values": [
+                            {
+                              "$type": "FluorineFx.ASObject, FluorineFx",
+                              "effectId": 15,
+                              "itemEffectId": 260,
+                              "effect": {
+                                "$type": "FluorineFx.ASObject, FluorineFx",
+                                "effectId": 15,
+                                "gameCode": "FlatArmorMod",
+                                "dataVersion": 0,
+                                "name": "FlatArmorMod",
+                                "categoryId": null,
+                                "runeType": {
+                                  "$type": "FluorineFx.ASObject, FluorineFx",
+                                  "runeTypeId": 3,
+                                  "dataVersion": 0,
+                                  "name": "Yellow",
+                                  "futureData": null,
+                                  "TypeName": "com.riotgames.platform.catalog.runes.RuneType"
+                                },
+                                "futureData": null,
+                                "TypeName": "com.riotgames.platform.catalog.Effect"
+                              },
+                              "dataVersion": 0,
+                              "value": "0.9144",
+                              "itemId": 5257,
+                              "futureData": null,
+                              "TypeName": "com.riotgames.platform.catalog.ItemEffect"
+                            }
+                          ]
+                        },
+                        "baseType": "RUNE",
+                        "dataVersion": 0,
+                        "description": "+0.91 armor",
+                        "name": "Greater Mark of Armor",
+                        "uses": null,
+                        "TypeName": "com.riotgames.platform.catalog.runes.Rune"
+                      },
+                      "summonerId": 222908.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.summoner.runes.SummonerRune"
+                    }
+                  ]
+                },
+                "summonerId": 222908.0,
+                "futureData": null,
+                "TypeName": "com.riotgames.platform.summoner.runes.SummonerRuneInventory"
+              },
+              "ClientId": "9406D356-C508-CFB5-96A8-87DDC22ADF59",
+              "ClientIdBytes": "”\u0006ÓVÅ\bÏµ–¨‡ÝÂ*ßY",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "9406D35B-A70D-8A7C-A8CC-A423BD9ED80F",
+              "MessageIdBytes": "”\u0006Ó[§\rŠ|¨Ì¤#½žØ\u000f",
+              "TimeStamp": 1385522273175,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 5685,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

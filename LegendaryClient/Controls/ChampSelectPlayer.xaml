@@ -1,0 +1,22 @@
+﻿<UserControl x:Name="ChampPlayer"
+             x:Class="LegendaryClient.Controls.ChampSelectPlayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="80" d:DesignWidth="135">
+    <Grid Background="#194B4B4B">
+        <Rectangle x:Name="TeamRectangle" Fill="#FF535353" Width="4" HorizontalAlignment="Left" Visibility="Hidden"></Rectangle>
+        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="48" Margin="10,10,0,0" VerticalAlignment="Top" Width="48" Source="/LegendaryClient;component/NONE.png" />
+        <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="22" Margin="65,10,0,0" VerticalAlignment="Top" Width="22" />
+        <Image x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="22" Margin="65,35,0,0" VerticalAlignment="Top" Width="22" />
+        <Button x:Name="TradeButton" HorizontalAlignment="Left" Height="22" Margin="95,10,0,0" VerticalAlignment="Top" Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Hidden">
+            <StackPanel>
+                <Image Source="/LegendaryClient;component/trade.png" />
+            </StackPanel>
+        </Button>
+        <Image x:Name="LockedInIcon" HorizontalAlignment="Left" Height="22" Margin="95,35,0,0" VerticalAlignment="Top" Width="22" Source="/LegendaryClient;component/Unlocked.png" Visibility="Hidden" />
+        <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="5,53,0,0" VerticalAlignment="Top" Width="125" Foreground="White" />
+    </Grid>
+</UserControl>

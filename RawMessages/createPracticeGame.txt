@@ -1,0 +1,276 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 75,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "createPracticeGame",
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "94DE219F-8819-CC3B-0DD4-0751C6EBDFC6",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": [
+                  {
+                    "$type": "FluorineFx.ASObject, FluorineFx",
+                    "gameMode": "ONEFORALL",
+                    "allowSpectators": "ALL",
+                    "passbackUrl": null,
+                    "gameName": "Snowl's game",
+                    "passbackDataPacket": null,
+                    "gamePassword": "",
+                    "region": "",
+                    "gameMap": {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "displayName": "Summoner's Rift",
+                      "description": "The oldest and most venerated Field of Justice is known as Summoner's Rift.  This battleground is known for the constant conflicts fought between two opposing groups of Summoners.  Traverse down one of three different paths in order to attack your enemy at their weakest point.  Work with your allies to siege the enemy base and destroy their Headquarters!",
+                      "mapId": 1,
+                      "totalPlayers": 10,
+                      "name": "SummonersRift",
+                      "minCustomPlayers": 1,
+                      "dataVersion": null,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.game.map.GameMap"
+                    },
+                    "maxNumPlayers": 10,
+                    "gameTypeConfig": 14,
+                    "TypeName": "com.riotgames.platform.game.PracticeGameConfig"
+                  }
+                ]
+              },
+              "timestamp": 0,
+              "destination": "gameService",
+              "clientId": null,
+              "messageId": "593E979B-3911-A9C9-F002-97ECE9141766",
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 1047,
+        "StreamId": 0,
+        "Timer": 24566,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 24566,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 63,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "593E979B-3911-A9C9-F002-97ECE9141766",
+              "CorrelationIdBytes": "Y>—›9\u0011©Éð\u0002—ìé\u0014\u0017f",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "spectatorsAllowed": "ALL",
+                "passwordSet": false,
+                "practiceGameRewardsDisabledReasons": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    "INSUFFICIENT_PLAYERS",
+                    "UNBALANCED_TEAMS"
+                  ]
+                },
+                "gameType": "PRACTICE_GAME",
+                "gameTypeConfigId": 14,
+                "glmGameId": null,
+                "gameState": "TEAM_SELECT",
+                "glmHost": null,
+                "observers": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": []
+                },
+                "statusOfParticipants": null,
+                "glmSecurePort": 0,
+                "id": 21879053.0,
+                "ownerSummary": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "accountId": 200006292.0,
+                  "queueRating": 0,
+                  "botDifficulty": "NONE",
+                  "minor": false,
+                  "locale": null,
+                  "partnerId": "",
+                  "lastSelectedSkinIndex": 0,
+                  "profileIconId": 582,
+                  "rankedTeamGuest": false,
+                  "summonerId": 222908.0,
+                  "dataVersion": 0,
+                  "selectedRole": null,
+                  "pickMode": 1,
+                  "teamParticipantId": null,
+                  "timeAddedToQueue": null,
+                  "index": 0,
+                  "originalAccountNumber": 32041797.0,
+                  "summonerInternalName": "snowl",
+                  "teamOwner": false,
+                  "futureData": null,
+                  "badges": 0,
+                  "pickTurn": 0,
+                  "clientInSynch": false,
+                  "summonerName": "Snowl",
+                  "originalPlatformId": "NA",
+                  "selectedPosition": null,
+                  "TypeName": "com.riotgames.platform.game.PlayerParticipant"
+                },
+                "teamTwoPickOutcome": null,
+                "teamTwo": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": []
+                },
+                "bannedChampions": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": []
+                },
+                "dataVersion": 0,
+                "roomName": "65vLwsuMPdMtjTNDH02o5TDJAAjIIOtA@sec",
+                "name": "Snowl's game",
+                "spectatorDelay": 180,
+                "teamOne": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "accountId": 200006292.0,
+                      "queueRating": 0,
+                      "botDifficulty": "NONE",
+                      "minor": false,
+                      "locale": null,
+                      "partnerId": "",
+                      "lastSelectedSkinIndex": 0,
+                      "profileIconId": 582,
+                      "rankedTeamGuest": false,
+                      "summonerId": 222908.0,
+                      "dataVersion": 0,
+                      "selectedRole": null,
+                      "pickMode": 1,
+                      "teamParticipantId": null,
+                      "timeAddedToQueue": null,
+                      "index": 0,
+                      "originalAccountNumber": 32041797.0,
+                      "summonerInternalName": "snowl",
+                      "teamOwner": false,
+                      "futureData": null,
+                      "badges": 0,
+                      "pickTurn": 0,
+                      "clientInSynch": false,
+                      "summonerName": "Snowl",
+                      "originalPlatformId": "NA",
+                      "selectedPosition": null,
+                      "TypeName": "com.riotgames.platform.game.PlayerParticipant"
+                    }
+                  ]
+                },
+                "terminatedCondition": "NOT_TERMINATED",
+                "queueTypeName": "NONE",
+                "glmPort": 0,
+                "passbackUrl": null,
+                "roomPassword": "YWn4hFJCIUSdlHDT",
+                "optimisticLock": 1.0,
+                "teamOnePickOutcome": null,
+                "maxNumPlayers": 10,
+                "queuePosition": 0,
+                "terminatedConditionString": "NOT_TERMINATED",
+                "futureData": null,
+                "gameMode": "ONEFORALL",
+                "expiryTime": 2699722.0,
+                "mapId": 1,
+                "banOrder": null,
+                "pickTurn": 1,
+                "gameStateString": "TEAM_SELECT",
+                "playerChampionSelections": {
+                  "$type": "FluorineFx.AMF3.ArrayCollection, FluorineFx",
+                  "$values": [
+                    {
+                      "$type": "FluorineFx.ASObject, FluorineFx",
+                      "summonerInternalName": "snowl",
+                      "dataVersion": 0,
+                      "spell2Id": -1.0,
+                      "selectedSkinIndex": 0,
+                      "championId": 0,
+                      "spell1Id": -1.0,
+                      "futureData": null,
+                      "TypeName": "com.riotgames.platform.game.PlayerChampionSelectionDTO"
+                    }
+                  ]
+                },
+                "joinTimerDuration": 0,
+                "passbackDataPacket": null,
+                "TypeName": "com.riotgames.platform.game.GameDTO"
+              },
+              "ClientId": "94E98018-191B-5A55-45F5-4F3872793B1C",
+              "ClientIdBytes": "”é€\u0018\u0019\u001bZUEõO8ry;\u001c",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "94E9833D-C30B-3DE2-9F2E-13919DB688E6",
+              "MessageIdBytes": "”éƒ=Ã\u000b=âŸ.\u0013‘¶ˆæ",
+              "TimeStamp": 1385528358259,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 1572,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

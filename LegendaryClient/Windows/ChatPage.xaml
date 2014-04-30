@@ -1,0 +1,39 @@
+﻿<Page x:Class="LegendaryClient.Windows.ChatPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:LegendaryClient.Controls"
+      mc:Ignorable="d"
+      d:DesignHeight="640" d:DesignWidth="250"
+	Title="ChatPage">
+
+    <Page.Resources>
+        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style x:Key="NoFocus" TargetType="{x:Type ListView}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+        <ContextMenu x:Key="PlayerChatMenu">
+            <MenuItem Header="Invite to Game" />
+            <MenuItem x:Name="ProfileItem" Header="View Profile" Click="ProfileItem_Click" />
+            <MenuItem Header="Invite to Chat" />
+            <MenuItem Header="Remove Friend" />
+            <MenuItem Header="Ignore Friend" />
+            <MenuItem Header="Spectate Game" />
+        </ContextMenu>
+    </Page.Resources>
+
+    <Grid Background="#E5000000">
+        <ComboBox x:Name="PresenceChanger" HorizontalAlignment="Stretch" Margin="5,5,5,0" VerticalAlignment="Top" ItemsSource="{DynamicResource ChatStates}" SelectedIndex="0" SelectionChanged="PresenceChanger_SelectionChanged" />
+        <local:TextBoxWatermarked x:Name="StatusBox" HorizontalAlignment="Stretch" Height="23" Margin="5,35,5,0" TextWrapping="NoWrap" VerticalAlignment="Top" Watermark="Set your status message" />
+        <ListView Style="{StaticResource NoFocus}" Margin="0,65,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  x:Name="ChatListView" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                    <GridViewColumn Width="250" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

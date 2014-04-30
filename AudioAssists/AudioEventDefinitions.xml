@@ -1,0 +1,108 @@
+<GLOBAL>
+  <MUSIC groupVolumeMod="1.0">
+    <MUSIC_HOWLING_ABYSS_PATH file="/ambient/howlingabyss_champselect.mp3" type="music" fadeInTime="2" fadeOutTime="1" volumeModifier="1.0"/>
+    <MUSIC_DOMINION_DRAFT_MODE_PATH file="/ambient/ChmpSlct_Odin_DraftMode.mp3" type="music" fadeInTime="2" fadeOutTime="6" volumeModifier="0.3"/>
+    <MUSIC_DRAFT_MODE_PATH file="/ambient/ChmpSlct_DraftMode.mp3" type="music" fadeInTime="2" fadeOutTime="1" volumeModifier=".45"/>
+    <MUSIC_DOMINION_BLIND_PICK_PATH file="/ambient/ChmpSlct_Odin_BlindPick.mp3" type="music" volumeModifier=".45"/>
+    <MUSIC_BLIND_PICK_PATH file="/ambient/ChmpSlct_BlindPick.mp3" type="music" volumeModifier=".45"/>
+    <MUSIC_TUTORIAL file="/ambient/ChmpSlct_Tutorial.mp3" type="music" volumeModifier=".45"/>
+  </MUSIC>
+  <SFX>
+    <VOICE_OVER>
+	  <TUTORIAL>
+        <TUTORIAL_WELCOME file="{locale}/tutorial/001.Tutorial2.PVPnet.Welcome.mp3" type="sfx" defaultToUS="false" volumeModifier="1.0"/>
+        <TUTORIAL_CHAMPION_SELECTION_INTRO file="{locale}/tutorial/002.Tutorial2.PVPnet.Champion_Selection.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_TIME_LIMIT file="{locale}/tutorial/003.Tutorial2.PVPnet.Time_Limit.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_CHAMPION_ROSTER_INTRO file="{locale}/tutorial/004.Tutorial2.PVPnet.Champion_Roster.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_GAREN_INTRO file="{locale}/tutorial/007.Tutorial2.PVPnet.Garen.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_ASHE_INTRO file="{locale}/tutorial/006.Tutorial2.PVPnet.Ashe.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_RYZE_INTRO file="{locale}/tutorial/005.Tutorial2.PVPnet.Ryze.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_SELECT_CHAMPION file="{locale}/tutorial/008.Tutorial2.PVPnet.Select_Champion.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_TEAMMATE file="{locale}/tutorial/009.Tutorial2.PVPnet.Teammate.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_CHAT file="{locale}/tutorial/010.Tutorial2.PVPnet.Chat.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_SPELLS file="{locale}/tutorial/011.Tutorial2.PVPnet.Spells.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_SELECT_SPELLS file="{locale}/tutorial/012.Tutorial2.PVPnet.Select_Spells.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_STAT_BONUSES file="{locale}/tutorial/013.Tutorial2.PVPnet.Stat_Bonuses.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_MASTERIES file="{locale}/tutorial/014.Tutorial2.PVPnet.Masteries.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_RUNE_PAGES file="{locale}/tutorial/015.Tutorial2.PVPnet.Rune_Pages.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_SKINS file="{locale}/tutorial/016.Tutorial2.PVPnet.Skins.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_LOCK_IN file="{locale}/tutorial/017.Tutorial2.PVPnet.Lock_In.mp3" type="sfx" defaultToUS="false"/>
+        <TUTORIAL_MAKE_CHOICES file="{locale}/tutorial/018.Tutorial2.PVPnet.Make_Choices.mp3" type="sfx" defaultToUS="false"/>
+        <END_OF_GAME>
+          <EOG_TUTORIAL_GREETING file="{locale}/tutorial/124.Tutorial2.PvPnetPost.Post_Battle_Screen.mp3" type="sfx" defaultToUS="false"/>
+          <EOG_TUTORIAL_OVERVIEW file="{locale}/tutorial/125.Tutorial2.PvPnetPost.Rewards.mp3" type="sfx" defaultToUS="false"/>
+          <EOG_TUTORIAL_INFLUENCE_POINTS file="{locale}/tutorial/126.Tutorial2.PvPnetPost.Influence_Points.mp3" type="sfx" defaultToUS="false"/>
+          <EOG_TUTORIAL_SCOREBOARD file="{locale}/tutorial/127.Tutorial2.PvPnetPost.Champion_Stats.mp3" type="sfx" defaultToUS="false"/>
+          <EOG_TUTORIAL_TEAM_LIST file="{locale}/tutorial/128.Tutorial2.PvPnetPost.Social.mp3" type="sfx" defaultToUS="false"/>
+          <EOG_TUTORIAL_IGNORE_REPORT file="{locale}/tutorial/129.Tutorial2.PvPnetPost.Ignore_Report.mp3" type="sfx" defaultToUS="false"/>
+        </END_OF_GAME>
+      </TUTORIAL>
+    </VOICE_OVER>
+    <RUNES_COMBINE_RUNES file="runes/air_event_combinrune_1.mp3" type="sfx" volumeModifier=".45"/>
+    <RUNES_RUNE_DROP_1 file="runes/air_event_runedrop_1.mp3" type="sfx" volumeModifier=".45"/>
+    <RUNES_RUNE_DROP_2 file="runes/air_event_runedrop_2.mp3" type="sfx" volumeModifier=".45"/>
+    <RUNES_RUNE_DROP_3 file="runes/air_event_runedrop_3.mp3" type="sfx" volumeModifier=".45"/>
+    <RUNES_RUNE_DROP_4 file="runes/air_event_runedrop_4.mp3" type="sfx" volumeModifier=".45"/>
+    <RUNES_RUNE_DROP_5 file="runes/air_event_runedrop_5.mp3" type="sfx" volumeModifier=".45"/>
+    <RUNES_RUNE_DROP_6 file="runes/air_event_runedrop_6.mp3" type="sfx" volumeModifier=".45"/>
+    <RUNES_RUNE_DROP_7 file="runes/air_event_runedrop_7.mp3" type="sfx" volumeModifier=".45"/>
+    <RT_TEAM_ACCEPT_1 file="rt/Team_Accept_1.mp3" type="sfx" volumeModifier=".45"/>
+    <RT_TEAM_ACCEPT_3 file="rt/Team_Accept_3.mp3" type="sfx" volumeModifier=".45"/>
+    <RT_TEAM_INVITE_1 file="rt/Team_Invite_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_STORE_BUTTON_CLICK file="/openstore.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_GAME_TYPE_SELECT_CLICK file="/closeplayscreen.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_BUDDY_INVITE file="/buddy_invite.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_MSG_RECEIVE file="/standard_msg_receive.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_PM_RECEIVE file="/pm_receive.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_GAME_INVITE file="/chat/air_event_invited_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_CHAT_JOIN file="/join_chat.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_CHAT_LEAVE file="/leave_chat.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_CHAT_RESTRICTED file="/restrict_chat.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_CHAT_ROOM_REQUEST file="/chat_room_request.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_CHAMPION_SUMMON file="/summon_champion.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_MATCHMAKING_QUEUED file="/matchmakingqueued.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_MOUSE_OVER_DISABLED file="/button_locked.mp3" type="sfx" volumeModifier="0.0"/>
+    <SOUND_CB_ITEM_ROLLOVER file="/cb_item_rollover.mp3" type="sfx" volumeModifier="0.0"/>
+    <SOUND_CB_ITEM_DISABLED_ROLLOVER file="/cb_item_rollover_disabled.mp3" type="sfx" volumeModifier="0.0"/>
+    <SOUND_CB_ROLLOVER file="/cb_rollover.mp3" type="sfx" volumeModifier="0.0"/>
+    <SOUND_CB_ROLLOVER_DISABLED file="/cb_rollover_disabled.mp3" type="sfx" volumeModifier="0.0"/>
+    <SOUND_PLAY_BUTTON_CLICK file="/newSounds/playbutton.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_LOGIN_OK_BUTTON_CLICK file="/newSounds/login.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_MOUSE_DOWN file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_MOUSE_OVER file="/newSounds/air_button_rollover_1.mp3" type="sfx" volumeModifier="0.0"/>
+    <SOUND_CB_OPEN file="/newSounds/air_button_press_7.mp3" type="sfx" volumeModifier=".45"/>
+    <NEW_SOUND_CHALK_CHECK file="/newSounds/air_box_chalkcheck_1.mp3" type="sfx" volumeModifier=".45"/>
+    <NEW_SOUND_BAN file="/newSounds/air_button_press_12.mp3" type="sfx" volumeModifier=".45"/>
+
+    <SOUND_PLAY_BUTTON_ROLL_OVER file="/newSounds/air_button_rollover_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_TOP_NAV_BUTTON_CLICK file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_OPTIONS_MENU_OPEN file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_OPTIONS_MENU_CLOSE file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_HOME_BUTTON_CLICK file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_WATCH_NOW_ROLL_OVER file="/newSounds/air_button_rollover_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_WATCH_NOW_CLICK file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_LANDING_PAGE_ARROW_CLICK file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_CHAT_TAB_CLICK file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_PROFILE_TAB_CLICK file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_CHAMPION_INVENTORY_CHAMP_CLICK file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_DROP_DOWN_OPEN file="/newSounds/air_button_rollover_1.mp3" type="sfx" volumeModifier=".45"/>
+    <SOUND_DROP_DOWN_SELECT file="/newSounds/air_button_press_1.mp3" type="sfx" volumeModifier=".45"/>
+
+    <CHAMP_SELECT>
+      <NEW_SOUND_LOCK_IN file="/champSelect/lockinchampion.mp3" type="sfx" volumeModifier=".45"/>
+      <NEW_SOUND_YOUR_TURN file="/champSelect/yourturn.mp3" type="sfx" volumeModifier=".45"/>
+      <NEW_SOUND_SKIN_SCROLL file="/champSelect/browseskins.mp3" type="sfx" volumeModifier=".45"/>
+      <SOUND_GAME_STARTING file="/champSelect/exitchampionselect.mp3" type="sfx" volumeModifier=".45"/>
+      <SOUND_TURN_ENDING_SOON file="/champSelect/countdown10seconds.mp3" type="sfx" volumeModifier=".45"/>
+      <SOUND_PHASE_CHANGE file="/champSelect/phasechangedrums2.mp3" type="sfx" volumeModifier=".45"/>
+      <SOUND_TRADE_REQUEST file="/champSelect/traderequested.mp3" type="sfx" volumeModifier=".45"/>
+    </CHAMP_SELECT>
+    <MASTERIES_SOUND_ADD_POINT file="masteries/masteries_sfx_addpoint.mp3" volumeModifier=".45" type="sfx"/>
+    <MASTERIES_SOUND_REMOVE_POINT file="masteries/masteries_sfx_removepoint.mp3" volumeModifier=".45" type="sfx"/>
+    <RANKED_TEAMS>
+      <TEAM_ACCEPT file="/rt/Team_Accept_1.mp3" type="sfx" volumeModifier=".45"/>
+      <OTHER_TEAM_ACCEPT file="/rt/Team_Accept_3.mp3" type="sfx" volumeModifier=".45"/>
+      <TEAM_INVITE file="/rt/Team_Invite_1.mp3" type="sfx" volumeModifier=".45"/>
+    </RANKED_TEAMS>
+  </SFX>
+</GLOBAL>

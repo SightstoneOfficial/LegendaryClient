@@ -1,0 +1,73 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 0,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "receive",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSA, LoLNotes",
+              "CorrelationId": null,
+              "CorrelationIdBytes": null,
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "rp": 65.0,
+                "inventoryType": "RUNE",
+                "data": {
+                  "$type": "FluorineFx.ASObject, FluorineFx",
+                  "dataVersion": 0,
+                  "runeId": 5260,
+                  "quantity": 1,
+                  "futureData": null,
+                  "TypeName": "com.riotgames.platform.catalog.runes.RuneQuantity"
+                },
+                "ip": 4670.0,
+                "TypeName": "com.riotgames.platform.messaging.StoreFulfillmentNotification"
+              },
+              "ClientId": "cn-200006292",
+              "ClientIdBytes": null,
+              "Destination": "messagingDestination",
+              "Headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSSubtopic": "cn-200006292"
+              },
+              "MessageId": "bada7a55-8c41-439e-b7b1-ffc1425fb484",
+              "MessageIdBytes": null,
+              "TimeStamp": 1385528297154,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 333,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}

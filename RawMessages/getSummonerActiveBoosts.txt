@@ -1,0 +1,123 @@
+{
+  "$type": "System.Collections.Generic.List`1[[FluorineFx.Messaging.Rtmp.Event.Notify, FluorineFx]], mscorlib",
+  "$values": [
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 9,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": null,
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "FluorineFx.Messaging.Messages.RemotingMessage, FluorineFx",
+              "source": null,
+              "operation": "getSumonerActiveBoosts",
+              "body": {
+                "$type": "System.Object[], mscorlib",
+                "$values": []
+              },
+              "headers": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "DSId": "9406B5D7-802E-13AA-D627-C6F0A82EEF69",
+                "DSRequestTimeout": 60,
+                "DSEndpoint": "my-rtmps"
+              },
+              "timestamp": 0,
+              "destination": "inventoryService",
+              "messageId": "7EDED847-A09B-89EC-B885-97900F0792DE",
+              "clientId": null,
+              "timeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 314,
+        "StreamId": 0,
+        "Timer": 1857,
+        "IsTimerRelative": true
+      },
+      "Object": null,
+      "Timestamp": 1857,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    },
+    {
+      "$type": "FluorineFx.Messaging.Rtmp.Event.FlexInvoke, FluorineFx",
+      "CmdData": null,
+      "Data": null,
+      "InvokeId": 9,
+      "ServiceCall": {
+        "$type": "FluorineFx.Messaging.Rtmp.Service.PendingCall, FluorineFx",
+        "Result": null,
+        "IsSuccess": false,
+        "ServiceMethodName": "_result",
+        "ServiceName": null,
+        "Arguments": {
+          "$type": "System.Object[], mscorlib",
+          "$values": [
+            {
+              "$type": "DSK, LoLNotes",
+              "CorrelationId": "7EDED847-A09B-89EC-B885-97900F0792DE",
+              "CorrelationIdBytes": "~ÞØG ›‰ì¸…—\u000f\u0007’Þ",
+              "Body": {
+                "$type": "FluorineFx.ASObject, FluorineFx",
+                "xpBoostEndDate": 0.0,
+                "xpBoostPerWinCount": 0,
+                "xpLoyaltyBoost": 0,
+                "ipBoostPerWinCount": 0,
+                "ipLoyaltyBoost": 0,
+                "summonerId": 222908.0,
+                "ipBoostEndDate": 1378706820000.0,
+                "TypeName": "com.riotgames.platform.summoner.boost.SummonerActiveBoostsDTO"
+              },
+              "ClientId": "9406CEBE-030F-D8BD-0408-2910E921033E",
+              "ClientIdBytes": "”\u0006Î¾\u0003\u000fØ½\u0004\b)\u0010é!\u0003>",
+              "Destination": null,
+              "Headers": null,
+              "MessageId": "9406CEC2-E50D-FEF2-4A70-53AB38D8B178",
+              "MessageIdBytes": "”\u0006ÎÂå\rþòJpS«8Ø±x",
+              "TimeStamp": 1385522272693,
+              "TimeToLive": 0
+            }
+          ]
+        },
+        "Status": 1,
+        "Exception": null
+      },
+      "ConnectionParameters": null,
+      "EventType": 2,
+      "Header": {
+        "$type": "FluorineFx.Messaging.Rtmp.RtmpHeader, FluorineFx",
+        "ChannelId": 3,
+        "DataType": 17,
+        "Size": 303,
+        "StreamId": 0,
+        "Timer": 0,
+        "IsTimerRelative": false
+      },
+      "Object": null,
+      "Timestamp": 0,
+      "ExtendedTimestamp": -1,
+      "DataType": 17,
+      "Source": null,
+      "HasSource": false
+    }
+  ]
+}
