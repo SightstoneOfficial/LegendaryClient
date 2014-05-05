@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patcher", "Patcher\Patcher.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplayHandler", "ReplayHandler\ReplayHandler.csproj", "{F7D78C61-76B0-4270-9B45-4DAEA881A4BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PVPNetConnect", "GitPVP\PVPNetConnect.csproj", "{93DCBEBF-C652-40ED-A003-CFF421F68B4F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PVPNetConnect", "PVPNetConnect\PVPNetConnect.csproj", "{93DCBEBF-C652-40ED-A003-CFF421F68B4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,8 +38,8 @@ Global
 		{F7D78C61-76B0-4270-9B45-4DAEA881A4BB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.PubRelease|Any CPU.Build.0 = Release|Any CPU
+		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.PubRelease|Any CPU.ActiveCfg = PubRelease|Any CPU
+		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.PubRelease|Any CPU.Build.0 = PubRelease|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
