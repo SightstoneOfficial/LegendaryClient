@@ -19,7 +19,7 @@ namespace LegendaryClient.Logic.AutoReplays
         
         public string Server;
         public bool Recording = true;
-
+        public string Key;
         public delegate void OnReplayRecordedHandler();
         public event OnReplayRecordedHandler OnReplayRecorded;
 
