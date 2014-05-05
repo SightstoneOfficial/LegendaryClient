@@ -1,33 +1,33 @@
-﻿using System;
+using System;
 using System.Net;
 
 namespace LegendaryClient.Logic.Region
 {
-    public sealed class BR : BaseRegion
+    public sealed class LA2 : BaseRegion
     {
         public override string RegionName
         {
-            get { return "BR"; }
+            get { return "LA2"; }
         }
 
         public override string InternalName
         {
-            get { return "BR1"; }
+            get { return "la2"; }
         }
 
         public override string ChatName
         {
-            get { return "br"; }
+            get { return "la2"; }
         }
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //This returns english (not spanish) characters
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/la2/es_MX.js"); }
         }
 
         public override PVPNetConnect.Region PVPRegion
         {
-            get { return PVPNetConnect.Region.BR; }
+            get { return PVPNetConnect.Region.LA2; }
         }
 
         public override IPAddress[] PingAddresses
@@ -43,12 +43,12 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.br.lol.riotgames.com:80/observer-mode/rest/"); }
+            get { return new Uri("http://spectator.la2.lol.riotgames.com/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress
         {
-            get { return "66.150.148.234:80"; }
+            get { return "66.151.33.19:80"; }
         }
     }
 }
