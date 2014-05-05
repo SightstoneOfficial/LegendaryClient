@@ -35,6 +35,12 @@ namespace PVPNetConnect
         [UseGarenaValue(false)]
         BR,
 
+        [ServerValue("prod.la2.lol.riotgames.com")]
+        [LoginQueueValue("https://lq.la2.lol.riotgames.com/")]
+        [LocaleValue("es_MX")]
+        [UseGarenaValue(false)]
+        LA2,
+
         [ServerValue("prod.tr.lol.riotgames.com")]
         [LoginQueueValue("https://lq.tr.lol.riotgames.com/")]
         [LocaleValue("pt_BR")]
