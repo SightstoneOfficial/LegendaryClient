@@ -39,7 +39,7 @@ namespace LegendaryClient.Logic
         /// The database of all runes
         /// </summary>
         internal static List<runes> Runes;
-
+        
         /// <summary>
         /// Latest champion for League of Legends login screen
         /// </summary>
@@ -466,6 +466,11 @@ namespace LegendaryClient.Logic
         /// The region the user is connecting to
         /// </summary>
         internal static BaseRegion Region;
+
+        /// <summary>
+        /// The region the user is connecting to
+        /// </summary>
+        internal static bool Chunk;
 
         /// <summary>
         /// Is the client logged in to the League of Legends server

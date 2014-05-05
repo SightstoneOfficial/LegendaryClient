@@ -1,7 +1,9 @@
 ﻿using jabber.connection;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.AutoReplays;
 using LegendaryClient.Logic.PlayerSpell;
+using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
@@ -28,6 +30,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ChampSelectPage : Page
     {
+        ReplayRecorder recorder;
         private bool BanningPhase = false;
         private GameDTO LatestDto;
         private ChampionDTO[] Champions;
@@ -42,6 +45,7 @@ namespace LegendaryClient.Windows
         private bool HasLaunchedGame = false;
         private bool QuickLoad = false; //Don't load masteries and runes on load at start
         private Room Chatroom;
+        int GameId;
 
         public ChampSelectPage()
         {
@@ -428,7 +432,17 @@ namespace LegendaryClient.Windows
                 }
 
                 #endregion Launching Game
+
+                
+
             }
+        }
+
+        
+        private void Record()
+        {
+            //string Server, int GameId, string Region, string Key
+            recorder = new ReplayRecorder();
         }
 
         internal void RenderLockInGrid(PlayerChampionSelectionDTO selection)
