@@ -48,6 +48,7 @@
         <x:Array x:Key="Regions" Type="sys:String"
                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
             <sys:String>BR</sys:String>
+            <sys:String>LA2</sys:String>
             <sys:String>EUN</sys:String>
             <sys:String>EUW</sys:String>
             <sys:String>KR</sys:String>
