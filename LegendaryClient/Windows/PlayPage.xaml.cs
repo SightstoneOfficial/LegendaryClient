@@ -173,6 +173,10 @@ namespace LegendaryClient.Windows
                     {
                         message.MessageTextBox.Text = "You do not meet the requirements for this queue." + Environment.NewLine;
                     }
+                    else if (result.PlayerJoinFailures[0].ReasonFailed == "QUEUE_PARTICIPANTS")
+                    {
+                        message.MessageTextBox.Text = "This queue is in dev. Please use this queue on the real league of legends client." + Environment.NewLine;
+                    }
                     Client.OverlayContainer.Content = message.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));

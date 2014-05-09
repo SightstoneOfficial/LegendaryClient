@@ -50,6 +50,11 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static string Version = "4.6.test";
 
+        ///<summary>
+        /// To see if the user is a dev
+        /// </summary>
+        internal static bool Dev = false;
+
         /// <summary>
         /// The current directory the client is running from
         /// </summary>
@@ -197,23 +202,42 @@ namespace LegendaryClient.Logic
             ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
         }
 
+        //internal static string GetPresence()
+
+        internal static string LegendaryClientAddition = "∟";
+        internal static void NewStatus(object sender, RoutedEventArgs e)
+        {
+            if (Dev == false)
+            {
+                Client.LegendaryClientAddition = "∟";
+            }
+            if (Dev == true)
+            {
+                Client.LegendaryClientAddition = "♒";
+            }
+        }
+
         internal static string GetPresence()
         {
             return "<body>" +
-                "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
-                "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
-                "<wins>" + AmountOfWins + "</wins>" +
-                (IsRanked ?
-                "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
-                "<rankedLeagueName>" + LeagueName + "</rankedLeagueName>" +
-                "<rankedLeagueDivision>" + Tier + "</rankedLeagueDivision>" +
-                "<rankedLeagueTier>" + TierName + "</rankedLeagueTier>" +
-                "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
-                "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
-                "<gameStatus>" + GameStatus + "</gameStatus>" +
-                "<statusMsg>" + CurrentStatus + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
-            "</body>";
+                  "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
+                  "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
+                  "<wins>" + AmountOfWins + "</wins>" +
+                  (IsRanked ?
+                  "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
+                  "<rankedLeagueName>" + LeagueName + "</rankedLeagueName>" +
+                  "<rankedLeagueDivision>" + Tier + "</rankedLeagueDivision>" +
+                  "<rankedLeagueTier>" + TierName + "</rankedLeagueTier>" +
+                  "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
+                  "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
+                  "<gameStatus>" + GameStatus + "</gameStatus>" +
+                  "<statusMsg>" + CurrentStatus + LegendaryClientAddition + "</statusMsg>" + 
+                  //Look for "∟" to recognize LegendaryClient Users
+                  //Look for "♒" to recongnize Devs
+                    "</body>";
         }
+
+        
 
         internal static void RostManager_OnRosterItem(object sender, jabber.protocol.iq.Item ri)
         {
@@ -287,6 +311,10 @@ namespace LegendaryClient.Logic
                                     if (Player.Status.EndsWith("∟"))
                                     {
                                         Player.UsingLegendary = true;
+                                    }
+                                    else if (Player.Status.EndsWith("♒"))
+                                    {
+                                        Player.IsLegendaryDev = true;
                                     }
                                     break;
 
@@ -575,6 +603,9 @@ namespace LegendaryClient.Logic
                 case "matching-queue-NORMAL-3x3-game-queue":
                     return "Normal 3v3";
 
+                case "matching-queue-GROUPFINDER-5x5-game-queue":
+                    return "Team Builder 5v5";
+
                 case "matching-queue-NORMAL-5x5-draft-game-queue":
                     return "Draft 5v5";
 
@@ -782,6 +813,8 @@ namespace LegendaryClient.Logic
         public string Status { get; set; }
 
         public bool UsingLegendary { get; set; }
+
+        public bool IsLegendaryDev { get; set; }
 
         public List<string> Messages = new List<string>();
     }

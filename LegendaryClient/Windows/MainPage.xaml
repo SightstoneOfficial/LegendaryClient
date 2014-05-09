@@ -89,6 +89,6 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="fakeend" Content="Fake end of game" HorizontalAlignment="Left" Margin="1145,111,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click" />
+        <Button x:Name="fakeend" Visibility="Hidden" Content="Fake end of game" HorizontalAlignment="Left" Margin="1145,111,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click" />
     </Grid>
 </Page>

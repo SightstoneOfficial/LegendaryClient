@@ -24,6 +24,114 @@ namespace LegendaryClient.Windows
             StartPatcher();
         }
 
+        private void DevKeySend_Click(object sender, RoutedEventArgs e)
+        {
+            if (DevKey.Text == "!~devkey-publicdev~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Public Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-R4tP769DmAr2B3xHeRvm~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Eddy5641!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-AGWV2t7GknpBDzzTeyze~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome ICareForCows!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-uXaRQLB2h82EZqeFwMS9~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-xnfRtZUr5WzYMUHmYLHs~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-9mnDreEAPtUeCwAVkjf3~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-UwYtjHckU3TmnGbAGb7w~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-Bc3qNxzj69ECv3YKpLwf~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-YHR5zaUYMWE22LLUCrRf~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-qQCrKBbmkA4sVdwR76sE~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+            else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+            }
+        }
+
+        private void DevSkip_Click(object sender, RoutedEventArgs e)
+        {
+            Client.SwitchPage(new LoginPage());
+        }
+
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
             Client.SwitchPage(new LoginPage());

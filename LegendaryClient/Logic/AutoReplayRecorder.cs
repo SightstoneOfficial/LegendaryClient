@@ -40,7 +40,7 @@ namespace LegendaryClient.Logic.AutoReplays
             
             Directory.CreateDirectory(Path.Combine("cabinet", Client.GameID + "-" + region.SpectatorIpAddress));
 
-            File.WriteAllText(Path.Combine("cabinet", Client.GameID + "-" + region.SpectatorIpAddress, "key"), Key);
+            //File.WriteAllText(Path.Combine("cabinet", Client.GameID + "-" + region.SpectatorIpAddress, "key"), Key);
 
             int ChunkTimeInterval;
             int LastChunk = 0;
