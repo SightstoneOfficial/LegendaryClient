@@ -92,7 +92,7 @@ namespace LegendaryClient.Windows
                         File.Delete("COL.ZIP");
                         System.Diagnostics.Process.Start("Patcher.exe");
                         Environment.Exit(0);*/
-                /*    }
+                    }
                 }
 #endif
                 LogTextBox("LegendaryClient is up to date");

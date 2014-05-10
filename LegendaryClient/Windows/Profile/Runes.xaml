@@ -8,7 +8,7 @@
 	Title="Runes">
 
     <Grid>
-        <ListView x:Name="RunePageListView" HorizontalAlignment="Stretch" Margin="10,10,40,0" VerticalAlignment="Top" Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#19000000" Grid.ColumnSpan="2" SelectionChanged="RunePageListView_SelectionChanged" Foreground="White">
+        <ListView x:Name="RunePageListView" HorizontalAlignment="Stretch" Margin="10,10,40,0" VerticalAlignment="Top" Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#19000000" Grid.ColumnSpan="2" Foreground="White">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -61,14 +61,14 @@
         <Label x:Name="SealsLabel" Content="Seals" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="761,265,0,0" VerticalAlignment="Top"/>
         <Label x:Name="GlyphsLabel" Content="Glyphs" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="1003,265,0,0" VerticalAlignment="Top"/>
         <Label x:Name="QuintsLabel" Content="Quintessences" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="517,423,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="RuneFilterComboBox" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="RuneFilterComboBox_SelectionChanged">
+        <ComboBox x:Name="RuneFilterComboBox" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" Width="200">
             <Label Content="All"/>
             <Label Content="Attack"/>
             <Label Content="Magic"/>
             <Label Content="Defense"/>
             <Label Content="Utility"/>
         </ComboBox>
-        <ListView x:Name="AvailableRuneList" HorizontalAlignment="Left" Height="438" Margin="10,100,0,0" VerticalAlignment="Top" Width="501" MouseDoubleClick="AvailableRuneList_DoubleClickOrRightClick" MouseRightButtonUp="AvailableRuneList_DoubleClickOrRightClick" Foreground="White" FontSize="16" Background="#66505050">
+        <ListView x:Name="AvailableRuneList" HorizontalAlignment="Left" Height="438" Margin="10,100,0,0" VerticalAlignment="Top" Width="501" Foreground="White" FontSize="16" Background="#66505050">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Rune"/>
@@ -105,7 +105,7 @@
             <Grid Height="100" Width="100"/>
         </ListView>
         <Label x:Name="StatsLabel" Content="" Foreground="White" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="852,324,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="SaveRunes" Content="Save Rune Page" HorizontalAlignment="Left" Margin="264,45,0,0" VerticalAlignment="Top" Width="200" Click="SaveRunes_Click" />
-        <Button x:Name="ClearRunes" Content="Clear Rune Page" HorizontalAlignment="Left" Margin="264,73,0,0" VerticalAlignment="Top" Width="200" Click="ClearRunes_Click" />
+        <Button x:Name="SaveRunes" Content="Save Rune Page" HorizontalAlignment="Left" Margin="264,45,0,0" VerticalAlignment="Top" Width="200"/>
+        <Button x:Name="ClearRunes" Content="Clear Rune Page" HorizontalAlignment="Left" Margin="264,73,0,0" VerticalAlignment="Top" Width="200"/>
     </Grid>
 </Page>

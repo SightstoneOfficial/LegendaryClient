@@ -6,6 +6,7 @@ using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Logic.SWF;
 using LegendaryClient.Logic.SWF.SWFTypes;
+using LegendaryClient.Windows;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using System;
 using System.IO;
@@ -34,13 +35,15 @@ namespace LegendaryClient.Windows
                                 select s).ToList();
             foreach (champions c in Client.Champions)
             {
-                string Source = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath);
-                c.icon = Client.GetImage(Source);
-                Champions.InsertExtraChampData(c);
+                var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath), UriKind.Absolute);
+                c.icon = new BitmapImage(Source);
             }
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
                                     orderby s.name
                                     select s).ToList();
+            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
+                                        orderby s.name
+                                        select s).ToList();
             Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
                                  orderby s.id
                                  select s).ToList();
@@ -49,9 +52,9 @@ namespace LegendaryClient.Windows
                                select s).ToList();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
-            Client.Runes = Runes.PopulateRunes();
 
             //Retrieve latest client version
+            /*
             SWFReader reader = new SWFReader("ClientLibCommon.dat");
             foreach (Tag tag in reader.Tags)
             {
@@ -65,10 +68,9 @@ namespace LegendaryClient.Windows
                         string[] firstSplit = str.Split((char)6);
                         string[] secondSplit = firstSplit[0].Split((char)18);
                         //Client.Version = secondSplit[1];
-                        //version handled by data dragon
                     }
                 }
-            }
+            }*/
 
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedUsername))
             {
@@ -84,8 +86,8 @@ namespace LegendaryClient.Windows
             {
                 RegionComboBox.SelectedValue = Properties.Settings.Default.Region;
             }
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath);
-            LoginImage.Source = Client.GetImage(uriSource);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
+            LoginImage.Source = new BitmapImage(uriSource);
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&
                 !String.IsNullOrWhiteSpace(Properties.Settings.Default.Region) &&
                 Properties.Settings.Default.AutoLogin)
@@ -120,6 +122,7 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
             BaseRegion SelectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             Client.Region = SelectedRegion;
+            //Client.Version = "4.6.test";
             Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
         }
 
@@ -141,6 +144,8 @@ namespace LegendaryClient.Windows
             }));
         }
 
+#pragma warning disable 4014 //Code does not need to be awaited
+
         private async void GotLoginPacket(LoginDataPacket packet)
         {
             Client.LoginPacket = packet;
@@ -156,7 +161,7 @@ namespace LegendaryClient.Windows
             {
                 Client.StatusContainer.Visibility = System.Windows.Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
-
+                
                 //Setup chat
                 Client.ChatClient.AutoReconnect = 30;
                 Client.ChatClient.KeepAlive = 10;
@@ -185,6 +190,7 @@ namespace LegendaryClient.Windows
                 Client.ConfManager.Stream = Client.ChatClient;
 
                 Client.SwitchPage(new MainPage());
+                Client.ClearPage(this);
             }));
         }
     }

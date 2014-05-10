@@ -4,14 +4,18 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Web.Script.Serialization;
+using LegendaryClient.Logic;
 
 namespace LegendaryClient.Logic.Replays
 {
     public class ReplayRecorder
     {
         public int GameId;
+        
+        
         public int LastChunkNumber = 0;
         public string Region;
+        
         public string Server;
         public bool Recording = true;
 
@@ -21,8 +25,10 @@ namespace LegendaryClient.Logic.Replays
         public delegate void OnGotChunkHandler(int ChunkId);
         public event OnGotChunkHandler OnGotChunk;
 
+        
         public ReplayRecorder(string Server, int GameId, string Region, string Key)
         {
+            //GameId = Client.GameID;
             this.GameId = GameId;
             this.Region = Region;
             this.Server = "http://" + Server;

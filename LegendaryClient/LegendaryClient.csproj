@@ -53,6 +53,9 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PubRelease|AnyCPU'">
+    <OutputPath>bin\PubRelease\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Awesomium.Core, Version=1.7.2.2, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
       <HintPath>..\DLLS\Awesomium.Core.dll</HintPath>
@@ -72,7 +75,10 @@
     </Reference>
     <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Release\PVPNetConnect.dll</HintPath>
+      <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="rtmp-sharp">
+      <HintPath>..\..\Coding\League Of Legends\LegendaryClient-master\DLLS\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -108,6 +114,14 @@
     </Compile>
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TradeControl.xaml.cs">
+      <DependentUpon>TradeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Logic\AutoReplayRecorder.cs" />
+    <Compile Include="Logic\Region\LAS.cs" />
+    <Compile Include="ReplayElements\ChampionItem.xaml.cs">
+      <DependentUpon>ChampionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ChatItem.xaml.cs">
       <DependentUpon>ChatItem.xaml</DependentUpon>
@@ -166,10 +180,14 @@
     <Compile Include="Controls\RuneItem.xaml.cs">
       <DependentUpon>RuneItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TextBoxWatermarked.cs" />
-    <Compile Include="Controls\TradeControl.xaml.cs">
-      <DependentUpon>TradeControl.xaml</DependentUpon>
+    <Compile Include="Controls\AccessKeyScoper.cs" />
+    <Compile Include="ReplayElements\PlayerItemReplay.xaml.cs">
+      <DependentUpon>PlayerItemReplay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReplayElements\SmallChampionItem.xaml.cs">
+      <DependentUpon>SmallChampionItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBoxWatermarked.cs" />
     <Compile Include="Controls\WindowsExensions.cs" />
     <Compile Include="Controls\AccessKeyScoper.cs" />
     <Compile Include="Logic\ChatPrefixes.cs" />
@@ -211,8 +229,8 @@
     <Compile Include="Logic\SWF\SWFTypes\Rect.cs" />
     <Compile Include="Logic\SWF\SWFTypes\Tag.cs" />
     <Compile Include="Logic\SWF\SWFTypes\TagCodes.cs" />
-    <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
-      <DependentUpon>ChampionDetailsPage.xaml</DependentUpon>
+    <Compile Include="Windows\InGame.xaml.cs">
+      <DependentUpon>InGame.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\InvitePlayersPage.xaml.cs">
       <DependentUpon>InvitePlayersPage.xaml</DependentUpon>
@@ -328,6 +346,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\TradeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReplayElements\ChampionItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ChatItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -400,12 +426,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\RuneItem.xaml">
+    <Page Include="Controls\ReplayItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ReplayElements\PlayerItemReplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Steel.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\SmallChampionItem.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TradeControl.xaml">
@@ -424,7 +453,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\ChampionDetailsPage.xaml">
+    <Page Include="Windows\InGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -605,6 +634,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="NONE.png" />
+    <Resource Include="ReplayControls\noise.png" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -633,6 +663,15 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PVPNetConnect\PVPNetConnect.csproj">
+      <Project>{93dcbebf-c652-40ed-a003-cff421f68b4f}</Project>
+      <Name>PVPNetConnect</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -117,11 +117,17 @@ namespace LegendaryClient.Windows
             }));
         }
 
+
+        /// <summary>
+        /// Queue bool
+        /// </summary>
         private Button LastSender;
+        
 
         private async void QueueButton_Click(object sender, RoutedEventArgs e)
         {
-            //so you can only be in one queue
+            //To leave all other queues
+            {
             var keys = new List<Button>(ButtonTimers.Keys);
             foreach (Button pair in keys)
             {
@@ -131,8 +137,8 @@ namespace LegendaryClient.Windows
             ButtonTimers = new Dictionary<Button, int>();
             Queues = new List<double>();
             await Client.PVPNet.PurgeFromQueues();
-
-
+            }
+            //To Start Queueing
             LastSender = (Button)sender;
             GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
             if (Queues.Contains(config.Id))
@@ -165,7 +171,11 @@ namespace LegendaryClient.Windows
                     }
                     else if (result.PlayerJoinFailures[0].ReasonFailed == "RANKED_MIN_LEVEL")
                     {
-                        message.MessageTextBox.Text = "You do not meet the level requirements for this queue! Please wait until you are a higher level.";
+                        message.MessageTextBox.Text = "You do not meet the requirements for this queue." + Environment.NewLine;
+                    }
+                    else if (result.PlayerJoinFailures[0].ReasonFailed == "QUEUE_PARTICIPANTS")
+                    {
+                        message.MessageTextBox.Text = "This queue is in dev. Please use this queue on the real league of legends client." + Environment.NewLine;
                     }
                     Client.OverlayContainer.Content = message.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
