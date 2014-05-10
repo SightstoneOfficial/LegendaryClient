@@ -54,6 +54,7 @@
             <sys:String>NA</sys:String>
             <sys:String>OCE</sys:String>
             <sys:String>RU</sys:String>
+            <sys:String>LAS</sys:String>
         </x:Array>
 
         <x:Array x:Key="TeamSizes" Type="sys:Int32"
