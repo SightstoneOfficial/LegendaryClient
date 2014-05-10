@@ -56,7 +56,7 @@ namespace LegendaryClient.Windows
             else if (DevKey.Text == "!~devkey-uXaRQLB2h82EZqeFwMS9~!")
             {
                 DevKey.Visibility = Visibility.Hidden;
-                Welcome.Text = "Welcome Dev!";
+                Welcome.Text = "Welcome Dave!";
                 DevKeySend.Visibility = Visibility.Hidden;
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
