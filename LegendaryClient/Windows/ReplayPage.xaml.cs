@@ -1,4 +1,4 @@
-﻿using LegendaryClient.Elements;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Properties;
 using System;
 using System.Diagnostics;

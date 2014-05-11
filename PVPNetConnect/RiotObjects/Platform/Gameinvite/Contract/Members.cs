@@ -4,32 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
+namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Member
 {
-    public class Invitee : RiotGamesObject
+    public class Member : RiotGamesObject
     {
         public override string TypeName
         {
             get { return this.type; }
         }
 
-        private string type = "com.riotgames.platform.gameinvite.contract.Invitee";
+        private string type = "com.riotgames.platform.gameinvite.contract.Member";
 
-        public Invitee()
+        public Member()
         {
         }
 
-        public Invitee(Callback callback)
+        public Member(Callback callback)
         {
             this.callback = callback;
         }
 
-        public Invitee(TypedObject result)
+        public Member(TypedObject result)
         {
             base.SetFields(this, result);
         }
 
-        public delegate void Callback(Invitee result);
+        public delegate void Callback(Member result);
 
         private Callback callback;
 
@@ -39,14 +39,11 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
             callback(this);
         }
 
-        [InternalName("inviteeStateAsString")]
-        public String InviteeState { get; set; }
+        [InternalName("hasDelegatedInvitePower")]
+        public bool hasDelegatedInvitePower { get; set; }
 
         [InternalName("summonerName")]
         public String SummonerName { get; set; }
-
-        [InternalName("inviteeState")]
-        public String inviteeState { get; set; }
 
         [InternalName("summonerId")]
         public Double SummonerId { get; set; }

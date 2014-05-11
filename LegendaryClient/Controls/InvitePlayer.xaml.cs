@@ -3,11 +3,11 @@
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for SmallChampionItem.xaml
+    /// Interaction logic for InvitePlayer.xaml
     /// </summary>
-    public partial class SmallChampionItem : UserControl
+    public partial class InvitePlayer : UserControl
     {
-        public SmallChampionItem()
+        public InvitePlayer()
         {
             InitializeComponent();
         }

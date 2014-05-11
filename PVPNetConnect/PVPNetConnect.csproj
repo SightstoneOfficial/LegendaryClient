@@ -69,6 +69,7 @@
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\InvitationRequest.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Invitee.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\LobbyStatus.cs" />
+    <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Members.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Player.cs" />
     <Compile Include="RiotObjects\Platform\Game\BannedChampion.cs" />
     <Compile Include="RiotObjects\Platform\Game\BotParticipant.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="RiotObjects\Platform\Matchmaking\QueueDodger.cs" />
     <Compile Include="RiotObjects\Platform\Matchmaking\QueueInfo.cs" />
     <Compile Include="RiotObjects\Platform\Matchmaking\SearchingForMatchNotification.cs" />
+    <Compile Include="RiotObjects\Platform\Messaging\ClientLoginKickNotification.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\SimpleDialogMessage.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\StoreAccountBalanceNotification.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\StoreFulfillmentNotification.cs" />

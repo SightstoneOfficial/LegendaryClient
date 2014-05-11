@@ -109,6 +109,7 @@
     <Compile Include="Controls\TradeControl.xaml.cs">
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WindowExtensions.cs" />
     <Compile Include="Logic\AutoReplayRecorder.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="ReplayElements\ChampionItem.xaml.cs">

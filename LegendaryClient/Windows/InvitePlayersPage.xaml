@@ -1,0 +1,45 @@
+﻿<Page x:Class="LegendaryClient.Windows.InvitePlayersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="768" d:DesignWidth="1280"
+	Title="InvitePlayersPage">
+
+    <Page.Resources>
+        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style x:Key="NoFocus" TargetType="{x:Type ListView}">
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#B2000000">
+        <Grid HorizontalAlignment="Center" Margin="0,50,0,50" VerticalAlignment="Stretch" Width="600" Background="#FF2B2B2B">
+            <Label Content="Invite Players" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
+
+            <Label Content="Available Players" HorizontalAlignment="Left" Margin="10,60,0,0" FontWeight="ExtraLight" FontSize="26" VerticalAlignment="Top" />
+            <ListView Style="{StaticResource NoFocus}" x:Name="AvailablePlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="AvailablePlayerListView_SelectionChanged">
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                        <GridViewColumn Width="250" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <Label Content="Invited Players" HorizontalAlignment="Right" Margin="0,60,10,0" FontWeight="ExtraLight" FontSize="26" VerticalAlignment="Top" />
+            <ListView Style="{StaticResource NoFocus}" x:Name="InvitedPlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Right" Margin="0,115,10,50" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="InvitedPlayerListView_SelectionChanged">
+                <ListView.View>
+                    <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                        <GridViewColumn Width="250" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <Button x:Name="SendInvitesButton" Content="Send Invites" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" Width="200" Margin="0,0,115,5" Click="SendInvitesButton_Click" />
+            <Button x:Name="CloseButton" Content="Close" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" Width="100" Margin="0,0,5,5" Click="CloseButton_Click" />
+        </Grid>
+    </Grid>
+</Page>

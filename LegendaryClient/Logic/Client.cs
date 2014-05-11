@@ -183,7 +183,7 @@ namespace LegendaryClient.Logic
             {
                 ChatPlayerItem chatItem = AllPlayers[msg.From.User];
                 chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
-                //MainWin.FlashWindow();
+                MainWin.FlashWindow();
             }
         }
 
@@ -202,10 +202,10 @@ namespace LegendaryClient.Logic
             ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
         }
 
-        //internal static string GetPresence()
+        
 
         internal static string LegendaryClientAddition = "∟";
-        internal static void NewStatus(object sender, RoutedEventArgs e)
+        internal static void NewStatus()
         {
             if (Dev == false)
             {
@@ -219,6 +219,7 @@ namespace LegendaryClient.Logic
 
         internal static string GetPresence()
         {
+            NewStatus();
             return "<body>" +
                   "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
                   "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
@@ -760,10 +761,10 @@ namespace LegendaryClient.Logic
         }
         public static void Log(String lines, String type = "LOG")
         {
-            /*
+            
             System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
             file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
-            file.Close();*/
+            file.Close();
         }
 
         //Get Image
@@ -772,7 +773,7 @@ namespace LegendaryClient.Logic
             Uri UriSource = new Uri(Address, UriKind.RelativeOrAbsolute);
             if (!File.Exists(Address) && !Address.StartsWith("/LegendaryClient;component"))
             {
-                //Log("Cannot find " + Address, "WARN");
+                Log("Cannot find " + Address, "WARN");
                 UriSource = new Uri("/LegendaryClient;component/NONE.png", UriKind.RelativeOrAbsolute);
             }
             return new BitmapImage(UriSource);

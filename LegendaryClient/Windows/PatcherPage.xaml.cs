@@ -65,7 +65,7 @@ namespace LegendaryClient.Windows
             else if (DevKey.Text == "!~devkey-xnfRtZUr5WzYMUHmYLHs~!")
             {
                 DevKey.Visibility = Visibility.Hidden;
-                Welcome.Text = "Welcome Dev!";
+                Welcome.Text = "Welcome Rftiiv15!";
                 DevKeySend.Visibility = Visibility.Hidden;
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
@@ -235,6 +235,9 @@ namespace LegendaryClient.Windows
                 string DDragonVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
                 LogTextBox("Current DataDragon Version: " + DDragonVersion);
 
+                Client.Version = patcher.DDragonVersion;
+                LogTextBox("Client Version: " + Client.Version);
+
                 if (patcher.DDragonVersion != DDragonVersion)
                 {
                     if (!Directory.Exists(Path.Combine("Assets", "temp")))
@@ -255,6 +258,7 @@ namespace LegendaryClient.Windows
                     }));
 
                     Stream inStream = File.OpenRead(Path.Combine("Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
+                    
                     using (GZipInputStream gzipStream = new GZipInputStream(inStream))
                     {
                         TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
@@ -269,7 +273,7 @@ namespace LegendaryClient.Windows
 
                     var VersionDDragon = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
                     VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
-                    Client.Version = DDragonVersion;
+                    
                     
                     VersionDDragon.Close();
                 }

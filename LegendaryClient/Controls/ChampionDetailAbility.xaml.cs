@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for PlayerItemReplay.xaml
+    /// Interaction logic for ChampionDetailAbility.xaml
     /// </summary>
-    public partial class PlayerItemReplay : UserControl
+    public partial class ChampionDetailAbility : UserControl
     {
-        public PlayerItemReplay()
+        public ChampionDetailAbility()
         {
             InitializeComponent();
         }
