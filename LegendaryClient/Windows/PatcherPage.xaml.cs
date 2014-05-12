@@ -22,8 +22,9 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             StartPatcher();
+            Client.Log("LegendaryClient Started Up Successfully");
         }
-
+        #region Devkeys
         private void DevKeySend_Click(object sender, RoutedEventArgs e)
         {
             if (DevKey.Text == "!~devkey-publicdev~!")
@@ -125,16 +126,23 @@ namespace LegendaryClient.Windows
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
             }
+            else if (Client.Dev == true)
+            {
+                Client.Log("Dev mode enabled");
+            }
+        #endregion Devkeys
         }
 
         private void DevSkip_Click(object sender, RoutedEventArgs e)
         {
             Client.SwitchPage(new LoginPage());
+            Client.Log("Swiched to LoginPage with DevSkip");
         }
 
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
             Client.SwitchPage(new LoginPage());
+            Client.Log("[Debug]: Swiched to LoginPage");
         }
 
         private void StartPatcher()
@@ -143,6 +151,7 @@ namespace LegendaryClient.Windows
             {
                 LogTextBox("Starting Patcher");
                 LogTextBox("LegendaryClient tested for League of Legends V 4.5.13");
+                Client.Log("Patcher Starting");
 
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += (o, e) =>
@@ -161,6 +170,7 @@ namespace LegendaryClient.Windows
 
                 string CurrentMD5 = GetMd5();
                 LogTextBox("MD5: " + CurrentMD5);
+                Client.Log("[DEBUG]: MD5:" + CurrentMD5);
                 string VersionString = "";
                 try
                 {
@@ -172,6 +182,7 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         CurrentProgressLabel.Content = "Could not retrieve update files!";
+                        Client.Log("[Warn]: Failed to retrieve update files");
                     }));
                     return;
                 }
@@ -204,6 +215,7 @@ namespace LegendaryClient.Windows
                 //LogTextBox("LegendaryClient is up to date");
                 //LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
                 LogTextBox("LegendaryClient is up to date");
+                Client.Log("[Debug]: LegendaryClient Is Up To Date");
 
                 #endregion LegendaryClient
 
@@ -235,7 +247,8 @@ namespace LegendaryClient.Windows
                 string DDragonVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
                 LogTextBox("Current DataDragon Version: " + DDragonVersion);
 
-                Client.Version = patcher.DDragonVersion;
+                Client.Version = DDragonVersion;
+                Client.Log("[Debug]: DDragon Version (LOL Version) = " + DDragonVersion);
                 LogTextBox("Client Version: " + Client.Version);
 
                 if (patcher.DDragonVersion != DDragonVersion)
@@ -273,8 +286,8 @@ namespace LegendaryClient.Windows
 
                     var VersionDDragon = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
                     VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
-                    
-                    
+
+                    Client.Version = DDragonVersion;
                     VersionDDragon.Close();
                 }
 
@@ -449,7 +462,8 @@ namespace LegendaryClient.Windows
                 SkipPatchButton.IsEnabled = true;
             }));
             
-            LogTextBox("Legendary Client Has Finished Patching");
+            LogTextBox("LegendaryClient Has Finished Patching");
+            Client.Log("[Debug]: LegendaryClient Has Finished Patching");
 
             
             /*

@@ -188,6 +188,7 @@ namespace LegendaryClient.Windows
 
                 Client.ConfManager = new ConferenceManager();
                 Client.ConfManager.Stream = Client.ChatClient;
+                Client.Log("Connected and loged in as" + Client.ChatClient.User);
 
                 Client.SwitchPage(new MainPage());
                 Client.ClearPage(this);

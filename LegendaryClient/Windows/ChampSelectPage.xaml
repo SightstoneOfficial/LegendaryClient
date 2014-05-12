@@ -105,7 +105,7 @@
         <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Left" Margin="895,458,0,0" VerticalAlignment="Top" Width="100" Height="30" Click="EditMasteriesButton_Click" />
         <Button x:Name="LockInButton" Content="Lock In" Margin="0,458,150,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" Height="30" Click="LockInButton_Click" />
 
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="150,500,150,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="150,500,150,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />

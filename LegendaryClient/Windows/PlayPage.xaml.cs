@@ -38,6 +38,10 @@ namespace LegendaryClient.Windows
             PingElapsed(1, null);
         }
 
+        private void PingRectangle_MouseDown(object sender, ElapsedEventArgs e)
+        {
+            Client.SwitchPage(new TeamQueuePage());
+        }
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>

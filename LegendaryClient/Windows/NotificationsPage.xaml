@@ -1,11 +1,11 @@
-﻿<Page x:Class="LegendaryClient.Windows.NotificationsPage"
+﻿<Page x:Class="LegendaryClient.Windows.NotificationPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       d:DesignHeight="640" d:DesignWidth="250"
-	Title="NotificationsPage">
+	Title="NotificationPage">
 
     <Page.Resources>
         <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">

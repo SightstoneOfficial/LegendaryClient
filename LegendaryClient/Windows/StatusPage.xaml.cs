@@ -17,6 +17,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Client.StatusLabel = StatusLabel;
+            //Client.StatusGrid = StatusGrid;
             Client.ChatListView = ChatListView;
             Client.ChatClient.OnMessage += ChatClient_OnMessage;
         }
@@ -27,6 +28,17 @@ namespace LegendaryClient.Windows
             //If is special message, don't show popup
             if (msg.Subject != null)
             {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    ChatSubjects subject = (ChatSubjects)Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
+
+                    if ((subject == ChatSubjects.PRACTICE_GAME_INVITE ||
+                        subject == ChatSubjects.GAME_INVITE) &&
+                        Client.NotificationContainer.Visibility != System.Windows.Visibility.Visible)
+                    {
+                        NotificationButton.Content = ".";
+                    }
+                }));
                 return;
             }
 
@@ -75,13 +87,32 @@ namespace LegendaryClient.Windows
             if (Client.ChatContainer.Visibility == System.Windows.Visibility.Hidden)
             {
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Visible;
+                //Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 260, 50);
             }
             else
             {
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
+                //Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 10, 50);
             }
+        }
+
+        private void NotificationButton_Click(object sender, RoutedEventArgs e)
+        {/*
+            NotificationButton.Content = "-";
+            if (Client.NotificationContainer.Visibility == System.Windows.Visibility.Hidden)
+            {
+                Client.NotificationContainer.Visibility = System.Windows.Visibility.Visible;
+                Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
+                Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 260, 50);
+            }
+            else
+            {
+                Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
+                Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
+                Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 10, 50);
+            }//*/
         }
 
         private void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -89,6 +120,7 @@ namespace LegendaryClient.Windows
             if (ChatListView.SelectedIndex != -1)
             {
                 NotificationChatPlayer item = (NotificationChatPlayer)ChatListView.SelectedItem;
+                ChatListView.SelectedIndex = -1;
                 if (Client.ChatItem == null)
                 {
                     Client.ChatItem = new ChatItem();
@@ -96,11 +128,19 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
+                    string CurrentName = (string)Client.ChatItem.PlayerLabelName.Content;
                     Client.MainGrid.Children.Remove(Client.ChatItem);
                     Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
                     Client.ChatItem = null;
-                    ChatListView.SelectedIndex = -1;
-                    return;
+                    if (CurrentName != (string)item.PlayerLabelName.Content)
+                    {
+                        Client.ChatItem = new ChatItem();
+                        Client.MainGrid.Children.Add(Client.ChatItem);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
 
                 item.BlinkRectangle.Visibility = System.Windows.Visibility.Hidden;
@@ -117,8 +157,33 @@ namespace LegendaryClient.Windows
                 Point relativePoint = item.TransformToAncestor(Client.MainWin).Transform(new Point(0, 0));
 
                 Client.ChatItem.Margin = new System.Windows.Thickness(relativePoint.X, 0, 0, 40);
-                ChatListView.SelectedIndex = -1;
             }
         }
+
+        private async void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Client.PVPNet.QuitGame();
+            //Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            Client.ClearPage(new CustomGameLobbyPage());
+            Client.ClearPage(new CreateCustomGamePage());
+            Client.ClearPage(this);
+
+            Client.SwitchPage(new MainPage());
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Client.LastPageContent != null)
+            {
+                Grid testGrid = (Grid)Client.LastPageContent;
+                //Already on this page
+                if (testGrid.Parent != null)
+                    return;
+                FakePage fakePage = new FakePage();
+                fakePage.Content = Client.LastPageContent;
+                Client.SwitchPage(fakePage);
+            }
+        }
+
     }
 }

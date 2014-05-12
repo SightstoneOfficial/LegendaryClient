@@ -388,6 +388,8 @@ namespace LegendaryClient.Logic
             return Type + "~" + obfuscatedName;
         }
 
+
+
         internal static string GetChatroomJID(string ObfuscatedChatroomName, string password, bool IsTypePublic)
         {
             if (!IsTypePublic)
@@ -410,6 +412,8 @@ namespace LegendaryClient.Logic
 
         internal static Grid MainGrid;
         internal static Grid NotificationGrid;
+        internal static Grid StatusGrid;
+
         internal static Label StatusLabel;
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
@@ -417,6 +421,7 @@ namespace LegendaryClient.Logic
         internal static ContentControl ChatContainer;
         internal static ContentControl StatusContainer;
         internal static ContentControl NotificationOverlayContainer;
+        internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
         internal static ChatItem ChatItem;
 
@@ -761,10 +766,10 @@ namespace LegendaryClient.Logic
         }
         public static void Log(String lines, String type = "LOG")
         {
-            
+            /*
             System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
             file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
-            file.Close();
+            file.Close();*/
         }
 
         //Get Image

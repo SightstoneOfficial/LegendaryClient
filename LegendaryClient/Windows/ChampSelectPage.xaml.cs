@@ -96,7 +96,7 @@ namespace LegendaryClient.Windows
         {
             Client.FocusClient();
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
-            ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+            //ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
 
@@ -460,8 +460,7 @@ namespace LegendaryClient.Windows
                             CountdownTimer.Stop();
                         }
                         Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-                        Client.ClearPage(this);
-                        //Client.QuitCurrentGame();
+                        QuitCurrentGame();
                     }));
                     Client.LaunchGame();
                 }
@@ -726,20 +725,24 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private async void DodgeButton_Click(object sender, RoutedEventArgs e)
+        private void DodgeButton_Click(object sender, RoutedEventArgs e)
         {
             //TODO - add messagebox
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            QuitCurrentGame();
+        }
 
+        private async void QuitCurrentGame()
+        {
             await Client.PVPNet.QuitGame();
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(new CustomGameLobbyPage());
             Client.ClearPage(new CreateCustomGamePage());
-            Client.ClearPage(this);
+            Client.ClearPage(new ChampSelectPage());
+            //Client.ClearPage(this);
 
-            //Client.SwitchPage(new MainPage()); Client.QuitCurrentGame();
+            Client.SwitchPage(new MainPage());
         }
-
         private async void LockInButton_Click(object sender, RoutedEventArgs e)
         {
             if (ChampionSelectListView.SelectedItems.Count > 0)
@@ -903,9 +906,3 @@ namespace LegendaryClient.Windows
         }
     }
 }
-
-/*
-
-//*/
-
-//
