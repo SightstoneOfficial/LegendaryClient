@@ -1,16 +1,21 @@
-﻿<Page x:Class="LegendaryClient.Windows.LoginPage"
+﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:Controls1="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.LoginPage"
       mc:Ignorable="d"
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="LoginPage">
     <Grid Background="Black" Margin="0">
-        <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2" />
+        <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
+        <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
 
         <Grid x:Name="HideGrid" HorizontalAlignment="Left" Height="280" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
+            <Grid.Effect>
+                <DropShadowEffect />
+            </Grid.Effect>
             <Label x:Name="WelcomeLabel" Content="Login to League of Legends" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" />
             <Grid x:Name="LoginGrid" HorizontalAlignment="Left" Height="230" Margin="0,50,0,0" VerticalAlignment="Top" Width="350">
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="White" Margin="10,10,0,0" FontSize="18" FontWeight="Bold" />
@@ -23,9 +28,6 @@
                 <ComboBox x:Name="RegionComboBox" ItemsSource="{DynamicResource Regions}" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="4" />
                 <CheckBox x:Name="AutoLoginCheckBox" Content="Auto-Login" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
             </Grid>
-            <Grid.Effect>
-                <DropShadowEffect />
-            </Grid.Effect>
         </Grid>
 
         <Controls:ProgressRing x:Name="LoggingInProgressRing" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,100" Visibility="Hidden">

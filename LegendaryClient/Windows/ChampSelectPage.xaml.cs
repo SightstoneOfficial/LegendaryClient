@@ -96,6 +96,8 @@ namespace LegendaryClient.Windows
         {
             Client.FocusClient();
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
+
+
             //ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
@@ -137,7 +139,7 @@ namespace LegendaryClient.Windows
 
                 Client.SwitchPage(new MainPage());
                 MessageOverlay overlay = new MessageOverlay();
-                overlay.MessageTextBox.Text = "Invalid Config ID (" + latestDTO.GameTypeConfigId.ToString() + "). Report to Snowl [https://github.com/Snowl/LegendaryClient/issues/new]";
+                overlay.MessageTextBox.Text = "Invalid Config ID, The game was stopped (" + latestDTO.GameTypeConfigId.ToString() + "). Report to Eddy [https://github.com/Eddy5641/LegendaryClient/issues/new]. Mission Failed. Sorry about that.";
                 overlay.MessageTitle.Content = "Invalid Config";
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -627,10 +629,11 @@ namespace LegendaryClient.Windows
                 string uriSource = "/LegendaryClient;component/Locked.png";
                 control.LockedInIcon.Source = Client.GetImage(uriSource);
             }
+            /*
             if (CanTradeWith.PotentialTraders.Contains(player.SummonerInternalName) || DevMode)
             {
                 control.TradeButton.Visibility = System.Windows.Visibility.Visible;
-            }
+            }*/
             control.LockedInIcon.Visibility = System.Windows.Visibility.Visible;
             control.TradeButton.Tag = new KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>(selection, player);
             control.TradeButton.Click += TradeButton_Click;

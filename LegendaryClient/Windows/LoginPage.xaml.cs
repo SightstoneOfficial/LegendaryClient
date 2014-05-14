@@ -86,8 +86,9 @@ namespace LegendaryClient.Windows
             {
                 RegionComboBox.SelectedValue = Properties.Settings.Default.Region;
             }
+
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
-            LoginImage.Source = new BitmapImage(uriSource);
+            LoginImage.Source = new BitmapImage(uriSource);//*/
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&
                 !String.IsNullOrWhiteSpace(Properties.Settings.Default.Region) &&
                 Properties.Settings.Default.AutoLogin)

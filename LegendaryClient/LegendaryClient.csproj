@@ -128,6 +128,7 @@
     <Compile Include="Controls\WindowExtensions.cs" />
     <Compile Include="Logic\AutoReplayRecorder.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
+    <Compile Include="Logic\Region\TR.cs" />
     <Compile Include="ReplayElements\ChampionItem.xaml.cs">
       <DependentUpon>ChampionItem.xaml</DependentUpon>
     </Compile>
@@ -342,6 +343,9 @@
     </Compile>
     <Compile Include="Windows\TeamQueuePage.xaml.cs">
       <DependentUpon>TeamQueuePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Warning.xaml.cs">
+      <DependentUpon>Warning.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\ChampionAbility.xaml">
       <SubType>Designer</SubType>
@@ -727,6 +731,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Windows\Warning.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -762,6 +770,8 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="chat.png" />
+    <Resource Include="cs_bg_champions.png" />
+    <Resource Include="Locked.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -771,6 +781,8 @@
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="trade.png" />
+    <Resource Include="Unlocked.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

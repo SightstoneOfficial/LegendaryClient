@@ -145,7 +145,7 @@ namespace LegendaryClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Public Dev")]
         public string DevName {
             get {
                 return ((string)(this["DevName"]));
@@ -157,13 +157,25 @@ namespace LegendaryClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("!~devkey-publicdev~!")]
         public string DevKey {
             get {
                 return ((string)(this["DevKey"]));
             }
             set {
                 this["DevKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4.7.8")]
+        public string DevVersion {
+            get {
+                return ((string)(this["DevVersion"]));
+            }
+            set {
+                this["DevVersion"] = value;
             }
         }
     }
