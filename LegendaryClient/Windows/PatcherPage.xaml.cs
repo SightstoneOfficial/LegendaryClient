@@ -35,6 +35,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-R4tP769DmAr2B3xHeRvm~!")
             {
@@ -44,6 +45,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-AGWV2t7GknpBDzzTeyze~!")
             {
@@ -53,6 +55,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-uXaRQLB2h82EZqeFwMS9~!")
             {
@@ -62,6 +65,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-xnfRtZUr5WzYMUHmYLHs~!")
             {
@@ -71,6 +75,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-9mnDreEAPtUeCwAVkjf3~!")
             {
@@ -80,6 +85,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-UwYtjHckU3TmnGbAGb7w~!")
             {
@@ -89,6 +95,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-Bc3qNxzj69ECv3YKpLwf~!")
             {
@@ -98,6 +105,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-YHR5zaUYMWE22LLUCrRf~!")
             {
@@ -107,6 +115,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-qQCrKBbmkA4sVdwR76sE~!")
             {
@@ -116,6 +125,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
             {
@@ -125,6 +135,7 @@ namespace LegendaryClient.Windows
                 DevSkip.Visibility = Visibility.Visible;
                 Welcome.Visibility = Visibility.Visible;
                 Client.Dev = true;
+                Client.NewStatus();
             }
             else if (Client.Dev == true)
             {
@@ -175,7 +186,6 @@ namespace LegendaryClient.Windows
                 try
                 {
                     VersionString = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
-                    
                 }
                 catch
                 {

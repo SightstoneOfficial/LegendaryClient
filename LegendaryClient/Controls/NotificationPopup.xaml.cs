@@ -1,6 +1,7 @@
 ﻿using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,23 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class NotificationPopup : UserControl
     {
+        public NotificationPopup()
+        {
+            InitializeComponent();
+        }
+        /*
+        private async void AcceptButton_Click(object sender, RoutedEventArgs e)
+        {
+            LobbyStatus LobbyStatus = this.Tag as LobbyStatus;
+            await Client.PVPNet.InvitationRequest();
+        }
+
+        private async void DeclineButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Client.PVPNet.InvitationRequest();
+            this.Visibility = System.Windows.Visibility.Hidden;
+        }*/
+        
         ChatSubjects Subject;
         Message MessageData;
         int InviteId = 0;
@@ -87,9 +105,9 @@ namespace LegendaryClient.Controls
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            /*
+            
             Client.MainGrid.Children.Remove(Client.ChatItem);
-            Client.ChatListView.Items.Remove(tempPlayer);*/
+            //Client.ChatListView.Items.Remove(tempPlayer);
         }
     }
 }

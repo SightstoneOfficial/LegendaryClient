@@ -7,9 +7,9 @@ using System.Web.Script.Serialization;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Region;
 
-namespace LegendaryClient.Logic.AutoReplays
+namespace LegendaryClient.Logic.AutoReplayRecorder
 {
-    public class ReplayRecorder
+    public class AutoReplayRecorder
     {
 
         BaseRegion region;
@@ -28,7 +28,8 @@ namespace LegendaryClient.Logic.AutoReplays
 
         
        // public ReplayRecorder(string Server, int GameId, string Region, string Key)
-        public ReplayRecorder()
+        
+        public AutoReplayRecorder()
         {
      
             //Dictionary<string, object> SpectatorGame = objectGame as Dictionary<string, object>;

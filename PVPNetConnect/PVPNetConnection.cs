@@ -269,7 +269,7 @@ namespace PVPNetConnect
              Disconnect();
              return false;
          }
-          //*/
+          /*
 
             Error("Garena Servers are not yet supported", ErrorType.Login);
             Disconnect();

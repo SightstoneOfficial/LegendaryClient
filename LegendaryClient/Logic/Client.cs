@@ -27,6 +27,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
+//using LegendaryClient.Logic.AutoReplayRecorder;
 
 namespace LegendaryClient.Logic
 {
@@ -102,6 +103,8 @@ namespace LegendaryClient.Logic
 
         internal static ChampionDTO[] PlayerChampions;
 
+        internal static AutoReplayRecorder.AutoReplayRecorder recorder;
+
         internal static List<string> Whitelist = new List<string>();
 
         #region Chat
@@ -169,11 +172,11 @@ namespace LegendaryClient.Logic
                 MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     ChatSubjects subject = (ChatSubjects) Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
-                    NotificationPopup pop = new NotificationPopup(subject, msg);
-                    pop.Height = 230;
-                    pop.HorizontalAlignment = HorizontalAlignment.Right;
-                    pop.VerticalAlignment = VerticalAlignment.Bottom;
-                    Client.NotificationGrid.Children.Add(pop);
+                    //NotificationPopup pop = new NotificationPopup(subject, msg);
+                    //pop.Height = 230;
+                    //pop.HorizontalAlignment = HorizontalAlignment.Right;
+                    //pop.VerticalAlignment = VerticalAlignment.Bottom;
+                    //Client.NotificationGrid.Children.Add(pop);
                 }));
 
                 return;
@@ -202,7 +205,7 @@ namespace LegendaryClient.Logic
             ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
         }
 
-        
+        internal static bool hidelegendaryaddition;
 
         internal static string LegendaryClientAddition = "∟";
         internal static void NewStatus()
@@ -211,9 +214,13 @@ namespace LegendaryClient.Logic
             {
                 Client.LegendaryClientAddition = "∟";
             }
-            if (Dev == true)
+            else if (Dev == true)
             {
                 Client.LegendaryClientAddition = "♒";
+            }
+            else if (hidelegendaryaddition == true)
+            {
+                Client.LegendaryClientAddition = "";
             }
         }
 
@@ -316,6 +323,7 @@ namespace LegendaryClient.Logic
                                     else if (Player.Status.EndsWith("♒"))
                                     {
                                         Player.IsLegendaryDev = true;
+                                        Player.UsingLegendary = true;
                                     }
                                     break;
 
@@ -425,6 +433,7 @@ namespace LegendaryClient.Logic
         internal static ListView ChatListView;
         internal static ChatItem ChatItem;
 
+        internal static ListView InviteListView;
         internal static Image MainPageProfileImage;
 
         #region WPF Tab Change
@@ -672,6 +681,7 @@ namespace LegendaryClient.Logic
             return Directory;
         }
 
+        
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();
@@ -685,6 +695,7 @@ namespace LegendaryClient.Logic
                 CurrentGame.EncryptionKey + " " +
                 CurrentGame.SummonerId + "\"";
             p.Start();
+            //recorder = new AutoReplayRecorder.AutoReplayRecorder();
         }
 
         internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)
@@ -700,6 +711,7 @@ namespace LegendaryClient.Logic
                 + GameId + " "
                 + Platform + "\"";
             p.Start();
+            
         }
 
         #endregion League Of Legends Logic

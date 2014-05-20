@@ -122,6 +122,9 @@
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InvitePlayer.xaml.cs">
+      <DependentUpon>InvitePlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TradeControl.xaml.cs">
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
@@ -238,6 +241,9 @@
     </Compile>
     <Compile Include="Windows\InGameHomeOverlay.xaml.cs">
       <DependentUpon>InGameHomeOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\InvitePlayersPage.xaml.cs">
+      <DependentUpon>InvitePlayersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\NonExistantPage.xaml.cs">
       <DependentUpon>NonExistantPage.xaml</DependentUpon>
@@ -358,6 +364,10 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\InvitePlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TradeControl.xaml">
       <SubType>Designer</SubType>
@@ -522,6 +532,10 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\InvitePlayersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\NonExistantPage.xaml">
       <SubType>Designer</SubType>
@@ -772,6 +786,7 @@
     <Resource Include="chat.png" />
     <Resource Include="cs_bg_champions.png" />
     <Resource Include="Locked.png" />
+    <Resource Include="Dev.PNG" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -806,9 +821,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PVPNetConnect\PVPNetConnect.csproj">

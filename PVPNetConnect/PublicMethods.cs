@@ -1016,6 +1016,7 @@ namespace PVPNetConnect
             return result;
         }
 
+        
         public async Task<object> AcceptInviteForMatchmakingGame(string gameId)
         {
             int Id = Invoke("matchmakerService", "acceptInviteForMatchmakingGame", new object[] { gameId });
@@ -1270,6 +1271,23 @@ namespace PVPNetConnect
         public async Task<object> PurgeFromQueues()
         {
             int Id = Invoke("matchmakerService", "purgeFromQueues", new object[] { });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+
+        public async Task<object> Invite(double Summoner_ID)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "invite", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+        public async Task<object> GetInvitations(double x)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "getPendingInvitations", new object[] { x });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);

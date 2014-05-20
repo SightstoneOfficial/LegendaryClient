@@ -61,13 +61,13 @@ namespace LegendaryClient.Windows
                             continue;
 
                         bool ShouldBreak = false;
-                        /*foreach (var x in Client.InviteListView.Items)
+                        foreach (var x in Client.InviteListView.Items)
                         {
                             InvitePlayer invitePlayer = x as InvitePlayer;
                             if ((string)invitePlayer.PlayerLabel.Content == ChatPlayerPair.Value.Username)
                                 if ((string)invitePlayer.StatusLabel.Content == "Accepted")
                                     ShouldBreak = true;
-                        }*/
+                        }
                         if (ShouldBreak)
                             continue;
 
@@ -122,7 +122,7 @@ namespace LegendaryClient.Windows
             "<gameId>" + GameId + "</gameId>" +
             "<mapId>" + MapId + "</mapId>" +
             "<gamePassword>" + Password + "</gamePassword></body>";
-            /*
+
             foreach (string Player in invitedPlayers)
             {
                 Client.Message(Player, InviteMessage, ChatSubjects.PRACTICE_GAME_INVITE);
@@ -145,7 +145,7 @@ namespace LegendaryClient.Windows
                 InvitePlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
                 Client.InviteListView.Items.Add(InvitePlayerItem);
             }
-            Client.OverlayContainer.Visibility = Visibility.Hidden;*/
+            Client.OverlayContainer.Visibility = Visibility.Hidden;
         }
     }
 }
