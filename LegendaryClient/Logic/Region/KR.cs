@@ -5,6 +5,10 @@ namespace LegendaryClient.Logic.Region
 {
     public sealed class KR : BaseRegion
     {
+        public void NASqlite()
+        {
+            LegendaryClient.Logic.Client.sqlite = "gameStats_ko_KR.sqlite";
+        }
         public override string RegionName
         {
             get { return "KR"; }

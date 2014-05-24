@@ -122,8 +122,15 @@ namespace LegendaryClient.Windows
             Client.FocusClient();
             //Client.IsInGame = true;
             //Get champions and sort alphabetically
+
+
+
+
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+
+
+
             //Retrieve masteries and runes
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;

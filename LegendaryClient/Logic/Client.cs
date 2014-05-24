@@ -40,6 +40,12 @@ namespace LegendaryClient.Logic
         /// The database of all runes
         /// </summary>
         internal static List<runes> Runes;
+
+        /// <summary>
+        /// Sets Sqlite Version
+        /// </summary>
+        //internal static string sqlite = "gameStats_en_US.sqlite";
+        internal static string sqlite = "gameStats_ko_KR.sqlite";
         
         /// <summary>
         /// Latest champion for League of Legends login screen
