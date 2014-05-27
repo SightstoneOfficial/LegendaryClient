@@ -46,5 +46,6 @@
                 <DropShadowEffect ShadowDepth="3" />
             </TextBox.Effect>
         </TextBox>
+        <Controls1:TextBoxWatermarked x:Name="Version" HorizontalAlignment="Right" TextWrapping="Wrap" Watermark="Client Version Override" VerticalAlignment="Top" Margin="0,10,10,0" Height="24" Width="243"/>
     </Grid>
 </Page>

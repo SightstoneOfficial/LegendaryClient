@@ -1017,7 +1017,8 @@ namespace PVPNetConnect
         }
 
         
-        public async Task<object> AcceptInviteForMatchmakingGame(string gameId)
+        //public async Task<object> AcceptInviteForMatchmakingGame(string gameId)
+        public async Task<object> InvitationRequest(string gameId)
         {
             int Id = Invoke("matchmakerService", "acceptInviteForMatchmakingGame", new object[] { gameId });
             while (!results.ContainsKey(Id))

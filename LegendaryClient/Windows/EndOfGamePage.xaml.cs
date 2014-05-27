@@ -21,6 +21,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             RenderStats(Statistics);
+            Client.SwitchPage(new MainPage());
         }
 
         private void RenderStats(EndOfGameStats Statistics)

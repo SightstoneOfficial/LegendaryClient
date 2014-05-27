@@ -43,9 +43,10 @@ namespace LegendaryClient.Logic
 
         /// <summary>
         /// Sets Sqlite Version
+        /// Like the language pack
         /// </summary>
-        //internal static string sqlite = "gameStats_en_US.sqlite";
-        internal static string sqlite = "gameStats_ko_KR.sqlite";
+        internal static string sqlite = "gameStats_en_US.sqlite";
+        //internal static string sqlite = "gameStats_ko_KR.sqlite";
         
         /// <summary>
         /// Latest champion for League of Legends login screen
@@ -194,6 +195,11 @@ namespace LegendaryClient.Logic
                 chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
                 MainWin.FlashWindow();
             }
+        }
+
+        internal async static void GameInvite(object sender, PVPNetConnection PVPConnect, string GameID)
+        {
+            await PVPConnect.InvitationRequest(GameID);
         }
 
         internal static void ChatClientConnect(object sender)

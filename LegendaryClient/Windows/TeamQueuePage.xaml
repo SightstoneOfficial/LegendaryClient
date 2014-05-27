@@ -36,8 +36,8 @@
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="5,0,120,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Button x:Name="ChatButton" Content="Send" Margin="470,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" />
-        <Button Content="Leave Team Queue Page" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Margin="984,10,0,0" Height="35"/>
-        <Button Content="Start Queue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="143" Margin="1127,10,0,0" Height="35"/>
+        <Button Content="Leave Team Queue Page" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Margin="1127,10,0,0" Height="35"/>
+        <Button Content="Start Queue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="143" Margin="979,10,0,0" Height="35"/>
 
     </Grid>
 </Page>

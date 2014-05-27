@@ -27,6 +27,8 @@ namespace LegendaryClient.Windows
         public LoginPage()
         {
             InitializeComponent();
+            Version.TextChanged += WaterTextbox_TextChanged;
+            Version.Text = Client.Version;
 
             //Get client data after patcher completed
 
@@ -54,6 +56,7 @@ namespace LegendaryClient.Windows
                                select s).ToList();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
+            Client.Runes = Runes.PopulateRunes();
 
             //Retrieve latest client version
             /*
@@ -98,6 +101,12 @@ namespace LegendaryClient.Windows
                 AutoLoginCheckBox.IsChecked = true;
                 LoginButton_Click(null, null);
             }
+        }
+
+        private void WaterTextbox_TextChanged(object sender, RoutedEventArgs e)
+        {
+            //Version.Text = Client.Version;]
+            Client.Version = Version.Text;
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)

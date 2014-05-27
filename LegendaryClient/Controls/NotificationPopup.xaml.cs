@@ -2,6 +2,7 @@
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Xml;
+using LegendaryClient.Windows;
 
 namespace LegendaryClient.Controls
 {
@@ -25,22 +27,36 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class NotificationPopup : UserControl
     {
+        
+
         public NotificationPopup()
         {
             InitializeComponent();
+            /*
+            NotificationTextBox.Text = Player.SummonerName + " has invited you to a game" + Environment.NewLine
+                                     + "Hosted on " + BaseMap.GetMap(MapId).DisplayName + Environment.NewLine
+                                     + "Game Type: " + Client.TitleCaseString(GameType).Replace("_", " ") + Environment.NewLine;*/
         }
-        /*
+        
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            LobbyStatus LobbyStatus = this.Tag as LobbyStatus;
-            await Client.PVPNet.InvitationRequest();
+            LobbyStatus Status = this.Tag as LobbyStatus;
+            await Client.PVPNet.InvitationRequest(Status.InvitationID);
+            Client.SwitchPage(new TeamQueuePage());
         }
 
-        private async void DeclineButton_Click(object sender, RoutedEventArgs e)
+        private void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.InvitationRequest();
+            //await Client.PVPNet.InvitationRequest(Status.InvitationID);
             this.Visibility = System.Windows.Visibility.Hidden;
-        }*/
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.MainGrid.Children.Remove(Client.ChatItem);
+            //Client.ChatListView.Items.Remove(tempPlayer);
+        }
+        /*
         
         ChatSubjects Subject;
         Message MessageData;
@@ -108,6 +124,6 @@ namespace LegendaryClient.Controls
             
             Client.MainGrid.Children.Remove(Client.ChatItem);
             //Client.ChatListView.Items.Remove(tempPlayer);
-        }
+        }*/
     }
 }
