@@ -9,6 +9,7 @@
         <Image x:Name="ChampionImage" Source="/LegendaryClient;component/Assets/champion/Twitch.png">
             <Image.Clip>
                 <RectangleGeometry Rect="5,5,66,66"/>
+                <!--PUSH-->
             </Image.Clip>
         </Image>
     </Grid>

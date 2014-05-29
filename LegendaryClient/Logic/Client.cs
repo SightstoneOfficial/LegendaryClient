@@ -51,7 +51,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Latest champion for League of Legends login screen
         /// </summary>
-        internal const int LatestChamp = 161;
+        internal const int LatestChamp = 201;
 
         /// <summary>
         /// Latest version of League of Legends. Retrieved from ClientLibCommon.dat
@@ -224,11 +224,11 @@ namespace LegendaryClient.Logic
         {
             if (Dev == false)
             {
-                Client.LegendaryClientAddition = "∟";
+                Client.LegendaryClientAddition = "∟" + "</statusMsg>";
             }
             else if (Dev == true)
             {
-                Client.LegendaryClientAddition = "♒";
+                Client.LegendaryClientAddition = "♒" + "</statusMsg>";
             }
             else if (hidelegendaryaddition == true)
             {
@@ -251,7 +251,7 @@ namespace LegendaryClient.Logic
                   "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
                   "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
                   "<gameStatus>" + GameStatus + "</gameStatus>" +
-                  "<statusMsg>" + CurrentStatus + LegendaryClientAddition + "</statusMsg>" + 
+                  "<statusMsg>" + CurrentStatus + LegendaryClientAddition + 
                   //Look for "∟" to recognize LegendaryClient Users
                   //Look for "♒" to recongnize Devs
                     "</body>";
