@@ -40,7 +40,7 @@ namespace LegendaryClient.Windows
 
         private void PingRectangle_MouseDown(object sender, ElapsedEventArgs e)
         {
-            Client.SwitchPage(new TeamQueuePage());
+            //Client.SwitchPage(new TeamQueuePage());
         }
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {

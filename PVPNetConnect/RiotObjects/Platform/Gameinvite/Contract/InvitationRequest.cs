@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using System;
 
 namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
 {
@@ -9,7 +10,7 @@ namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
             get { return this.type; }
         }
 
-        private string type = "com.riotgames.leagues.gameinvite.contract.InvitationRequest";
+        private string type = "com.riotgames.platform.gameinvite.contract.InvitationRequest";
 
         public InvitationRequest()
         {
@@ -36,7 +37,23 @@ namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
         }
 
         [InternalName("inviter")]
-        public Int32 inviter { get; set; }
+        public Inviter inviter { get; set; }
+
+        [InternalName("gameMetaData")]
+        public String gameMetaData { get; set; }
+
+        [InternalName("owner")]
+        public String owner { get; set; }
+        //public Owner owner { get; set; }
+
+        [InternalName("invitationStateAsString")]
+        public String invitationStateAsString { get; set; }
+
+        [InternalName("invitationState")]
+        public String invitationState { get; set; }
+
+        [InternalName("invitationId")]
+        public String InvitationID { get; set; }
 
     }
 }

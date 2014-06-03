@@ -120,7 +120,7 @@ namespace LegendaryClient.Windows
         {
             //Force client to popup once in champion select
             Client.FocusClient();
-            //Client.IsInGame = true;
+            Client.IsInGame = true;
             //Get champions and sort alphabetically
 
 
@@ -207,7 +207,7 @@ namespace LegendaryClient.Windows
 
             //Start recieving champ select
             ChampSelect_OnMessageReceived(this, latestDTO);
-            //OnFixChampSelect += ChampSelect_OnMessageReceived;
+            Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
             Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
         }
 
@@ -432,6 +432,14 @@ namespace LegendaryClient.Windows
                                         if (PurpleSide)
                                             AreWePurpleSide = true;
                                         RenderLockInGrid(selection);
+                                        if (player.PointSummary != null)
+                                        {
+                                            LockInButton.Content = string.Format("Reroll ({0}/{1})", player.PointSummary.CurrentPoints, player.PointSummary.PointsCostToRoll);
+                                            if (player.PointSummary.NumberOfRolls > 0)
+                                                LockInButton.IsEnabled = true;
+                                            else
+                                                LockInButton.IsEnabled = false;
+                                        }
                                     }
                                 }
                             }
@@ -553,9 +561,9 @@ namespace LegendaryClient.Windows
                     else if (TradeDTO.State == "CANCELED" || TradeDTO.State == "DECLINED" || TradeDTO.State == "BUSY")
                     {
                         PlayerTradeControl.Visibility = System.Windows.Visibility.Hidden;
-                        /*
-                        //NotificationPopup pop = new NotificationPopup(ChatSubjects.INVITE_STATUS_CHANGED,
-                        //    string.Format("{0} has {1} this trade", TradeDTO.RequesterInternalSummonerName, TradeDTO.State));
+                        
+                        NotificationPopup pop = new NotificationPopup(ChatSubjects.INVITE_STATUS_CHANGED,
+                            string.Format("{0} has {1} this trade", TradeDTO.RequesterInternalSummonerName, TradeDTO.State));
 
                         if (TradeDTO.State == "BUSY")
                             pop.NotificationTextBox.Text = string.Format("{0} is currently busy", TradeDTO.RequesterInternalSummonerName);
@@ -870,10 +878,17 @@ namespace LegendaryClient.Windows
 
         private async void LockInButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Aram Reroll
-            if (ChampionSelectListView.SelectedItems.Count > 0)
+            if (configType.PickMode != "AllRandomPickStrategy")
             {
-                await Client.PVPNet.ChampionSelectCompleted();
+                if (ChampionSelectListView.SelectedItems.Count > 0)
+                {
+                    await Client.PVPNet.ChampionSelectCompleted();
+                    HasLockedIn = true;
+                }
+            }
+            else
+            {
+                await Client.PVPNet.Roll();
                 HasLockedIn = true;
             }
         }

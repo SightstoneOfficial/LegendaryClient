@@ -1,16 +1,15 @@
-﻿<Page
+﻿<Page x:Class="LegendaryClient.Windows.TeamQueuePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:Controls="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.TeamQueuePage" 
       mc:Ignorable="d" 
       d:DesignHeight="568" d:DesignWidth="1280"
 	Title="TeamQueuePage">
 
     <Grid>
         <Label Content="Your Team" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
-        <ListView x:Name="TeamListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,50,415,200" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <ListView x:Name="TeamListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,50,420,230" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -18,7 +17,10 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="InviteListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="288" Margin="0,0,10,230" VerticalAlignment="Bottom" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <Button x:Name="CancelGameButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,200" VerticalAlignment="Bottom" Width="200"/>
+        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="560,0,0,200" VerticalAlignment="Bottom" Width="300" Click="StartGameButton_Click"/>
+
+        <ListView x:Name="InviteListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="170" Margin="0,0,10,230" VerticalAlignment="Bottom" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -35,9 +37,7 @@
             </RichTextBox.Resources>
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="5,0,120,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Button x:Name="ChatButton" Content="Send" Margin="470,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" />
-        <Button Content="Leave Team Queue Page" HorizontalAlignment="Left" VerticalAlignment="Top" Width="138" Margin="1127,10,0,0" Height="35"/>
-        <Button Content="Start Queue" HorizontalAlignment="Left" VerticalAlignment="Top" Width="143" Margin="979,10,0,0" Height="35"/>
+        <Button x:Name="ChatButton" Content="Send" Margin="470,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
 
     </Grid>
 </Page>

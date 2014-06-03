@@ -1,3 +1,4 @@
+using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
 using System;
 
 namespace PVPNetConnect.RiotObjects.Platform.Game
@@ -91,6 +92,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
 
         [InternalName("pickMode")]
         public Int32 PickMode { get; set; }
+
+        [InternalName("pointSummary")]
+        public PointSummary PointSummary { get; set; } 
 
         [InternalName("originalPlatformId")]
         public String OriginalPlatformId { get; set; }

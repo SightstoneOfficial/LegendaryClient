@@ -29,6 +29,7 @@ using System.Text;
 using System.Threading;
 using System.Web.Script.Serialization;
 using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 
 namespace PVPNetConnect
 {
@@ -1092,7 +1093,7 @@ namespace PVPNetConnect
                                                 MessageReceived(new EndOfGameStats(body));
                                             else if (
                                                 body.type.Equals(
-                                                "com.riotgames.leagues.gameinvite.contract.InvitationRequest"))
+                                                "com.riotgames.platform.gameinvite.contract.InvitationRequest"))
                                                 MessageReceived(new InvitationRequest(body));
                                             //MessageReceived(to["body"]);
                                         })).Start();

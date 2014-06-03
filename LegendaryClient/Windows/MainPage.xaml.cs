@@ -514,6 +514,12 @@ namespace LegendaryClient.Windows
             HoverLabel.Opacity = 0;
         }
 
+        private void InviteTest_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new GameInviteTest().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>

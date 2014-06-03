@@ -6,10 +6,12 @@ using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Messaging;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using SQLite;
@@ -74,6 +76,16 @@ namespace LegendaryClient.Logic
         internal static SQLiteConnection SQLiteDatabase;
 
         /// <summary>
+        /// Fix for champ select. Do not use this!
+        /// </summary>
+        internal static event PVPNetConnection.OnMessageReceivedHandler OnFixChampSelect;
+
+        /// <summary>
+        /// Allow lobby to still have a connection. Do not use this!
+        /// </summary>
+        internal static event PVPNetConnection.OnMessageReceivedHandler OnFixLobby;
+
+        /// <summary>
         /// The database of all the champions
         /// </summary>
         internal static List<champions> Champions;
@@ -117,6 +129,9 @@ namespace LegendaryClient.Logic
         #region Chat
 
         internal static JabberClient ChatClient;
+        //Fix for invitations
+        public delegate void OnMessageHandler(object sender, jabber.protocol.client.Message e);
+        public static event OnMessageHandler OnMessage;
 
         internal static PresenceType _CurrentPresence;
 
@@ -199,7 +214,7 @@ namespace LegendaryClient.Logic
 
         internal async static void GameInvite(object sender, PVPNetConnection PVPConnect, string GameID)
         {
-            await PVPConnect.InvitationRequest(GameID);
+            await PVPConnect.Accept(GameID);
         }
 
         internal static void ChatClientConnect(object sender)
@@ -224,15 +239,15 @@ namespace LegendaryClient.Logic
         {
             if (Dev == false)
             {
-                Client.LegendaryClientAddition = "∟" + "</statusMsg>";
+                Client.LegendaryClientAddition = CurrentStatus + "∟";
             }
             else if (Dev == true)
             {
-                Client.LegendaryClientAddition = "♒" + "</statusMsg>";
+                Client.LegendaryClientAddition = CurrentStatus + "♒";
             }
             else if (hidelegendaryaddition == true)
             {
-                Client.LegendaryClientAddition = "";
+                Client.LegendaryClientAddition = CurrentStatus + "";
             }
         }
 
@@ -251,7 +266,7 @@ namespace LegendaryClient.Logic
                   "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
                   "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
                   "<gameStatus>" + GameStatus + "</gameStatus>" +
-                  "<statusMsg>" + CurrentStatus + LegendaryClientAddition + 
+                  "<statusMsg>" + LegendaryClientAddition + "</statusMsg>" + 
                   //Look for "∟" to recognize LegendaryClient Users
                   //Look for "♒" to recongnize Devs
                     "</body>";
@@ -499,6 +514,8 @@ namespace LegendaryClient.Logic
 
         #endregion WPF Tab Change
 
+        
+
         #region League Of Legends Logic
 
         /// <summary>
@@ -563,7 +580,9 @@ namespace LegendaryClient.Logic
         internal static PlayerCredentialsDto CurrentGame;
 
         internal static bool AutoAcceptQueue = false;
+        internal static object LobbyContent;
         internal static object LastPageContent;
+        internal static bool IsInGame = false;
 
         /// <summary>
         /// When an error occurs while connected. Currently un-used
@@ -616,6 +635,18 @@ namespace LegendaryClient.Logic
                 else if (message is StoreFulfillmentNotification)
                 {
                     PlayerChampions = await PVPNet.GetAvailableChampions();
+                }
+                else if (message is InvitationRequest)
+                {
+                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        //Gameinvite stuff
+                        GameInvitePopup pop = new GameInvitePopup();
+                        pop.HorizontalAlignment = HorizontalAlignment.Right;
+                        pop.VerticalAlignment = VerticalAlignment.Bottom;
+                        pop.Height = 230;
+                        Client.NotificationGrid.Children.Add(pop);
+                    }));
                 }
             }));
         }
@@ -724,6 +755,54 @@ namespace LegendaryClient.Logic
                 + Platform + "\"";
             p.Start();
             
+        }
+
+        internal async static void QuitCurrentGame()
+        {
+            if (OnMessage != null)
+            {
+                foreach (Delegate d in OnMessage.GetInvocationList())
+                {
+                    OnMessage -= (OnMessageHandler)d;
+                }
+            }
+
+            FixChampSelect();
+            FixLobby();
+            IsInGame = false;
+
+            await PVPNet.QuitGame();
+            StatusGrid.Visibility = System.Windows.Visibility.Hidden;
+            PlayButton.Visibility = System.Windows.Visibility.Visible;
+            LobbyContent = null;
+            LastPageContent = null;
+            GameStatus = "outOfGame";
+            SetChatHover();
+            SwitchPage(new MainPage());
+        }
+
+        internal static void FixLobby()
+        {
+            if (OnFixLobby != null)
+            {
+                foreach (Delegate d in OnFixLobby.GetInvocationList())
+                {
+                    PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                    OnFixLobby -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                }
+            }
+        }
+
+        internal static void FixChampSelect()
+        {
+            if (OnFixChampSelect != null)
+            {
+                foreach (Delegate d in OnFixChampSelect.GetInvocationList())
+                {
+                    PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                    OnFixChampSelect -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                }
+            }
         }
 
         #endregion League Of Legends Logic

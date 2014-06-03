@@ -11,8 +11,12 @@
         <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="48" Margin="10,10,0,0" VerticalAlignment="Top" Width="48" Source="/LegendaryClient;component/NONE.png" />
         <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="22" Margin="65,10,0,0" VerticalAlignment="Top" Width="22" />
         <Image x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="22" Margin="65,35,0,0" VerticalAlignment="Top" Width="22" />
+        <Button x:Name="TradeButton" HorizontalAlignment="Left" Height="22" Margin="95,10,0,0" VerticalAlignment="Top" Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Hidden">
+            <StackPanel>
+                <Image Source="/LegendaryClient;component/trade.png" />
+            </StackPanel>
+        </Button>
+        <Image x:Name="LockedInIcon" HorizontalAlignment="Left" Height="22" Margin="95,35,0,0" VerticalAlignment="Top" Width="22" Source="/LegendaryClient;component/Unlocked.png" Visibility="Hidden" />
         <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="5,53,0,0" VerticalAlignment="Top" Width="125" Foreground="White" />
-        <Button x:Name="TradeButton" HorizontalAlignment="Left" Height="22" Margin="95,10,0,0" VerticalAlignment="Top" Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Hidden"/>
-        <Image x:Name="LockedInIcon" HorizontalAlignment="Left" Height="22" Margin="95,35,0,0" VerticalAlignment="Top" Width="22" Source="/LegendaryClient;component/Unlocked.png" Visibility="Hidden"/>
     </Grid>
 </UserControl>

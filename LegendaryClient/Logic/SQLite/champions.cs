@@ -1,4 +1,6 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Windows.Media.Imaging;
 
 namespace LegendaryClient.Logic.SQLite
 {
@@ -79,6 +81,15 @@ namespace LegendaryClient.Logic.SQLite
         public string opponentTips { get; set; }
 
         public string selectSoundPath { get; set; }
+
+        #region DDragon Data
+
+        public string Lore { get; set; }
+        public string ResourceType { get; set; }
+        public ArrayList Skins { get; set; }
+        public List<Spell> Spells { get; set; }
+
+        #endregion
 
         public static champions GetChampion(int id)
         {
