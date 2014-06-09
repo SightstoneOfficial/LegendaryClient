@@ -259,8 +259,8 @@ namespace LegendaryClient.Windows
 
                 Client.Version = DDragonVersion;
                 Client.Log("[Debug]: DDragon Version (LOL Version) = " + DDragonVersion);
-                Client.Version = "4.8.text";
-                LogTextBox("Client Version: " + Client.Version);
+
+                 LogTextBox("Client Version: " + Client.Version);
 
                 if (patcher.DDragonVersion != DDragonVersion)
                 {

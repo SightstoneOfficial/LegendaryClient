@@ -26,6 +26,7 @@ namespace LegendaryClient.Windows
         private Dictionary<double, JoinQueue> configs = new Dictionary<double, JoinQueue>();
         private Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
         private List<double> Queues = new List<double>();
+        //JoinQueue item = new JoinQueue();
 
         public PlayPage()
         {
@@ -44,6 +45,8 @@ namespace LegendaryClient.Windows
         }
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
+            //TeambuilderCorrect();
+
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var keys = new List<Button>(ButtonTimers.Keys);
@@ -64,6 +67,7 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 //Ping
+                TeambuilderCorrect();
                 PingLabel.Content = Math.Round(PingAverage).ToString() + "ms";
                 if (PingAverage == 0)
                 {
@@ -106,6 +110,9 @@ namespace LegendaryClient.Windows
                     item.Height = 80;
                     item.QueueButton.Tag = config;
                     item.QueueButton.Click += QueueButton_Click;
+                    item.TeamQueueButton.Click += TeamQueueButton_Click;
+                    item.TBCreateBotton.Click += TBCreateBotton_Click;
+                    item.TBSearchButton.Click += TBSearchButton_Click;
                     item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
                     QueueInfo t = await Client.PVPNet.GetQueueInformation(config.Id);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
@@ -117,6 +124,7 @@ namespace LegendaryClient.Windows
                         configs.Add(config.Id, item);
                         QueueListView.Items.Add(item);
                     }
+                        //GROUPFINDER
                 }
             }));
         }
@@ -127,7 +135,42 @@ namespace LegendaryClient.Windows
         /// </summary>
         private Button LastSender;
         
+        //Duo
+        public static void TBCreateBotton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.SwitchPage(new TeamBuilder(true));
+        }
+        //Solo
+        public static void TBSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.SwitchPage(new TeamBuilder(false));
+        }
+        private async void TeamQueueButton_Click(object sender, RoutedEventArgs e)
+        {
+            LastSender = (Button)sender;
+            GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
+            if (Queues.Contains(config.Id))
+            {
+                return;
+            }
+            Queues.Add(config.Id);
+            MatchMakerParams parameters = new MatchMakerParams();
+            parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
+            Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
+        }
 
+        private void TeambuilderCorrect()
+        {
+            JoinQueue item = new JoinQueue();
+            if (item.QueueLabel.Content == "matching-queue-GROUPFINDER-5x5-game-queue")
+            {
+                 item.TeamQueueButton.Visibility = Visibility.Hidden;
+                 item.QueueButton.Visibility = Visibility.Hidden;
+                 item.QueueLabel.Content = "Team Builder";
+                 item.AmountInQueueLabel.Visibility = Visibility.Hidden;
+                 item.WaitTimeLabel.Visibility = Visibility.Hidden;
+            }
+        }
         private async void QueueButton_Click(object sender, RoutedEventArgs e)
         {
             //To leave all other queues

@@ -134,6 +134,12 @@
     <Compile Include="Controls\InvitePlayer.xaml.cs">
       <DependentUpon>InvitePlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TeamBuilder\TeamBuilderChoose.xaml.cs">
+      <DependentUpon>TeamBuilderChoose.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TeamBuilder\TeamBuilderPlayer.xaml.cs">
+      <DependentUpon>TeamBuilderPlayer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TradeControl.xaml.cs">
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
@@ -153,8 +159,10 @@
     <Compile Include="Logic\BotLogic\PlayableBots\EzrealBot.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\FiddlesticksBot.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\MundoBot.cs" />
+    <Compile Include="Logic\JSON\InvitationRequest.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\TR.cs" />
+    <Compile Include="Logic\SQLite\invitationRequest.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="ReplayElements\ChampionItem.xaml.cs">
       <DependentUpon>ChampionItem.xaml</DependentUpon>
@@ -374,6 +382,9 @@
     <Compile Include="Windows\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\TeamBuilder.xaml.cs">
+      <DependentUpon>TeamBuilder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\TeamQueuePage.xaml.cs">
       <DependentUpon>TeamQueuePage.xaml</DependentUpon>
     </Compile>
@@ -401,6 +412,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\InvitePlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TeamBuilder\TeamBuilderChoose.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TeamBuilder\TeamBuilderPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -777,6 +796,10 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\TeamBuilder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\TeamQueuePage.xaml">
       <SubType>Designer</SubType>

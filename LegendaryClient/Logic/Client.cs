@@ -111,6 +111,11 @@ namespace LegendaryClient.Logic
         internal static List<masteries> Masteries;
 
         /// <summary>
+        /// The Invite Data
+        /// </summary>
+        internal static List<invitationRequest> InviteJsonRequest;
+
+        /// <summary>
         /// The database of all the search tags
         /// </summary>
         internal static List<championSearchTags> SearchTags;
@@ -638,14 +643,23 @@ namespace LegendaryClient.Logic
                 }
                 else if (message is InvitationRequest)
                 {
+                    //TypedObject body = (TypedObject)to["body"];
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         //Gameinvite stuff
                         GameInvitePopup pop = new GameInvitePopup();
+                        PVPNet.getPendingInvitations();
+                        PVPNet.checkLobbyStatus();
+                        PVPNet.getLobbyStatus();
+                        PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest Invite = new PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest();
+                        //Invite.callback;
+                        //Invite.InvitationRequest(body);
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
                         pop.Height = 230;
                         Client.NotificationGrid.Children.Add(pop);
+                        Client.InviteJsonRequest = LegendaryClient.Logic.JSON.InvitationRequest.PopulateGameInviteJson();
+                        //message.GetType() == typeof(GameInvitePopup)
                     }));
                 }
             }));

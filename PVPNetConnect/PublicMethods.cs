@@ -1039,6 +1039,26 @@ namespace PVPNetConnect
             return result;
         }
 
+        public async Task<object> checkLobbyStatus()
+        {
+            int Id = Invoke("lcdsGameInvitationService", "checkLobbyStatus", new object[] { });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
+        public async Task<object> getPendingInvitations()
+        {
+            int Id = Invoke("lcdsGameInvitationService", "getPendingInvitations", new object[] { });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
         public async Task<object> Decline(string InvitationId)
         {
             int Id = Invoke("lcdsGameInvitationService", "decline", new object[] { InvitationId });
@@ -1048,9 +1068,9 @@ namespace PVPNetConnect
             return null;
         }
 
-        public async Task<object> createArrangedTeamLobby(string InvitationId)
+        public async Task<object> createArrangedTeamLobby(double QueueId)
         {
-            int Id = Invoke("lcdsGameInvitationService", "createArrangedTeamLobby", new object[] { InvitationId });
+            int Id = Invoke("lcdsGameInvitationService", "createArrangedTeamLobby", new object[] { QueueId });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             LobbyStatus result = new LobbyStatus();

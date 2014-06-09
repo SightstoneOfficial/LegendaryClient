@@ -50,6 +50,9 @@ namespace PVPNetConnect
         [StringValue("NORMAL_GAME")]
         NormalGame,
 
+        [StringValue("GROUPFINDER")]
+        TeamBuilder,
+
         [StringValue("CUSTOM_GAME")]
         CustomGame,
 
@@ -74,6 +77,9 @@ namespace PVPNetConnect
     /// </summary>
     public enum QueueType
     {
+        [StringValue("GROUPFINDER")]
+        TeamBuilder,
+
         [StringValue("RANKED_TEAM3x3")]
         RankedTeam3x3,
 
