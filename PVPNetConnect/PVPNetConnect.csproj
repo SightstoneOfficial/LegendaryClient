@@ -36,7 +36,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,6 +68,7 @@
     <Compile Include="RiotObjects\Platform\Catalog\Runes\Rune.cs" />
     <Compile Include="RiotObjects\Platform\Catalog\Runes\RuneType.cs" />
     <Compile Include="RiotObjects\Platform\Clientfacade\Domain\LoginDataPacket.cs" />
+    <Compile Include="RiotObjects\Platform\Client\Dynamic\Configuration\ClientDynamicConfigurationNotification.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\InvitationRequest.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Invitee.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Inviter.cs" />

@@ -180,7 +180,7 @@ namespace LegendaryClient.Windows
                 overlay.MessageTitle.Content = "Invalid Config";
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
-                return;
+                
             }
             counter = configType.MainPickTimerDuration - 5; //Seems to be a 5 second inconsistancy with riot and what they actually provide
             CountdownTimer = new System.Windows.Forms.Timer();
@@ -860,6 +860,8 @@ namespace LegendaryClient.Windows
         private void DodgeButton_Click(object sender, RoutedEventArgs e)
         {
             //TODO - add messagebox
+            Warning pop = new Warning();
+            //pop.hide.Click =
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
             QuitCurrentGame();
         }
@@ -871,7 +873,7 @@ namespace LegendaryClient.Windows
             Client.ClearPage(new CustomGameLobbyPage());
             Client.ClearPage(new CreateCustomGamePage());
             Client.ClearPage(new ChampSelectPage());
-            //Client.ClearPage(this);
+            Client.ClearPage(this);
 
             Client.SwitchPage(new MainPage());
         }
@@ -891,6 +893,8 @@ namespace LegendaryClient.Windows
                 await Client.PVPNet.Roll();
                 HasLockedIn = true;
             }
+
+
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)

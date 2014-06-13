@@ -44,6 +44,13 @@ namespace LegendaryClient.Logic
         internal static List<runes> Runes;
 
         /// <summary>
+        /// Retreives UpdateDate For LegendaryClient
+        /// </summary>
+        internal static List<UpdateData> updateData;
+
+        internal static string LegendaryClientVersion = "1.0.1.2";
+
+        /// <summary>
         /// Sets Sqlite Version
         /// Like the language pack
         /// </summary>
@@ -588,10 +595,14 @@ namespace LegendaryClient.Logic
         internal static object LobbyContent;
         internal static object LastPageContent;
         internal static bool IsInGame = false;
+        internal static bool RunonePop = false;
 
         /// <summary>
         /// When an error occurs while connected. Currently un-used
         /// </summary>
+        /// 
+
+
         internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error)
         {
             ;
@@ -644,15 +655,15 @@ namespace LegendaryClient.Logic
                 else if (message is InvitationRequest)
                 {
                     //TypedObject body = (TypedObject)to["body"];
-                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
                     {
                         //Gameinvite stuff
                         GameInvitePopup pop = new GameInvitePopup();
-                        PVPNet.getPendingInvitations();
-                        PVPNet.checkLobbyStatus();
-                        PVPNet.getLobbyStatus();
+                        await PVPNet.getPendingInvitations();
+                        await PVPNet.checkLobbyStatus();
+                        await PVPNet.getLobbyStatus();
                         PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest Invite = new PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest();
-                        //Invite.callback;
+                        //await Invite.Callback;
                         //Invite.InvitationRequest(body);
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
@@ -661,6 +672,17 @@ namespace LegendaryClient.Logic
                         Client.InviteJsonRequest = LegendaryClient.Logic.JSON.InvitationRequest.PopulateGameInviteJson();
                         //message.GetType() == typeof(GameInvitePopup)
                     }));
+                }
+                else if (message is GameDTO && RunonePop == false)
+                {
+                    GameDTO Queue = message as GameDTO;
+                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                    }));
+                    RunonePop = true;
+                    //Client.PVPNet.OnMessageReceived -= GotQueuePop;
                 }
             }));
         }
@@ -941,4 +963,5 @@ namespace LegendaryClient.Logic
 
         public List<string> Messages = new List<string>();
     }
+
 }

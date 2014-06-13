@@ -1049,6 +1049,8 @@ namespace PVPNetConnect
             return result;
         }
 
+
+
         public async Task<object> getPendingInvitations()
         {
             int Id = Invoke("lcdsGameInvitationService", "getPendingInvitations", new object[] { });

@@ -1059,6 +1059,7 @@ namespace PVPNetConnect
                                         new Thread(new ThreadStart(() =>
                                         {
                                             TypedObject body = (TypedObject)to["body"];
+
                                             if (body.type.Equals("com.riotgames.platform.game.GameDTO"))
                                                 MessageReceived(new GameDTO(body));
 
@@ -1068,6 +1069,7 @@ namespace PVPNetConnect
                                             else if (
                                                 body.type.Equals("com.riotgames.platform.gameinvite.contract.InvitationRequest"))
                                                 MessageReceived(new InvitationRequest(body));
+
                                             else if (
                                                 body.type.Equals(
                                                     "com.riotgames.platform.game.message.GameNotification"))

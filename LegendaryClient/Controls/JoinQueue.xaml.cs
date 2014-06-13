@@ -23,14 +23,6 @@ namespace LegendaryClient.Controls
         public JoinQueue()
         {
             InitializeComponent();
-            if (QueueLabel.Content == "matching-queue-groupfinder-5x5-game-queue")
-            {
-                TeamQueueButton.Visibility = Visibility.Hidden;
-                QueueButton.Visibility = Visibility.Hidden;
-                QueueLabel.Content = "Team Builder";
-                AmountInQueueLabel.Visibility = Visibility.Hidden;
-                WaitTimeLabel.Visibility = Visibility.Hidden;
-            }
         }
         
     }

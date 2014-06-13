@@ -84,6 +84,7 @@
       <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="rtmp-sharp">
       <HintPath>..\..\Coding\League Of Legends\LegendaryClient-master\DLLS\rtmp-sharp.dll</HintPath>
     </Reference>
@@ -160,10 +161,12 @@
     <Compile Include="Logic\BotLogic\PlayableBots\FiddlesticksBot.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\MundoBot.cs" />
     <Compile Include="Logic\JSON\InvitationRequest.cs" />
+    <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\TR.cs" />
     <Compile Include="Logic\SQLite\invitationRequest.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
+    <Compile Include="Logic\SQLite\UpdateData.cs" />
     <Compile Include="ReplayElements\ChampionItem.xaml.cs">
       <DependentUpon>ChampionItem.xaml</DependentUpon>
     </Compile>

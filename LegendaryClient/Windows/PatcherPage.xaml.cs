@@ -1,8 +1,11 @@
 ﻿using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Patcher;
+using LegendaryClient.Logic.SQLite;
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
@@ -200,31 +203,49 @@ namespace LegendaryClient.Windows
                 string[] VersionSplit = VersionString.Split('|');
 
                 LogTextBox("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
-
-#if !DEBUG //Dont patch client while in DEBUG
-                if (VersionSplit.Length == 3)
+                Client.updateData = LegendaryUpdate.PopulateItems();
+                UpdateData legendaryupdatedata = new UpdateData();
+                var version = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/Version");
+                if (Client.LegendaryClientVersion != version)
                 {
-                    string[] versionArray = VersionString.Split('|');
-                    if (VersionSplit[0] != CurrentMD5)
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        LogTextBox("LegendaryClient needs to be updated");
-                        /*Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            CurrentStatusLabel.Content = "Downloading latest LegendaryClient...";
-                        }));
+                        MessageOverlay overlay = new MessageOverlay();
+                        overlay.MessageTextBox.Text = "An update is available LegendaryClient";
+                        overlay.MessageTitle.Content = "Update Notification";
+                        overlay.AcceptButton.Content = "Update LegendaryClient";
+                        overlay.AcceptButton.Click += update;
+                        Client.OverlayContainer.Content = overlay.Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
 
-                        client.DownloadFile(versionArray[2], "COL.ZIP");
-                        Directory.CreateDirectory("Patch");
-                        System.IO.Compression.ZipFile.ExtractToDirectory("COL.ZIP", "Patch");
-                        File.Delete("COL.ZIP");
-                        System.Diagnostics.Process.Start("Patcher.exe");
-                        Environment.Exit(0);*/
-                    }
+                        CurrentProgressLabel.Content = "LegendaryClient Is Out of Date!";
+                        LogTextBox("LegendaryClient Is Out of Date!");
+                    }));
+
+                    return;
                 }
-#endif
+                else if (Client.LegendaryClientVersion == version)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        CurrentProgressLabel.Content = "LegendaryClient Is Up To Date!";
+                        LogTextBox("LegendaryClient Is Up To Date!");
+                    }));
+                }
+                else if (version == null)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        CurrentProgressLabel.Content = "Could not check LegendaryClient Version!";
+                        LogTextBox("Could not check LegendaryClient Version!");
+                    }));
+                }
+                //LogTextBox("LC Update Json Data: " + json);
+
+
                 //LogTextBox("LegendaryClient is up to date");
                 //LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
-                LogTextBox("LegendaryClient is up to date");
+                
                 Client.Log("[Debug]: LegendaryClient Is Up To Date");
 
                 #endregion LegendaryClient
@@ -459,6 +480,48 @@ namespace LegendaryClient.Windows
             });
 
             bgThead.Start();
+        }
+
+        private void update(object sender, EventArgs e)
+        {
+            UpdateData legendaryupdatedata = new UpdateData();
+            WebClient client = new WebClient();
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "temp")))
+            {
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "temp"));
+            }
+            var downloadLink = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
+            var filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
+            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+            string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
+            LogTextBox("Retreving Update Data from: " + DownloadLocation);
+            client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
+            //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
+        }
+
+        
+        void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            double bytesIn = double.Parse(e.BytesReceived.ToString());
+            double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
+            double percentage = bytesIn / totalBytes * 100;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                CurrentProgressBar.Value = int.Parse(Math.Truncate(percentage).ToString());
+            }));
+        }
+
+        void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                CurrentProgressLabel.Content = "Download Completed";
+                LogTextBox("Finished Download");
+                LogTextBox("Starting Patcher. Please Wait");
+            }));
+            
         }
 
         private void FinishPatching()
