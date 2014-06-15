@@ -48,6 +48,7 @@ namespace PVPNetConnect
         {
             PlayerCredentialsDto startedGame = new PlayerCredentialsDto()
             {
+                /*
                 EncryptionKey = "fake",
                 GameId = 125432223.0,
                 LastSelectedSkinIndex = 0,
@@ -63,6 +64,7 @@ namespace PVPNetConnect
                 SummonerName = "Snowl",
                 ObserverEncryptionKey = "fake",
                 ChampionId = 133
+                */
             };
             MessageReceived(startedGame);
         }

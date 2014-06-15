@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
+using System;
+using System.IO;
 
 namespace Patcher
 {
@@ -6,23 +9,17 @@ namespace Patcher
     {
         private static void Main(string[] args)
         {
-            if (Directory.Exists("Patch"))
-            {
-                foreach (string newPath in Directory.GetFiles("Patch", "*.*", SearchOption.AllDirectories))
-                    File.Copy(newPath, newPath.Replace("Patch", "."), true);
-            }
-            System.IO.DirectoryInfo PatchInfo = new DirectoryInfo("Patch");
+            Console.WriteLine("LegendaryClient Updater");
+            Stream inStream = File.OpenRead(Path.Combine("temp", "1.0.1.2.zip"));
 
-            foreach (FileInfo file in PatchInfo.GetFiles())
+            using (GZipInputStream gzipStream = new GZipInputStream(inStream))
             {
-                file.Delete();
+                TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
+                tarArchive.ExtractContents("temp");
+                tarArchive.CloseArchive();
             }
-            foreach (DirectoryInfo dir in PatchInfo.GetDirectories())
-            {
-                dir.Delete(true);
-            }
-            Directory.Delete("Patch");
-            System.Diagnostics.Process.Start("LegendaryClient.exe");
+            System.Diagnostics.Process.Start("Patcher.exe");
+            Environment.Exit(0);
         }
     }
 }

@@ -3,6 +3,7 @@ using jabber.connection;
 using jabber.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic.Region;
+using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using PVPNetConnect;
@@ -38,6 +39,12 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
+
+        /// <summary>
+        /// Timer used so replays won't start right away
+        /// </summary>
+        internal static System.Windows.Forms.Timer ReplayTimer;
+
         /// <summary>
         /// The database of all runes
         /// </summary>
@@ -48,7 +55,15 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static List<UpdateData> updateData;
 
-        internal static string LegendaryClientVersion = "1.0.1.2";
+        /// <summary>
+        /// Stuff
+        /// </summary>
+        internal static string LegendaryClientVersion = "1.0.1.3";
+
+        /// <summary>
+        /// Update Data
+        /// </summary>
+        internal static int LegendaryClientReleaseNumber = 1;
 
         /// <summary>
         /// Sets Sqlite Version
@@ -134,7 +149,7 @@ namespace LegendaryClient.Logic
 
         internal static ChampionDTO[] PlayerChampions;
 
-        internal static AutoReplayRecorder.AutoReplayRecorder recorder;
+        internal static AutoReplayRecorder Autorecorder;
 
         internal static List<string> Whitelist = new List<string>();
 
@@ -582,6 +597,11 @@ namespace LegendaryClient.Logic
         internal static GameDTO GameLobbyDTO;
 
         /// <summary>
+        /// A recorder
+        /// </summary>
+        internal static ReplayRecorder recorder;
+
+        /// <summary>
         /// When going into champion select reuse the last DTO to set up data
         /// </summary>
         internal static GameDTO ChampSelectDTO;
@@ -760,7 +780,8 @@ namespace LegendaryClient.Logic
             return Directory;
         }
 
-        
+
+        private static int counter;
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();
@@ -775,6 +796,29 @@ namespace LegendaryClient.Logic
                 CurrentGame.SummonerId + "\"";
             p.Start();
             //recorder = new AutoReplayRecorder.AutoReplayRecorder();
+            ReplayTimer = new System.Windows.Forms.Timer();
+            ReplayTimer.Tick += new EventHandler(CountdownTimer_Tick);
+            ReplayTimer.Interval = 10000; // 10 seconds
+            ReplayTimer.Start();
+        }
+
+        private static void CountdownTimer_Tick(object sender, EventArgs e)
+        {
+            string ObserverServerIp;
+            double GameId;
+            string InternalName;
+            string ObserverEncryptionKey;
+
+            PlayerCredentialsDto replaydata = new PlayerCredentialsDto();
+            ObserverServerIp = replaydata.ObserverServerIp;
+            GameId = replaydata.GameId;
+            InternalName =Region.InternalName;
+            ObserverEncryptionKey = replaydata.ObserverEncryptionKey;
+            if (ReplayTimer.Interval == 0)
+            {
+                ReplayTimer.Stop();
+                Autorecorder = new LegendaryClient.Logic.Replays.AutoReplayRecorder(ObserverServerIp, GameId, InternalName, ObserverEncryptionKey);
+            }
         }
 
         internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)

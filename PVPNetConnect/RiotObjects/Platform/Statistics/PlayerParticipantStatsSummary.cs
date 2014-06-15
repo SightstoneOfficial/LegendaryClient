@@ -88,6 +88,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         [InternalName("summonerName")]
         public String SummonerName { get; set; }
 
+        [InternalName("roomName")]
+        public String RoomName { get; set; }
+
+        [InternalName("roomPassword")]
+        public String RoomPassword { get; set; }
+
         [InternalName("wins")]
         public Double Wins { get; set; }
 

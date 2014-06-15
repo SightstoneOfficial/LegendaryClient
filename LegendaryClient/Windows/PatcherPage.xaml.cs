@@ -197,16 +197,24 @@ namespace LegendaryClient.Windows
                         CurrentProgressLabel.Content = "Could not retrieve update files!";
                         Client.Log("[Warn]: Failed to retrieve update files");
                     }));
-                    return;
+
+                    //return;
                 }
 
                 string[] VersionSplit = VersionString.Split('|');
 
                 LogTextBox("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
                 Client.updateData = LegendaryUpdate.PopulateItems();
+
+                #if !DEBUG //Dont patch client while in DEBUG
                 UpdateData legendaryupdatedata = new UpdateData();
                 var version = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/Version");
-                if (Client.LegendaryClientVersion != version)
+                LogTextBox("Most Up to date LegendaryClient Version: " + version);
+                string versionAsString = version;
+                var versiontoint = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/VersionAsInt");
+                int VersionAsInt = Convert.ToInt32(versiontoint);
+
+                if (VersionAsInt != Client.LegendaryClientReleaseNumber)
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
@@ -214,13 +222,14 @@ namespace LegendaryClient.Windows
                         overlay.MessageTextBox.Text = "An update is available LegendaryClient";
                         overlay.MessageTitle.Content = "Update Notification";
                         overlay.AcceptButton.Content = "Update LegendaryClient";
-                        overlay.AcceptButton.Click += update;
+                        overlay.MessageTextBox.TextChanged += Text_Changed;
                         Client.OverlayContainer.Content = overlay.Content;
                         Client.OverlayContainer.Visibility = Visibility.Visible;
 
                         CurrentProgressLabel.Content = "LegendaryClient Is Out of Date!";
-                        LogTextBox("LegendaryClient Is Out of Date!");
+                        
                     }));
+                    LogTextBox("LegendaryClient Is Out of Date!");
 
                     return;
                 }
@@ -229,24 +238,27 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         CurrentProgressLabel.Content = "LegendaryClient Is Up To Date!";
-                        LogTextBox("LegendaryClient Is Up To Date!");
+                        
                     }));
+                    LogTextBox("LegendaryClient Is Up To Date!");
                 }
                 else if (version == null)
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         CurrentProgressLabel.Content = "Could not check LegendaryClient Version!";
-                        LogTextBox("Could not check LegendaryClient Version!");
+                        
                     }));
+                    LogTextBox("Could not check LegendaryClient Version!");
+                    return;
                 }
                 //LogTextBox("LC Update Json Data: " + json);
-
+                #endif
 
                 //LogTextBox("LegendaryClient is up to date");
                 //LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
                 
-                Client.Log("[Debug]: LegendaryClient Is Up To Date");
+                //Client.Log("[Debug]: LegendaryClient Is Up To Date");
 
                 #endregion LegendaryClient
 
@@ -497,10 +509,19 @@ namespace LegendaryClient.Windows
             string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
             LogTextBox("Retreving Update Data from: " + DownloadLocation);
             client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
+            //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
         }
 
-        
+        public void Text_Changed(object sender, RoutedEventArgs e)
+        {
+            MessageOverlay overlay = new MessageOverlay();
+                        //overlay.AcceptButton.Click += update;
+            if (overlay.MessageTextBox.Text != "NO")
+            {
+                overlay.AcceptButton.Click += update;
+            }
+        }
         void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             double bytesIn = double.Parse(e.BytesReceived.ToString());
@@ -520,6 +541,8 @@ namespace LegendaryClient.Windows
                 CurrentProgressLabel.Content = "Download Completed";
                 LogTextBox("Finished Download");
                 LogTextBox("Starting Patcher. Please Wait");
+                System.Diagnostics.Process.Start("Patcher.exe");
+                Environment.Exit(0);
             }));
             
         }
