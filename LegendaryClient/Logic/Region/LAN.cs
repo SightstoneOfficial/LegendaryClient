@@ -3,11 +3,11 @@ using System.Net;
 
 namespace LegendaryClient.Logic.Region
 {
-    public sealed class LAN : BaseRegion
+    public sealed class LA1 : BaseRegion
     {
         public override string RegionName
         {
-            get { return "LAN"; }
+            get { return "LA1"; }
         }
 
         public override string InternalName
@@ -23,12 +23,12 @@ namespace LegendaryClient.Logic.Region
         public override Uri NewsAddress
         {
             //Unknown
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/na/en_US.js"); }
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/la1/es_MX.js"); }
         }
 
         public override PVPNetConnect.Region PVPRegion
         {
-            get { return PVPNetConnect.Region.LAN; }
+            get { return PVPNetConnect.Region.LA1; }
         }
 
         public override IPAddress[] PingAddresses
