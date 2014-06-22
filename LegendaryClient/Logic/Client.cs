@@ -677,8 +677,9 @@ namespace LegendaryClient.Logic
                     //TypedObject body = (TypedObject)to["body"];
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
                     {
+                        InvitationRequest invite = new InvitationRequest();
                         //Gameinvite stuff
-                        GameInvitePopup pop = new GameInvitePopup();
+                        GameInvitePopup pop = new GameInvitePopup(invite);
                         await PVPNet.getPendingInvitations();
                         await PVPNet.checkLobbyStatus();
                         await PVPNet.getLobbyStatus();
@@ -695,13 +696,14 @@ namespace LegendaryClient.Logic
                 }
                 else if (message is GameDTO && RunonePop == false)
                 {
+                    /*
                     GameDTO Queue = message as GameDTO;
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
                         Client.OverlayContainer.Visibility = Visibility.Visible;
                     }));
-                    RunonePop = true;
+                    RunonePop = true;*/
                     //Client.PVPNet.OnMessageReceived -= GotQueuePop;
                 }
             }));

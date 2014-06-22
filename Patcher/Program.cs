@@ -18,7 +18,7 @@ namespace Patcher
                 tarArchive.ExtractContents("temp");
                 tarArchive.CloseArchive();
             }
-            System.Diagnostics.Process.Start("Patcher.exe");
+            System.Diagnostics.Process.Start("LegendaryClient.exe");
             Environment.Exit(0);
         }
     }

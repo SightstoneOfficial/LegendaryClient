@@ -1029,6 +1029,16 @@ namespace PVPNetConnect
             return result;
         }
 
+        public async Task<object> transferOwnership(string InvitationId)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "transferOwnership", new object[] { InvitationId });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
         public async Task<object> getLobbyStatus()
         {
             int Id = Invoke("lcdsGameInvitationService", "getLobbyStatus", new object[] { });

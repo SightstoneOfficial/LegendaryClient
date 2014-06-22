@@ -164,10 +164,11 @@ namespace LegendaryClient.Windows
             Thread bgThead = new Thread(() =>
             {
                 LogTextBox("Starting Patcher");
-                LogTextBox("LegendaryClient tested for League of Legends V 4.5.13");
                 Client.Log("Patcher Starting");
 
                 WebClient client = new WebClient();
+                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+                client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadDDragon);
                 client.DownloadProgressChanged += (o, e) =>
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -546,6 +547,18 @@ namespace LegendaryClient.Windows
             }));
             
         }
+
+        void client_DownloadDDragon(object sender, AsyncCompletedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                CurrentProgressLabel.Content = "Download Completed";
+                LogTextBox("Finished Download");
+                CurrentProgressBar.Value = 0;
+            }));
+
+        }
+
 
         private void FinishPatching()
         {

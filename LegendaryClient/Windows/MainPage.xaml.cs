@@ -124,7 +124,7 @@ namespace LegendaryClient.Windows
                                     string Series = "";
                                     if (miniSeries != null)
                                     {
-                                        Series = (string)miniSeries["progress"];
+                                        Series = ((string)miniSeries["progress"]).Replace('N', '-');
                                         InPromo = true;
                                     }
                                     CurrentLP = (player.LeaguePoints == 100 ? Series : Convert.ToString(player.LeaguePoints));
@@ -144,7 +144,7 @@ namespace LegendaryClient.Windows
                 PlayerProgressLabel.Content = CurrentTier;
                 if (InPromo)
                 {
-                    PlayerCurrentProgressLabel.Content = CurrentLP;
+                    PlayerCurrentProgressLabel.Content = CurrentLP.Replace('N', '-');
                     PlayerProgressBar.Value = 100;
                 }
                 else

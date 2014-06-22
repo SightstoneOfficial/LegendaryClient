@@ -135,6 +135,9 @@
     <Compile Include="Controls\InvitePlayer.xaml.cs">
       <DependentUpon>InvitePlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\LeagueItem.xaml.cs">
+      <DependentUpon>LeagueItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TeamBuilder\TeamBuilderChoose.xaml.cs">
       <DependentUpon>TeamBuilderChoose.xaml</DependentUpon>
     </Compile>
@@ -415,6 +418,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\InvitePlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\LeagueItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
