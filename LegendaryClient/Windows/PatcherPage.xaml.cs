@@ -440,14 +440,15 @@ namespace LegendaryClient.Windows
                 {
                     LogTextBox("Checking for existing League of Legends Installation");
                     GameLocation = Path.Combine("League of Legends", "RADS");
+                    string rootPath = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path", "").ToString();
                     if (Directory.Exists(GameLocation))
                     {
                         RetrieveCurrentInstallation = true;
                     }
-                    else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", GameLocation)))
+                    else if (Directory.Exists(Path.Combine(rootPath, "RADS")))
                     {
                         RetrieveCurrentInstallation = true;
-                        GameLocation = Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", GameLocation);
+                        GameLocation = Path.Combine(rootPath, "RADS");
                     }
                     else
                     {
