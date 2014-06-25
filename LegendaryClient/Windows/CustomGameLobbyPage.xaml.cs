@@ -350,9 +350,10 @@ namespace LegendaryClient.Windows
 
                 case 12:
                     return "Captain Pick";
-
+                    //R.I.P One for All
+                    /*
                 case 14:
-                    return "One for All";
+                    return "One for All";*/
 
                 default:
                     return Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;

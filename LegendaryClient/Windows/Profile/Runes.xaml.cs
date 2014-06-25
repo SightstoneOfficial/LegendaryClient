@@ -137,7 +137,11 @@ namespace LegendaryClient.Windows.Profile
         }
         private async void GetAvailableRunes()
         {
+<<<<<<< HEAD
+            PVPNetConnect.RiotObjects.Platform.Summoner.Runes.SummonerRuneInventory runeInven =
+=======
             PVPNetConnect.RiotObjects.Platform.Summoner.Runes.SummonerRuneInventory runeInven = 
+>>>>>>> master
                 await Client.PVPNet.GetSummonerRuneInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
             runes = runeInven.SummonerRunes;
             runes.Sort((x, y) => x.Rune.Name.CompareTo(y.Rune.Name));

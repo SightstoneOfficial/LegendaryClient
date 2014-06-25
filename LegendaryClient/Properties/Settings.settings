@@ -29,5 +29,17 @@
     <Setting Name="AutoLogin" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="DevMode" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DevName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Public Dev</Value>
+    </Setting>
+    <Setting Name="DevKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">!~devkey-publicdev~!</Value>
+    </Setting>
+    <Setting Name="DevVersion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">4.7.8</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

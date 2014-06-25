@@ -3,13 +3,17 @@ using jabber.connection;
 using jabber.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic.Region;
+using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Login;
 using PVPNetConnect.RiotObjects.Platform.Messaging;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using SQLite;
@@ -22,11 +26,13 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
+//using LegendaryClient.Logic.AutoReplayRecorder;
 
 namespace LegendaryClient.Logic
 {
@@ -35,15 +41,53 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
+
+        /// <summary>
+        /// Timer used so replays won't start right away
+        /// </summary>
+        internal static System.Windows.Forms.Timer ReplayTimer;
+
+        /// <summary>
+        /// The database of all runes
+        /// </summary>
+        internal static List<runes> Runes;
+
+        /// <summary>
+        /// Retreives UpdateDate For LegendaryClient
+        /// </summary>
+        internal static List<UpdateData> updateData;
+
+        /// <summary>
+        /// Stuff
+        /// </summary>
+        internal static string LegendaryClientVersion = "1.0.1.3";
+
+        /// <summary>
+        /// Update Data
+        /// </summary>
+        internal static int LegendaryClientReleaseNumber = 1;
+
+        /// <summary>
+        /// Sets Sqlite Version
+        /// Like the language pack
+        /// </summary>
+        internal static string sqlite = "gameStats_en_US.sqlite";
+        //internal static string sqlite = "gameStats_ko_KR.sqlite";
+        
         /// <summary>
         /// Latest champion for League of Legends login screen
         /// </summary>
-        internal const int LatestChamp = 161;
+        internal const int LatestChamp = 201;
 
         /// <summary>
         /// Latest version of League of Legends. Retrieved from ClientLibCommon.dat
         /// </summary>
-        internal static string Version = "3.00.00";
+        internal static string Version = "4.6.test";
+
+        ///<summary>
+        /// To see if the user is a dev
+        /// </summary>
+        internal static bool Dev = false;
 
         /// <summary>
         /// The current directory the client is running from
@@ -56,9 +100,24 @@ namespace LegendaryClient.Logic
         internal static SQLiteConnection SQLiteDatabase;
 
         /// <summary>
+        /// Fix for champ select. Do not use this!
+        /// </summary>
+        internal static event PVPNetConnection.OnMessageReceivedHandler OnFixChampSelect;
+
+        /// <summary>
+        /// Allow lobby to still have a connection. Do not use this!
+        /// </summary>
+        internal static event PVPNetConnection.OnMessageReceivedHandler OnFixLobby;
+
+        /// <summary>
         /// The database of all the champions
         /// </summary>
         internal static List<champions> Champions;
+
+        /// <summary>
+        /// The database of all the champion abilities
+        /// </summary>
+        internal static List<championAbilities> ChampionAbilities;
 
         /// <summary>
         /// The database of all the champion skins
@@ -76,9 +135,9 @@ namespace LegendaryClient.Logic
         internal static List<masteries> Masteries;
 
         /// <summary>
-        /// The database of all runes
+        /// The Invite Data
         /// </summary>
-        internal static List<runes> Runes;
+        internal static List<invitationRequest> InviteJsonRequest;
 
         /// <summary>
         /// The database of all the search tags
@@ -92,12 +151,13 @@ namespace LegendaryClient.Logic
 
         internal static ChampionDTO[] PlayerChampions;
 
+        internal static AutoReplayRecorder Autorecorder;
+
         internal static List<string> Whitelist = new List<string>();
 
         #region Chat
 
         internal static JabberClient ChatClient;
-
         //Fix for invitations
         public delegate void OnMessageHandler(object sender, jabber.protocol.client.Message e);
         public static event OnMessageHandler OnMessage;
@@ -158,41 +218,20 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
         {
-            MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                if (OnMessage != null)
-                {
-                    OnMessage(sender, msg);
-                }
-
-                if (msg.Subject != null)
-                {
-                    ChatSubjects subject = (ChatSubjects)Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
-
-                    if (subject == ChatSubjects.PRACTICE_GAME_INVITE ||
-                        subject == ChatSubjects.GAME_INVITE)
-                    {
-                        MainWin.FlashWindow();
-                        NotificationPopup pop = new NotificationPopup(subject, msg);
-                        pop.Height = 230;
-                        pop.HorizontalAlignment = HorizontalAlignment.Right;
-                        pop.VerticalAlignment = VerticalAlignment.Bottom;
-                        NotificationGrid.Children.Add(pop);
-                    }
-                    else if (subject == ChatSubjects.GAME_MSG_OUT_OF_SYNC)
-                    {
-                        MessageOverlay messageOver = new MessageOverlay();
-                        messageOver.MessageTitle.Content = "Game no longer exists";
-                        messageOver.MessageTextBox.Text = "The game you are looking for no longer exists.";
-                        Client.OverlayContainer.Content = messageOver.Content;
-                        Client.OverlayContainer.Visibility = Visibility.Visible;
-                    }
-                }
-            }));
-
-            //On core thread
             if (msg.Subject != null)
+            {
+                MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    ChatSubjects subject = (ChatSubjects) Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
+                    //NotificationPopup pop = new NotificationPopup(subject, msg);
+                    //pop.Height = 230;
+                    //pop.HorizontalAlignment = HorizontalAlignment.Right;
+                    //pop.VerticalAlignment = VerticalAlignment.Bottom;
+                    //Client.NotificationGrid.Children.Add(pop);
+                }));
+
                 return;
+            }
 
             if (AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
             {
@@ -200,6 +239,11 @@ namespace LegendaryClient.Logic
                 chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
                 MainWin.FlashWindow();
             }
+        }
+
+        internal async static void GameInvite(object sender, PVPNetConnection PVPConnect, string GameID)
+        {
+            await PVPConnect.Accept(GameID);
         }
 
         internal static void ChatClientConnect(object sender)
@@ -214,29 +258,50 @@ namespace LegendaryClient.Logic
 
         internal static void SetChatHover()
         {
-            if (ChatClient.IsAuthenticated)
+            ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
+        }
+
+        internal static bool hidelegendaryaddition;
+
+        internal static string LegendaryClientAddition = "∟";
+        internal static void NewStatus()
+        {
+            if (Dev == false)
             {
-                ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
+                Client.LegendaryClientAddition = CurrentStatus + "∟";
+            }
+            else if (Dev == true)
+            {
+                Client.LegendaryClientAddition = CurrentStatus + "♒";
+            }
+            else if (hidelegendaryaddition == true)
+            {
+                Client.LegendaryClientAddition = CurrentStatus + "";
             }
         }
 
         internal static string GetPresence()
         {
+            NewStatus();
             return "<body>" +
-                "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
-                "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
-                "<wins>" + AmountOfWins + "</wins>" +
-                (IsRanked ?
-                "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
-                "<rankedLeagueName>" + LeagueName + "</rankedLeagueName>" +
-                "<rankedLeagueDivision>" + Tier + "</rankedLeagueDivision>" +
-                "<rankedLeagueTier>" + TierName + "</rankedLeagueTier>" +
-                "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
-                "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
-                "<gameStatus>" + GameStatus + "</gameStatus>" +
-                "<statusMsg>" + CurrentStatus + "∟</statusMsg>" + //Look for "∟" to recognize that LegendaryClient - not shown on normal client
-            "</body>";
+                  "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
+                  "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
+                  "<wins>" + AmountOfWins + "</wins>" +
+                  (IsRanked ?
+                  "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
+                  "<rankedLeagueName>" + LeagueName + "</rankedLeagueName>" +
+                  "<rankedLeagueDivision>" + Tier + "</rankedLeagueDivision>" +
+                  "<rankedLeagueTier>" + TierName + "</rankedLeagueTier>" +
+                  "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
+                  "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
+                  "<gameStatus>" + GameStatus + "</gameStatus>" +
+                  "<statusMsg>" + LegendaryClientAddition + "</statusMsg>" + 
+                  //Look for "∟" to recognize LegendaryClient Users
+                  //Look for "♒" to recongnize Devs
+                    "</body>";
         }
+
+        
 
         internal static void RostManager_OnRosterItem(object sender, jabber.protocol.iq.Item ri)
         {
@@ -253,17 +318,17 @@ namespace LegendaryClient.Logic
 
         internal static void PresManager_OnPrimarySessionChange(object sender, jabber.JID bare)
         {
-            jabber.protocol.client.Presence[] s = PresManager.GetAll(bare);
+            jabber.protocol.client.Presence[] s = Client.PresManager.GetAll(bare);
             if (s.Length == 0)
                 return;
             string Presence = s[0].Status;
             if (Presence == null)
                 return;
-            if (AllPlayers.ContainsKey(bare.User))
+            Debug.WriteLine(Presence);
+            if (Client.AllPlayers.ContainsKey(bare.User))
             {
                 UpdatePlayers = true;
-                ChatPlayerItem Player = AllPlayers[bare.User];
-                Player.RawPresence = Presence; //For debugging
+                ChatPlayerItem Player = Client.AllPlayers[bare.User];
                 using (XmlReader reader = XmlReader.Create(new StringReader(Presence)))
                 {
                     while (reader.Read())
@@ -311,6 +376,11 @@ namespace LegendaryClient.Logic
                                     {
                                         Player.UsingLegendary = true;
                                     }
+                                    else if (Player.Status.EndsWith("♒"))
+                                    {
+                                        Player.IsLegendaryDev = true;
+                                        Player.UsingLegendary = true;
+                                    }
                                     break;
 
                                 case "gameStatus":
@@ -352,12 +422,12 @@ namespace LegendaryClient.Logic
 
         internal static void Message(string To, string Message, ChatSubjects Subject)
         {
-            Message msg = new Message(ChatClient.Document);
+            Message msg = new Message(Client.ChatClient.Document);
             msg.Type = MessageType.normal;
             msg.To = To + "@pvp.net";
             msg.Subject = ((ChatSubjects)Subject).ToString();
             msg.Body = Message;
-            ChatClient.Write(msg);
+            Client.ChatClient.Write(msg);
         }
 
         //Why do you even have to do this, riot?
@@ -382,6 +452,8 @@ namespace LegendaryClient.Logic
             return Type + "~" + obfuscatedName;
         }
 
+
+
         internal static string GetChatroomJID(string ObfuscatedChatroomName, string password, bool IsTypePublic)
         {
             if (!IsTypePublic)
@@ -402,22 +474,22 @@ namespace LegendaryClient.Logic
 
         #endregion Chat
 
-        //These are controls that need to be modified over one page
         internal static Grid MainGrid;
         internal static Grid NotificationGrid;
         internal static Grid StatusGrid;
+
         internal static Label StatusLabel;
         internal static Label InfoLabel;
-        internal static Button PlayButton;
         internal static ContentControl OverlayContainer;
+        internal static Button PlayButton;
         internal static ContentControl ChatContainer;
         internal static ContentControl StatusContainer;
-        internal static ContentControl NotificationContainer;
         internal static ContentControl NotificationOverlayContainer;
+        internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
         internal static ChatItem ChatItem;
-        internal static ListView InviteListView;
 
+        internal static ListView InviteListView;
         internal static Image MainPageProfileImage;
 
         #region WPF Tab Change
@@ -441,26 +513,37 @@ namespace LegendaryClient.Logic
         internal static void SwitchPage(Page page)
         {
             IsOnPlayPage = page is PlayPage;
-            //Dont cache important pages
-            if (!(page is LoginPage ||
-                  page is CustomGameLobbyPage ||
-                  page is ChampSelectPage ||
-                  page is CreateCustomGamePage))
+            foreach (Page p in Pages) //Cache pages
             {
-                foreach (Page p in Pages) //Cache pages
+                if (p.GetType() == page.GetType())
                 {
-                    if (p.GetType() == page.GetType())
-                    {
-                        Container.Content = p.Content;
-                        return;
-                    }
+                    Container.Content = p.Content;
+                    return;
                 }
             }
             Container.Content = page.Content;
             if (!(page is FakePage))
                 Pages.Add(page);
         }
+
+        /// <summary>
+        /// Clears the cache of a certain page if not used anymore
+        /// </summary>
+        internal static void ClearPage(Page page)
+        {
+            foreach (Page p in Pages.ToArray())
+            {
+                if (p.GetType() == page.GetType())
+                {
+                    Pages.Remove(p);
+                    return;
+                }
+            }
+        }
+
         #endregion WPF Tab Change
+
+        
 
         #region League Of Legends Logic
 
@@ -484,6 +567,11 @@ namespace LegendaryClient.Logic
         /// The region the user is connecting to
         /// </summary>
         internal static BaseRegion Region;
+
+        /// <summary>
+        /// The region the user is connecting to
+        /// </summary>
+        internal static bool Chunk;
 
         /// <summary>
         /// Is the client logged in to the League of Legends server
@@ -511,6 +599,11 @@ namespace LegendaryClient.Logic
         internal static GameDTO GameLobbyDTO;
 
         /// <summary>
+        /// A recorder
+        /// </summary>
+        internal static ReplayRecorder recorder;
+
+        /// <summary>
         /// When going into champion select reuse the last DTO to set up data
         /// </summary>
         internal static GameDTO ChampSelectDTO;
@@ -520,26 +613,44 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static PlayerCredentialsDto CurrentGame;
 
-        internal static bool AutoAcceptQueue = false;
-        internal static object LastPageContent;
-        internal static object LobbyContent;
-        internal static bool IsInGame = false;
+        internal static Session PlayerSession;
 
-        /// <summary>
-        /// Fix for champ select. Do not use this!
-        /// </summary>
-        internal static event PVPNetConnection.OnMessageReceivedHandler OnFixChampSelect;
-        /// <summary>
-        /// Allow lobby to still have a connection. Do not use this!
-        /// </summary>
-        internal static event PVPNetConnection.OnMessageReceivedHandler OnFixLobby;
+        internal static bool AutoAcceptQueue = false;
+        internal static object LobbyContent;
+        internal static object LastPageContent;
+        internal static bool IsInGame = false;
+        internal static bool RunonePop = false;
 
         /// <summary>
         /// When an error occurs while connected. Currently un-used
         /// </summary>
+        /// 
+
+
         internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error)
         {
-            Log(error.Type + " " + error.Message, "RTMPSERROR");
+            ;
+        }
+
+        internal static System.Timers.Timer HeartbeatTimer;
+        internal static int HeartbeatCount;
+
+        internal static void StartHeartbeat()
+        {
+            HeartbeatTimer = new System.Timers.Timer();
+            HeartbeatTimer.Elapsed += new ElapsedEventHandler(DoHeartbeat);
+            HeartbeatTimer.Interval = 120000; // in milliseconds
+            HeartbeatTimer.Start();
+        }
+
+        internal async static void DoHeartbeat(object sender, ElapsedEventArgs e)
+        {
+            if (IsLoggedIn)
+            {
+                //await PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId), PlayerSession.Token, HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-0700'"));
+
+                HeartbeatCount++;
+            }
         }
 
         internal static void OnMessageReceived(object sender, object message)
@@ -550,8 +661,8 @@ namespace LegendaryClient.Logic
                 {
                     StoreAccountBalanceNotification newBalance = (StoreAccountBalanceNotification)message;
                     InfoLabel.Content = "IP: " + newBalance.Ip + " ∙ RP: " + newBalance.Rp;
-                    LoginPacket.IpBalance = newBalance.Ip;
-                    LoginPacket.RpBalance = newBalance.Rp;
+                    Client.LoginPacket.IpBalance = newBalance.Ip;
+                    Client.LoginPacket.RpBalance = newBalance.Rp;
                 }
                 else if (message is GameNotification)
                 {
@@ -564,42 +675,61 @@ namespace LegendaryClient.Logic
                             messageOver.MessageTitle.Content = "Banned from custom game";
                             messageOver.MessageTextBox.Text = "You have been banned from this custom game!";
                             break;
-                        case "PLAYER_QUIT":
-                            string[] Name = await PVPNet.GetSummonerNames(new double[1] { Convert.ToDouble((string)notification.MessageArgument) });
-                            messageOver.MessageTitle.Content = "Player has left the queue";
-                            messageOver.MessageTextBox.Text = Name[0] + " has left the queue";
-                            break;
+
                         default:
                             messageOver.MessageTextBox.Text = notification.MessageCode + Environment.NewLine;
-                            messageOver.MessageTextBox.Text += Convert.ToString(notification.MessageArgument);
+                            messageOver.MessageTextBox.Text = Convert.ToString(notification.MessageArgument);
                             break;
                     }
-                    OverlayContainer.Content = messageOver.Content;
-                    OverlayContainer.Visibility = Visibility.Visible;
-                    QuitCurrentGame();
+                    Client.OverlayContainer.Content = messageOver.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                    Client.ClearPage(new CustomGameLobbyPage());
+                    Client.SwitchPage(new MainPage());
                 }
                 else if (message is EndOfGameStats)
                 {
                     EndOfGameStats stats = message as EndOfGameStats;
                     EndOfGamePage EndOfGame = new EndOfGamePage(stats);
-                    OverlayContainer.Visibility = Visibility.Visible;
-                    OverlayContainer.Content = EndOfGame.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                    Client.OverlayContainer.Content = EndOfGame.Content;
                 }
                 else if (message is StoreFulfillmentNotification)
                 {
                     PlayerChampions = await PVPNet.GetAvailableChampions();
                 }
-                else if (message is GameDTO)
+                else if (message is InvitationRequest)
                 {
-                    GameDTO Queue = message as GameDTO;
-                    if (!IsInGame && Queue.GameState != "TERMINATED")
+                    //TypedObject body = (TypedObject)to["body"];
+                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
                     {
-                        MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
-                            Client.OverlayContainer.Visibility = Visibility.Visible;
-                        }));
-                    }
+                        InvitationRequest invite = new InvitationRequest();
+                        //Gameinvite stuff
+                        GameInvitePopup pop = new GameInvitePopup();
+                        await PVPNet.getPendingInvitations();
+                        await PVPNet.checkLobbyStatus();
+                        await PVPNet.getLobbyStatus();
+                        PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest Invite = new PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest();
+                        //await Invite.Callback;
+                        //Invite.InvitationRequest(body);
+                        pop.HorizontalAlignment = HorizontalAlignment.Right;
+                        pop.VerticalAlignment = VerticalAlignment.Bottom;
+                        pop.Height = 230;
+                        Client.NotificationGrid.Children.Add(pop);
+                        Client.InviteJsonRequest = LegendaryClient.Logic.JSON.InvitationRequest.PopulateGameInviteJson();
+                        //message.GetType() == typeof(GameInvitePopup)
+                    }));
+                }
+                else if (message is GameDTO && RunonePop == false)
+                {
+                    /*
+                    GameDTO Queue = message as GameDTO;
+                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                    }));
+                    RunonePop = true;*/
+                    //Client.PVPNet.OnMessageReceived -= GotQueuePop;
                 }
             }));
         }
@@ -613,6 +743,9 @@ namespace LegendaryClient.Logic
 
                 case "matching-queue-NORMAL-3x3-game-queue":
                     return "Normal 3v3";
+
+                case "matching-queue-GROUPFINDER-5x5-game-queue":
+                    return "Team Builder 5v5";
 
                 case "matching-queue-NORMAL-5x5-draft-game-queue":
                     return "Draft 5v5";
@@ -674,6 +807,8 @@ namespace LegendaryClient.Logic
             return Directory;
         }
 
+
+        private static int counter;
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();
@@ -687,6 +822,30 @@ namespace LegendaryClient.Logic
                 CurrentGame.EncryptionKey + " " +
                 CurrentGame.SummonerId + "\"";
             p.Start();
+            //recorder = new AutoReplayRecorder.AutoReplayRecorder();
+            ReplayTimer = new System.Windows.Forms.Timer();
+            ReplayTimer.Tick += new EventHandler(CountdownTimer_Tick);
+            ReplayTimer.Interval = 10000; // 10 seconds
+            ReplayTimer.Start();
+        }
+
+        private static void CountdownTimer_Tick(object sender, EventArgs e)
+        {
+            string ObserverServerIp;
+            double GameId;
+            string InternalName;
+            string ObserverEncryptionKey;
+
+            PlayerCredentialsDto replaydata = new PlayerCredentialsDto();
+            ObserverServerIp = replaydata.ObserverServerIp;
+            GameId = replaydata.GameId;
+            InternalName =Region.InternalName;
+            ObserverEncryptionKey = replaydata.ObserverEncryptionKey;
+            if (ReplayTimer.Interval == 0)
+            {
+                ReplayTimer.Stop();
+                Autorecorder = new LegendaryClient.Logic.Replays.AutoReplayRecorder(ObserverServerIp, GameId, InternalName, ObserverEncryptionKey);
+            }
         }
 
         internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)
@@ -702,6 +861,7 @@ namespace LegendaryClient.Logic
                 + GameId + " "
                 + Platform + "\"";
             p.Start();
+            
         }
 
         internal async static void QuitCurrentGame()
@@ -751,6 +911,7 @@ namespace LegendaryClient.Logic
                 }
             }
         }
+
         #endregion League Of Legends Logic
 
         internal static MainWindow MainWin;
@@ -813,14 +974,15 @@ namespace LegendaryClient.Logic
             dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp / 1000)).ToLocalTime();
             return dtDateTime;
         }
-
         public static void Log(String lines, String type = "LOG")
         {
+            /*
             System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
             file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
-            file.Close();
+            file.Close();*/
         }
 
+        //Get Image
         public static BitmapImage GetImage(string Address)
         {
             Uri UriSource = new Uri(Address, UriKind.RelativeOrAbsolute);
@@ -866,10 +1028,11 @@ namespace LegendaryClient.Logic
 
         public string Status { get; set; }
 
-        public string RawPresence { get; set; }
-
         public bool UsingLegendary { get; set; }
+
+        public bool IsLegendaryDev { get; set; }
 
         public List<string> Messages = new List<string>();
     }
+
 }

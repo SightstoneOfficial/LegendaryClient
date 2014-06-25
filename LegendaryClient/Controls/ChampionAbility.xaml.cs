@@ -11,5 +11,10 @@ namespace LegendaryClient.Controls
         {
             InitializeComponent();
         }
+
+        private void AbilityDescription_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

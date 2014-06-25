@@ -175,11 +175,24 @@ namespace LegendaryClient.Windows
                     PlayerItem.PlayerWins.Content = playerItem.RankedWins + " Ranked Wins";
                 PlayerItem.LevelLabel.Content = playerItem.Level;
                 PlayerItem.UsingLegendary.Visibility = playerItem.UsingLegendary ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+<<<<<<< HEAD
+
+                //PlayerItem.Dev.Visibility = playerItem.IsLegendaryDev ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", playerItem.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
+                PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
+=======
                 var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", playerItem.ProfileIcon + ".png");
                 PlayerItem.ProfileImage.Source = Client.GetImage(uriSource);
+>>>>>>> master
                 if (playerItem.Status != null)
                 {
-                    PlayerItem.PlayerStatus.Text = playerItem.Status.Replace("∟", "");
+                    //Client.hidelegendaryaddition = true;
+                    Client.NewStatus();
+                }
+                else if (playerItem.Status == null)
+                {
+                    Client.hidelegendaryaddition = true;
+                    Client.NewStatus();
                 }
                 else
                 {

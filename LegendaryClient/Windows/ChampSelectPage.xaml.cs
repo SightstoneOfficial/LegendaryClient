@@ -8,7 +8,7 @@ using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
-//using PVPNetConnect.RiotObjects.Platform.Trade;
+using PVPNetConnect.RiotObjects.Platform.Trade;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,7 +33,8 @@ namespace LegendaryClient.Windows
         private bool BanningPhase
         {
             get { return _BanningPhase; }
-            set {
+            set
+            {
                 if (_BanningPhase != value)
                 {
                     RenderChamps(value);
@@ -75,7 +76,7 @@ namespace LegendaryClient.Windows
         private List<ChampionBanInfoDTO> ChampionsForBan;
         private MasteryBookDTO MyMasteries;
         private SpellBookDTO MyRunes;
-        //private PotentialTradersDTO CanTradeWith;
+        private PotentialTradersDTO CanTradeWith;
         private GameTypeConfigDTO configType;
         private System.Windows.Forms.Timer CountdownTimer;
         private int counter;
@@ -95,14 +96,41 @@ namespace LegendaryClient.Windows
         /// <summary>
         /// Initializes all data required for champion select. Also retrieves latest GameDTO
         /// </summary>
+        /// 
+
+        /// <summary>
+        /// Fix Champ Select
+        /// </summary>
+        internal static void FixChampSelect()
+        {
+            /*
+            if (OnFixChampSelect != null)
+            {
+                foreach (Delegate d in OnFixChampSelect.GetInvocationList())
+                {
+                    PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                    OnFixChampSelect -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                }
+            }//*/
+        }
+
+        internal static object LobbyContent;
+
         private async void StartChampSelect()
         {
             //Force client to popup once in champion select
             Client.FocusClient();
             Client.IsInGame = true;
             //Get champions and sort alphabetically
+
+
+
+
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+
+
+
             //Retrieve masteries and runes
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
@@ -113,7 +141,7 @@ namespace LegendaryClient.Windows
             {
                 string MasteryPageName = MasteryPage.Name;
                 //Stop garbage mastery names
-                if (MasteryPageName.StartsWith("@@")) 
+                if (MasteryPageName.StartsWith("@@"))
                 {
                     MasteryPageName = "Mastery Page " + ++i;
                 }
@@ -145,14 +173,14 @@ namespace LegendaryClient.Windows
             configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDTO.GameTypeConfigId);
             if (configType == null) //Invalid config... abort!
             {
-                Client.QuitCurrentGame();
+                QuitCurrentGame();
 
                 MessageOverlay overlay = new MessageOverlay();
-                overlay.MessageTextBox.Text = "Invalid Config ID (" + latestDTO.GameTypeConfigId.ToString() + "). Report to Snowl [https://github.com/Snowl/LegendaryClient/issues/new]";
+                overlay.MessageTextBox.Text = "Invalid Config ID (" + latestDTO.GameTypeConfigId.ToString() + "). Report to Eddy5641 [https://github.com/Eddy5641/LegendaryClient/issues/new]";
                 overlay.MessageTitle.Content = "Invalid Config";
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
-                return;
+                
             }
             counter = configType.MainPickTimerDuration - 5; //Seems to be a 5 second inconsistancy with riot and what they actually provide
             CountdownTimer = new System.Windows.Forms.Timer();
@@ -251,9 +279,9 @@ namespace LegendaryClient.Windows
                         {
                             CountdownTimer.Stop();
                         }
-                        Client.FixChampSelect();
+                        FixChampSelect();
                         FakePage fakePage = new FakePage();
-                        fakePage.Content = Client.LobbyContent;
+                        fakePage.Content = LobbyContent;
                         Client.SwitchPage(fakePage);
                         return;
                     }
@@ -324,7 +352,7 @@ namespace LegendaryClient.Windows
                     else if (ChampDTO.GameState == "POST_CHAMP_SELECT")
                     {
                         //Post game has started. Allow trading
-                        //CanTradeWith = await Client.PVPNet.GetPotentialTraders();
+                        CanTradeWith = await Client.PVPNet.GetPotentialTraders();
                         HasLockedIn = true;
                         GameStatusLabel.Content = "All players have picked!";
                         if (configType != null)
@@ -404,6 +432,14 @@ namespace LegendaryClient.Windows
                                         if (PurpleSide)
                                             AreWePurpleSide = true;
                                         RenderLockInGrid(selection);
+                                        if (player.PointSummary != null)
+                                        {
+                                            LockInButton.Content = string.Format("Reroll ({0}/{1})", player.PointSummary.CurrentPoints, player.PointSummary.PointsCostToRoll);
+                                            if (player.PointSummary.NumberOfRolls > 0)
+                                                LockInButton.IsEnabled = true;
+                                            else
+                                                LockInButton.IsEnabled = false;
+                                        }
                                     }
                                 }
                             }
@@ -495,14 +531,13 @@ namespace LegendaryClient.Windows
                         {
                             CountdownTimer.Stop();
                         }
-                        Client.QuitCurrentGame();
+                        QuitCurrentGame();
                     }));
                     Client.LaunchGame();
                 }
 
                 #endregion Launching Game
             }
-                /*
             else if (message.GetType() == typeof(TradeContractDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -526,7 +561,8 @@ namespace LegendaryClient.Windows
                     else if (TradeDTO.State == "CANCELED" || TradeDTO.State == "DECLINED" || TradeDTO.State == "BUSY")
                     {
                         PlayerTradeControl.Visibility = System.Windows.Visibility.Hidden;
-                        NotificationPopup pop = new NotificationPopup(ChatSubjects.INVITE_STATUS_CHANGED, 
+                        
+                        NotificationPopup pop = new NotificationPopup(ChatSubjects.INVITE_STATUS_CHANGED,
                             string.Format("{0} has {1} this trade", TradeDTO.RequesterInternalSummonerName, TradeDTO.State));
 
                         if (TradeDTO.State == "BUSY")
@@ -536,10 +572,10 @@ namespace LegendaryClient.Windows
                         pop.OkButton.Visibility = System.Windows.Visibility.Visible;
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
-                        Client.NotificationGrid.Children.Add(pop);
+                        Client.NotificationGrid.Children.Add(pop);//*/
                     }
                 }));
-            }*/
+            }
         }
 
         /// <summary>
@@ -570,12 +606,15 @@ namespace LegendaryClient.Windows
             SkinSelectListView.Items.Add(item);
 
             //Render abilities
-            foreach (Spell ability in Champion.Spells)
+            List<championAbilities> Abilities = championAbilities.GetAbilities(selection.ChampionId);
+            foreach (championAbilities ability in Abilities)
             {
                 ChampionAbility championAbility = new ChampionAbility();
-                championAbility.DataContext = ability;
-                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", ability.Image);
+                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "abilities", ability.iconPath);
                 championAbility.AbilityImage.Source = Client.GetImage(uriSource);
+                championAbility.AbilityHotKey.Content = ability.hotkey;
+                championAbility.AbilityName.Content = ability.name;
+                championAbility.AbilityDescription.Text = ability.description;
                 championAbility.Width = 375;
                 championAbility.Height = 75;
                 AbilityListView.Items.Add(championAbility);
@@ -702,14 +741,10 @@ namespace LegendaryClient.Windows
                 control.Opacity = 1;
             }
             //If trading with this player is possible
-
-            /*
             if (CanTradeWith != null && (CanTradeWith.PotentialTraders.Contains(player.SummonerInternalName) || DevMode))
             {
                 control.TradeButton.Visibility = System.Windows.Visibility.Visible;
             }
-            */
-
             //If this player is duo/trio/quadra queued with players
             if (player.TeamParticipantId != null && (double)player.TeamParticipantId != 0)
             {
@@ -738,7 +773,7 @@ namespace LegendaryClient.Windows
         private async void TradeButton_Click(object sender, RoutedEventArgs e)
         {
             KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant> p = (KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>)((Button)sender).Tag;
-            //await Client.PVPNet.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
+            await Client.PVPNet.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
 
             PlayerTradeControl.Visibility = System.Windows.Visibility.Visible;
             champions MyChampion = champions.GetChampion((int)MyChampId);
@@ -825,17 +860,41 @@ namespace LegendaryClient.Windows
         private void DodgeButton_Click(object sender, RoutedEventArgs e)
         {
             //TODO - add messagebox
-            Client.QuitCurrentGame();
+            Warning pop = new Warning();
+            //pop.hide.Click =
+            Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            QuitCurrentGame();
+        }
+
+        private async void QuitCurrentGame()
+        {
+            await Client.PVPNet.QuitGame();
+            Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            Client.ClearPage(new CustomGameLobbyPage());
+            Client.ClearPage(new CreateCustomGamePage());
+            Client.ClearPage(new ChampSelectPage());
+            Client.ClearPage(this);
+
+            Client.SwitchPage(new MainPage());
         }
 
         private async void LockInButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: Aram Reroll
-            if (ChampionSelectListView.SelectedItems.Count > 0)
+            if (configType.PickMode != "AllRandomPickStrategy")
             {
-                await Client.PVPNet.ChampionSelectCompleted();
+                if (ChampionSelectListView.SelectedItems.Count > 0)
+                {
+                    await Client.PVPNet.ChampionSelectCompleted();
+                    HasLockedIn = true;
+                }
+            }
+            else
+            {
+                await Client.PVPNet.Roll();
                 HasLockedIn = true;
             }
+
+
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)

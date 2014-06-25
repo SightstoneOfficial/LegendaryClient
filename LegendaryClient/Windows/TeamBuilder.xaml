@@ -1,0 +1,16 @@
+﻿<Page x:Class="LegendaryClient.Windows.TeamBuilder"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="672" d:DesignWidth="1024"
+	Title="TeamBuilder">
+
+    <Grid>
+        <Label Content="Team Builder Beta" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
+        <Button x:Name="Invite" IsEnabled="True" Content="Invite" HorizontalAlignment="Right" VerticalAlignment="Top" Width="296" Margin="0,371,10,0" Height="26"/>
+        <StackPanel x:Name="Players" HorizontalAlignment="Right" Background="#FF474747" Height="326" VerticalAlignment="Top" Width="296" Margin="0,40,10,0"/>
+
+    </Grid>
+</Page>

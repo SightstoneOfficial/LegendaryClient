@@ -1,0 +1,106 @@
+﻿<Page x:Class="LegendaryClient.Windows.ChampionDetailsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="688" d:DesignWidth="1280"
+	Title="ChampionDetailsPage">
+
+    <Grid Background="#B2000000">
+        <Grid HorizontalAlignment="Stretch" Margin="20,20,20,20" VerticalAlignment="Stretch" Background="#FF2B2B2B" Grid.RowSpan="2">
+            <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
+                <TabItem Header="Overview">
+                    <Grid>
+                        <Image x:Name="ChampionImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" />
+                        <Grid VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,0,0" Height="120" Background="#B2000000">
+
+                            <Image x:Name="ChampionProfileImage" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top" Width="64"/>
+                            <Label x:Name="ChampionName" Content="Corki" HorizontalAlignment="Left" Margin="80,10,0,0" VerticalAlignment="Top" Foreground="White" FontSize="40" FontWeight="ExtraLight"/>
+                            <Label x:Name="ChampionTitle" Content="the Swag Overlord" HorizontalAlignment="Left" Margin="80,73,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                        </Grid>
+
+                        <ProgressBar x:Name="AttackProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="30" Margin="100,150,0,0" VerticalAlignment="Top" Width="200" Value="5" Maximum="10" Foreground="#FF7C7C7C" BorderBrush="{x:Null}"/>
+                        <Label Content="Attack" HorizontalAlignment="Left" Margin="10,145,0,0" FontWeight="ExtraLight" FontSize="20" VerticalAlignment="Top">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+
+                        <ProgressBar x:Name="DefenseProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="30" Margin="100,190,0,0" VerticalAlignment="Top" Width="200" Value="4" Maximum="10" Foreground="#FF7C7C7C" BorderBrush="{x:Null}"/>
+                        <Label Content="Defense" HorizontalAlignment="Left" Margin="10,185,0,0" FontWeight="ExtraLight" FontSize="20" VerticalAlignment="Top">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+                        
+                        
+
+                        <ProgressBar x:Name="AbilityProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="30" Margin="100,230,0,0" VerticalAlignment="Top" Width="200" Value="8" Maximum="10" Foreground="#FF7C7C7C" BorderBrush="{x:Null}"/>
+                        <Label Content="Ability" HorizontalAlignment="Left" Margin="10,225,0,0" FontWeight="ExtraLight" FontSize="20" VerticalAlignment="Top">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+
+                        <ProgressBar x:Name="DifficultyProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="30" Margin="100,270,0,0" VerticalAlignment="Top" Width="200" Value="8" Maximum="10" Foreground="#FF7C7C7C" BorderBrush="{x:Null}" Background="#FFE6E6E6"/>
+                        <Label Content="Difficulty" HorizontalAlignment="Left" Margin="10,265,0,0" FontWeight="ExtraLight" FontSize="20" VerticalAlignment="Top">
+                            <Label.Effect>
+                                <DropShadowEffect ShadowDepth="1" BlurRadius="3"/>
+                            </Label.Effect>
+                        </Label>
+
+                        <Label x:Name="SkinName" Content="" HorizontalAlignment="Left" Margin="20,360,0,0" FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top"/>
+                        <ListView x:Name="SkinSelectListView" HorizontalAlignment="Stretch" Margin="20,0,20,10" VerticalAlignment="Bottom" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="190" BorderBrush="{x:Null}" Background="{x:Null}">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <EventSetter Event="PreviewMouseDown" Handler="SkinSelectListView_PreviewMouseDown" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+
+                        <Grid VerticalAlignment="Top" HorizontalAlignment="Right" Margin="0,10,10,0" Height="290" Background="#B2000000">
+
+                            <Label x:Name="HPLabel" Content="HP: 375 (+82 per level)" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                            <Label x:Name="ResourceLabel" Content="Mana: 243 (+37 per level)" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                            <Label x:Name="HPRegenLabel" Content="HP/5: 4.5 (+0.55 per level)" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                            <Label x:Name="ResourceRegenLabel" Content="Mana/5: 6.5 (+0.55 per level)" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                            <Label x:Name="MagicResistLabel" Content="MR: 30 (+0 per level)" HorizontalAlignment="Left" Margin="10,130,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                            <Label x:Name="ArmorLabel" Content="Armor: 13.5 (+3.5 per level)" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                            <Label x:Name="AttackDamageLabel" Content="AD: 48.2 (+3 per level)" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                            <Label x:Name="RangeLabel" Content="Range: 550" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                            <Label x:Name="MovementSpeedLabel" Content="Speed: 325" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Foreground="White" FontSize="20" FontWeight="ExtraLight"/>
+                        </Grid>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Abilities">
+                    <Grid>
+                        <ListView x:Name="AbilityListView" HorizontalAlignment="Stretch" Margin="20,20,20,20" Background="#E5505050" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Lore">
+                    <Grid>
+                        <TextBox x:Name="LoreText" HorizontalAlignment="Stretch" Margin="20,20,20,20" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap" Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="10,10,10,10" FontSize="16" FontWeight="ExtraLight" Background="#E5505050" BorderBrush="{x:Null}"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Tips">
+                    <Grid>
+                        <TextBox x:Name="TipsText" HorizontalAlignment="Stretch" Margin="20,20,20,20" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap" Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="10,10,10,10" FontSize="16" FontWeight="ExtraLight" Background="#E5505050" BorderBrush="{x:Null}"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <Button x:Name="CloseButton" Content="X" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="30" Margin="0,5,5,0" Panel.ZIndex="2" Click="CloseButton_Click" />
+        </Grid>
+    </Grid>
+</Page>

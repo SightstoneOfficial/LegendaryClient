@@ -1,8 +1,9 @@
-﻿<Page x:Class="LegendaryClient.Windows.PatcherPage"
+﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:Controls="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.PatcherPage"
       mc:Ignorable="d"
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="PatcherPage">
@@ -18,10 +19,14 @@
         <Button x:Name="SkipPatchButton" IsEnabled="False" Content="Skip" HorizontalAlignment="Right" Margin="0,5,10,0" VerticalAlignment="Top" Width="150" Height="50" Click="SkipPatchButton_Click" />
 
         <Label x:Name="CurrentProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,100" VerticalAlignment="Bottom" />
-        <ProgressBar x:Name="CurrentProgressBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,70" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" IsIndeterminate="True" />
+        <ProgressBar x:Name="CurrentProgressBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,70" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" />
         <Label x:Name="TotalProgressLabel" Content="0%" HorizontalAlignment="Left" Margin="10,0,0,40" VerticalAlignment="Bottom" />
         <ProgressBar x:Name="TotalProgessBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,10" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" />
         <Label x:Name="CurrentStatusLabel" Content="Checking for updates..." HorizontalAlignment="Right" Margin="0,0,10,100" VerticalAlignment="Bottom" />
-        <TextBox x:Name="PatchTextBox" HorizontalAlignment="Stretch" Margin="10,60,10,130" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Stretch" Background="#FF2E2E2E" BorderBrush="{x:Null}" Foreground="White" />
+        <TextBox x:Name="PatchTextBox" HorizontalAlignment="Stretch" Margin="10,60,10,163" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Stretch" Background="#FF2E2E2E" BorderBrush="{x:Null}" Foreground="White" />
+        <Controls:TextBoxWatermarked x:Name="DevKey" Watermark="Type Your Dev Key Here" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Margin="15,0,0,136" Width="913" Background="#FF2E2E2E"/>
+        <Button x:Name="DevSkip" Content="DevSkip" HorizontalAlignment="Right" Margin="0,5,165,0" VerticalAlignment="Top" Width="150" Height="50" Click="DevSkip_Click" IsEnabled="True" Visibility="Hidden"/>
+        <TextBlock x:Name="Welcome" HorizontalAlignment="Left" TextWrapping="Wrap" Text=" Welcome Dev Eddy5641!" VerticalAlignment="Bottom" Margin="10,0,0,136" Width="1004" Height="22" FontSize="14" Visibility="Hidden" Background="#FF2E2E2E"/>
+        <Button x:Name="DevKeySend" Click="DevKeySend_Click" Content="Check Key" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="81" Margin="0,0,10,136" Height="22"/>
     </Grid>
 </Page>
