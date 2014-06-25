@@ -12,7 +12,7 @@
                 <DropShadowEffect ShadowDepth="3" />
             </Rectangle.Effect>
         </Rectangle>
-        <Label x:Name="PlayerLabelName" Content="Snowl" Margin="10,5,0,0" Foreground="White" FontWeight="ExtraLight" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Label x:Name="PlayerLabelName" Content="Eddy5641" Margin="10,5,0,0" Foreground="White" FontWeight="ExtraLight" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Button x:Name="MinimizeButton" Style="{x:Null}" Foreground="Black" Content="_" HorizontalAlignment="Right" Margin="0,10,40,0" VerticalAlignment="Top" Width="25" Click="MinimizeButton_Click" />
         <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="25" Click="CloseButton_Click" />
 

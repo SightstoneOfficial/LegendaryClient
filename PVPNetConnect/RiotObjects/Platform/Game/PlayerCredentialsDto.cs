@@ -44,11 +44,17 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         [InternalName("lastSelectedSkinIndex")]
         public Int32 LastSelectedSkinIndex { get; set; }
 
+        [InternalName("dataVersion")]
+        public Int32 DataVersion { get; set; }
+
         [InternalName("serverIp")]
         public String ServerIp { get; set; }
 
         [InternalName("observer")]
         public Boolean Observer { get; set; }
+
+        [InternalName("futureData")]
+        public Boolean FutureData { get; set; }
 
         [InternalName("summonerId")]
         public Double SummonerId { get; set; }

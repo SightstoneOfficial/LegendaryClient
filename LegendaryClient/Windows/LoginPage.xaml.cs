@@ -27,9 +27,13 @@ namespace LegendaryClient.Windows
         public LoginPage()
         {
             InitializeComponent();
+            Version.TextChanged += WaterTextbox_TextChanged;
+            Version.Text = Client.Version;
 
             //Get client data after patcher completed
-            Client.SQLiteDatabase = new SQLite.SQLiteConnection("gameStats_en_US.sqlite");
+
+            //Client.SQLiteDatabase = new SQLite.SQLiteConnection("gameStats_en_US.sqlite");
+            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Client.sqlite);
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
                                 orderby s.name
                                 select s).ToList();
@@ -52,6 +56,8 @@ namespace LegendaryClient.Windows
                                select s).ToList();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
+            Client.Runes = Runes.PopulateRunes();
+            Client.StartHeartbeat();
 
             //Retrieve latest client version
             /*
@@ -86,8 +92,9 @@ namespace LegendaryClient.Windows
             {
                 RegionComboBox.SelectedValue = Properties.Settings.Default.Region;
             }
+
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
-            LoginImage.Source = new BitmapImage(uriSource);
+            LoginImage.Source = new BitmapImage(uriSource);//*/
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&
                 !String.IsNullOrWhiteSpace(Properties.Settings.Default.Region) &&
                 Properties.Settings.Default.AutoLogin)
@@ -95,6 +102,12 @@ namespace LegendaryClient.Windows
                 AutoLoginCheckBox.IsChecked = true;
                 LoginButton_Click(null, null);
             }
+        }
+
+        private void WaterTextbox_TextChanged(object sender, RoutedEventArgs e)
+        {
+            //Version.Text = Client.Version;]
+            Client.Version = Version.Text;
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -122,7 +135,7 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
             BaseRegion SelectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             Client.Region = SelectedRegion;
-            //Client.Version = "4.6.test";
+            //Client.Version = "4.7.8";
             Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
         }
 
@@ -188,6 +201,7 @@ namespace LegendaryClient.Windows
 
                 Client.ConfManager = new ConferenceManager();
                 Client.ConfManager.Stream = Client.ChatClient;
+                Client.Log("Connected and loged in as" + Client.ChatClient.User);
 
                 Client.SwitchPage(new MainPage());
                 Client.ClearPage(this);

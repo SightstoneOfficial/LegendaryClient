@@ -3,6 +3,7 @@ using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Practice;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Harassment;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Login;
@@ -1016,9 +1017,82 @@ namespace PVPNetConnect
             return result;
         }
 
-        public async Task<object> AcceptInviteForMatchmakingGame(string gameId)
+        
+        //public async Task<object> AcceptInviteForMatchmakingGame(string gameId)
+        public async Task<object> Accept(string InvitationId)
         {
-            int Id = Invoke("matchmakerService", "acceptInviteForMatchmakingGame", new object[] { gameId });
+            int Id = Invoke("lcdsGameInvitationService", "accept", new object[] { InvitationId });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
+        public async Task<object> transferOwnership(string InvitationId)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "transferOwnership", new object[] { InvitationId });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
+        public async Task<object> getLobbyStatus()
+        {
+            int Id = Invoke("lcdsGameInvitationService", "getLobbyStatus", new object[] { });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
+        public async Task<object> checkLobbyStatus()
+        {
+            int Id = Invoke("lcdsGameInvitationService", "checkLobbyStatus", new object[] { });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
+
+
+        public async Task<object> getPendingInvitations()
+        {
+            int Id = Invoke("lcdsGameInvitationService", "getPendingInvitations", new object[] { });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
+        public async Task<object> Decline(string InvitationId)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "decline", new object[] { InvitationId });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+
+        public async Task<object> createArrangedTeamLobby(double QueueId)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "createArrangedTeamLobby", new object[] { QueueId });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            LobbyStatus result = new LobbyStatus();
+            results.Remove(Id);
+            return result;
+        }
+
+        public async Task<object> Invite(string ID)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "invite", new object[] { ID });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);
@@ -1165,6 +1239,20 @@ namespace PVPNetConnect
             return null;
         }
 
+        /// <summary>
+        /// Attempts to reroll the champion. Only works in AllRandomPickStrategy
+        /// </summary>
+        /// <returns>Returns the amount of rolls left for the player</returns>
+        public async Task<RollResult> Roll()
+        {
+            //return InvokeAsync<RollResult>("lcdsRerollService", "roll");
+            int Id = Invoke("lcdsRerollService", "roll", new object[] { });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+
         //Todo - get actual data objects
         public async Task<object> GetGameMapList()
         {
@@ -1270,6 +1358,23 @@ namespace PVPNetConnect
         public async Task<object> PurgeFromQueues()
         {
             int Id = Invoke("matchmakerService", "purgeFromQueues", new object[] { });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+
+        public async Task<object> Invite(double Summoner_ID)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "invite", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+        public async Task<object> GetInvitations(double x)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "getPendingInvitations", new object[] { x });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);

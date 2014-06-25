@@ -96,6 +96,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         [InternalName("queueTypeName")]
         public String QueueTypeName { get; set; }
 
+        /*[InternalName("featuredGameInfo")]
+        public featuredGameInfo //*/
+
         [InternalName("glmPort")]
         public Int32 GlmPort { get; set; }
 

@@ -17,6 +17,7 @@ using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using PVPNetConnect.RiotObjects.Platform.Messaging;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using PVPNetConnect.RiotObjects.Platform.Trade;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +28,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Web.Script.Serialization;
+using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 
 namespace PVPNetConnect
 {
@@ -184,7 +187,7 @@ namespace PVPNetConnect
 
         private bool GetGarenaToken()
         {
-            /*
+            
          try
          {
              System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
@@ -262,15 +265,17 @@ namespace PVPNetConnect
          }
          catch
          {
-             Error("Unable to acquire garena token", ErrorType.Login);
+             //Error("Unable to acquire garena token", ErrorType.Login);
+             Error("Garena is in dev. This may not work", ErrorType.Login);
              Disconnect();
              return false;
          }
-          */
+          /*
 
             Error("Garena Servers are not yet supported", ErrorType.Login);
             Disconnect();
             return false;
+            //*/
         }
 
         private bool GetAuthKey()
@@ -1054,10 +1059,17 @@ namespace PVPNetConnect
                                         new Thread(new ThreadStart(() =>
                                         {
                                             TypedObject body = (TypedObject)to["body"];
+
                                             if (body.type.Equals("com.riotgames.platform.game.GameDTO"))
                                                 MessageReceived(new GameDTO(body));
+
                                             else if (body.type.Equals("com.riotgames.platform.game.PlayerCredentialsDto"))
                                                 MessageReceived(new PlayerCredentialsDto(body));
+
+                                            else if (
+                                                body.type.Equals("com.riotgames.platform.gameinvite.contract.InvitationRequest"))
+                                                MessageReceived(new InvitationRequest(body));
+
                                             else if (
                                                 body.type.Equals(
                                                     "com.riotgames.platform.game.message.GameNotification"))
@@ -1086,6 +1098,7 @@ namespace PVPNetConnect
                                                 body.type.Equals(
                                                 "com.riotgames.platform.statistics.EndOfGameStats"))
                                                 MessageReceived(new EndOfGameStats(body));
+                                            
                                             //MessageReceived(to["body"]);
                                         })).Start();
                                     }

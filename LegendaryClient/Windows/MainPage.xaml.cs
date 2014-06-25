@@ -361,6 +361,9 @@ namespace LegendaryClient.Windows
                 }
                 if (pair.Key == "bannedChampions")
                 {
+                    //ArrayList players = pair.Value as ArrayList;
+                    //Dictionary<string, object> playerInfo = objectPlayer as Dictionary<string, object>;
+                    //foreach (KeyValuePair<string, object> playerPair in playerInfo)
                     ArrayList keyArray = pair.Value as ArrayList;
                     if (keyArray.Count > 0)
                     {
@@ -368,6 +371,7 @@ namespace LegendaryClient.Windows
                         PurpleBansLabel.Visibility = Visibility.Visible;
                     }
                     foreach (Dictionary<string, object> keyArrayP in keyArray)
+                    //Dictionary<string, object> keyArrayP = keyArray as Dictionary<string, object>;
                     {
                         int cid = 0;
                         int teamId = 100;
@@ -376,6 +380,7 @@ namespace LegendaryClient.Windows
                             if (keyArrayPair.Key == "championId")
                             {
                                 cid = (int)keyArrayPair.Value;
+                                //cid = (int)playerPair.Value;
                             }
                             if (keyArrayPair.Key == "teamId")
                             {
@@ -386,7 +391,10 @@ namespace LegendaryClient.Windows
                         Image champImage = new Image();
                         champImage.Height = 58;
                         champImage.Width = 58;
+                        //temp
                         champImage.Source = champions.GetChampion(cid).icon;
+                        
+
                         item.Content = champImage;
                         if (teamId == 100)
                         {
@@ -493,6 +501,12 @@ namespace LegendaryClient.Windows
         private void HoverLabel_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             HoverLabel.Opacity = 0;
+        }
+
+        private void InviteTest_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new GameInviteTest().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private void PVPNet_OnMessageReceived(object sender, object message)

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace LegendaryClient.Elements
+namespace LegendaryClient.Controls
 {
     /// <summary>
     /// Interaction logic for SmallChampionItem.xaml

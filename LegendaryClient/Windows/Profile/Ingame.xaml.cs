@@ -20,7 +20,10 @@ namespace LegendaryClient.Windows.Profile
     public partial class Ingame : Page
     {
         PlatformGameLifecycleDTO Game;
+<<<<<<< HEAD
+=======
 
+>>>>>>> master
         public Ingame()
         {
             InitializeComponent();
@@ -149,6 +152,15 @@ namespace LegendaryClient.Windows.Profile
             }
             catch { MMRLabel.Content = "N/A"; }
         }
+<<<<<<< HEAD
+        private void SpectateButton_Click(object sender, System.Windows.RoutedEventArgs e)
+         {
+             string IP = Game.PlayerCredentials.ObserverServerIp;
+             string Key = Game.PlayerCredentials.ObserverEncryptionKey;
+             double GameID = Game.PlayerCredentials.GameId;
+             Client.LaunchSpectatorGame(IP, Key, (int)GameID, Client.Region.InternalName);
+         }
+=======
 
         private void SpectateButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -157,5 +169,6 @@ namespace LegendaryClient.Windows.Profile
             double GameID = Game.PlayerCredentials.GameId;
             Client.LaunchSpectatorGame(IP, Key, (int)GameID, Client.Region.InternalName);
         }
+>>>>>>> master
     }
 }

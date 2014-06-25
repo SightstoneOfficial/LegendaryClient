@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LegendaryClient.Elements
+namespace LegendaryClient.Controls
 {
     /// <summary>
     /// Interaction logic for PlayerItemReplay.xaml

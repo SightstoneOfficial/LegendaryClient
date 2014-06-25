@@ -36,7 +36,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,9 +68,13 @@
     <Compile Include="RiotObjects\Platform\Catalog\Runes\Rune.cs" />
     <Compile Include="RiotObjects\Platform\Catalog\Runes\RuneType.cs" />
     <Compile Include="RiotObjects\Platform\Clientfacade\Domain\LoginDataPacket.cs" />
+    <Compile Include="RiotObjects\Platform\Client\Dynamic\Configuration\ClientDynamicConfigurationNotification.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\InvitationRequest.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Invitee.cs" />
+    <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Inviter.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\LobbyStatus.cs" />
+    <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Members.cs" />
+    <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Owner.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Player.cs" />
     <Compile Include="RiotObjects\Platform\Game\BannedChampion.cs" />
     <Compile Include="RiotObjects\Platform\Game\BotParticipant.cs" />
@@ -98,12 +104,14 @@
     <Compile Include="RiotObjects\Platform\Matchmaking\QueueDodger.cs" />
     <Compile Include="RiotObjects\Platform\Matchmaking\QueueInfo.cs" />
     <Compile Include="RiotObjects\Platform\Matchmaking\SearchingForMatchNotification.cs" />
+    <Compile Include="RiotObjects\Platform\Messaging\ClientLoginKickNotification.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\SimpleDialogMessage.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\StoreAccountBalanceNotification.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\StoreFulfillmentNotification.cs" />
     <Compile Include="RiotObjects\Platform\Reroll\Pojo\AramPlayerParticipant.cs" />
     <Compile Include="RiotObjects\Platform\Reroll\Pojo\EogPointChangeBreakdown.cs" />
     <Compile Include="RiotObjects\Platform\Reroll\Pojo\PointSummary.cs" />
+    <Compile Include="RiotObjects\Platform\Reroll\Pojo\RollResult.cs" />
     <Compile Include="RiotObjects\Platform\Statistics\AggregatedStat.cs" />
     <Compile Include="RiotObjects\Platform\Statistics\AggregatedStats.cs" />
     <Compile Include="RiotObjects\Platform\Statistics\AggregatedStatsKey.cs" />

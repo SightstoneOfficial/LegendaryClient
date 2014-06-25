@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="LegendaryClient.Elements.ChampionItem"
+﻿<UserControl x:Class="LegendaryClient.Controls.ChampionItem"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,6 +9,7 @@
         <Image x:Name="ChampionImage" Source="/LegendaryClient;component/Assets/champion/Twitch.png">
             <Image.Clip>
                 <RectangleGeometry Rect="5,5,66,66"/>
+                <!--PUSH-->
             </Image.Clip>
         </Image>
     </Grid>

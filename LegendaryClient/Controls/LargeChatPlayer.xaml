@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignWidth="250">
+             d:DesignWidth="300">
     <Grid Background="#E5000000">
         <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="60" Margin="5,5,0,0" VerticalAlignment="Top" Width="60" Source="/LegendaryClient;component/Icon.ico" />
         <Image x:Name="UsingLegendary" HorizontalAlignment="Right" Height="20" Margin="5,5,0,0" VerticalAlignment="Top" Width="20" Visibility="Visible" Source="/LegendaryClient;component/Icon.ico" />
@@ -24,5 +24,6 @@
         <Label HorizontalAlignment="Stretch" Margin="0,100,0,0" VerticalAlignment="Bottom" Foreground="White">
             <TextBlock x:Name="InGameStatus" Text="In game as Shyvana" TextWrapping="WrapWithOverflow" Foreground="#FFFFFF99" Visibility="Collapsed"/>
         </Label>
+        <Image x:Name="Dev" HorizontalAlignment="Right" Height="20" Margin="0,0,25,96" VerticalAlignment="Bottom" Width="48" Visibility="Hidden" Source="/LegendaryClient;component/Dev.png" />
     </Grid>
 </UserControl>

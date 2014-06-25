@@ -7,7 +7,10 @@ using PVPNetConnect;
 using System;
 using System.Collections.Generic;
 using System.IO;
+<<<<<<< HEAD
+=======
 using System.Reflection;
+>>>>>>> master
 using System.Windows;
 using System.Windows.Controls;
 
@@ -32,7 +35,14 @@ namespace LegendaryClient
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "lcdebug.log"));
             }
 
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "lcdebug.log")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "lcdebug.log"));
+            }
+
             Client.InfoLabel = InfoLabel;
+            Client.StartHeartbeat();
             Client.PVPNet = new PVPNetConnection();
             Client.PVPNet.KeepDelegatesOnLogout = false;
             Client.PVPNet.OnError += Client.PVPNet_OnError;

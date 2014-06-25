@@ -90,6 +90,9 @@ namespace LegendaryClient.Windows.Profile
                     if (stats.Lose == 1)
                         brush = (Brush)bc.ConvertFrom("#FF9E6060");
 
+                    else if (stats.Game.IpEarned == 0)
+                        brush = (Brush)bc.ConvertFrom("#FFE27100");
+
                     item.GridView.Background = brush;
                     item.GridView.Width = 250;
                     GamesListView.Items.Add(item);
