@@ -4,11 +4,9 @@ using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace LegendaryClient.Windows.Profile
@@ -24,13 +22,17 @@ namespace LegendaryClient.Windows.Profile
         private int OffenseUsedPoints = 0;
         private int DefenseUsedPoints = 0;
         private int UtilityUsedPoints = 0;
+<<<<<<< HEAD
         private List<double> MasteryPageOrder = new List<double>();
+=======
+>>>>>>> master
         public Masteries()
         {
             InitializeComponent();
             MasteryPageListView.Items.Clear();
             for (int i = 1; i <= Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count; i++)
                 MasteryPageListView.Items.Add(i);
+<<<<<<< HEAD
             double SelectedPageId = 0;
             foreach (MasteryBookPageDTO MasteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
             {
@@ -42,6 +44,11 @@ namespace LegendaryClient.Windows.Profile
             }
             MasteryPageOrder.Sort();
             MasteryPageListView.SelectedIndex = MasteryPageOrder.IndexOf(SelectedPageId);
+=======
+            Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Sort((x, y) => x.PageId.CompareTo(y.PageId));
+            MasteryPageListView.SelectedIndex = Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.IndexOf(
+                Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Find(x => x.Current == true));
+>>>>>>> master
         }
 
         public void ChangeBook()
@@ -108,6 +115,7 @@ namespace LegendaryClient.Windows.Profile
                         break;
                 }
 
+                //TODO: Remove hardcoded masteries (mastery.json has null values for this)
                 //Add spaces
                 if (Mastery.id == 4152 ||
                     Mastery.id == 4222 ||
@@ -345,12 +353,18 @@ namespace LegendaryClient.Windows.Profile
                 {
                     MasteryPage.Current = false;
                 }
+<<<<<<< HEAD
                 if (MasteryPage.PageId == MasteryPageOrder[MasteryPageListView.SelectedIndex])
                 {
                     MasteryPage.Current = true;
                     SelectedBook = MasteryPage;
                 }
             }
+=======
+            }
+            Client.LoginPacket.AllSummonerData.MasteryBook.BookPages[MasteryPageListView.SelectedIndex].Current = true;
+            SelectedBook = Client.LoginPacket.AllSummonerData.MasteryBook.BookPages[MasteryPageListView.SelectedIndex];
+>>>>>>> master
             ChangeBook();
             RenderMasteries();
         }

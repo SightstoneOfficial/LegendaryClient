@@ -11,4 +11,74 @@
     <Color x:Key="AccentColor4">#33647687</Color>
 
     <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="White" />
+
+    <Style TargetType="{x:Type TabItem}" BasedOn="{StaticResource {x:Type TabItem}}">
+        <Setter Property="FocusVisualStyle"
+                Value="{x:Null}" />
+        <Setter Property="IsTabStop"
+                Value="False" />
+        <Setter Property="BorderThickness"
+                Value="1" />
+        <Setter Property="Padding"
+                Value="6,2,6,2" />
+        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="VerticalContentAlignment"
+                Value="Stretch" />
+        <Setter Property="MinWidth"
+                Value="5" />
+        <Setter Property="MinHeight"
+                Value="5" />
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="BorderBrush"
+                Value="{DynamicResource AccentColorBrush}" />
+        <Setter Property="Background"
+                Value="Transparent" />
+        <Setter Property="Foreground"
+                Value="{DynamicResource BlackBrush}" />
+        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border x:Name="Border"
+                            Margin="{TemplateBinding Padding}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ContentPresenter x:Name="ContentSite"
+                                          Margin="2,1,2,1"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          TextElement.FontSize="26.67"
+                                          TextElement.FontStretch="Normal"
+                                          TextElement.FontWeight="ExtraLight"
+                                          TextElement.Foreground="{TemplateBinding Foreground}"
+                                          ContentSource="Header"
+                                          RecognizesAccessKey="True" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected"
+                                 Value="true">
+                            <Setter Property="Foreground"
+                                    Value="#FFF3F3F3" />
+                        </Trigger>
+                        <Trigger Property="IsSelected"
+                                 Value="false">
+                            <Setter Property="Foreground"
+                                    Value="#FF969696" />
+                        </Trigger>
+                        <Trigger SourceName="ContentSite"
+                                 Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Foreground"
+                                    Value="#FFEAEAEA" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

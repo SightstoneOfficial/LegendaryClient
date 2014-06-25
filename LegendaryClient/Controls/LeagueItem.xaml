@@ -5,10 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="32" d:DesignWidth="800">
+<<<<<<< HEAD
+=======
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </UserControl.Resources>
+
+>>>>>>> master
     <Grid>
         <Label x:Name="PlayerRankLabel" Content="1" HorizontalAlignment="Left" Margin="5,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White" VerticalAlignment="Top"/>
         <Label x:Name="RankChangeLabel" Content="-" HorizontalAlignment="Left" Margin="40,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White"  VerticalAlignment="Top"/>
 
+<<<<<<< HEAD
         <Label x:Name="PlayerLabel" Content="Snowl" HorizontalAlignment="Left" Margin="100,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White"  VerticalAlignment="Top"/>
         <Label x:Name="RecruitLabel" Content="r" HorizontalAlignment="Left" Margin="430,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White"  VerticalAlignment="Top" Visibility="Hidden"/>
         <Label x:Name="VeteranLabel" Content="v" HorizontalAlignment="Left" Margin="450,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White"  VerticalAlignment="Top" Visibility="Hidden"/>
@@ -17,5 +26,15 @@
         <Label x:Name="WinsLabel" Content="210" HorizontalAlignment="Left" Margin="600,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White"  VerticalAlignment="Top"/>
 
         <Label x:Name="LPLabel" Content="90" HorizontalAlignment="Left" Margin="700,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White"  VerticalAlignment="Top"/>
+=======
+        <Label x:Name="PlayerLabel" Content="{Binding Path=PlayerOrTeamName}" HorizontalAlignment="Left" Margin="100,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White"  VerticalAlignment="Top"/>
+        <Label x:Name="RecruitLabel" Content="r" HorizontalAlignment="Left" Margin="430,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White" VerticalAlignment="Top" Visibility="{Binding Path=FreshBlood, Converter={StaticResource BoolToVis}}"/>
+        <Label x:Name="VeteranLabel" Content="v" HorizontalAlignment="Left" Margin="450,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White" VerticalAlignment="Top" Visibility="{Binding Path=Veteran, Converter={StaticResource BoolToVis}}"/>
+        <Label x:Name="HotStreakLabel" Content="h" HorizontalAlignment="Left" Margin="470,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White" VerticalAlignment="Top" Visibility="{Binding Path=HotStreak, Converter={StaticResource BoolToVis}}"/>
+
+        <Label x:Name="WinsLabel" Content="{Binding Path=Wins}" HorizontalAlignment="Left" Margin="600,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White" VerticalAlignment="Top"/>
+
+        <Label x:Name="LPLabel" Content="{Binding Path=LeaguePoints}" HorizontalAlignment="Left" Margin="700,0,0,0" FontSize="16" FontWeight="ExtraLight" Foreground="White" VerticalAlignment="Top"/>
+>>>>>>> master
     </Grid>
 </UserControl>

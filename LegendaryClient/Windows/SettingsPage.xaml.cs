@@ -80,20 +80,21 @@ namespace LegendaryClient.Windows
             #region AboutTextbox
 
             AboutTextBox.Text =
-@"Copyright (c) 2013-2014, Eddy5641 (Eddy V - legendarycoding.weebly.com)
+@"Copyright (c) 2013-2014, Eddy5641 (Ed V)
 All rights reserved.
 
-
+This client is open-source and can be found at https://github.com/eddy5641/LegendaryClient
 
 Thanks to " + Client.LoginPacket.AllSummonerData.Summoner.Name + @". Using this client means the most to me. Thank you very much!
 
-Big thanks to Snowl. Created most of this client.
+Special Thanks to Snowl. He made the foundation for this client
+
 Thanks to all the people at #riotcontrol, especially raler (for providing PVPNetConnect).
 Thanks to all the people who done the RTMPS work. Your help has been invaluable.
 
 Thanks Riot for providing a pretty awesome game. It might not be perfect, but I have wasted many hours on it.
 
-Thanks to all the people who have supported me.
+Thanks to all the people who have supported me (excluding gort).
 
 Uses Data Dragon QA Interface & l3cdn.
 
@@ -109,7 +110,8 @@ sqlite
 zlib
 
 Donations are accepted at:
-Not accepted yet";
+Bitcoin: 1Pq5HWenYoNkHKbKcRjQXshuFeSmkkXH5d
+Litecoin: LWMujPiDyfDoQt33cL6FHmMt78fYmjhzGB";
 
             #endregion AboutTextbox
         }

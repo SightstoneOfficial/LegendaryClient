@@ -3,6 +3,7 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -92,16 +93,27 @@ namespace LegendaryClient.Windows.Profile
                 {
                     ProfileChampionImage championImage = new ProfileChampionImage();
                     champions champion = champions.GetChampion(champ.ChampionId);
-                    championImage.ChampImage.Source = champion.icon;
+                    championImage.DataContext = champion;
+
                     if (champ.FreeToPlay)
                         championImage.FreeToPlayLabel.Visibility = System.Windows.Visibility.Visible;
-                    championImage.ChampName.Content = champion.displayName;
+
                     if (!champ.Owned && !champ.FreeToPlay)
-                    {
                         championImage.ChampImage.Opacity = 0.5;
-                    }
+
+                    championImage.Tag = champ.ChampionId;
                     ChampionSelectListView.Items.Add(championImage);
                 }
+            }
+        }
+
+        private void ChampionSelectListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ChampionSelectListView.SelectedIndex != -1)
+            {
+                ProfileChampionImage selectedChampion = (ProfileChampionImage)ChampionSelectListView.SelectedItem;
+                Client.OverlayContainer.Content = new ChampionDetailsPage((int)selectedChampion.Tag).Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
             }
         }
     }

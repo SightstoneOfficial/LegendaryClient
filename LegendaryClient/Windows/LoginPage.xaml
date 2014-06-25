@@ -20,11 +20,11 @@
             <Grid x:Name="LoginGrid" HorizontalAlignment="Left" Height="230" Margin="0,50,0,0" VerticalAlignment="Top" Width="350">
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="White" Margin="10,10,0,0" FontSize="18" FontWeight="Bold" />
                 <TextBox x:Name="LoginUsernameBox" TextWrapping="NoWrap" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,40,0,0" FontSize="16" />
+                <PasswordBox x:Name="LoginPasswordBox" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,120,0,0" FontSize="16" />
+                <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Stretch" Margin="10,180,10,0" VerticalAlignment="Top" Height="41" Click="LoginButton_Click" IsDefault="True" />
                 <CheckBox x:Name="RememberUsernameCheckbox" Content="Remember Username" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Foreground="White" IsChecked="True" />
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Foreground="White" Margin="10,90,0,0" FontSize="18" FontWeight="Bold" />
-                <PasswordBox x:Name="LoginPasswordBox" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,120,0,0" FontSize="16" />
                 <CheckBox x:Name="RememberPasswordCheckbox" Content="Remember Password" HorizontalAlignment="Right" Margin="0,160,10,0" VerticalAlignment="Top" Foreground="White" />
-                <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Stretch" Margin="10,180,10,0" VerticalAlignment="Top" Height="41" Click="LoginButton_Click" IsDefault="True" />
                 <ComboBox x:Name="RegionComboBox" ItemsSource="{DynamicResource Regions}" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="4" />
                 <CheckBox x:Name="AutoLoginCheckBox" Content="Auto-Login" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
             </Grid>

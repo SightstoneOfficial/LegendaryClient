@@ -15,9 +15,11 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class CreateCustomGamePage : Page
     {
+        bool PageLoaded = false;
         public CreateCustomGamePage()
         {
             InitializeComponent();
+            PageLoaded = true;
             Client.Whitelist = new List<string>();
             NameTextBox.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + "'s game";
         }
@@ -31,102 +33,101 @@ namespace LegendaryClient.Windows
 
         private PracticeGameConfig GenerateGameConfig()
         {
-            try
+            if (!PageLoaded)
+                return new PracticeGameConfig();
+
+            NameInvalidLabel.Visibility = Visibility.Hidden;
+            PracticeGameConfig gameConfig = new PracticeGameConfig();
+            gameConfig.GameName = NameTextBox.Text;
+            gameConfig.GamePassword = PasswordTextBox.Text;
+            gameConfig.MaxNumPlayers = Convert.ToInt32(TeamSizeComboBox.SelectedItem) * 2;
+            switch ((string)GameTypeComboBox.SelectedItem)
             {
-                NameInvalidLabel.Visibility = Visibility.Hidden;
-                PracticeGameConfig gameConfig = new PracticeGameConfig();
-                gameConfig.GameName = NameTextBox.Text;
-                gameConfig.GamePassword = PasswordTextBox.Text;
-                gameConfig.MaxNumPlayers = Convert.ToInt32(TeamSizeComboBox.SelectedItem) * 2;
-                switch ((string)GameTypeComboBox.SelectedItem)
-                {
-                    case "Blind Pick":
-                        gameConfig.GameTypeConfig = 1;
-                        break;
+                case "Blind Pick":
+                    gameConfig.GameTypeConfig = 1;
+                    break;
 
-                    case "No Ban Draft":
-                        gameConfig.GameTypeConfig = 3;
-                        break;
+                case "No Ban Draft":
+                    gameConfig.GameTypeConfig = 3;
+                    break;
 
-                    case "All Random":
-                        gameConfig.GameTypeConfig = 4;
-                        break;
+                case "All Random":
+                    gameConfig.GameTypeConfig = 4;
+                    break;
 
-                    case "Open Pick":
-                        gameConfig.GameTypeConfig = 5;
-                        break;
+                case "Open Pick":
+                    gameConfig.GameTypeConfig = 5;
+                    break;
 
-                    case "Blind Draft":
-                        gameConfig.GameTypeConfig = 7;
-                        break;
+                case "Blind Draft":
+                    gameConfig.GameTypeConfig = 7;
+                    break;
 
-                    case "Infinite Time Blind Pick":
-                        gameConfig.GameTypeConfig = 11;
-                        break;
+                case "Infinite Time Blind Pick":
+                    gameConfig.GameTypeConfig = 11;
+                    break;
 
-                    case "One for All":
-                        gameConfig.GameTypeConfig = 14;
-                        break;
+                case "One for All":
+                    gameConfig.GameTypeConfig = 14;
+                    break;
 
-                    case "Captain Pick":
-                        gameConfig.GameTypeConfig = 12;
-                        break;
+                case "Captain Pick":
+                    gameConfig.GameTypeConfig = 12;
+                    break;
 
-                    default: //Tournament Draft
-                        gameConfig.GameTypeConfig = 6;
-                        break;
-                }
-                switch ((string)((Label)MapListBox.SelectedItem).Content)
-                {
-                    case "The Crystal Scar":
-                        gameConfig.GameMap = GameMap.TheCrystalScar;
-                        gameConfig.GameMode = "ODIN";
-                        break;
-
-                    case "Howling Abyss":
-                        gameConfig.GameMap = GameMap.HowlingAbyss;
-                        gameConfig.GameMode = "ARAM";
-                        break;
-
-                    case "The Twisted Treeline":
-                        gameConfig.GameMap = GameMap.TheTwistedTreeline;
-                        gameConfig.GameMode = "CLASSIC";
-                        if (gameConfig.MaxNumPlayers > 6)
-                        {
-                            NameInvalidLabel.Content = "Team size must be lower or equal to 3";
-                            NameInvalidLabel.Visibility = Visibility.Visible;
-                            CreateGameButton.IsEnabled = false;
-                            return gameConfig;
-                        }
-                        break;
-
-                    default:
-                        gameConfig.GameMap = GameMap.SummonersRift;
-                        gameConfig.GameMode = "CLASSIC";
-                        break;
-                }
-                switch ((string)AllowSpectatorsComboBox.SelectedItem)
-                {
-                    case "None":
-                        gameConfig.AllowSpectators = "NONE";
-                        break;
-
-                    case "Lobby Only":
-                        gameConfig.AllowSpectators = "LOBBYONLY";
-                        break;
-
-                    case "Friends List Only":
-                        gameConfig.AllowSpectators = "DROPINONLY";
-                        break;
-
-                    default:
-                        gameConfig.AllowSpectators = "ALL";
-                        break;
-                }
-                CreateGameButton.IsEnabled = true;
-                return gameConfig;
+                default: //Tournament Draft
+                    gameConfig.GameTypeConfig = 6;
+                    break;
             }
-            catch { return null; }
+            switch ((string)((Label)MapListBox.SelectedItem).Content)
+            {
+                case "The Crystal Scar":
+                    gameConfig.GameMap = GameMap.TheCrystalScar;
+                    gameConfig.GameMode = "ODIN";
+                    break;
+
+                case "Howling Abyss":
+                    gameConfig.GameMap = GameMap.HowlingAbyss;
+                    gameConfig.GameMode = "ARAM";
+                    break;
+
+                case "The Twisted Treeline":
+                    gameConfig.GameMap = GameMap.TheTwistedTreeline;
+                    gameConfig.GameMode = "CLASSIC";
+                    if (gameConfig.MaxNumPlayers > 6)
+                    {
+                        NameInvalidLabel.Content = "Team size must be lower or equal to 3";
+                        NameInvalidLabel.Visibility = Visibility.Visible;
+                        CreateGameButton.IsEnabled = false;
+                        return gameConfig;
+                    }
+                    break;
+
+                default:
+                    gameConfig.GameMap = GameMap.SummonersRift;
+                    gameConfig.GameMode = "CLASSIC";
+                    break;
+            }
+            switch ((string)AllowSpectatorsComboBox.SelectedItem)
+            {
+                case "None":
+                    gameConfig.AllowSpectators = "NONE";
+                    break;
+
+                case "Lobby Only":
+                    gameConfig.AllowSpectators = "LOBBYONLY";
+                    break;
+
+                case "Friends List Only":
+                    gameConfig.AllowSpectators = "DROPINONLY";
+                    break;
+
+                default:
+                    gameConfig.AllowSpectators = "ALL";
+                    break;
+            }
+            CreateGameButton.IsEnabled = true;
+            return gameConfig;
         }
 
         private void CreatedGame(GameDTO result)
@@ -186,27 +187,26 @@ namespace LegendaryClient.Windows
 
         private void GenerateSpectatorCode()
         {
-            try
-            {
-                PracticeGameConfig gameConfig = GenerateGameConfig();
-                TournamentCodeTextbox.Text = "pvpnet://lol/customgame/joinorcreate";
-                TournamentCodeTextbox.Text += "/map" + gameConfig.GameMap.MapId;
-                TournamentCodeTextbox.Text += "/pick" + gameConfig.GameTypeConfig;
-                TournamentCodeTextbox.Text += "/team" + gameConfig.MaxNumPlayers * 0.5;
-                TournamentCodeTextbox.Text += "/spec" + gameConfig.AllowSpectators;
+            if (!PageLoaded)
+                return;
 
-                string json = "";
-                if (String.IsNullOrEmpty(gameConfig.GamePassword))
-                    json = "{ \"name\": \"" + gameConfig.GameName + "\" }";
-                else
-                    json = "{ \"name\": \"" + gameConfig.GameName + "\", \"password\": \"" + gameConfig.GamePassword + "\" }";
+            PracticeGameConfig gameConfig = GenerateGameConfig();
+            TournamentCodeTextbox.Text = "pvpnet://lol/customgame/joinorcreate";
+            TournamentCodeTextbox.Text += "/map" + gameConfig.GameMap.MapId;
+            TournamentCodeTextbox.Text += "/pick" + gameConfig.GameTypeConfig;
+            TournamentCodeTextbox.Text += "/team" + gameConfig.MaxNumPlayers * 0.5;
+            TournamentCodeTextbox.Text += "/spec" + gameConfig.AllowSpectators;
 
-                //Also "report" to get riot to send a report back, and "extra" to have data sent so you can identify it (passbackDataPacket)
+            string json = "";
+            if (String.IsNullOrEmpty(gameConfig.GamePassword))
+                json = "{ \"name\": \"" + gameConfig.GameName + "\" }";
+            else
+                json = "{ \"name\": \"" + gameConfig.GameName + "\", \"password\": \"" + gameConfig.GamePassword + "\" }";
 
-                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
-                TournamentCodeTextbox.Text += "/" + System.Convert.ToBase64String(plainTextBytes);
-            }
-            catch { }
+            //Also "report" to get riot to send a report back, and "extra" to have data sent so you can identify it (passbackDataPacket)
+
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
+            TournamentCodeTextbox.Text += "/" + System.Convert.ToBase64String(plainTextBytes);
         }
 
         private void WhitelistAddButton_Click(object sender, RoutedEventArgs e)

@@ -33,7 +33,11 @@
         GAME_INVITE_LIST_STATUS,
         PRACTICE_GAME_JOIN_ACK,
         RANKED_TEAM_UPDATE,
+<<<<<<< HEAD
         INVITE_STATUS_CHANGED,
         personalMessage
+=======
+        INVITE_STATUS_CHANGED
+>>>>>>> master
     }
 }
