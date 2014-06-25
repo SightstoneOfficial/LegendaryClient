@@ -13,6 +13,7 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Login;
 using PVPNetConnect.RiotObjects.Platform.Messaging;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using SQLite;
@@ -25,6 +26,7 @@ using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -611,6 +613,8 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static PlayerCredentialsDto CurrentGame;
 
+        internal static Session PlayerSession;
+
         internal static bool AutoAcceptQueue = false;
         internal static object LobbyContent;
         internal static object LastPageContent;
@@ -626,6 +630,27 @@ namespace LegendaryClient.Logic
         internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error)
         {
             ;
+        }
+
+        internal static System.Timers.Timer HeartbeatTimer;
+        internal static int HeartbeatCount;
+
+        internal static void StartHeartbeat()
+        {
+            HeartbeatTimer = new System.Timers.Timer();
+            HeartbeatTimer.Elapsed += new ElapsedEventHandler(DoHeartbeat);
+            HeartbeatTimer.Interval = 120000; // in milliseconds
+            HeartbeatTimer.Start();
+        }
+
+        internal async static void DoHeartbeat(object sender, ElapsedEventArgs e)
+        {
+            if (IsLoggedIn)
+            {
+                //await PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId), PlayerSession.Token, HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-0700'"));
+
+                HeartbeatCount++;
+            }
         }
 
         internal static void OnMessageReceived(object sender, object message)
@@ -679,7 +704,7 @@ namespace LegendaryClient.Logic
                     {
                         InvitationRequest invite = new InvitationRequest();
                         //Gameinvite stuff
-                        GameInvitePopup pop = new GameInvitePopup(invite);
+                        GameInvitePopup pop = new GameInvitePopup();
                         await PVPNet.getPendingInvitations();
                         await PVPNet.checkLobbyStatus();
                         await PVPNet.getLobbyStatus();

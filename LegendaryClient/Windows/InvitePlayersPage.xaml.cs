@@ -115,6 +115,32 @@ namespace LegendaryClient.Windows
 
         private void SendInvitesButton_Click(object sender, RoutedEventArgs e)
         {
+           foreach (string Player in invitedPlayers)
+            {
+
+                ChatPlayerItem PlayerInfo = Client.AllPlayers[Player];
+                Client.PVPNet.Invite(PlayerInfo.Id);
+                
+                //If has already invited
+                bool ShouldBreak = false;
+                foreach (var x in Client.InviteListView.Items)
+                {
+                    InvitePlayer invitePlayer = x as InvitePlayer;
+                    if ((string)invitePlayer.PlayerLabel.Content == PlayerInfo.Username)
+                        ShouldBreak = true;
+                }
+                if (ShouldBreak)
+                    continue;
+
+                InvitePlayer InvitePlayerItem = new InvitePlayer();
+                InvitePlayerItem.PlayerLabel.Content = PlayerInfo.Username;
+                InvitePlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+                Client.InviteListView.Items.Add(InvitePlayerItem);
+            }
+            Client.OverlayContainer.Visibility = Visibility.Hidden;
+        }
+        /*private void SendInvitesButton_Click(object sender, RoutedEventArgs e)
+        {
             string InviteMessage = "<body><inviteId>" + "190608647" + "</inviteId>" +
             "<userName>" + Client.LoginPacket.AllSummonerData.Summoner.Name + "</userName>" +
             "<profileIconId>" + Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIconId>" +
@@ -146,6 +172,6 @@ namespace LegendaryClient.Windows
                 Client.InviteListView.Items.Add(InvitePlayerItem);
             }
             Client.OverlayContainer.Visibility = Visibility.Hidden;
-        }
+        }*/
     }
 }

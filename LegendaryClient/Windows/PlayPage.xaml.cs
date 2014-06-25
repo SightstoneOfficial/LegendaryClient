@@ -147,6 +147,19 @@ namespace LegendaryClient.Windows
         }
         private async void TeamQueueButton_Click(object sender, RoutedEventArgs e)
         {
+            //To leave all other queues
+            {
+                var keys = new List<Button>(ButtonTimers.Keys);
+                foreach (Button pair in keys)
+                {
+                    Button realButton = (Button)pair.Tag;
+                    realButton.Content = "Queue";
+                }
+                ButtonTimers = new Dictionary<Button, int>();
+                Queues = new List<double>();
+                await Client.PVPNet.PurgeFromQueues();
+            }
+            //To Start Queueing
             LastSender = (Button)sender;
             GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
             if (Queues.Contains(config.Id))
@@ -195,7 +208,9 @@ namespace LegendaryClient.Windows
             Queues.Add(config.Id);
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
-            Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
+            await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+            //Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
+            Client.SwitchPage(new TeamQueuePage(true));
         }
 
         private void EnteredQueue(SearchingForMatchNotification result)

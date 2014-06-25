@@ -21,7 +21,7 @@
             <Label Content="Invite Players" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
 
             <Label Content="Available Players" HorizontalAlignment="Left" Margin="10,60,0,0" FontWeight="ExtraLight" FontSize="26" VerticalAlignment="Top" />
-            <ListView Style="{StaticResource NoFocus}" x:Name="AvailablePlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="10,115,0,0" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="AvailablePlayerListView_SelectionChanged">
+            <ListView Style="{StaticResource NoFocus}" x:Name="AvailablePlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="10,115,0,50" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="AvailablePlayerListView_SelectionChanged">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                         <GridViewColumn Width="250" />

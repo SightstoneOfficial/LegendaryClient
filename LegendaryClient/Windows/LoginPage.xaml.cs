@@ -57,6 +57,7 @@ namespace LegendaryClient.Windows
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
+            Client.StartHeartbeat();
 
             //Retrieve latest client version
             /*

@@ -6,6 +6,7 @@ using MahApps.Metro.Controls;
 using PVPNetConnect;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -23,7 +24,14 @@ namespace LegendaryClient
             InitializeComponent();
             Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "lcdebug.log")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "lcdebug.log"));
+            }
+
             Client.InfoLabel = InfoLabel;
+            Client.StartHeartbeat();
             Client.PVPNet = new PVPNetConnection();
             Client.PVPNet.KeepDelegatesOnLogout = false;
             Client.PVPNet.OnError += Client.PVPNet_OnError;
