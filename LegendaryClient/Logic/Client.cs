@@ -60,12 +60,12 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Stuff
         /// </summary>
-        internal static string LegendaryClientVersion = "1.0.1.3";
+        internal static string LegendaryClientVersion = "1.0.1.4";
 
         /// <summary>
         /// Update Data
         /// </summary>
-        internal static int LegendaryClientReleaseNumber = 1;
+        internal static int LegendaryClientReleaseNumber = 2;
 
         /// <summary>
         /// Sets Sqlite Version
