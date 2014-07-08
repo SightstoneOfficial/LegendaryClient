@@ -1293,6 +1293,15 @@ namespace PVPNetConnect
             return null;
         }
 
+        public async Task<object> Leave()
+        {
+            int Id = Invoke("lcdsGameInvitationService", "leave", new object[] {  });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+
         public async Task<object> DeclineTeamInvite(TeamId teamId)
         {
             int Id = Invoke("summonerTeamService", "declineInvite", new object[] { teamId.GetBaseTypedObject() });

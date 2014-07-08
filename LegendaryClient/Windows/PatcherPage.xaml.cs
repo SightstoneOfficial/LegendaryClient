@@ -26,6 +26,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
+            DevKey.TextChanged += DevKeySend_Click;
         }
         #region Devkeys
         private void DevKeySend_Click(object sender, RoutedEventArgs e)

@@ -82,7 +82,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Latest version of League of Legends. Retrieved from ClientLibCommon.dat
         /// </summary>
-        internal static string Version = "4.6.test";
+        internal static string Version = "4.10.3";
 
         ///<summary>
         /// To see if the user is a dev
@@ -452,7 +452,7 @@ namespace LegendaryClient.Logic
             return Type + "~" + obfuscatedName;
         }
 
-
+        internal static bool runonce = false;
 
         internal static string GetChatroomJID(string ObfuscatedChatroomName, string password, bool IsTypePublic)
         {
@@ -589,6 +589,11 @@ namespace LegendaryClient.Logic
         internal static double GameID = 0;
 
         /// <summary>
+        /// 
+        /// </summary>
+        internal static int GameQueue;
+
+        /// <summary>
         /// Game Name of the current game that the client is connected to
         /// </summary>
         internal static string GameName = "";
@@ -653,6 +658,7 @@ namespace LegendaryClient.Logic
             }
         }
 
+        
         internal static void OnMessageReceived(object sender, object message)
         {
             MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
@@ -699,16 +705,16 @@ namespace LegendaryClient.Logic
                 }
                 else if (message is InvitationRequest)
                 {
+                    InvitationRequest stats = message as InvitationRequest;
+                    Inviter Inviterstats = message as Inviter;
                     //TypedObject body = (TypedObject)to["body"];
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
                     {
-                        InvitationRequest invite = new InvitationRequest();
                         //Gameinvite stuff
-                        GameInvitePopup pop = new GameInvitePopup();
+                        GameInvitePopup pop = new GameInvitePopup(stats, Inviterstats);
                         await PVPNet.getPendingInvitations();
                         await PVPNet.checkLobbyStatus();
                         await PVPNet.getLobbyStatus();
-                        PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest Invite = new PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest();
                         //await Invite.Callback;
                         //Invite.InvitationRequest(body);
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
@@ -719,17 +725,10 @@ namespace LegendaryClient.Logic
                         //message.GetType() == typeof(GameInvitePopup)
                     }));
                 }
-                else if (message is GameDTO && RunonePop == false)
+                else if (message is LobbyStatus)
                 {
-                    /*
-                    GameDTO Queue = message as GameDTO;
-                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
-                        Client.OverlayContainer.Visibility = Visibility.Visible;
-                    }));
-                    RunonePop = true;*/
-                    //Client.PVPNet.OnMessageReceived -= GotQueuePop;
+                    LobbyStatus stats = message as LobbyStatus;
+                    Client.SwitchPage(new TeamQueuePage(stats.InvitationID, stats));
                 }
             }));
         }

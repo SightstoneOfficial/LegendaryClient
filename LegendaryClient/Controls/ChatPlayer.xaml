@@ -15,7 +15,7 @@
             </Label.Effect>
         </Label>
 
-        <Label x:Name="PlayerName" Content="Snowl" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
-        <Label x:Name="PlayerStatus" Content="Test status" HorizontalAlignment="Left" Margin="45,20,0,0" VerticalAlignment="Top" Foreground="White" />
+        <Label x:Name="PlayerName" Content="Eddy5641" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
+        <Label x:Name="PlayerStatus" Content="Super Hot Fire" HorizontalAlignment="Left" Margin="45,20,0,0" VerticalAlignment="Top" Foreground="White" />
     </Grid>
 </UserControl>

@@ -26,6 +26,33 @@
             </Style.Triggers>
         </Style>
 
+        <Style TargetType="{x:Type Button}" x:Key="Square">
+            <Setter Property="Background" Value="#FF474747"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Foreground" Value="#FFCFCFCF"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="BorderBrush" Value="#FF2A2A2B"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="2" />
+                    <Setter Property="Background" Value="#FF707070"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>

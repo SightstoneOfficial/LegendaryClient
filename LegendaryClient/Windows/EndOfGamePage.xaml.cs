@@ -22,6 +22,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             RenderStats(Statistics);
             Client.SwitchPage(new MainPage());
+            Client.runonce = false;
         }
 
         private void RenderStats(EndOfGameStats Statistics)

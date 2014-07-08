@@ -157,7 +157,7 @@ namespace LegendaryClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("!~devkey-publicdev~!")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string DevKey {
             get {
                 return ((string)(this["DevKey"]));
@@ -176,6 +176,18 @@ namespace LegendaryClient.Properties {
             }
             set {
                 this["DevVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public string FavouriteChamps {
+            get {
+                return ((string)(this["FavouriteChamps"]));
+            }
+            set {
+                this["FavouriteChamps"] = value;
             }
         }
     }

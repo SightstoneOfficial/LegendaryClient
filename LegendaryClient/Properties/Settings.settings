@@ -36,10 +36,13 @@
       <Value Profile="(Default)">Public Dev</Value>
     </Setting>
     <Setting Name="DevKey" Type="System.String" Scope="User">
-      <Value Profile="(Default)">!~devkey-publicdev~!</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="DevVersion" Type="System.String" Scope="User">
       <Value Profile="(Default)">4.7.8</Value>
+    </Setting>
+    <Setting Name="FavouriteChamps" Type="System.String" Scope="User">
+      <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>
 </SettingsFile>

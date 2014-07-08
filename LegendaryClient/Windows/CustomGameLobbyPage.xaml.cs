@@ -83,12 +83,17 @@ namespace LegendaryClient.Windows
                         {
                             i++;
                             CustomLobbyPlayer lobbyPlayer = new CustomLobbyPlayer();
+                            BotControl botPlayer = new BotControl();
                             if (playerTeam is PlayerParticipant)
                             {
                                 PlayerParticipant player = playerTeam as PlayerParticipant;
                                 lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
+                                BotParticipant botParticipant = playerTeam as BotParticipant;
+                                botPlayer = RenderBot(botParticipant);
                                 IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
                                 StartGameButton.IsEnabled = IsOwner;
+                                AddBotBlueTeam.IsEnabled = IsOwner;
+                                AddBotPurpleTeam.IsEnabled = IsOwner;
 
                                 if (Client.Whitelist.Count > 0)
                                 {
@@ -187,6 +192,19 @@ namespace LegendaryClient.Windows
             lobbyPlayer.BanButton.Tag = player;
             lobbyPlayer.BanButton.Click += KickAndBan_Click;
             return lobbyPlayer;
+        }
+
+        private BotControl RenderBot(BotParticipant BotPlayer)
+        {
+            BotControl botPlayer = new BotControl();
+            botPlayer.PlayerName.Content = BotPlayer.SummonerName;
+
+            //var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", BotPlayer.Champion + ".png"), UriKind.RelativeOrAbsolute);
+            //botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
+
+            botPlayer.BanButton.Tag = BotPlayer;
+            botPlayer.BanButton.Click += KickAndBan_Click;
+            return botPlayer;
         }
 
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)

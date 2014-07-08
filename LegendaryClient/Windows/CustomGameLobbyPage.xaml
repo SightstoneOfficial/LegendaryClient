@@ -58,8 +58,8 @@
         </ListView>
         <Button Content="Invite Players" HorizontalAlignment="Right" Margin="0,460,15,0" VerticalAlignment="Top" Width="390" />
 
-        <Button x:Name="SwitchTeamsButton" Content="Switch Teams" HorizontalAlignment="Left" Margin="10,435,0,0" VerticalAlignment="Top" Width="630" Click="SwitchTeamsButton_Click" />
-        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="650,435,0,0" VerticalAlignment="Top" Width="200" Click="StartGameButton_Click" IsEnabled="False" />
+        <Button x:Name="SwitchTeamsButton" Content="Switch Teams" HorizontalAlignment="Left" Margin="917,10,0,0" VerticalAlignment="Top" Width="174" Click="SwitchTeamsButton_Click" />
+        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="738,10,0,0" VerticalAlignment="Top" Width="174" Click="StartGameButton_Click" IsEnabled="False" />
 
         <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="10,470,0,40" Width="550" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
@@ -84,5 +84,7 @@
         <Label x:Name="ModeLabel" Content="CLASSIC" HorizontalAlignment="Right" Margin="0,0,10,110" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="TypeLabel" Content="Blind Pick" HorizontalAlignment="Right" Margin="0,0,10,70" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="SizeLabel" Content="5v5" HorizontalAlignment="Right" Margin="0,0,10,30" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
+        <Button x:Name="AddBotBlueTeam" Content="Add Bot" Style="{DynamicResource Square}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="10,430,0,0" IsEnabled="False"/>
+        <Button x:Name="AddBotPurpleTeam" Content="Add Bot" Style="{DynamicResource Square}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="450,430,0,0" IsEnabled="False"/>
     </Grid>
 </Page>

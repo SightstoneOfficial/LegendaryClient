@@ -408,6 +408,11 @@ namespace PVPNetConnect
                     Error("Your username or password is incorrect!", ErrorType.Password);
                     Disconnect();
                 }
+                else if (e.Message == "The given key was not present in the dictionary.")
+                {
+                    Error("The given key was not present in the dictionary. Client version is wrong maybe?", ErrorType.Password);
+                    Disconnect();
+                }
                 else
                 {
                     Error("Unable to get Auth Key \n" + e, ErrorType.AuthKey);
@@ -1098,6 +1103,10 @@ namespace PVPNetConnect
                                                 body.type.Equals(
                                                 "com.riotgames.platform.statistics.EndOfGameStats"))
                                                 MessageReceived(new EndOfGameStats(body));
+                                            else if (
+                                                body.type.Equals(
+                                                "com.riotgames.platform.gameinvite.contract.LobbyStatus"))
+                                                MessageReceived(new LobbyStatus(body));
                                             
                                             //MessageReceived(to["body"]);
                                         })).Start();

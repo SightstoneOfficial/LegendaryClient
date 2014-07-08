@@ -14,5 +14,6 @@
             </Label.Effect>
         </Label>
         <Label x:Name="ChampName" Content="Heimerdinger" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Bottom" Foreground="White" />
+        <Image x:Name="FavoriteImage" HorizontalAlignment="Left" Height="16" Margin="18,2,0,0" VerticalAlignment="Top" Width="16" Source="/LegendaryClient;component/star.png" Visibility="Hidden" />
     </Grid>
 </UserControl>

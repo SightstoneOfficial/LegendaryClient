@@ -24,9 +24,16 @@
         <ProgressBar x:Name="TotalProgessBar" Style="{x:Null}" HorizontalAlignment="Stretch" Height="30" Margin="10,0,10,10" VerticalAlignment="Bottom" Foreground="#FF9C9C9C" />
         <Label x:Name="CurrentStatusLabel" Content="Checking for updates..." HorizontalAlignment="Right" Margin="0,0,10,100" VerticalAlignment="Bottom" />
         <TextBox x:Name="PatchTextBox" HorizontalAlignment="Stretch" Margin="10,60,10,163" IsReadOnly="True" TextWrapping="NoWrap" VerticalAlignment="Stretch" Background="#FF2E2E2E" BorderBrush="{x:Null}" Foreground="White" />
-        <Controls:TextBoxWatermarked x:Name="DevKey" Watermark="Type Your Dev Key Here" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Margin="15,0,0,136" Width="913" Background="#FF2E2E2E"/>
+        <Controls:TextBoxWatermarked x:Name="DevKey" Watermark="Type Your Dev Key Here" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Margin="15,0,0,136" Width="999" Background="#FF2E2E2E" Foreground="{x:Null}">
+            <Controls:TextBoxWatermarked.BorderBrush>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF2E2E2E"/>
+                </LinearGradientBrush>
+            </Controls:TextBoxWatermarked.BorderBrush>
+        </Controls:TextBoxWatermarked>
         <Button x:Name="DevSkip" Content="DevSkip" HorizontalAlignment="Right" Margin="0,5,165,0" VerticalAlignment="Top" Width="150" Height="50" Click="DevSkip_Click" IsEnabled="True" Visibility="Hidden"/>
         <TextBlock x:Name="Welcome" HorizontalAlignment="Left" TextWrapping="Wrap" Text=" Welcome Dev Eddy5641!" VerticalAlignment="Bottom" Margin="10,0,0,136" Width="1004" Height="22" FontSize="14" Visibility="Hidden" Background="#FF2E2E2E"/>
-        <Button x:Name="DevKeySend" Click="DevKeySend_Click" Content="Check Key" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="81" Margin="0,0,10,136" Height="22"/>
+        <Button x:Name="DevKeySend" Click="DevKeySend_Click" Visibility="Hidden" Style="{DynamicResource Square}" Content="Check Key" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="81" Margin="0,0,10,136" Height="22"/>
     </Grid>
 </Page>

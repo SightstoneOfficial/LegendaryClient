@@ -91,6 +91,8 @@ namespace LegendaryClient.Logic.SQLite
 
         #endregion
 
+        public bool IsFavourite { get; set; }
+
         public static champions GetChampion(int id)
         {
             foreach (champions c in Client.Champions)
