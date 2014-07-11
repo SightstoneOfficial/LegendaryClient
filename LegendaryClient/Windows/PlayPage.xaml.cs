@@ -165,7 +165,7 @@ namespace LegendaryClient.Windows
                 Client.GameQueue = Convert.ToInt32(config.Id);
                 await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                 LobbyStatus LobbyStatus = new LobbyStatus();
-                Client.SwitchPage(new TeamQueuePage("", LobbyStatus));
+                Client.SwitchPage(new TeamQueuePage(LobbyStatus));
         }
 
         private async void QueueButton_Click(object sender, RoutedEventArgs e)

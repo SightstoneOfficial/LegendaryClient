@@ -412,6 +412,26 @@ namespace LegendaryClient.Windows
 
                 #region lol_game_client
 
+                LogTextBox("Searching For Lol Install");
+
+                string Rad_Path;
+
+                string LolPath1 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\RIOT GAMES\RADS", "Path", "").ToString();
+                if (LolPath1 != "" || LolPath1 != null)
+                {
+                    //root.GetDirectories("*.*", System.IO.SearchOption.AllDirectories);
+                    Rad_Path = Path.Combine(LolPath1, "RADS");
+
+                }
+                string LolPath2 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES\RADS", "Path", "").ToString();
+                string LolPath3 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES\RADS", "Path", "").ToString();
+                string LolPath4 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\Wow6432Node\Riot Games\RADS", "Path", "").ToString();
+                string LolPath5 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES\RADS", "Path", "").ToString();
+                string LolPath6 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\RADS", "Path", "").ToString();
+                string LolPath7 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path", "").ToString();
+                string LolPath8 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\RADS", "Path", "").ToString();
+
+                
                 if (!Directory.Exists("RADS"))
                 {
                     Directory.CreateDirectory("RADS");
@@ -486,7 +506,7 @@ namespace LegendaryClient.Windows
                         CurrentProgressLabel.Content = "Retrieving League of Legends";
                     }));
                 }
-
+                //*/
                 #endregion lol_game_client
 
                 
@@ -498,6 +518,25 @@ namespace LegendaryClient.Windows
         }
 
         private void update(object sender, EventArgs e)
+        {
+            UpdateData legendaryupdatedata = new UpdateData();
+            WebClient client = new WebClient();
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "temp")))
+            {
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "temp"));
+            }
+            var downloadLink = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
+            var filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
+            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+            string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
+            LogTextBox("Retreving Update Data from: " + DownloadLocation);
+            client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
+            //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
+            //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
+        }
+
+        private void updatebetausers(object sender, EventArgs e)
         {
             UpdateData legendaryupdatedata = new UpdateData();
             WebClient client = new WebClient();

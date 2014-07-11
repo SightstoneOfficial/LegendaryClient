@@ -7,6 +7,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using log4net;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -17,6 +18,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private List<ChampionDTO> ChampionList;
         private bool NoFilterOnLoad;
+        private static readonly ILog log = LogManager.GetLogger(typeof(Champions));
 
         public Champions()
         {

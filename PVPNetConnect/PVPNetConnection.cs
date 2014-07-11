@@ -1076,6 +1076,10 @@ namespace PVPNetConnect
                                                 MessageReceived(new InvitationRequest(body));
 
                                             else if (
+                                                body.type.Equals("com.riotgames.platform.gameinvite.contract.InvitationRequest"))
+                                                MessageReceived(new Inviter(body));
+
+                                            else if (
                                                 body.type.Equals(
                                                     "com.riotgames.platform.game.message.GameNotification"))
                                                 MessageReceived(new GameNotification(body));

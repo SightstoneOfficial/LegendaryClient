@@ -32,6 +32,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
+using log4net;
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
 namespace LegendaryClient.Logic
@@ -41,6 +42,8 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(Client));
 
         /// <summary>
         /// Timer used so replays won't start right away
@@ -658,7 +661,8 @@ namespace LegendaryClient.Logic
             }
         }
 
-        
+        //internal static Inviter CurrentInviter;
+
         internal static void OnMessageReceived(object sender, object message)
         {
             MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
@@ -703,6 +707,11 @@ namespace LegendaryClient.Logic
                 {
                     PlayerChampions = await PVPNet.GetAvailableChampions();
                 }
+                else if (message is Inviter)
+                {
+                    Inviter stats = message as Inviter;
+                    //CurrentInviter = stats;
+                }
                 else if (message is InvitationRequest)
                 {
                     InvitationRequest stats = message as InvitationRequest;
@@ -712,9 +721,6 @@ namespace LegendaryClient.Logic
                     {
                         //Gameinvite stuff
                         GameInvitePopup pop = new GameInvitePopup(stats, Inviterstats);
-                        await PVPNet.getPendingInvitations();
-                        await PVPNet.checkLobbyStatus();
-                        await PVPNet.getLobbyStatus();
                         //await Invite.Callback;
                         //Invite.InvitationRequest(body);
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
@@ -728,7 +734,7 @@ namespace LegendaryClient.Logic
                 else if (message is LobbyStatus)
                 {
                     LobbyStatus stats = message as LobbyStatus;
-                    Client.SwitchPage(new TeamQueuePage(stats.InvitationID, stats));
+                    Client.SwitchPage(new TeamQueuePage(stats));
                 }
             }));
         }
@@ -742,9 +748,6 @@ namespace LegendaryClient.Logic
 
                 case "matching-queue-NORMAL-3x3-game-queue":
                     return "Normal 3v3";
-
-                case "matching-queue-GROUPFINDER-5x5-game-queue":
-                    return "Team Builder 5v5";
 
                 case "matching-queue-NORMAL-5x5-draft-game-queue":
                     return "Draft 5v5";
@@ -778,6 +781,9 @@ namespace LegendaryClient.Logic
 
                 case "matching-queue-ONEFORALL-5x5-game-queue":
                     return "One For All 5v5";
+                    
+                case "matching-queue-GROUPFINDER-5x5-game-queue":
+                    return "Team Builder 5v5";
 
                 default:
                     return InternalQueue;
@@ -808,13 +814,16 @@ namespace LegendaryClient.Logic
 
 
         private static int counter;
+
+        private static string Location = Path.Combine("C:", "Riot Games", "League of Legends", "RADS", "solutions", "lol_game_client_sln", "releases", "0.0.1.47", "deploy", "League of Legends.exe");
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;
-            p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            //p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            p.StartInfo.FileName = Location;
             p.StartInfo.Arguments = "\"8394\" \"LoLLauncher.exe\" \"" + "" + "\" \"" +
                 CurrentGame.ServerIp + " " +
                 CurrentGame.ServerPort + " " +
@@ -853,7 +862,8 @@ namespace LegendaryClient.Logic
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;
-            p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            //p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            p.StartInfo.FileName = Location;
             p.StartInfo.Arguments = "\"8393\" \"LoLLauncher.exe\" \"\" \"spectator "
                 + SpectatorServer + " "
                 + Key + " "
@@ -994,6 +1004,8 @@ namespace LegendaryClient.Logic
         }
         #endregion Public Helper Methods
     }
+
+
 
     public class ChatPlayerItem
     {

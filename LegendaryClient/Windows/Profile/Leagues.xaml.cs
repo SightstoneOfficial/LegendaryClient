@@ -11,6 +11,7 @@ using LegendaryClient.Logic.SQLite;
 using System;
 using System.Windows.Threading;
 using System.Threading;
+using log4net;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -23,6 +24,7 @@ namespace LegendaryClient.Windows.Profile
         string SelectedRank;
         string Queue;
         AggregatedStats SelectedAggregatedStats;
+        private static readonly ILog log = LogManager.GetLogger(typeof(Leagues));
 
         public Leagues()
         {

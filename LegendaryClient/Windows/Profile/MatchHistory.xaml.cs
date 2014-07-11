@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using log4net;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -26,6 +27,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private List<MatchStats> GameStats = new List<MatchStats>();
         private LargeChatPlayer PlayerItem;
+        private static readonly ILog log = LogManager.GetLogger(typeof(MatchHistory));
 
         public MatchHistory()
         {

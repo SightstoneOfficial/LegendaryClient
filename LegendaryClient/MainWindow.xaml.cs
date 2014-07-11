@@ -6,9 +6,12 @@ using MahApps.Metro.Controls;
 using PVPNetConnect;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using log4net;
+using log4net.Config;
 
 namespace LegendaryClient
 {
@@ -18,6 +21,8 @@ namespace LegendaryClient
     public partial class MainWindow : MetroWindow
     {
         private Accent Steel = null;
+        Warning Warn = new Warning();
+        private static readonly ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
         public MainWindow()
         {
@@ -67,6 +72,7 @@ namespace LegendaryClient
             Client.StatusContainer = StatusContainer;
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SwitchPage(new PatcherPage());
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
         }
 
 
@@ -166,6 +172,45 @@ namespace LegendaryClient
                 Client.Container.Margin = new Thickness(0, 0, 0, 0);
                 Client.SwitchPage(new LoginPage());
             }
+        }
+
+        
+        private bool QuitMe = false;
+        
+        private void MainWindow_Closing(Object sender, CancelEventArgs e)
+        {
+            Client.PVPNet.PurgeFromQueues();
+            Client.PVPNet.Leave();
+            Environment.Exit(0);
+
+            if (QuitMe = true)
+            {
+                e.Cancel = true;
+                Warn.Title.Content = "Quit";
+                Warn.Content.Content = "Are You Sure You Want To Quit?";
+                Warn.backtochampselect.Click += Quit;
+                Warn.backtochampselect.Content = "Quit";
+                Warn.AcceptButton.Click += HideWarning;
+                Warn.hide.Click += HideWarning;
+                Client.OverlayContainer.Content = new Warning().Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+            
+        }
+        private void Quit(object sender, RoutedEventArgs e)
+        {
+            Client.PVPNet.PurgeFromQueues();
+            Client.PVPNet.Leave();
+            Environment.Exit(0);
+        }
+        private void HideWarning(object sender, RoutedEventArgs e)
+        {
+            Warn.Visibility = Visibility.Hidden;
+
         }
     }
 }

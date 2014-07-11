@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
+using log4net;
 
 //While this is in the Profile folder, the namespace is LegendaryClient.Windows
 namespace LegendaryClient.Windows
@@ -22,6 +23,7 @@ namespace LegendaryClient.Windows
         AggregatedChampion AllStats;
 
         AggregatedChampion SelectedStats;
+        private static readonly ILog log = LogManager.GetLogger(typeof(AggregatedStatsOverlay));
 
         public AggregatedStatsOverlay(AggregatedStats stats, Boolean IsSelf)
         {

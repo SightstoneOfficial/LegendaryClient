@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using log4net;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -25,6 +26,7 @@ namespace LegendaryClient.Windows.Profile
         private int DefenseUsedPoints = 0;
         private int UtilityUsedPoints = 0;
         private List<double> MasteryPageOrder = new List<double>();
+        private static readonly ILog log = LogManager.GetLogger(typeof(Masteries));
         public Masteries()
         {
             InitializeComponent();

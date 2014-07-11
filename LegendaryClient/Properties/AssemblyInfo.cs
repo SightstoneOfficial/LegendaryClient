@@ -48,4 +48,6 @@ using System.Windows;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.1.2")]
 [assembly: AssemblyFileVersion("1.0.1.2")]
+
+[assembly: log4net.Config.XmlConfigurator(ConfigFile="log4net.config",Watch=true)]
 //switch this to 1.1.0.0 after replay fix

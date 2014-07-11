@@ -11,6 +11,7 @@ using System.Web.Script.Serialization;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using log4net;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -20,6 +21,7 @@ namespace LegendaryClient.Windows.Profile
     public partial class Ingame : Page
     {
         PlatformGameLifecycleDTO Game;
+        private static readonly ILog log = LogManager.GetLogger(typeof(InGame));
         public Ingame()
         {
             InitializeComponent();
