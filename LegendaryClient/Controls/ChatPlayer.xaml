@@ -17,5 +17,6 @@
 
         <Label x:Name="PlayerName" Content="Eddy5641" HorizontalAlignment="Left" Margin="45,0,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
         <Label x:Name="PlayerStatus" Content="Super Hot Fire" HorizontalAlignment="Left" Margin="45,20,0,0" VerticalAlignment="Top" Foreground="White" />
+        <Label x:Name="PlayerId" Content="41284010" HorizontalAlignment="Left" Margin="188,0,0,0" VerticalAlignment="Top" Foreground="White" Visibility="Hidden"/>
     </Grid>
 </UserControl>

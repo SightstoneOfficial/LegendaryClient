@@ -14,5 +14,6 @@
         public const string Queued = "aq";
         public const string CTA = "cta";
         public const string Post_Game = "pg";
+        public const string TeamBuilder_Lobby = "cp";
     }
 }

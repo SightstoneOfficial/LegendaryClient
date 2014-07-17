@@ -27,6 +27,8 @@ namespace LegendaryClient
         public MainWindow()
         {
             InitializeComponent();
+
+            SwitchPage.Visibility = Visibility.Hidden;
             Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
@@ -76,7 +78,7 @@ namespace LegendaryClient
         }
 
 
-        void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        static void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
             //Disregard PVPNetSpam
             if (e.Exception.Message.Contains("too small for an Int32") || e.Exception.Message.Contains("Constructor on type "))
@@ -99,6 +101,25 @@ namespace LegendaryClient
                 ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
                 Properties.Settings.Default.DarkTheme = true;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        private void SwichToTeamQueue_Click(object Sender, RoutedEventArgs e)
+        {
+            Client.SwitchPage(new TeamQueuePage(null));
+        }
+        internal bool SwitchTeamPage = true;
+        public void Hide()
+        {
+            if (SwitchTeamPage == true)
+            {
+                SwitchPage.Visibility = Visibility.Visible;
+                SwitchTeamPage = false;
+            }
+            else if (SwitchTeamPage == false)
+            {
+                SwitchPage.Visibility = Visibility.Hidden;
+                SwitchTeamPage = true;
             }
         }
 
@@ -183,7 +204,7 @@ namespace LegendaryClient
             Client.PVPNet.Leave();
             Environment.Exit(0);
 
-            if (QuitMe = true)
+            if (QuitMe == true)
             {
                 e.Cancel = true;
                 Warn.Title.Content = "Quit";

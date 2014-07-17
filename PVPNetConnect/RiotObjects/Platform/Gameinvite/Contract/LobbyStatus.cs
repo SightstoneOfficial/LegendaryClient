@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
 {
@@ -46,16 +47,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         //public Player Owner { get; set; }
 
         [InternalName("members")]
-        public Double[] PlayerIds { get; set; }
+        public List<Member.Member> Members { get; set; }
 
         [InternalName("invitees")]
-        public Invitee InvitedPlayers { get; set; }
-
-        [InternalName("summonerName")]
-        public Invitee SummonerName { get; set; }
-
-        [InternalName("inviteeState")]
-        public Invitee inviteeState { get; set; }
+        public List<Invitee> Invitees { get; set; }
 
         [InternalName("invitationId")]
         public String InvitationID { get; set; }

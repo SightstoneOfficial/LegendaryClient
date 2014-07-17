@@ -73,7 +73,7 @@
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Invitee.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Inviter.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\LobbyStatus.cs" />
-    <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Members.cs" />
+    <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Member.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Owner.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Player.cs" />
     <Compile Include="RiotObjects\Platform\Game\BannedChampion.cs" />

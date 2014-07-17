@@ -11,9 +11,11 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -29,6 +31,16 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Version.TextChanged += WaterTextbox_TextChanged;
             Version.Text = Client.Version;
+
+            WebClient client = new WebClient();
+            var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
+            SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
+            SoundPlayer.Play();
+            Sound.IsChecked = false;
+
+            //VideoPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "login.swf"));
+            //VideoPlayer.Play();
+            Video.IsChecked = false;
 
             //Get client data after patcher completed
 
@@ -102,12 +114,53 @@ namespace LegendaryClient.Windows
                 AutoLoginCheckBox.IsChecked = true;
                 LoginButton_Click(null, null);
             }
+            
         }
 
         private void WaterTextbox_TextChanged(object sender, RoutedEventArgs e)
         {
             //Version.Text = Client.Version;]
             Client.Version = Version.Text;
+        }
+        bool PlayingSound = true;
+        private void DisableSound_Click(object sender, RoutedEventArgs e)
+        {
+            
+            if(PlayingSound == true)
+            {
+                SoundPlayer.Pause();
+                Sound.IsChecked = true;
+                PlayingSound = false;
+            }
+            else
+            {
+                WebClient client = new WebClient();
+                var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
+                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
+                SoundPlayer.Play();
+                Sound.IsChecked = false;
+                PlayingSound = true;
+            }
+        }
+        bool PlayingVideo = true;
+        private void DisableVideo_Click(object sender, RoutedEventArgs e)
+        {
+            if(PlayingVideo == true)
+            {
+                //VideoPlayer.Pause();
+                Video.IsChecked = true;
+                PlayingVideo = false;
+                //VideoPlayer.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                WebClient client = new WebClient();
+                var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
+                //VideoPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
+                //VideoPlayer.Play();
+                Video.IsChecked = false;
+                PlayingVideo = true;
+            }
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
