@@ -126,9 +126,6 @@
     <Compile Include="Controls\ChampionDetailAbility.xaml.cs">
       <DependentUpon>ChampionDetailAbility.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GameInvitePopup.xaml.cs">
-      <DependentUpon>GameInvitePopup.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\BotControl.xaml.cs">
       <DependentUpon>BotControl.xaml</DependentUpon>
     </Compile>
