@@ -149,6 +149,9 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
+                    if (string.IsNullOrEmpty(CurrentLP)) {
+                        CurrentLP = "0";
+                    }
                     PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
                     PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
                 }
