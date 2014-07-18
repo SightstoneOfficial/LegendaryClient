@@ -56,7 +56,7 @@ namespace LegendaryClient.Windows
         string gameMode;
         string gameType;
 
-        string INVITE;
+        string Invite;
 
         internal static LobbyStatus CurrentLobby;
 
@@ -72,7 +72,7 @@ namespace LegendaryClient.Windows
             Client.OnMessage += Client_OnMessage;
             MainWindow Window = new MainWindow();
             Window.Hide();
-            INVITE = Invid;
+            Invite = Invid;
             
             LoadStats();
         }
@@ -81,7 +81,7 @@ namespace LegendaryClient.Windows
         { 
 
             ///Wow Riot, you get rid of getLobbyStatus so I have to do this all over -.-
-            LobbyStatus Lobby = await Client.PVPNet.getLobbyStatus(INVITE);
+            LobbyStatus Lobby = await Client.PVPNet.getLobbyStatus(Invite);
             CurrentLobby = Lobby;
 
             //arrangeing_game
