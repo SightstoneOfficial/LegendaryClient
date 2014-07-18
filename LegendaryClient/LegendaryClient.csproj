@@ -81,7 +81,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net45\MahApps.Metro.dll</HintPath>
@@ -89,7 +89,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="rtmp-sharp">
-      <HintPath>..\..\Coding\League Of Legends\LegendaryClient-master\DLLS\rtmp-sharp.dll</HintPath>
+      <HintPath>.\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -285,9 +285,6 @@
     </Compile>
     <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
       <DependentUpon>ChampionDetailsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\GameInviteTest.xaml.cs">
-      <DependentUpon>GameInviteTest.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\InGame.xaml.cs">
       <DependentUpon>InGame.xaml</DependentUpon>
@@ -609,10 +606,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\GameInviteTest.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Windows\InGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -884,7 +877,6 @@
     <Resource Include="chat.png" />
     <Resource Include="cs_bg_champions.png" />
     <Resource Include="Locked.png" />
-    <Resource Include="Dev.PNG" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

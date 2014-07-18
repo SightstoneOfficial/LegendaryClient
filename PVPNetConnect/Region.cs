@@ -12,7 +12,7 @@ namespace PVPNetConnect
         NA,
 
         [ServerValue("prod.euw1.lol.riotgames.com")]
-        [LoginQueueValue("https://lq.euw1.lol.riotgames.com")]
+        [LoginQueueValue("https://lq.euw1.lol.riotgames.com/")]
         [LocaleValue("en_GB")]
         [UseGarenaValue(false)]
         EUW,
