@@ -91,6 +91,7 @@ namespace LegendaryClient.Windows
             }
         }
 
+        #pragma warning disable 4014 //Code does not need to be awaited
         private void JoinGameButton_Click(object sender, RoutedEventArgs e)
         {
             double GameID = 0;

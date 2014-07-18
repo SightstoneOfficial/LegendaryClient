@@ -27,11 +27,9 @@ namespace LegendaryClient.Windows
         public QueuePopOverlay(GameDTO InitialDTO)
         {
             InitializeComponent();
-            Client.IsInGame = true;
             Client.FocusClient();
             InitializePop(InitialDTO);
             TimeLeft = InitialDTO.JoinTimerDuration;
-            //Client.RtmpConnection.MessageReceived += OnMessageReceived;
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             QueueTimer = new System.Timers.Timer(1000);
             QueueTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
@@ -49,28 +47,22 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        //private void OnMessageReceived(object sender, MessageReceivedEventArgs message)
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
-            //if (message.Body.GetType() == typeof(GameDTO))
             if (message.GetType() == typeof(GameDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    //GameDTO QueueDTO = message.Body as GameDTO;
                     GameDTO QueueDTO = message as GameDTO;
-                    if (QueueDTO.GameState == "TERMINATED" || QueueDTO.GameState == "TERMINATED_IN_ERROR")
+                    if (QueueDTO.GameState == "TERMINATED")
                     {
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        //Client.RtmpConnection.MessageReceived -= OnMessageReceived;
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
-                        Client.IsInGame = false;
                         return;
                     }
                     else if (QueueDTO.GameState == "CHAMP_SELECT")
                     {
                         HasStartedChampSelect = true;
-                        //Client.RtmpConnection.MessageReceived -= OnMessageReceived;
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         string s = QueueDTO.GameState;
                         Client.ChampSelectDTO = QueueDTO;
@@ -103,21 +95,6 @@ namespace LegendaryClient.Windows
                                 player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
                             }
                             player.ReadyCheckBox.IsChecked = true;
-                            player.ReadyCheckBox.Foreground = System.Windows.Media.Brushes.Green;
-                        }
-                        else if (c == '2')
-                        {
-                            QueuePopPlayer player = null;
-                            if (i < (PlayerParticipantStatus.Length / 2)) //Team 1
-                            {
-                                player = (QueuePopPlayer)Team1ListBox.Items[i];
-                            }
-                            else //Team 2
-                            {
-                                player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
-                            }
-                            player.ReadyCheckBox.IsChecked = null;
-                            player.ReadyCheckBox.Foreground = System.Windows.Media.Brushes.Red;
                         }
                         i++;
                     }

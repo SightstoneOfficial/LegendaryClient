@@ -23,10 +23,10 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Grid x:Name="StatusGrid" HorizontalAlignment="Right" ScrollViewer.VerticalScrollBarVisibility="Disabled" Width="135" Margin="0,0,115,0" Background="#4C000000" Visibility="Collapsed">
-            <Label x:Name="StatusLabel"  Content="In Game" Foreground="White" HorizontalAlignment="Center" FontWeight="ExtraLight" Margin="0,0,0,0" VerticalAlignment="Center" FontSize="16" />
-            <Button x:Name="CloseButton" Style="{x:Null}" Content="X" HorizontalAlignment="Left" Margin="5,0,0,0" Foreground="Black" VerticalAlignment="Center" Width="25" Click="CloseButton_Click" />
-            <Button x:Name="BackButton" Style="{x:Null}" Content="←" HorizontalAlignment="Right" Margin="0,0,5,0" Foreground="Black" VerticalAlignment="Center" Width="25" Click="BackButton_Click" />
+        <Grid HorizontalAlignment="Right" ScrollViewer.VerticalScrollBarVisibility="Disabled" Width="135" Margin="0,0,115,0" Background="#4C000000" Visibility="Collapsed">
+            <Label x:Name="StatusLabel"  Content="In Game" HorizontalAlignment="Center" FontWeight="ExtraLight" Margin="0,0,0,0" VerticalAlignment="Center" FontSize="16" />
+            <Button Style="{x:Null}" Content="X" HorizontalAlignment="Left" Margin="5,0,0,0" Foreground="Black" VerticalAlignment="Center" Width="25" />
+            <Button Style="{x:Null}" Content="←" HorizontalAlignment="Right" Margin="0,0,5,0" Foreground="Black" VerticalAlignment="Center" Width="25" />
         </Grid>
 
         <Button x:Name="ChatButton" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,60,4" VerticalAlignment="Stretch" Width="50" Click="ChatButton_Click">
@@ -34,11 +34,7 @@
                 <Image Source="/LegendaryClient;component/chat.png" Stretch="None" />
             </StackPanel>
         </Button>
-<<<<<<< HEAD
         <Button x:Name="NotificationButton" Style="{x:Null}" Content="!" Foreground="Black" FontSize="20" HorizontalAlignment="Right" Margin="0,4,5,4" VerticalAlignment="Stretch" Width="50" Click="NotificationButton_Click" />
         <Controls:TextBoxWatermarked x:Name="DevCommand" HorizontalAlignment="Right" Margin="0,0,115,4" TextWrapping="Wrap" Watermark="Enter Dev Command here" Height="32" VerticalAlignment="Bottom" Width="254" FontSize="20" Visibility="Hidden"/>
-=======
-        <Button x:Name="NotificationButton" Style="{x:Null}" Content="-" Foreground="Black" FontSize="30" HorizontalAlignment="Right" Margin="0,4,5,4" VerticalAlignment="Stretch" Width="50" Click="NotificationButton_Click" FontFamily="Wingdings"/>
->>>>>>> master
     </Grid>
 </Page>

@@ -6,13 +6,12 @@ using MahApps.Metro.Controls;
 using PVPNetConnect;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
-<<<<<<< HEAD
-=======
-using System.Reflection;
->>>>>>> master
 using System.Windows;
 using System.Windows.Controls;
+using log4net;
+using log4net.Config;
 
 namespace LegendaryClient
 {
@@ -22,18 +21,15 @@ namespace LegendaryClient
     public partial class MainWindow : MetroWindow
     {
         private Accent Steel = null;
+        Warning Warn = new Warning();
+        private static readonly ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
         public MainWindow()
         {
             InitializeComponent();
-            Client.ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            //Set up logging before we do anything
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "lcdebug.log")))
-            {
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "lcdebug.log"));
-            }
+            SwitchPage.Visibility = Visibility.Hidden;
+            Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "lcdebug.log")))
@@ -57,7 +53,6 @@ namespace LegendaryClient
             ChatContainer.Content = new ChatPage().Content;
             StatusContainer.Content = new StatusPage().Content;
             NotificationOverlayContainer.Content = new FakePage().Content;
-            NotificationContainer.Content = new NotificationsPage().Content;
 
             Grid NotificationTempGrid = null;
             foreach (var x in NotificationOverlayContainer.GetChildObjects())
@@ -77,12 +72,13 @@ namespace LegendaryClient
             Client.OverlayContainer = OverlayContainer;
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;
-            Client.NotificationContainer = NotificationContainer;
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SwitchPage(new PatcherPage());
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
         }
 
-        void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+
+        static void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
             //Disregard PVPNetSpam
             if (e.Exception.Message.Contains("too small for an Int32") || e.Exception.Message.Contains("Constructor on type "))
@@ -105,6 +101,25 @@ namespace LegendaryClient
                 ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
                 Properties.Settings.Default.DarkTheme = true;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        private void SwichToTeamQueue_Click(object Sender, RoutedEventArgs e)
+        {
+            Client.SwitchPage(new TeamQueuePage(null));
+        }
+        internal bool SwitchTeamPage = true;
+        public void Hide()
+        {
+            if (SwitchTeamPage == true)
+            {
+                SwitchPage.Visibility = Visibility.Visible;
+                SwitchTeamPage = false;
+            }
+            else if (SwitchTeamPage == false)
+            {
+                SwitchPage.Visibility = Visibility.Hidden;
+                SwitchTeamPage = true;
             }
         }
 
@@ -155,8 +170,14 @@ namespace LegendaryClient
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
+            if (Client.IsLoggedIn)
+            {
+                ReplayPage ReplayPage = new ReplayPage();
+                Client.SwitchPage(ReplayPage);
+            }
         }
 
+        #pragma warning disable 4014 //Code does not need to be awaited
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoLogin = false;
@@ -164,16 +185,53 @@ namespace LegendaryClient
             {
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
-                Client.QuitCurrentGame();
+                Client.PVPNet.QuitGame();
                 Client.PVPNet.Disconnect();
                 Client.ChatClient.Close();
                 Client.IsLoggedIn = false;
                 Client.StatusContainer.Visibility = Visibility.Hidden;
                 Client.Container.Margin = new Thickness(0, 0, 0, 0);
-                Client.SwitchPage(page);
                 Client.SwitchPage(new LoginPage());
             }
         }
 
+        
+        private bool QuitMe = false;
+        
+        private void MainWindow_Closing(Object sender, CancelEventArgs e)
+        {
+            Client.PVPNet.PurgeFromQueues();
+            Client.PVPNet.Leave();
+            Environment.Exit(0);
+
+            if (QuitMe == true)
+            {
+                e.Cancel = true;
+                Warn.Title.Content = "Quit";
+                Warn.Content.Content = "Are You Sure You Want To Quit?";
+                Warn.backtochampselect.Click += Quit;
+                Warn.backtochampselect.Content = "Quit";
+                Warn.AcceptButton.Click += HideWarning;
+                Warn.hide.Click += HideWarning;
+                Client.OverlayContainer.Content = new Warning().Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                e.Cancel = false;
+            }
+            
+        }
+        private void Quit(object sender, RoutedEventArgs e)
+        {
+            Client.PVPNet.PurgeFromQueues();
+            Client.PVPNet.Leave();
+            Environment.Exit(0);
+        }
+        private void HideWarning(object sender, RoutedEventArgs e)
+        {
+            Warn.Visibility = Visibility.Hidden;
+
+        }
     }
 }

@@ -32,6 +32,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
+using log4net;
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
 namespace LegendaryClient.Logic
@@ -41,6 +42,8 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
+
+        private static readonly ILog log = LogManager.GetLogger(typeof(Client));
 
         /// <summary>
         /// Timer used so replays won't start right away
@@ -60,12 +63,12 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Stuff
         /// </summary>
-        internal static string LegendaryClientVersion = "1.0.1.3";
+        internal static string LegendaryClientVersion = "1.0.1.4";
 
         /// <summary>
         /// Update Data
         /// </summary>
-        internal static int LegendaryClientReleaseNumber = 1;
+        internal static int LegendaryClientReleaseNumber = 2;
 
         /// <summary>
         /// Sets Sqlite Version
@@ -82,7 +85,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Latest version of League of Legends. Retrieved from ClientLibCommon.dat
         /// </summary>
-        internal static string Version = "4.6.test";
+        internal static string Version = "4.10.3";
 
         ///<summary>
         /// To see if the user is a dev
@@ -276,7 +279,7 @@ namespace LegendaryClient.Logic
             }
             else if (hidelegendaryaddition == true)
             {
-                Client.LegendaryClientAddition = CurrentStatus + "";
+                Client.LegendaryClientAddition = CurrentStatus;
             }
         }
 
@@ -452,7 +455,7 @@ namespace LegendaryClient.Logic
             return Type + "~" + obfuscatedName;
         }
 
-
+        internal static bool runonce = false;
 
         internal static string GetChatroomJID(string ObfuscatedChatroomName, string password, bool IsTypePublic)
         {
@@ -482,6 +485,7 @@ namespace LegendaryClient.Logic
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
         internal static Button PlayButton;
+        internal static Button HideTeamQueuePage;
         internal static ContentControl ChatContainer;
         internal static ContentControl StatusContainer;
         internal static ContentControl NotificationOverlayContainer;
@@ -589,6 +593,11 @@ namespace LegendaryClient.Logic
         internal static double GameID = 0;
 
         /// <summary>
+        /// 
+        /// </summary>
+        internal static int GameQueue;
+
+        /// <summary>
         /// Game Name of the current game that the client is connected to
         /// </summary>
         internal static string GameName = "";
@@ -653,6 +662,8 @@ namespace LegendaryClient.Logic
             }
         }
 
+        //internal static Inviter CurrentInviter;
+
         internal static void OnMessageReceived(object sender, object message)
         {
             MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
@@ -697,39 +708,29 @@ namespace LegendaryClient.Logic
                 {
                     PlayerChampions = await PVPNet.GetAvailableChampions();
                 }
+                else if (message is Inviter)
+                {
+                    Inviter stats = message as Inviter;
+                    //CurrentInviter = stats;
+                }
                 else if (message is InvitationRequest)
                 {
+                    InvitationRequest stats = message as InvitationRequest;
+                    Inviter Inviterstats = message as Inviter;
                     //TypedObject body = (TypedObject)to["body"];
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
                     {
-                        InvitationRequest invite = new InvitationRequest();
                         //Gameinvite stuff
-                        GameInvitePopup pop = new GameInvitePopup();
-                        await PVPNet.getPendingInvitations();
-                        await PVPNet.checkLobbyStatus();
-                        await PVPNet.getLobbyStatus();
-                        PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest Invite = new PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest();
+                        GameInvitePopup pop = new GameInvitePopup(stats, Inviterstats);
                         //await Invite.Callback;
                         //Invite.InvitationRequest(body);
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
                         pop.Height = 230;
                         Client.NotificationGrid.Children.Add(pop);
-                        Client.InviteJsonRequest = LegendaryClient.Logic.JSON.InvitationRequest.PopulateGameInviteJson();
+                        //Client.InviteJsonRequest = LegendaryClient.Logic.JSON.InvitationRequest.PopulateGameInviteJson();
                         //message.GetType() == typeof(GameInvitePopup)
                     }));
-                }
-                else if (message is GameDTO && RunonePop == false)
-                {
-                    /*
-                    GameDTO Queue = message as GameDTO;
-                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
-                        Client.OverlayContainer.Visibility = Visibility.Visible;
-                    }));
-                    RunonePop = true;*/
-                    //Client.PVPNet.OnMessageReceived -= GotQueuePop;
                 }
             }));
         }
@@ -743,9 +744,6 @@ namespace LegendaryClient.Logic
 
                 case "matching-queue-NORMAL-3x3-game-queue":
                     return "Normal 3v3";
-
-                case "matching-queue-GROUPFINDER-5x5-game-queue":
-                    return "Team Builder 5v5";
 
                 case "matching-queue-NORMAL-5x5-draft-game-queue":
                     return "Draft 5v5";
@@ -779,6 +777,24 @@ namespace LegendaryClient.Logic
 
                 case "matching-queue-ONEFORALL-5x5-game-queue":
                     return "One For All 5v5";
+                    
+                case "matching-queue-GROUPFINDER-5x5-game-queue":
+                    return "Team Builder 5v5";
+
+                case "matching-queue-BOT_INTRO-5x5-game-queue":
+                    return "Bot 5v5 Intro";
+
+                case "matching-queue-GROUP_FINDER-5x5-game-queue":
+                    return "Groupfinder 5v5";
+
+                case "matching-queue-NIGHTMARE_BOT_1-5x5-game-queue":
+                    return "Nightmare Bots 5v5 (Easy)";
+
+                case "matching-queue-NIGHTMARE_BOT_2-5x5-game-queue":
+                    return "Nightmare Bots 5v5 (Med)";
+
+                case "matching-queue-NIGHTMARE_BOT_3-5x5-game-queue":
+                    return "Nightmare Bots 5v5 (Hard)";
 
                 default:
                     return InternalQueue;
@@ -787,7 +803,7 @@ namespace LegendaryClient.Logic
 
         internal static string GetGameDirectory()
         {
-            string Directory = Path.Combine(ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases");
+            string Directory = Path.Combine(ExecutingDirectory, "RADS", "solutions", "lol_game_client", "releases");
 
             DirectoryInfo dInfo = new DirectoryInfo(Directory);
             DirectoryInfo[] subdirs = null;
@@ -809,13 +825,16 @@ namespace LegendaryClient.Logic
 
 
         private static int counter;
+
+        private static string Location = Path.Combine("C:", "Riot Games", "League of Legends", "RADS", "solutions", "lol_game_client_sln", "releases", "0.0.1.48", "deploy", "League of Legends.exe");
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;
-            p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            //p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            p.StartInfo.FileName = Location;
             p.StartInfo.Arguments = "\"8394\" \"LoLLauncher.exe\" \"" + "" + "\" \"" +
                 CurrentGame.ServerIp + " " +
                 CurrentGame.ServerPort + " " +
@@ -854,7 +873,8 @@ namespace LegendaryClient.Logic
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;
-            p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            //p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            p.StartInfo.FileName = Location;
             p.StartInfo.Arguments = "\"8393\" \"LoLLauncher.exe\" \"\" \"spectator "
                 + SpectatorServer + " "
                 + Key + " "
@@ -995,6 +1015,8 @@ namespace LegendaryClient.Logic
         }
         #endregion Public Helper Methods
     }
+
+
 
     public class ChatPlayerItem
     {

@@ -9,7 +9,6 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -75,30 +74,21 @@ namespace LegendaryClient.Windows
                     Client.UpdatePlayers = false;
 
                     ChatListView.Items.Clear();
-                    Expander testExpander = new Expander();
-                    ListView testGrid = new ListView();
-                    testGrid.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    testGrid.VerticalAlignment = VerticalAlignment.Stretch;
-                    testGrid.Foreground = Brushes.White;
-                    testGrid.Background = null;
-                    testGrid.BorderBrush = null;
-                    testGrid.SelectionChanged += ChatListView_SelectionChanged;
-
                     foreach (KeyValuePair<string, ChatPlayerItem> ChatPlayerPair in Client.AllPlayers.ToArray())
                     {
-                        ChatPlayer player = new ChatPlayer();
-                        player.Tag = ChatPlayerPair.Value;
-                        player.DataContext = ChatPlayerPair.Value;
-                        player.ContextMenu = (ContextMenu)Resources["PlayerChatMenu"];
-
                         if (ChatPlayerPair.Value.Level != 0)
                         {
+                            ChatPlayer player = new ChatPlayer();
                             player.Width = 250;
+                            player.Tag = ChatPlayerPair.Value;
+                            player.PlayerName.Content = ChatPlayerPair.Value.Username;
+                            player.LevelLabel.Content = ChatPlayerPair.Value.Level;
                             BrushConverter bc = new BrushConverter();
                             Brush brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
+                            player.PlayerStatus.Content = ChatPlayerPair.Value.Status;
                             player.PlayerStatus.Foreground = brush;
-                            var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ChatPlayerPair.Value.ProfileIcon + ".png");
-                            player.ProfileImage.Source = Client.GetImage(uriSource);
+                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ChatPlayerPair.Value.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
+                            player.ProfileImage.Source = new BitmapImage(uriSource);
 
                             if (ChatPlayerPair.Value.GameStatus != "outOfGame")
                             {
@@ -128,22 +118,12 @@ namespace LegendaryClient.Windows
                                 player.PlayerStatus.Foreground = brush;
                             }
 
+                            player.ContextMenu = (ContextMenu)Resources["PlayerChatMenu"];
                             player.MouseMove += ChatPlayerMouseOver;
                             player.MouseLeave += player_MouseLeave;
+                            ChatListView.Items.Add(player);
                         }
-                        else
-                        {
-                            player.Width = 250;
-                            player.Height = 30;
-                            player.PlayerName.Margin = new Thickness(5, 2.5, 0, 0);
-                            player.LevelLabel.Visibility = System.Windows.Visibility.Hidden;
-                            player.ProfileImage.Visibility = System.Windows.Visibility.Hidden;
-                        }
-
-                        testGrid.Items.Add(player);
                     }
-                    testExpander.Content = testGrid;
-                    ChatListView.Items.Add(testExpander);
                 }
             }));
         }
@@ -169,21 +149,17 @@ namespace LegendaryClient.Windows
                 PlayerItem.Tag = playerItem;
                 PlayerItem.PlayerName.Content = playerItem.Username;
                 PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;
+                PlayerItem.PlayerStatus.Text = playerItem.Status;
                 if (playerItem.RankedWins == 0)
                     PlayerItem.PlayerWins.Content = playerItem.Wins + " Normal Wins";
                 else
                     PlayerItem.PlayerWins.Content = playerItem.RankedWins + " Ranked Wins";
                 PlayerItem.LevelLabel.Content = playerItem.Level;
                 PlayerItem.UsingLegendary.Visibility = playerItem.UsingLegendary ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-<<<<<<< HEAD
 
-                //PlayerItem.Dev.Visibility = playerItem.IsLegendaryDev ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+                PlayerItem.Dev.Visibility = playerItem.IsLegendaryDev ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", playerItem.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
                 PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
-=======
-                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", playerItem.ProfileIcon + ".png");
-                PlayerItem.ProfileImage.Source = Client.GetImage(uriSource);
->>>>>>> master
                 if (playerItem.Status != null)
                 {
                     //Client.hidelegendaryaddition = true;
@@ -213,7 +189,7 @@ namespace LegendaryClient.Windows
                             if (InGameChamp != null)
                                 PlayerItem.InGameStatus.Text = "In Game" + Environment.NewLine +
                                                                "Playing as " + InGameChamp.displayName + Environment.NewLine +
-                                                               "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds);
+                                                               "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds) ;
                             else
                                 PlayerItem.InGameStatus.Text = "In Game";
                             break;
@@ -222,7 +198,7 @@ namespace LegendaryClient.Windows
                             break;
                         case "inQueue":
                             PlayerItem.InGameStatus.Text = "In Queue" + Environment.NewLine +
-                                                           "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds);
+                                                           "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds) ;
                             break;
                         case "spectating":
                             PlayerItem.InGameStatus.Text = "Spectating";
@@ -249,9 +225,9 @@ namespace LegendaryClient.Windows
 
         private void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count > 0)
+            if (ChatListView.SelectedIndex != -1)
             {
-                ChatPlayer player = (ChatPlayer)e.AddedItems[0];
+                ChatPlayer player = (ChatPlayer)ChatListView.SelectedItem;
                 ChatListView.SelectedIndex = -1;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
                 LastPlayerItem = playerItem;

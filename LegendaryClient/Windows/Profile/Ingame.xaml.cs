@@ -11,6 +11,7 @@ using System.Web.Script.Serialization;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using log4net;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -20,10 +21,7 @@ namespace LegendaryClient.Windows.Profile
     public partial class Ingame : Page
     {
         PlatformGameLifecycleDTO Game;
-<<<<<<< HEAD
-=======
-
->>>>>>> master
+        private static readonly ILog log = LogManager.GetLogger(typeof(InGame));
         public Ingame()
         {
             InitializeComponent();
@@ -58,10 +56,10 @@ namespace LegendaryClient.Windows.Profile
                         if (championSelect.SummonerInternalName == participant.SummonerInternalName)
                         {
                             control.ChampionImage.Source = champions.GetChampion(championSelect.ChampionId).icon;
-                            var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id)));
-                            control.SummonerSpell1.Source = Client.GetImage(uriSource);
-                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id)));
-                            control.SummonerSpell2.Source = Client.GetImage(uriSource);
+                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
+                            control.SummonerSpell1.Source = new BitmapImage(uriSource);
+                            uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
+                            control.SummonerSpell2.Source = new BitmapImage(uriSource);
 
                             #region Generate Background
 
@@ -135,9 +133,13 @@ namespace LegendaryClient.Windows.Profile
                 champImage.Width = 58;
                 champImage.Source = champions.GetChampion(x.ChampionId).icon;
                 if (x.TeamId == 100)
+                {
                     BlueBanListView.Items.Add(champImage);
+                }
                 else
+                {
                     PurpleBanListView.Items.Add(champImage);
+                }
             }
 
             try
@@ -145,14 +147,15 @@ namespace LegendaryClient.Windows.Profile
                 string mmrJSON = "";
                 string url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName + "/" + CurrentGame.Game.Id + "/token";
                 using (WebClient client = new WebClient())
+                {
                     mmrJSON = client.DownloadString(url);
+                }
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(mmrJSON);
                 MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
             }
             catch { MMRLabel.Content = "N/A"; }
         }
-<<<<<<< HEAD
         private void SpectateButton_Click(object sender, System.Windows.RoutedEventArgs e)
          {
              string IP = Game.PlayerCredentials.ObserverServerIp;
@@ -160,15 +163,5 @@ namespace LegendaryClient.Windows.Profile
              double GameID = Game.PlayerCredentials.GameId;
              Client.LaunchSpectatorGame(IP, Key, (int)GameID, Client.Region.InternalName);
          }
-=======
-
-        private void SpectateButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            string IP = Game.PlayerCredentials.ObserverServerIp;
-            string Key = Game.PlayerCredentials.ObserverEncryptionKey;
-            double GameID = Game.PlayerCredentials.GameId;
-            Client.LaunchSpectatorGame(IP, Key, (int)GameID, Client.Region.InternalName);
-        }
->>>>>>> master
     }
 }

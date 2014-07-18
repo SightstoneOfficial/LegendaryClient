@@ -17,6 +17,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ChampionDetailsPage : Page
     {
+        internal champions TheChamp;
         public ChampionDetailsPage(int ChampionId)
         {
             InitializeComponent();
@@ -36,6 +37,11 @@ namespace LegendaryClient.Windows
         public void RenderChampions(int ChampionId)
         {
             champions Champ = champions.GetChampion(ChampionId);
+            TheChamp = Champ;
+            if (TheChamp.IsFavourite)
+                FavouriteLabel.Content = "Unfavourite";
+            else
+                FavouriteLabel.Content = "Favourite";
             ChampionName.Content = Champ.displayName;
             ChampionTitle.Content = Champ.title;
             ChampionProfileImage.Source = Champ.icon;
@@ -117,6 +123,24 @@ namespace LegendaryClient.Windows
         private void CloseButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
             Client.OverlayContainer.Visibility = Visibility.Hidden;
+        }
+
+        private void FavouriteButton_Click(object sender, RoutedEventArgs e)
+        {
+            TheChamp.IsFavourite = !TheChamp.IsFavourite;
+            //List<Int32> TempList = new List<int>(Properties.Settings.Default.FavouriteChamps);
+            //if (TempList.Contains(TheChamp.id))
+            //    TempList.Remove(TheChamp.id);
+            //else
+             //   TempList.Add(TheChamp.id);
+
+            //Properties.Settings.Default.FavouriteChamps = TempList.ToArray();
+            Properties.Settings.Default.Save();
+
+            if (TheChamp.IsFavourite)
+                FavouriteLabel.Content = "Unfavourite";
+            else
+                FavouriteLabel.Content = "Favourite";
         }
     }
 }

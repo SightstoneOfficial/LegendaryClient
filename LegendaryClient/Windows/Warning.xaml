@@ -9,7 +9,7 @@
 
     <Grid Background="#B2000000">
         <Grid HorizontalAlignment="Center" Width="750" Height="700" Margin="0,0,0,0" VerticalAlignment="Center" Background="#FF2B2B2B">
-            <Label x:Name="Titel" Content="Warning" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" Width="225" />
+            <Label x:Name="Title" Content="Warning" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" Width="225" />
             <Button x:Name="AcceptButton" Content="Dodge" HorizontalAlignment="Stretch" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="30"/>
             <Label x:Name="Content" Content="You are about to dodge a queue&#xD;&#xA;This will result in a temporary penalty if you dodge this&#xD;&#xA;queue." HorizontalAlignment="Left" Margin="10,65,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" Height="590" Width="730" />
             <Button x:Name="backtochampselect" Content="Return To champ select" HorizontalAlignment="Stretch" Margin="10,0,10,45" VerticalAlignment="Bottom" Height="30"/>

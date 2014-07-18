@@ -3,7 +3,6 @@ using LegendaryClient.Logic;
 using System;
 using System.Windows.Controls;
 using System.Windows;
-using System.Collections.Generic;
 
 namespace LegendaryClient.Windows
 {
@@ -31,29 +30,11 @@ namespace LegendaryClient.Windows
         {
             RefreshBrowser();
         }
-        
+
         private void ShopBrowser_NativeViewInitialized(object sender, WebViewEventArgs e)
         {
             JSObject JSHook = ShopBrowser.CreateGlobalJavascriptObject("parentSandboxBridge");
             JSHook.Bind("openInventoryBrowser", false, new JavascriptMethodEventHandler(OnItemClick));
-            JSHook.Bind("getBuddyList", true, new JavascriptMethodEventHandler(OnRequestBuddies));
-        }
-
-        public void OnRequestBuddies(object sender, JavascriptMethodEventArgs e)
-        {
-            JSValue[] buddyList = new JSValue[Client.AllPlayers.Count];
-
-            int i = 0;
-            foreach (var x in Client.AllPlayers)
-            {
-                JSObject buddy = new JSObject();
-                buddy["name"] = new JSValue(x.Value.Username);
-                buddy["summonerId"] = new JSValue(x.Key.Replace("sum", ""));
-                buddy["isMutualFriend"] = new JSValue(true);
-                buddyList[i++] = buddy;
-            }
-
-            e.Result = new JSValue(buddyList);
         }
 
         public void OnItemClick(object sender, JavascriptMethodEventArgs e)

@@ -17,7 +17,7 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Button x:Name="CancelGameButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,200" VerticalAlignment="Bottom" Width="200"/>
+        <Button x:Name="CancelGameButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,200" VerticalAlignment="Bottom" Width="200" Click="Leave_Click"/>
         <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="560,0,0,200" VerticalAlignment="Bottom" Width="300" Click="StartGameButton_Click"/>
 
         <ListView x:Name="InviteListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="170" Margin="0,0,10,230" VerticalAlignment="Bottom" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
@@ -27,7 +27,7 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Right" Margin="0,0,15,200" VerticalAlignment="Bottom" Width="390"/>
+        <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Right" Margin="0,0,15,200" VerticalAlignment="Bottom" Width="390" Click="Invite_Click"/>
 
         <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="10,0,10,40" Height="150" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
@@ -38,6 +38,8 @@
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="5,0,120,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Button x:Name="ChatButton" Content="Send" Margin="470,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
+        <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="113" Stroke="Black" VerticalAlignment="Top" Width="390" Margin="0,50,15,0"/>
+        <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging... Please Wait" VerticalAlignment="Top" Margin="0,52,17,0" Height="109" Width="385" Foreground="White" FontSize="20" TextAlignment="Center"/>
 
     </Grid>
 </Page>

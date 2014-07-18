@@ -26,6 +26,60 @@
             </Style.Triggers>
         </Style>
 
+        <Style TargetType="{x:Type Button}" x:Key="Square">
+            <Setter Property="Background" Value="#FF474747"/>
+            <Setter Property="BorderBrush" Value="{x:Null}"/>
+            <Setter Property="Foreground" Value="#FFCFCFCF"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="BorderBrush" Value="#FF2A2A2B"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="2" />
+                    <Setter Property="Background" Value="#FF707070"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type Button}" x:Key="HideSquare">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Transparent"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value="0.8" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="2" />
+                    <Setter Property="Background" Value="Transparent"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
@@ -80,9 +134,9 @@
             <sys:String>Blind Pick</sys:String>
             <sys:String>All Random</sys:String>
             <sys:String>Tournament Draft</sys:String>
+            <sys:String>One for All</sys:String>
             <!-- Modes unavailable to the public-->
-            <!--<sys:String>One for All</sys:String>
-            <sys:String>Open Pick</sys:String>
+            <!--<sys:String>Open Pick</sys:String>
             <sys:String>Infinite Time Blind Pick</sys:String>
             <sys:String>Infinite Time Blind PickTest</sys:String>
             <sys:String>Captain Pick</sys:String>

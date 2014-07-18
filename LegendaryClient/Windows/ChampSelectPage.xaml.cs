@@ -91,6 +91,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             StartChampSelect();
             Client.LastPageContent = this.Content;
+            Client.runonce = true;
         }
 
         /// <summary>
@@ -862,7 +863,7 @@ namespace LegendaryClient.Windows
             //TODO - add messagebox
             Warning pop = new Warning();
             //pop.hide.Click =
-            Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            //Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
             QuitCurrentGame();
         }
 

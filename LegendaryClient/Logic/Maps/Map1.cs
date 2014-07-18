@@ -4,7 +4,7 @@
     {
         public override string DisplayName
         {
-            get { return "Summoner's Rift"; }
+            get { return "Summoners Rift"; }
         }
     }
 }

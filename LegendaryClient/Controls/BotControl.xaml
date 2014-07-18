@@ -7,11 +7,11 @@
              mc:Ignorable="d"
              d:DesignHeight="65" d:DesignWidth="300">
     <Grid>
-        <Image x:Name="ProfileImage"  HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="64" />
-        <Label x:Name="PlayerName" Content="Annie Bot" HorizontalAlignment="Left" Margin="70,0,0,0" FontSize="20" FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Image x:Name="ProfileImage"  HorizontalAlignment="Left" Height="37" VerticalAlignment="Top" Width="37" />
+        <Label x:Name="PlayerName" Content="Annie Bot" HorizontalAlignment="Left" Margin="42,0,0,0" FontSize="20" FontWeight="ExtraLight" VerticalAlignment="Top" Width="225" />
         <Button x:Name="BanButton" Content="X" HorizontalAlignment="Left" Margin="272,4,0,0" VerticalAlignment="Top" Width="25" Height="25" />
         <Label x:Name="OwnerLabel" Content="Owner" HorizontalAlignment="Right" Margin="0,0,5,0" FontSize="20" FontWeight="ExtraLight" VerticalAlignment="Top" Visibility="Hidden" />
-        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="140" Margin="70,37,0,0"/>
-        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="215,37,0,0"/>
+        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" Margin="10,37,0,0"/>
+        <ComboBox HorizontalAlignment="Right" VerticalAlignment="Top" Width="117" Margin="0,37,3,0"/>
     </Grid>
 </UserControl>

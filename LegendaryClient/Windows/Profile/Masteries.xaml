@@ -19,16 +19,9 @@
 
         <Label x:Name="UsedLabel" Foreground="White" Content="Points Used: 0" HorizontalAlignment="Left" Margin="10,70,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
         <Label x:Name="FreeLabel" Foreground="White" Content="Points Free: 0" HorizontalAlignment="Left" Margin="10,110,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-<<<<<<< HEAD
 
         <Button x:Name="SaveButton" Content="Save Masteries" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="200" Click="SaveButton_Click" />
         <Button x:Name="RevertButton" Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="200" Click="RevertButton_Click" />
-=======
-        
-        <Button x:Name="SaveButton" Content="Save Masteries" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="200" Click="SaveButton_Click" />
-        <Button x:Name="RevertButton" Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="200" Click="RevertButton_Click" />
-
->>>>>>> master
         <Button x:Name="DeleteButton" Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Width="200" />
         <Button x:Name="ReturnButton" Content="Return All Points" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Width="200" Click="ReturnButton_Click" />
 

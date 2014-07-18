@@ -17,7 +17,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string ChatName
         {
-            get { return "eu"; }
+            get { return "euw1"; }
         }
 
         public override Uri NewsAddress

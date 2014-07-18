@@ -11,7 +11,7 @@
         <Label Content="Search" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Foreground="White" />
         <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="100,20,250,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
 
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="10,50,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" SelectionChanged="ChampionSelectListView_SelectionChanged">
+        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="10,50,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />

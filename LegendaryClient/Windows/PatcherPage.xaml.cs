@@ -1,4 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.GZip;
+﻿using System.Collections.Generic;
+using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.JSON;
@@ -21,15 +22,13 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class PatcherPage : Page
     {
-        Thread bgThread;
-
         public PatcherPage()
         {
             InitializeComponent();
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
+            DevKey.TextChanged += DevKeySend_Click;
         }
-<<<<<<< HEAD
         #region Devkeys
         private void DevKeySend_Click(object sender, RoutedEventArgs e)
         {
@@ -143,6 +142,187 @@ namespace LegendaryClient.Windows
                 Client.Dev = true;
                 Client.NewStatus();
             }
+                else if (DevKey.Text == "!~betakey-gBEtVpJgj6QpSWZzHVRN~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Beta User!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                    else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+
             else if (Client.Dev == true)
             {
                 Client.Log("Dev mode enabled");
@@ -155,8 +335,6 @@ namespace LegendaryClient.Windows
             Client.SwitchPage(new LoginPage());
             Client.Log("Swiched to LoginPage with DevSkip");
         }
-=======
->>>>>>> master
 
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -166,13 +344,10 @@ namespace LegendaryClient.Windows
 
         private void StartPatcher()
         {
-            bgThread = new Thread(() =>
+            Thread bgThead = new Thread(() =>
             {
                 LogTextBox("Starting Patcher");
-<<<<<<< HEAD
                 Client.Log("Patcher Starting");
-=======
->>>>>>> master
 
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
@@ -197,31 +372,25 @@ namespace LegendaryClient.Windows
                 string VersionString = "";
                 try
                 {
-                    VersionString = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
+                    VersionString = client.DownloadString(new Uri("http://eddy5641.github.io/LegendaryClient/update.html"));
+
+                    string[] VersionSplit = VersionString.Split('|');
+
+                    LogTextBox("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
                 }
                 catch
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         CurrentProgressLabel.Content = "Could not retrieve update files!";
-<<<<<<< HEAD
                         Client.Log("[Warn]: Failed to retrieve update files");
-=======
-                        Client.Log("Couldn't get update files for LegendaryClient");
->>>>>>> master
                     }));
 
                     //return;
                 }
 
-                string[] VersionSplit = VersionString.Split('|');
-
-                LogTextBox("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
-<<<<<<< HEAD
+                
                 Client.updateData = LegendaryUpdate.PopulateItems();
-=======
-                Client.Log("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
->>>>>>> master
 
                 #if !DEBUG //Dont patch client while in DEBUG
                 UpdateData legendaryupdatedata = new UpdateData();
@@ -250,7 +419,6 @@ namespace LegendaryClient.Windows
 
                     return;
                 }
-<<<<<<< HEAD
                 else if (Client.LegendaryClientVersion == version)
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -277,11 +445,6 @@ namespace LegendaryClient.Windows
                 //LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
                 
                 //Client.Log("[Debug]: LegendaryClient Is Up To Date");
-=======
-#endif
-                LogTextBox("LegendaryClient is up to date");
-                Client.Log("LC Patched");
->>>>>>> master
 
                 #endregion LegendaryClient
 
@@ -302,18 +465,16 @@ namespace LegendaryClient.Windows
                 {
                     var VersionLOL = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
                     VersionLOL.Write(encoding.GetBytes("0.0.0"), 0, encoding.GetBytes("0.0.0").Length);
+                    
                     VersionLOL.Close();
                 }
+                
 
                 RiotPatcher patcher = new RiotPatcher();
                 string DDragonDownloadURL = patcher.GetDragon();
-                if (!DDragonDownloadURL.StartsWith("http:"))
-                    DDragonDownloadURL = "http:" + DDragonDownloadURL;
                 LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
-                Client.Version = patcher.DDragonVersion;
                 string DDragonVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
                 LogTextBox("Current DataDragon Version: " + DDragonVersion);
-                Client.Log("DD: " + patcher.DDragonVersion + "|" + DDragonVersion);
 
                 Client.Version = DDragonVersion;
                 Client.Log("[Debug]: DDragon Version (LOL Version) = " + DDragonVersion);
@@ -351,15 +512,12 @@ namespace LegendaryClient.Windows
 
                     Copy(Path.Combine("Assets", "temp", patcher.DDragonVersion, "data"), Path.Combine("Assets", "data"));
                     Copy(Path.Combine("Assets", "temp", patcher.DDragonVersion, "img"), Path.Combine("Assets"));
-                    Directory.Delete(Path.Combine("Assets", "temp"), true);
+                    DeleteDirectoryRecursive(Path.Combine("Assets", "temp"));
 
                     var VersionDDragon = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
                     VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
-<<<<<<< HEAD
 
                     Client.Version = DDragonVersion;
-=======
->>>>>>> master
                     VersionDDragon.Close();
                 }
 
@@ -370,6 +528,9 @@ namespace LegendaryClient.Windows
                     TotalProgressLabel.Content = "40%";
                     TotalProgessBar.Value = 40;
                 }));
+
+                // Try get LoL path from registry
+                string lolRootPath = GetLolRootPath();
 
                 #region lol_air_client
 
@@ -386,20 +547,20 @@ namespace LegendaryClient.Windows
                 LogTextBox("Current Air Assets Version: " + AirVersion);
                 bool RetrieveCurrentInstallation = false;
                 string AirLocation = "";
-                Client.Log("AIR: " + LatestAIR + "|" + AirVersion);
 
                 if (AirVersion == "0.0.0.0")
                 {
                     LogTextBox("Checking for existing League of Legends Installation");
                     AirLocation = Path.Combine("League of Legends", "RADS", "projects", "lol_air_client", "releases");
+                    var localAirLocation = Path.Combine("RADS", "projects", "lol_air_client", "releases");
                     if (Directory.Exists(AirLocation))
                     {
                         RetrieveCurrentInstallation = true;
                     }
-                    else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", AirLocation)))
+                    else if (string.IsNullOrEmpty(lolRootPath) == false && Directory.Exists(Path.Combine(lolRootPath, localAirLocation)))
                     {
                         RetrieveCurrentInstallation = true;
-                        AirLocation = Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", AirLocation);
+                        AirLocation = Path.Combine(lolRootPath, localAirLocation);
                     }
                     else
                     {
@@ -410,7 +571,6 @@ namespace LegendaryClient.Windows
 
                     if (RetrieveCurrentInstallation)
                     {
-                        Client.Log("Got previous installation: " + AirLocation);
                         LogTextBox("Getting Air Assets from " + AirLocation);
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
@@ -419,6 +579,11 @@ namespace LegendaryClient.Windows
                         AirVersion = patcher.GetCurrentAirInstall(AirLocation);
                         LogTextBox("Retrieved currently installed Air Assets");
                         LogTextBox("Current Air Assets Version: " + AirVersion);
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        {
+                            TotalProgressLabel.Content = "60%";
+                            TotalProgessBar.Value = 60;
+                        }));
                     }
                 }
 
@@ -426,6 +591,7 @@ namespace LegendaryClient.Windows
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
+                        SkipPatchButton.IsEnabled = true;
                         CurrentProgressLabel.Content = "Retrieving Air Assets";
                     }));
                 }
@@ -433,6 +599,8 @@ namespace LegendaryClient.Windows
                 #endregion lol_air_client
 
                 #region lol_game_client
+
+                LogTextBox("Searching For Lol Install");
 
                 if (!Directory.Exists("RADS"))
                 {
@@ -444,6 +612,12 @@ namespace LegendaryClient.Windows
                     var VersionGAME = File.Create(Path.Combine("RADS", "VERSION_LOL"));
                     VersionGAME.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
                     VersionGAME.Close();
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        TotalProgressLabel.Content = "70%";
+                        TotalProgessBar.Value = 70;
+                    }));
+                    
                 }
 
                 string LatestGame = patcher.GetLatestGame();
@@ -453,25 +627,22 @@ namespace LegendaryClient.Windows
                 RetrieveCurrentInstallation = false;
                 string GameLocation = "";
 
-                if (GameVersion == "0.0.0.0")
+                if (GameVersion != LatestGame)
                 {
                     LogTextBox("Checking for existing League of Legends Installation");
                     GameLocation = Path.Combine("League of Legends", "RADS");
-                    string rootPath = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path", "").ToString();
                     if (Directory.Exists(GameLocation))
                     {
                         RetrieveCurrentInstallation = true;
                     }
-                    else if (Directory.Exists(Path.Combine(rootPath, "RADS")))
+                    else if (string.IsNullOrEmpty(lolRootPath) == false && Directory.Exists(Path.Combine(lolRootPath, "RADS")))
                     {
                         RetrieveCurrentInstallation = true;
-                        GameLocation = Path.Combine(rootPath, "RADS");
+                        GameLocation = Path.Combine(lolRootPath, "RADS");
                     }
                     else
                     {
-                        LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
-                            + Client.ExecutingDirectory
-                            + " to make the patching process quicker");
+                        LogTextBox("Unable to find existing League of Legends. Please Find Your League Of Legends");
                     }
 
                     if (RetrieveCurrentInstallation)
@@ -484,7 +655,15 @@ namespace LegendaryClient.Windows
                         GameVersion = patcher.GetCurrentGameInstall(GameLocation);
                         LogTextBox("Retrieved currently installed League of Legends");
                         LogTextBox("Current League of Legends Version: " + GameLocation);
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        {
+                            TotalProgressLabel.Content = "80%";
+                            TotalProgessBar.Value = 80;
+                        }));
+                        
                     }
+                    
+                    
                 }
 
                 if (GameVersion != LatestGame)
@@ -494,17 +673,63 @@ namespace LegendaryClient.Windows
                         CurrentProgressLabel.Content = "Retrieving League of Legends";
                     }));
                 }
-
+                //*/
                 #endregion lol_game_client
+
+                
 
                 FinishPatching();
             });
-            bgThread.IsBackground = true;
-            bgThread.Start();
+
+            bgThead.Start();
         }
 
-<<<<<<< HEAD
+        private string GetLolRootPath() {
+            var possiblePaths = new List<Tuple<string, string>>  {
+                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\RIOT GAMES", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Wow6432Node\Riot Games", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\League Of Legends", "Path"),
+                // Yes, a f*ckin whitespace after "Riot Games"..
+                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends", "Path"),
+            };
+            foreach (var tuple in possiblePaths) {
+                var path = tuple.Item1;
+                var valueName = tuple.Item2;
+                try {
+                    var value = Microsoft.Win32.Registry.GetValue(path, valueName, string.Empty);
+                    if (value != null && value.ToString() != string.Empty) {
+                        return value.ToString();
+                    }
+                } catch { }
+            }
+
+            return string.Empty;
+        }
+
         private void update(object sender, EventArgs e)
+        {
+            UpdateData legendaryupdatedata = new UpdateData();
+            WebClient client = new WebClient();
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "temp")))
+            {
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "temp"));
+            }
+            var downloadLink = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
+            var filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
+            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
+            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
+            string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
+            LogTextBox("Retreving Update Data from: " + DownloadLocation);
+            client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
+            //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
+            //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
+        }
+
+        private void updatebetausers(object sender, EventArgs e)
         {
             UpdateData legendaryupdatedata = new UpdateData();
             WebClient client = new WebClient();
@@ -570,18 +795,16 @@ namespace LegendaryClient.Windows
 
 
         private void FinishPatching()
-=======
-        private void FinishPatching(bool Force = false)
->>>>>>> master
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                SkipPatchButton.Content = "Play";
-                SkipPatchButton.IsEnabled = true;
                 TotalProgressLabel.Content = "100%";
                 TotalProgessBar.Value = 100;
+                SkipPatchButton.Content = "Play";
+                CurrentProgressLabel.Content = "Finished Patching";
+                CurrentStatusLabel.Content = "Ready To Play";
+                SkipPatchButton.IsEnabled = true;
             }));
-<<<<<<< HEAD
             
             LogTextBox("LegendaryClient Has Finished Patching");
             Client.Log("[Debug]: LegendaryClient Has Finished Patching");
@@ -592,8 +815,6 @@ namespace LegendaryClient.Windows
             {
                 Client.SwitchPage(new LoginPage());
             }));*/
-=======
->>>>>>> master
         }
 
         private void LogTextBox(string s)
@@ -635,5 +856,20 @@ namespace LegendaryClient.Windows
             }
             return rtrn.ToUpper();
         }
+
+        private static void DeleteDirectoryRecursive(string path) {
+            foreach (var directory in Directory.GetDirectories(path)) {
+                DeleteDirectoryRecursive(directory);
+            }
+
+            try {
+                Directory.Delete(path, true);
+            } catch (IOException) {
+                Directory.Delete(path, true);
+            } catch (UnauthorizedAccessException) {
+                Directory.Delete(path, true);
+            }
+        }
+
     }
 }

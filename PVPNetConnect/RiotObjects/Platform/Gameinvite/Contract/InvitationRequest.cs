@@ -1,5 +1,6 @@
 ﻿using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using System;
+using System.Collections.Generic;
 
 namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
 {
@@ -36,9 +37,6 @@ namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
             callback(this);
         }
 
-        [InternalName("inviter")]
-        public Inviter Inviter { get; set; }
-
         [InternalName("gameMetaData")]
         public String GameMetaData { get; set; }
 
@@ -55,8 +53,11 @@ namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
         [InternalName("invitationId")]
         public String InvitationId { get; set; }
 
-        [InternalName("summonerName")]
-        public Inviter SummonerName { get; set; }
+        [InternalName("inviter")]
+        public List<Inviter> Inviter { get; set; }
+
+        [InternalName("owner")]
+        public String Owner { get; set; }
 
     }
 }

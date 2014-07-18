@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              Height="279" Width="154">
-
     <Grid>
         <Rectangle Fill="#02000000" Width="154" Height="279" />
         <Image x:Name="SkinImage" HorizontalAlignment="Left" Height="280" Margin="0,0,0,0" VerticalAlignment="Top" Width="154" />
@@ -14,6 +13,6 @@
                 <DropShadowEffect ShadowDepth="2" BlurRadius="1" />
             </Label.Effect>
         </Label>
-        <Label x:Name="SkinName" Content="{Binding Path=displayName}" HorizontalAlignment="Center" Margin="0,0,0,0" Background="#4C0C0C0C" VerticalAlignment="Bottom" Foreground="White" />
+        <Label x:Name="SkinName" Content="Definitely not Blitzcrank" HorizontalAlignment="Center" Margin="0,0,0,0" Background="#4C0C0C0C" VerticalAlignment="Bottom" Foreground="White" />
     </Grid>
 </UserControl>

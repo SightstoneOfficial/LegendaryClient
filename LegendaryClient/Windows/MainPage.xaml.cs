@@ -19,7 +19,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
@@ -37,7 +36,6 @@ namespace LegendaryClient.Windows
         internal int SelectedGame = 0;
         internal ArrayList gameList;
         internal ArrayList newsList;
-        internal System.Windows.Forms.Timer RefreshTimer;
 
         public MainPage()
         {
@@ -95,23 +93,9 @@ namespace LegendaryClient.Windows
 
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
             int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png");
-            ProfileImage.Source = Client.GetImage(uriSource);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"), UriKind.RelativeOrAbsolute);
+            ProfileImage.Source = new BitmapImage(uriSource);
             Client.MainPageProfileImage = ProfileImage;
-
-            RefreshTimer = new System.Windows.Forms.Timer();
-            RefreshTimer.Tick += new EventHandler(RefreshTimer_Tick);
-            RefreshTimer.Interval = 300000; // 5 minutes
-            RefreshTimer.Start();
-        }
-
-        private void RefreshTimer_Tick(object sender, EventArgs e)
-        {
-            if (SpectatorComboBox.SelectedIndex != -1 && SpectatorComboBox.SelectedValue != null)
-            {
-                BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
-                ChangeSpectatorRegion(region);
-            }
         }
 
         private void GotLeaguesForPlayer(SummonerLeaguesDTO result)
@@ -155,7 +139,6 @@ namespace LegendaryClient.Windows
                     PlayerProgressLabel.Content = "Level 30";
                     PlayerCurrentProgressLabel.Content = "";
                     PlayerAimProgressLabel.Content = "";
-                    return;
                 }
 
                 PlayerProgressLabel.Content = CurrentTier;
@@ -166,6 +149,9 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
+                    if (string.IsNullOrEmpty(CurrentLP)) {
+                        CurrentLP = "0";
+                    }
                     PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
                     PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
                 }
@@ -264,28 +250,25 @@ namespace LegendaryClient.Windows
 
         private void ChangeSpectatorRegion(BaseRegion region)
         {
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate(object s, DoWorkEventArgs args)
-            {
-                string spectatorJSON = "";
-                using (WebClient client = new WebClient())
-                {
-                    spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
-                }
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
-                gameList = deserializedJSON["gameList"] as ArrayList;
-            };
+            try {
+                // @TODO: Move to global worker to prevent mutiple requests on fast region switch
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += delegate {
+                    string spectatorJSON = "";
+                    using (WebClient client = new WebClient()) {
+                        spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
+                    }
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
+                    gameList = deserializedJSON["gameList"] as ArrayList;
+                };
 
-            worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
-            {
-                ParseSpectatorGames();
-            };
-
-            worker.RunWorkerAsync();
+                worker.RunWorkerCompleted += (s, args) => ParseSpectatorGames();
+                worker.RunWorkerAsync();
+            } catch { }
         }
 
-        private async void ParseSpectatorGames()
+        private void ParseSpectatorGames()
         {
             if (gameList == null)
                 return;
@@ -300,11 +283,14 @@ namespace LegendaryClient.Windows
             int GameId = 0;
             var objectGame = gameList[SelectedGame];
             Dictionary<string, object> SpectatorGame = objectGame as Dictionary<string, object>;
+            ImageGrid.Children.Clear();
             foreach (KeyValuePair<string, object> pair in SpectatorGame)
             {
                 if (pair.Key == "participants")
                 {
                     ArrayList players = pair.Value as ArrayList;
+
+                    int i = 0;
                     foreach (var objectPlayer in players)
                     {
                         Dictionary<string, object> playerInfo = objectPlayer as Dictionary<string, object>;
@@ -338,12 +324,33 @@ namespace LegendaryClient.Windows
                         }
                         ChampSelectPlayer control = new ChampSelectPlayer();
                         control.ChampionImage.Source = champions.GetChampion(championId).icon;
-                        string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell1Id));
-                        control.SummonerSpell1.Source = Client.GetImage(uriSource);
-                        uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell2Id));
-                        control.SummonerSpell2.Source = Client.GetImage(uriSource);
-
+                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
+                        control.SummonerSpell1.Source = new BitmapImage(uriSource);
+                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
+                        control.SummonerSpell2.Source = new BitmapImage(uriSource);
                         control.PlayerName.Content = PlayerName;
+
+                        Image m = new Image();
+                        Canvas.SetZIndex(m, -2); //Put background behind everything
+                        m.Stretch = Stretch.None;
+                        m.Width = 100;
+                        m.Opacity = 0.30;
+                        m.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                        m.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
+                        m.Margin = new System.Windows.Thickness(i++ * 100, 0, 0, 0);
+                        System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(new System.Drawing.Point(100, 0), new System.Drawing.Size(100, 560));
+                        System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championId).portraitPath)) as System.Drawing.Bitmap;
+                        System.Drawing.Bitmap target = new System.Drawing.Bitmap(cropRect.Width, cropRect.Height);
+
+                        using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(target))
+                        {
+                            g.DrawImage(src, new System.Drawing.Rectangle(0, 0, target.Width, target.Height),
+                                            cropRect,
+                                            System.Drawing.GraphicsUnit.Pixel);
+                        }
+
+                        m.Source = Client.ToWpfBitmap(target);
+                        ImageGrid.Children.Add(m);
 
                         if (teamId == 100)
                         {
@@ -355,11 +362,20 @@ namespace LegendaryClient.Windows
                         }
                     }
                 }
-                if (pair.Key == "gameId")
+                else if (pair.Key == "gameId")
                 {
                     GameId = (int)pair.Value;
                 }
-                if (pair.Key == "bannedChampions")
+                else if (pair.Key == "mapId")
+                {
+                    MapLabel.Content = BaseMap.GetMap((int)pair.Value).DisplayName;
+                }
+                else if (pair.Key == "gameLength")
+                {
+                    var seconds = (int) pair.Value;
+                    GameTimeLabel.Content = string.Format("{0:D}:{1:00} min", seconds / 60, seconds % 60);
+                }
+                else if (pair.Key == "bannedChampions")
                 {
                     //ArrayList players = pair.Value as ArrayList;
                     //Dictionary<string, object> playerInfo = objectPlayer as Dictionary<string, object>;
@@ -415,7 +431,7 @@ namespace LegendaryClient.Windows
                 string url = region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName + "/" + GameId + "/token";
                 using (WebClient client = new WebClient())
                 {
-                    spectatorJSON = await client.DownloadStringTaskAsync(url);
+                    spectatorJSON = client.DownloadString(url);
                 }
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
@@ -505,8 +521,8 @@ namespace LegendaryClient.Windows
 
         private void InviteTest_Click(object sender, RoutedEventArgs e)
         {
-            Client.OverlayContainer.Content = new GameInviteTest().Content;
-            Client.OverlayContainer.Visibility = Visibility.Visible;
+            //Client.OverlayContainer.Content = new GameInviteTest().Content;
+            //Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private void PVPNet_OnMessageReceived(object sender, object message)

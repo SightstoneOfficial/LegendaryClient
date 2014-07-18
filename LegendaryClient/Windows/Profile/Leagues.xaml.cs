@@ -11,6 +11,7 @@ using LegendaryClient.Logic.SQLite;
 using System;
 using System.Windows.Threading;
 using System.Threading;
+using log4net;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -23,6 +24,7 @@ namespace LegendaryClient.Windows.Profile
         string SelectedRank;
         string Queue;
         AggregatedStats SelectedAggregatedStats;
+        private static readonly ILog log = LogManager.GetLogger(typeof(Leagues));
 
         public Leagues()
         {
@@ -35,13 +37,9 @@ namespace LegendaryClient.Windows.Profile
             foreach (LeagueListDTO leagues in MyLeagues.SummonerLeagues)
             {
                 if (leagues.Queue == "RANKED_SOLO_5x5")
-<<<<<<< HEAD
                 {
                     SelectedRank = leagues.RequestorsRank;
                 }
-=======
-                    SelectedRank = leagues.RequestorsRank;
->>>>>>> master
             }
             Queue = "RANKED_SOLO_5x5";
             RenderLeague();
@@ -79,7 +77,6 @@ namespace LegendaryClient.Windows.Profile
                     {
                         i++;
                         LeagueItem item = new LeagueItem();
-<<<<<<< HEAD
                         item.PlayerRankLabel.Content = i;
                         if (i - player.PreviousDayLeaguePosition != 0)
                         {
@@ -102,17 +99,6 @@ namespace LegendaryClient.Windows.Profile
                         {
                             item.LPLabel.Content = ((string)miniSeries["progress"]).Replace('N', '-');
                         }
-=======
-                        item.DataContext = player;
-
-                        item.PlayerRankLabel.Content = i;
-                        if (i - player.PreviousDayLeaguePosition != 0)
-                            item.RankChangeLabel.Content = i - player.PreviousDayLeaguePosition;
-
-                        TypedObject miniSeries = player.MiniSeries as TypedObject;
-                        if (miniSeries != null)
-                            item.LPLabel.Content = ((string)miniSeries["progress"]).Replace('N', '-');
->>>>>>> master
 
                         LeaguesListView.Items.Add(item);
                     }
@@ -153,10 +139,6 @@ namespace LegendaryClient.Windows.Profile
             {
                 LeagueItem item = (LeagueItem)LeaguesListView.SelectedItem;
                 PlayerLabel.Content = item.PlayerLabel.Content;
-<<<<<<< HEAD
-=======
-                TopChampionsListView.Items.Clear();
->>>>>>> master
                 var x = await Client.PVPNet.GetSummonerByName((string)item.PlayerLabel.Content);
                 Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", new AggregatedStats.Callback(GotStats));
             }
@@ -167,20 +149,12 @@ namespace LegendaryClient.Windows.Profile
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 SelectedAggregatedStats = stats;
-<<<<<<< HEAD
 
                 ViewAggregatedStatsButton.IsEnabled = false;
                 TopChampionsListView.Items.Clear();
                 List<AggregatedChampion> ChampionStats = new List<AggregatedChampion>();
                 int i = 0;
 
-=======
-            
-                ViewAggregatedStatsButton.IsEnabled = false;
-                List<AggregatedChampion> ChampionStats = new List<AggregatedChampion>();
-                int i = 0;
-                TopChampionsListView.Items.Clear();
->>>>>>> master
                 if (SelectedAggregatedStats.LifetimeStatistics.Count() > 0)
                 {
                     foreach (AggregatedStat stat in SelectedAggregatedStats.LifetimeStatistics)
@@ -193,30 +167,17 @@ namespace LegendaryClient.Windows.Profile
                             Champion.ChampionId = stat.ChampionId;
                             ChampionStats.Add(Champion);
                         }
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> master
                         var type = typeof(AggregatedChampion);
                         string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
                         var f = type.GetField(fieldName);
                         f.SetValue(Champion, stat.Value);
                     }
-<<<<<<< HEAD
 
                     ChampionStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
 
                     foreach (AggregatedChampion info in ChampionStats)
                     {
-=======
-            
-                    ChampionStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
-            
-                    foreach (AggregatedChampion info in ChampionStats)
-                    {
-                        //Show the top 6 champions
->>>>>>> master
                         if (i++ > 6)
                             break;
                         ViewAggregatedStatsButton.IsEnabled = true;
@@ -234,14 +195,5 @@ namespace LegendaryClient.Windows.Profile
                 }
             }));
         }
-<<<<<<< HEAD
-=======
-
-        private void ViewAggregatedStatsButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Client.OverlayContainer.Content = new AggregatedStatsOverlay(SelectedAggregatedStats, false).Content;
-            Client.OverlayContainer.Visibility = System.Windows.Visibility.Visible;
-        }
->>>>>>> master
     }
 }

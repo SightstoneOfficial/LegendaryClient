@@ -7,6 +7,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
+using log4net;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -17,6 +18,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private List<ChampionDTO> ChampionList;
         private bool NoFilterOnLoad;
+        private static readonly ILog log = LogManager.GetLogger(typeof(Champions));
 
         public Champions()
         {
@@ -93,14 +95,14 @@ namespace LegendaryClient.Windows.Profile
                 {
                     ProfileChampionImage championImage = new ProfileChampionImage();
                     champions champion = champions.GetChampion(champ.ChampionId);
-                    championImage.DataContext = champion;
-
+                    championImage.ChampImage.Source = champion.icon;
                     if (champ.FreeToPlay)
                         championImage.FreeToPlayLabel.Visibility = System.Windows.Visibility.Visible;
-
+                    championImage.ChampName.Content = champion.displayName;
                     if (!champ.Owned && !champ.FreeToPlay)
+                    {
                         championImage.ChampImage.Opacity = 0.5;
-
+                    }
                     championImage.Tag = champ.ChampionId;
                     ChampionSelectListView.Items.Add(championImage);
                 }

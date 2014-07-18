@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
@@ -48,10 +47,14 @@ namespace LegendaryClient.Windows.Profile
             List<ChampionSkinDTO> skinList = new List<ChampionSkinDTO>();
 
             foreach (ChampionDTO champion in tempList)
+            {
                 skinList.AddRange(champion.ChampionSkins);
+            }
 
             if (!String.IsNullOrEmpty(SearchTextBox.Text))
+            {
                 skinList = skinList.Where(x => championSkins.GetSkin(x.SkinId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+            }
 
             foreach (ChampionSkinDTO skin in skinList)
             {
@@ -59,26 +62,14 @@ namespace LegendaryClient.Windows.Profile
                 {
                     ProfileSkinImage skinImage = new ProfileSkinImage();
                     championSkins championSkin = championSkins.GetSkin(skin.SkinId);
-                    skinImage.DataContext = championSkin;
-                    var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath);
-                    skinImage.SkinImage.Source = Client.GetImage(uriSource);
+                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath), UriKind.Absolute);
+                    skinImage.SkinImage.Source = new BitmapImage(uriSource);
                     if (!skin.StillObtainable)
                         skinImage.LimitedLabel.Visibility = System.Windows.Visibility.Visible;
-                    skinImage.Tag = championSkin;
+                    skinImage.SkinName.Content = championSkin.displayName;
                     skinImage.Margin = new System.Windows.Thickness(5, 0, 5, 0);
                     SkinSelectListView.Items.Add(skinImage);
                 }
-            }
-        }
-
-        private void SkinSelectListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (SkinSelectListView.SelectedIndex != -1)
-            {
-                ProfileSkinImage selectedSkin = (ProfileSkinImage)SkinSelectListView.SelectedItem;
-                championSkins skin = (championSkins)selectedSkin.Tag;
-                Client.OverlayContainer.Content = new ChampionDetailsPage(skin.championId, skin.id).Content;
-                Client.OverlayContainer.Visibility = Visibility.Visible;
             }
         }
     }
