@@ -55,7 +55,7 @@ namespace LegendaryClient.Windows
                 var keys = new List<Button>(ButtonTimers.Keys);
                 foreach (Button pair in keys)
                 {
-                    ButtonTimers[pair] = ButtonTimers[pair] + 1;
+                    ButtonTimers[pair]++;
                     TimeSpan time = TimeSpan.FromSeconds(ButtonTimers[pair]);
                     Button realButton = (Button)pair.Tag;
                     realButton.Content = string.Format("{0:D2}:{1:D2} Re-Click To Leave", time.Minutes, time.Seconds);
@@ -186,9 +186,7 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
                 InQueue = true;
                 //Client.SwitchPage(new TeamQueuePage(true));
-            }
-            if (InQueue == true)
-            {
+            } else {
                 LeaveAllQueues();
                 InQueue = false;
             }
@@ -292,15 +290,15 @@ namespace LegendaryClient.Windows
         }
         private async void LeaveAllQueues()
         {
-            var keys = new List<Button>(ButtonTimers.Keys);
-            foreach (Button pair in keys)
+            await Client.PVPNet.PurgeFromQueues();
+
+            foreach (Button btn in ButtonTimers.Keys)
             {
-                Button realButton = (Button)pair.Tag;
+                Button realButton = (Button)btn.Tag;
                 realButton.Content = "Queue";
             }
-            ButtonTimers = new Dictionary<Button, int>();
-            Queues = new List<double>();
-            await Client.PVPNet.PurgeFromQueues();
+            ButtonTimers.Clear();
+            Queues.Clear();
         }
     }
 }

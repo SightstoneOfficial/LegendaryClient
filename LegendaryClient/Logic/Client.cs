@@ -781,6 +781,21 @@ namespace LegendaryClient.Logic
                 case "matching-queue-GROUPFINDER-5x5-game-queue":
                     return "Team Builder 5v5";
 
+                case "matching-queue-BOT_INTRO-5x5-game-queue":
+                    return "Bot 5v5 Intro";
+
+                case "matching-queue-GROUP_FINDER-5x5-game-queue":
+                    return "Groupfinder 5v5";
+
+                case "matching-queue-NIGHTMARE_BOT_1-5x5-game-queue":
+                    return "Nightmare Bots 5v5 (Easy)";
+
+                case "matching-queue-NIGHTMARE_BOT_2-5x5-game-queue":
+                    return "Nightmare Bots 5v5 (Med)";
+
+                case "matching-queue-NIGHTMARE_BOT_3-5x5-game-queue":
+                    return "Nightmare Bots 5v5 (Hard)";
+
                 default:
                     return InternalQueue;
             }

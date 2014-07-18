@@ -8,7 +8,7 @@
 	Title="ChooseProfilePicturePage">
 
     <Grid Background="#B2000000">
-        <Grid HorizontalAlignment="Center" Width="1100" Height="400" Margin="0,0,0,0" VerticalAlignment="Center" Background="#FF2B2B2B">
+        <Grid HorizontalAlignment="Center" Height="400" Margin="0,0,0,0" VerticalAlignment="Center" Background="#FF2B2B2B">
             <Label Content="Choose A Summoner Icon" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
             <ListView x:Name="SummonerIconListView" HorizontalAlignment="Stretch" Margin="20,70,20,50" BorderBrush="{x:Null}" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
                 <ListView.ItemsPanel>

@@ -1287,7 +1287,7 @@ namespace PVPNetConnect
         /// Attempts to reroll the champion. Only works in AllRandomPickStrategy
         /// </summary>
         /// <returns>Returns the amount of rolls left for the player</returns>
-        public async Task<RollResult> Roll()
+        public async Task<object> Roll()
         {
             //return InvokeAsync<RollResult>("lcdsRerollService", "roll");
             int Id = Invoke("lcdsRerollService", "roll", new object[] { });

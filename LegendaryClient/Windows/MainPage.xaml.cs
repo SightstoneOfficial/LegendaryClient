@@ -149,6 +149,9 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
+                    if (string.IsNullOrEmpty(CurrentLP)) {
+                        CurrentLP = "0";
+                    }
                     PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
                     PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
                 }
@@ -247,25 +250,22 @@ namespace LegendaryClient.Windows
 
         private void ChangeSpectatorRegion(BaseRegion region)
         {
-            BackgroundWorker worker = new BackgroundWorker();
-            worker.DoWork += delegate(object s, DoWorkEventArgs args)
-            {
-                string spectatorJSON = "";
-                using (WebClient client = new WebClient())
-                {
-                    spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
-                }
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
-                gameList = deserializedJSON["gameList"] as ArrayList;
-            };
+            try {
+                // @TODO: Move to global worker to prevent mutiple requests on fast region switch
+                BackgroundWorker worker = new BackgroundWorker();
+                worker.DoWork += delegate {
+                    string spectatorJSON = "";
+                    using (WebClient client = new WebClient()) {
+                        spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
+                    }
+                    JavaScriptSerializer serializer = new JavaScriptSerializer();
+                    Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
+                    gameList = deserializedJSON["gameList"] as ArrayList;
+                };
 
-            worker.RunWorkerCompleted += delegate(object s, RunWorkerCompletedEventArgs args)
-            {
-                ParseSpectatorGames();
-            };
-
-            worker.RunWorkerAsync();
+                worker.RunWorkerCompleted += (s, args) => ParseSpectatorGames();
+                worker.RunWorkerAsync();
+            } catch { }
         }
 
         private void ParseSpectatorGames()
@@ -362,15 +362,20 @@ namespace LegendaryClient.Windows
                         }
                     }
                 }
-                if (pair.Key == "gameId")
+                else if (pair.Key == "gameId")
                 {
                     GameId = (int)pair.Value;
                 }
-                if (pair.Key == "mapId")
+                else if (pair.Key == "mapId")
                 {
                     MapLabel.Content = BaseMap.GetMap((int)pair.Value).DisplayName;
                 }
-                if (pair.Key == "bannedChampions")
+                else if (pair.Key == "gameLength")
+                {
+                    var seconds = (int) pair.Value;
+                    GameTimeLabel.Content = string.Format("{0:D}:{1:00} min", seconds / 60, seconds % 60);
+                }
+                else if (pair.Key == "bannedChampions")
                 {
                     //ArrayList players = pair.Value as ArrayList;
                     //Dictionary<string, object> playerInfo = objectPlayer as Dictionary<string, object>;
@@ -516,8 +521,8 @@ namespace LegendaryClient.Windows
 
         private void InviteTest_Click(object sender, RoutedEventArgs e)
         {
-            Client.OverlayContainer.Content = new GameInviteTest().Content;
-            Client.OverlayContainer.Visibility = Visibility.Visible;
+            //Client.OverlayContainer.Content = new GameInviteTest().Content;
+            //Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private void PVPNet_OnMessageReceived(object sender, object message)
