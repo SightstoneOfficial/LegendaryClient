@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.Windows;
 
@@ -6,13 +7,18 @@ using System.Windows;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("LegendaryClient")]
-[assembly: AssemblyDescription("League of Legends Client")]
+[assembly: AssemblyDescription("League of Legends Custom Client")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Legendary Coding")]
 [assembly: AssemblyProduct("LegendaryClient")]
-[assembly: AssemblyCopyright("Copyright (c) 2013-2014, Eddy5641/Snowl (Eddy V - legendarycoding.weebly.com)")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCopyright("Copyright (c) 2014, Eddy5641/Snowl (Eddy V - legendarycoding.weebly.com)")]
+[assembly: AssemblyTrademark("LegendaryClient Program")]
 [assembly: AssemblyCulture("")]
+
+// The Client Language Local
+// English Client For NA USE
+// Change this for Language Packs
+//[assembly: NeutralResourcesLanguage("en_US")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -46,8 +52,7 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.0.1.2")]
-[assembly: AssemblyFileVersion("1.0.1.2")]
+[assembly: AssemblyVersion("2.0.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile="log4net.config",Watch=true)]
-//switch this to 1.1.0.0 after replay fix
