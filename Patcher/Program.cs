@@ -43,6 +43,7 @@ namespace Patcher
         private static void WriteToConsole(string Text)
         {
             Console.WriteLine(Text);
+            //
         }
     }
 }
