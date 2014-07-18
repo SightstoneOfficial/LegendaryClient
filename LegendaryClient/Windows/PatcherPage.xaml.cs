@@ -1,4 +1,5 @@
-﻿using ICSharpCode.SharpZipLib.GZip;
+﻿using System.Collections.Generic;
+using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.JSON;
@@ -511,7 +512,7 @@ namespace LegendaryClient.Windows
 
                     Copy(Path.Combine("Assets", "temp", patcher.DDragonVersion, "data"), Path.Combine("Assets", "data"));
                     Copy(Path.Combine("Assets", "temp", patcher.DDragonVersion, "img"), Path.Combine("Assets"));
-                    Directory.Delete(Path.Combine("Assets", "temp"), true);
+                    DeleteDirectoryRecursive(Path.Combine("Assets", "temp"));
 
                     var VersionDDragon = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
                     VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
@@ -527,6 +528,9 @@ namespace LegendaryClient.Windows
                     TotalProgressLabel.Content = "40%";
                     TotalProgessBar.Value = 40;
                 }));
+
+                // Try get LoL path from registry
+                string lolRootPath = GetLolRootPath();
 
                 #region lol_air_client
 
@@ -548,14 +552,15 @@ namespace LegendaryClient.Windows
                 {
                     LogTextBox("Checking for existing League of Legends Installation");
                     AirLocation = Path.Combine("League of Legends", "RADS", "projects", "lol_air_client", "releases");
+                    var localAirLocation = Path.Combine("RADS", "projects", "lol_air_client", "releases");
                     if (Directory.Exists(AirLocation))
                     {
                         RetrieveCurrentInstallation = true;
                     }
-                    else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", AirLocation)))
+                    else if (string.IsNullOrEmpty(lolRootPath) == false && Directory.Exists(Path.Combine(lolRootPath, localAirLocation)))
                     {
                         RetrieveCurrentInstallation = true;
-                        AirLocation = Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", AirLocation);
+                        AirLocation = Path.Combine(lolRootPath, localAirLocation);
                     }
                     else
                     {
@@ -597,26 +602,6 @@ namespace LegendaryClient.Windows
 
                 LogTextBox("Searching For Lol Install");
 
-                string 
-                    
-                    Rad_Path;
-                /*
-                string LolPath1 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\RIOT GAMES\RADS", "Path", "").ToString();
-                if (LolPath1 != "" || LolPath1 != null)
-                {
-                    //root.GetDirectories("*.*", System.IO.SearchOption.AllDirectories);
-                    Rad_Path = Path.Combine(LolPath1, "RADS");
-
-                }
-                string LolPath2 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES\RADS", "Path", "").ToString();
-                string LolPath3 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES\RADS", "Path", "").ToString();
-                string LolPath4 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\Wow6432Node\Riot Games\RADS", "Path", "").ToString();
-                string LolPath5 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES\RADS", "Path", "").ToString();
-                string LolPath6 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\RADS", "Path", "").ToString();
-                string LolPath7 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path", "").ToString();
-                string LolPath8 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\RADS", "Path", "").ToString();
-                //*/
-                
                 if (!Directory.Exists("RADS"))
                 {
                     Directory.CreateDirectory("RADS");
@@ -646,15 +631,14 @@ namespace LegendaryClient.Windows
                 {
                     LogTextBox("Checking for existing League of Legends Installation");
                     GameLocation = Path.Combine("League of Legends", "RADS");
-                    string rootPath = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path", "").ToString();
                     if (Directory.Exists(GameLocation))
                     {
                         RetrieveCurrentInstallation = true;
                     }
-                    else if (Directory.Exists(Path.Combine(rootPath, "RADS")))
+                    else if (string.IsNullOrEmpty(lolRootPath) == false && Directory.Exists(Path.Combine(lolRootPath, "RADS")))
                     {
                         RetrieveCurrentInstallation = true;
-                        GameLocation = Path.Combine(rootPath, "RADS");
+                        GameLocation = Path.Combine(lolRootPath, "RADS");
                     }
                     else
                     {
@@ -698,6 +682,32 @@ namespace LegendaryClient.Windows
             });
 
             bgThead.Start();
+        }
+
+        private string GetLolRootPath() {
+            var possiblePaths = new List<Tuple<string, string>>  {
+                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\RIOT GAMES", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Wow6432Node\Riot Games", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games", "Path"),
+                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\League Of Legends", "Path"),
+                // Yes, a f*ckin whitespace after "Riot Games"..
+                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends", "Path"),
+            };
+            foreach (var tuple in possiblePaths) {
+                var path = tuple.Item1;
+                var valueName = tuple.Item2;
+                try {
+                    var value = Microsoft.Win32.Registry.GetValue(path, valueName, string.Empty);
+                    if (value != null && value.ToString() != string.Empty) {
+                        return value.ToString();
+                    }
+                } catch { }
+            }
+
+            return string.Empty;
         }
 
         private void update(object sender, EventArgs e)
@@ -846,7 +856,20 @@ namespace LegendaryClient.Windows
             }
             return rtrn.ToUpper();
         }
-        //internal static string DDragonVersion = DDragonVersion;
-        
+
+        private static void DeleteDirectoryRecursive(string path) {
+            foreach (var directory in Directory.GetDirectories(path)) {
+                DeleteDirectoryRecursive(directory);
+            }
+
+            try {
+                Directory.Delete(path, true);
+            } catch (IOException) {
+                Directory.Delete(path, true);
+            } catch (UnauthorizedAccessException) {
+                Directory.Delete(path, true);
+            }
+        }
+
     }
 }

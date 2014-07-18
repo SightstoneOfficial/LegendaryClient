@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClient", "LegendaryClient\LegendaryClient.csproj", "{A6F20D1A-8523-42EF-BED7-90915047AB44}"
 EndProject
@@ -10,8 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplayHandler", "ReplayHandler\ReplayHandler.csproj", "{F7D78C61-76B0-4270-9B45-4DAEA881A4BB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PVPNetConnect", "PVPNetConnect\PVPNetConnect.csproj", "{93DCBEBF-C652-40ED-A003-CFF421F68B4F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B524B3C7-03B2-4E6E-AA9C-29C3C38A1513}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryChat", "LegendaryChat\LegendaryChat.csproj", "{DBB129C7-675B-4338-AC63-FC4519241057}"
 EndProject
