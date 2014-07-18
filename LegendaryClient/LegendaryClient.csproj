@@ -150,6 +150,9 @@
     <Compile Include="Controls\TeamBuilder\TeamBuilderPlayer.xaml.cs">
       <DependentUpon>TeamBuilderPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TeamControl.xaml.cs">
+      <DependentUpon>TeamControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TradeControl.xaml.cs">
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
@@ -170,7 +173,6 @@
     <Compile Include="Logic\BotLogic\PlayableBots\FiddlesticksBot.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\MundoBot.cs" />
     <Compile Include="Logic\JSON\Champions.cs" />
-    <Compile Include="Logic\JSON\InvitationRequest.cs" />
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\TR.cs" />
@@ -441,6 +443,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TeamBuilder\TeamBuilderPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TeamControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

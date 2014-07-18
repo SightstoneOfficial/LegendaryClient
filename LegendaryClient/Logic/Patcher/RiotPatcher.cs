@@ -102,15 +102,64 @@ namespace LegendaryClient.Logic.Patcher
                 latestVersion = info.Name;
             }
 
+            DirectoryInfo dInfox = new DirectoryInfo(Path.Combine(GameLocation, "solutions", "lol_game_client_sln", "releases"));
+            DirectoryInfo[] subdirsx = null;
+            try
+            {
+                subdirsx = dInfox.GetDirectories();
+            }
+            catch { return "0.0.0.0"; }
+            string latestVersionx = "0.0.1";
+            foreach (DirectoryInfo info in subdirsx)
+            {
+                latestVersionx = info.Name;
+            }
+            //solutions\lol_game_client_sln\releases\0.0.1.48
+            Copy(Path.Combine(GameLocation, "solutions", "lol_game_client_sln", "releases", latestVersionx, "deploy"), Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client_ko_kr"));
+
+            
+            if (Directory.Exists(Path.Combine(GameLocation, "projects", "lol_game_client_ko_kr")))
+            {
+                Copy(Path.Combine(GameLocation, "projects", "lol_game_client_ko_kr"), Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client_ko_kr"));
+            }
+            else if (Directory.Exists(Path.Combine(GameLocation, "projects", "lol_game_client_en_gb")))
+            {
+                Copy(Path.Combine(GameLocation, "projects", "lol_game_client_en_gb"), Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client_en_gb"));
+            }
+            else if (Directory.Exists(Path.Combine(GameLocation, "projects", "lol_game_client_en_us")))
+            {
+                Copy(Path.Combine(GameLocation, "projects", "lol_game_client_en_us"), Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client_en_us"));
+            }
+
             string ParentDirectory = Directory.GetParent(GameLocation).FullName;
             Copy(Path.Combine(ParentDirectory, "Config"), Path.Combine(Client.ExecutingDirectory, "Config"));
 
-            Copy(Path.Combine(GameLocation, "projects", "lol_game_client"), Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client"));
+            Copy(Path.Combine(GameLocation, "solutions", "lol_game_client_sln"), Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client"));
+
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "RiotRadsIO.dll")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "RiotRadsIO.dll"));
+            }
             File.Copy(Path.Combine(GameLocation, "RiotRadsIO.dll"), Path.Combine(Client.ExecutingDirectory, "RADS", "RiotRadsIO.dll"));
 
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
+            }
             var VersionAIR = File.Create(Path.Combine("RADS", "VERSION_LOL"));
-            VersionAIR.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
+            //VersionAIR.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
+            VersionAIR.Write(encoding.GetBytes(GetLatestGame()), 0, encoding.GetBytes(GetLatestGame()).Length);
             VersionAIR.Close();
+
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSIONGC_LOL")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSIONGC_LOL"));
+            }
+            var VersionGC = File.Create(Path.Combine("RADS", "VERSIONGC_LOL"));
+            VersionGC.Write(encoding.GetBytes(latestVersionx), 0, encoding.GetBytes(latestVersionx).Length);
+            VersionGC.Close();
+
+            return latestVersionx;
             return latestVersion;
         }
 

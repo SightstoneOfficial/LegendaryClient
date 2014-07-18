@@ -6,13 +6,14 @@
       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       xmlns:Controls1="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.LoginPage"
       mc:Ignorable="d"
+      xmlns:my="http://schemas.awesomium.com/winfx" 
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="LoginPage">
     <Grid Background="Black" Margin="0">
         <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
 
-        <Grid x:Name="HideGrid" HorizontalAlignment="Left" Height="280" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
+        <Grid x:Name="HideGrid" HorizontalAlignment="Left" Height="331" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
             <Grid.Effect>
                 <DropShadowEffect />
             </Grid.Effect>
@@ -26,8 +27,11 @@
                 <CheckBox x:Name="RememberPasswordCheckbox" Content="Remember Password" HorizontalAlignment="Right" Margin="0,160,10,0" VerticalAlignment="Top" Foreground="White" />
                 <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Stretch" Margin="10,180,10,0" VerticalAlignment="Top" Height="41" Click="LoginButton_Click" IsDefault="True" />
                 <ComboBox x:Name="RegionComboBox" ItemsSource="{DynamicResource Regions}" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="4" />
-                <CheckBox x:Name="AutoLoginCheckBox" Content="Auto-Login" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top"/>
+                <CheckBox x:Name="AutoLoginCheckBox" Content="Auto-Login" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Foreground="White" />
             </Grid>
+            <Controls1:TextBoxWatermarked x:Name="Version" HorizontalAlignment="Right" TextWrapping="Wrap" Watermark="Client Version Override" VerticalAlignment="Top" Margin="0,301,10,0" Height="24" Width="330"/>
+            <CheckBox x:Name="Sound" Click="DisableSound_Click" Content="Disable Login Music" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="False" />
+            <CheckBox x:Name="Video" Content="Disable Menu Animations" HorizontalAlignment="Right" Margin="0,280,14,0" VerticalAlignment="Top" Foreground="White" IsChecked="False" />
         </Grid>
 
         <Controls:ProgressRing x:Name="LoggingInProgressRing" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,100" Visibility="Hidden">
@@ -46,6 +50,6 @@
                 <DropShadowEffect ShadowDepth="3" />
             </TextBox.Effect>
         </TextBox>
-        <Controls1:TextBoxWatermarked x:Name="Version" HorizontalAlignment="Right" TextWrapping="Wrap" Watermark="Client Version Override" VerticalAlignment="Top" Margin="0,10,10,0" Height="24" Width="243"/>
+        <MediaElement x:Name="SoundPlayer" HorizontalAlignment="Left" LoadedBehavior="Manual" UnloadedBehavior="Stop" Height="100" VerticalAlignment="Top" Width="100" Margin="924,572,0,0" Visibility="Hidden"/>
     </Grid>
 </Page>

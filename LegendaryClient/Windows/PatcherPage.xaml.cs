@@ -141,6 +141,187 @@ namespace LegendaryClient.Windows
                 Client.Dev = true;
                 Client.NewStatus();
             }
+                else if (DevKey.Text == "!~betakey-gBEtVpJgj6QpSWZzHVRN~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Beta User!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                    else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+                        else if (DevKey.Text == "!~devkey-8ZTKHEumL8EUXvLYt92n~!")
+            {
+                DevKey.Visibility = Visibility.Hidden;
+                Welcome.Text = "Welcome Dev!";
+                DevKeySend.Visibility = Visibility.Hidden;
+                DevSkip.Visibility = Visibility.Visible;
+                Welcome.Visibility = Visibility.Visible;
+                Client.Dev = true;
+                Client.NewStatus();
+            }
+
             else if (Client.Dev == true)
             {
                 Client.Log("Dev mode enabled");
@@ -190,7 +371,11 @@ namespace LegendaryClient.Windows
                 string VersionString = "";
                 try
                 {
-                    VersionString = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
+                    VersionString = client.DownloadString(new Uri("http://eddy5641.github.io/LegendaryClient/update.html"));
+
+                    string[] VersionSplit = VersionString.Split('|');
+
+                    LogTextBox("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
                 }
                 catch
                 {
@@ -203,9 +388,7 @@ namespace LegendaryClient.Windows
                     //return;
                 }
 
-                string[] VersionSplit = VersionString.Split('|');
-
-                LogTextBox("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
+                
                 Client.updateData = LegendaryUpdate.PopulateItems();
 
                 #if !DEBUG //Dont patch client while in DEBUG
@@ -414,8 +597,10 @@ namespace LegendaryClient.Windows
 
                 LogTextBox("Searching For Lol Install");
 
-                string Rad_Path;
-
+                string 
+                    
+                    Rad_Path;
+                /*
                 string LolPath1 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_USER\Software\RIOT GAMES\RADS", "Path", "").ToString();
                 if (LolPath1 != "" || LolPath1 != null)
                 {
@@ -430,7 +615,7 @@ namespace LegendaryClient.Windows
                 string LolPath6 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\RADS", "Path", "").ToString();
                 string LolPath7 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path", "").ToString();
                 string LolPath8 = Microsoft.Win32.Registry.GetValue(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\RADS", "Path", "").ToString();
-
+                //*/
                 
                 if (!Directory.Exists("RADS"))
                 {
@@ -457,7 +642,7 @@ namespace LegendaryClient.Windows
                 RetrieveCurrentInstallation = false;
                 string GameLocation = "";
 
-                if (GameVersion == "0.0.0.0")
+                if (GameVersion != LatestGame)
                 {
                     LogTextBox("Checking for existing League of Legends Installation");
                     GameLocation = Path.Combine("League of Legends", "RADS");
@@ -473,9 +658,7 @@ namespace LegendaryClient.Windows
                     }
                     else
                     {
-                        LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
-                            + Client.ExecutingDirectory
-                            + " to make the patching process quicker");
+                        LogTextBox("Unable to find existing League of Legends. Please Find Your League Of Legends");
                     }
 
                     if (RetrieveCurrentInstallation)

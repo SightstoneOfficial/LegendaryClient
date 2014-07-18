@@ -279,7 +279,7 @@ namespace LegendaryClient.Logic
             }
             else if (hidelegendaryaddition == true)
             {
-                Client.LegendaryClientAddition = CurrentStatus + "";
+                Client.LegendaryClientAddition = CurrentStatus;
             }
         }
 
@@ -485,6 +485,7 @@ namespace LegendaryClient.Logic
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
         internal static Button PlayButton;
+        internal static Button HideTeamQueuePage;
         internal static ContentControl ChatContainer;
         internal static ContentControl StatusContainer;
         internal static ContentControl NotificationOverlayContainer;
@@ -727,14 +728,9 @@ namespace LegendaryClient.Logic
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
                         pop.Height = 230;
                         Client.NotificationGrid.Children.Add(pop);
-                        Client.InviteJsonRequest = LegendaryClient.Logic.JSON.InvitationRequest.PopulateGameInviteJson();
+                        //Client.InviteJsonRequest = LegendaryClient.Logic.JSON.InvitationRequest.PopulateGameInviteJson();
                         //message.GetType() == typeof(GameInvitePopup)
                     }));
-                }
-                else if (message is LobbyStatus)
-                {
-                    LobbyStatus stats = message as LobbyStatus;
-                    Client.SwitchPage(new TeamQueuePage(stats));
                 }
             }));
         }
@@ -792,7 +788,7 @@ namespace LegendaryClient.Logic
 
         internal static string GetGameDirectory()
         {
-            string Directory = Path.Combine(ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases");
+            string Directory = Path.Combine(ExecutingDirectory, "RADS", "solutions", "lol_game_client", "releases");
 
             DirectoryInfo dInfo = new DirectoryInfo(Directory);
             DirectoryInfo[] subdirs = null;
@@ -815,7 +811,7 @@ namespace LegendaryClient.Logic
 
         private static int counter;
 
-        private static string Location = Path.Combine("C:", "Riot Games", "League of Legends", "RADS", "solutions", "lol_game_client_sln", "releases", "0.0.1.47", "deploy", "League of Legends.exe");
+        private static string Location = Path.Combine("C:", "Riot Games", "League of Legends", "RADS", "solutions", "lol_game_client_sln", "releases", "0.0.1.48", "deploy", "League of Legends.exe");
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();

@@ -247,6 +247,11 @@ namespace PVPNetConnect
             InvokeWithCallback("leaguesServiceProxy", "getChallengerLeague", new object[] { queueType }, cb);
         }
 
+        /// <summary>
+        /// kep
+        /// </summary>
+        /// <param name="queueType"></param>
+        /// <returns></returns>
         public async Task<LeagueListDTO> GetChallengerLeague(String queueType)
         {
             int Id = Invoke("leaguesServiceProxy", "getChallengerLeague", new object[] { queueType });
@@ -483,6 +488,15 @@ namespace PVPNetConnect
             SummonerLeaguesDTO result = new SummonerLeaguesDTO(messageBody);
             results.Remove(Id);
             return result;
+        }
+
+        public async Task<object> Kick(double Summoner_ID)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "kick", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
         }
 
         /// 25.)
@@ -1024,7 +1038,23 @@ namespace PVPNetConnect
             int Id = Invoke("lcdsGameInvitationService", "accept", new object[] { InvitationId });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            LobbyStatus result = new LobbyStatus();
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            LobbyStatus result = new LobbyStatus(messageBody);
+            results.Remove(Id);
+            return result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InvitationId"></param>
+        /// <returns></returns>
+        public async Task<object> getLobbyStatusaccept(string InvitationId)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "accept", new object[] { InvitationId });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(20);
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            LobbyStatus result = new LobbyStatus(messageBody);
             results.Remove(Id);
             return result;
         }
@@ -1034,17 +1064,19 @@ namespace PVPNetConnect
             int Id = Invoke("lcdsGameInvitationService", "transferOwnership", new object[] { InvitationId });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            LobbyStatus result = new LobbyStatus();
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            LobbyStatus result = new LobbyStatus(messageBody);
             results.Remove(Id);
             return result;
         }
 
-        public async Task<object> getLobbyStatus()
+        public async Task<LobbyStatus> getLobbyStatus(string InvitationId)
         {
-            int Id = Invoke("lcdsGameInvitationService", "getLobbyStatus", new object[] { });
+            int Id = Invoke("lcdsGameInvitationService", "accept", new object[] { InvitationId });
             while (!results.ContainsKey(Id))
-                await Task.Delay(10);
-            LobbyStatus result = new LobbyStatus();
+                await Task.Delay(20);
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            LobbyStatus result = new LobbyStatus(messageBody);
             results.Remove(Id);
             return result;
         }
@@ -1301,6 +1333,23 @@ namespace PVPNetConnect
             results.Remove(Id);
             return null;
         }
+        public async Task<object> GrantInvite(double Summoner_ID)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "grantInvitePrivileges", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+
+        public async Task<object> MakeOwner(double Summoner_ID)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "transferOwnership", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
 
         public async Task<object> DeclineTeamInvite(TeamId teamId)
         {
@@ -1352,6 +1401,13 @@ namespace PVPNetConnect
             return null;
         }
 
+        public void AttachTeamToQueue(MatchMakerParams matchMakerParams, SearchingForMatchNotification.Callback callback)
+        {
+            SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
+            InvokeWithCallback("matchmakerService", "attachTeamToQueue",
+                new object[] { matchMakerParams.GetBaseTypedObject() }, cb);
+        }
+
         public async Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParams matchMakerParams)
         {
             int Id = Invoke("matchmakerService", "attachTeamToQueue",
@@ -1363,6 +1419,7 @@ namespace PVPNetConnect
             results.Remove(Id);
             return result;
         }
+
 
         public async Task<object> PurgeFromQueues()
         {
@@ -1389,6 +1446,7 @@ namespace PVPNetConnect
             results.Remove(Id);
             return null;
         }
+        
 
         /*Todo
         * accountService getAccountStateForCurrentSession

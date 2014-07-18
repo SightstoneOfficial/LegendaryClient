@@ -49,6 +49,7 @@ namespace LegendaryClient.Windows
                         ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
                         player.PlayerName.Content = playerItem.Username;
                         player.PlayerStatus.Content = playerItem.Status;
+                        player.PlayerId.Content = playerItem.Id;
                         player.LevelLabel.Content = ChatPlayerPair.Value.Level;
                         var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ChatPlayerPair.Value.ProfileIcon + ".png");
                         player.ProfileImage.Source = Client.GetImage(uriSource);
@@ -117,9 +118,11 @@ namespace LegendaryClient.Windows
         {
            foreach (string Player in invitedPlayers)
             {
-
-                ChatPlayerItem PlayerInfo = Client.AllPlayers[Player];
-                await Client.PVPNet.Invite(PlayerInfo.Id);
+               ChatPlayerItem PlayerInfo = Client.AllPlayers[Player];
+                //ChatPlayer player = (ChatPlayer)AvailablePlayerListView.SelectedItem;
+                //ChatPlayerItem PlayerInfo = Client.AllPlayers[Player];
+                //ChatPlayerItem PlayerInfo = (ChatPlayerItem)player.Tag;
+                //await Client.PVPNet.Invite(PlayerInfo.Id);
                 
                 //If has already invited
                 bool ShouldBreak = false;
@@ -128,12 +131,14 @@ namespace LegendaryClient.Windows
                     InvitePlayer invitePlayer = x as InvitePlayer;
                     if ((string)invitePlayer.PlayerLabel.Content == PlayerInfo.Username)
                         ShouldBreak = true;
+
                 }
                 if (ShouldBreak)
                     continue;
-
                 InvitePlayer InvitePlayerItem = new InvitePlayer();
                 InvitePlayerItem.PlayerLabel.Content = PlayerInfo.Username;
+                
+                Client.PVPNet.Invite(PlayerInfo.Id);
                 InvitePlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
                 Client.InviteListView.Items.Add(InvitePlayerItem);
             }

@@ -88,8 +88,8 @@ namespace LegendaryClient.Windows
                             {
                                 PlayerParticipant player = playerTeam as PlayerParticipant;
                                 lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                BotParticipant botParticipant = playerTeam as BotParticipant;
-                                botPlayer = RenderBot(botParticipant);
+                                ///BotParticipant botParticipant = playerTeam as BotParticipant;
+                                //botPlayer = RenderBot(botParticipant);
                                 IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
                                 StartGameButton.IsEnabled = IsOwner;
                                 AddBotBlueTeam.IsEnabled = IsOwner;

@@ -38,8 +38,8 @@
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="5,0,120,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Button x:Name="ChatButton" Content="Send" Margin="470,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
-        <Rectangle x:Name="PingRectangle" Fill="Blue" HorizontalAlignment="Right" Height="113" Stroke="Black" VerticalAlignment="Top" Width="390" Margin="0,50,15,0"/>
-        <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Margin="0,52,17,0" Height="109" Width="385" Foreground="White" FontSize="20" TextAlignment="Center"/>
+        <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="113" Stroke="Black" VerticalAlignment="Top" Width="390" Margin="0,50,15,0"/>
+        <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging... Please Wait" VerticalAlignment="Top" Margin="0,52,17,0" Height="109" Width="385" Foreground="White" FontSize="20" TextAlignment="Center"/>
 
     </Grid>
 </Page>
