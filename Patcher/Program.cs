@@ -12,11 +12,11 @@ namespace Patcher
             Console.WriteLine("LegendaryClient Updater");
             Stream inStream = File.OpenRead(Path.Combine("temp", "1.0.1.2.zip"));
 
-            using (GZipInputStream gzipStream = new GZipInputStream(inStream))
+            using (var gzipStream = new GZipInputStream(inStream))
             {
                 TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
                 tarArchive.ExtractContents("temp");
-                tarArchive.CloseArchive();
+                tarArchive.Close();
             }
             System.Diagnostics.Process.Start("LegendaryClient.exe");
             Environment.Exit(0);

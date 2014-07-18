@@ -516,8 +516,8 @@ namespace LegendaryClient.Windows
 
         private void InviteTest_Click(object sender, RoutedEventArgs e)
         {
-            Client.OverlayContainer.Content = new GameInviteTest().Content;
-            Client.OverlayContainer.Visibility = Visibility.Visible;
+            //Client.OverlayContainer.Content = new GameInviteTest().Content;
+            //Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private void PVPNet_OnMessageReceived(object sender, object message)
