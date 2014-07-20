@@ -9,13 +9,11 @@ https://www.youtube.com/watch?v=rVWdHeQcGwM&feature=youtu.be
 
 LegendaryClient Aram Game
 
-<<<<<<< HEAD
+ HEAD
 =======
-Master Is Unstable Use DevTest
+Master Is Fixed
 
-opps, looks like master got recked. Don't download this
 
->>>>>>> 5bcc839bc1207031731bf740982574681613a3b9
 Prerequisites
 =============
 
@@ -31,6 +29,9 @@ You need these DLLS:
 * SharpZipLib
 * Sqlite
 * PVPNetConnect
+* Json.net
+ 
+These DLLS should be included
 
 In-Client Screenshots (90-100)% complete
 =====================
