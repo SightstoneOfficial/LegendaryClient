@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClient", "LegendaryClient\LegendaryClient.csproj", "{A6F20D1A-8523-42EF-BED7-90915047AB44}"
 EndProject
@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplayHandler", "ReplayHand
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PVPNetConnect", "PVPNetConnect\PVPNetConnect.csproj", "{93DCBEBF-C652-40ED-A003-CFF421F68B4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryChat", "LegendaryChat\LegendaryChat.csproj", "{DBB129C7-675B-4338-AC63-FC4519241057}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchLegendaryClient", "LaunchLegendaryClient\LaunchLegendaryClient.csproj", "{925EDBC9-3F51-4224-8AC6-389B3D9BB07A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,12 +44,13 @@ Global
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.PubRelease|Any CPU.Build.0 = PubRelease|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93DCBEBF-C652-40ED-A003-CFF421F68B4F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DBB129C7-675B-4338-AC63-FC4519241057}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DBB129C7-675B-4338-AC63-FC4519241057}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DBB129C7-675B-4338-AC63-FC4519241057}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{DBB129C7-675B-4338-AC63-FC4519241057}.PubRelease|Any CPU.Build.0 = Release|Any CPU
-		{DBB129C7-675B-4338-AC63-FC4519241057}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DBB129C7-675B-4338-AC63-FC4519241057}.Release|Any CPU.Build.0 = Release|Any CPU
+		{925EDBC9-3F51-4224-8AC6-389B3D9BB07A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{925EDBC9-3F51-4224-8AC6-389B3D9BB07A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{925EDBC9-3F51-4224-8AC6-389B3D9BB07A}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{925EDBC9-3F51-4224-8AC6-389B3D9BB07A}.PubRelease|Any CPU.Build.0 = Release|Any CPU
+		{925EDBC9-3F51-4224-8AC6-389B3D9BB07A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{925EDBC9-3F51-4224-8AC6-389B3D9BB07A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{925EDBC9-3F51-4224-8AC6-389B3D9BB07A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

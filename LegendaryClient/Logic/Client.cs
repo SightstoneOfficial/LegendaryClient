@@ -68,7 +68,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Update Data
         /// </summary>
-        internal static int LegendaryClientReleaseNumber = 3;
+        internal static int LegendaryClientReleaseNumber = 2;
 
         /// <summary>
         /// Sets Sqlite Version
@@ -996,10 +996,10 @@ namespace LegendaryClient.Logic
         }
         public static void Log(String lines, String type = "LOG")
         {
-            /*
+            
             System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
             file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
-            file.Close();*/
+            file.Close();
         }
 
         //Get Image

@@ -163,9 +163,8 @@ namespace LegendaryClient.Windows
                 MatchMakerParams parameters = new MatchMakerParams();
                 parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
                 Client.GameQueue = Convert.ToInt32(config.Id);
-                await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
-                LobbyStatus LobbyStatus = new LobbyStatus();
-                Client.SwitchPage(new TeamQueuePage(null));
+                LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+                Client.SwitchPage(new TeamQueuePage(Lobby.InvitationID, Lobby));
         }
 
         private async void QueueButton_Click(object sender, RoutedEventArgs e)

@@ -64,7 +64,7 @@ namespace LegendaryClient.Windows
         /// When invited to a team
         /// </summary>
         /// <param name="Message"></param>
-        public TeamQueuePage(string Invid)
+        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null)
         {
             InitializeComponent();
             Client.InviteListView = InviteListView;
@@ -74,15 +74,22 @@ namespace LegendaryClient.Windows
             Window.Hide();
             Invite = Invid;
             
-            LoadStats();
+            LoadStats(NewLobby);
         }
 
-        public async void LoadStats()
+        public async void LoadStats(LobbyStatus NewLobby)
         { 
 
             ///Wow Riot, you get rid of getLobbyStatus so I have to do this all over -.-
             LobbyStatus Lobby = await Client.PVPNet.getLobbyStatus(Invite);
-            CurrentLobby = Lobby;
+            if (NewLobby != null)
+            {
+                CurrentLobby = NewLobby;
+            }
+            else if (NewLobby == null)
+            {
+                CurrentLobby = Lobby;
+            }
 
             //arrangeing_game
             string ObfuscatedName = Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"), ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
@@ -341,7 +348,10 @@ namespace LegendaryClient.Windows
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.QueueIds = new Int32[] { Convert.ToInt32(queueId) };
             parameters.InvitationId = CurrentLobby.InvitationID;
-            parameters.Team = null;
+            foreach (Member stats in CurrentLobby.Members)
+            {
+                parameters.Team = stats.SummonerId;
+            }
             
             Client.PVPNet.AttachTeamToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
         }

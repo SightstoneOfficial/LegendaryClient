@@ -34,10 +34,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PubRelease|AnyCPU'">
     <OutputPath>bin\PubRelease\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+    <Reference Include="ICSharpCode.SharpZipLib.Patcher, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>..\LegendaryClient\bin\Release\ICSharpCode.SharpZipLib.Patcher.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

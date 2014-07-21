@@ -1124,12 +1124,13 @@ namespace PVPNetConnect
             return null;
         }
 
-        public async Task<object> createArrangedTeamLobby(double QueueId)
+        public async Task<LobbyStatus> createArrangedTeamLobby(double QueueId)
         {
             int Id = Invoke("lcdsGameInvitationService", "createArrangedTeamLobby", new object[] { QueueId });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            LobbyStatus result = new LobbyStatus();
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            LobbyStatus result = new LobbyStatus(messageBody);
             results.Remove(Id);
             return result;
         }

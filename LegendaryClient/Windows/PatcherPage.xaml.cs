@@ -339,7 +339,6 @@ namespace LegendaryClient.Windows
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
             Client.SwitchPage(new LoginPage());
-            Client.Log("[Debug]: Swiched to LoginPage");
         }
 
         private void StartPatcher()
@@ -347,7 +346,6 @@ namespace LegendaryClient.Windows
             Thread bgThead = new Thread(() =>
             {
                 LogTextBox("Starting Patcher");
-                Client.Log("Patcher Starting");
 
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
@@ -368,7 +366,6 @@ namespace LegendaryClient.Windows
 
                 string CurrentMD5 = GetMd5();
                 LogTextBox("MD5: " + CurrentMD5);
-                Client.Log("[DEBUG]: MD5:" + CurrentMD5);
                 string VersionString = "";
                 try
                 {
@@ -383,7 +380,6 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         CurrentProgressLabel.Content = "Could not retrieve update files!";
-                        Client.Log("[Warn]: Failed to retrieve update files");
                     }));
 
                     //return;
@@ -392,7 +388,7 @@ namespace LegendaryClient.Windows
                 
                 Client.updateData = LegendaryUpdate.PopulateItems();
 
-                #if !DEBUG //Dont patch client while in DEBUG
+                //#if !DEBUG //Dont patch client while in DEBUG
                 UpdateData legendaryupdatedata = new UpdateData();
                 var version = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/Version");
                 LogTextBox("Most Up to date LegendaryClient Version: " + version);
@@ -408,6 +404,7 @@ namespace LegendaryClient.Windows
                         overlay.MessageTextBox.Text = "An update is available LegendaryClient";
                         overlay.MessageTitle.Content = "Update Notification";
                         overlay.AcceptButton.Content = "Update LegendaryClient";
+                        overlay.AcceptButton.Click += update;
                         overlay.MessageTextBox.TextChanged += Text_Changed;
                         Client.OverlayContainer.Content = overlay.Content;
                         Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -439,7 +436,7 @@ namespace LegendaryClient.Windows
                     return;
                 }
                 //LogTextBox("LC Update Json Data: " + json);
-                #endif
+                //#endif
 
                 //LogTextBox("LegendaryClient is up to date");
                 //LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
@@ -477,7 +474,7 @@ namespace LegendaryClient.Windows
                 LogTextBox("Current DataDragon Version: " + DDragonVersion);
 
                 Client.Version = DDragonVersion;
-                Client.Log("[Debug]: DDragon Version (LOL Version) = " + DDragonVersion);
+                Client.Log("DDragon Version (LOL Version) = " + DDragonVersion);
 
                  LogTextBox("Client Version: " + Client.Version);
 
@@ -684,8 +681,10 @@ namespace LegendaryClient.Windows
             bgThead.Start();
         }
 
-        private string GetLolRootPath() {
-            var possiblePaths = new List<Tuple<string, string>>  {
+        private string GetLolRootPath() 
+        {
+            var possiblePaths = new List<Tuple<string, string>>  
+            {
                 new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
                 new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES", "Path"),
                 new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\RIOT GAMES", "Path"),
@@ -696,16 +695,20 @@ namespace LegendaryClient.Windows
                 // Yes, a f*ckin whitespace after "Riot Games"..
                 new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends", "Path"),
             };
-            foreach (var tuple in possiblePaths) {
+            foreach (var tuple in possiblePaths) 
+            {
                 var path = tuple.Item1;
                 var valueName = tuple.Item2;
-                try {
+                try 
+                {
                     var value = Microsoft.Win32.Registry.GetValue(path, valueName, string.Empty);
-                    if (value != null && value.ToString() != string.Empty) {
+                    if (value != null && value.ToString() != string.Empty) 
+                    {
                         return value.ToString();
                     }
                 } catch { }
             }
+            
 
             return string.Empty;
         }
@@ -714,9 +717,9 @@ namespace LegendaryClient.Windows
         {
             UpdateData legendaryupdatedata = new UpdateData();
             WebClient client = new WebClient();
-            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "temp")))
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Temp")))
             {
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "temp"));
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Temp"));
             }
             var downloadLink = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
             var filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
@@ -724,7 +727,7 @@ namespace LegendaryClient.Windows
             client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
             string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
             LogTextBox("Retreving Update Data from: " + DownloadLocation);
-            client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
+            client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine(Client.ExecutingDirectory, "Temp", "LegendaryClientUpdateFile.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
         }
@@ -733,9 +736,10 @@ namespace LegendaryClient.Windows
         {
             UpdateData legendaryupdatedata = new UpdateData();
             WebClient client = new WebClient();
-            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "temp")))
+            var Startup = Directory.GetParent(Client.ExecutingDirectory);
+            if (!Directory.Exists(Path.Combine(Startup.ToString(), "Temp")))
             {
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "temp"));
+                Directory.CreateDirectory(Path.Combine(Startup.ToString(), "Temp"));
             }
             var downloadLink = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
             var filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
@@ -743,7 +747,7 @@ namespace LegendaryClient.Windows
             client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
             string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
             LogTextBox("Retreving Update Data from: " + DownloadLocation);
-            client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
+            client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("Temp", "LegendaryClientBetaTesterUpdateFile.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
         }
@@ -752,9 +756,10 @@ namespace LegendaryClient.Windows
         {
             MessageOverlay overlay = new MessageOverlay();
                         //overlay.AcceptButton.Click += update;
-            if (overlay.MessageTextBox.Text != "NO")
+            if (overlay.MessageTextBox.Text == "NO")
             {
-                overlay.AcceptButton.Click += update;
+                overlay.AcceptButton.Click -= update;
+                overlay.Visibility = Visibility.Hidden;
             }
         }
         void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -766,6 +771,7 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 CurrentProgressBar.Value = int.Parse(Math.Truncate(percentage).ToString());
+                CurrentProgressLabel.Content = "Now downloading LegendaryClient";
             }));
         }
 
@@ -776,8 +782,17 @@ namespace LegendaryClient.Windows
                 CurrentProgressLabel.Content = "Download Completed";
                 LogTextBox("Finished Download");
                 LogTextBox("Starting Patcher. Please Wait");
-                System.Diagnostics.Process.Start("Patcher.exe");
-                Environment.Exit(0);
+
+                var location = Directory.GetParent(Client.ExecutingDirectory);
+                var p = new System.Diagnostics.Process();
+                p.StartInfo.WorkingDirectory = location.ToString();
+                //p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+                p.StartInfo.FileName = "Patcher.exe";
+                p.Start();
+                
+                Application.Current.Shutdown();
+                System.Windows.Forms.Application.Exit();
+                System.Environment.Exit(0);
             }));
             
         }
@@ -807,7 +822,7 @@ namespace LegendaryClient.Windows
             }));
             
             LogTextBox("LegendaryClient Has Finished Patching");
-            Client.Log("[Debug]: LegendaryClient Has Finished Patching");
+            Client.Log("LegendaryClient Has Finished Patching");
 
             
             /*
@@ -823,6 +838,7 @@ namespace LegendaryClient.Windows
             {
                 PatchTextBox.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + s + Environment.NewLine;
             }));
+            Client.Log(s);
         }
 
         private void Copy(string sourceDir, string targetDir)
