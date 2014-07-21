@@ -9,6 +9,11 @@ https://www.youtube.com/watch?v=rVWdHeQcGwM&feature=youtu.be
 
 LegendaryClient Aram Game
 
+ HEAD
+=======
+Master Is Fixed
+
+
 Prerequisites
 =============
 
@@ -24,6 +29,9 @@ You need these DLLS:
 * SharpZipLib
 * Sqlite
 * PVPNetConnect
+* Json.net
+ 
+These DLLS should be included
 
 In-Client Screenshots (90-100)% complete
 =====================
