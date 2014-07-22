@@ -76,6 +76,11 @@ namespace LegendaryClient.Logic.Patcher
             {
                 File.Copy(Path.Combine(AirLocation, "assets", "data", "gameStats", "gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
             }
+            else
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                File.Copy(Path.Combine(AirLocation, "assets", "data", "gameStats", "gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+            }
 
             Copy(Path.Combine(AirLocation, "assets", "images", "abilities"), Path.Combine(Client.ExecutingDirectory, "Assets", "abilities"));
             Copy(Path.Combine(AirLocation, "assets", "images", "champions"), Path.Combine(Client.ExecutingDirectory, "Assets", "champions"));
@@ -147,8 +152,8 @@ namespace LegendaryClient.Logic.Patcher
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
             }
             var VersionAIR = File.Create(Path.Combine("RADS", "VERSION_LOL"));
-            //VersionAIR.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
-            VersionAIR.Write(encoding.GetBytes(GetLatestGame()), 0, encoding.GetBytes(GetLatestGame()).Length);
+            VersionAIR.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
+            //VersionAIR.Write(encoding.GetBytes(GetLatestGame()), 0, encoding.GetBytes(GetLatestGame()).Length);
             VersionAIR.Close();
 
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSIONGC_LOL")))
@@ -159,7 +164,7 @@ namespace LegendaryClient.Logic.Patcher
             VersionGC.Write(encoding.GetBytes(latestVersionx), 0, encoding.GetBytes(latestVersionx).Length);
             VersionGC.Close();
 
-            return latestVersionx;
+            //return latestVersionx;
             return latestVersion;
         }
 

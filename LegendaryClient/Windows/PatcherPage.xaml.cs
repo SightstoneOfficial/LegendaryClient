@@ -14,6 +14,9 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Linq;
+using RAFlibPlus;
+using ComponentAce.Compression.Libs.zlib;
 
 namespace LegendaryClient.Windows
 {
@@ -22,6 +25,9 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class PatcherPage : Page
     {
+        internal static bool LoLDataIsUpToDate = false;
+        internal static string LatestLolDataVersion = "";
+        internal static string LolDataVersion = "";
         public PatcherPage()
         {
             InitializeComponent();
@@ -595,82 +601,67 @@ namespace LegendaryClient.Windows
 
                 #endregion lol_air_client
 
+
+                //string GameVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
                 #region lol_game_client
-
-                LogTextBox("Searching For Lol Install");
-
-                if (!Directory.Exists("RADS"))
+                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client")))
                 {
-                    Directory.CreateDirectory("RADS");
+                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client"));
                 }
-
-                if (!File.Exists(Path.Combine("RADS", "VERSION_LOL")))
+                if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL")))
                 {
-                    var VersionGAME = File.Create(Path.Combine("RADS", "VERSION_LOL"));
-                    VersionGAME.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
-                    VersionGAME.Close();
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        TotalProgressLabel.Content = "70%";
-                        TotalProgessBar.Value = 70;
-                    }));
-                    
+                    var VersionLOL = File.Create(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
+                    VersionLOL.Write(encoding.GetBytes("0.0.0.0"),0,encoding.GetBytes("0.0.0.0").Length);
+                    VersionLOL.Close();
                 }
-
-                string LatestGame = patcher.GetLatestGame();
-                LogTextBox("League Of Legends Version: " + LatestGame);
-                string GameVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
-                LogTextBox("Current League of Legends Version: " + GameVersion);
-                RetrieveCurrentInstallation = false;
-                string GameLocation = "";
-
-                if (GameVersion != LatestGame)
+                LogTextBox("Checking version...");
+                CheckIfPatched();
+                if (!LoLDataIsUpToDate)
                 {
-                    LogTextBox("Checking for existing League of Legends Installation");
-                    GameLocation = Path.Combine("League of Legends", "RADS");
-                    if (Directory.Exists(GameLocation))
+                    LogTextBox("Not up-to-date!");
+                    if (LolDataVersion == "0.0.0.0")
                     {
-                        RetrieveCurrentInstallation = true;
-                    }
-                    else if (string.IsNullOrEmpty(lolRootPath) == false && Directory.Exists(Path.Combine(lolRootPath, "RADS")))
-                    {
-                        RetrieveCurrentInstallation = true;
-                        GameLocation = Path.Combine(lolRootPath, "RADS");
-                    }
-                    else
-                    {
-                        LogTextBox("Unable to find existing League of Legends. Please Find Your League Of Legends");
-                    }
-
-                    if (RetrieveCurrentInstallation)
-                    {
-                        LogTextBox("Getting League Of Legends from " + GameLocation);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        LogTextBox("Checking for existing LoL installation");
+                        string FileArchivesDirectory = Path.Combine("League of Legends", "RADS", "projects", "lol_game_client", "filearchives");
+                        string MainVersionLocation = Path.Combine("League of Legends", "RADS", "projects", "lol_game_client", "releases");
+                        if (Directory.Exists(FileArchivesDirectory))
                         {
-                            CurrentProgressLabel.Content = "Copying League of Legends";
-                        }));
-                        GameVersion = patcher.GetCurrentGameInstall(GameLocation);
-                        LogTextBox("Retrieved currently installed League of Legends");
-                        LogTextBox("Current League of Legends Version: " + GameLocation);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            ExpandRAF(FileArchivesDirectory);
+                            WriteLatestVersion(MainVersionLocation);
+                        }
+                        else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", FileArchivesDirectory)))
                         {
-                            TotalProgressLabel.Content = "80%";
-                            TotalProgessBar.Value = 80;
-                        }));
-                        
+                            ExpandRAF(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", FileArchivesDirectory));
+                            WriteLatestVersion(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", MainVersionLocation));
+                        }
                     }
-                    
-                    
-                }
-
-                if (GameVersion != LatestGame)
-                {
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    string PackageManifest = "";
+                    int CurrentVersionNumber = Convert.ToInt32(LolDataVersion.Split('.')[3]);
+                    int LatestVersionNumber = Convert.ToInt32(LatestLolDataVersion.Split('.')[3]);
+                    LogTextBox("Retrieving Package Manifest");
+                    //How will this happen, idk but we will never know if it will happen
+                    InvalidVersion:
+                    if (CurrentVersionNumber >= LatestVersionNumber)
                     {
-                        CurrentProgressLabel.Content = "Retrieving League of Legends";
-                    }));
+                        //Already updated, just fake numbers in the release listing and you can ignore them
+                    }
+                    try
+                    {
+                        PackageManifest = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/0.0.0." + LatestVersionNumber + "/packages/files/packagemanifest");
+                    }
+                    catch { LogTextBox(LatestVersionNumber + " is not valid"); LatestVersionNumber -= 1; goto InvalidVersion; }
+                    //Do online patch of LoLData from current version onwards
+                    if (LolDataVersion != LatestLolDataVersion)
+                    {
+                        LogTextBox("Updating from " + LolDataVersion + " -> " + LatestLolDataVersion);
+                        UpdateFrom(LolDataVersion, PackageManifest);
+                        WriteLatestVersion(LatestLolDataVersion);
+                    }
+                    LogTextBox("Patching League of Legends.exe...");
+                    //Everytime we update download all .exe and dll files
+                    GetAllExe(PackageManifest);
                 }
-                //*/
+                LogTextBox("Done!");
                 #endregion lol_game_client
 
                 
@@ -873,7 +864,8 @@ namespace LegendaryClient.Windows
             return rtrn.ToUpper();
         }
 
-        private static void DeleteDirectoryRecursive(string path) {
+        private void DeleteDirectoryRecursive(string path) 
+        {
             foreach (var directory in Directory.GetDirectories(path)) {
                 DeleteDirectoryRecursive(directory);
             }
@@ -886,6 +878,167 @@ namespace LegendaryClient.Windows
                 Directory.Delete(path, true);
             }
         }
+        public void WriteLatestVersion(string fileDirectory)
+        {
+            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+            string dDirectory = fileDirectory;
+            DirectoryInfo dInfo = new DirectoryInfo(dDirectory);
+            DirectoryInfo[] subdirs = null;
+            try
+            {
+                subdirs = dInfo.GetDirectories();
+            }
+            catch { return; }
+            string latestVersion = "0.0.1";
+            foreach (DirectoryInfo info in subdirs)
+            {
+                latestVersion = info.Name;
+            }
+            var VersionLOL = File.Create(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
+            VersionLOL.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
+            VersionLOL.Close();
+            LolDataVersion = latestVersion;
+        }
 
+        public void CopyStream(System.IO.Stream input, System.IO.Stream output)
+        {
+            byte[] buffer = new byte[2000];
+            int len;
+            while ((len = input.Read(buffer, 0, 2000)) > 0)
+            {
+                output.Write(buffer, 0, len);
+            }
+            output.Flush();
+        }
+
+        public void uncompressFile(string inFile, string outFile)
+        {
+            int data = 0;
+            int stopByte = -1;
+            System.IO.FileStream outFileStream = new System.IO.FileStream(outFile, System.IO.FileMode.Create);
+            ZInputStream inZStream = new ZInputStream(System.IO.File.Open(inFile, System.IO.FileMode.Open, System.IO.FileAccess.Read));
+            while (stopByte != (data = inZStream.Read()))
+            {
+                byte _dataByte = (byte)data;
+                outFileStream.WriteByte(_dataByte);
+            }
+
+            inZStream.Close();
+            outFileStream.Close();
+        }
+
+        private void GetAllExe(string PackageManifest)
+        {
+            string[] FileMetaData = PackageManifest.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
+            foreach (string s in FileMetaData)
+            {
+                if (String.IsNullOrEmpty(s))
+                {
+                    continue;
+                }
+                //Remove size and type metadata
+                string Location = s.Split(',')[0];
+                //Get save position
+                string SavePlace = Location.Split(new string[] { "/files/" }, StringSplitOptions.None)[1];
+                if (SavePlace.EndsWith(".exe.compressed") || SavePlace.EndsWith(".dll.compressed"))
+                {
+                    LogTextBox("Downloading " + SavePlace);
+                    using (WebClient newClient = new WebClient())
+                    {
+                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                    }
+                    uncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace), Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace).Replace(".compressed", ""));
+                    File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                }
+            }
+        }
+
+        private void UpdateFrom(string version, string PackageManifest)
+        {
+            int CurrentVersionNumber = Convert.ToInt32(version.Split('.')[3]);
+            string[] FileMetaData = PackageManifest.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
+            foreach (string s in FileMetaData)
+            {
+                if (String.IsNullOrEmpty(s))
+                {
+                    continue;
+                }
+                //Remove size and type metadata
+                string Location = s.Split(',')[0];
+                //Get save position
+                string SavePlace = Location.Split(new string[] { "/files/" }, StringSplitOptions.None)[1];
+                string[] VersionArray = Location.Split(new string[] { "/files/" }, StringSplitOptions.None)[0].Split('/');
+                string Version = VersionArray[VersionArray.Length - 1];
+                int VersionNumber = Convert.ToInt32(Version.Split('.')[3]);
+                if (VersionNumber > CurrentVersionNumber) //Update if later than current version
+                {
+                    LogTextBox("Downloading " + SavePlace);
+                    using (WebClient newClient = new WebClient())
+                    {
+                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                    }
+                    uncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace), Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace).Replace(".compressed", ""));
+                    File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                }
+            }
+        }
+
+        private void CheckIfPatched()
+        {
+            string LolVersion = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
+            string CurrentLolVersion = System.IO.File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
+            LogTextBox("Latest version of League of Legends: " + LolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0]);
+            LogTextBox("Your version of League of Legends: " + CurrentLolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0]);
+            LoLDataIsUpToDate = LolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0] == CurrentLolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+            LolDataVersion = CurrentLolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+            LatestLolDataVersion = LolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+        }
+
+        private bool ExpandRAF(string fileDirectory)
+        {
+            LogTextBox("Loading RAF Packages in " + fileDirectory);
+            RAFMasterFileList list = new RAFMasterFileList(fileDirectory);
+            LogTextBox("Expanding RAF packages. This will take a while (~20-30 minutes)...");
+            LogTextBox("During this time computer performance may be affected. While patching, running applications should be closed or not in-use");
+            int i = 0;
+            foreach (var x in list.FileDictFull)
+            {   
+                string FileLastWritten = "";
+                var RAFFile = x.Value[0];
+                string n = Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client");
+                foreach (string Directories in RAFFile.FileName.Split('/'))
+                {
+                    if (!Directories.Contains('.'))
+                    {
+                        if (!Directory.Exists(Path.Combine(n, Directories)))
+                        {
+                            Directory.CreateDirectory(Path.Combine(n, Directories));
+                        }
+                        n = Path.Combine(n, Directories);
+                    }
+                    else
+                    {
+                        BinaryWriter Writer = null;
+                        try
+                        {
+                            Writer = new BinaryWriter(File.OpenWrite(Path.Combine(n, Directories)));
+
+                            // Writer raw data                
+                            Writer.Write(RAFFile.GetContent());
+                            Writer.Flush();
+                            Writer.Close();
+                            FileLastWritten = Path.Combine(n, Directories);
+                        }
+                        catch
+                        {
+                            LogTextBox("Unable to write " + Path.Combine(n, Directories));
+                        }
+                    }
+                }
+                LogTextBox("(" + i + "/" + list.FileDictFull.Count + ") " + (((decimal)i / (decimal)list.FileDictFull.Count) * 100).ToString("N2") + "%");
+                i += 1;
+            }
+            return true;
+        }
     }
 }

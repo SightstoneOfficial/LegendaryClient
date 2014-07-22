@@ -348,10 +348,14 @@ namespace LegendaryClient.Windows
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.QueueIds = new Int32[] { Convert.ToInt32(queueId) };
             parameters.InvitationId = CurrentLobby.InvitationID;
+            List<int[]> InviteList = new List<int[]>();
             foreach (Member stats in CurrentLobby.Members)
             {
-                parameters.Team = stats.SummonerId;
+                int[] GameInvitePlayerList = new int[Convert.ToInt32(stats.SummonerId)];
+                InviteList.Add(GameInvitePlayerList);
+                //parameters.Team = stats.SummonerId;
             }
+            parameters.Team = InviteList;
             
             Client.PVPNet.AttachTeamToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
         }

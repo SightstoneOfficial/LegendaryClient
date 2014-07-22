@@ -994,9 +994,13 @@ namespace LegendaryClient.Logic
             dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp / 1000)).ToLocalTime();
             return dtDateTime;
         }
+        /// <summary>
+        /// Add data to the log file
+        /// </summary>
+        /// <param name="lines"></param>
+        /// <param name="type"></param>
         public static void Log(String lines, String type = "LOG")
         {
-            
             System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
             file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
             file.Close();

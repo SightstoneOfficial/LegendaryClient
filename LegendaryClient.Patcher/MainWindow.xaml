@@ -1,0 +1,32 @@
+﻿<controls:MetroWindow x:Class="LegendaryClient.Patcher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:LegendaryClient.Patcher"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        Title="LegendaryClient Patcher"
+        Width="1360" Height="768" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <i:Interaction.Behaviors>
+        <Behaviours:BorderlessWindowBehavior/>
+    </i:Interaction.Behaviors>
+
+    <Grid Background="#ecf0f1">
+        <Grid x:Name="OverlayGrid" Background="#7F000000" Panel.ZIndex="999" Visibility="Hidden">
+            <ContentControl x:Name="OverlayContainer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="40,40,40,40" />
+        </Grid>
+        <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" />
+    </Grid>
+</controls:MetroWindow>
