@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using Newtonsoft.Json;
+using System.Globalization;
+using System.Threading;
 
 namespace LegendaryClient.Controls
 {
@@ -29,23 +31,25 @@ namespace LegendaryClient.Controls
         int gameTypeConfigId;
         string gameMode;
         string gameType;
-        public GameInvitePopup(InvitationRequest stats, Inviter Inviter)
+        public GameInvitePopup(InvitationRequest stats)
         {
             InitializeComponent();
+            //IDK WHY I'M Receiving this stuff -.-
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
             GameMetaData = stats.GameMetaData;
             InvitationStateAsString = stats.InvitationStateAsString;
             InvitationState = stats.InvitationState;
+            this.Inviter = stats.Inviter;
             InvitationId = stats.InvitationId;
 
             if (InvitationId != null)
             {
                 NoGame.Visibility = Visibility.Hidden;
             }
-            //foreach (Inviter Invite in stats.Inviter)
-            //{
-            //    SummonerName = Invite.SummonerName;
-            //}
+
+            //Get who the Inviter's Name
+
+            //Simple way to get lobby data with Json.Net
             invitationRequest m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
             queueId = m.queueId;
             isRanked = m.isRanked;
@@ -55,9 +59,9 @@ namespace LegendaryClient.Controls
             gameMode = m.gameMode;
             gameType = m.gameType;
 
-            //gameMode = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(gameMode.toLower());
+            //So if there is a new map, it won't get a null error
+            string MapName = "Unknown Map";
 
-            string MapName;
 
             if (mapId == 1)
             {
@@ -75,14 +79,16 @@ namespace LegendaryClient.Controls
             {
                 MapName = "The Crystal Scar";
             }
-            else
-            {
-                MapName = "Unknown Map";
-            }
 
-            var gameModeLower = string.Format(gameMode.ToLower());
-            var gameTypeLower = string.Format(gameType.ToLower());
+            
+            //This is used so we can call the ToTitleCase [first letter is capital rest are not]
+            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+            TextInfo textInfo = cultureInfo.TextInfo;
+            var gameModeLower = textInfo.ToTitleCase(string.Format(gameMode.ToLower()));
+            var gameTypeLower = textInfo.ToTitleCase(string.Format(gameType.ToLower()));
+            //Why do I have to do this Riot?
             var gameTypeRemove = gameTypeLower.Replace("_game", "");
+            var removeAllUnder = gameTypeRemove.Replace("_", " ");
 
             if (Inviter == null)
             {
@@ -90,40 +96,37 @@ namespace LegendaryClient.Controls
                 RenderNotificationTextBox("");
                 RenderNotificationTextBox("Mode: " + gameModeLower);
                 RenderNotificationTextBox("Map: " + MapName);
-                RenderNotificationTextBox("Type: " + MapName);
+                RenderNotificationTextBox("Type: " + removeAllUnder);
             }
-            else if (Inviter != null)
+            else if (Inviter == "")
+            {
+                RenderNotificationTextBox("An unknown player has invited you to a game");
+                RenderNotificationTextBox("");
+                RenderNotificationTextBox("Mode: " + gameModeLower);
+                RenderNotificationTextBox("Map: " + MapName);
+                RenderNotificationTextBox("Type: " + removeAllUnder);
+            }
+            else if (Inviter != null && Inviter != "")
             {
                 RenderNotificationTextBox(SummonerName + " has invited you to a game");
                 RenderNotificationTextBox("");
                 RenderNotificationTextBox("Mode: " + gameModeLower);
                 RenderNotificationTextBox("Map: " + MapName);
-                RenderNotificationTextBox("Type: " + MapName);
+                RenderNotificationTextBox("Type: " + removeAllUnder);
             }
         }
 
         private void RenderNotificationTextBox(string s)
         {
             NotificationTextBox.Text += s + Environment.NewLine;
+
         }
-        private async void Accept_Click(object sender, RoutedEventArgs e)
+        private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            if(InvitationId != null)
-            {
-                this.Visibility = Visibility.Hidden;
-                //Client.SwitchPage(new TeamQueuePage(false));
-                
-                Client.SwitchPage(new TeamQueuePage(InvitationId));
-            }
-            if(InvitationId == null)
-            {
-                MessageOverlay overlay = new MessageOverlay();
-                overlay.MessageTextBox.Text = "No Invitation Id was received. Report to Eddy5641 [https://github.com/Eddy5641/LegendaryClient/issues/new]";
-                overlay.MessageTitle.Content = "No Invite Id";
-                Client.OverlayContainer.Content = overlay.Content;
-                Client.OverlayContainer.Visibility = Visibility.Visible;
-                return;
-            }
+            Client.PVPNet.getLobbyStatus(InvitationId);
+            LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
+            //NewLobby = await Client.PVPNet.getLobbyStatus(InvitationId);
+            Client.SwitchPage(new TeamQueuePage(InvitationId));
             
         }
         private void Decline_Click(object sender, RoutedEventArgs e)
@@ -140,6 +143,7 @@ namespace LegendaryClient.Controls
         {
             if (message.GetType() == typeof(LobbyStatus))
             {
+                //why did I do this... I don't actually know
                 LobbyStatus Lobbystatus = message as LobbyStatus;
             }
         }

@@ -16,8 +16,8 @@
             <Label x:Name="TypeLabel" FontWeight="ExtraLight" Content="RANKED SOLO 5x5" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Foreground="White" />
 
             <Button x:Name="CloseButton" Content="X" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="30" Margin="0,5,5,0" Panel.ZIndex="4" Click="CloseButton_Click" />
-            <Label Content="+100 IP" FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" />
-            <Label Content="100 IP Total" FontSize="16" FontWeight="ExtraLight" Foreground="White" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" />
+            <Label x:Name="GainedIP" Content="+100 IP" FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" />
+            <Label x:Name="TotalIP" Content="100 IP Total" FontSize="16" FontWeight="ExtraLight" Foreground="White" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" />
             <TabControl HorizontalAlignment="Right" Width="920" Margin="150,0,0,0" VerticalAlignment="Stretch">
                 <TabItem Header="Overview" Foreground="White">
                     <Grid>
@@ -34,6 +34,8 @@
                     <Grid />
                 </TabItem>
             </TabControl>
+            <Label x:Name="TotalXP" Content="1000 XP Total" FontSize="16" FontWeight="ExtraLight" Foreground="White" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" />
+            <Label x:Name="GainedXP" Content="+50 XP" FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" />
         </Grid>
 
         <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="30,435,0,65" Width="300" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">

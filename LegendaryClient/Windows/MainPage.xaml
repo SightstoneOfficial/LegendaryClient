@@ -92,5 +92,6 @@
         </TabControl>
         <Button x:Name="fakeend" Visibility="Hidden" Content="Fake end of game" HorizontalAlignment="Left" Margin="1145,111,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click" />
         <Button Content="TestInvite" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,10,10,0" Click="InviteTest_Click"/>
+        <Button Content="TestChat" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,37,10,0" Click="ChatTest_Click"/>
     </Grid>
 </Page>

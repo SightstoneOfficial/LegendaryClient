@@ -68,7 +68,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Update Data
         /// </summary>
-        internal static int LegendaryClientReleaseNumber = 2;
+        internal static int LegendaryClientReleaseNumber = 3;
 
         /// <summary>
         /// Sets Sqlite Version
@@ -721,7 +721,7 @@ namespace LegendaryClient.Logic
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
                     {
                         //Gameinvite stuff
-                        GameInvitePopup pop = new GameInvitePopup(stats, Inviterstats);
+                        GameInvitePopup pop = new GameInvitePopup(stats);
                         //await Invite.Callback;
                         //Invite.InvitationRequest(body);
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
@@ -826,7 +826,7 @@ namespace LegendaryClient.Logic
 
         private static int counter;
 
-        private static string Location = Path.Combine("C:", "Riot Games", "League of Legends", "RADS", "solutions", "lol_game_client_sln", "releases", "0.0.1.48", "deploy", "League of Legends.exe");
+        private static string Location = Path.Combine(ExecutingDirectory, "RADS", "lol_game_client", "League of Legends.exe");
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();
@@ -1001,9 +1001,16 @@ namespace LegendaryClient.Logic
         /// <param name="type"></param>
         public static void Log(String lines, String type = "LOG")
         {
-            System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
-            file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
-            file.Close();
+            /*
+            try
+            {
+                System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
+                file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
+                file.Close();
+            }
+            catch
+            { }
+            //*/
         }
 
         //Get Image

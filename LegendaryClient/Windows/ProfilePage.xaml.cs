@@ -30,6 +30,7 @@ namespace LegendaryClient.Windows
             RunesContainer.Content = new Runes();
             MasteriesContainer.Content = new Masteries();
             SkinsContainer.Content = new Skins();
+            LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline(Name);
 
             if (String.IsNullOrEmpty(Name))
             {

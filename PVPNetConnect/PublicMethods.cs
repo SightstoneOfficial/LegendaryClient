@@ -1082,23 +1082,26 @@ namespace PVPNetConnect
         }
 
 
+        public LobbyStatus InviteLobby;
         public async Task<LobbyStatus> getLobbyStatus(string InvitationId)
         {
             int Id = Invoke("lcdsGameInvitationService", "accept", new object[] { InvitationId });
             while (!results.ContainsKey(Id))
-                await Task.Delay(20);
+                await Task.Delay(10);
             TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
             LobbyStatus result = new LobbyStatus(messageBody);
             results.Remove(Id);
+            InviteLobby = result;
             return result;
         }
 
-        public async Task<object> checkLobbyStatus()
+        public async Task<LobbyStatus> checkLobbyStatus()
         {
-            int Id = Invoke("lcdsGameInvitationService", "checkLobbyStatus", new object[] { });
+            int Id = Invoke("lcdsGameInvitationService", "checkLobbyStatus", new object[] {  });
             while (!results.ContainsKey(Id))
-                await Task.Delay(10);
-            LobbyStatus result = new LobbyStatus();
+                await Task.Delay(20);
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            LobbyStatus result = new LobbyStatus(messageBody);
             results.Remove(Id);
             return result;
         }

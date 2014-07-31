@@ -1,14 +1,20 @@
-﻿using LegendaryClient.Controls;
+﻿using jabber.connection;
+using jabber.protocol.client;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Windows
 {
@@ -17,12 +23,60 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class EndOfGamePage : Page
     {
+        private Room newRoom;
         public EndOfGamePage(EndOfGameStats Statistics)
         {
             InitializeComponent();
             RenderStats(Statistics);
             Client.SwitchPage(new MainPage());
             Client.runonce = false;
+
+            string ObfuscatedName = Client.GetObfuscatedChatroomName(Statistics.RoomName, ChatPrefixes.Post_Game); //Why do you need to replace INVID with invid Riot?
+            string JID = Client.GetChatroomJID(ObfuscatedName, Statistics.RoomPassword, false);
+            newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+            newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+            newRoom.Join(Statistics.RoomPassword);
+        }
+
+        private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            }));
+        }
+
+        private void newRoom_OnRoomMessage(object sender, Message msg)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+
+                if (msg.Body != "This room is not anonymous")
+                {
+                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.From.Resource + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                }
+            }));
+        }
+
+        private void ChatButton_Click(object sender, RoutedEventArgs e)
+        {
+            TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+            tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+            tr.Text = ChatTextBox.Text + Environment.NewLine;
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+            newRoom.PublicMessage(ChatTextBox.Text);
+            ChatTextBox.Text = "";
         }
 
         private void RenderStats(EndOfGameStats Statistics)
@@ -55,7 +109,7 @@ namespace LegendaryClient.Windows
                 {
                     if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
                     {
-                        Image item = new Image();
+                        System.Windows.Controls.Image item = new System.Windows.Controls.Image();
                         uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"), UriKind.Absolute);
                         item.Source = new BitmapImage(uriSource);
                         playerStats.ItemsListView.Items.Add(item);
@@ -109,6 +163,7 @@ namespace LegendaryClient.Windows
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            newRoom.Leave(null);
             Client.OverlayContainer.Visibility = Visibility.Hidden;
         }
     }

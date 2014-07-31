@@ -814,13 +814,6 @@ namespace LegendaryClient.Windows
             
             LogTextBox("LegendaryClient Has Finished Patching");
             Client.Log("LegendaryClient Has Finished Patching");
-
-            
-            /*
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                Client.SwitchPage(new LoginPage());
-            }));*/
         }
 
         private void LogTextBox(string s)
@@ -913,18 +906,26 @@ namespace LegendaryClient.Windows
 
         public void uncompressFile(string inFile, string outFile)
         {
-            int data = 0;
-            int stopByte = -1;
-            System.IO.FileStream outFileStream = new System.IO.FileStream(outFile, System.IO.FileMode.Create);
-            ZInputStream inZStream = new ZInputStream(System.IO.File.Open(inFile, System.IO.FileMode.Open, System.IO.FileAccess.Read));
-            while (stopByte != (data = inZStream.Read()))
+            try 
             {
-                byte _dataByte = (byte)data;
-                outFileStream.WriteByte(_dataByte);
+                int data = 0;
+                int stopByte = -1;
+                System.IO.FileStream outFileStream = new System.IO.FileStream(outFile, System.IO.FileMode.Create);
+                ZInputStream inZStream = new ZInputStream(System.IO.File.Open(inFile, System.IO.FileMode.Open, System.IO.FileAccess.Read));
+                while (stopByte != (data = inZStream.Read()))
+                {
+                    byte _dataByte = (byte)data;
+                    outFileStream.WriteByte(_dataByte);
+                }
+    
+                inZStream.Close();
+                outFileStream.Close(); 
             }
-
-            inZStream.Close();
-            outFileStream.Close();
+            catch 
+            {
+                Client.Log("Unable to find a file to uncompress");
+            }
+            
         }
 
         private void GetAllExe(string PackageManifest)
@@ -975,10 +976,18 @@ namespace LegendaryClient.Windows
                     LogTextBox("Downloading " + SavePlace);
                     using (WebClient newClient = new WebClient())
                     {
-                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                        try
+                        {
+                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                        }
+                        catch { }
                     }
                     uncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace), Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace).Replace(".compressed", ""));
-                    File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                    try
+                    {
+                        File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                    }
+                    catch { }
                 }
             }
         }

@@ -37,6 +37,11 @@ namespace LegendaryClient
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "lcdebug.log"));
             }
 
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Backup.log")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "Backup.log"));
+            }
+
             Client.InfoLabel = InfoLabel;
             Client.StartHeartbeat();
             Client.PVPNet = new PVPNetConnection();
@@ -106,7 +111,7 @@ namespace LegendaryClient
 
         private void SwichToTeamQueue_Click(object Sender, RoutedEventArgs e)
         {
-            Client.SwitchPage(new TeamQueuePage(null));
+            Client.SwitchPage(new TeamQueuePage(null, null));
         }
         internal bool SwitchTeamPage = true;
         public void Hide()

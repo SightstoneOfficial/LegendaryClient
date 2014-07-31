@@ -1,4 +1,5 @@
 ﻿using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Member;
 using System;
 using System.Collections.Generic;
 
@@ -40,10 +41,6 @@ namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
         [InternalName("gameMetaData")]
         public String GameMetaData { get; set; }
 
-        //[InternalName("owner")]
-        //public String owner { get; set; }
-        //public Owner owner { get; set; }
-
         [InternalName("invitationStateAsString")]
         public String InvitationStateAsString { get; set; }
 
@@ -54,10 +51,10 @@ namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
         public String InvitationId { get; set; }
 
         [InternalName("inviter")]
-        public List<Inviter> Inviter { get; set; }
+        public String Inviter { get; set; }
 
         [InternalName("owner")]
-        public String Owner { get; set; }
+        public List<Member> Owner { get; set; }
 
     }
 }

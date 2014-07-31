@@ -70,36 +70,16 @@ namespace LegendaryClient.Windows
             Client.InviteListView = InviteListView;
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
             Client.OnMessage += Client_OnMessage;
-            MainWindow Window = new MainWindow();
-            Window.Hide();
+            //MainWindow Window = new MainWindow();
+            //Window.Hide();
+            //Opps
             Invite = Invid;
-            
-            LoadStats(NewLobby);
+            CurrentLobby = NewLobby;
+            LoadStats();
         }
 
-        public async void LoadStats(LobbyStatus NewLobby)
-        { 
-
-            ///Wow Riot, you get rid of getLobbyStatus so I have to do this all over -.-
-            LobbyStatus Lobby = await Client.PVPNet.getLobbyStatus(Invite);
-            if (NewLobby != null)
-            {
-                CurrentLobby = NewLobby;
-            }
-            else if (NewLobby == null)
-            {
-                CurrentLobby = Lobby;
-            }
-
-            //arrangeing_game
-            string ObfuscatedName = Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"), ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
-            string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
-            newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
-            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-            newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-            newRoom.Join(CurrentLobby.ChatKey);
-
+        public  void LoadStats()
+        {
             i = 10;
             PingTimer = new Timer(1000);
             PingTimer.Elapsed += new ElapsedEventHandler(PingElapsed);
@@ -109,7 +89,28 @@ namespace LegendaryClient.Windows
             StartGameButton.IsEnabled = false;
 
             ///Way smarter way then just putting the code here
-            RenderLobbyData();
+
+            //RenderLobbyData();
+        }
+        bool InChat = false;
+        private void JoinChat()
+        {
+            if (CurrentLobby.InvitationID != null && CurrentLobby.InvitationID != "")
+            {
+                try
+                {
+                    string ObfuscatedName = Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"), ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
+                    string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
+                    newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+                    newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                    newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+                    newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                    newRoom.Join(CurrentLobby.ChatKey);
+                }
+                catch { }
+                InChat = true;
+            }
+            
         }
         
         private async void Inviter_Click(object sender, RoutedEventArgs e)
@@ -201,79 +202,86 @@ namespace LegendaryClient.Windows
 
         private void RenderLobbyData()
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            try 
             {
-                Client.InviteListView.Items.Clear();
-                TeamListView.Items.Clear();
-                if (Client.LoginPacket.AllSummonerData.Summoner.Name == CurrentLobby.Owner);
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    IsOwner = true;
-                }
-                if (Client.LoginPacket.AllSummonerData.Summoner.Name != CurrentLobby.Owner);
-                {
+                    Client.InviteListView.Items.Clear();
+                    TeamListView.Items.Clear();
                     IsOwner = false;
-                }
-
-                if (IsOwner == true)
-                {
-                    InviteButton.IsEnabled = true;
-                    StartGameButton.IsEnabled = true;
-                }
-                else if (IsOwner == false)
-                {
-                    InviteButton.IsEnabled = false;
-                    StartGameButton.IsEnabled = false;
-                }
-
-                foreach (Member stats in CurrentLobby.Members)
-                {
-                    TeamControl TeamPlayer = new TeamControl();
-                    TeamPlayerStats = TeamPlayer;
-                    TeamPlayer.Name.Content = stats.SummonerName;
-                    TeamPlayer.SumID.Content = stats.SummonerName;
-                    TeamPlayer.Kick.Tag = stats;
-                    TeamPlayer.Inviter.Tag = stats;
-                    TeamPlayer.Profile.Tag = stats;
-                    TeamPlayer.Owner.Tag = stats;
-
-                    TeamPlayer.Kick.Click += Kick_Click;
-                    TeamPlayer.Inviter.Click += Inviter_Click;
-                    TeamPlayer.Profile.Click += Profile_Click;
-                    TeamPlayer.Owner.Click += Owner_Click;
-
-                    if (stats.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                    if(Client.LoginPacket.AllSummonerData.Summoner.Name == CurrentLobby.Owner);
                     {
-                        TeamPlayer.Kick.Visibility = Visibility.Hidden;
-                        TeamPlayer.Inviter.Visibility = Visibility.Hidden;
-                        TeamPlayer.Profile.Visibility = Visibility.Hidden;
-                        TeamPlayer.Owner.Visibility = Visibility.Hidden;
-                        if (stats.hasDelegatedInvitePower == true && IsOwner == false)
+                        IsOwner = true;
+                    }
+
+                    if (IsOwner == true)
+                    {
+                        InviteButton.IsEnabled = true;
+                        StartGameButton.IsEnabled = true;
+                    }
+                    else if (IsOwner == false)
+                    {
+                        InviteButton.IsEnabled = false;
+                        StartGameButton.IsEnabled = false;
+                    }
+
+                    foreach (Member stats in CurrentLobby.Members)
+                    {
+                    //Your kidding me right
+                        TeamControl TeamPlayer = new TeamControl();
+                        TeamPlayerStats = TeamPlayer;
+                        TeamPlayer.Name.Content = stats.SummonerName;
+                        TeamPlayer.SumID.Content = stats.SummonerName;
+                        TeamPlayer.Kick.Tag = stats;
+                        TeamPlayer.Inviter.Tag = stats;
+                        TeamPlayer.Profile.Tag = stats;
+                        TeamPlayer.Owner.Tag = stats;
+
+                        TeamPlayer.Kick.Click += Kick_Click;
+                        TeamPlayer.Inviter.Click += Inviter_Click;
+                        TeamPlayer.Profile.Click += Profile_Click;
+                        TeamPlayer.Owner.Click += Owner_Click;
+
+
+                        //
+                        if (stats.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
                         {
-                            InviteButton.IsEnabled = true;
-                        }
-                        else if (stats.hasDelegatedInvitePower == false && IsOwner == false)
-                        {
-                            InviteButton.IsEnabled = false;
+                            TeamPlayer.Kick.Visibility = Visibility.Hidden;
+                            TeamPlayer.Inviter.Visibility = Visibility.Hidden;
+                            TeamPlayer.Profile.Visibility = Visibility.Hidden;
+                            TeamPlayer.Owner.Visibility = Visibility.Hidden;
+                            if (stats.hasDelegatedInvitePower == true && IsOwner == false)
+                            {
+                                InviteButton.IsEnabled = true;
+                            }
+                            else if (stats.hasDelegatedInvitePower == false && IsOwner == false)
+                            {
+                                InviteButton.IsEnabled = false;
+                            }
                         }
                         if (IsOwner == false)
                         {
-                            //So you don't crash trying to kick someone when you cant
+                            //So you don't crash trying to kick someone when you can't
                             TeamPlayer.Kick.Visibility = Visibility.Hidden;
                             TeamPlayer.Inviter.Visibility = Visibility.Hidden;
                             TeamPlayer.Owner.Visibility = Visibility.Hidden;
                         }
+                        TeamListView.Items.Add(TeamPlayer);
                     }
-                    TeamListView.Items.Add(TeamPlayer);
-                }
 
-                foreach (Invitee statsx in CurrentLobby.Invitees)
-                {
-                    InvitePlayer invitePlayer = new InvitePlayer();
-                    invitePlayer.StatusLabel.Content = statsx.inviteeState;
-                    invitePlayer.PlayerLabel.Content = statsx.SummonerName;
-                    Client.InviteListView.Items.Add(invitePlayer);
-                }
-            }));
+                    foreach (Invitee statsx in CurrentLobby.Invitees)
+                    {
+                        InvitePlayer invitePlayer = new InvitePlayer();
+                        invitePlayer.StatusLabel.Content = statsx.inviteeState;
+                        invitePlayer.PlayerLabel.Content = statsx.SummonerName;
+                        Client.InviteListView.Items.Add(invitePlayer);
+                    }
+                    //Gota join chat someday
+                    JoinChat();
+                }));
+            }
+            catch { }
+            
         }
 
         private void Update_OnMessageReceived(object sender, object message)
@@ -306,7 +314,7 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.Leave();
             Client.SwitchPage(new MainPage());
-            Client.ClearPage(new TeamQueuePage(null));
+            Client.ClearPage(new TeamQueuePage(null, null));
         }
 
 
@@ -317,11 +325,8 @@ namespace LegendaryClient.Windows
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-                //TeamListView.Items.Add(participant.NickJID);
             }));
         }
-
-        
 
         private void newRoom_OnRoomMessage(object sender, Message msg)
         {
@@ -340,28 +345,6 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        private async void Client_OnMessage(object sender, Message msg)
-        { /*Not needed anymore */ }
-
-        private async void StartGameButton_Click(object sender, RoutedEventArgs e)
-        {
-            MatchMakerParams parameters = new MatchMakerParams();
-            parameters.QueueIds = new Int32[] { Convert.ToInt32(queueId) };
-            parameters.InvitationId = CurrentLobby.InvitationID;
-            List<int[]> InviteList = new List<int[]>();
-            foreach (Member stats in CurrentLobby.Members)
-            {
-                int[] GameInvitePlayerList = new int[Convert.ToInt32(stats.SummonerId)];
-                InviteList.Add(GameInvitePlayerList);
-                //parameters.Team = stats.SummonerId;
-            }
-            parameters.Team = InviteList;
-            
-            Client.PVPNet.AttachTeamToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
-        }
-
-
-
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
             TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
@@ -372,6 +355,26 @@ namespace LegendaryClient.Windows
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
             newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
+        }
+
+        private void Client_OnMessage(object sender, Message msg)
+        { /*Not needed anymore */ }
+
+        private async void StartGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            MatchMakerParams parameters = new MatchMakerParams();
+            parameters.QueueIds = new Int32[] { Convert.ToInt32(queueId) };
+            parameters.InvitationId = CurrentLobby.InvitationID;
+            List<int[]> InviteList = new List<int[]>();
+            foreach (Member stats in CurrentLobby.Members)
+            {
+                //Why do I have to use a list Rito
+                int[] GameInvitePlayerList = new int[Convert.ToInt32(stats.SummonerId)];
+                InviteList.Add(GameInvitePlayerList);
+            }
+            parameters.Team = InviteList;
+            
+            Client.PVPNet.AttachTeamToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
         }
         private void EnteredQueue(SearchingForMatchNotification result)
         {

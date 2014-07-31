@@ -57,6 +57,9 @@
                 <Frame x:Name="SkinsContainer">
                 </Frame>
             </TabItem>
+            <TabItem x:Name="MatchHistoryBetaTab" Header="Match History Beta">
+                <Frame x:Name="LeagueMatchHistoryBetaContainer"></Frame>
+            </TabItem>
         </TabControl>
     </Grid>
 </Page>

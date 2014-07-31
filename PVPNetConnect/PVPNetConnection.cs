@@ -410,7 +410,7 @@ namespace PVPNetConnect
                 }
                 else if (e.Message == "The given key was not present in the dictionary.")
                 {
-                    Error("The given key was not present in the dictionary. Client version is wrong maybe?", ErrorType.Password);
+                    Error("The given key was not present in the dictionary. Client version is wrong maybe?", ErrorType.AuthKey);
                     Disconnect();
                 }
                 else
