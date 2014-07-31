@@ -20,6 +20,8 @@ namespace Patcher
             }
             WriteToConsole("LegendaryClient Updater Version 1.0.0.0 UNSTABLE");
             Console.Title = "LegendaryClient Updater Version 1.0.0.0";
+            WriteToConsole("This program should have been started by LegendaryClient or LegendaryClient.exe");
+            WriteToConsole("If this program was not started by LegendaryClient.exe, close this program and launch LegendaryClient");
             WebClient client = new WebClient();
             string VersionString = "";
             bool RetreivedFile = false;

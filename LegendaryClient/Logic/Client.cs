@@ -43,6 +43,8 @@ namespace LegendaryClient.Logic
     internal static class Client
     {
 
+        internal static string GameLocation;
+
         private static readonly ILog log = LogManager.GetLogger(typeof(Client));
 
         /// <summary>
@@ -826,7 +828,10 @@ namespace LegendaryClient.Logic
 
         private static int counter;
 
-        private static string Location = Path.Combine(ExecutingDirectory, "RADS", "lol_game_client", "League of Legends.exe");
+        internal static string LaunchGameLocation;
+
+        //Thats right, We no longer download League Of Legends, This improves Patching Time
+        private static string Location = Path.Combine(LaunchGameLocation, "deploy", "League of Legends.exe");
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();

@@ -533,6 +533,8 @@ namespace LegendaryClient.Windows
                 }));
 
                 // Try get LoL path from registry
+
+                //A string that looks like C:\Riot Games\League of Legends\
                 string lolRootPath = GetLolRootPath();
 
                 #region lol_air_client
@@ -604,6 +606,27 @@ namespace LegendaryClient.Windows
 
                 //string GameVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
                 #region lol_game_client
+                LogTextBox("Trying to detect League of Legends GameClient");
+                LogTextBox("League of Legends is located at: " + lolRootPath);
+                //RADS\solutions\lol_game_client_sln\releases
+                Client.GameLocation = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln", "releases");
+
+                string LolVersion = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_NA");
+                string GameClientSln = LolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                LogTextBox("Latest League of Legends GameClient: " + GameClientSln);
+                LogTextBox("Checking if League of Legends is Up-To-Date");
+                if (Directory.Exists(Path.Combine(Client.GameLocation, GameClientSln)))
+                {
+                    LogTextBox("League of Legends is Up-To-Date");
+                    Client.LaunchGameLocation = Path.Combine(Client.GameLocation, GameClientSln);
+                }
+                else 
+                {
+                    LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
+                    return;
+                }
+                //No Need to download this anymore, I will auto detect League of Legends
+                /*
                 if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client")))
                 {
                     Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client"));
@@ -662,6 +685,7 @@ namespace LegendaryClient.Windows
                     GetAllExe(PackageManifest);
                 }
                 LogTextBox("Done!");
+                //*/
                 #endregion lol_game_client
 
                 
