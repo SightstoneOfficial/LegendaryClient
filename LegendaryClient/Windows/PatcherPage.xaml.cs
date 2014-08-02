@@ -609,21 +609,87 @@ namespace LegendaryClient.Windows
                 LogTextBox("Trying to detect League of Legends GameClient");
                 LogTextBox("League of Legends is located at: " + lolRootPath);
                 //RADS\solutions\lol_game_client_sln\releases
-                Client.GameLocation = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln", "releases");
+                var GameLocation = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln", "releases");
 
+                string LolVersion2 = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
                 string LolVersion = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_NA");
                 string GameClientSln = LolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                string GameClient = LolVersion2.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
                 LogTextBox("Latest League of Legends GameClient: " + GameClientSln);
                 LogTextBox("Checking if League of Legends is Up-To-Date");
-                if (Directory.Exists(Path.Combine(Client.GameLocation, GameClientSln)))
+                if (Directory.Exists(Path.Combine(GameLocation, GameClientSln)))
                 {
                     LogTextBox("League of Legends is Up-To-Date");
-                    Client.LaunchGameLocation = Path.Combine(Client.GameLocation, GameClientSln);
+                    //Client.LaunchGameLocation = Path.Combine(Client.GameLocation, GameClientSln);
+                    //C:\Riot Games\League of Legends\RADS\projects\lol_game_client\releases\0.0.0.243\deploy
+                    Client.LOLCLIENTVERSION = LolVersion2;
+                    Client.Location = Path.Combine(lolRootPath, "RADS", "projects", "lol_game_client", "releases", GameClient, "deploy", "League of Legends.exe");
                 }
                 else 
                 {
                     LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
                     return;
+                }
+
+
+                if (!Directory.Exists("RADS"))
+                {
+                    Directory.CreateDirectory("RADS");
+                }
+
+                if (!File.Exists(Path.Combine("RADS", "VERSION_LOL")))
+                {
+                    var VersionGAME = File.Create(Path.Combine("RADS", "VERSION_LOL"));
+                    VersionGAME.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
+                    VersionGAME.Close();
+                }
+
+                string LatestGame = patcher.GetLatestGame();
+                LogTextBox("League Of Legends Version: " + LatestGame);
+                string GameVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
+                LogTextBox("Current League of Legends Version: " + GameVersion);
+                RetrieveCurrentInstallation = false;
+                string NGameLocation = "";
+
+                if (GameVersion != GameClient)
+                {
+                    LogTextBox("Checking for existing League of Legends Installation");
+                    NGameLocation = Path.Combine("League of Legends", "RADS");
+                    if (Directory.Exists(NGameLocation))
+                    {
+                        RetrieveCurrentInstallation = true;
+                    }
+                    else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", NGameLocation)))
+                    {
+                        RetrieveCurrentInstallation = true;
+                        NGameLocation = Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", NGameLocation);
+                    }
+                    else
+                    {
+                        LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
+                            + Client.ExecutingDirectory
+                            + " to make the patching process quicker");
+                    }
+
+                    if (RetrieveCurrentInstallation)
+                    {
+                        LogTextBox("Getting League Of Legends from " + NGameLocation);
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        {
+                            CurrentProgressLabel.Content = "Copying League of Legends";
+                        }));
+                        GameVersion = patcher.GetCurrentGameInstall(NGameLocation);
+                        LogTextBox("Retrieved currently installed League of Legends");
+                        LogTextBox("Current League of Legends Version: " + NGameLocation);
+                    }
+                }
+
+                if (GameVersion != LatestGame)
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        CurrentProgressLabel.Content = "Retrieving League of Legends";
+                    }));
                 }
                 //No Need to download this anymore, I will auto detect League of Legends
                 /*

@@ -127,6 +127,7 @@ namespace LegendaryClient.Controls
             LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
             //NewLobby = await Client.PVPNet.getLobbyStatus(InvitationId);
             Client.SwitchPage(new TeamQueuePage(InvitationId));
+            this.Visibility = Visibility.Hidden;
             
         }
         private void Decline_Click(object sender, RoutedEventArgs e)

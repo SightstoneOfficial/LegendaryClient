@@ -43,8 +43,6 @@ namespace LegendaryClient.Logic
     internal static class Client
     {
 
-        internal static string GameLocation;
-
         private static readonly ILog log = LogManager.GetLogger(typeof(Client));
 
         /// <summary>
@@ -828,30 +826,29 @@ namespace LegendaryClient.Logic
 
         private static int counter;
 
-        internal static string LaunchGameLocation;
+        internal static string Location;
+        internal static string LOLCLIENTVERSION;
 
-        //Thats right, We no longer download League Of Legends, This improves Patching Time
-        private static string Location = Path.Combine(LaunchGameLocation, "deploy", "League of Legends.exe");
         internal static void LaunchGame()
         {
             string GameDirectory = GetGameDirectory();
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;
-            //p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
-            p.StartInfo.FileName = Location;
+            p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
             p.StartInfo.Arguments = "\"8394\" \"LoLLauncher.exe\" \"" + "" + "\" \"" +
                 CurrentGame.ServerIp + " " +
                 CurrentGame.ServerPort + " " +
                 CurrentGame.EncryptionKey + " " +
                 CurrentGame.SummonerId + "\"";
             p.Start();
-            //recorder = new AutoReplayRecorder.AutoReplayRecorder();
+
             ReplayTimer = new System.Windows.Forms.Timer();
             ReplayTimer.Tick += new EventHandler(CountdownTimer_Tick);
             ReplayTimer.Interval = 10000; // 10 seconds
             ReplayTimer.Start();
         }
+        
 
         private static void CountdownTimer_Tick(object sender, EventArgs e)
         {
@@ -878,8 +875,8 @@ namespace LegendaryClient.Logic
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;
-            //p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
-            p.StartInfo.FileName = Location;
+            p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            //p.StartInfo.FileName = Location;
             p.StartInfo.Arguments = "\"8393\" \"LoLLauncher.exe\" \"\" \"spectator "
                 + SpectatorServer + " "
                 + Key + " "

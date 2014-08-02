@@ -23,7 +23,7 @@
 
         <ProgressBar x:Name="PlayerProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="23" Margin="170,80,0,0" VerticalAlignment="Top" Width="250" Value="75" Foreground="#FF9C9C9C" />
         <Label x:Name="PlayerCurrentProgressLabel" Style="{x:Null}" Content="75LP" HorizontalAlignment="Left" Margin="170,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
-        <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Gold V" HorizontalAlignment="Left" Margin="265,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
+        <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Silver II" HorizontalAlignment="Left" Margin="265,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
         <Label x:Name="PlayerAimProgressLabel" Style="{x:Null}" Content="100LP" HorizontalAlignment="Left" Margin="365,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
 
         <TextBox x:Name="BroadcastMessage" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,52,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" BorderThickness="0" />
@@ -90,8 +90,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="fakeend" Visibility="Hidden" Content="Fake end of game" HorizontalAlignment="Left" Margin="1145,111,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click" />
-        <Button Content="TestInvite" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,10,10,0" Click="InviteTest_Click"/>
-        <Button Content="TestChat" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,37,10,0" Click="ChatTest_Click"/>
+        <Button x:Name="fakeend" Visibility="Hidden" Content="Fake end of game" HorizontalAlignment="Left" Margin="1065,10,0,0" VerticalAlignment="Top" Width="125" Click="fakeend_Click" />
+        <Button Content="TestInvite" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,10,10,0" Click="InviteTest_Click"/>
+        <Button Content="TestChat" Visibility="Hidden" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,37,10,0" Click="ChatTest_Click"/>
     </Grid>
 </Page>
