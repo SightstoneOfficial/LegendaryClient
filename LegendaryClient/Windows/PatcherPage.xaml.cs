@@ -392,7 +392,7 @@ namespace LegendaryClient.Windows
                 }
 
                 
-                Client.updateData = LegendaryUpdate.PopulateItems();
+                //Client.updateData = LegendaryUpdate.PopulateItems();
 
                 //#if !DEBUG //Dont patch client while in DEBUG
                 UpdateData legendaryupdatedata = new UpdateData();

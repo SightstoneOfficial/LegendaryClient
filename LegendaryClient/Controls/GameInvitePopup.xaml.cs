@@ -39,7 +39,7 @@ namespace LegendaryClient.Controls
             GameMetaData = stats.GameMetaData;
             InvitationStateAsString = stats.InvitationStateAsString;
             InvitationState = stats.InvitationState;
-            this.Inviter = stats.Inviter;
+            this.Inviter = SummonerName;
             InvitationId = stats.InvitationId;
 
             if (InvitationId != null)
@@ -48,6 +48,7 @@ namespace LegendaryClient.Controls
             }
 
             //Get who the Inviter's Name
+
 
             //Simple way to get lobby data with Json.Net
             invitationRequest m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
@@ -58,6 +59,8 @@ namespace LegendaryClient.Controls
             gameTypeConfigId = m.gameTypeConfigId;
             gameMode = m.gameMode;
             gameType = m.gameType;
+
+            Client.PVPNet.getLobbyStatusInviteId = InvitationId;
 
             //So if there is a new map, it won't get a null error
             string MapName = "Unknown Map";
@@ -123,7 +126,6 @@ namespace LegendaryClient.Controls
         }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            Client.PVPNet.getLobbyStatus(InvitationId);
             LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
             //NewLobby = await Client.PVPNet.getLobbyStatus(InvitationId);
             Client.SwitchPage(new TeamQueuePage(InvitationId));

@@ -30,6 +30,7 @@ using System.Threading;
 using System.Web.Script.Serialization;
 using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 
 namespace PVPNetConnect
 {
@@ -1078,6 +1079,10 @@ namespace PVPNetConnect
                                             else if (
                                                 body.type.Equals("com.riotgames.platform.gameinvite.contract.InvitationRequest"))
                                                 MessageReceived(new Inviter(body));
+
+                                            else if (
+                                                body.type.Equals("com.riotgames.platform.serviceproxy.dispatch.LcdsServiceProxyResponse"))
+                                                MessageReceived(new LcdsServiceProxyResponse(body));
 
                                             else if (
                                                 body.type.Equals(

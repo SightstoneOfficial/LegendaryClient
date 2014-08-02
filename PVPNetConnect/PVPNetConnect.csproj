@@ -112,6 +112,7 @@
     <Compile Include="RiotObjects\Platform\Reroll\Pojo\AramPlayerParticipant.cs" />
     <Compile Include="RiotObjects\Platform\Reroll\Pojo\EogPointChangeBreakdown.cs" />
     <Compile Include="RiotObjects\Platform\Reroll\Pojo\PointSummary.cs" />
+    <Compile Include="RiotObjects\Platform\ServiceProxy\Dispatch\LcdsServiceProxyResponse.cs" />
     <Compile Include="RiotObjects\Platform\Statistics\AggregatedStat.cs" />
     <Compile Include="RiotObjects\Platform\Statistics\AggregatedStats.cs" />
     <Compile Include="RiotObjects\Platform\Statistics\AggregatedStatsKey.cs" />

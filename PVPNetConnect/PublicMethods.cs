@@ -189,6 +189,15 @@ namespace PVPNetConnect
             return null;
         }
 
+        public async Task<object> Call(String GroupFinderUUID, String GameMode, String ProcedureCall, String Parameters)
+        {
+            int Id = Invoke("lcdsServiceProxy", "call", new object[] { GroupFinderUUID, GameMode, ProcedureCall, Parameters });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+
         /// 9.)
         public void GetMasteryBook(Double summonerId, MasteryBookDTO.Callback callback)
         {
@@ -1043,21 +1052,6 @@ namespace PVPNetConnect
             results.Remove(Id);
             return result;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="InvitationId"></param>
-        /// <returns></returns>
-        public async Task<object> getLobbyStatusaccept(string InvitationId)
-        {
-            int Id = Invoke("lcdsGameInvitationService", "accept", new object[] { InvitationId });
-            while (!results.ContainsKey(Id))
-                await Task.Delay(20);
-            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
-            LobbyStatus result = new LobbyStatus(messageBody);
-            results.Remove(Id);
-            return result;
-        }
 
         public async Task<object> transferOwnership(string InvitationId)
         {
@@ -1083,9 +1077,11 @@ namespace PVPNetConnect
 
 
         public LobbyStatus InviteLobby;
-        public async Task<LobbyStatus> getLobbyStatus(string InvitationId)
+
+        public string getLobbyStatusInviteId;
+        public async Task<LobbyStatus> getLobbyStatus()
         {
-            int Id = Invoke("lcdsGameInvitationService", "accept", new object[] { InvitationId });
+            int Id = Invoke("lcdsGameInvitationService", "accept", new object[] { getLobbyStatusInviteId });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             TypedObject messageBody = results[Id].GetTO("data").GetTO("body");

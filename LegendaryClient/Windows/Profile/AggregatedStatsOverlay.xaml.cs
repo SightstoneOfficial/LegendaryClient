@@ -107,7 +107,7 @@ namespace LegendaryClient.Windows
 
             ChampionStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
 
-            AllStats = ChampionStats[0];
+            //AllStats = ChampionStats;
 
             foreach (AggregatedChampion ChampionStat in ChampionStats)
             {

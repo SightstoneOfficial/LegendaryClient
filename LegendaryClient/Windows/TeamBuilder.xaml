@@ -9,8 +9,21 @@
 
     <Grid>
         <Label Content="Team Builder Beta" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
-        <Button x:Name="Invite" IsEnabled="True" Content="Invite" HorizontalAlignment="Right" VerticalAlignment="Top" Width="296" Margin="0,371,10,0" Height="26"/>
-        <StackPanel x:Name="Players" HorizontalAlignment="Right" Background="#FF474747" Height="326" VerticalAlignment="Top" Width="296" Margin="0,40,10,0"/>
+        <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="74" Stroke="Black" VerticalAlignment="Top" Width="395" Margin="0,10,10,0"/>
+        <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging... Please Wait" VerticalAlignment="Top" Margin="0,10,10,0" Height="74" Width="395" Foreground="White" FontSize="20" TextAlignment="Center"/>
+        <Button x:Name="Invite" IsEnabled="True" Content="Invite" HorizontalAlignment="Right" VerticalAlignment="Top" Width="395" Margin="0,371,10,0" Height="30"/>
+        <ListView x:Name="Players" HorizontalAlignment="Right" Background="#FF474747" Height="277" VerticalAlignment="Top" Width="395" Margin="0,89,10,0"/>
+        <ListView Margin="10,44,410,10"/>
+
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="619,0,10,40" Height="226" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="619,0,100,17" TextWrapping="Wrap" VerticalAlignment="Bottom" />
+        <Button x:Name="ChatButton" Content="Send" Margin="0,0,10,16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
 
     </Grid>
 </Page>

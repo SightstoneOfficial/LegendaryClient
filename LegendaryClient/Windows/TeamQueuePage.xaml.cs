@@ -78,7 +78,7 @@ namespace LegendaryClient.Windows
             LoadStats();
         }
 
-        public  void LoadStats()
+        public async void LoadStats()
         {
             i = 10;
             PingTimer = new Timer(1000);
@@ -88,30 +88,25 @@ namespace LegendaryClient.Windows
             InviteButton.IsEnabled = false;
             StartGameButton.IsEnabled = false;
 
+            if (CurrentLobby == null)
+            {
+                //Yay fixed lobby. Riot hates me still though. They broke this earlier, except I have fixed it
+                CurrentLobby = await Client.PVPNet.getLobbyStatus();
+            }
+            string ObfuscatedName = Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"), ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
+            string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
+            newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+            newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+            newRoom.Join(CurrentLobby.ChatKey);
+
+
             ///Way smarter way then just putting the code here
 
-            //RenderLobbyData();
+            RenderLobbyData();
         }
-        bool InChat = false;
-        private void JoinChat()
-        {
-            if (CurrentLobby.InvitationID != null && CurrentLobby.InvitationID != "")
-            {
-                try
-                {
-                    string ObfuscatedName = Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"), ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
-                    string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
-                    newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
-                    newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-                    newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-                    newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-                    newRoom.Join(CurrentLobby.ChatKey);
-                }
-                catch { }
-                InChat = true;
-            }
-            
-        }
+        
         
         private async void Inviter_Click(object sender, RoutedEventArgs e)
         {
@@ -276,8 +271,6 @@ namespace LegendaryClient.Windows
                         invitePlayer.PlayerLabel.Content = statsx.SummonerName;
                         Client.InviteListView.Items.Add(invitePlayer);
                     }
-                    //Gota join chat someday
-                    JoinChat();
                 }));
             }
             catch { }
@@ -365,11 +358,10 @@ namespace LegendaryClient.Windows
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.QueueIds = new Int32[] { Convert.ToInt32(queueId) };
             parameters.InvitationId = CurrentLobby.InvitationID;
-            List<int[]> InviteList = new List<int[]>();
+            List<int> InviteList = new List<int>();
             foreach (Member stats in CurrentLobby.Members)
             {
-                //Why do I have to use a list Rito
-                int[] GameInvitePlayerList = new int[Convert.ToInt32(stats.SummonerId)];
+                int GameInvitePlayerList = Convert.ToInt32(stats.SummonerId);
                 InviteList.Add(GameInvitePlayerList);
             }
             parameters.Team = InviteList;

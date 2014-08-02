@@ -94,8 +94,9 @@
     <Reference Include="RAFlibPlus">
       <HintPath>..\..\Users\Edward_2\Desktop\Coding\Kyoku-master\Kyoku\RAFlibPlus.dll</HintPath>
     </Reference>
-    <Reference Include="rtmp-sharp">
-      <HintPath>.\rtmp-sharp.dll</HintPath>
+    <Reference Include="rtmp-sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Release\Client\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
