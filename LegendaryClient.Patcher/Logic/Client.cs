@@ -17,6 +17,11 @@ namespace LegendaryClient.Patcher.Logic
         internal static bool LoLDataIsUpToDate = false;
 
         /// <summary>
+        /// We need to know the region to get the right language local.
+        /// </summary>
+        internal static string Region;
+
+        /// <summary>
         /// The most up to date version int of League of Legends
         /// </summary>
         internal static string LatestLolDataVersion = "";
@@ -50,6 +55,7 @@ namespace LegendaryClient.Patcher.Logic
         /// Used to Create an overlay or a notification
         /// </summary>
         internal static ContentControl OverlayContainer;
+
 
         internal static Type CurrentPage; //Stop changing to same page
         internal static List<Page> CachedPages = new List<Page>();

@@ -656,7 +656,9 @@ namespace LegendaryClient.Logic
         {
             if (IsLoggedIn)
             {
-                //await PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId), PlayerSession.Token, HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-0700'"));
+                //string LCDSHeartBeatString = Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId) + "|" + PlayerSession.Token, HeartbeatCount + "|" + DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT'KKKK");
+                Client.Log("Preforming LCDSHeartBeat");
+                await PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId), PlayerSession.Token, HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT'KKKK"));
 
                 HeartbeatCount++;
             }
@@ -718,7 +720,7 @@ namespace LegendaryClient.Logic
                     InvitationRequest stats = message as InvitationRequest;
                     Inviter Inviterstats = message as Inviter;
                     //TypedObject body = (TypedObject)to["body"];
-                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
+                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         //Gameinvite stuff
                         GameInvitePopup pop = new GameInvitePopup(stats);

@@ -116,7 +116,7 @@ namespace LegendaryClient.Windows
             Client.OverlayContainer.Visibility = Visibility.Hidden;
         }
 
-        private async void SendInvitesButton_Click(object sender, RoutedEventArgs e)
+        private void SendInvitesButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (string Player in invitedPlayers)
             {

@@ -19,6 +19,11 @@ namespace LegendaryClient.Logic.Region
             get { return "KR"; }
         }
 
+        public override string Locale
+        {
+            get { return "ko_KR"; }
+        }
+
         public override string ChatName
         {
             get { return "kr"; }

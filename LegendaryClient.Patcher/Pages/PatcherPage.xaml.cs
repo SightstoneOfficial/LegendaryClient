@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using LegendaryClient.Patcher.Logic;
 
 namespace LegendaryClient.Patcher.Pages
 {
@@ -35,6 +36,7 @@ namespace LegendaryClient.Patcher.Pages
             {
                 File.Delete(System.IO.Path.Combine(ExecutingDirectory, "LegendaryClientPatcher.log"));
             }
+            //LogTextBox(CreateConfigurationmanifest());
         }
 
         /// <summary>
@@ -47,10 +49,14 @@ namespace LegendaryClient.Patcher.Pages
             if (IsLogVisible == true)
             {
                 IsLogVisible = false;
+                NewsGrid.Visibility = Visibility.Visible;
+                LogGrid.Visibility = Visibility.Hidden;
             }
             else if (IsLogVisible == false)
             {
                 IsLogVisible = true;
+                NewsGrid.Visibility = Visibility.Hidden;
+                LogGrid.Visibility = Visibility.Visible;
             }
 
         }
@@ -131,6 +137,10 @@ namespace LegendaryClient.Patcher.Pages
             System.IO.StreamWriter file = new System.IO.StreamWriter(System.IO.Path.Combine(ExecutingDirectory, "LegendaryClientPatcher.log"), true);
             file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
             file.Close();
+        }
+        public void LogTextBox(string s)
+        {
+            Logbox.Text += s + Environment.NewLine;
         }
     }
 }

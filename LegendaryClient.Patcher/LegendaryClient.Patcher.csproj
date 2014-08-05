@@ -42,6 +42,9 @@
     <Reference Include="PVPNetConnect">
       <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
     </Reference>
+    <Reference Include="RAFlibPlus">
+      <HintPath>..\..\Users\Edward_2\Desktop\Coding\Kyoku-master\Kyoku\RAFlibPlus.dll</HintPath>
+    </Reference>
     <Reference Include="SharpZipLib">
       <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
     </Reference>
@@ -61,6 +64,14 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="wLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Users\Edward_2\Desktop\Coding\Kyoku-master\Kyoku\wLib.dll</HintPath>
+    </Reference>
+    <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=924c5b18328d6f09, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Users\Edward_2\Desktop\Coding\Kyoku-master\Kyoku\zlib.net.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -76,6 +87,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Logic\Client.cs" />
+    <Compile Include="Logic\LeagueDownloadLogic.cs" />
+    <Compile Include="Logic\LegendaryClientDownloadLogic.cs" />
+    <Compile Include="Logic\Region\MainRegion.cs" />
+    <Compile Include="Logic\Region\NA.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -84,10 +99,24 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Pages\PatcherSettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PatcherElements\FreeWeekChampion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Pages\PatcherPage.xaml.cs">
       <DependentUpon>PatcherPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PatcherSettingsPage.xaml.cs">
+      <DependentUpon>PatcherSettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PatcherElements\FreeWeekChampion.xaml.cs">
+      <DependentUpon>FreeWeekChampion.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -122,9 +151,7 @@
   <ItemGroup>
     <Resource Include="TopBar.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PatcherElements\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

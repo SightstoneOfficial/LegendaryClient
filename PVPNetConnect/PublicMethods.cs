@@ -35,7 +35,7 @@ namespace PVPNetConnect
             InvokeWithCallback("loginService", "login", new object[] { arg0.GetBaseTypedObject() }, cb);
         }
 
-        private async Task<Session> Login(AuthenticationCredentials arg0)
+        public async Task<Session> Login(AuthenticationCredentials arg0)
         {
             int Id = Invoke("loginService", "login", new object[] { arg0.GetBaseTypedObject() });
             while (!results.ContainsKey(Id))

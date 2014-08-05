@@ -20,6 +20,11 @@ namespace LegendaryClient.Logic.Region
             get { return "tr"; }
         }
 
+        public override string Locale
+        {
+            get { return "en_US"; }
+        }
+
         public override Uri NewsAddress
         {
             get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //This returns english (not spanish) characters

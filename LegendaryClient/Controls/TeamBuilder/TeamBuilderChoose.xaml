@@ -8,11 +8,24 @@
              d:DesignHeight="150" d:DesignWidth="600">
     <Grid>
 
-        <Controls:ChampionImage HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="100" Width="100"/>
+        <Image x:Name="Champion" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="85" Width="85"/>
         <ComboBox x:Name="Position" HorizontalAlignment="Left" VerticalAlignment="Top" Width="218" Margin="115,10,0,0"/>
         <ComboBox x:Name="Role" HorizontalAlignment="Left" VerticalAlignment="Top" Width="218" Margin="338,10,0,0"/>
-        <ComboBox x:Name="RunePage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="218" Margin="115,88,0,0"/>
-        <ComboBox x:Name="MasteryPage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="218" Margin="338,88,0,0"/>
+        <ComboBox x:Name="RunePage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,88,0,0"/>
+        <ComboBox x:Name="MasteryPage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,115,0,0"/>
+        <Button x:Name="EditRunes" Content="Edit Runes" Margin="471,88,10,40"/>
+        <Button x:Name="EditMasteries" Content="Edit Masteries" Margin="471,115,10,13"/>
+
+        <Button x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="10,100,0,0">
+            <StackPanel>
+                <Image x:Name="SummonerSpell1Image" Height="32" Width="32" />
+            </StackPanel>
+        </Button>
+        <Button x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="55,100,0,0">
+            <StackPanel>
+                <Image x:Name="SummonerSpell2Image" Height="32" Width="32" />
+            </StackPanel>
+        </Button>
 
     </Grid>
 </UserControl>

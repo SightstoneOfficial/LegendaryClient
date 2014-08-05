@@ -173,7 +173,7 @@ namespace PVPNetConnect
                     if (!Login())
                         return;
 
-                    StartHeartbeat();
+                    //StartHeartbeat();
                 });
                 t.IsBackground = true;
                 t.Start();
@@ -467,6 +467,26 @@ namespace PVPNetConnect
                 return false;
             }
         }
+
+        public static string GetNewIpAddress()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            WebRequest con = WebRequest.Create("http://ll.leagueoflegends.com/services/connection_info");
+            WebResponse response = con.GetResponse();
+
+            int c;
+            while ((c = response.GetResponseStream().ReadByte()) != -1)
+                sb.Append((char)c);
+
+            con.Abort();
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            Dictionary<string, string> deserializedJSON = serializer.Deserialize<Dictionary<string, string>>(sb.ToString());
+
+            return deserializedJSON["ip_address"];
+        }
+
 
         private bool Handshake()
         {

@@ -126,9 +126,27 @@ namespace LegendaryClient.Controls
         }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
-            //NewLobby = await Client.PVPNet.getLobbyStatus(InvitationId);
-            Client.SwitchPage(new TeamQueuePage(InvitationId));
+            if (gameType == "PRACTICE_GAME")
+            {
+                Client.SwitchPage(new CustomGameLobbyPage());
+            }
+            //goddammit teambuilder
+            else if (gameType == "NORMAL_GAME" && queueId != 61)
+            {
+                LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
+                Client.SwitchPage(new TeamQueuePage(InvitationId));
+            }
+            else if (gameType == "NORMAL_GAME" && queueId == 61)
+            {
+                LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
+                Client.SwitchPage(new TeamBuilderPage(false));
+            }
+            else if (gameType == "RANKED_GAME")
+            {
+                LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
+                //NewLobby = await Client.PVPNet.getLobbyStatus(InvitationId);
+                Client.SwitchPage(new TeamQueuePage(InvitationId));
+            }
             this.Visibility = Visibility.Hidden;
             
         }

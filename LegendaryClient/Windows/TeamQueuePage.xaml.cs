@@ -108,26 +108,26 @@ namespace LegendaryClient.Windows
         }
         
         
-        private async void Inviter_Click(object sender, RoutedEventArgs e)
+        private void Inviter_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             Member stats = (Member)LastSender.Tag;
             Client.PVPNet.GrantInvite(stats.SummonerId);
 
         }
-        private async void Profile_Click(object sender, RoutedEventArgs e)
+        private void Profile_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             Member stats = (Member)LastSender.Tag;
             Client.SwitchPage(new ProfilePage(stats.SummonerName));
         }
-        private async void Kick_Click(object sender, RoutedEventArgs e)
+        private void Kick_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             Member stats = (Member)LastSender.Tag;
             Client.PVPNet.Kick(stats.SummonerId);
         }
-        private async void Owner_Click(object sender, RoutedEventArgs e)
+        private void Owner_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             Member stats = (Member)LastSender.Tag;
@@ -353,7 +353,7 @@ namespace LegendaryClient.Windows
         private void Client_OnMessage(object sender, Message msg)
         { /*Not needed anymore */ }
 
-        private async void StartGameButton_Click(object sender, RoutedEventArgs e)
+        private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.QueueIds = new Int32[] { Convert.ToInt32(queueId) };
@@ -374,17 +374,16 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    MessageOverlay message = new MessageOverlay();
-                    message.MessageTitle.Content = "Failed to join queue";
-                    message.MessageTextBox.Text = result.PlayerJoinFailures[0].ReasonFailed;
-                    if (result.PlayerJoinFailures[0].ReasonFailed == "QUEUE_DODGER")
+                    MessageOverlay messageOver = new MessageOverlay();
+                    messageOver.MessageTitle.Content = "Could not join the queue";
+                    foreach (QueueDodger x in result.PlayerJoinFailures)
                     {
-                        message.MessageTextBox.Text = "Unable to join the queue due to a player recently dodging a game." + Environment.NewLine;
-                        TimeSpan time = TimeSpan.FromMilliseconds(result.PlayerJoinFailures[0].PenaltyRemainingTime);
-                        message.MessageTextBox.Text = "You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
+                        messageOver.MessageTextBox.Text += x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
+                        TimeSpan time = TimeSpan.FromMilliseconds(x.PenaltyRemainingTime);
+                        messageOver.MessageTextBox.Text += "You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
                     }
-                    Client.OverlayContainer.Content = message.Content;
-                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                    messageOver.Content = messageOver.Content;
+                    messageOver.Visibility = Visibility.Visible;
                 }));
                 return;
             }

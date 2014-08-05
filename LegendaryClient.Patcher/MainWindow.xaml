@@ -10,23 +10,35 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    
 
     <i:Interaction.Behaviors>
         <Behaviours:BorderlessWindowBehavior/>
     </i:Interaction.Behaviors>
 
+    <controls:MetroWindow.WindowCommands>
+        <controls:WindowCommands>
+            <Label x:Name="RegionLabel" Content="Connected to: NA" FontWeight="Light" FontSize="15" />
+            <Button x:Name="Settings" Content="Patcher Settings" Click="SlideGrid" />
+        </controls:WindowCommands>
+    </controls:MetroWindow.WindowCommands>
+    
     <Grid Background="#ecf0f1">
-        <Grid x:Name="OverlayGrid" Background="#7F000000" Panel.ZIndex="999" Visibility="Hidden">
-            <ContentControl x:Name="OverlayContainer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="40,40,40,40" />
-        </Grid>
         <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" />
+        <!--We want to slide this grid from the right-->
+        <Grid x:Name="OverlayGrid" Panel.ZIndex="999" Visibility="Hidden">
+            <Grid.RenderTransform>
+                <TranslateTransform/>
+            </Grid.RenderTransform>
+            <ContentControl x:Name="OverlayContainer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+        </Grid>
     </Grid>
 </controls:MetroWindow>

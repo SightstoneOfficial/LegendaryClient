@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch
 {
-    class LcdsServiceProxyResponse : RiotGamesObject
+    public class LcdsServiceProxyResponse : RiotGamesObject
     {
         public override string TypeName
         {

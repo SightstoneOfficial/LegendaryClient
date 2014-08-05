@@ -141,20 +141,23 @@ namespace LegendaryClient.Windows
         //Duo
         public static void TBCreateBotton_Click(object sender, RoutedEventArgs e)
         {
-            Client.SwitchPage(new TeamBuilder(true));
+            Client.SwitchPage(new TeamBuilderPage(true));
         }
         //Solo
         public static void TBSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.SwitchPage(new TeamBuilder(false));
+            Client.SwitchPage(new TeamBuilderPage(false));
         }
         private async void TeamQueueButton_Click(object sender, RoutedEventArgs e)
         {
             //To leave all other queues
             LeaveAllQueues();
             InQueue = false;
-             LastSender = (Button)sender;
-                GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
+            LastSender = (Button)sender;
+            GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
+            //Make Teambuilder work for duo
+            if (config.Id != 61)
+            {
                 if (Queues.Contains(config.Id))
                 {
                     return;
@@ -165,27 +168,41 @@ namespace LegendaryClient.Windows
                 Client.GameQueue = Convert.ToInt32(config.Id);
                 LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                 Client.SwitchPage(new TeamQueuePage(Lobby.InvitationID, Lobby));
+            }
+            else
+            {
+                Client.SwitchPage(new TeamBuilderPage(true));
+            }
+                
         }
 
-        private async void QueueButton_Click(object sender, RoutedEventArgs e)
+        private void QueueButton_Click(object sender, RoutedEventArgs e)
         {
             //to queue
             if (InQueue == false)
             {
                 LastSender = (Button)sender;
                 GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
-                if (Queues.Contains(config.Id))
+                //Make TeamBuilder Work for solo
+                if (config.Id != 61)
                 {
-                    return;
+                    if (Queues.Contains(config.Id))
+                    {
+                        return;
+                    }
+                    Queues.Add(config.Id);
+                    MatchMakerParams parameters = new MatchMakerParams();
+                    parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
+                    Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
+                    InQueue = true;
                 }
-                Queues.Add(config.Id);
-                MatchMakerParams parameters = new MatchMakerParams();
-                parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
-                //await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
-                Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
-                InQueue = true;
-                //Client.SwitchPage(new TeamQueuePage(true));
-            } else {
+                else if (config.Id == 61)
+                {
+                    Client.SwitchPage(new TeamBuilderPage(false));
+                }
+            } 
+            else 
+            {
                 LeaveAllQueues();
                 InQueue = false;
             }

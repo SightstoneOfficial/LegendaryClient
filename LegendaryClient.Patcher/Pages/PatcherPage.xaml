@@ -25,13 +25,16 @@
         <Button x:Name="OverButtonLeft" MouseEnter="OverButtonLeft_MouseEnter" MouseLeave="ReturnButtonsToNumbers_MouseLeage" Content="Show Log TextBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="266" Height="100" Style="{DynamicResource HideSquare}"/>
         <Button x:Name="OverButtonRight" MouseEnter="OverButtonRight_MouseEnter" MouseLeave="ReturnButtonsToNumbers_MouseLeage" Content="Play" HorizontalAlignment="Left" VerticalAlignment="Top" Width="267" Margin="1093,0,0,0" Height="100" Style="{DynamicResource HideSquare}"/>
 
-        <Grid Margin="0,155,0,202" x:Name="NewsGrid">
+        <Grid Margin="0,155,0,0" x:Name="NewsGrid">
 
-            <awe:WebControl HorizontalAlignment="Left" VerticalAlignment="Top" Height="401" Width="1100"/>
-            <ListBox HorizontalAlignment="Left" Height="401" Margin="1100,0,0,0" VerticalAlignment="Top" Width="250"/>
+            <!--<awe:WebControl HorizontalAlignment="Left" VerticalAlignment="Top" Height="600" Width="900" Margin="200,0,0,0" />-->
+            <ListBox HorizontalAlignment="Left" Height="600" Margin="1100,0,0,0" VerticalAlignment="Top" Width="250"/>
 
         </Grid>
-        <Grid Margin="0,155,0,0" Visibility="Hidden" x:Name="LogGrid"/>
+        <Grid Margin="0,155,0,200" x:Name="LogGrid" Visibility="Hidden">
+            <TextBox x:Name="Logbox" HorizontalAlignment="Left" Height="393" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="1340" Margin="10,10,0,0"/>
+
+        </Grid>
     </Grid>
 
 </Page>

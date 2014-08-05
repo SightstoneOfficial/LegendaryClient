@@ -20,6 +20,11 @@ namespace LegendaryClient.Logic.Region
             get { return "eun1"; }
         }
 
+        public override string Locale
+        {
+            get { return "en_GB"; }
+        }
+
         public override Uri NewsAddress
         {
             get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/eune/en_GB.js"); }

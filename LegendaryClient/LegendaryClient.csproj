@@ -414,8 +414,8 @@
     <Compile Include="Windows\ShopPage.xaml.cs">
       <DependentUpon>ShopPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\TeamBuilder.xaml.cs">
-      <DependentUpon>TeamBuilder.xaml</DependentUpon>
+    <Compile Include="Windows\TeamBuilderPage.xaml.cs">
+      <DependentUpon>TeamBuilderPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\TeamQueuePage.xaml.cs">
       <DependentUpon>TeamQueuePage.xaml</DependentUpon>
@@ -849,7 +849,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\TeamBuilder.xaml">
+    <Page Include="Windows\TeamBuilderPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

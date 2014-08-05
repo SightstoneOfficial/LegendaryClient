@@ -8,11 +8,15 @@ using LegendaryClient.Logic.SWF;
 using LegendaryClient.Logic.SWF.SWFTypes;
 using LegendaryClient.Windows;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using PVPNetConnect.RiotObjects.Platform.Login;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -223,7 +227,9 @@ namespace LegendaryClient.Windows
             Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
             Client.IsLoggedIn = true;
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
             {
                 Client.StatusContainer.Visibility = System.Windows.Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
@@ -258,7 +264,42 @@ namespace LegendaryClient.Windows
 
                 Client.SwitchPage(new MainPage());
                 Client.ClearPage(this);
+
+                AuthenticationCredentials newCredentials = new AuthenticationCredentials();
+                newCredentials.Username = LoginUsernameBox.Text;
+                newCredentials.Password = LoginPasswordBox.Password;
+                newCredentials.ClientVersion = Client.Version;
+                newCredentials.IpAddress = GetNewIpAddress();
+                newCredentials.Locale = Client.Region.Locale;
+                newCredentials.Domain = "lolclient.lol.riotgames.com";
+
+                Session login = await Client.PVPNet.Login(newCredentials);
+                Client.PlayerSession = login;
+
+                //We need this HeartBeat so it looks like this is the real client
+                await Client.PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(Client.LoginPacket.AllSummonerData.Summoner.AcctId), Client.PlayerSession.Token, Client.HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-'%K"));
+                Client.HeartbeatCount++;
             }));
+
+            
+        }
+        public static string GetNewIpAddress()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            WebRequest con = WebRequest.Create("http://ll.leagueoflegends.com/services/connection_info");
+            WebResponse response = con.GetResponse();
+
+            int c;
+            while ((c = response.GetResponseStream().ReadByte()) != -1)
+                sb.Append((char)c);
+
+            con.Abort();
+
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            Dictionary<string, string> deserializedJSON = serializer.Deserialize<Dictionary<string, string>>(sb.ToString());
+
+            return deserializedJSON["ip_address"];
         }
     }
 }

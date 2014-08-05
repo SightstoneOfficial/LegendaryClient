@@ -30,6 +30,11 @@ namespace LegendaryClient.Logic.Region
             get { return PVPNetConnect.Region.LA2; }
         }
 
+        public override string Locale
+        {
+            get { return "en_US"; }
+        }
+
         public override IPAddress[] PingAddresses
         {
             get

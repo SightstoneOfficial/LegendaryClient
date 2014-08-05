@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClient.Patcher", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Patcher", "Patcher\Patcher.csproj", "{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCCrashDetector", "LCCrashDetector\LCCrashDetector.csproj", "{38958364-9127-4BB8-B5B4-5AD0078BF242}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,12 @@ Global
 		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.PubRelease|Any CPU.Build.0 = PubRelease|Any CPU
 		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BC9B7B7-1CA7-4517-BBE0-3E8E411F3219}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38958364-9127-4BB8-B5B4-5AD0078BF242}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38958364-9127-4BB8-B5B4-5AD0078BF242}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38958364-9127-4BB8-B5B4-5AD0078BF242}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{38958364-9127-4BB8-B5B4-5AD0078BF242}.PubRelease|Any CPU.Build.0 = Release|Any CPU
+		{38958364-9127-4BB8-B5B4-5AD0078BF242}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38958364-9127-4BB8-B5B4-5AD0078BF242}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
