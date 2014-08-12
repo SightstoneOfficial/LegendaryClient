@@ -7,10 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="600">
     <Grid>
+        <Grid x:Name="SelectChampion" VerticalAlignment="Top" HorizontalAlignment="Left" Height="85" Width="85" Background="#7F323030" Margin="10,10,0,0">
+            <Image x:Name="Champion" HorizontalAlignment="Left" VerticalAlignment="Top" Height="85" Width="85"/>
+        </Grid>
 
-        <Image x:Name="Champion" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Height="85" Width="85"/>
-        <ComboBox x:Name="Position" HorizontalAlignment="Left" VerticalAlignment="Top" Width="218" Margin="115,10,0,0"/>
-        <ComboBox x:Name="Role" HorizontalAlignment="Left" VerticalAlignment="Top" Width="218" Margin="338,10,0,0"/>
+        <ComboBox x:Name="Position" HorizontalAlignment="Left" VerticalAlignment="Top" Width="475" Margin="115,10,0,0"/>
+        <ComboBox x:Name="Role" HorizontalAlignment="Left" VerticalAlignment="Top" Width="475" Margin="115,37,0,0"/>
         <ComboBox x:Name="RunePage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,88,0,0"/>
         <ComboBox x:Name="MasteryPage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,115,0,0"/>
         <Button x:Name="EditRunes" Content="Edit Runes" Margin="471,88,10,40"/>

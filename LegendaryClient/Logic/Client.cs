@@ -787,7 +787,7 @@ namespace LegendaryClient.Logic
                     return "Bot 5v5 Intro";
 
                 case "matching-queue-GROUP_FINDER-5x5-game-queue":
-                    return "Groupfinder 5v5";
+                    return "Teambuilder 5v5 Beta (In Dev. Do Not Play)";
 
                 case "matching-queue-NIGHTMARE_BOT_1-5x5-game-queue":
                     return "Nightmare Bots 5v5 (Easy)";
@@ -805,7 +805,7 @@ namespace LegendaryClient.Logic
 
         internal static string GetGameDirectory()
         {
-            string Directory = Path.Combine(ExecutingDirectory, "RADS", "solutions", "lol_game_client", "releases");
+            string Directory = Path.Combine(ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases");
 
             DirectoryInfo dInfo = new DirectoryInfo(Directory);
             DirectoryInfo[] subdirs = null;
@@ -833,11 +833,12 @@ namespace LegendaryClient.Logic
 
         internal static void LaunchGame()
         {
-            string GameDirectory = GetGameDirectory();
+            string GameDirectory = Location;
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;
             p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            //"8394" "LoLLauncher.exe" "" "127.0.0.1 5119 17BLOhi6KZsTtldTsizvHg== 47917791"
             p.StartInfo.Arguments = "\"8394\" \"LoLLauncher.exe\" \"" + "" + "\" \"" +
                 CurrentGame.ServerIp + " " +
                 CurrentGame.ServerPort + " " +

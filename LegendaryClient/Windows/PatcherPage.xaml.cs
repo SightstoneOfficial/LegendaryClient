@@ -623,7 +623,7 @@ namespace LegendaryClient.Windows
                     //Client.LaunchGameLocation = Path.Combine(Client.GameLocation, GameClientSln);
                     //C:\Riot Games\League of Legends\RADS\projects\lol_game_client\releases\0.0.0.243\deploy
                     Client.LOLCLIENTVERSION = LolVersion2;
-                    Client.Location = Path.Combine(lolRootPath, "RADS", "projects", "lol_game_client", "releases", GameClient, "deploy", "League of Legends.exe");
+                    Client.Location = Path.Combine(lolRootPath, "RADS", "projects", "lol_game_client", "releases", GameClient, "deploy");
                 }
                 else 
                 {
