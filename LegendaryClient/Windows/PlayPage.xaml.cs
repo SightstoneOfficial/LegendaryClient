@@ -156,7 +156,7 @@ namespace LegendaryClient.Windows
             LastSender = (Button)sender;
             GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
             //Make Teambuilder work for duo
-            if (config.Id != 61)
+            if (config.Id != 61 && config.TypeString != "BOT")
             {
                 if (Queues.Contains(config.Id))
                 {
@@ -168,6 +168,10 @@ namespace LegendaryClient.Windows
                 Client.GameQueue = Convert.ToInt32(config.Id);
                 LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                 Client.SwitchPage(new TeamQueuePage(Lobby.InvitationID, Lobby));
+            }
+            else if (config.TypeString == "BOT")
+            {
+
             }
             else
             {

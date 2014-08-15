@@ -39,15 +39,15 @@ namespace LegendaryClient.Windows.Profile
         }
         public async void GetData()
         {
-            PlayerMatchHistory history = new PlayerMatchHistory();
-            HistoryAccount acc = await history.GetPlayerAsync(Client.Region.InternalName, SumName);
-            PlayerListGames games = await history.GetGamesAsync(acc);
+            //PlayerMatchHistory history = new PlayerMatchHistory();
+            //HistoryAccount acc = await history.GetPlayerAsync(Client.Region.InternalName, SumName);
+            //PlayerListGames games = await history.GetGamesAsync(acc);
             
             //This is the first game
-            Game game = await history.GetFullGameDataAsync(games.games.games[0]);
+            //Game game = await history.GetFullGameDataAsync(games.games.games[0]);
 
             //This is the IndepthTimeline
-            IndepthTimeline timeline = await history.GetGameTimelineAsync(games.games.games[0]);
+            //IndepthTimeline timeline = await history.GetGameTimelineAsync(games.games.games[0]);
         }
     }
 }

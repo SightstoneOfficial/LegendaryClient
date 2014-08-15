@@ -397,7 +397,7 @@ namespace LegendaryClient.Windows
                 //#if !DEBUG //Dont patch client while in DEBUG
                 UpdateData legendaryupdatedata = new UpdateData();
                 var version = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/Version");
-                LogTextBox("Most Up to date LegendaryClient Version: " + version);
+                LogTextBox("Most Up to date LegendaryClient Version: " + version.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0]);
                 string versionAsString = version;
                 var versiontoint = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/VersionAsInt");
                 int VersionAsInt = Convert.ToInt32(versiontoint);

@@ -92,6 +92,7 @@ namespace LegendaryClient.Windows
             StartChampSelect();
             Client.LastPageContent = this.Content;
             Client.runonce = true;
+            Client.LobbyButton.Visibility = Visibility.Hidden;
         }
 
         /// <summary>

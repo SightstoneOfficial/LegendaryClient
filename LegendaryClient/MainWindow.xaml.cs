@@ -77,6 +77,7 @@ namespace LegendaryClient
             Client.OverlayContainer = OverlayContainer;
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;
+            Client.LobbyButton = SwitchPage;
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SwitchPage(new PatcherPage());
             this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
@@ -111,7 +112,7 @@ namespace LegendaryClient
 
         private void SwichToTeamQueue_Click(object Sender, RoutedEventArgs e)
         {
-            Client.SwitchPage(new TeamQueuePage(null, null));
+            Client.SwitchPage(new TeamQueuePage(null, null, true));
         }
         internal bool SwitchTeamPage = true;
         public void Hide()

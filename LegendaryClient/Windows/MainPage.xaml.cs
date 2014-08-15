@@ -402,7 +402,6 @@ namespace LegendaryClient.Windows
                             if (keyArrayPair.Key == "championId")
                             {
                                 cid = (int)keyArrayPair.Value;
-                                //cid = (int)playerPair.Value;
                             }
                             if (keyArrayPair.Key == "teamId")
                             {
@@ -414,8 +413,11 @@ namespace LegendaryClient.Windows
                         champImage.Height = 58;
                         champImage.Width = 58;
                         //temp
-                        champImage.Source = champions.GetChampion(cid).icon;
-                        
+                        try
+                        {
+                            champImage.Source = champions.GetChampion(cid).icon;
+                        }
+                        catch { }
 
                         item.Content = champImage;
                         if (teamId == 100)

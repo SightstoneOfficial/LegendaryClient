@@ -37,7 +37,7 @@ namespace LegendaryClient.Windows
             Version.Text = Client.Version;
 
             WebClient client = new WebClient();
-            var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
+            //var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
             SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
             SoundPlayer.Play();
             Sound.IsChecked = false;

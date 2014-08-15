@@ -19,7 +19,6 @@ namespace LegendaryClient.Windows
     {
         private static System.Timers.Timer UpdateTimer;
         private List<string> invitedPlayers;
-        private List<int> invitePlayerId;
 
         public InvitePlayersPage()
         {
@@ -120,7 +119,8 @@ namespace LegendaryClient.Windows
         {
             foreach (string Player in invitedPlayers)
             {
-                Client.PVPNet.Invite(Player);
+                //This invites the player
+                Client.PVPNet.Invite(Player.Replace("sum",""));
 
                 ChatPlayerItem PlayerInfo = Client.AllPlayers[Player];
 
@@ -135,46 +135,8 @@ namespace LegendaryClient.Windows
                 if (ShouldBreak)
                     continue;
 
-                InvitePlayer InvitePlayerItem = new InvitePlayer();
-                InvitePlayerItem.PlayerLabel.Content = PlayerInfo.Username;
-                InvitePlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-                Client.InviteListView.Items.Add(InvitePlayerItem);
             }
             Client.OverlayContainer.Visibility = Visibility.Hidden;
         }
-        /*private void SendInvitesButton_Click(object sender, RoutedEventArgs e)
-        {
-            string InviteMessage = "<body><inviteId>" + "190608647" + "</inviteId>" +
-            "<userName>" + Client.LoginPacket.AllSummonerData.Summoner.Name + "</userName>" +
-            "<profileIconId>" + Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIconId>" +
-            "<gameType>PRACTICE_GAME</gameType>" +
-            "<gameId>" + GameId + "</gameId>" +
-            "<mapId>" + MapId + "</mapId>" +
-            "<gamePassword>" + Password + "</gamePassword></body>";
-
-            foreach (string Player in invitedPlayers)
-            {
-                Client.Message(Player, InviteMessage, ChatSubjects.PRACTICE_GAME_INVITE);
-
-                ChatPlayerItem PlayerInfo = Client.AllPlayers[Player];
-
-                //If has already invited
-                bool ShouldBreak = false;
-                foreach (var x in Client.InviteListView.Items)
-                {
-                    InvitePlayer invitePlayer = x as InvitePlayer;
-                    if ((string)invitePlayer.PlayerLabel.Content == PlayerInfo.Username)
-                        ShouldBreak = true;
-                }
-                if (ShouldBreak)
-                    continue;
-
-                InvitePlayer InvitePlayerItem = new InvitePlayer();
-                InvitePlayerItem.PlayerLabel.Content = PlayerInfo.Username;
-                InvitePlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
-                Client.InviteListView.Items.Add(InvitePlayerItem);
-            }
-            Client.OverlayContainer.Visibility = Visibility.Hidden;
-        }*/
     }
 }

@@ -66,6 +66,11 @@ namespace LegendaryClient.Logic
         internal static string LegendaryClientVersion = "2.0.0.0";
 
         /// <summary>
+        /// Button For Lobby
+        /// </summary>
+        internal static Button LobbyButton;
+
+        /// <summary>
         /// Update Data
         /// </summary>
         internal static int LegendaryClientReleaseNumber = 3;
@@ -839,7 +844,7 @@ namespace LegendaryClient.Logic
             p.StartInfo.WorkingDirectory = GameDirectory;
             p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
             //"8394" "LoLLauncher.exe" "" "127.0.0.1 5119 17BLOhi6KZsTtldTsizvHg== 47917791"
-            p.StartInfo.Arguments = "\"8394\" \"LoLLauncher.exe\" \"" + "" + "\" \"" +
+            p.StartInfo.Arguments = "\"8394\" \"LoLLauncher.exe\" \"" + "\" \"" +
                 CurrentGame.ServerIp + " " +
                 CurrentGame.ServerPort + " " +
                 CurrentGame.EncryptionKey + " " +

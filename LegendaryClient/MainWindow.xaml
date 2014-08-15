@@ -7,7 +7,7 @@
 
     <Controls:MetroWindow.WindowCommands>
         <Controls:WindowCommands>
-            <Button x:Name="SwitchPage" Content="logout" Click="SwichToTeamQueue_Click" />
+            <Button x:Name="SwitchPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click" />
             <Label x:Name="InfoLabel" Content="Not Logged In" FontWeight="Light" FontSize="15" />
             <Button x:Name="HomeButton" Content="home" Click="HomeButton_Click" />
             <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" />

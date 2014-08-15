@@ -31,6 +31,8 @@ using Timer = System.Timers.Timer;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Member;
 using Newtonsoft.Json;
 using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
+using System.Globalization;
 
 namespace LegendaryClient.Windows
 {
@@ -64,7 +66,7 @@ namespace LegendaryClient.Windows
         /// When invited to a team
         /// </summary>
         /// <param name="Message"></param>
-        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null)
+        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false)
         {
             InitializeComponent();
             Client.InviteListView = InviteListView;
@@ -75,7 +77,12 @@ namespace LegendaryClient.Windows
             //Opps
             Invite = Invid;
             CurrentLobby = NewLobby;
-            LoadStats();
+            if (!IsReturningToLobby)
+            {
+                LoadStats();
+            }
+
+            Client.LobbyButton.Visibility = Visibility.Visible;
         }
 
         public async void LoadStats()
@@ -199,14 +206,35 @@ namespace LegendaryClient.Windows
         {
             try 
             {
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
                 {
+                    CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+                    TextInfo textInfo = cultureInfo.TextInfo;
+
                     Client.InviteListView.Items.Clear();
                     TeamListView.Items.Clear();
                     IsOwner = false;
-                    if(Client.LoginPacket.AllSummonerData.Summoner.Name == CurrentLobby.Owner);
+
+                    foreach (Invitee statsx in CurrentLobby.Invitees)
                     {
-                        IsOwner = true;
+                        var InviteeState = string.Format(statsx.inviteeState.ToLower());
+                        var InviteeStateTitleCase = textInfo.ToTitleCase(InviteeState);
+                        InvitePlayer invitePlayer = new InvitePlayer();
+                        invitePlayer.StatusLabel.Content = InviteeStateTitleCase;
+                        invitePlayer.PlayerLabel.Content = statsx.SummonerName;
+                        if (string.Format(statsx.inviteeState.ToUpper()) == "OWNER" && statsx.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                        {
+                            IsOwner = true;
+                        }
+                        else if (string.Format(statsx.inviteeState.ToUpper()) == "CREATOR" && statsx.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                        {
+                            IsOwner = true;
+                        }
+                        else if (statsx.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                        {
+                            IsOwner = false;
+                        }
+                        Client.InviteListView.Items.Add(invitePlayer);
                     }
 
                     if (IsOwner == true)
@@ -237,8 +265,15 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Profile.Click += Profile_Click;
                         TeamPlayer.Owner.Click += Owner_Click;
 
+                        PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(stats.SummonerName);
 
-                        //
+                        //Populate the ProfileIcon
+                        int ProfileIconID = Summoner.ProfileIconId;
+                        var uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png");
+
+                        TeamPlayer.ProfileIcon.Source = Client.GetImage(uriSource);
+
+                        //Make it so you cant kick yourself
                         if (stats.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
                         {
                             TeamPlayer.Kick.Visibility = Visibility.Hidden;
@@ -264,13 +299,7 @@ namespace LegendaryClient.Windows
                         TeamListView.Items.Add(TeamPlayer);
                     }
 
-                    foreach (Invitee statsx in CurrentLobby.Invitees)
-                    {
-                        InvitePlayer invitePlayer = new InvitePlayer();
-                        invitePlayer.StatusLabel.Content = statsx.inviteeState;
-                        invitePlayer.PlayerLabel.Content = statsx.SummonerName;
-                        Client.InviteListView.Items.Add(invitePlayer);
-                    }
+                    
                 }));
             }
             catch { }
@@ -307,7 +336,7 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.Leave();
             Client.SwitchPage(new MainPage());
-            Client.ClearPage(new TeamQueuePage(null, null));
+            Client.LobbyButton.Visibility = Visibility.Hidden;
         }
 
 
