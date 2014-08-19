@@ -56,7 +56,7 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button Content="Invite Players" HorizontalAlignment="Right" Margin="0,460,15,0" VerticalAlignment="Top" Width="390" />
+        <Button Content="Invite Players" HorizontalAlignment="Right" Margin="0,460,15,0" VerticalAlignment="Top" Width="390" Click="Invite_Click"/>
 
         <Button x:Name="SwitchTeamsButton" Content="Switch Teams" HorizontalAlignment="Left" Margin="917,10,0,0" VerticalAlignment="Top" Width="174" Click="SwitchTeamsButton_Click" />
         <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="738,10,0,0" VerticalAlignment="Top" Width="174" Click="StartGameButton_Click" IsEnabled="False" />

@@ -31,8 +31,8 @@ namespace LegendaryClient.Windows
             Client.SwitchPage(new MainPage());
             Client.runonce = false;
 
-            string ObfuscatedName = Client.GetObfuscatedChatroomName(Statistics.RoomName, ChatPrefixes.Post_Game); //Why do you need to replace INVID with invid Riot?
-            string JID = Client.GetChatroomJID(ObfuscatedName, Statistics.RoomPassword, false);
+            string ObfuscatedName = Client.GetObfuscatedChatroomName(Statistics.RoomName, ChatPrefixes.Post_Game);
+            string JID = Client.GetChatroomJID(Statistics.RoomName, Statistics.RoomPassword, false);
             newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
             newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
             newRoom.OnRoomMessage += newRoom_OnRoomMessage;
@@ -157,8 +157,16 @@ namespace LegendaryClient.Windows
             PlayersListView.Items.Insert(AllParticipants.Count / 2, new Separator());
 
             championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
-            var skinSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
-            SkinImage.Source = new BitmapImage(skinSource);
+            try
+            {
+                var skinSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
+                SkinImage.Source = new BitmapImage(skinSource);
+            }
+            catch
+            {
+
+            }
+            
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

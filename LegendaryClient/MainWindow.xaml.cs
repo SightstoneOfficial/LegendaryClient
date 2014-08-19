@@ -79,7 +79,10 @@ namespace LegendaryClient
             Client.StatusContainer = StatusContainer;
             Client.LobbyButton = SwitchPage;
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
+            Client.SoundPlayer = SoundPlayer;
+            Client.AmbientSoundPlayer = ASoundPlayer;
             Client.SwitchPage(new PatcherPage());
+
             this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
         }
 

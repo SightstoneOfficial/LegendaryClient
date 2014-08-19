@@ -43,7 +43,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         public String GameData { get; set; }
 
         [InternalName("owner")]
-        public String Owner { get; set; }
+        public Player Owner { get; set; }
         //public Player Owner { get; set; }
 
         [InternalName("members")]

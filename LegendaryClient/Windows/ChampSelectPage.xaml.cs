@@ -2,6 +2,7 @@
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
+using LegendaryClient.Logic.SoundLogic;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
@@ -217,7 +218,10 @@ namespace LegendaryClient.Windows
         {
             counter--;
             if (counter <= 0)
+            {
                 return;
+            }
+                
             LobbyTimeLabel.Content = counter;
         }
 
@@ -591,6 +595,7 @@ namespace LegendaryClient.Windows
 
             LockInButton.Content = "Locked In";
 
+            //
             champions Champion = champions.GetChampion(selection.ChampionId);
 
             SkinSelectListView.Items.Clear();
@@ -798,7 +803,8 @@ namespace LegendaryClient.Windows
                 {
                     if (item.Tag != null)
                     {
-                        await Client.PVPNet.SelectChampion((int)item.Tag);
+                        //SelectChampion.SelectChampion(selection.ChampionId)
+                        await Client.PVPNet.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
 
                         //TODO: Fix stupid animation glitch on left hand side
                         DoubleAnimation fadingAnimation = new DoubleAnimation();

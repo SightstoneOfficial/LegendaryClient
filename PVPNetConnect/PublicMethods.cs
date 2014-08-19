@@ -1413,14 +1413,14 @@ namespace PVPNetConnect
             return null;
         }
 
-        public void AttachTeamToQueue(MatchMakerParams matchMakerParams, SearchingForMatchNotification.Callback callback)
+        public void AttachTeamToQueue(MatchMakerParamsForTeam matchMakerParams, SearchingForMatchNotification.Callback callback)
         {
             SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
             InvokeWithCallback("matchmakerService", "attachTeamToQueue",
                 new object[] { matchMakerParams.GetBaseTypedObject() }, cb);
         }
 
-        public async Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParams matchMakerParams)
+        public async Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParamsForTeam matchMakerParams)
         {
             int Id = Invoke("matchmakerService", "attachTeamToQueue",
                 new object[] { matchMakerParams.GetBaseTypedObject() });

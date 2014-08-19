@@ -373,36 +373,14 @@ namespace LegendaryClient.Windows
                 string CurrentMD5 = GetMd5();
                 LogTextBox("MD5: " + CurrentMD5);
                 string VersionString = "";
-                try
-                {
-                    VersionString = client.DownloadString(new Uri("http://eddy5641.github.io/LegendaryClient/update.html"));
 
-                    string[] VersionSplit = VersionString.Split('|');
 
-                    LogTextBox("Update data: " + VersionSplit[0] + "|" + VersionSplit[1]);
-                }
-                catch
-                {
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        CurrentProgressLabel.Content = "Could not retrieve update files!";
-                    }));
-
-                    //return;
-                }
-
-                
-                //Client.updateData = LegendaryUpdate.PopulateItems();
-
-                //#if !DEBUG //Dont patch client while in DEBUG
                 UpdateData legendaryupdatedata = new UpdateData();
-                var version = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/Version");
-                LogTextBox("Most Up to date LegendaryClient Version: " + version.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0]);
+                var version = LegendaryClientPatcher.GetLatestLCVersion();
+                LogTextBox("Most Up to date LegendaryClient Version: " + version);
                 string versionAsString = version;
-                var versiontoint = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/VersionAsInt");
-                int VersionAsInt = Convert.ToInt32(versiontoint);
 
-                if (VersionAsInt != Client.LegendaryClientReleaseNumber)
+                if (version != Client.LegendaryClientVersion)
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
@@ -413,14 +391,14 @@ namespace LegendaryClient.Windows
                         overlay.AcceptButton.Click += update;
                         overlay.MessageTextBox.TextChanged += Text_Changed;
                         Client.OverlayContainer.Content = overlay.Content;
-                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                        //Client.OverlayContainer.Visibility = Visibility.Visible;
 
                         CurrentProgressLabel.Content = "LegendaryClient Is Out of Date!";
                         
                     }));
                     LogTextBox("LegendaryClient Is Out of Date!");
 
-                    return;
+                    //return;
                 }
                 else if (Client.LegendaryClientVersion == version)
                 {
@@ -441,13 +419,6 @@ namespace LegendaryClient.Windows
                     LogTextBox("Could not check LegendaryClient Version!");
                     return;
                 }
-                //LogTextBox("LC Update Json Data: " + json);
-                //#endif
-
-                //LogTextBox("LegendaryClient is up to date");
-                //LogTextBox("LegendaryClient does not have a patcher downloader. Do not be worried by this.");
-                
-                //Client.Log("[Debug]: LegendaryClient Is Up To Date");
 
                 #endregion LegendaryClient
 
@@ -617,13 +588,20 @@ namespace LegendaryClient.Windows
                 string GameClient = LolVersion2.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
                 LogTextBox("Latest League of Legends GameClient: " + GameClientSln);
                 LogTextBox("Checking if League of Legends is Up-To-Date");
+
+                string LolLauncherVersion = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                string LauncherVersion = LolLauncherVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
                 if (Directory.Exists(Path.Combine(GameLocation, GameClientSln)))
                 {
                     LogTextBox("League of Legends is Up-To-Date");
                     //Client.LaunchGameLocation = Path.Combine(Client.GameLocation, GameClientSln);
                     //C:\Riot Games\League of Legends\RADS\projects\lol_game_client\releases\0.0.0.243\deploy
                     Client.LOLCLIENTVERSION = LolVersion2;
-                    Client.Location = Path.Combine(lolRootPath, "RADS", "projects", "lol_game_client", "releases", GameClient, "deploy");
+                    //C:\Riot Games\League of Legends\RADS\solutions\lol_game_client_sln\releases\0.0.1.50\deploy
+                    Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln", "releases", GameClientSln, "deploy");
+                    //C:\Riot Games\League of Legends\RADS\projects\lol_air_client\releases\0.0.1.104
+                    Client.LoLLauncherLocation = Path.Combine(lolRootPath, "RADS", "projects", "lol_air_client", "releases", LauncherVersion, "deploy");
+                    Client.RootLocation = lolRootPath;
                 }
                 else 
                 {

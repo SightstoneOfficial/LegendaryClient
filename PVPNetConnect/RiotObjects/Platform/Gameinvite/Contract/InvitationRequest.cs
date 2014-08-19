@@ -51,7 +51,7 @@ namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
         public String InvitationId { get; set; }
 
         [InternalName("inviter")]
-        public String Inviter { get; set; }
+        public Inviter Inviter { get; set; }
 
         [InternalName("owner")]
         public List<Member> Owner { get; set; }

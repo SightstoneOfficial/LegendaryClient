@@ -38,6 +38,7 @@ namespace LegendaryClient.Windows
             {
                 GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
             }
+            Client.InviteListView = InviteListView;
         }
 
         private void GameLobby_OnMessageReceived(object sender, object message)
@@ -58,13 +59,17 @@ namespace LegendaryClient.Windows
                         SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
 
                         HasConnectedToChat = true;
-                        string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
-                        string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);
-                        newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
-                        newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-                        newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-                        newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-                        newRoom.Join(dto.RoomPassword);
+                        try
+                        {
+                            string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
+                            string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);
+                            newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+                            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                            newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+                            newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                            newRoom.Join(dto.RoomPassword);
+                        }
+                        catch { }
                     }
                     if (dto.GameState == "TEAM_SELECT")
                     {
@@ -142,6 +147,12 @@ namespace LegendaryClient.Windows
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             }));
+        }
+
+        public void Invite_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new InvitePlayersPage().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private void newRoom_OnRoomMessage(object sender, jabber.protocol.client.Message msg)

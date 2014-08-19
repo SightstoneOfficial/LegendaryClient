@@ -215,6 +215,11 @@ namespace LegendaryClient.Windows
                     TeamListView.Items.Clear();
                     IsOwner = false;
 
+                    if(CurrentLobby.Owner.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                    {
+                        IsOwner = true;
+                    }
+
                     foreach (Invitee statsx in CurrentLobby.Invitees)
                     {
                         var InviteeState = string.Format(statsx.inviteeState.ToLower());
@@ -222,18 +227,6 @@ namespace LegendaryClient.Windows
                         InvitePlayer invitePlayer = new InvitePlayer();
                         invitePlayer.StatusLabel.Content = InviteeStateTitleCase;
                         invitePlayer.PlayerLabel.Content = statsx.SummonerName;
-                        if (string.Format(statsx.inviteeState.ToUpper()) == "OWNER" && statsx.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
-                        {
-                            IsOwner = true;
-                        }
-                        else if (string.Format(statsx.inviteeState.ToUpper()) == "CREATOR" && statsx.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
-                        {
-                            IsOwner = true;
-                        }
-                        else if (statsx.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
-                        {
-                            IsOwner = false;
-                        }
                         Client.InviteListView.Items.Add(invitePlayer);
                     }
 
@@ -241,12 +234,22 @@ namespace LegendaryClient.Windows
                     {
                         InviteButton.IsEnabled = true;
                         StartGameButton.IsEnabled = true;
+                        Client.isOwnerOfGame = true;
                     }
                     else if (IsOwner == false)
                     {
                         InviteButton.IsEnabled = false;
                         StartGameButton.IsEnabled = false;
+                        Client.isOwnerOfGame = false;
                     }
+                    invitationRequest m = JsonConvert.DeserializeObject<invitationRequest>(CurrentLobby.GameData);
+                    queueId = m.queueId;
+                    isRanked = m.isRanked;
+                    rankedTeamName = m.rankedTeamName;
+                    mapId = m.mapId;
+                    gameTypeConfigId = m.gameTypeConfigId;
+                    gameMode = m.gameMode;
+                    gameType = m.gameType;
 
                     foreach (Member stats in CurrentLobby.Members)
                     {
@@ -259,6 +262,7 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Inviter.Tag = stats;
                         TeamPlayer.Profile.Tag = stats;
                         TeamPlayer.Owner.Tag = stats;
+                        TeamPlayer.HorizontalAlignment = HorizontalAlignment.Stretch;
 
                         TeamPlayer.Kick.Click += Kick_Click;
                         TeamPlayer.Inviter.Click += Inviter_Click;
@@ -382,11 +386,17 @@ namespace LegendaryClient.Windows
         private void Client_OnMessage(object sender, Message msg)
         { /*Not needed anymore */ }
 
+        internal List<Int32> QueueIds;
+
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            MatchMakerParams parameters = new MatchMakerParams();
-            parameters.QueueIds = new Int32[] { Convert.ToInt32(queueId) };
+            MatchMakerParamsForTeam parameters = new MatchMakerParamsForTeam();
+            parameters.Languages = null;
+            QueueIds.Add(queueId);
+            parameters.QueueIds = QueueIds;
             parameters.InvitationId = CurrentLobby.InvitationID;
+            parameters.TeamId = null;
+            parameters.LastMaestroMessage = null;
             List<int> InviteList = new List<int>();
             foreach (Member stats in CurrentLobby.Members)
             {

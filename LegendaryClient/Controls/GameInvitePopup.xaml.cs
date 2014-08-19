@@ -21,7 +21,6 @@ namespace LegendaryClient.Controls
         string InvitationStateAsString;
         string InvitationState;
         string InvitationId;
-        string SummonerName;
         string Inviter;
 
         int queueId;
@@ -39,7 +38,7 @@ namespace LegendaryClient.Controls
             GameMetaData = stats.GameMetaData;
             InvitationStateAsString = stats.InvitationStateAsString;
             InvitationState = stats.InvitationState;
-            this.Inviter = SummonerName;
+            Inviter = stats.Inviter.SummonerName;
             InvitationId = stats.InvitationId;
 
             if (InvitationId != null)
@@ -111,7 +110,7 @@ namespace LegendaryClient.Controls
             }
             else if (Inviter != null && Inviter != "")
             {
-                RenderNotificationTextBox(SummonerName + " has invited you to a game");
+                RenderNotificationTextBox(Inviter + " has invited you to a game");
                 RenderNotificationTextBox("");
                 RenderNotificationTextBox("Mode: " + gameModeLower);
                 RenderNotificationTextBox("Map: " + MapName);

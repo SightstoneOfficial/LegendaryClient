@@ -205,10 +205,9 @@ namespace LegendaryClient.Windows
                     Client.SwitchPage(new TeamBuilderPage(false));
                 }
             } 
-            else 
+            else if (InQueue == true)
             {
                 LeaveAllQueues();
-                InQueue = false;
             }
         }
 
@@ -257,13 +256,16 @@ namespace LegendaryClient.Windows
 
         private void GotQueuePop(object sender, object message)
         {
-            GameDTO Queue = message as GameDTO;
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            if(Client.runonce == false)
             {
-                Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
-                Client.OverlayContainer.Visibility = Visibility.Visible;
-            }));
-            Client.PVPNet.OnMessageReceived -= GotQueuePop;
+                GameDTO Queue = message as GameDTO;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                }));
+                Client.PVPNet.OnMessageReceived -= GotQueuePop;
+            }            
         }
 
         internal double HighestPingTime(IPAddress[] Addresses)
@@ -318,6 +320,7 @@ namespace LegendaryClient.Windows
                 realButton.Content = "Queue";
             }
             ButtonTimers.Clear();
+            InQueue = false;
             Queues.Clear();
         }
     }

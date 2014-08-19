@@ -16,7 +16,7 @@
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
         <ContextMenu x:Key="PlayerChatMenu">
-            <MenuItem Header="Invite to Game" />
+            <MenuItem x:Name="Invite" Header="Invite to Game" Click="Invite_Click" />
             <MenuItem x:Name="ProfileItem" Header="View Profile" Click="ProfileItem_Click" />
             <MenuItem Header="Invite to Chat" />
             <MenuItem Header="Remove Friend" />

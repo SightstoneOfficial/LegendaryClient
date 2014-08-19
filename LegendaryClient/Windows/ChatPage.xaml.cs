@@ -249,5 +249,16 @@ namespace LegendaryClient.Windows
         {
             Client.SwitchPage(new ProfilePage(LastPlayerItem.Username));
         }
+        private void Invite_Click(object sender, RoutedEventArgs e)
+        {
+            if(Client.isOwnerOfGame == true)
+            {
+                Client.PVPNet.Invite(LastPlayerItem.Id.Replace("sum", ""));
+            }
+            else
+            {
+
+            }
+        }
     }
 }

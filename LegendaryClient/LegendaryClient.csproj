@@ -155,6 +155,9 @@
     <Compile Include="Controls\LeagueItem.xaml.cs">
       <DependentUpon>LeagueItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\NotifyPlayerPopup.xaml.cs">
+      <DependentUpon>NotifyPlayerPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TeamBuilder\TeamBuilderChoose.xaml.cs">
       <DependentUpon>TeamBuilderChoose.xaml</DependentUpon>
     </Compile>
@@ -185,8 +188,12 @@
     <Compile Include="Logic\BotLogic\PlayableBots\MundoBot.cs" />
     <Compile Include="Logic\JSON\Champions.cs" />
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
+    <Compile Include="Logic\Patcher\LegendaryClientPatcher.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\TR.cs" />
+    <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
+    <Compile Include="Logic\SoundLogic\ChampSelectSound.cs" />
+    <Compile Include="Logic\SoundLogic\SelectChampion.cs" />
     <Compile Include="Logic\SQLite\invitationRequest.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\UpdateData.cs" />
@@ -423,6 +430,9 @@
     <Compile Include="Windows\Warning.xaml.cs">
       <DependentUpon>Warning.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\WebsiteOverlayPage.xaml.cs">
+      <DependentUpon>WebsiteOverlayPage.xaml</DependentUpon>
+    </Compile>
     <Page Include="Controls\ChampionDetailAbility.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -452,6 +462,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LeagueItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NotifyPlayerPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -860,6 +874,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\Warning.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\WebsiteOverlayPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

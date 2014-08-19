@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
 {
-    class Player : RiotGamesObject
+    public class Player : RiotGamesObject
     {
     public override string TypeName
         {

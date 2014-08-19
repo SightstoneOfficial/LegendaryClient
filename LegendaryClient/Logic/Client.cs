@@ -43,12 +43,24 @@ namespace LegendaryClient.Logic
     internal static class Client
     {
 
+        /// <summary>
+        /// Use this to play sounds
+        /// </summary>
+        internal static MediaElement SoundPlayer;
+
+        /// <summary>
+        /// Use this to play sounds in the background only
+        /// </summary>
+        internal static MediaElement AmbientSoundPlayer;
+
         private static readonly ILog log = LogManager.GetLogger(typeof(Client));
 
         /// <summary>
         /// Timer used so replays won't start right away
         /// </summary>
         internal static System.Windows.Forms.Timer ReplayTimer;
+
+        internal static bool isOwnerOfGame = false;
 
         /// <summary>
         /// The database of all runes
@@ -834,8 +846,9 @@ namespace LegendaryClient.Logic
         private static int counter;
 
         internal static string Location;
+        internal static string LoLLauncherLocation;
         internal static string LOLCLIENTVERSION;
-
+        internal static string RootLocation;
         internal static void LaunchGame()
         {
             string GameDirectory = Location;
@@ -844,7 +857,7 @@ namespace LegendaryClient.Logic
             p.StartInfo.WorkingDirectory = GameDirectory;
             p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
             //"8394" "LoLLauncher.exe" "" "127.0.0.1 5119 17BLOhi6KZsTtldTsizvHg== 47917791"
-            p.StartInfo.Arguments = "\"8394\" \"LoLLauncher.exe\" \"" + "\" \"" +
+            p.StartInfo.Arguments = "\"8394\" \"" + RootLocation + "LoLLauncher.exe" + "\" \"" + "\" \"" +
                 CurrentGame.ServerIp + " " +
                 CurrentGame.ServerPort + " " +
                 CurrentGame.EncryptionKey + " " +
