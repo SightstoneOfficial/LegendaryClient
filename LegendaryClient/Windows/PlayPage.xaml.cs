@@ -197,6 +197,7 @@ namespace LegendaryClient.Windows
                     Queues.Add(config.Id);
                     MatchMakerParams parameters = new MatchMakerParams();
                     parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
+                    Client.QueueId = config.Id;
                     Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
                     InQueue = true;
                 }

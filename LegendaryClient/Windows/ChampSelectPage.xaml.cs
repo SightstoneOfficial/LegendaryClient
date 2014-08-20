@@ -91,6 +91,8 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             StartChampSelect();
+            string Sound = AmbientChampSelect.currentQueueToSoundFile(Client.QueueId);
+            AmbientChampSelect.PlayAmbientChampSelectSound(Sound);
             Client.LastPageContent = this.Content;
             Client.runonce = true;
             Client.LobbyButton.Visibility = Visibility.Hidden;

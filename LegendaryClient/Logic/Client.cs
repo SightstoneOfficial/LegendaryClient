@@ -62,6 +62,8 @@ namespace LegendaryClient.Logic
 
         internal static bool isOwnerOfGame = false;
 
+        internal static double QueueId = 0;
+
         /// <summary>
         /// The database of all runes
         /// </summary>
@@ -1048,6 +1050,8 @@ namespace LegendaryClient.Logic
             return new BitmapImage(UriSource);
         }
         #endregion Public Helper Methods
+
+        
     }
 
 

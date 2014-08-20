@@ -9,7 +9,8 @@ using System.Threading.Tasks;
 namespace LegendaryClient.Logic.SoundLogic
 {
     public class SelectChampion
-    {
+    {       
+
         public static int SelectChamp(Int32 Champ)
         {
             Client.SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Champions", champions.GetChampion(Champ).name + ".mp3"));
