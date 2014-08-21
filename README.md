@@ -28,10 +28,15 @@ You need these DLLS:
 * MahApps.Metro
 * SharpZipLib
 * Sqlite
-* PVPNetConnect
-* Json.net
+* PVPNetConnect : Included as a project
  
 These DLLS should be included
+
+You will also need These DLLS:
+* RAFLibPlus : https://code.google.com/p/raflib-plus/downloads/list
+* Json.net : Download this from NuGet in visual studio
+
+These DLLS are Not Included. Please Download them yourself
 
 In-Client Screenshots (90-100)% complete
 =====================
