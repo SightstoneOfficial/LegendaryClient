@@ -13,6 +13,7 @@ LegacyPVP
 =========
 The new rework of LegendaryClient. I will leave this here to honor Snowl's work.
 https://github.com/eddy5641/LegacyPVP
+This will still be worked on, You will not see much difference between the time I put into LegendaryClient (I finished a different project)
 LegacyPVP Is Based Of LegendaryClient, Except with more winterminty features [Sorry guys no 2/3/4 queue probably]
 
 
