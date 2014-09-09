@@ -1,7 +1,4 @@
-﻿using LeagueMatchHistory;
-using LeagueMatchHistory.MatchHistory;
-using LeagueMatchHistory.MatchHistory.Games;
-using LeagueMatchHistory.MatchHistory.Games.Timeline;
+﻿
 using LegendaryClient.Logic;
 using System;
 using System.Collections.Generic;

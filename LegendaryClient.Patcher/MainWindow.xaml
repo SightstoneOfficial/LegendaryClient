@@ -18,11 +18,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-
-    <i:Interaction.Behaviors>
-        <Behaviours:BorderlessWindowBehavior/>
-    </i:Interaction.Behaviors>
 
     <controls:MetroWindow.WindowCommands>
         <controls:WindowCommands>
@@ -33,7 +28,6 @@
     
     <Grid Background="#ecf0f1">
         <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" />
-        <!--We want to slide this grid from the right-->
         <Grid x:Name="OverlayGrid" Panel.ZIndex="999" Visibility="Hidden">
             <Grid.RenderTransform>
                 <TranslateTransform/>

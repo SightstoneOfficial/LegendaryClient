@@ -1026,16 +1026,7 @@ namespace LegendaryClient.Logic
         /// <param name="type"></param>
         public static void Log(String lines, String type = "LOG")
         {
-            /*
-            try
-            {
-                System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "lcdebug.log"), true);
-                file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
-                file.Close();
-            }
-            catch
-            { }
-            //*/
+            LCLog.WriteToLog.Log(lines, type);
         }
 
         //Get Image

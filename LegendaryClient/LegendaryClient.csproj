@@ -80,9 +80,6 @@
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LeagueMatchHistory">
-      <HintPath>..\..\Users\Edward_2\Desktop\LeagueMatchHistory-master\bin\Release\LeagueMatchHistory.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -91,12 +88,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
-    <Reference Include="RAFlibPlus">
-      <HintPath>..\..\Users\Edward_2\Desktop\Coding\Kyoku-master\Kyoku\RAFlibPlus.dll</HintPath>
-    </Reference>
-    <Reference Include="rtmp-sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Release\Client\rtmp-sharp.dll</HintPath>
+      <HintPath>bin\Debug\Client\PVPNetConnect.dll</HintPath>
+    </Reference>
+    <Reference Include="RAFlibPlus">
+      <HintPath>..\DLLS\RAFlibPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="rtmp-sharp">
+      <HintPath>..\..\gac\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -901,7 +901,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Logger.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -957,13 +956,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PVPNetConnect\PVPNetConnect.csproj">
-      <Project>{93dcbebf-c652-40ed-a003-cff421f68b4f}</Project>
-      <Name>PVPNetConnect</Name>
-    </ProjectReference>
+    <Folder Include="Notifications\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Notifications\" />
+    <ProjectReference Include="..\LCLog\LCLog.csproj">
+      <Project>{b9acf25e-89ae-4cc8-9041-1e74822dac2d}</Project>
+      <Name>LCLog</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\SSDT\Microsoft.Data.Tools.Schema.Sql.UnitTesting.targets" Condition="'$(VSToolsPath)' != ''" />

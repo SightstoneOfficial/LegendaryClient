@@ -18,6 +18,10 @@ namespace LegendaryClient.Windows
     public partial class ChampionDetailsPage : Page
     {
         internal champions TheChamp;
+
+        private Point CurrentLocation;
+
+
         public ChampionDetailsPage(int ChampionId)
         {
             InitializeComponent();
@@ -128,19 +132,54 @@ namespace LegendaryClient.Windows
         private void FavouriteButton_Click(object sender, RoutedEventArgs e)
         {
             TheChamp.IsFavourite = !TheChamp.IsFavourite;
-            //List<Int32> TempList = new List<int>(Properties.Settings.Default.FavouriteChamps);
-            //if (TempList.Contains(TheChamp.id))
-            //    TempList.Remove(TheChamp.id);
-            //else
-             //   TempList.Add(TheChamp.id);
+            if (Properties.Settings.Default.FavouriteChamps == null)
+            {
+                List<Int32> NoNull = new List<int>();
+                NoNull.Add(0);
+                Properties.Settings.Default.FavouriteChamps = NoNull.ToArray();
+                Properties.Settings.Default.Save();
+            }
 
-            //Properties.Settings.Default.FavouriteChamps = TempList.ToArray();
+            List<Int32> TempList = new List<int>(Properties.Settings.Default.FavouriteChamps);
+            if (TempList.Contains(TheChamp.id))
+                TempList.Remove(TheChamp.id);
+            else
+                TempList.Add(TheChamp.id);
+
+            Properties.Settings.Default.FavouriteChamps = TempList.ToArray();
             Properties.Settings.Default.Save();
 
             if (TheChamp.IsFavourite)
                 FavouriteLabel.Content = "Unfavourite";
             else
                 FavouriteLabel.Content = "Favourite";
+        }
+
+        //Cool way to allow user to drag the grid arround
+        private Vector MoveOffset;
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                CurrentLocation = Mouse.GetPosition(MouseGrid);
+                MoveOffset = new Vector(tt.X, tt.Y);
+                Grid.CaptureMouse();
+            }
+        }
+
+        private void Grid_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (Grid.IsMouseCaptured)
+            {
+                Vector offset = Point.Subtract(e.GetPosition(MouseGrid), CurrentLocation);
+
+                tt.X = MoveOffset.X + offset.X;
+                tt.Y = MoveOffset.Y + offset.Y;
+            }
+        }
+        private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Grid.ReleaseMouseCapture();
         }
     }
 }

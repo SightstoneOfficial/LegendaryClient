@@ -372,7 +372,6 @@ namespace LegendaryClient.Windows
 
                 string CurrentMD5 = GetMd5();
                 LogTextBox("MD5: " + CurrentMD5);
-                string VersionString = "";
 
 
                 UpdateData legendaryupdatedata = new UpdateData();
@@ -522,45 +521,24 @@ namespace LegendaryClient.Windows
                 string AirVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                 LogTextBox("Current Air Assets Version: " + AirVersion);
                 bool RetrieveCurrentInstallation = false;
-                string AirLocation = "";
-
-                if (AirVersion == "0.0.0.0")
+                WebClient UpdateClient = new WebClient();
+                string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                
+                if (AirVersion != LatestVersion)
                 {
-                    LogTextBox("Checking for existing League of Legends Installation");
-                    AirLocation = Path.Combine("League of Legends", "RADS", "projects", "lol_air_client", "releases");
-                    var localAirLocation = Path.Combine("RADS", "projects", "lol_air_client", "releases");
-                    if (Directory.Exists(AirLocation))
-                    {
-                        RetrieveCurrentInstallation = true;
-                    }
-                    else if (string.IsNullOrEmpty(lolRootPath) == false && Directory.Exists(Path.Combine(lolRootPath, localAirLocation)))
-                    {
-                        RetrieveCurrentInstallation = true;
-                        AirLocation = Path.Combine(lolRootPath, localAirLocation);
-                    }
-                    else
-                    {
-                        LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
-                            + Client.ExecutingDirectory
-                            + " to make the patching process quicker");
-                    }
+                    //Download Air Assists from riot
+                    string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/packages/files/packagemanifest");
+                    GetAllPngs(Package);
+                    if (File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
+                        File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                    UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
-                    if (RetrieveCurrentInstallation)
-                    {
-                        LogTextBox("Getting Air Assets from " + AirLocation);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            CurrentProgressLabel.Content = "Copying Air Assets";
-                        }));
-                        AirVersion = patcher.GetCurrentAirInstall(AirLocation);
-                        LogTextBox("Retrieved currently installed Air Assets");
-                        LogTextBox("Current Air Assets Version: " + AirVersion);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            TotalProgressLabel.Content = "60%";
-                            TotalProgessBar.Value = 60;
-                        }));
-                    }
+                    if (File.Exists(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
+                        File.Delete(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
+                    var file = File.Create(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
+                    file.Write(encoding.GetBytes(LatestVersion), 0, encoding.GetBytes(LatestVersion).Length);
+                    file.Close();
                 }
 
                 if (AirVersion != LatestAIR)
@@ -656,7 +634,6 @@ namespace LegendaryClient.Windows
                         {
                             CurrentProgressLabel.Content = "Copying League of Legends";
                         }));
-                        GameVersion = patcher.GetCurrentGameInstall(NGameLocation);
                         LogTextBox("Retrieved currently installed League of Legends");
                         LogTextBox("Current League of Legends Version: " + NGameLocation);
                     }
@@ -669,72 +646,11 @@ namespace LegendaryClient.Windows
                         CurrentProgressLabel.Content = "Retrieving League of Legends";
                     }));
                 }
-                //No Need to download this anymore, I will auto detect League of Legends
-                /*
-                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client")))
-                {
-                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client"));
-                }
-                if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL")))
-                {
-                    var VersionLOL = File.Create(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
-                    VersionLOL.Write(encoding.GetBytes("0.0.0.0"),0,encoding.GetBytes("0.0.0.0").Length);
-                    VersionLOL.Close();
-                }
-                LogTextBox("Checking version...");
-                CheckIfPatched();
-                if (!LoLDataIsUpToDate)
-                {
-                    LogTextBox("Not up-to-date!");
-                    if (LolDataVersion == "0.0.0.0")
-                    {
-                        LogTextBox("Checking for existing LoL installation");
-                        string FileArchivesDirectory = Path.Combine("League of Legends", "RADS", "projects", "lol_game_client", "filearchives");
-                        string MainVersionLocation = Path.Combine("League of Legends", "RADS", "projects", "lol_game_client", "releases");
-                        if (Directory.Exists(FileArchivesDirectory))
-                        {
-                            ExpandRAF(FileArchivesDirectory);
-                            WriteLatestVersion(MainVersionLocation);
-                        }
-                        else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", FileArchivesDirectory)))
-                        {
-                            ExpandRAF(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", FileArchivesDirectory));
-                            WriteLatestVersion(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", MainVersionLocation));
-                        }
-                    }
-                    string PackageManifest = "";
-                    int CurrentVersionNumber = Convert.ToInt32(LolDataVersion.Split('.')[3]);
-                    int LatestVersionNumber = Convert.ToInt32(LatestLolDataVersion.Split('.')[3]);
-                    LogTextBox("Retrieving Package Manifest");
-                    //How will this happen, idk but we will never know if it will happen
-                    InvalidVersion:
-                    if (CurrentVersionNumber >= LatestVersionNumber)
-                    {
-                        //Already updated, just fake numbers in the release listing and you can ignore them
-                    }
-                    try
-                    {
-                        PackageManifest = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/0.0.0." + LatestVersionNumber + "/packages/files/packagemanifest");
-                    }
-                    catch { LogTextBox(LatestVersionNumber + " is not valid"); LatestVersionNumber -= 1; goto InvalidVersion; }
-                    //Do online patch of LoLData from current version onwards
-                    if (LolDataVersion != LatestLolDataVersion)
-                    {
-                        LogTextBox("Updating from " + LolDataVersion + " -> " + LatestLolDataVersion);
-                        UpdateFrom(LolDataVersion, PackageManifest);
-                        WriteLatestVersion(LatestLolDataVersion);
-                    }
-                    LogTextBox("Patching League of Legends.exe...");
-                    //Everytime we update download all .exe and dll files
-                    GetAllExe(PackageManifest);
-                }
-                LogTextBox("Done!");
-                //*/
                 #endregion lol_game_client
 
                 
 
-                FinishPatching();
+                FinishPatching(LatestVersion);
             });
 
             bgThead.Start();
@@ -868,8 +784,10 @@ namespace LegendaryClient.Windows
         }
 
 
-        private void FinishPatching()
+        private void FinishPatching(string LatestVersion)
         {
+            WebClient UpdateClient = new WebClient();
+            UpdateClient.DownloadFile("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/files/assets/data/gameStats/gameStats_en_US.sqlite", Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 TotalProgressLabel.Content = "100%";
@@ -889,6 +807,7 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 PatchTextBox.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + s + Environment.NewLine;
+                PatchTextBox.ScrollToEnd();
             }));
             Client.Log(s);
         }
@@ -1018,6 +937,35 @@ namespace LegendaryClient.Windows
                     }
                     uncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace), Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace).Replace(".compressed", ""));
                     File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                }
+            }
+        }
+        private void GetAllPngs(string PackageManifest)
+        {
+            string[] FileMetaData = PackageManifest.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
+            foreach (string s in FileMetaData)
+            {
+                if (String.IsNullOrEmpty(s))
+                {
+                    continue;
+                }
+                //Remove size and type metadata
+                string Location = s.Split(',')[0];
+                //Get save position
+                string SavePlace = Location.Split(new string[] { "/files/" }, StringSplitOptions.None)[1];
+                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions")))
+                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "champions"));
+                if (SavePlace.EndsWith(".jpg") || SavePlace.EndsWith(".png"))
+                {
+                    if (SavePlace.Contains("assets/images/champions/"))
+                    {                        
+                        using (WebClient newClient = new WebClient())
+                        {
+                            string SaveName = Location.Split(new string[] { "/champions/" }, StringSplitOptions.None)[1];
+                            LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
+                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "champions", SaveName));
+                        }
+                    }                    
                 }
             }
         }

@@ -30,17 +30,11 @@ namespace LegendaryClient
 
             SwitchPage.Visibility = Visibility.Hidden;
             Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "lcdebug.log")))
-            {
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "lcdebug.log"));
-            }
-
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Backup.log")))
-            {
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "Backup.log"));
-            }
+                        
+            LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
+            LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
+            LCLog.WriteToLog.CreateLogFile();
+            AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
 
             Client.InfoLabel = InfoLabel;
             Client.StartHeartbeat();
@@ -84,17 +78,6 @@ namespace LegendaryClient
             Client.SwitchPage(new PatcherPage());
 
             this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
-        }
-
-
-        static void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
-        {
-            //Disregard PVPNetSpam
-            if (e.Exception.Message.Contains("too small for an Int32") || e.Exception.Message.Contains("Constructor on type "))
-                return;
-            Client.Log("A first chance exception was thrown", "EXCEPTION");
-            Client.Log(e.Exception.Message, "EXCEPTION");
-            Client.Log(e.Exception.StackTrace, "EXCEPTION");
         }
 
         private void ThemeButton_Click(object sender, RoutedEventArgs e)
