@@ -1,0 +1,303 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RAFlibPlus</name>
+    </assembly>
+    <members>
+        <member name="T:RAFlibPlus.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:RAFlibPlus.RAFArchive">
+            <summary>
+            A class that allows the easy manipulation of RAF archives
+            </summary>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchive.#ctor(System.String)">
+            <summary>
+            A class that allows the easy manipulation of RAF archives
+            </summary>
+            <param name="rafPath">Path to the .raf file</param>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchive.GetFileEntry(System.String)">
+            <summary>
+            Looks up the path in the RAFFileListEntry dictionary. The path must be exact. Use SearchFileEntries for partial paths
+            </summary>
+            <param name="fullPath">Full RAFFileListEntry path, ie, DATA/Characters/Ahri/Ahri.skn (case insensitive)</param>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchive.SearchFileEntries(System.String)">
+            <summary>
+            Returns any entries whose filepath contains the search string, ie: ahri would return DATA/Characters/Ahri/Ahri.skn.
+            </summary>
+            <param name="searchPhrase">The phrase to look for</param>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchive.SearchFileEntries(System.String,RAFlibPlus.RAFSearchType)">
+            <summary>
+            Returns any entries whose filepath contains the search string. Use the RAFSearchType to specify how to search
+            </summary>
+            <param name="searchPhrase">The phrase to look for</param>
+            <param name="searchType">SearchType.All returns any entries whose filepath contains the search string. SearchType.End returns any entries whose filepath ends with the search string.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchive.SearchFileEntries(System.String[],RAFlibPlus.RAFSearchType)">
+            <summary>
+            Simultaneously search for entries whose filepath contain a search phrase. Use the RAFSearchType to specify how to search
+            </summary>
+            <param name="searchPhrases">Array of phrases to look for</param>
+            <param name="searchType">SearchType.All returns any entries whose filepath contains the search string. SearchType.End returns any entries whose filepath ends with the search string.</param>
+            <returns>A struct with the found RAFFileListEntry and the search phrase that triggered it</returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchive.InsertFile(System.String,System.Byte[],System.Boolean)">
+            <summary>
+            Replace the content of the RAFFileListEntry and update memory of this new data.
+            You HAVE to call &lt;RAFArchive&gt;.SaveRAFFile() after you finish all the inserts.
+            </summary>
+            <param name="fileName">Full path of the RAFFileListEntry, ie. DATA/Characters/Ahri/Ahri.skn</param>
+            <param name="content">Content to overwrite the previous file data</param>
+            <param name="createNewIfNoExist">Should a new RAFFileListEntry be created if a RAFFileListEntry can't be found with the given fileName</param>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchive.InsertFile(System.String,System.Byte[],System.IO.FileStream,System.Boolean)">
+            <summary>
+            Replace the content of the RAFFileListEntry and update memory of this new data.
+            You HAVE to call &lt;RAFArchive&gt;.SaveRAFFile() after you finish all the inserts.
+            </summary>
+            <param name="fileName">Full path of the RAFFileListEntry, ie. DATA/Characters/Ahri/Ahri.skn</param>
+            <param name="content">Content to overwrite the previous file data</param>
+            <param name="datFileStream">FileStream to the RAF .dat file</param>
+            <param name="createNewIfNoExist">Should a new RAFFileListEntry be created if a RAFFileListEntry can't be found with the given fileName</param>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchive.SaveRAFFile">
+            <summary>
+            Rebuilds the .dat file. This is neccessary after any file inserting. 
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.RAFArchive.ID">
+            <summary>
+            Returns the ID of an archive. It is the taken from name of the folder that holds the .raf and .dat files, ie. 0.0.0.25
+            </summary>
+            <returns>ID of the archive</returns>
+        </member>
+        <member name="P:RAFlibPlus.RAFArchive.RAFFilePath">
+            <summary>
+            Returns the local path to the .raf file, ie. C:\Archive_114252416.raf
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.RAFArchive.FileDictFull">
+            <summary>
+            Returns the file dictionary which uses the full-path, (lower-cased) file names as keys, ie. "data/characters/ahri/ahri.skn"
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.RAFArchive.FileDictShort">
+            <summary>
+            Returns the file dictionary which uses the (lower-cased) file names as keys, ie. "ahri.skn". The values are List&lt;RAFFileListEntry&gt; to accomidate collisions
+            </summary>
+        </member>
+        <member name="T:RAFlibPlus.RAFArchiveID">
+            <summary>
+            Struct to hold the id number of an archive
+            </summary>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchiveID.CreateID(System.String)">
+            <summary>
+            Factory to create an ArchiveID object
+            </summary>
+            <param name="inputStr">Input string to be parsed into an ID. Should follow the pattern: 'A.B.C.D' If less arguments are present, ie. 'A.B', they will be assumed to be the highest order</param>
+            <returns>The created ArchiveID object</returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFArchiveID.CreateID(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Factory to create an ArchiveID object
+            </summary>
+            /// <param name="a">The highest order number</param>
+            <param name="b">The second order number</param>
+            <param name="c">The third order number</param>
+            <param name="d">the lowest order number</param>
+            <returns>The created ArchiveID object</returns>
+        </member>
+        <member name="T:RAFlibPlus.RAFFileListEntry">
+            <summary>
+            A class that represents a file within an RAF archive
+            </summary>
+        </member>
+        <member name="M:RAFlibPlus.RAFFileListEntry.#ctor(RAFlibPlus.RAFArchive,System.Byte[]@,System.UInt32,System.UInt32)">
+            <summary>
+            A class that represents a file within an RAF archive
+            </summary>
+            <param name="raf">Pointer to the owning RAFArchive</param>
+            <param name="directoryFileContent">Pointer to the content of the .raf.dat file</param>
+            <param name="offsetDirectoryEntry">Offset to the entry data offsets</param>
+            <param name="offsetStringTable">Offset to the entry's file name</param>
+        </member>
+        <member name="M:RAFlibPlus.RAFFileListEntry.#ctor(RAFlibPlus.RAFArchive,System.String,System.UInt32,System.UInt32)">
+            <summary>
+            A class that represents a file within an RAF archive. Creates an entry that only exists in memory.
+            </summary>
+            <param name="raf">Pointer to the owning RAFArchive</param>
+            <param name="fileName">Full path of the file, ie. DATA/Characters/Ahri/Ahri.skn</param>
+            <param name="offsetDatFile">Offset to the entry data offsets</param>
+            <param name="fileSize">Length of the file in bytes</param>
+        </member>
+        <member name="M:RAFlibPlus.RAFFileListEntry.GetContent">
+            <summary>
+            Returns the content of the file
+            </summary>
+        </member>
+        <member name="M:RAFlibPlus.RAFFileListEntry.GetContent(System.IO.FileStream)">
+            <summary>
+            Returns the content of the file
+            </summary>
+            <param name="fStream">FileStream to the RAF .dat file</param>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFFileListEntry.GetRawContent">
+            <summary>
+            Returns the raw, still compressed, contents of the file. 
+            Doesn't really have a use, but included from old RAFlib
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFFileListEntry.ReplaceContent(System.Byte[])">
+            <summary>
+            Replace the content of the RAFFileListEntry and update memory of this new data.
+            You HAVE to call &lt;RAFArchive&gt;.SaveRAFFile() after you finish all the inserts.
+            </summary>
+            <param name="content">Content to overwrite the previous file data</param>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFFileListEntry.ReplaceContent(System.Byte[],System.IO.FileStream)">
+            <summary>
+            Replace the content of the RAFFileListEntry and update memory of this new data.
+            You HAVE to call &lt;RAFArchive&gt;.SaveRAFFile() after you finish all the inserts.
+            </summary>
+            <param name="content">Content to overwrite the previous file data</param>
+            <param name="datFileStream">FileStream to the RAF .dat file</param>
+            <returns></returns>
+        </member>
+        <member name="P:RAFlibPlus.RAFFileListEntry.FileName">
+            <summary>
+            Filename of the entry
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.RAFFileListEntry.FileOffset">
+            <summary>
+            Offset to the start of the archived file in the .dat file
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.RAFFileListEntry.FileSize">
+            <summary>
+            Size of this archived file
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.RAFFileListEntry.StringNameHash">
+            <summary>
+            Hash of the string name
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.RAFFileListEntry.RAFArchive">
+            <summary>
+            Returns the entry's corresponding RAFArchive
+            </summary>
+        </member>
+        <member name="T:RAFlibPlus.RAFHashManager">
+            <summary>
+            Manages the handling of hashes for RAF Strings, which is calculated in an unknown
+            matter at the moment.
+            </summary>
+        </member>
+        <member name="M:RAFlibPlus.RAFHashManager.GetHash(System.String)">
+            <summary>
+            Get the hash of a entry file name
+            </summary>
+            <param name="s">Entry file name</param>
+            <returns></returns>
+        </member>
+        <member name="T:RAFlibPlus.RAFMasterFileList">
+            <summary>
+            Allows the easy manipulation of RAF archives. With this class the user can pretend there is only one giant RAF archive
+            </summary>
+        </member>
+        <member name="M:RAFlibPlus.RAFMasterFileList.#ctor(System.String)">
+            <summary>
+            Allows the easy manipulation of RAF archives. With this class the user can pretend there is only one giant RAF archive
+            </summary>
+            <param name="fileArchivePath">The path to RADS\projects\lol_game_client\filearchives</param>
+        </member>
+        <member name="M:RAFlibPlus.RAFMasterFileList.#ctor(System.String[])">
+            <summary>
+            Allows the easy manipulation of RAF archives. With this class the user can pretend there is only one giant RAF archive
+            </summary>
+            <param name="rafFilePaths">An array whose values are the paths to each RAF file you want to be combined together</param>
+        </member>
+        <member name="M:RAFlibPlus.RAFMasterFileList.GetFileEntry(System.String)">
+            <summary>
+            Looks up the path in the RAFFileListEntry dictionary. The path must be exact. Use SearchFileEntries for partial paths
+            </summary>
+            <param name="fullPath">Full RAFFileListEntry path, ie, DATA/Characters/Ahri/Ahri.skn (case insensitive)</param>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFMasterFileList.SearchFileEntries(System.String)">
+            <summary>
+            Returns any entries whose filepath contains the search string, ie: ahri would return DATA/Characters/Ahri/Ahri.skn.
+            </summary>
+            <param name="searchPhrase">The phrase to look for</param>
+        </member>
+        <member name="M:RAFlibPlus.RAFMasterFileList.SearchFileEntries(System.String,RAFlibPlus.RAFSearchType)">
+            <summary>
+            Returns any entries whose filepath contains the search string. Use the RAFSearchType to specify how to search
+            </summary>
+            <param name="searchPhrase">The phrase to look for</param>
+            <param name="searchType">SearchType.All returns any entries whose filepath contains the search string. SearchType.End returns any entries whose filepath ends with the search string.</param>
+            <returns></returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFMasterFileList.SearchFileEntries(System.String[],RAFlibPlus.RAFSearchType)">
+            <summary>
+            Simultaneously search for entries whose filepath contain a search phrase. Use the RAFSearchType to specify how to search
+            </summary>
+            <param name="searchPhrases">Array of phrases to look for</param>
+            <param name="searchType">SearchType.All returns any entries whose filepath contains the search string. SearchType.End returns any entries whose filepath ends with the search string.</param>
+            <returns>A struct with the found RAFFileListEntry and the search phrase that triggered it</returns>
+        </member>
+        <member name="M:RAFlibPlus.RAFMasterFileList.getRAFFiles(System.String)">
+            <summary>
+            Searches each folder inside the base directory for .raf files, ignoring any sub-directories
+            </summary>
+            <param name="baseDir">The path to RADS\projects\lol_game_client\filearchives</param>
+            <returns></returns>
+        </member>
+        <member name="P:RAFlibPlus.RAFMasterFileList.FileDictFull">
+            <summary>
+            Returns the file dictionary which uses the full-path (lower-cased) file names as keys, ie. "data/characters/ahri/ahri.skn"
+            </summary>
+        </member>
+        <member name="P:RAFlibPlus.RAFMasterFileList.FileDictShort">
+            <summary>
+            Returns the file dictionary which uses the (lower-cased) file names as keys, ie. "ahri.skn". The values are List&lt;RAFFileListEntry&gt; to accomidate collisions
+            </summary>
+        </member>
+        <member name="F:RAFlibPlus.RAFSearchType.All">
+            <summary>
+            Returns any entries whose filepath contains the search string, ie. "/ahri/" would return DATA/Characters/Ahri/Ahri.skn
+            </summary>
+        </member>
+        <member name="F:RAFlibPlus.RAFSearchType.End">
+            <summary>
+            Returns any entries whose filepath ends with the search string, ie. "/ezreal_tx_cm.dds" would return DATA/Characters/Ezreal/Ezreal_TX_CM.dds
+            </summary>
+        </member>
+    </members>
+</doc>
