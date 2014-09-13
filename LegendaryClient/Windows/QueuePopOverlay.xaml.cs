@@ -3,6 +3,7 @@ using LegendaryClient.Logic;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -119,9 +120,19 @@ namespace LegendaryClient.Windows
                 if (p is PlayerParticipant)
                 {
                     PlayerParticipant playerPart = (PlayerParticipant)p;
-                    player.PlayerLabel.Content = playerPart.SummonerName;
-                    player.RankLabel.Content = "";
-                    Team1ListBox.Items.Add(player);
+                    if (!String.IsNullOrEmpty(playerPart.SummonerName))
+                    {
+                        player.PlayerLabel.Content = playerPart.SummonerName;
+                        player.RankLabel.Content = "";
+                        Team1ListBox.Items.Add(player);
+                    }
+                    else
+                    {
+                        AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(playerPart.SummonerId);
+                        player.PlayerLabel.Content = Summoner.Summoner.Name;
+                        player.RankLabel.Content = "";
+                        Team2ListBox.Items.Add(player);
+                    }
                 }
                 else
                 {
@@ -134,25 +145,32 @@ namespace LegendaryClient.Windows
             int i = 0;
             foreach (Participant p in AllParticipants)
             {
-                if (p is PlayerParticipant)
+                try
                 {
-                    QueuePopPlayer player = (QueuePopPlayer)Team1ListBox.Items[i];
-                    PlayerParticipant playerPart = (PlayerParticipant)p;
-                    SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
-                    foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
+                    if (p is PlayerParticipant)
                     {
-                        if (x.Queue == "RANKED_SOLO_5x5")
+                        QueuePopPlayer player = (QueuePopPlayer)Team1ListBox.Items[i];
+                        PlayerParticipant playerPart = (PlayerParticipant)p;
+                        SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
+                        foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
                         {
-                            player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+                            if (x.Queue == "RANKED_SOLO_5x5")
+                            {
+                                player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+                            }
                         }
+                        //People can be ranked without having solo queue so don't put if statement checking List.Length
+                        if (String.IsNullOrEmpty((string)player.RankLabel.Content))
+                        {
+                            player.RankLabel.Content = "Unranked";
+                        }
+                        i++;
                     }
-                    //People can be ranked without having solo queue so don't put if statement checking List.Length
-                    if (String.IsNullOrEmpty((string)player.RankLabel.Content))
-                    {
-                        player.RankLabel.Content = "Unranked";
-                    }
-                    i++;
                 }
+                catch
+                {
+
+                }                
             }
 
             if (Client.AutoAcceptQueue)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LCLog
@@ -23,6 +24,20 @@ namespace LCLog
             WriteToLog.Log("A first chance exception was thrown", "EXCEPTION");
             WriteToLog.Log(e.Exception.Message, "EXCEPTION");
             WriteToLog.Log(e.Exception.StackTrace, "EXCEPTION");
+        }
+        public static void AppDomain_CurrentDomain(object sender, UnhandledExceptionEventArgs x)
+        {
+            WriteToLog.Log("An unhandled exception was thrown", "UNHANDLEDEXCEPTION");
+            Exception ex = (Exception)x.ExceptionObject;
+            WriteToLog.Log(ex.Message, "UNHANDLEDEXCEPTION");
+            WriteToLog.Log(ex.StackTrace, "UNHANDLEDEXCEPTION");
+        }
+
+        public static void Application_ThreadException(object sender, ThreadExceptionEventArgs t)
+        {
+            WriteToLog.Log("An unhandled exception was thrown", "ThreadException");
+            WriteToLog.Log(t.Exception.Message, "ThreadException");
+            WriteToLog.Log(t.Exception.StackTrace, "ThreadException");
         }
     }
 }

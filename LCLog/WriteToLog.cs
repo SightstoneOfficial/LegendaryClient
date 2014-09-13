@@ -30,7 +30,7 @@ namespace LCLog
         public static void Log(String lines, String type = "LOG")
         {
             System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, LogfileName), true);
-            file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type, lines));
+            file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type.ToUpper(), lines));
             file.Close();
         }
 

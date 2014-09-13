@@ -522,7 +522,7 @@ namespace LegendaryClient.Windows
                 LogTextBox("Current Air Assets Version: " + AirVersion);
                 bool RetrieveCurrentInstallation = false;
                 WebClient UpdateClient = new WebClient();
-                string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting");
                 string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
                 
                 if (AirVersion != LatestVersion)

@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using log4net;
 using log4net.Config;
+using System.Security.Permissions;
 
 namespace LegendaryClient
 {
@@ -35,6 +36,10 @@ namespace LegendaryClient
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
+            AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
+#if !DEBUG
+
+#endif
 
             Client.InfoLabel = InfoLabel;
             Client.StartHeartbeat();
