@@ -506,7 +506,7 @@ namespace LegendaryClient.Windows
 
                 //A string that looks like C:\Riot Games\League of Legends\
                 string lolRootPath = GetLolRootPath();
-
+                
                 #region lol_air_client
 
                 if (!File.Exists(Path.Combine("Assets", "VERSION_AIR")))
@@ -524,11 +524,15 @@ namespace LegendaryClient.Windows
                 WebClient UpdateClient = new WebClient();
                 string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting");
                 string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
-                
+                if (LatestVersion == "0.0.1.110") //temporary workaround
+                {
+                     LatestVersion = "0.0.1.108";
+                }
                 if (AirVersion != LatestVersion)
                 {
                     //Download Air Assists from riot
                     string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/packages/files/packagemanifest");
+
                     GetAllPngs(Package);
                     if (File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
                         File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
@@ -584,6 +588,10 @@ namespace LegendaryClient.Windows
                 else 
                 {
                     LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
+                    this.Dispatcher.Invoke((Action)(() =>
+    {
+        LocationButton.Visibility = Visibility.Visible;
+    }));
                     return;
                 }
 
@@ -622,9 +630,10 @@ namespace LegendaryClient.Windows
                     }
                     else
                     {
-                        LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
+                       /* LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
                             + Client.ExecutingDirectory
-                            + " to make the patching process quicker");
+                            + " to make the patching process quicker");*/
+                        Microsoft.Win32.OpenFileDialog OpenLocation = new Microsoft.Win32.OpenFileDialog();
                     }
 
                     if (RetrieveCurrentInstallation)
@@ -660,15 +669,16 @@ namespace LegendaryClient.Windows
         {
             var possiblePaths = new List<Tuple<string, string>>  
             {
-                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\RIOT GAMES", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_USER\Software\Wow6432Node\Riot Games", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\League Of Legends", "Path"),
+                //new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
+                //new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES", "Path"),
+                //new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\RIOT GAMES", "Path"),
+               // new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Wow6432Node\Riot Games", "Path"),
+                //new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path"),
+                //new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games", "Path"),
+                //new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\League Of Legends", "Path"),
                 // Yes, a f*ckin whitespace after "Riot Games"..
-                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends", "Path"),
+                //new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends", "Path"),
+                new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\LegendaryClient", "Path"),
             };
             foreach (var tuple in possiblePaths) 
             {
@@ -683,9 +693,22 @@ namespace LegendaryClient.Windows
                     }
                 } catch { }
             }
-            
+            Microsoft.Win32.OpenFileDialog OpenLocation = new Microsoft.Win32.OpenFileDialog();
 
-            return string.Empty;
+            OpenLocation.FileName = "lol.launcher.exe";
+            OpenLocation.CheckFileExists = true;
+            OpenLocation.Title = "League of legends Launcher location";
+            OpenLocation.Filter = "Executable files (.exe)|*.exe"; // Filter files by extension 
+            Nullable<bool> result = OpenLocation.ShowDialog();
+            if (result == true)
+            {
+                string LauncherPath = Path.GetDirectoryName(OpenLocation.FileName);
+                Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\LegendaryClient", "path", LauncherPath);
+                LogTextBox("League of Legends location set as: " + LauncherPath);
+                return LauncherPath;
+            }
+
+            else return string.Empty; 
         }
 
         private void update(object sender, EventArgs e)
@@ -1064,6 +1087,21 @@ namespace LegendaryClient.Windows
                 i += 1;
             }
             return true;
+        }
+        private void LocationButton_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog OpenLocation = new Microsoft.Win32.OpenFileDialog();
+            OpenLocation.FileName = "lol.launcher.exe";
+            OpenLocation.CheckFileExists = true;
+            OpenLocation.Filter = "Executable files (.exe)|*.exe"; // Filter files by extension 
+            Nullable<bool> result = OpenLocation.ShowDialog();
+            if (result == true)
+            {
+                string LauncherPath = Path.GetDirectoryName(OpenLocation.FileName);
+                Microsoft.Win32.Registry.SetValue(@"HKEY_CURRENT_USER\Software\LegendaryClient", "path", LauncherPath);
+                LogTextBox("League of Legends location set as: " + LauncherPath);
+                string lolRootPath = LauncherPath;
+            }
         }
     }
 }
