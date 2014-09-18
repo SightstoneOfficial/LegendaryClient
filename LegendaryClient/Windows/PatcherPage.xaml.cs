@@ -526,7 +526,7 @@ namespace LegendaryClient.Windows
                 string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
                 if (LatestVersion == "0.0.1.110") //temporary workaround
                 {
-                     LatestVersion = "0.0.1.108";
+                     LatestVersion = "0.0.1.109";
                 }
                 if (AirVersion != LatestVersion)
                 {
