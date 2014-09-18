@@ -9,6 +9,9 @@ https://www.youtube.com/watch?v=rVWdHeQcGwM&feature=youtu.be
 
 LegendaryClient Aram Game
 
+Working on a patcher to patch LC [Awesome splash though]
+I am aware of crashing
+
 LegacyPVP
 =========
 The new rework of LegendaryClient. I will leave this here to honor Snowl's work.
