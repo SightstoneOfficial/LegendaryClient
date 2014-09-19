@@ -13,4 +13,3 @@
 {"VersionId":"1.0.0.1","VersionName":"LegenadryClient Bug Patch","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/1.0.0.1/LegendaryClient.zip","IsPrerelease":true,"IsBeta":false},
 {"VersionId":"1.0.0.0","VersionName":"First Release","VersionDescription":"Get Na Working","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/1.0.0.0/LegendaryClient.zip","IsPrerelease":true,"IsBeta":false}
 ]}
-//This allows the client to check for updates
