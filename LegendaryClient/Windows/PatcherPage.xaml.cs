@@ -31,8 +31,41 @@ namespace LegendaryClient.Windows
         public PatcherPage()
         {
             InitializeComponent();
+            DevKey.TextChanged += DevKey_TextChanged;
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
+        }
+
+        void DevKey_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (DevKey.Text.StartsWith("!~betakey-"))
+                if (DevKey.Text.EndsWith("~!"))
+                    GetDev(DevKey.Text.Replace("!~betakey-", "").Replace("~!", ""));
+        }
+
+        private void GetDev(string DevKey)
+        {
+            if (DevKey.Length != 20)
+                return;
+            bool Auth = false;
+            var client = new WebClient();
+            string KeyPlayer = client.DownloadString("http://eddy5641.github.io/LegendaryClient/BetaUsers");
+            string[] Players = KeyPlayer.Split(new string[] { Environment.NewLine }, 0, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string Beta in Players)
+            {
+                string[] BetaKey = Beta.Split(',');
+                if (DevKey == BetaKey[0])
+                {
+                    Auth = true;
+                    Welcome.Text = "Welcome " + BetaKey[1];
+                    Welcome.Visibility = Visibility.Visible;
+                }
+            }
+            if (Auth == false)
+            {
+                this.DevKey.Text = "";
+            }
+            
         }
 
         private void DevSkip_Click(object sender, RoutedEventArgs e)

@@ -282,7 +282,6 @@
     <Compile Include="Logic\Client.cs" />
     <Compile Include="Logic\Region\BaseRegion.cs" />
     <Compile Include="Logic\Region\BR.cs" />
-    <Compile Include="Logic\Region\EUNE.cs" />
     <Compile Include="Logic\Region\EUW.cs" />
     <Compile Include="Logic\Region\KR.cs" />
     <Compile Include="Logic\Region\NA.cs" />
