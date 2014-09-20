@@ -1,5 +1,5 @@
 {"LCVersions":[
-{"VersionId":"2.0.1.0-Log","VersionName":"Added a logger + no more crashing for some","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.1.0-Log/Client.zip","IsPrerelease":true,"IsBeta":false},
+{"VersionId":"2.0.1.0-Log+Crash","VersionName":"Added a logger + no more crashing for some","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.1.0-Log/Client.zip","IsPrerelease":true,"IsBeta":false},
 {"VersionId":"2.0.1.0","VersionName":"","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.1.0/Client.zip","IsPrerelease":true,"IsBeta":false},
 
 {"VersionId":"2.0.0.0","VersionName":"Major Changes","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.0.0/LegendaryClient.Version.2.0.0.0.zip","IsPrerelease":false,"IsBeta":false},
