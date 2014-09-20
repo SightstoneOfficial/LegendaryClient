@@ -29,18 +29,21 @@ namespace LCLog
         /// <param name="type"></param>
         public static void Log(String lines, String type = "LOG")
         {
-            System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, LogfileName), true);
+            System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "Logs", LogfileName), true);
             file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type.ToUpper(), lines));
             file.Close();
         }
 
         public static void CreateLogFile()
         {
-            if (File.Exists(Path.Combine(ExecutingDirectory, LogfileName)))
+            if (!Directory.Exists(Path.Combine(ExecutingDirectory, "Logs")))
+                Directory.CreateDirectory(Path.Combine(ExecutingDirectory, "Logs"));
+            if (File.Exists(Path.Combine(ExecutingDirectory, "Logs", LogfileName)))
             {
-                File.Delete(Path.Combine(ExecutingDirectory, LogfileName));
+                File.Delete(Path.Combine(ExecutingDirectory, "Logs", LogfileName));
             }
-            var file = File.Create(Path.Combine(ExecutingDirectory, LogfileName));
+            LogfileName = LogfileName + "(" + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString() + ")";
+            var file = File.Create(Path.Combine(ExecutingDirectory, "Logs", LogfileName));
             file.Close();
         }
     }
