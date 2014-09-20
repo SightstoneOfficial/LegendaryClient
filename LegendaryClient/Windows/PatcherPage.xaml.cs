@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using System.Linq;
 using RAFlibPlus;
 using ComponentAce.Compression.Libs.zlib;
+using Microsoft.Win32;
 
 namespace LegendaryClient.Windows
 {
@@ -416,8 +417,26 @@ namespace LegendaryClient.Windows
                 } catch { }
             }
             
+                OpenFileDialog FindLeagueDialog = new OpenFileDialog();
 
-            return string.Empty;
+                if (!Directory.Exists(Path.Combine("C:\\", "Riot Games", "League of Legends")))
+                {
+                    FindLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Program Files (x86)", "GarenaLoL", "GameData", "Apps", "LoL");
+                }
+                else
+                {
+                FindLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Riot Games", "League of Legends");
+                }
+                FindLeagueDialog.DefaultExt = ".exe";
+                FindLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
+
+                Nullable<bool> result = FindLeagueDialog.ShowDialog();
+            if (result == true)
+            {
+                return FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
+            }
+            else
+                return string.Empty;
         }
 
         private void update(object sender, EventArgs e)
