@@ -7,5 +7,6 @@ namespace LegendaryClient
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }
