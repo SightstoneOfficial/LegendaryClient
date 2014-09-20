@@ -87,7 +87,10 @@
       <HintPath>..\packages\MahApps.Metro.0.10.1.1\lib\net45\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Client\PVPNetConnect.dll</HintPath>
@@ -122,6 +125,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=924c5b18328d6f09, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Users\Edward_2\Desktop\Coding\Kyoku-master\Kyoku\zlib.net.dll</HintPath>
@@ -278,7 +282,7 @@
     <Compile Include="Logic\Client.cs" />
     <Compile Include="Logic\Region\BaseRegion.cs" />
     <Compile Include="Logic\Region\BR.cs" />
-    <Compile Include="Logic\Region\EUN.cs" />
+    <Compile Include="Logic\Region\EUNE.cs" />
     <Compile Include="Logic\Region\EUW.cs" />
     <Compile Include="Logic\Region\KR.cs" />
     <Compile Include="Logic\Region\NA.cs" />

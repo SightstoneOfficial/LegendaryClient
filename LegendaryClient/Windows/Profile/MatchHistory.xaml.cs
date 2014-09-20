@@ -285,6 +285,16 @@ namespace LegendaryClient.Windows.Profile
         public double TotalHeal = 0;
         public double NeutralMinionsKilledYourJungle = 0;
         public double NeutralMinionsKilledEnemyJungle = 0;
+        public double NodeNeutralize = 0;
+        public double CombatPlayerScore = 0;
+        public double NodeNeutralizeAssist = 0;
+        public double TotalScoreRank = 0;
+        public double TeamObjective = 0;
+        public double NodeCapture = 0;
+        public double TotalPlayerScore = 0;
+        public double NodeCaptureAssist = 0;
+        public double VictoryPointTotal = 0;
+        public double ObjectivePlayerScore = 0;
         public PlayerGameStats Game = null;
     }
 }

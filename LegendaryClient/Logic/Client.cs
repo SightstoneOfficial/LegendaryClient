@@ -824,7 +824,7 @@ namespace LegendaryClient.Logic
 
         internal static string GetGameDirectory()
         {
-            string Directory = Path.Combine(ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases");
+            string Directory = Path.Combine(RootLocation, "RADS", "projects", "lol_game_client", "releases");
 
             DirectoryInfo dInfo = new DirectoryInfo(Directory);
             DirectoryInfo[] subdirs = null;
