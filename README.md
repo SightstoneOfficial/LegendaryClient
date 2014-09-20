@@ -9,6 +9,13 @@ https://www.youtube.com/watch?v=rVWdHeQcGwM&feature=youtu.be
 
 LegendaryClient Aram Game
 
+Working on a patcher to patch LC [Awesome splash though]
+I am aware of crashing
+
+#How To Install
+https://www.youtube.com/watch?v=ZWYn_vft5Kg&feature=youtu.be
+It come with a metro-like installer [no dlls needed, a stand alone program]
+
 LegacyPVP
 =========
 The new rework of LegendaryClient. I will leave this here to honor Snowl's work.
