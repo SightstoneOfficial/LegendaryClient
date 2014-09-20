@@ -38,11 +38,7 @@ namespace LCLog
         {
             if (!Directory.Exists(Path.Combine(ExecutingDirectory, "Logs")))
                 Directory.CreateDirectory(Path.Combine(ExecutingDirectory, "Logs"));
-            if (File.Exists(Path.Combine(ExecutingDirectory, "Logs", LogfileName)))
-            {
-                File.Delete(Path.Combine(ExecutingDirectory, "Logs", LogfileName));
-            }
-            LogfileName = LogfileName + "(" + DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToShortTimeString() + ")";
+            LogfileName = string.Format("{0}T{1} {2}", DateTime.Now.ToShortDateString().Replace("/", "_"), DateTime.Now.ToShortTimeString().Replace(" ", "").Replace(":", "-"), "_" + LogfileName); 
             var file = File.Create(Path.Combine(ExecutingDirectory, "Logs", LogfileName));
             file.Close();
         }
