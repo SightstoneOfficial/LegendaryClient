@@ -23,6 +23,12 @@ https://github.com/eddy5641/LegacyPVP
 This will still be worked on, You will not see much difference between the time I put into LegendaryClient (I finished a different project)
 LegacyPVP Is Based Of LegendaryClient, Except with more winterminty features [Sorry guys no 2/3/4 queue probably]
 
+#Accounts
+I will be playing by these names
+eddy5641 [na]
+awesomeeddy [na]
+imjustpro1545 [na]
+eddy5641 [euwe]
 
 Prerequisites
 =============
