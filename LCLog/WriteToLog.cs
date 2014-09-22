@@ -36,6 +36,7 @@ namespace LCLog
 
         public static void CreateLogFile()
         {
+            //Generate A Unique file to use as a log file
             if (!Directory.Exists(Path.Combine(ExecutingDirectory, "Logs")))
                 Directory.CreateDirectory(Path.Combine(ExecutingDirectory, "Logs"));
             LogfileName = string.Format("{0}T{1} {2}", DateTime.Now.ToShortDateString().Replace("/", "_"), DateTime.Now.ToShortTimeString().Replace(" ", "").Replace(":", "-"), "_" + LogfileName); 

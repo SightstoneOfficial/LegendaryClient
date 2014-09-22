@@ -228,7 +228,6 @@ namespace LegendaryClient
         private void HideWarning(object sender, RoutedEventArgs e)
         {
             Warn.Visibility = Visibility.Hidden;
-
         }
     }
 }

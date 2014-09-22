@@ -24,7 +24,7 @@ namespace RiotPatch
                 Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "projects", "lol_patcher"));
 
                 Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "solutions"));
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "lol_game_client_sln"));
+                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "solutions", "lol_game_client_sln"));
 
                 Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "system"));
             }

@@ -193,6 +193,7 @@
     <Compile Include="Logic\JSON\Champions.cs" />
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Patcher\LegendaryClientPatcher.cs" />
+    <Compile Include="Logic\Region\EUNE.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\TR.cs" />
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />

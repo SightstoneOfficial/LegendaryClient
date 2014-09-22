@@ -42,6 +42,8 @@
     <Compile Include="DownloadEverything.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RADS\projects\lol_air_client\DownloadAir.cs" />
+    <Compile Include="RADS\system\Files.cs" />
+    <Compile Include="StuffThatYouShouldn%27tHave\LatestVersion.cs" />
     <Compile Include="Uncompress.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +53,6 @@
     <Folder Include="RADS\projects\lol_launcher\" />
     <Folder Include="RADS\projects\lol_patcher\" />
     <Folder Include="RADS\solutions\lol_game_client_sln\" />
-    <Folder Include="RADS\system\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

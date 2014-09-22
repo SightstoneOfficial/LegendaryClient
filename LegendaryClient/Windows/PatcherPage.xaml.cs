@@ -101,59 +101,6 @@ namespace LegendaryClient.Windows
                     }));
                 };
 
-                #region LegendaryClient
-
-                string CurrentMD5 = GetMd5();
-                LogTextBox("MD5: " + CurrentMD5);
-
-
-                UpdateData legendaryupdatedata = new UpdateData();
-                var version = LegendaryClientPatcher.GetLatestLCVersion();
-                LogTextBox("Most Up to date LegendaryClient Version: " + version);
-                string versionAsString = version;
-
-                if (version != Client.LegendaryClientVersion)
-                {
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        MessageOverlay overlay = new MessageOverlay();
-                        overlay.MessageTextBox.Text = "An update is available LegendaryClient";
-                        overlay.MessageTitle.Content = "Update Notification";
-                        overlay.AcceptButton.Content = "Update LegendaryClient";
-                        overlay.AcceptButton.Click += update;
-                        overlay.MessageTextBox.TextChanged += Text_Changed;
-                        Client.OverlayContainer.Content = overlay.Content;
-                        //Client.OverlayContainer.Visibility = Visibility.Visible;
-
-                        CurrentProgressLabel.Content = "LegendaryClient Is Out of Date!";
-                        
-                    }));
-                    LogTextBox("LegendaryClient Is Out of Date!");
-
-                    //return;
-                }
-                else if (Client.LegendaryClientVersion == version)
-                {
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        CurrentProgressLabel.Content = "LegendaryClient Is Up To Date!";
-                        
-                    }));
-                    LogTextBox("LegendaryClient Is Up To Date!");
-                }
-                else if (version == null)
-                {
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        CurrentProgressLabel.Content = "Could not check LegendaryClient Version!";
-                        
-                    }));
-                    LogTextBox("Could not check LegendaryClient Version!");
-                    return;
-                }
-
-                #endregion LegendaryClient
-
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     TotalProgressLabel.Content = "20%";
@@ -305,12 +252,8 @@ namespace LegendaryClient.Windows
                 if (Directory.Exists(Path.Combine(GameLocation, GameClientSln)))
                 {
                     LogTextBox("League of Legends is Up-To-Date");
-                    //Client.LaunchGameLocation = Path.Combine(Client.GameLocation, GameClientSln);
-                    //C:\Riot Games\League of Legends\RADS\projects\lol_game_client\releases\0.0.0.243\deploy
                     Client.LOLCLIENTVERSION = LolVersion2;
-                    //C:\Riot Games\League of Legends\RADS\solutions\lol_game_client_sln\releases\0.0.1.50\deploy
                     Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln", "releases", GameClientSln, "deploy");
-                    //C:\Riot Games\League of Legends\RADS\projects\lol_air_client\releases\0.0.1.104
                     Client.LoLLauncherLocation = Path.Combine(lolRootPath, "RADS", "projects", "lol_air_client", "releases", LauncherVersion, "deploy");
                     Client.RootLocation = lolRootPath;
                 }
@@ -439,6 +382,7 @@ namespace LegendaryClient.Windows
                 return string.Empty;
         }
 
+        [Obsolete]
         private void update(object sender, EventArgs e)
         {
             UpdateData legendaryupdatedata = new UpdateData();
@@ -458,6 +402,7 @@ namespace LegendaryClient.Windows
             //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
         }
 
+        [Obsolete]
         private void updatebetausers(object sender, EventArgs e)
         {
             UpdateData legendaryupdatedata = new UpdateData();
@@ -477,17 +422,6 @@ namespace LegendaryClient.Windows
             //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
         }
-
-        public void Text_Changed(object sender, RoutedEventArgs e)
-        {
-            MessageOverlay overlay = new MessageOverlay();
-                        //overlay.AcceptButton.Click += update;
-            if (overlay.MessageTextBox.Text == "NO")
-            {
-                overlay.AcceptButton.Click -= update;
-                overlay.Visibility = Visibility.Hidden;
-            }
-        }
         void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             double bytesIn = double.Parse(e.BytesReceived.ToString());
@@ -500,7 +434,7 @@ namespace LegendaryClient.Windows
                 CurrentProgressLabel.Content = "Now downloading LegendaryClient";
             }));
         }
-
+        [Obsolete]
         void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -531,7 +465,6 @@ namespace LegendaryClient.Windows
                 LogTextBox("Finished Download");
                 CurrentProgressBar.Value = 0;
             }));
-
         }
 
 
@@ -665,7 +598,7 @@ namespace LegendaryClient.Windows
             }
             
         }
-
+        [Obsolete]
         private void GetAllExe(string PackageManifest)
         {
             string[] FileMetaData = PackageManifest.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
@@ -720,7 +653,7 @@ namespace LegendaryClient.Windows
                 }
             }
         }
-
+        [Obsolete]
         private void UpdateFrom(string version, string PackageManifest)
         {
             int CurrentVersionNumber = Convert.ToInt32(version.Split('.')[3]);
@@ -758,7 +691,7 @@ namespace LegendaryClient.Windows
                 }
             }
         }
-
+        [Obsolete]
         private void CheckIfPatched()
         {
             string LolVersion = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
@@ -769,7 +702,7 @@ namespace LegendaryClient.Windows
             LolDataVersion = CurrentLolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
             LatestLolDataVersion = LolVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
         }
-
+        [Obsolete]
         private bool ExpandRAF(string fileDirectory)
         {
             LogTextBox("Loading RAF Packages in " + fileDirectory);

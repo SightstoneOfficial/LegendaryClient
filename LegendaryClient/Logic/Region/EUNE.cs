@@ -3,11 +3,11 @@ using System.Net;
 
 namespace LegendaryClient.Logic.Region
 {
-    public sealed class EUN : BaseRegion
+    public sealed class EUNE : BaseRegion
     {
         public override string RegionName
         {
-            get { return "EUN"; }
+            get { return "EUNE"; }
         }
 
         public override string InternalName
@@ -50,7 +50,7 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest"); }
+            get { return new Uri("http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest/"); }
             //http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest/featured
         }
 
