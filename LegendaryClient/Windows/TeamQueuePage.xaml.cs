@@ -390,10 +390,10 @@ namespace LegendaryClient.Windows
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            MatchMakerParamsForTeam parameters = new MatchMakerParamsForTeam();
+            MatchMakerParams parameters = new MatchMakerParams();
             parameters.Languages = null;
             QueueIds.Add(queueId);
-            parameters.QueueIds = QueueIds;
+            parameters.QueueIds = QueueIds.ToArray();
             parameters.InvitationId = CurrentLobby.InvitationID;
             parameters.TeamId = null;
             parameters.LastMaestroMessage = null;
