@@ -91,10 +91,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PVPNetConnect, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Client\PVPNetConnect.dll</HintPath>
-    </Reference>
     <Reference Include="RAFlibPlus">
       <HintPath>..\DLLS\RAFlibPlus.dll</HintPath>
     </Reference>
@@ -966,6 +962,10 @@
     <ProjectReference Include="..\LCLog\LCLog.csproj">
       <Project>{b9acf25e-89ae-4cc8-9041-1e74822dac2d}</Project>
       <Name>LCLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PVPNetConnect\PVPNetConnect.csproj">
+      <Project>{93dcbebf-c652-40ed-a003-cff421f68b4f}</Project>
+      <Name>PVPNetConnect</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
