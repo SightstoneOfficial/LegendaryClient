@@ -107,6 +107,9 @@ namespace LegendaryClient.Windows
                     TotalProgessBar.Value = 20;
                 }));
 
+                #region idk
+                #endregion idk
+
                 #region DDragon
 
                 System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();

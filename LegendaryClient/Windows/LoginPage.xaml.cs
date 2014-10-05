@@ -19,6 +19,7 @@ using System.Threading;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -36,14 +37,14 @@ namespace LegendaryClient.Windows
             Version.TextChanged += WaterTextbox_TextChanged;
             Version.Text = Client.Version;
 
+
             WebClient client = new WebClient();
-            //var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
-            SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
+            client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
+            SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
             SoundPlayer.Play();
             Sound.IsChecked = false;
+            LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.swf");
 
-            //VideoPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "login.swf"));
-            //VideoPlayer.Play();
             Video.IsChecked = false;
 
             //Get client data after patcher completed
@@ -112,7 +113,7 @@ namespace LegendaryClient.Windows
             }
 
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
-            LoginImage.Source = new BitmapImage(uriSource);//*/
+            //LoginImage.Source = new BitmapImage(uriSource);//*/
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&
                 !String.IsNullOrWhiteSpace(Properties.Settings.Default.Region) &&
                 Properties.Settings.Default.AutoLogin)
@@ -141,8 +142,8 @@ namespace LegendaryClient.Windows
             else
             {
                 WebClient client = new WebClient();
-                var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
-                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
+                client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
+                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
                 PlayingSound = true;
@@ -153,17 +154,14 @@ namespace LegendaryClient.Windows
         {
             if(PlayingVideo == true)
             {
-                //VideoPlayer.Pause();
                 Video.IsChecked = true;
                 PlayingVideo = false;
-                //VideoPlayer.Visibility = Visibility.Hidden;
+                LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
             }
             else
             {
                 WebClient client = new WebClient();
-                var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
-                //VideoPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
-                //VideoPlayer.Play();
+                LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.swf");
                 Video.IsChecked = false;
                 PlayingVideo = true;
             }

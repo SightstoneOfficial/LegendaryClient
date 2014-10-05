@@ -13,6 +13,7 @@
         <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
 
+        <my:WebControl x:Name="LoginPic" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1"/>
         <Grid x:Name="HideGrid" HorizontalAlignment="Left" Height="331" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
             <Grid.Effect>
                 <DropShadowEffect />
@@ -31,7 +32,7 @@
             </Grid>
             <Controls1:TextBoxWatermarked x:Name="Version" HorizontalAlignment="Right" TextWrapping="Wrap" Watermark="Client Version Override" VerticalAlignment="Top" Margin="0,301,10,0" Height="24" Width="330"/>
             <CheckBox x:Name="Sound" Click="DisableSound_Click" Content="Disable Login Music" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="False" />
-            <CheckBox x:Name="Video" Content="Disable Menu Animations" HorizontalAlignment="Right" Margin="0,280,14,0" VerticalAlignment="Top" Foreground="White" IsChecked="False" />
+            <CheckBox x:Name="Video" Click="DisableVideo_Click" Content="Disable Menu Animations" HorizontalAlignment="Right" Margin="0,280,14,0" VerticalAlignment="Top" Foreground="White" IsChecked="False" />
         </Grid>
 
         <Controls:ProgressRing x:Name="LoggingInProgressRing" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,100" Visibility="Hidden">
