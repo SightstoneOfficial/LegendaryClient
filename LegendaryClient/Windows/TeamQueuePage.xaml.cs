@@ -392,6 +392,7 @@ namespace LegendaryClient.Windows
         {
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.Languages = null;
+            QueueIds = new List<int>();
             QueueIds.Add(queueId);
             parameters.QueueIds = QueueIds.ToArray();
             parameters.InvitationId = CurrentLobby.InvitationID;

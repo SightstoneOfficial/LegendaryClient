@@ -13,7 +13,7 @@
         <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
 
-        <my:WebControl x:Name="LoginPic" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1"/>
+        <MediaElement x:Name="LoginPic" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1"/>
         <Grid x:Name="HideGrid" HorizontalAlignment="Left" Height="331" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
             <Grid.Effect>
                 <DropShadowEffect />
