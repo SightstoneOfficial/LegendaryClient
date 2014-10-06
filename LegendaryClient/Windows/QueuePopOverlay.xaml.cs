@@ -73,6 +73,18 @@ namespace LegendaryClient.Windows
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.SwitchPage(new ChampSelectPage());
                     }
+                    else if (QueueDTO.GameState == "PRE_CHAMP_SELECT")
+                    {
+                        HasStartedChampSelect = true;
+                        Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                        string s = QueueDTO.GameState;
+                        Client.ChampSelectDTO = QueueDTO;
+                        Client.GameID = QueueDTO.Id;
+                        Client.ChampSelectDTO = QueueDTO;
+                        Client.LastPageContent = Client.Container.Content;
+                        Client.OverlayContainer.Visibility = Visibility.Hidden;
+                        Client.SwitchPage(new ChampSelectPage());
+                    }
 
                     int i = 0;
                     string PlayerParticipantStatus = (string)QueueDTO.StatusOfParticipants;
@@ -105,6 +117,7 @@ namespace LegendaryClient.Windows
 
         public async void InitializePop(GameDTO InitialDTO)
         {
+            
             List<Participant> AllParticipants = InitialDTO.TeamOne;
             AllParticipants.AddRange(InitialDTO.TeamTwo);
             if (InitialDTO.TeamOne[0] is ObfuscatedParticipant)
@@ -128,10 +141,31 @@ namespace LegendaryClient.Windows
                     }
                     else
                     {
-                        AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(playerPart.SummonerId);
-                        player.PlayerLabel.Content = Summoner.Summoner.Name;
-                        player.RankLabel.Content = "";
-                        Team2ListBox.Items.Add(player);
+                        try
+                        {
+                            AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(playerPart.AccountId);
+                            player.PlayerLabel.Content = Summoner.Summoner.Name;
+                            SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.AccountId);
+                            foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
+                            {
+                                if (x.Queue == "RANKED_SOLO_5x5")
+                                {
+                                    player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+                                }
+                            }
+                            //People can be ranked without having solo queue so don't put if statement checking List.Length
+                            if (String.IsNullOrEmpty((string)player.RankLabel.Content))
+                            {
+                                player.RankLabel.Content = "Unranked";
+                            }
+                            Team2ListBox.Items.Add(player);
+                        }
+                        catch
+                        {
+                            player.PlayerLabel.Content = "Enemy";
+                            player.RankLabel.Content = "";
+                            Team2ListBox.Items.Add(player);
+                        }
                     }
                 }
                 else

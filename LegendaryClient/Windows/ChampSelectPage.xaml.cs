@@ -7,6 +7,7 @@ using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
 using PVPNetConnect.RiotObjects.Platform.Trade;
@@ -404,7 +405,16 @@ namespace LegendaryClient.Windows
                         if (tempParticipant is PlayerParticipant)
                         {
                             PlayerParticipant player = tempParticipant as PlayerParticipant;
-                            control.PlayerName.Content = player.SummonerName;
+                            if (!String.IsNullOrEmpty(player.SummonerName))
+                                control.PlayerName.Content = player.SummonerName;
+                            else
+                            {
+                                AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.SummonerId);
+                                if (!String.IsNullOrEmpty(Summoner.Summoner.Name))
+                                    control.PlayerName.Content = Summoner.Summoner.Name;
+                                else
+                                    control.PlayerName.Content = "Unknown Player";
+                            }
 
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
                             {
