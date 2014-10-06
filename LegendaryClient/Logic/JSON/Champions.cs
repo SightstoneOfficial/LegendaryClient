@@ -19,9 +19,9 @@ namespace LegendaryClient.Logic.JSON
         public static void InsertExtraChampData(champions Champ)
         {
             string champJSON = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "champion", Champ.name + ".json"));
-            
-            //Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(champJSON);
-            Dictionary<string, object> deserializedJSON = JsonConvert.DeserializeObject<Dictionary<string, object>>(champJSON);
+            JavaScriptSerializer serializer = new JavaScriptSerializer();
+            Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(champJSON);
+            //Dictionary<string, object> deserializedJSON = JsonConvert.DeserializeObject<Dictionary<string, object>>(champJSON);
             Dictionary<string, object> temp = deserializedJSON["data"] as Dictionary<string, object>;
             if (Champ.name == "Kogmaw")
                 Champ.name = "KogMaw";
