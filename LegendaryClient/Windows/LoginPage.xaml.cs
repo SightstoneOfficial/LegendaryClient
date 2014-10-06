@@ -20,6 +20,7 @@ using System.Threading;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -37,14 +38,17 @@ namespace LegendaryClient.Windows
             Version.TextChanged += WaterTextbox_TextChanged;
             Version.Text = Client.Version;
 
-            WebClient client = new WebClient();
-            //var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
-            SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
+
+            
+            SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
             SoundPlayer.Play();
             Sound.IsChecked = false;
+            LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
+            LoginPic.LoadedBehavior = MediaState.Manual;
+            LoginPic.MediaEnded += LoginPic_MediaEnded;
+            SoundPlayer.MediaEnded += SoundPlayer_MediaEnded;
+            LoginPic.Play();
 
-            //VideoPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "login.swf"));
-            //VideoPlayer.Play();
             Video.IsChecked = false;
 
             //Get client data after patcher completed
@@ -115,7 +119,7 @@ namespace LegendaryClient.Windows
             }
 
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
-            LoginImage.Source = new BitmapImage(uriSource);//*/
+            //LoginImage.Source = new BitmapImage(uriSource);//*/
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&
                 !String.IsNullOrWhiteSpace(Properties.Settings.Default.Region) &&
                 Properties.Settings.Default.AutoLogin)
@@ -124,6 +128,12 @@ namespace LegendaryClient.Windows
                 LoginButton_Click(null, null);
             }
             
+        }
+
+        void LoginPic_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            LoginPic.Position = TimeSpan.FromSeconds(0);
+            LoginPic.Play();
         }
 
         private void WaterTextbox_TextChanged(object sender, RoutedEventArgs e)
@@ -143,30 +153,31 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                WebClient client = new WebClient();
-                var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
-                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
+                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
                 PlayingSound = true;
             }
+        }
+
+        void SoundPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        {
+            SoundPlayer.Position = TimeSpan.FromSeconds(0);
+            SoundPlayer.Play();
         }
         bool PlayingVideo = true;
         private void DisableVideo_Click(object sender, RoutedEventArgs e)
         {
             if(PlayingVideo == true)
             {
-                //VideoPlayer.Pause();
                 Video.IsChecked = true;
                 PlayingVideo = false;
-                //VideoPlayer.Visibility = Visibility.Hidden;
+                LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
             }
             else
             {
-                WebClient client = new WebClient();
-                var MpFileName = client.DownloadString(new Uri("http://legendaryclient.com/update.html"));
-                //VideoPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "aud.mp3"));
-                //VideoPlayer.Play();
+                LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
+                LoginPic.Play();
                 Video.IsChecked = false;
                 PlayingVideo = true;
             }

@@ -37,6 +37,21 @@ namespace LegendaryClient.Controls
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
             GameMetaData = stats.GameMetaData;
             InvitationStateAsString = stats.InvitationStateAsString;
+            if (InvitationStateAsString == "ON_HOLD")
+            {
+                this.Visibility = Visibility.Hidden;
+                return;
+            }
+            else if (InvitationStateAsString == "TERMINATED")
+            {
+                this.Visibility = Visibility.Hidden;
+                return;
+            }
+            else if (InvitationStateAsString == "REVOKED")
+            {
+                this.Visibility = Visibility.Hidden;
+                return;
+            }
             InvitationState = stats.InvitationState;
             Inviter = stats.Inviter.SummonerName;
             InvitationId = stats.InvitationId;

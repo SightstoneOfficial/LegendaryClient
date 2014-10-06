@@ -106,6 +106,12 @@ namespace LegendaryClient.Windows
                     TotalProgressLabel.Content = "20%";
                     TotalProgessBar.Value = 20;
                 }));
+                #region idk
+
+                client = new WebClient();
+                client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
+                client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp4"), Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
+                #endregion idk
 
                 #region DDragon
 

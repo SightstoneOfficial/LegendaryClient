@@ -320,13 +320,16 @@ namespace LegendaryClient.Windows
             }
             else if (message.GetType() == typeof(GameDTO) && Client.runonce == false)
             {
+                
                 GameDTO Queue = message as GameDTO;
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                if (Queue.GameState == "JOINING_CHAMP_SELECT")
                 {
-                    Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
-                    Client.OverlayContainer.Visibility = Visibility.Visible;
-                }));
-                Client.runonce = true;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                    }));
+                }
             }
         }
 
@@ -392,6 +395,7 @@ namespace LegendaryClient.Windows
         {
             MatchMakerParams parameters = new MatchMakerParams();
             parameters.Languages = null;
+            QueueIds = new List<int>();
             QueueIds.Add(queueId);
             parameters.QueueIds = QueueIds.ToArray();
             parameters.InvitationId = CurrentLobby.InvitationID;

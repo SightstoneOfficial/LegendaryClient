@@ -3,10 +3,12 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
@@ -21,6 +23,8 @@ namespace LegendaryClient.Logic.JSON
             //Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(champJSON);
             Dictionary<string, object> deserializedJSON = JsonConvert.DeserializeObject<Dictionary<string, object>>(champJSON);
             Dictionary<string, object> temp = deserializedJSON["data"] as Dictionary<string, object>;
+            if (Champ.name == "Kogmaw")
+                Champ.name = "KogMaw";
             Dictionary<string, object> champData = temp[Champ.name] as Dictionary<string, object>;
             //Dictionary<string, object> champData = serializer.Deserialize<Dictionary<string, object>>(temp2);
 
