@@ -268,66 +268,6 @@ namespace LegendaryClient.Windows
                     LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
                     return;
                 }
-
-
-                if (!Directory.Exists("RADS"))
-                {
-                    Directory.CreateDirectory("RADS");
-                }
-
-                if (!File.Exists(Path.Combine("RADS", "VERSION_LOL")))
-                {
-                    var VersionGAME = File.Create(Path.Combine("RADS", "VERSION_LOL"));
-                    VersionGAME.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
-                    VersionGAME.Close();
-                }
-
-                string LatestGame = patcher.GetLatestGame();
-                LogTextBox("League Of Legends Version: " + LatestGame);
-                string GameVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
-                LogTextBox("Current League of Legends Version: " + GameVersion);
-                RetrieveCurrentInstallation = false;
-                string NGameLocation = "";
-
-                if (GameVersion != GameClient)
-                {
-                    LogTextBox("Checking for existing League of Legends Installation");
-                    NGameLocation = Path.Combine("League of Legends", "RADS");
-                    if (Directory.Exists(NGameLocation))
-                    {
-                        RetrieveCurrentInstallation = true;
-                    }
-                    else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", NGameLocation)))
-                    {
-                        RetrieveCurrentInstallation = true;
-                        NGameLocation = Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", NGameLocation);
-                    }
-                    else
-                    {
-                        LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
-                            + Client.ExecutingDirectory
-                            + " to make the patching process quicker");
-                    }
-
-                    if (RetrieveCurrentInstallation)
-                    {
-                        LogTextBox("Getting League Of Legends from " + NGameLocation);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            CurrentProgressLabel.Content = "Copying League of Legends";
-                        }));
-                        LogTextBox("Retrieved currently installed League of Legends");
-                        LogTextBox("Current League of Legends Version: " + NGameLocation);
-                    }
-                }
-
-                if (GameVersion != LatestGame)
-                {
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        CurrentProgressLabel.Content = "Retrieving League of Legends";
-                    }));
-                }
                 #endregion lol_game_client
 
                 
