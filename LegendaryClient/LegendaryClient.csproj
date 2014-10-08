@@ -95,7 +95,7 @@
       <HintPath>..\DLLS\RAFlibPlus.dll</HintPath>
     </Reference>
     <Reference Include="rtmp-sharp">
-      <HintPath>..\..\..\LegendaryClient\DLLS\rtmp-sharp.dll</HintPath>
+      <HintPath>..\..\..\..\Desktop\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
