@@ -116,13 +116,13 @@ namespace LegendaryClient.Windows
                 #region DDragon
 
                 System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
-                if (!Directory.Exists("Assets"))
+                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets")))
                 {
-                    Directory.CreateDirectory("Assets");
+                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets"));
                 }
-                if (!File.Exists(Path.Combine("Assets", "VERSION_DDRagon")))
+                if (!File.Exists(Path.Combine(Client.ExecutingDirectory,  "Assets", "VERSION_DDRagon")))
                 {
-                    var VersionLOL = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
+                    var VersionLOL = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
                     VersionLOL.Write(encoding.GetBytes("0.0.0"), 0, encoding.GetBytes("0.0.0").Length);
                     
                     VersionLOL.Close();
@@ -142,9 +142,9 @@ namespace LegendaryClient.Windows
 
                 if (patcher.DDragonVersion != DDragonVersion)
                 {
-                    if (!Directory.Exists(Path.Combine("Assets", "temp")))
+                    if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "temp")))
                     {
-                        Directory.CreateDirectory(Path.Combine("Assets", "temp"));
+                        Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
                     }
 
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -152,28 +152,28 @@ namespace LegendaryClient.Windows
                         CurrentProgressLabel.Content = "Downloading DataDragon";
                     }));
 
-                    client.DownloadFile(DDragonDownloadURL, Path.Combine("Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
+                    client.DownloadFile(DDragonDownloadURL, Path.Combine(Client.ExecutingDirectory, "Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
 
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         CurrentProgressLabel.Content = "Extracting DataDragon";
                     }));
 
-                    Stream inStream = File.OpenRead(Path.Combine("Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
+                    Stream inStream = File.OpenRead(Path.Combine(Client.ExecutingDirectory, "Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
                     
                     using (GZipInputStream gzipStream = new GZipInputStream(inStream))
                     {
                         TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
-                        tarArchive.ExtractContents(Path.Combine("Assets", "temp"));
+                        tarArchive.ExtractContents(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
                         tarArchive.CloseArchive();
                     }
                     inStream.Close();
 
-                    Copy(Path.Combine("Assets", "temp", patcher.DDragonVersion, "data"), Path.Combine("Assets", "data"));
-                    Copy(Path.Combine("Assets", "temp", patcher.DDragonVersion, "img"), Path.Combine("Assets"));
-                    DeleteDirectoryRecursive(Path.Combine("Assets", "temp"));
+                    Copy(Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion, "data"), Path.Combine(Client.ExecutingDirectory, "Assets", "data"));
+                    Copy(Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion, "img"), Path.Combine(Client.ExecutingDirectory, "Assets"));
+                    DeleteDirectoryRecursive(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
 
-                    var VersionDDragon = File.Create(Path.Combine("Assets", "VERSION_DDRagon"));
+                    var VersionDDragon = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
                     VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
 
                     Client.Version = DDragonVersion;
@@ -195,9 +195,9 @@ namespace LegendaryClient.Windows
 
                 #region lol_air_client
 
-                if (!File.Exists(Path.Combine("Assets", "VERSION_AIR")))
+                if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                 {
-                    var VersionAIR = File.Create(Path.Combine("Assets", "VERSION_AIR"));
+                    var VersionAIR = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                     VersionAIR.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
                     VersionAIR.Close();
                 }
@@ -267,66 +267,6 @@ namespace LegendaryClient.Windows
                 {
                     LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
                     return;
-                }
-
-
-                if (!Directory.Exists("RADS"))
-                {
-                    Directory.CreateDirectory("RADS");
-                }
-
-                if (!File.Exists(Path.Combine("RADS", "VERSION_LOL")))
-                {
-                    var VersionGAME = File.Create(Path.Combine("RADS", "VERSION_LOL"));
-                    VersionGAME.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
-                    VersionGAME.Close();
-                }
-
-                string LatestGame = patcher.GetLatestGame();
-                LogTextBox("League Of Legends Version: " + LatestGame);
-                string GameVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
-                LogTextBox("Current League of Legends Version: " + GameVersion);
-                RetrieveCurrentInstallation = false;
-                string NGameLocation = "";
-
-                if (GameVersion != GameClient)
-                {
-                    LogTextBox("Checking for existing League of Legends Installation");
-                    NGameLocation = Path.Combine("League of Legends", "RADS");
-                    if (Directory.Exists(NGameLocation))
-                    {
-                        RetrieveCurrentInstallation = true;
-                    }
-                    else if (Directory.Exists(Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", NGameLocation)))
-                    {
-                        RetrieveCurrentInstallation = true;
-                        NGameLocation = Path.Combine(System.IO.Path.GetPathRoot(Environment.SystemDirectory), "Riot Games", NGameLocation);
-                    }
-                    else
-                    {
-                        LogTextBox("Unable to find existing League of Legends. Copy your League of Legends folder into + "
-                            + Client.ExecutingDirectory
-                            + " to make the patching process quicker");
-                    }
-
-                    if (RetrieveCurrentInstallation)
-                    {
-                        LogTextBox("Getting League Of Legends from " + NGameLocation);
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            CurrentProgressLabel.Content = "Copying League of Legends";
-                        }));
-                        LogTextBox("Retrieved currently installed League of Legends");
-                        LogTextBox("Current League of Legends Version: " + NGameLocation);
-                    }
-                }
-
-                if (GameVersion != LatestGame)
-                {
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        CurrentProgressLabel.Content = "Retrieving League of Legends";
-                    }));
                 }
                 #endregion lol_game_client
 
