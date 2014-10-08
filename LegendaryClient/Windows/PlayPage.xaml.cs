@@ -199,7 +199,6 @@ namespace LegendaryClient.Windows
                                 seperators[1].Add(item);
                                 break;
                             case "Ranked 5v5":
-                                item.TeamQueueButton.IsEnabled = false;
                                 seperators[2].Add(item);
                                 break;
                             case "Ranked Team 5v5":
