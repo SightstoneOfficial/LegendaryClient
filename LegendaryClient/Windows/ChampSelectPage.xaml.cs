@@ -120,7 +120,7 @@ namespace LegendaryClient.Windows
             }//*/
         }
 
-        internal static object LobbyContent = new object();
+        internal static object LobbyContent;
 
         private async void StartChampSelect()
         {

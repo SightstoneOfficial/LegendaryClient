@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for JoinQueue.xaml
+    /// Interaction logic for GameSeperator.xaml
     /// </summary>
     public partial class GameSeperator : UserControl
     {

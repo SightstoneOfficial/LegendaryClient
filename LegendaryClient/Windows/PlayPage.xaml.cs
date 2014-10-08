@@ -29,7 +29,7 @@ namespace LegendaryClient.Windows
         private Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
         private GameSeperator[] seperators = new GameSeperator[3];
         private List<double> Queues = new List<double>();
-        //private int QueueID;
+        private int QueueID;
         private bool InQueue = false;
         //JoinQueue item = new JoinQueue();
 

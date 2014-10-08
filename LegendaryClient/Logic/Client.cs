@@ -72,7 +72,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Retreives UpdateDate For LegendaryClient
         /// </summary>
-        internal static List<UpdateData> updateData = new List<UpdateData>();
+        internal static List<UpdateData> updateData;
 
         /// <summary>
         /// Stuff
@@ -498,17 +498,17 @@ namespace LegendaryClient.Logic
 
         internal static Grid MainGrid;
         internal static Grid NotificationGrid;
-        internal static Grid StatusGrid = new Grid();
+        internal static Grid StatusGrid;
 
         internal static Label StatusLabel;
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
         internal static Button PlayButton;
-        internal static Button HideTeamQueuePage = new Button();
+        internal static Button HideTeamQueuePage;
         internal static ContentControl ChatContainer;
         internal static ContentControl StatusContainer;
         internal static ContentControl NotificationOverlayContainer;
-        internal static ContentControl NotificationContainer = new ContentControl();
+        internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
         internal static ChatItem ChatItem;
 
@@ -594,7 +594,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// The region the user is connecting to
         /// </summary>
-        internal static bool Chunk = false;
+        internal static bool Chunk;
 
         /// <summary>
         /// Is the client logged in to the League of Legends server
@@ -629,7 +629,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// A recorder
         /// </summary>
-        internal static ReplayRecorder recorder = null;
+        internal static ReplayRecorder recorder;
 
         /// <summary>
         /// When going into champion select reuse the last DTO to set up data
@@ -684,8 +684,6 @@ namespace LegendaryClient.Logic
         }
 
         //internal static Inviter CurrentInviter;
-
-#pragma warning disable 4014
 
         internal static void OnMessageReceived(object sender, object message)
         {
@@ -847,7 +845,7 @@ namespace LegendaryClient.Logic
         }
 
 
-        //private static int counter = 0;
+        private static int counter;
 
         internal static string Location;
         internal static string LoLLauncherLocation;
