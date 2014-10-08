@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("PVPNetConnect")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("League of Legends RTMP Client")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PVPNetConnect")]
