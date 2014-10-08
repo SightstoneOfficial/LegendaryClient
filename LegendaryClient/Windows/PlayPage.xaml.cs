@@ -204,17 +204,11 @@ namespace LegendaryClient.Windows
                                 break;
                             case "Ranked Team 5v5":
                                 item.QueueButton.IsEnabled = false;
-                                item.TeamQueueButton.IsEnabled = false;
-                                item.TeamQueueButton.Content = "In Maitenance...";
                                 seperators[2].Add(item);
                                 break;
                             case "Ranked Team 3v3":
                                 item.QueueButton.IsEnabled = false;
-                                item.TeamQueueButton.IsEnabled = false;
-                                item.TeamQueueButton.Content = "In Maitenance...";
                                 seperators[2].Add(item);
-                                break;
-                            default:
                                 break;
                         }
                         configs.Add(config.Id, item);
