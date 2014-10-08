@@ -11,6 +11,7 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Login;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -62,6 +63,8 @@ namespace LegendaryClient.Windows
             {
                 var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath), UriKind.Absolute);
                 c.icon = new BitmapImage(Source);
+                Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
+                
                 Champions.InsertExtraChampData(c);
             }
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()

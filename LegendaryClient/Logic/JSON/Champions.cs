@@ -1,4 +1,5 @@
 ﻿using LegendaryClient.Logic.SQLite;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,10 +21,12 @@ namespace LegendaryClient.Logic.JSON
             string champJSON = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "champion", Champ.name + ".json"));
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(champJSON);
+            //Dictionary<string, object> deserializedJSON = JsonConvert.DeserializeObject<Dictionary<string, object>>(champJSON);
             Dictionary<string, object> temp = deserializedJSON["data"] as Dictionary<string, object>;
             if (Champ.name == "Kogmaw")
                 Champ.name = "KogMaw";
             Dictionary<string, object> champData = temp[Champ.name] as Dictionary<string, object>;
+            //Dictionary<string, object> champData = serializer.Deserialize<Dictionary<string, object>>(temp2);
 
             Champ.Lore = champData["lore"] as string;
             Champ.ResourceType = champData["partype"] as string;
