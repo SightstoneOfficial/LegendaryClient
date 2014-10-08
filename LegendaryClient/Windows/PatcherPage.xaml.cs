@@ -18,6 +18,7 @@ using System.Linq;
 using RAFlibPlus;
 using ComponentAce.Compression.Libs.zlib;
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace LegendaryClient.Windows
 {
@@ -201,15 +202,14 @@ namespace LegendaryClient.Windows
                     VersionAIR.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
                     VersionAIR.Close();
                 }
-
                 string LatestAIR = patcher.GetLatestAir();
                 LogTextBox("Air Assets Version: " + LatestAIR);
                 string AirVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                 LogTextBox("Current Air Assets Version: " + AirVersion);
-                bool RetrieveCurrentInstallation = false;
+                //bool RetrieveCurrentInstallation = false; //just added this?
                 WebClient UpdateClient = new WebClient();
                 string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting");
-                string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[1]; //Temporary fix, they messed up (version 0.0.1.113 doesn't exist yet) for the new patch.
                 
                 if (AirVersion != LatestVersion)
                 {
@@ -218,6 +218,7 @@ namespace LegendaryClient.Windows
                     GetAllPngs(Package);
                     if (File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
                         File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                    
                     UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
                     if (File.Exists(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
@@ -328,7 +329,7 @@ namespace LegendaryClient.Windows
                 return string.Empty;
         }
 
-        [Obsolete]
+        /*[Obsolete]
         private void update(object sender, EventArgs e)
         {
             UpdateData legendaryupdatedata = new UpdateData();
@@ -367,7 +368,8 @@ namespace LegendaryClient.Windows
             client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("Temp", "LegendaryClientBetaTesterUpdateFile.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
-        }
+        }*/ //So many warnings in VS
+
         void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             double bytesIn = double.Parse(e.BytesReceived.ToString());

@@ -25,9 +25,11 @@ namespace LegendaryClient.Windows
         private int i = 0;
         private static Timer PingTimer;
         private Dictionary<double, JoinQueue> configs = new Dictionary<double, JoinQueue>();
+        private Dictionary<double, GameSeperator> gameConfigs = new Dictionary<double, GameSeperator>(); //Add functionality later
         private Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
+        private GameSeperator[] seperators = new GameSeperator[3];
         private List<double> Queues = new List<double>();
-        private int QueueID;
+        //private int QueueID;
         private bool InQueue = false;
         //JoinQueue item = new JoinQueue();
 
@@ -69,6 +71,31 @@ namespace LegendaryClient.Windows
             double PingAverage = HighestPingTime(Client.Region.PingAddresses);
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
+                for (int b = 0; b < 3; b++)
+                {
+                    if (!gameConfigs.ContainsKey(b))
+                    {
+                        seperators[b] = new GameSeperator(QueueListView);
+                        seperators[b].Height = 80;
+                        switch (b)
+                        {
+                            case 0:
+                                seperators[b].QueueLabel.Content = Client.InternalQueueToPretty("Bot Queues");
+                                seperators[b].Tag = "Bot";
+                                break;
+                            case 1:
+                                seperators[b].QueueLabel.Content = Client.InternalQueueToPretty("Normal Queues");
+                                seperators[b].Tag = "Normal";
+                                break;
+                            case 2:
+                                seperators[b].QueueLabel.Content = Client.InternalQueueToPretty("Ranked Queues");
+                                seperators[b].Tag = "Ranked";
+                                break;
+                        }
+                        gameConfigs.Add(b, seperators[b]);
+                        QueueListView.Items.Add(seperators[b]);
+                    }
+                }
                 //Ping
                 PingLabel.Content = Math.Round(PingAverage).ToString() + "ms";
                 if (PingAverage == 0)
@@ -117,17 +144,81 @@ namespace LegendaryClient.Windows
                     item.TBCreateBotton.Click += TBCreateBotton_Click;
                     item.TBSearchButton.Click += TBSearchButton_Click;
                     item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
+                    if (item.QueueLabel.Content as string == "matching-queue-BOT_EASY-5x5-game-queue")
+                        item.QueueLabel.Content = "Bot 5v5 Easy";
+                    else if (item.QueueLabel.Content as string == "matching-queue-BOT_MEDIUM-5x5-game-queue")
+                        item.QueueLabel.Content = "Bot 5v5 Medium";
                     QueueInfo t = await Client.PVPNet.GetQueueInformation(config.Id);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
+                    seperators[0].UpdateLabels();
+                    seperators[1].UpdateLabels();
+                    seperators[2].UpdateLabels();
                     TimeSpan time = TimeSpan.FromMilliseconds(t.WaitTime);
                     string answer = string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds);
                     item.WaitTimeLabel.Content = "Avg Wait Time: " + answer;
                     if (!configs.ContainsKey(config.Id))
                     {
+                        switch (Client.InternalQueueToPretty(config.CacheName))
+                        {
+                            case "matching-queue-BOT_EASY-5x5-game-queue":
+                                seperators[0].Add(item);
+                                break;
+                            case "Bot 5v5 Intro":
+                                seperators[0].Add(item);
+                                break;
+                            case "matching-queue-BOT_MEDIUM-5x5-game-queue":
+                                seperators[0].Add(item);
+                                break;
+                            case "Dominion Bot 5v5 Beginner":
+                                seperators[0].Add(item);
+                                break;
+                            case "Bot 3v3 Beginner":
+                                seperators[0].Add(item);
+                                break;
+                            case "ARAM 5v5":
+                                seperators[1].Add(item);
+                                break;
+                            case "Teambuilder 5v5 Beta (In Dev. Do Not Play)":
+                                item.QueueButton.IsEnabled = false;
+                                item.TeamQueueButton.IsEnabled = false;
+                                seperators[1].Add(item);
+                                break;
+                            case "Normal 3v3":
+                                seperators[1].Add(item);
+                                break;
+                            case "Draft 5v5":
+                                seperators[1].Add(item);
+                                break;
+                            case "Normal 5v5":
+                                seperators[1].Add(item);
+                                break;
+                            case "Dominion Draft 5v5":
+                                seperators[1].Add(item);
+                                break;
+                            case "Dominion 5v5":
+                                seperators[1].Add(item);
+                                break;
+                            case "Ranked 5v5":
+                                item.TeamQueueButton.IsEnabled = false;
+                                seperators[2].Add(item);
+                                break;
+                            case "Ranked Team 5v5":
+                                item.QueueButton.IsEnabled = false;
+                                item.TeamQueueButton.IsEnabled = false;
+                                item.TeamQueueButton.Content = "In Maitenance...";
+                                seperators[2].Add(item);
+                                break;
+                            case "Ranked Team 3v3":
+                                item.QueueButton.IsEnabled = false;
+                                item.TeamQueueButton.IsEnabled = false;
+                                item.TeamQueueButton.Content = "In Maitenance...";
+                                seperators[2].Add(item);
+                                break;
+                            default:
+                                break;
+                        }
                         configs.Add(config.Id, item);
-                        QueueListView.Items.Add(item);
                     }
-                        //GROUPFINDER
                 }
             }));
         }
@@ -209,6 +300,7 @@ namespace LegendaryClient.Windows
             else if (InQueue == true)
             {
                 LeaveAllQueues();
+                InQueue = false; //Fixes LeaveAllQueues not setting it to false fast enough, causing you to never be able to queue.
             }
         }
 

@@ -41,7 +41,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class TeamQueuePage : Page
     {
-        Message MessageData;
+        //Message MessageData;
         //long InviteId = 0;
         private Room newRoom;
         bool IsOwner = false;
@@ -114,7 +114,8 @@ namespace LegendaryClient.Windows
             RenderLobbyData();
         }
         
-        
+#pragma warning disable 4014
+
         private void Inviter_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;

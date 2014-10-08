@@ -128,8 +128,8 @@ namespace LegendaryClient.Windows
             foreach (Participant p in AllParticipants)
             {
                 QueuePopPlayer player = new QueuePopPlayer();
-                player.Width = 300;
-                player.Height = 100;
+                player.Width = 264;
+                player.Height = 70;
                 if (p is PlayerParticipant)
                 {
                     PlayerParticipant playerPart = (PlayerParticipant)p;

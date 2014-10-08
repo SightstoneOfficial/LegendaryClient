@@ -34,6 +34,7 @@ namespace LegendaryClient.Windows.Profile
             SumName = Name;
             GetData();
         }
+
         public async void GetData()
         {
             //PlayerMatchHistory history = new PlayerMatchHistory();

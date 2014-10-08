@@ -37,7 +37,7 @@ namespace LegendaryClient.Windows
     public partial class TeamBuilderPage : Page
     {
         private Room newRoom;
-        internal string ProcedureCall;
+        internal string ProcedureCall = "";
         internal int ChampionId = 0;
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace LegendaryClient.Windows
             string posUp = string.Format(position.ToUpper());
             string Json = string.Format("\"skinId\":{0},\"position\":\"{1}\",\"role\":\"{2}\",\"championId\":{3},\"spell2Id\":{4},\"queueId\":61,\"spell1Id\":{5}", skinId, posUp, roleUp, ChampionId, spell2, spell1);
             string JsonWithBrackets = "{" + Json + "}";
-            string TestJson = "{\"skinId\":0,\"position\"MIDDLE\",\"spell1:}";
+            //string TestJson = "{\"skinId\":0,\"position\"MIDDLE\",\"spell1:}";
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "createSoloQueryV4", JsonWithBrackets);
         }
 

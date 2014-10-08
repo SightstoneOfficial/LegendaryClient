@@ -86,7 +86,6 @@
     </Compile>
     <Compile Include="Logic\Client.cs" />
     <Compile Include="Logic\LeagueDownloadLogic.cs" />
-    <Compile Include="Logic\LegendaryClientDownloadLogic.cs" />
     <Compile Include="Logic\Region\MainRegion.cs" />
     <Compile Include="Logic\Region\NA.cs" />
     <Compile Include="MainWindow.xaml.cs">
