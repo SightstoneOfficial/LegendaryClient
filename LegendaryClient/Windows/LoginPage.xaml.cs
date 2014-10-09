@@ -43,11 +43,18 @@ namespace LegendaryClient.Windows
             SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
             SoundPlayer.Play();
             Sound.IsChecked = false;
-            LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
-            LoginPic.LoadedBehavior = MediaState.Manual;
-            LoginPic.MediaEnded += LoginPic_MediaEnded;
-            SoundPlayer.MediaEnded += SoundPlayer_MediaEnded;
-            LoginPic.Play();
+            if (Properties.Settings.Default.LoginPageImage == "")
+            {
+                LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
+                LoginPic.LoadedBehavior = MediaState.Manual;
+                LoginPic.MediaEnded += LoginPic_MediaEnded;
+                SoundPlayer.MediaEnded += SoundPlayer_MediaEnded;
+                LoginPic.Play();
+            }
+            else
+            {
+                LoginImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
+            }
 
             Video.IsChecked = false;
 

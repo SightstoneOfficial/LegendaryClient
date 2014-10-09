@@ -113,8 +113,8 @@ namespace LegendaryClient.Windows
 
             RenderLobbyData();
         }
-        
-        
+
+
         private void Inviter_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;

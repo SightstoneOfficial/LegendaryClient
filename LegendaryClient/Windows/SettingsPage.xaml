@@ -40,7 +40,10 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Interface">
-                <Grid />
+                <Grid>
+                    <Label Content="Login Image" HorizontalAlignment="Left" Margin="10,7,0,0" FontWeight="ExtraLight" FontSize="16" VerticalAlignment="Top" />
+                    <ComboBox x:Name="LoginImageBox" HorizontalAlignment="Left" Margin="108,16,0,0" VerticalAlignment="Top" Width="200" TextBoxBase.TextChanged="LoginImageBox_TextChanged" DropDownOpened="LoginImageBox_DropDownOpened" DropDownClosed="LoginImageBox_DropDownClosed" IsEditable="True" />
+                </Grid>
             </TabItem>
             <TabItem Header="Game">
                 <Grid />

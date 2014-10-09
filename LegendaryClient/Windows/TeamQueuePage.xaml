@@ -9,6 +9,7 @@
 	Title="TeamQueuePage">
 
     <Grid>
+        <Label Content="Invite Friends" HorizontalAlignment="Right" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" Margin="0,10,266,0" />
         <Label Content="Your Team" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
         <ListView x:Name="TeamListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,50,420,230" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
@@ -19,16 +20,16 @@
         </ListView>
 
         <Button x:Name="CancelGameButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,200" VerticalAlignment="Bottom" Width="200" Click="Leave_Click"/>
-        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="560,0,0,200" VerticalAlignment="Bottom" Width="300" Click="StartGameButton_Click"/>
+        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Right" Margin="0,0,420,200" VerticalAlignment="Bottom" Width="300" Click="StartGameButton_Click"/>
 
-        <ListView x:Name="InviteListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="219" Margin="0,0,10,230" VerticalAlignment="Bottom" Width="395" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <ListView x:Name="InviteListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Margin="0,50,15,230" VerticalAlignment="Stretch" Width="395" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Right" Margin="0,0,15,200" VerticalAlignment="Bottom" Width="390" Click="Invite_Click"/>
+        <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Right" Margin="0,0,15,200" VerticalAlignment="Bottom" Width="395" Click="Invite_Click"/>
 
         <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="10,0,10,40" Height="150" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
@@ -39,8 +40,8 @@
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="5,0,120,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Button x:Name="ChatButton" Content="Send" Margin="470,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
-        <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="64" Stroke="Black" VerticalAlignment="Top" Width="390" Margin="0,50,15,0"/>
-        <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging... Please Wait" VerticalAlignment="Top" Margin="0,52,17,0" Height="62" Width="385" Foreground="White" FontSize="20" TextAlignment="Center"/>
+        <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="25" Stroke="Black" VerticalAlignment="Top" Width="70" Margin="0,18,13,0"/>
+        <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging" VerticalAlignment="Top" Margin="0,18,15,0" Height="23" Width="68" Foreground="White" FontSize="16" TextAlignment="Center" RenderTransformOrigin="0.159,-0.961"/>
 
     </Grid>
 </Page>
