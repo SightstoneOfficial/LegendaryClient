@@ -918,7 +918,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="chat.png" />
-    <Resource Include="cs_bg_champions.png" />
     <Resource Include="Locked.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
