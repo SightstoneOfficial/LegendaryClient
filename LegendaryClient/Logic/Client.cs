@@ -822,6 +822,36 @@ namespace LegendaryClient.Logic
             }
         }
 
+        private static string convert(string QueueName)
+        {
+            string result = string.Empty;
+            string Queueinternal = "";
+            string Bots = "";
+            string Players = "";
+            string Extra = "";
+            var start = QueueName.Replace("matching-queue-", "").Replace("-game-queue","");
+            string[] x = start.Split('_');
+            if (x[1].ToLower() == "bot")
+            {
+                Bots = " Bots";
+                string[] m = x[3].Split('-');
+
+            }
+            else if (x[0].ToLower() == "bot" && x[1].ToLower() == "intro")
+            {
+                Queueinternal = "Intro";
+                Bots = "Bots";
+            }
+            else
+            {
+
+            }
+            if(!string.IsNullOrEmpty(Extra))
+                Extra= "(" + Extra + ")";
+            result = string.Format("{0}{1} {2} {3}", Queueinternal, Bots, Players, Extra);
+            return result;
+        }
+
         internal static string GetGameDirectory()
         {
             string Directory = Path.Combine(RootLocation, "RADS", "projects", "lol_game_client", "releases");

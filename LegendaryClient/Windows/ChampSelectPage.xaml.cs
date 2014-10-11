@@ -409,11 +409,19 @@ namespace LegendaryClient.Windows
                                 control.PlayerName.Content = player.SummonerName;
                             else
                             {
-                                AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.SummonerId);
-                                if (!String.IsNullOrEmpty(Summoner.Summoner.Name))
-                                    control.PlayerName.Content = Summoner.Summoner.Name;
-                                else
+                                try
+                                {
+                                    AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.AccountId);
+                                    if (!String.IsNullOrEmpty(Summoner.Summoner.Name))
+                                        control.PlayerName.Content = Summoner.Summoner.Name;
+                                    else
+                                        control.PlayerName.Content = "Unknown Player";
+                                }
+                                catch
+                                {
                                     control.PlayerName.Content = "Unknown Player";
+                                }
+                                
                             }
 
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)

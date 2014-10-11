@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -199,6 +200,7 @@ namespace LegendaryClient.Windows
                                 seperators[1].Add(item);
                                 break;
                             case "Ranked 5v5":
+                                item.TeamQueueButton.Content = "Solo/Duo Queue";
                                 seperators[2].Add(item);
                                 break;
                             case "Ranked Team 5v5":
@@ -264,7 +266,7 @@ namespace LegendaryClient.Windows
                 
         }
 
-        private void QueueButton_Click(object sender, RoutedEventArgs e)
+        private async void QueueButton_Click(object sender, RoutedEventArgs e)
         {
             //to queue
             if (InQueue == false)
@@ -289,11 +291,12 @@ namespace LegendaryClient.Windows
                 {
                     Client.SwitchPage(new TeamBuilderPage(false));
                 }
-            } 
-            else if (InQueue == true)
+                return;
+            }
+            else
             {
-                LeaveAllQueues();
                 InQueue = false; //Fixes LeaveAllQueues not setting it to false fast enough, causing you to never be able to queue.
+                await LeaveAllQueues();
             }
         }
 
@@ -396,8 +399,10 @@ namespace LegendaryClient.Windows
         {
             LeaveAllQueues();
         }
-        private async void LeaveAllQueues()
+        private async Task<bool> LeaveAllQueues()
         {
+            //Call this first thing
+            InQueue = false;
             await Client.PVPNet.PurgeFromQueues();
 
             foreach (Button btn in ButtonTimers.Keys)
@@ -406,8 +411,8 @@ namespace LegendaryClient.Windows
                 realButton.Content = "Queue";
             }
             ButtonTimers.Clear();
-            InQueue = false;
             Queues.Clear();
+            return true;
         }
     }
 }

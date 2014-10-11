@@ -36,9 +36,12 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Version.TextChanged += WaterTextbox_TextChanged;
+            if (Client.Version == "4.17.1")
+                Client.Version = "4.18.1";
+
             Version.Text = Client.Version;
 
-
+            
             
             SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
             SoundPlayer.Play();
@@ -235,6 +238,9 @@ namespace LegendaryClient.Windows
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 ErrorTextBox.Text = error.Message;
             }));
+            Client.PVPNet.OnMessageReceived -= Client.OnMessageReceived;
+            Client.PVPNet.OnError -= PVPNet_OnError;
+            Client.PVPNet.OnLogin -= PVPNet_OnLogin;
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited

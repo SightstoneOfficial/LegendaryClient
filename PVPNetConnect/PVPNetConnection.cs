@@ -702,9 +702,17 @@ namespace PVPNetConnect
 
                 if (!KeepDelegatesOnLogout)
                 {
-                    foreach (Delegate d in OnMessageReceived.GetInvocationList())
+                    try
                     {
-                        OnMessageReceived -= (OnMessageReceivedHandler)d;
+
+                        foreach (Delegate d in OnMessageReceived.GetInvocationList())
+                        {
+                            OnMessageReceived -= (OnMessageReceivedHandler)d;
+                        }
+                    }
+                    catch
+                    {
+                        
                     }
                 }
 

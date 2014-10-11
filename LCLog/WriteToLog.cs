@@ -29,9 +29,16 @@ namespace LCLog
         /// <param name="type"></param>
         public static void Log(String lines, String type = "LOG")
         {
-            System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "Logs", LogfileName), true);
-            file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type.ToUpper(), lines));
-            file.Close();
+            try
+            {
+                System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "Logs", LogfileName), true);
+                file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type.ToUpper(), lines));
+                file.Close();
+            }
+            catch
+            {
+                Log("Failed to do a log", "LoggerError");
+            }
         }
 
         public static void CreateLogFile()

@@ -61,6 +61,7 @@ namespace LegendaryClient.Windows
         string Invite;
 
         internal static LobbyStatus CurrentLobby;
+        bool ranked = false;
 
         /// <summary>
         /// When invited to a team
@@ -81,6 +82,7 @@ namespace LegendaryClient.Windows
             {
                 LoadStats();
             }
+
 
             Client.LobbyButton.Visibility = Visibility.Visible;
         }
@@ -108,7 +110,7 @@ namespace LegendaryClient.Windows
             newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
             newRoom.Join(CurrentLobby.ChatKey);
 
-
+            
             ///Way smarter way then just putting the code here
 
             RenderLobbyData();
@@ -206,6 +208,7 @@ namespace LegendaryClient.Windows
         {
             try 
             {
+                int Players = 0;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
                 {
                     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
@@ -250,7 +253,7 @@ namespace LegendaryClient.Windows
                     gameTypeConfigId = m.gameTypeConfigId;
                     gameMode = m.gameMode;
                     gameType = m.gameType;
-
+                    
                     foreach (Member stats in CurrentLobby.Members)
                     {
                     //Your kidding me right
@@ -268,6 +271,7 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Inviter.Click += Inviter_Click;
                         TeamPlayer.Profile.Click += Profile_Click;
                         TeamPlayer.Owner.Click += Owner_Click;
+                        Players++;
 
                         PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(stats.SummonerName);
 
@@ -302,8 +306,14 @@ namespace LegendaryClient.Windows
                         }
                         TeamListView.Items.Add(TeamPlayer);
                     }
-
-                    
+                    //Gets if it is a ranked solo game
+                    if (queueId == 4)
+                    {
+                        if (Players >= 2)
+                            InviteButton.IsEnabled = false;
+                        else
+                            InviteButton.IsEnabled = true;
+                    }                    
                 }));
             }
             catch { }

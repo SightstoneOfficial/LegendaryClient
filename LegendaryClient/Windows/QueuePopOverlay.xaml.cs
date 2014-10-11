@@ -101,13 +101,34 @@ namespace LegendaryClient.Windows
                             QueuePopPlayer player = null;
                             if (i < (PlayerParticipantStatus.Length / 2)) //Team 1
                             {
-                                player = (QueuePopPlayer)Team1ListBox.Items[i];
+                                try
+                                {
+                                    player = (QueuePopPlayer)Team1ListBox.Items[i];
+                                }
+                                catch
+                                {
+                                    Client.Log("Error with queue pop");
+                                }                                
                             }
                             else //Team 2
                             {
-                                player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
+                                try
+                                {
+                                    player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
+                                }
+                                catch
+                                {
+                                    Client.Log("Error with queue pop");
+                                }
                             }
-                            player.ReadyCheckBox.IsChecked = true;
+                            try
+                            {
+                                player.ReadyCheckBox.IsChecked = true;
+                            }
+                            catch
+                            {
+                                Client.Log("Error with queue pop");
+                            }
                         }
                         i++;
                     }
