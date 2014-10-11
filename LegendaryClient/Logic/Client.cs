@@ -159,7 +159,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// The Invite Data
         /// </summary>
-        internal static List<invitationRequest> InviteJsonRequest;
+        internal static List<invitationRequest> InviteJsonRequest = new List<invitationRequest>();
 
         /// <summary>
         /// The database of all the search tags

@@ -108,7 +108,7 @@ namespace LegendaryClient
             Client.SwitchPage(new TeamQueuePage(null, null, true));
         }
         internal bool SwitchTeamPage = true;
-        public void Hide()
+        public new void Hide()
         {
             if (SwitchTeamPage == true)
             {

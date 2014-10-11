@@ -1,6 +1,8 @@
 ﻿using LegendaryClient.Logic;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -130,6 +132,8 @@ Not accepted yet";
                 i++;
             }
 
+            LoginImageBox.Text = Properties.Settings.Default.LoginPageImage;
+
             ResolutionComboBox.SelectedIndex = ResolutionComboBox.Items.Count - 1;
             WindowModeComboBox.SelectedIndex = 0;
         }
@@ -144,6 +148,27 @@ Not accepted yet";
         {
             Properties.Settings.Default.SendErrors = (bool)ErrorCheckbox.IsChecked;
             Properties.Settings.Default.Save();
+        }
+
+        private void LoginImageBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Properties.Settings.Default.LoginPageImage = LoginImageBox.Text;
+        }
+
+        private void LoginImageBox_DropDownClosed(object sender, EventArgs e)
+        {
+            string temp = Properties.Settings.Default.LoginPageImage;
+            LoginImageBox.Items.Clear();
+            LoginImageBox.Text = temp;
+        }
+
+        private void LoginImageBox_DropDownOpened(object sender, EventArgs e)
+        {
+            foreach (string s in Directory.EnumerateFiles(Path.Combine(Client.ExecutingDirectory, "Assets", "champions"), "*", SearchOption.AllDirectories)
+                .Select(Path.GetFileName))
+            {
+                if (s.Contains("Splash")) LoginImageBox.Items.Add(s);
+            }
         }
     }
 }
