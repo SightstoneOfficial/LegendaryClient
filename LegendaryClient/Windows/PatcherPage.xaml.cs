@@ -416,7 +416,13 @@ namespace LegendaryClient.Windows
         private void FinishPatching(string LatestVersion)
         {
             WebClient UpdateClient = new WebClient();
-            UpdateClient.DownloadFile("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/files/assets/data/gameStats/gameStats_en_US.sqlite", Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+            UpdateClient.DownloadFileAsync(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+            UpdateClient.DownloadFileCompleted += UpdateClient_DownloadFileCompleted;
+            
+        }
+
+        void UpdateClient_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 TotalProgressLabel.Content = "100%";
@@ -426,7 +432,7 @@ namespace LegendaryClient.Windows
                 CurrentStatusLabel.Content = "Ready To Play";
                 SkipPatchButton.IsEnabled = true;
             }));
-            
+
             LogTextBox("LegendaryClient Has Finished Patching");
             Client.Log("LegendaryClient Has Finished Patching");
         }
