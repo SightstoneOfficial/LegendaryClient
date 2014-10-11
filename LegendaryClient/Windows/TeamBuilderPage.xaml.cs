@@ -417,7 +417,6 @@ namespace LegendaryClient.Windows
 
         private void SelectedAllChamps()
         {
-            /*
             //We only want this to be called when selected champs and role and position have a set value
             if(role != null && position != null && ChampionId != 0)
             {
@@ -426,7 +425,7 @@ namespace LegendaryClient.Windows
                 string posUp = string.Format(position.ToUpper());
                 string Json = string.Format("{\"role\":\"{0}\",\"position\":\"{1}\",\"queueId\":61,\"championId\":{2}", roleUp, posUp, ChampionId);
                 CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveEstimatedWaitTimeV2", Json);
-            }//*/
+            }
         }
 
         private void StartTeambuilder()
