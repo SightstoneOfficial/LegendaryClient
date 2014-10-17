@@ -704,7 +704,6 @@ namespace PVPNetConnect
                 {
                     try
                     {
-
                         foreach (Delegate d in OnMessageReceived.GetInvocationList())
                         {
                             OnMessageReceived -= (OnMessageReceivedHandler)d;
@@ -712,7 +711,7 @@ namespace PVPNetConnect
                     }
                     catch
                     {
-                        
+
                     }
                 }
 

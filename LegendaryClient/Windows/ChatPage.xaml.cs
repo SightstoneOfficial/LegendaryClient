@@ -4,6 +4,7 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -249,6 +250,9 @@ namespace LegendaryClient.Windows
         {
             Client.SwitchPage(new ProfilePage(LastPlayerItem.Username));
         }
+
+#pragma warning disable 4014
+
         private void Invite_Click(object sender, RoutedEventArgs e)
         {
             if(Client.isOwnerOfGame == true)
@@ -259,6 +263,11 @@ namespace LegendaryClient.Windows
             {
 
             }
+        }
+
+        private void AddFriendButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Fix Add Friend Button
         }
     }
 }

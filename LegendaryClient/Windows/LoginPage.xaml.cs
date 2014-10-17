@@ -36,16 +36,18 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Version.TextChanged += WaterTextbox_TextChanged;
-            if (Client.Version == "4.17.1")
+            if (Client.Version == "4.17.1")	
                 Client.Version = "4.18.1";
-
             Version.Text = Client.Version;
 
-            
-            
-            SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
-            SoundPlayer.Play();
-            Sound.IsChecked = false;
+            if (!Properties.Settings.Default.DisableLoginMusic)
+            {
+                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
+                SoundPlayer.Play();
+                Sound.IsChecked = false;
+            }
+            else Sound.IsChecked = true;
+
             if (Properties.Settings.Default.LoginPageImage == "")
             {
                 LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
@@ -80,7 +82,7 @@ namespace LegendaryClient.Windows
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
                                     orderby s.name
                                     select s).ToList();
-            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
+            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>() //Needs Fixed
                                         orderby s.name
                                         select s).ToList();
             Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
@@ -130,6 +132,7 @@ namespace LegendaryClient.Windows
 
             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
             //LoginImage.Source = new BitmapImage(uriSource);//*/
+            
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&
                 !String.IsNullOrWhiteSpace(Properties.Settings.Default.Region) &&
                 Properties.Settings.Default.AutoLogin)
@@ -155,7 +158,7 @@ namespace LegendaryClient.Windows
         private void DisableSound_Click(object sender, RoutedEventArgs e)
         {
             
-            if(PlayingSound == true)
+            if(PlayingSound)
             {
                 SoundPlayer.Pause();
                 Sound.IsChecked = true;
@@ -168,6 +171,9 @@ namespace LegendaryClient.Windows
                 Sound.IsChecked = false;
                 PlayingSound = true;
             }
+
+            if (Sound.IsChecked.Value) Properties.Settings.Default.DisableLoginMusic = true;
+            else Properties.Settings.Default.DisableLoginMusic = false;
         }
 
         void SoundPlayer_MediaEnded(object sender, RoutedEventArgs e)
@@ -218,7 +224,7 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
             BaseRegion SelectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             Client.Region = SelectedRegion;
-            //Client.Version = "4.7.8";
+            //Client.Version = "4.18.14";
             Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
         }
 
@@ -238,8 +244,8 @@ namespace LegendaryClient.Windows
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 ErrorTextBox.Text = error.Message;
             }));
-            Client.PVPNet.OnMessageReceived -= Client.OnMessageReceived;
-            Client.PVPNet.OnError -= PVPNet_OnError;
+            Client.PVPNet.OnMessageReceived -= Client.OnMessageReceived;	
+            Client.PVPNet.OnError -= PVPNet_OnError;			
             Client.PVPNet.OnLogin -= PVPNet_OnLogin;
         }
 
@@ -289,10 +295,10 @@ namespace LegendaryClient.Windows
 
                 Client.ConfManager = new ConferenceManager();
                 Client.ConfManager.Stream = Client.ChatClient;
-                Client.Log("Connected and loged in as" + Client.ChatClient.User);
+                Client.Log("Connected and logged in as" + Client.ChatClient.User);
 
                 Client.SwitchPage(new MainPage());
-                Client.ClearPage(this);
+                Client.ClearPage(typeof(LoginPage));
 
                 AuthenticationCredentials newCredentials = new AuthenticationCredentials();
                 newCredentials.Username = LoginUsernameBox.Text;

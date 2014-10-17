@@ -164,9 +164,9 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.QuitGame();
             //Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-            Client.ClearPage(new CustomGameLobbyPage());
-            Client.ClearPage(new CreateCustomGamePage());
-            Client.ClearPage(this);
+            Client.ClearPage(typeof(CustomGameLobbyPage));
+            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ClearPage(typeof(StatusPage));
 
             Client.SwitchPage(new MainPage());
         }

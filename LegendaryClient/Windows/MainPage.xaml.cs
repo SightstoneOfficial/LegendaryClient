@@ -40,6 +40,7 @@ namespace LegendaryClient.Windows
         public MainPage()
         {
             InitializeComponent();
+            AppDomain current = AppDomain.CurrentDomain;
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.LoginPacket.CompetitiveRegion;
             BaseRegion region = BaseRegion.GetRegion(Client.LoginPacket.CompetitiveRegion);
@@ -560,5 +561,6 @@ namespace LegendaryClient.Windows
         {
             Client.PVPNet.SimulateEndOfGame();
         }
+
     }
 }

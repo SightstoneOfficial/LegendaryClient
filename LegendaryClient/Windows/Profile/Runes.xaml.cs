@@ -35,7 +35,7 @@ namespace LegendaryClient.Windows.Profile
             YellowRunesAvail = BlackRunesAvail * 3 + Math.Ceiling((Client.LoginPacket.AllSummonerData.SummonerLevel.Level - BlackRunesAvail * 10 - 1) / 3.0f);
             BlueRunesAvail = BlackRunesAvail * 3 + Math.Ceiling((Client.LoginPacket.AllSummonerData.SummonerLevel.Level - BlackRunesAvail * 10 - 2) / 3.0f);
             for (int i = 1; i <= Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Count; i++)
-                RunePageListView.Items.Add(i);
+                RunePageListBox.Items.Add(i);
             Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Sort((x, y) => x.PageId.CompareTo(y.PageId));
             GetAvailableRunes();
         }
@@ -43,19 +43,19 @@ namespace LegendaryClient.Windows.Profile
         {
             Dictionary<String, double> statList = new Dictionary<String, double>();
             List<RuneItem> runeCollection = new List<RuneItem>();
-            foreach (RuneItem rune in RedListView.Items)
+            foreach (RuneItem rune in RedListBox.Items)
             {
                 runeCollection.Add(rune);
             }
-            foreach (RuneItem rune in YellowListView.Items)
+            foreach (RuneItem rune in YellowListBox.Items)
             {
                 runeCollection.Add(rune);
             }
-            foreach (RuneItem rune in BlueListView.Items)
+            foreach (RuneItem rune in BlueListBox.Items)
             {
                 runeCollection.Add(rune);
             }
-            foreach (RuneItem rune in BlackListView.Items)
+            foreach (RuneItem rune in BlackListBox.Items)
             {
                 runeCollection.Add(rune);
             }
@@ -142,16 +142,16 @@ namespace LegendaryClient.Windows.Profile
             runes = runeInven.SummonerRunes;
             runes.Sort((x, y) => x.Rune.Name.CompareTo(y.Rune.Name));
             RuneFilterComboBox.SelectedIndex = 0;
-            RunePageListView.SelectedIndex = Client.LoginPacket.AllSummonerData.SpellBook.BookPages.IndexOf(
+            RunePageListBox.SelectedIndex = Client.LoginPacket.AllSummonerData.SpellBook.BookPages.IndexOf(
                 Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Find(x => x.Current == true));
         }
 
         public void RenderRunes()
         {
-            RedListView.Items.Clear();
-            YellowListView.Items.Clear();
-            BlueListView.Items.Clear();
-            BlackListView.Items.Clear();
+            RedListBox.Items.Clear();
+            YellowListBox.Items.Clear();
+            BlueListBox.Items.Clear();
+            BlackListBox.Items.Clear();
             if (SelectedBook != null)
             {
                 foreach (SlotEntry RuneSlot in SelectedBook.SlotEntries)
@@ -177,6 +177,8 @@ namespace LegendaryClient.Windows.Profile
                         {
                             RuneItem item = new RuneItem();
                             item.RuneImage.Source = Rune.icon;
+                            item.RuneName.Content = Rune.name;
+                            item.RuneEffect.Content = Rune.description;
                             item.Margin = new Thickness(2, 2, 2, 2);
                             item.Tag = Rune;
                             item.MouseRightButtonDown += item_MouseRightButtonDown;
@@ -184,19 +186,19 @@ namespace LegendaryClient.Windows.Profile
                             item.MouseLeave += item_MouseLeave;
                             if (Rune.name.Contains("Mark"))
                             {
-                                RedListView.Items.Add(item);
+                                RedListBox.Items.Add(item);
                             }
                             else if (Rune.name.Contains("Seal"))
                             {
-                                YellowListView.Items.Add(item);
+                                YellowListBox.Items.Add(item);
                             }
                             else if (Rune.name.Contains("Glyph"))
                             {
-                                BlueListView.Items.Add(item);
+                                BlueListBox.Items.Add(item);
                             }
                             else if (Rune.name.Contains("Quint"))
                             {
-                                BlackListView.Items.Add(item);
+                                BlackListBox.Items.Add(item);
                             }
 
                         }
@@ -207,7 +209,7 @@ namespace LegendaryClient.Windows.Profile
 
         private void item_MouseRightButtonDown(object sender, MouseEventArgs e)
         {
-            ((ListView)((RuneItem)sender).Parent).Items.Remove(sender);
+            ((ListBox)((RuneItem)sender).Parent).Items.Remove(sender);
 
             foreach (var obj in AvailableRuneList.Items)
             {
@@ -275,7 +277,7 @@ namespace LegendaryClient.Windows.Profile
             PlayerItem.Margin = new Thickness(XMargin + 5, YMargin + 5, 0, 0);
         }
 
-        private void RunePageListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void RunePageListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             foreach (SpellBookPageDTO SpellPage in Client.LoginPacket.AllSummonerData.SpellBook.BookPages)
             {
@@ -284,8 +286,8 @@ namespace LegendaryClient.Windows.Profile
                     SpellPage.Current = false;
                 }
             }
-            Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RunePageListView.SelectedIndex].Current = true;
-            SelectedBook = Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RunePageListView.SelectedIndex];
+            Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RunePageListBox.SelectedIndex].Current = true;
+            SelectedBook = Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RunePageListBox.SelectedIndex];
             RuneTextBox.Text = SelectedBook.Name;
             RefreshAvailableRunes();
             RenderRunes();
@@ -293,44 +295,49 @@ namespace LegendaryClient.Windows.Profile
 
         private void AvailableRuneList_DoubleClickOrRightClick(object sender, MouseButtonEventArgs e)
         {
-            if (((RuneItem)((ListView)sender).SelectedItem).Used <= 0)
-                return;
-            runes Rune = ((runes)((RuneItem)((ListView)sender).SelectedItem).Tag);
-            RuneItem item = new RuneItem();
-            item.RuneImage.Source = Rune.icon;
-            item.Margin = new Thickness(2, 2, 2, 2);
-            item.Tag = Rune;
-            item.MouseRightButtonDown += item_MouseRightButtonDown;
-            item.MouseMove += item_MouseMove;
-            item.MouseLeave += item_MouseLeave;
-            ListView tempRuneListView = new ListView();
-            double tempAvailCount = 0;
-            if (Rune.name.Contains("Mark"))
+            if (((ListBox)sender).SelectedItem != null) //Fix crash if you double click scrollbar (no item selected)
             {
-                tempAvailCount = RedRunesAvail;
-                tempRuneListView = RedListView;
-            }
-            if (Rune.name.Contains("Seal"))
-            {
-                tempAvailCount = YellowRunesAvail;
-                tempRuneListView = YellowListView;
-            }
-            if (Rune.name.Contains("Glyph"))
-            {
-                tempAvailCount = BlueRunesAvail;
-                tempRuneListView = BlueListView;
-            }
-            if (Rune.name.Contains("Quint"))
-            {
-                tempAvailCount = BlackRunesAvail;
-                tempRuneListView = BlackListView;
-            }
-            if (tempRuneListView.Items.Count < tempAvailCount)
-            {
-                tempRuneListView.Items.Add(item);
-                UpdateStatList();
-                ((RuneItem)((ListView)sender).SelectedItem).Used--;
-                AvailableRuneList.Items.Refresh();
+                if (((RuneItem)((ListBox)sender).SelectedItem).Used <= 0)
+                    return;
+                runes Rune = ((runes)((RuneItem)((ListBox)sender).SelectedItem).Tag);
+                RuneItem item = new RuneItem();
+                item.RuneImage.Source = Rune.icon;
+                item.Margin = new Thickness(2, 2, 2, 2);
+                item.Tag = Rune;
+                item.RuneName.Content = Rune.name;
+                item.RuneEffect.Content = Rune.description;
+                item.MouseRightButtonDown += item_MouseRightButtonDown;
+                item.MouseMove += item_MouseMove;
+                item.MouseLeave += item_MouseLeave;
+                ListBox tempRuneListBox = new ListBox();
+                double tempAvailCount = 0;
+                if (Rune.name.Contains("Mark"))
+                {
+                    tempAvailCount = RedRunesAvail;
+                    tempRuneListBox = RedListBox;
+                }
+                if (Rune.name.Contains("Seal"))
+                {
+                    tempAvailCount = YellowRunesAvail;
+                    tempRuneListBox = YellowListBox;
+                }
+                if (Rune.name.Contains("Glyph"))
+                {
+                    tempAvailCount = BlueRunesAvail;
+                    tempRuneListBox = BlueListBox;
+                }
+                if (Rune.name.Contains("Quint"))
+                {
+                    tempAvailCount = BlackRunesAvail;
+                    tempRuneListBox = BlackListBox;
+                }
+                if (tempRuneListBox.Items.Count < tempAvailCount)
+                {
+                    tempRuneListBox.Items.Add(item);
+                    UpdateStatList();
+                    ((RuneItem)((ListBox)sender).SelectedItem).Used--;
+                    AvailableRuneList.Items.Refresh();
+                }
             }
         }
 
@@ -344,7 +351,7 @@ namespace LegendaryClient.Windows.Profile
         {
             List<SlotEntry> slotEntries = new List<SlotEntry>();
             int count = 1;
-            foreach (RuneItem rune in RedListView.Items)
+            foreach (RuneItem rune in RedListBox.Items)
             {
                 SlotEntry slotEntry = new SlotEntry();
                 slotEntry.RuneId = ((runes)rune.Tag).id;
@@ -352,7 +359,7 @@ namespace LegendaryClient.Windows.Profile
                 slotEntries.Add(slotEntry);
             }
             count = 10;
-            foreach (RuneItem rune in YellowListView.Items)
+            foreach (RuneItem rune in YellowListBox.Items)
             {
                 SlotEntry slotEntry = new SlotEntry();
                 slotEntry.RuneId = ((runes)rune.Tag).id;
@@ -360,7 +367,7 @@ namespace LegendaryClient.Windows.Profile
                 slotEntries.Add(slotEntry);
             }
             count = 19;
-            foreach (RuneItem rune in BlueListView.Items)
+            foreach (RuneItem rune in BlueListBox.Items)
             {
                 SlotEntry slotEntry = new SlotEntry();
                 slotEntry.RuneId = ((runes)rune.Tag).id;
@@ -368,7 +375,7 @@ namespace LegendaryClient.Windows.Profile
                 slotEntries.Add(slotEntry);
             }
             count = 28;
-            foreach (RuneItem rune in BlackListView.Items)
+            foreach (RuneItem rune in BlackListBox.Items)
             {
                 SlotEntry slotEntry = new SlotEntry();
                 slotEntry.RuneId = ((runes)rune.Tag).id;
@@ -393,10 +400,10 @@ namespace LegendaryClient.Windows.Profile
 
         private void ClearRunes_Click(object sender, RoutedEventArgs e)
         {
-            RedListView.Items.Clear();
-            YellowListView.Items.Clear();
-            BlueListView.Items.Clear();
-            BlackListView.Items.Clear();
+            RedListBox.Items.Clear();
+            YellowListBox.Items.Clear();
+            BlueListBox.Items.Clear();
+            BlackListBox.Items.Clear();
             foreach (var obj in AvailableRuneList.Items)
             {
                 try

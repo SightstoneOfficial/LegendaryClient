@@ -24,17 +24,22 @@ namespace LegendaryClient.Windows
         public bool HasStartedChampSelect = false;
         private static System.Timers.Timer QueueTimer;
         public int TimeLeft = 12;
+        private Page previousPage;
 
-        public QueuePopOverlay(GameDTO InitialDTO)
+        public QueuePopOverlay(GameDTO InitialDTO, Page previousPage)
         {
-            InitializeComponent();
-            Client.FocusClient();
-            InitializePop(InitialDTO);
-            TimeLeft = InitialDTO.JoinTimerDuration;
-            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
-            QueueTimer = new System.Timers.Timer(1000);
-            QueueTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
-            QueueTimer.Enabled = true;
+            if (InitialDTO != null)
+            {
+                InitializeComponent();
+                Client.FocusClient();
+                InitializePop(InitialDTO);
+                this.previousPage = previousPage;
+                TimeLeft = InitialDTO.JoinTimerDuration;
+                Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+                QueueTimer = new System.Timers.Timer(1000);
+                QueueTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
+                QueueTimer.Enabled = true;
+            }
         }
 
         internal void QueueElapsed(object sender, ElapsedEventArgs e)
@@ -71,7 +76,7 @@ namespace LegendaryClient.Windows
                         Client.ChampSelectDTO = QueueDTO;
                         Client.LastPageContent = Client.Container.Content;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.SwitchPage(new ChampSelectPage());
+                        Client.SwitchPage(new ChampSelectPage(previousPage));
                     }
                     else if (QueueDTO.GameState == "PRE_CHAMP_SELECT")
                     {
@@ -83,7 +88,7 @@ namespace LegendaryClient.Windows
                         Client.ChampSelectDTO = QueueDTO;
                         Client.LastPageContent = Client.Container.Content;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.SwitchPage(new ChampSelectPage());
+                        Client.SwitchPage(new ChampSelectPage(this));
                     }
 
                     int i = 0;
@@ -108,7 +113,7 @@ namespace LegendaryClient.Windows
                                 catch
                                 {
                                     Client.Log("Error with queue pop");
-                                }                                
+                                }
                             }
                             else //Team 2
                             {
@@ -198,7 +203,7 @@ namespace LegendaryClient.Windows
             }
 
             int i = 0;
-            foreach (Participant p in AllParticipants)
+            foreach (Participant p in AllParticipants) //Gets spammed with PlayerParticipant
             {
                 try
                 {

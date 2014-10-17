@@ -8,6 +8,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,7 +23,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -76,6 +76,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\awesomium.windows.controls.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\DLLS\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="jabber-net">
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
       <Private>True</Private>
@@ -95,11 +98,7 @@
       <HintPath>..\DLLS\RAFlibPlus.dll</HintPath>
     </Reference>
     <Reference Include="rtmp-sharp">
-      <HintPath>..\..\..\..\Desktop\rtmp-sharp.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
+      <HintPath>..\..\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -304,6 +303,7 @@
     <Compile Include="ReplayElements\ReplayItem.xaml.cs">
       <DependentUpon>ReplayItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
       <DependentUpon>ChampionDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -924,6 +924,7 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="chat.png" />
+    <Resource Include="cs_bg_champions.png" />
     <Resource Include="Locked.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

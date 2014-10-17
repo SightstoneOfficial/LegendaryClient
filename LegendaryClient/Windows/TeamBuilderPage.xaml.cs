@@ -37,7 +37,6 @@ namespace LegendaryClient.Windows
     public partial class TeamBuilderPage : Page
     {
         private Room newRoom;
-        internal string ProcedureCall;
         internal int ChampionId = 0;
 
         /// <summary>
@@ -137,12 +136,8 @@ namespace LegendaryClient.Windows
             string posUp = string.Format(position.ToUpper());
             string Json = string.Format("\"skinId\":{0},\"position\":\"{1}\",\"role\":\"{2}\",\"championId\":{3},\"spell2Id\":{4},\"queueId\":61,\"spell1Id\":{5}", skinId, posUp, roleUp, ChampionId, spell2, spell1);
             string JsonWithBrackets = "{" + Json + "}";
-            string TestJson = "{\"skinId\":0,\"position\"MIDDLE\",\"spell1:}";
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "createSoloQueryV4", JsonWithBrackets);
         }
-
-
-        
 
         private System.Timers.Timer CountdownTimer;
 
@@ -417,6 +412,7 @@ namespace LegendaryClient.Windows
 
         private void SelectedAllChamps()
         {
+            /*
             //We only want this to be called when selected champs and role and position have a set value
             if(role != null && position != null && ChampionId != 0)
             {
@@ -425,7 +421,7 @@ namespace LegendaryClient.Windows
                 string posUp = string.Format(position.ToUpper());
                 string Json = string.Format("{\"role\":\"{0}\",\"position\":\"{1}\",\"queueId\":61,\"championId\":{2}", roleUp, posUp, ChampionId);
                 CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveEstimatedWaitTimeV2", Json);
-            }
+            }//*/
         }
 
         private void StartTeambuilder()

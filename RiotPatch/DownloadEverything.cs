@@ -10,7 +10,7 @@ namespace RiotPatch
 {
     public class DownloadEverything
     {
-        public static void DownloadEverything(string MainLocation)
+        public static void DownloadEverythingFix(string MainLocation)
         {
             //Create needed folders because they do not exist
             if (!Directory.Exists(Path.Combine(MainLocation, "RADS")))

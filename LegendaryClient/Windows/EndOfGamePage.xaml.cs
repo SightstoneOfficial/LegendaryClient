@@ -44,9 +44,16 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                try
+                {
+                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                }
+                catch (Exception e)
+                {
+                    Client.Log(e.Message + " - Probably brushes failing for no reason again");
+                }
             }));
         }
 
@@ -57,12 +64,19 @@ namespace LegendaryClient.Windows
 
                 if (msg.Body != "This room is not anonymous")
                 {
-                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = msg.From.Resource + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
-                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    try
+                    {
+                        TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                        tr.Text = msg.From.Resource + ": ";
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                        tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Color.White);
+                    }
+                    catch (Exception e)
+                    {
+                        Client.Log(e.Message + " - Probably brushes failing for no reason again");
+                    }
                 }
             }));
         }

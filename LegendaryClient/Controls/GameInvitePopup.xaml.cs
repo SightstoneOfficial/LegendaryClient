@@ -9,6 +9,7 @@ using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.Threading;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Controls
 {
@@ -17,19 +18,10 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class GameInvitePopup : UserControl
     {
-        string GameMetaData;
-        string InvitationStateAsString;
-        string InvitationState;
-        string InvitationId;
-        string Inviter;
-
-        int queueId;
+        string GameMetaData, InvitationStateAsString, InvitationState, InvitationId, Inviter, rankedTeamName, gameMode, gameType;
+        int queueId, mapId, gameTypeConfigId;
         bool isRanked;
-        string rankedTeamName;
-        int mapId;
-        int gameTypeConfigId;
-        string gameMode;
-        string gameType;
+
         public GameInvitePopup(InvitationRequest stats)
         {
             InitializeComponent();
@@ -166,8 +158,10 @@ namespace LegendaryClient.Controls
         }
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
-            InvitationRequest Request = new InvitationRequest();
-            this.Visibility = Visibility.Hidden;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                this.Visibility = Visibility.Hidden;
+            }));
             Client.PVPNet.Decline(InvitationId);
         }
         private void Hide_Click(object sender, RoutedEventArgs e)
@@ -181,6 +175,19 @@ namespace LegendaryClient.Controls
                 //why did I do this... I don't actually know
                 LobbyStatus Lobbystatus = message as LobbyStatus;
             }
+            else if (message is InvitationRequest)
+            {
+                InvitationRequest request = message as InvitationRequest;
+                if (request.InvitationStateAsString == "ON_HOLD")
+                {
+                    Decline_Click(null, null);
+                }
+            }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Visibility = Visibility.Hidden;
         }
     }
 }

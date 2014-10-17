@@ -33,6 +33,7 @@ using Newtonsoft.Json;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System.Globalization;
+using PVPNetConnect.RiotObjects.Platform.Game.Message;
 
 namespace LegendaryClient.Windows
 {
@@ -41,7 +42,6 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class TeamQueuePage : Page
     {
-        Message MessageData;
         //long InviteId = 0;
         private Room newRoom;
         bool IsOwner = false;
@@ -61,7 +61,6 @@ namespace LegendaryClient.Windows
         string Invite;
 
         internal static LobbyStatus CurrentLobby;
-        bool ranked = false;
 
         /// <summary>
         /// When invited to a team
@@ -83,7 +82,6 @@ namespace LegendaryClient.Windows
                 LoadStats();
             }
 
-
             Client.LobbyButton.Visibility = Visibility.Visible;
         }
 
@@ -102,26 +100,35 @@ namespace LegendaryClient.Windows
                 //Yay fixed lobby. Riot hates me still though. They broke this earlier, except I have fixed it
                 CurrentLobby = await Client.PVPNet.getLobbyStatus();
             }
-            string ObfuscatedName = Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"), ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
-            string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
-            newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
-            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-            newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-            newRoom.Join(CurrentLobby.ChatKey);
+            if (CurrentLobby.InvitationID != null)
+            {
+                string ObfuscatedName = Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"), ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
+                string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
+                newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+                newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+                newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                newRoom.Join(CurrentLobby.ChatKey);
 
-            
-            ///Way smarter way then just putting the code here
 
-            RenderLobbyData();
+                ///Way smarter way then just putting the code here
+
+                RenderLobbyData();
+            }
+            else
+            {
+                Client.ClearPage(typeof(TeamQueuePage));
+                Client.SwitchPage(new MainPage());
+                Client.Log("Failed to join room.");
+            }
         }
 
 
-        private void Inviter_Click(object sender, RoutedEventArgs e)
+        private async void Inviter_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             Member stats = (Member)LastSender.Tag;
-            Client.PVPNet.GrantInvite(stats.SummonerId);
+            await Client.PVPNet.GrantInvite(stats.SummonerId);
 
         }
         private void Profile_Click(object sender, RoutedEventArgs e)
@@ -130,17 +137,17 @@ namespace LegendaryClient.Windows
             Member stats = (Member)LastSender.Tag;
             Client.SwitchPage(new ProfilePage(stats.SummonerName));
         }
-        private void Kick_Click(object sender, RoutedEventArgs e)
+        private async void Kick_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             Member stats = (Member)LastSender.Tag;
-            Client.PVPNet.Kick(stats.SummonerId);
+            await Client.PVPNet.Kick(stats.SummonerId);
         }
-        private void Owner_Click(object sender, RoutedEventArgs e)
+        private async void Owner_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             Member stats = (Member)LastSender.Tag;
-            Client.PVPNet.MakeOwner(stats.SummonerId);
+            await Client.PVPNet.MakeOwner(stats.SummonerId);
         }
 
         internal void PingElapsed(object sender, ElapsedEventArgs e)
@@ -253,7 +260,7 @@ namespace LegendaryClient.Windows
                     gameTypeConfigId = m.gameTypeConfigId;
                     gameMode = m.gameMode;
                     gameType = m.gameType;
-                    
+
                     foreach (Member stats in CurrentLobby.Members)
                     {
                     //Your kidding me right
@@ -265,6 +272,7 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Inviter.Tag = stats;
                         TeamPlayer.Profile.Tag = stats;
                         TeamPlayer.Owner.Tag = stats;
+                        TeamPlayer.Width = 1500;
                         TeamPlayer.HorizontalAlignment = HorizontalAlignment.Stretch;
 
                         TeamPlayer.Kick.Click += Kick_Click;
@@ -306,14 +314,14 @@ namespace LegendaryClient.Windows
                         }
                         TeamListView.Items.Add(TeamPlayer);
                     }
-                    //Gets if it is a ranked solo game
                     if (queueId == 4)
                     {
                         if (Players >= 2)
                             InviteButton.IsEnabled = false;
                         else
                             InviteButton.IsEnabled = true;
-                    }                    
+                    }
+                    
                 }));
             }
             catch { }
@@ -328,18 +336,34 @@ namespace LegendaryClient.Windows
                 CurrentLobby = Lobby;
                 RenderLobbyData();
             }
-            else if (message.GetType() == typeof(GameDTO) && Client.runonce == false)
+            else if (message is GameDTO)
             {
-                
                 GameDTO Queue = message as GameDTO;
-                if (Queue.GameState == "JOINING_CHAMP_SELECT")
+                if (Queue.GameState == "TERMINATED")
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
-                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                        Client.ClearPage(typeof(QueuePopOverlay));
+                        setStartButtonText("Start Game");
+                        inQueue = false;
                     }));
                 }
+            }
+            else if (message is GameNotification)
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    Client.ClearPage(typeof(QueuePopOverlay));
+                    setStartButtonText("Start Game");
+                    inQueue = false;
+                }));
+            }
+            else if (message is SearchingForMatchNotification)
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    EnteredQueue(message as SearchingForMatchNotification);
+                }));
             }
         }
 
@@ -352,10 +376,11 @@ namespace LegendaryClient.Windows
         private async void Leave_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.Leave();
+            await Client.PVPNet.PurgeFromQueues();
+            Client.ClearPage(typeof(TeamQueuePage));
             Client.SwitchPage(new MainPage());
             Client.LobbyButton.Visibility = Visibility.Hidden;
         }
-
 
         private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
@@ -384,6 +409,25 @@ namespace LegendaryClient.Windows
             }));
         }
 
+        private void GotQueuePop(object sender, object message)
+        {
+            if (Client.runonce == false)
+            {
+                GameDTO Queue = message as GameDTO;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                }));
+                Client.PVPNet.OnMessageReceived -= GotQueuePop;
+            }
+        }
+
+        public void readdHandler()
+        {
+            Client.PVPNet.OnMessageReceived += GotQueuePop;
+        }
+
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
             TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
@@ -401,26 +445,45 @@ namespace LegendaryClient.Windows
 
         internal List<Int32> QueueIds;
 
+        bool inQueue = false;
+
+#pragma warning disable 4014
+
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            MatchMakerParams parameters = new MatchMakerParams();
-            parameters.Languages = null;
-            QueueIds = new List<int>();
-            QueueIds.Add(queueId);
-            parameters.QueueIds = QueueIds.ToArray();
-            parameters.InvitationId = CurrentLobby.InvitationID;
-            parameters.TeamId = null;
-            parameters.LastMaestroMessage = null;
-            List<int> InviteList = new List<int>();
-            foreach (Member stats in CurrentLobby.Members)
+            if (!inQueue)
             {
-                int GameInvitePlayerList = Convert.ToInt32(stats.SummonerId);
-                InviteList.Add(GameInvitePlayerList);
+                MatchMakerParams parameters = new MatchMakerParams();
+                parameters.Languages = null;
+                QueueIds = new List<int>();
+                QueueIds.Add(queueId);
+                parameters.QueueIds = QueueIds.ToArray();
+                parameters.InvitationId = CurrentLobby.InvitationID;
+                parameters.TeamId = null;
+                parameters.LastMaestroMessage = null;
+                List<int> InviteList = new List<int>();
+                foreach (Member stats in CurrentLobby.Members)
+                {
+                    int GameInvitePlayerList = Convert.ToInt32(stats.SummonerId);
+                    InviteList.Add(GameInvitePlayerList);
+                }
+                parameters.Team = InviteList;
+
+                Client.PVPNet.AttachTeamToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
             }
-            parameters.Team = InviteList;
-            
-            Client.PVPNet.AttachTeamToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
+            else
+            {
+                Client.PVPNet.PurgeFromQueues();
+                setStartButtonText("Start Game");
+                inQueue = false;
+            }
         }
+
+        private void setStartButtonText(string text)
+        {
+            Dispatcher.Invoke(new Action(() => { StartGameButton.Content = text; }));
+        }
+
         private void EnteredQueue(SearchingForMatchNotification result)
         {
             if (result.PlayerJoinFailures != null)
@@ -435,33 +498,19 @@ namespace LegendaryClient.Windows
                         TimeSpan time = TimeSpan.FromMilliseconds(x.PenaltyRemainingTime);
                         messageOver.MessageTextBox.Text += "You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
                     }
-                    messageOver.Content = messageOver.Content;
-                    messageOver.Visibility = Visibility.Visible;
+                    Client.OverlayContainer.Content = messageOver.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
                 return;
             }
+            Client.PVPNet.OnMessageReceived += GotQueuePop;
+            setStartButtonText("In Queue...");
+            inQueue = true;
         }
-        private void GotQueuePop(object sender, object message)
+
+        private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            if (message.GetType() == typeof(GameDTO))
-            {
-                GameDTO Queue = message as GameDTO;
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                {
-                    Client.OverlayContainer.Content = new QueuePopOverlay(Queue).Content;
-                    Client.OverlayContainer.Visibility = Visibility.Visible;
-                }));
-                Client.PVPNet.OnMessageReceived -= GotQueuePop;
-
-            }
-            else if (message.GetType() == typeof(LobbyStatus))
-            {
-                LobbyStatus mg = message as LobbyStatus;
-                {
-                    CurrentLobby = mg;
-                }
-            }
+            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
         }
-
     }
 }

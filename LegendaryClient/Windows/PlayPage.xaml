@@ -1,6 +1,7 @@
 ﻿<Page x:Class="LegendaryClient.Windows.PlayPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
@@ -29,5 +30,10 @@
         <ListBox x:Name="QueueListView" HorizontalAlignment="Stretch" Margin="0,0,0,90" VerticalAlignment="Stretch" />
         <Button x:Name="LeaveQueuesButton" Content="Leave Queues" HorizontalAlignment="Right" Margin="0,0,150,57" VerticalAlignment="Bottom" Width="96" Height="28" Click="LeaveQueuesButton_Click" />
         <CheckBox x:Name="AutoAcceptCheckBox" Content="Auto Accept Queue" HorizontalAlignment="Right" Margin="0,0,10,65" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" />
+        <Controls:ProgressRing x:Name="WaitingForQueues" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,100" Visibility="Hidden">
+            <Controls:ProgressRing.Effect>
+                <DropShadowEffect />
+            </Controls:ProgressRing.Effect>
+        </Controls:ProgressRing>
     </Grid>
 </Page>

@@ -42,6 +42,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public String StatTypeName { get; set; }
 
         [InternalName("futureData")]
-        public Boolean FutureData { get; set; }
+        public new Boolean FutureData { get; set; }
     }
 }

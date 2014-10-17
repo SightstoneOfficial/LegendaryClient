@@ -8,6 +8,7 @@
 	Title="NotificationPage">
 
     <Page.Resources>
+        
         <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Visibility" Value="Collapsed" />
         </Style>
@@ -16,7 +17,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="#E5000000">
+    <Grid Background="{Binding Background}">
         <Button Content="Clear all Notifications" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top" />
         <ListView Style="{StaticResource NoFocus}" x:Name="ChatListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" Margin="0,45,0,0" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}">
             <ListView.View>

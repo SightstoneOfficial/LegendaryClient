@@ -26,7 +26,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
             base.SetFields(this, result);
         }
 
-        public delegate void Callback(PlayerParticipant result);
+        public new delegate void Callback(PlayerParticipant result);
 
         private Callback callback;
 

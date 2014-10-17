@@ -19,8 +19,16 @@ namespace LCLog
         /// <param name="e"></param>
         public static void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
-            if (e.Exception.Message.Contains("too small for an Int32") || e.Exception.Message.Contains("Constructor on type "))
+            try
+            {
+                if (e.Exception.Message.Contains("too small for an Int32") || e.Exception.Message.Contains("Constructor on type "))
+                    return;
+            }
+            catch
+            {
+                WriteToLog.Log("Failed to write error in FirstChanceException.");
                 return;
+            }
             WriteToLog.Log("A first chance exception was thrown", "EXCEPTION");
             WriteToLog.Log(e.Exception.Message, "EXCEPTION");
             WriteToLog.Log(e.Exception.StackTrace, "EXCEPTION");

@@ -13,6 +13,8 @@ using System.Windows.Controls;
 using log4net;
 using log4net.Config;
 using System.Security.Permissions;
+using System.Net;
+using System.Diagnostics;
 
 namespace LegendaryClient
 {
@@ -21,14 +23,13 @@ namespace LegendaryClient
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private Accent Steel = null;
+        private Accent myAccent = null;
         Warning Warn = new Warning();
         private static readonly ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
         public MainWindow()
         {
             InitializeComponent();
-
             SwitchPage.Visibility = Visibility.Hidden;
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
@@ -38,21 +39,16 @@ namespace LegendaryClient
             LCLog.WriteToLog.CreateLogFile();
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
-#if !DEBUG
-
-#endif
 
             Client.InfoLabel = InfoLabel;
             Client.StartHeartbeat();
             Client.PVPNet = new PVPNetConnection();
             Client.PVPNet.KeepDelegatesOnLogout = false;
             Client.PVPNet.OnError += Client.PVPNet_OnError;
-
-            Steel = new Accent("Steel", new Uri("pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml"));
-            if (Properties.Settings.Default.DarkTheme)
-            {
-                ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
-            }
+            if (String.IsNullOrEmpty(Properties.Settings.Default.Theme))
+               Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
+            myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
+            ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
 
             Client.ChatClient = new JabberClient();
             ChatContainer.Content = new ChatPage().Content;
@@ -82,32 +78,33 @@ namespace LegendaryClient
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
             Client.SwitchPage(new PatcherPage());
-            //Client.SwitchPage(new LoginPage());
+
+            using (WebClient client = new WebClient())
+            {
+                if (FileVersionInfo.GetVersionInfo("LegendaryClient.exe").FileVersion != client.DownloadString("http://dispersia.github.io/Version.txt"))
+                {
+                    Process.Start("LegendaryClientUpdater.exe");
+                    Environment.Exit(Environment.ExitCode);
+                }
+            }
 
             this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
         }
 
-        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        public void ChangeTheme()
         {
-            if (ThemeManager.ThemeIsDark)
-            {
-                ThemeManager.ChangeTheme(this, Steel, Theme.Light);
-                Properties.Settings.Default.DarkTheme = false;
-                Properties.Settings.Default.Save();
-            }
-            else
-            {
-                ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
-                Properties.Settings.Default.DarkTheme = true;
-                Properties.Settings.Default.Save();
-            }
+            Accent myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
+            ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
+            Client.CurrentAccent = myAccent;
         }
 
         private void SwichToTeamQueue_Click(object Sender, RoutedEventArgs e)
         {
             Client.SwitchPage(new TeamQueuePage(null, null, true));
         }
+
         internal bool SwitchTeamPage = true;
+
         public new void Hide()
         {
             if (SwitchTeamPage == true)
@@ -153,7 +150,7 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
-                SettingsPage SettingsPage = new SettingsPage();
+                SettingsPage SettingsPage = new SettingsPage(this);
                 Client.SwitchPage(SettingsPage);
             }
         }
@@ -164,6 +161,7 @@ namespace LegendaryClient
             {
                 MainPage MainPage = new MainPage();
                 Client.SwitchPage(MainPage);
+                Client.ClearPage(typeof(SettingsPage));
             }
         }
 

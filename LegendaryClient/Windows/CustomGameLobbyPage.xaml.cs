@@ -131,7 +131,7 @@ namespace LegendaryClient.Windows
                         {
                             Client.ChampSelectDTO = dto;
                             Client.LastPageContent = Client.Container.Content;
-                            Client.SwitchPage(new ChampSelectPage());
+                            Client.SwitchPage(new ChampSelectPage(this));
                             LaunchedTeamSelect = true;
                         }
                     }
@@ -221,8 +221,8 @@ namespace LegendaryClient.Windows
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.QuitGame();
-            Client.ClearPage(new CustomGameLobbyPage()); //Clear pages
-            Client.ClearPage(new CreateCustomGamePage());
+            Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
+            Client.ClearPage(typeof(CreateCustomGamePage));
 
             Client.SwitchPage(new MainPage());
         }

@@ -87,11 +87,13 @@ namespace LegendaryClient.Windows
         private bool HasLaunchedGame = false;
         private bool QuickLoad = false; //Don't load masteries and runes on load at start
         private Room Chatroom;
+        private Page previousPage;
 
-        public ChampSelectPage()
+        public ChampSelectPage(Page previousPage)
         {
             InitializeComponent();
             StartChampSelect();
+            this.previousPage = previousPage;
             string Sound = AmbientChampSelect.currentQueueToSoundFile(Client.QueueId);
             AmbientChampSelect.PlayAmbientChampSelectSound(Sound);
             Client.LastPageContent = this.Content;
@@ -120,7 +122,7 @@ namespace LegendaryClient.Windows
             }//*/
         }
 
-        internal static object LobbyContent;
+        internal static object LobbyContent = new object();
 
         private async void StartChampSelect()
         {
@@ -129,13 +131,8 @@ namespace LegendaryClient.Windows
             Client.IsInGame = true;
             //Get champions and sort alphabetically
 
-
-
-
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
-
-
 
             //Retrieve masteries and runes
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
@@ -186,35 +183,38 @@ namespace LegendaryClient.Windows
                 overlay.MessageTitle.Content = "Invalid Config";
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
-                
+
             }
-            counter = configType.MainPickTimerDuration - 5; //Seems to be a 5 second inconsistancy with riot and what they actually provide
-            CountdownTimer = new System.Windows.Forms.Timer();
-            CountdownTimer.Tick += new EventHandler(CountdownTimer_Tick);
-            CountdownTimer.Interval = 1000; // 1 second
-            CountdownTimer.Start();
+            else
+            {
+                counter = configType.MainPickTimerDuration - 5; //Seems to be a 5 second inconsistancy with riot and what they actually provide
+                CountdownTimer = new System.Windows.Forms.Timer();
+                CountdownTimer.Tick += new EventHandler(CountdownTimer_Tick);
+                CountdownTimer.Interval = 1000; // 1 second
+                CountdownTimer.Start();
 
-            LatestDto = latestDTO;
-            //Get the champions for the other team to ban & sort alpabetically
-            ChampionBanInfoDTO[] ChampsForBan = await Client.PVPNet.GetChampionsForBan();
-            ChampionsForBan = new List<ChampionBanInfoDTO>(ChampsForBan);
-            ChampionsForBan.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+                LatestDto = latestDTO;
+                //Get the champions for the other team to ban & sort alpabetically
+                ChampionBanInfoDTO[] ChampsForBan = await Client.PVPNet.GetChampionsForBan();
+                ChampionsForBan = new List<ChampionBanInfoDTO>(ChampsForBan);
+                ChampionsForBan.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
-            //Join champion select chatroom
-            string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
-            Chatroom = Client.ConfManager.GetRoom(new jabber.JID(JID));
-            Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
-            Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
-            Chatroom.Join(latestDTO.RoomPassword);
+                //Join champion select chatroom
+                string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
+                Chatroom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+                Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
+                Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
+                Chatroom.Join(latestDTO.RoomPassword);
 
-            //Render our champions
-            RenderChamps(false);
+                //Render our champions
+                RenderChamps(false);
 
-            //Start recieving champ select
-            ChampSelect_OnMessageReceived(this, latestDTO);
-            Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
-            Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
+                //Start recieving champ select
+                ChampSelect_OnMessageReceived(this, latestDTO);
+                Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
+                Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
+            }
         }
 
         private void CountdownTimer_Tick(object sender, EventArgs e)
@@ -238,7 +238,6 @@ namespace LegendaryClient.Windows
             if (message.GetType() == typeof(GameDTO))
             {
                 #region In Champion Select
-
                 GameDTO ChampDTO = message as GameDTO;
                 LatestDto = ChampDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
@@ -377,7 +376,15 @@ namespace LegendaryClient.Windows
                     }
                     else if (ChampDTO.GameState == "TERMINATED")
                     {
-                        //TODO
+                        NotifyPlayerPopup pop = new NotifyPlayerPopup("Player Dodged", "Player has Dodged Queue.");
+                        pop.Height = 230;
+                        pop.HorizontalAlignment = HorizontalAlignment.Right;
+                        pop.VerticalAlignment = VerticalAlignment.Bottom;
+                        Client.NotificationGrid.Children.Add(pop);
+                        if (previousPage is TeamQueuePage)
+                            (previousPage as TeamQueuePage).readdHandler();
+                        Client.SwitchPage(previousPage);
+                        Client.ClearPage(typeof(ChampSelectPage));
                     }
 
                     #region Display players
@@ -409,19 +416,11 @@ namespace LegendaryClient.Windows
                                 control.PlayerName.Content = player.SummonerName;
                             else
                             {
-                                try
-                                {
-                                    AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.AccountId);
-                                    if (!String.IsNullOrEmpty(Summoner.Summoner.Name))
-                                        control.PlayerName.Content = Summoner.Summoner.Name;
-                                    else
-                                        control.PlayerName.Content = "Unknown Player";
-                                }
-                                catch
-                                {
+                                AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.SummonerId);
+                                if (!String.IsNullOrEmpty(Summoner.Summoner.Name))
+                                    control.PlayerName.Content = Summoner.Summoner.Name;
+                                else
                                     control.PlayerName.Content = "Unknown Player";
-                                }
-                                
                             }
 
                             foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
@@ -432,13 +431,13 @@ namespace LegendaryClient.Windows
                                 {
                                     if ((int)y.Tag == selection.ChampionId)
                                     {
-                                        y.IsHitTestVisible = false;
+                                        y.IsHitTestVisible = true;
                                         y.Opacity = 0.5;
                                         if (configType != null)
                                         {
                                             if (configType.DuplicatePick)
                                             {
-                                                y.IsHitTestVisible = true;
+                                                y.IsHitTestVisible = false;
                                                 y.Opacity = 1;
                                             }
                                         }
@@ -557,9 +556,9 @@ namespace LegendaryClient.Windows
                         {
                             CountdownTimer.Stop();
                         }
-                        QuitCurrentGame();
+                        Client.LaunchGame();
+                        InGame();
                     }));
-                    Client.LaunchGame();
                 }
 
                 #endregion Launching Game
@@ -898,12 +897,22 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.QuitGame();
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-            Client.ClearPage(new CustomGameLobbyPage());
-            Client.ClearPage(new CreateCustomGamePage());
-            Client.ClearPage(new ChampSelectPage());
-            Client.ClearPage(this);
+            Client.ClearPage(typeof(CustomGameLobbyPage));
+            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ClearPage(typeof(ChampSelectPage));
 
             Client.SwitchPage(new MainPage());
+        }
+
+        private async void InGame()
+        {
+            await Client.PVPNet.QuitGame();
+            Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            Client.ClearPage(typeof(CustomGameLobbyPage));
+            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ClearPage(typeof(ChampSelectPage));
+
+            Client.SwitchPage(new InGame());
         }
 
         private async void LockInButton_Click(object sender, RoutedEventArgs e)

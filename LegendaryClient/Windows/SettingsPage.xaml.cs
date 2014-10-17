@@ -1,9 +1,11 @@
 ﻿using LegendaryClient.Logic;
+using MahApps.Metro;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 
@@ -70,11 +72,14 @@ namespace LegendaryClient.Windows
         #endregion DLL Stuff
 
         private List<string> Resolutions = new List<string>();
+        private List<Tuple<string, string>> Themes = new List<Tuple<string, string>>();
+        private MainWindow mainWindow;
 
-        public SettingsPage()
+        public SettingsPage(MainWindow window)
         {
             InitializeComponent();
             InsertDefaultValues();
+            mainWindow = window;
 
             StatsCheckbox.IsChecked = Properties.Settings.Default.GatherStatistics;
             ErrorCheckbox.IsChecked = Properties.Settings.Default.SendErrors;
@@ -114,6 +119,25 @@ Donations are accepted at:
 Not accepted yet";
 
             #endregion AboutTextbox
+
+            Themes.Add(new Tuple<string, string>("Dark Steel", "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml"));
+            Themes.Add(new Tuple<string, string>("Light Steel", "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml"));
+            Themes.Add(new Tuple<string, string>("Dark Blue", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml"));
+            Themes.Add(new Tuple<string, string>("Light Blue", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml"));
+            Themes.Add(new Tuple<string, string>("Dark Red", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml"));
+            Themes.Add(new Tuple<string, string>("Light Red", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml"));
+            Themes.Add(new Tuple<string, string>("Dark Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml"));
+            Themes.Add(new Tuple<string, string>("Light Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml"));
+
+            ThemeBox.ItemsSource = Themes;
+            foreach (var item in Themes)
+            {
+                if (item.Item2.Equals(Properties.Settings.Default.Theme) && item.Item1.Contains((Properties.Settings.Default.DarkTheme) ? "Dark" : "Light"))
+                {
+                    ThemeBox.SelectedItem = item;
+                    break;
+                }
+            }
         }
 
         public void InsertDefaultValues()
@@ -169,6 +193,16 @@ Not accepted yet";
             {
                 if (s.Contains("Splash")) LoginImageBox.Items.Add(s);
             }
+        }
+
+        private void ThemeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Themes[ThemeBox.SelectedIndex].Item1.Contains("Dark"))
+                Properties.Settings.Default.DarkTheme = true;
+            else
+                Properties.Settings.Default.DarkTheme = false;
+            Properties.Settings.Default.Theme = Themes[ThemeBox.SelectedIndex].Item2;
+            mainWindow.ChangeTheme();
         }
     }
 }

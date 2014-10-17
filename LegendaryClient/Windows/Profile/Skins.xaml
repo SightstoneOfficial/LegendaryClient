@@ -9,7 +9,7 @@
 
     <Grid>
         <Label Content="Search" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Foreground="White" />
-        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="100,20,10,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
+        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="100,20,161,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
 
         <ListView x:Name="SkinSelectListView" HorizontalAlignment="Stretch" Margin="10,50,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
             <ListView.ItemsPanel>
@@ -18,5 +18,6 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
+        <CheckBox x:Name="LimitedSkinCheckBox" Content="Limited Only" HorizontalAlignment="Right" Margin="0,19,10,0" VerticalAlignment="Top" Height="23" Width="136" FontSize="18" Foreground="White" Checked="LimitedSkinCheckBox_Checked" Unchecked="LimitedSkinCheckBox_Checked" />
     </Grid>
 </Page>
