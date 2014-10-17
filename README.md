@@ -54,6 +54,14 @@ You will also need These DLLS:
 
 These DLLS are Not Included. Please Download them yourself
 
+##Users who want to use client features but not the client
+Check out these links:
+* https://github.com/eddy5641/LeagueTGen | League of Legends Tournament Code Gen
+* https://github.com/Snowl/LoLEnhancementSuite | Multiple mods for lol by Snowl (Original Creator)
+* op.gg | Account data + recording + mmr calc
+* http://www.leaguereplays.com/download | Lol replay client [use op.gg (I recommend you to)]
+* https://github.com/bladecoding/LoLNotes | See who is on your team + rtmp-s sniffer for lol (Causes lag)
+
 In-Client Screenshots (90-100)% complete
 =====================
 
