@@ -100,7 +100,6 @@ namespace LegendaryClient.Windows
 
         private void NotificationButton_Click(object sender, RoutedEventArgs e)
         {
-            NotificationButton.Content = "-";
             if (Client.NotificationContainer.Visibility == System.Windows.Visibility.Hidden)
             {
                 Client.NotificationContainer.Visibility = System.Windows.Visibility.Visible;
@@ -112,7 +111,7 @@ namespace LegendaryClient.Windows
                 Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 10, 50);
-            }//*/
+            }
         }
 
         private void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -7,12 +7,12 @@ using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -44,16 +44,9 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                try
-                {
-                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-                }
-                catch (Exception e)
-                {
-                    Client.Log(e.Message + " - Probably brushes failing for no reason again");
-                }
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             }));
         }
 
@@ -64,19 +57,12 @@ namespace LegendaryClient.Windows
 
                 if (msg.Body != "This room is not anonymous")
                 {
-                    try
-                    {
-                        TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = msg.From.Resource + ": ";
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
-                        tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Color.White);
-                    }
-                    catch (Exception e)
-                    {
-                        Client.Log(e.Message + " - Probably brushes failing for no reason again");
-                    }
+                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.From.Resource + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 }
             }));
         }

@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCLog", "LCLog\LCLog.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiotPatch", "RiotPatch\RiotPatch.csproj", "{FD32D64F-B568-43A1-8C52-7F3DA59781AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClientUpdater", "LegendaryClientUpdater\LegendaryClientUpdater.csproj", "{5D9A30D7-7455-471A-B0E3-E2998428113F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,12 +58,6 @@ Global
 		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.PubRelease|Any CPU.Build.0 = Release|Any CPU
 		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D9A30D7-7455-471A-B0E3-E2998428113F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D9A30D7-7455-471A-B0E3-E2998428113F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D9A30D7-7455-471A-B0E3-E2998428113F}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{5D9A30D7-7455-471A-B0E3-E2998428113F}.PubRelease|Any CPU.Build.0 = Release|Any CPU
-		{5D9A30D7-7455-471A-B0E3-E2998428113F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D9A30D7-7455-471A-B0E3-E2998428113F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
