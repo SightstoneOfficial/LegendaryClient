@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using System.Globalization;
 using System.Threading;
 using System.Windows.Threading;
+using System.Collections.Generic;
 
 namespace LegendaryClient.Controls
 {
@@ -25,25 +26,70 @@ namespace LegendaryClient.Controls
         public GameInvitePopup(InvitationRequest stats)
         {
             InitializeComponent();
+            try
+            {
+                InviteInfo info = Client.InviteData[stats.InvitationId];
+                if (stats.InvitationState == "ON_HOLD")
+                {
+                    info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now on hold", info.Inviter);
+                    Lockup();
+                }
+                else if (stats.InvitationState == "TERMINATED")
+                {
+                    info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has been terminated", info.Inviter);
+                    Lockup();
+                }
+                else if (stats.InvitationState == "REVOKED")
+                {
+                    info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has timed out");
+                    Lockup();
+                }
+                else if (stats.InvitationState == "ACTIVE")
+                {
+                    info.popup.NotificationTextBox.Text = "";
+                    if (stats.Inviter == null)
+                        LoadGamePopupData(info.stats);
+                    else
+                        LoadGamePopupData(stats);
+                    Unlock();
+                }
+                else
+                {
+                    info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, Client.TitleCaseString(stats.InvitationState));
+                    Lockup();
+                }
+            }
+            catch
+            {
+                LoadGamePopupData(stats);
+                Unlock();
+            }
             //IDK WHY I'M Receiving this stuff -.-
-            Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
-            GameMetaData = stats.GameMetaData;
+            
+
+        }
+        private void Lockup()
+        {
+            AcceptButton.Visibility = Visibility.Hidden;
+            DeclineButton.Visibility = Visibility.Hidden;
+            OkayButton.Visibility = Visibility.Visible;
+        }
+        private void Unlock()
+        {
+            AcceptButton.Visibility = Visibility.Visible;
+            DeclineButton.Visibility = Visibility.Visible;
+            OkayButton.Visibility = Visibility.Hidden;
+        }
+
+        private void RenderNotificationTextBox(string s)
+        {
+            NotificationTextBox.Text += s + Environment.NewLine;
+        }
+
+        private void LoadGamePopupData(InvitationRequest stats)
+        {
             InvitationStateAsString = stats.InvitationStateAsString;
-            if (InvitationStateAsString == "ON_HOLD")
-            {
-                this.Visibility = Visibility.Hidden;
-                return;
-            }
-            else if (InvitationStateAsString == "TERMINATED")
-            {
-                this.Visibility = Visibility.Hidden;
-                return;
-            }
-            else if (InvitationStateAsString == "REVOKED")
-            {
-                this.Visibility = Visibility.Hidden;
-                return;
-            }
+            GameMetaData = stats.GameMetaData;
             InvitationState = stats.InvitationState;
             Inviter = stats.Inviter.SummonerName;
             InvitationId = stats.InvitationId;
@@ -89,7 +135,7 @@ namespace LegendaryClient.Controls
                 MapName = "The Crystal Scar";
             }
 
-            
+
             //This is used so we can call the ToTitleCase [first letter is capital rest are not]
             CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
             TextInfo textInfo = cultureInfo.TextInfo;
@@ -123,13 +169,15 @@ namespace LegendaryClient.Controls
                 RenderNotificationTextBox("Map: " + MapName);
                 RenderNotificationTextBox("Type: " + removeAllUnder);
             }
+
+            InviteInfo y = new InviteInfo();
+            y.stats = stats;
+            y.popup = this;
+            y.Inviter = Inviter;
+
+            Client.InviteData.Add(stats.InvitationId, y);
         }
 
-        private void RenderNotificationTextBox(string s)
-        {
-            NotificationTextBox.Text += s + Environment.NewLine;
-
-        }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
             if (gameType == "PRACTICE_GAME")
@@ -167,27 +215,14 @@ namespace LegendaryClient.Controls
         private void Hide_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Hidden;
+            InviteInfo x = Client.InviteData[InvitationId];
+            x.PopupVisible = false;
         }
-        private void Update_OnMessageReceived(object sender, object message)
-        {
-            if (message.GetType() == typeof(LobbyStatus))
-            {
-                //why did I do this... I don't actually know
-                LobbyStatus Lobbystatus = message as LobbyStatus;
-            }
-            else if (message is InvitationRequest)
-            {
-                InvitationRequest request = message as InvitationRequest;
-                if (request.InvitationStateAsString == "ON_HOLD")
-                {
-                    Decline_Click(null, null);
-                }
-            }
-        }
-
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Hidden;
+            Client.PVPNet.Decline(InvitationId);
+            Client.InviteData.Remove(InvitationId);
         }
     }
 }

@@ -100,6 +100,10 @@
     <Reference Include="rtmp-sharp">
       <HintPath>..\..\rtmp-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -154,6 +158,9 @@
     <Compile Include="Controls\GameSeperator.xaml.cs">
       <DependentUpon>GameSeperator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InvitesNotification.xaml.cs">
+      <DependentUpon>InvitesNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LeagueItem.xaml.cs">
       <DependentUpon>LeagueItem.xaml</DependentUpon>
     </Compile>
@@ -188,6 +195,7 @@
     <Compile Include="Logic\BotLogic\PlayableBots\EzrealBot.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\FiddlesticksBot.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\MundoBot.cs" />
+    <Compile Include="Logic\InviteInfo.cs" />
     <Compile Include="Logic\JSON\Champions.cs" />
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Patcher\LegendaryClientPatcher.cs" />
@@ -303,7 +311,6 @@
     <Compile Include="ReplayElements\ReplayItem.xaml.cs">
       <DependentUpon>ReplayItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Settings.cs" />
     <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
       <DependentUpon>ChampionDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -467,6 +474,10 @@
     <Page Include="Controls\GameSeperator.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\InvitesNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\LeagueItem.xaml">
       <SubType>Designer</SubType>
@@ -924,7 +935,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="chat.png" />
-    <Resource Include="cs_bg_champions.png" />
     <Resource Include="Locked.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

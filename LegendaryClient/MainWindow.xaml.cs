@@ -52,6 +52,7 @@ namespace LegendaryClient
 
             Client.ChatClient = new JabberClient();
             ChatContainer.Content = new ChatPage().Content;
+            NotificationContainer.Content = new NotificationPage().Content;
             StatusContainer.Content = new StatusPage().Content;
             NotificationOverlayContainer.Content = new FakePage().Content;
 
@@ -71,6 +72,7 @@ namespace LegendaryClient
             Client.MainWin = this;
             Client.Container = Container;
             Client.OverlayContainer = OverlayContainer;
+            Client.NotificationContainer = NotificationContainer;
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;
             Client.LobbyButton = SwitchPage;
@@ -78,16 +80,18 @@ namespace LegendaryClient
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
             Client.SwitchPage(new PatcherPage());
-
+#if Debug
             using (WebClient client = new WebClient())
             {
                 if (FileVersionInfo.GetVersionInfo("LegendaryClient.exe").FileVersion != client.DownloadString("http://dispersia.github.io/Version.txt"))
                 {
+
                     Process.Start("LegendaryClientUpdater.exe");
                     Environment.Exit(Environment.ExitCode);
+
                 }
             }
-
+#endif
             this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
         }
 
@@ -199,6 +203,7 @@ namespace LegendaryClient
         {
             Client.PVPNet.PurgeFromQueues();
             Client.PVPNet.Leave();
+            Client.PVPNet.Disconnect();
             Environment.Exit(0);
 
             if (QuitMe == true)

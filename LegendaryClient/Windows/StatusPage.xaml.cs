@@ -87,19 +87,19 @@ namespace LegendaryClient.Windows
             if (Client.ChatContainer.Visibility == System.Windows.Visibility.Hidden)
             {
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Visible;
-                //Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
+                Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 260, 50);
             }
             else
             {
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
-                //Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
+                Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 10, 50);
             }
         }
 
         private void NotificationButton_Click(object sender, RoutedEventArgs e)
-        {/*
+        {
             NotificationButton.Content = "-";
             if (Client.NotificationContainer.Visibility == System.Windows.Visibility.Hidden)
             {

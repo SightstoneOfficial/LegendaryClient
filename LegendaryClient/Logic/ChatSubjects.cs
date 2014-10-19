@@ -34,6 +34,8 @@
         PRACTICE_GAME_JOIN_ACK,
         RANKED_TEAM_UPDATE,
         INVITE_STATUS_CHANGED,
-        personalMessage
+        personalMessage,
+        GAMEINVITE_ON_HOLD,
+        LegendaryClient_Notification
     }
 }

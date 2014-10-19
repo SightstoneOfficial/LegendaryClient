@@ -38,6 +38,7 @@
         </Grid.Background>
         <MediaElement x:Name="SoundPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0"/>
         <MediaElement x:Name="ASoundPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0"/>
+        <ContentControl x:Name="NotificationContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" Panel.ZIndex="3" Margin="0,0,0,40" />
         <ContentControl x:Name="ChatContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" Panel.ZIndex="3" Margin="0,0,0,40" />
         <ContentControl x:Name="StatusContainer" VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Visibility="Hidden" Panel.ZIndex="3" Height="40" />
         <ContentControl x:Name="OverlayContainer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,40" Panel.ZIndex="2" Visibility="Hidden" />

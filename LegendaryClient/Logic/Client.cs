@@ -162,6 +162,11 @@ namespace LegendaryClient.Logic
         internal static List<invitationRequest> InviteJsonRequest = new List<invitationRequest>();
 
         /// <summary>
+        /// All of players who have been invited
+        /// </summary>
+        internal static Dictionary<String, InviteInfo> InviteData = new Dictionary<String, InviteInfo>();
+
+        /// <summary>
         /// The database of all the search tags
         /// </summary>
         internal static List<championSearchTags> SearchTags;
@@ -507,7 +512,7 @@ namespace LegendaryClient.Logic
         internal static ContentControl ChatContainer;
         internal static ContentControl StatusContainer;
         internal static ContentControl NotificationOverlayContainer;
-        internal static ContentControl NotificationContainer = new ContentControl();
+        internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
         internal static ChatItem ChatItem;
 
@@ -823,6 +828,11 @@ namespace LegendaryClient.Logic
             }
         }
 
+        /// <summary>
+        /// Super complex method to get the queue name when it is unknown
+        /// </summary>
+        /// <param name="QueueName"></param>
+        /// <returns></returns>
         private static string convert(string QueueName)
         {
             string result = string.Empty;
@@ -832,6 +842,11 @@ namespace LegendaryClient.Logic
             string Extra = "";
             var start = QueueName.Replace("matching-queue-", "").Replace("-game-queue", "");
             string[] x = start.Split('_');
+            string[] y = start.Split('-');
+            foreach(string vs in y)
+            {
+
+            }
             if (x[1].ToLower() == "bot")
             {
                 Bots = " Bots";
@@ -847,8 +862,7 @@ namespace LegendaryClient.Logic
             {
 
             }
-            if (!string.IsNullOrEmpty(Extra))
-                Extra = "(" + Extra + ")";
+
             result = string.Format("{0}{1} {2} {3}", Queueinternal, Bots, Players, Extra);
             return result;
         }

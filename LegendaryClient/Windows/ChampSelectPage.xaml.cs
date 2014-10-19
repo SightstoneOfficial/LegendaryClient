@@ -13,6 +13,7 @@ using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
 using PVPNetConnect.RiotObjects.Platform.Trade;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -586,9 +587,10 @@ namespace LegendaryClient.Windows
                     else if (TradeDTO.State == "CANCELED" || TradeDTO.State == "DECLINED" || TradeDTO.State == "BUSY")
                     {
                         PlayerTradeControl.Visibility = System.Windows.Visibility.Hidden;
-                        
+
+                        TextInfo Text = new CultureInfo("en-US", false).TextInfo;
                         NotificationPopup pop = new NotificationPopup(ChatSubjects.INVITE_STATUS_CHANGED,
-                            string.Format("{0} has {1} this trade", TradeDTO.RequesterInternalSummonerName, TradeDTO.State));
+                            string.Format("{0} has {1} this trade", TradeDTO.RequesterInternalSummonerName, Text.ToTitleCase(TradeDTO.State)));
 
                         if (TradeDTO.State == "BUSY")
                             pop.NotificationTextBox.Text = string.Format("{0} is currently busy", TradeDTO.RequesterInternalSummonerName);

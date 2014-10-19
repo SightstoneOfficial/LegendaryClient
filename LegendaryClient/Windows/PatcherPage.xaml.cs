@@ -170,7 +170,8 @@ namespace LegendaryClient.Windows
                             {
                                 TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
                                 tarArchive.ExtractContents(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
-                                tarArchive.Close();
+                                //tarArchive.Close();
+                                tarArchive = null;
                             }
                             inStream.Close();
 
@@ -395,7 +396,6 @@ namespace LegendaryClient.Windows
             var downloadLink = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
             var filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
             client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
-            client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
             string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
             LogTextBox("Retreving Update Data from: " + DownloadLocation);
             client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("Temp", "LegendaryClientBetaTesterUpdateFile.zip"));
