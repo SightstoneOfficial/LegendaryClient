@@ -19,7 +19,7 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class GameInvitePopup : UserControl
     {
-        string GameMetaData, InvitationStateAsString, InvitationState, InvitationId, Inviter, rankedTeamName, gameMode, gameType;
+        string GameMetaData, InvitationStateAsString, InvitationState, InvitationId, Inviter, rankedTeamName, gameMode, gameType, MapName;
         int queueId, mapId, gameTypeConfigId;
         bool isRanked;
 
@@ -29,34 +29,32 @@ namespace LegendaryClient.Controls
             try
             {
                 InviteInfo info = Client.InviteData[stats.InvitationId];
-                if (stats.InvitationState == "ON_HOLD")
+                switch(stats.InvitationState)
                 {
-                    info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now on hold", info.Inviter);
-                    Lockup();
-                }
-                else if (stats.InvitationState == "TERMINATED")
-                {
-                    info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has been terminated", info.Inviter);
-                    Lockup();
-                }
-                else if (stats.InvitationState == "REVOKED")
-                {
-                    info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has timed out");
-                    Lockup();
-                }
-                else if (stats.InvitationState == "ACTIVE")
-                {
-                    info.popup.NotificationTextBox.Text = "";
-                    if (stats.Inviter == null)
-                        LoadGamePopupData(info.stats);
-                    else
-                        LoadGamePopupData(stats);
-                    Unlock();
-                }
-                else
-                {
-                    info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, Client.TitleCaseString(stats.InvitationState));
-                    Lockup();
+                    case "ON_HOLD":
+                        info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now on hold", info.Inviter);
+                        Lockup();
+                        break;
+                    case "TERMINATED":
+                        info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has been terminated", info.Inviter);
+                        Lockup();;
+                        break;
+                    case "REVOKED":
+                        info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has timed out");
+                        Lockup();
+                        break;
+                    case "ACTIVE":
+                        info.popup.NotificationTextBox.Text = "";
+                        if (stats.Inviter == null)
+                            LoadGamePopupData(info.stats);
+                        else
+                            LoadGamePopupData(stats);
+                        Unlock();
+                        break;
+                    default:
+                        info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, Client.TitleCaseString(stats.InvitationState));
+                        Lockup();
+                        break;
                 }
             }
             catch
@@ -64,9 +62,6 @@ namespace LegendaryClient.Controls
                 LoadGamePopupData(stats);
                 Unlock();
             }
-            //IDK WHY I'M Receiving this stuff -.-
-            
-
         }
         private void Lockup()
         {
@@ -98,11 +93,6 @@ namespace LegendaryClient.Controls
             {
                 NoGame.Visibility = Visibility.Hidden;
             }
-
-            //Get who the Inviter's Name
-
-
-            //Simple way to get lobby data with Json.Net
             invitationRequest m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
             queueId = m.queueId;
             isRanked = m.isRanked;
@@ -113,62 +103,37 @@ namespace LegendaryClient.Controls
             gameType = m.gameType;
 
             Client.PVPNet.getLobbyStatusInviteId = InvitationId;
-
-            //So if there is a new map, it won't get a null error
-            string MapName = "Unknown Map";
-
-
-            if (mapId == 1)
+            switch(mapId)
             {
-                MapName = "Summoners Rift";
+                case 1:
+                    MapName = "Summoners Rift";
+                    break;
+                case 8:
+                    MapName = "The Crystal Scar";
+                    break;
+                case 10:
+                    MapName = "The Twisted Treeline";
+                    break;
+                case 12:
+                    MapName = "Howling Abyss";
+                    break;
+                default:
+                    MapName = "Unknown Map";
+                    break;
             }
-            else if (mapId == 10)
-            {
-                MapName = "The Twisted Treeline";
-            }
-            else if (mapId == 12)
-            {
-                MapName = "Howling Abyss";
-            }
-            else if (mapId == 8)
-            {
-                MapName = "The Crystal Scar";
-            }
-
-
-            //This is used so we can call the ToTitleCase [first letter is capital rest are not]
-            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
-            TextInfo textInfo = cultureInfo.TextInfo;
-            var gameModeLower = textInfo.ToTitleCase(string.Format(gameMode.ToLower()));
-            var gameTypeLower = textInfo.ToTitleCase(string.Format(gameType.ToLower()));
-            //Why do I have to do this Riot?
+            var gameModeLower = Client.TitleCaseString(string.Format(gameMode.ToLower()));
+            var gameTypeLower = Client.TitleCaseString(string.Format(gameType.ToLower()));
             var gameTypeRemove = gameTypeLower.Replace("_game", "");
             var removeAllUnder = gameTypeRemove.Replace("_", " ");
 
-            if (Inviter == null)
-            {
-                RenderNotificationTextBox("An unknown player has invited you to a game");
-                RenderNotificationTextBox("");
-                RenderNotificationTextBox("Mode: " + gameModeLower);
-                RenderNotificationTextBox("Map: " + MapName);
-                RenderNotificationTextBox("Type: " + removeAllUnder);
-            }
-            else if (Inviter == "")
-            {
-                RenderNotificationTextBox("An unknown player has invited you to a game");
-                RenderNotificationTextBox("");
-                RenderNotificationTextBox("Mode: " + gameModeLower);
-                RenderNotificationTextBox("Map: " + MapName);
-                RenderNotificationTextBox("Type: " + removeAllUnder);
-            }
-            else if (Inviter != null && Inviter != "")
-            {
-                RenderNotificationTextBox(Inviter + " has invited you to a game");
-                RenderNotificationTextBox("");
-                RenderNotificationTextBox("Mode: " + gameModeLower);
-                RenderNotificationTextBox("Map: " + MapName);
-                RenderNotificationTextBox("Type: " + removeAllUnder);
-            }
+            if (String.IsNullOrEmpty(Inviter))
+                Inviter = "An unknown player";
+
+            RenderNotificationTextBox(Inviter + " has invited you to a game");
+            RenderNotificationTextBox("");
+            RenderNotificationTextBox("Mode: " + gameModeLower);
+            RenderNotificationTextBox("Map: " + MapName);
+            RenderNotificationTextBox("Type: " + removeAllUnder);
 
             InviteInfo y = new InviteInfo();
             y.stats = stats;
@@ -198,7 +163,6 @@ namespace LegendaryClient.Controls
             else if (gameType == "RANKED_GAME")
             {
                 LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
-                //NewLobby = await Client.PVPNet.getLobbyStatus(InvitationId);
                 Client.SwitchPage(new TeamQueuePage(InvitationId));
             }
             this.Visibility = Visibility.Hidden;

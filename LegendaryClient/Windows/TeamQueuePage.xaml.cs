@@ -50,13 +50,9 @@ namespace LegendaryClient.Windows
         private static Timer PingTimer;
 
         //gamemetadata
-        int queueId;
+        int queueId, mapId, gameTypeConfigId;
         bool isRanked;
-        string rankedTeamName;
-        int mapId;
-        int gameTypeConfigId;
-        string gameMode;
-        string gameType;
+        string rankedTeamName, gameMode, gameType;
 
         string Invite;
 

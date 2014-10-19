@@ -17,10 +17,10 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </ContentControl.Resources>
-    <Grid>
+    <Grid Background="#FF8F8F8F">
         <Button x:Name="Accept" Content="√" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Margin="188,0,0,0"/>
         <Button Content="X" x:Name="Decline" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Margin="188,55,0,0"/>
-        <Label x:Name="TitleLabel" Content="Label" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="TitleLabel" Content="Notification" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <TextBox Text="eddd5641 has invited you to a game" FontSize="10" x:Name="BodyTextbox" Margin="10,26,65,10" />
 
     </Grid>

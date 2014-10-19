@@ -76,9 +76,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\awesomium.windows.controls.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\DLLS\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="jabber-net">
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
       <Private>True</Private>
@@ -200,6 +197,7 @@
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Patcher\LegendaryClientPatcher.cs" />
     <Compile Include="Logic\Region\EUNE.cs" />
+    <Compile Include="Logic\Region\LAN.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\TR.cs" />
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
