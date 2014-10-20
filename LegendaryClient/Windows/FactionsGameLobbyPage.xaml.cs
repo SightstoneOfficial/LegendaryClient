@@ -6,6 +6,7 @@ using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,17 +18,19 @@ using System.Windows.Threading;
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for CustomGameLobbyPage.xaml
+    /// Interaction logic for FactionsGameLobbyPage.xaml
     /// </summary>
-    public partial class CustomGameLobbyPage : Page
+    public partial class FactionsGameLobbyPage : Page
     {
         private bool LaunchedTeamSelect;
         private bool IsOwner;
         private double OptomisticLock;
         private bool HasConnectedToChat;
         private Room newRoom;
+        private string leftTeam;
+        private string rightTeam;
 
-        public CustomGameLobbyPage()
+        public FactionsGameLobbyPage()
         {
             InitializeComponent();
 
@@ -39,6 +42,15 @@ namespace LegendaryClient.Windows
                 GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
             }
             Client.InviteListView = InviteListView;
+            Regex r = new Regex("~(.*[^:]):(.*)");
+            Match m = r.Match(GameName.Content.ToString());
+            if (m.Success)
+            {
+                leftTeam = m.Groups[1].Value;
+                rightTeam = m.Groups[2].Value;
+                LeftTeamLabel.Content = leftTeam;
+                RightTeamLabel.Content = rightTeam;
+            }
         }
 
         private void GameLobby_OnMessageReceived(object sender, object message)
@@ -97,8 +109,6 @@ namespace LegendaryClient.Windows
                                 //botPlayer = RenderBot(botParticipant);
                                 IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
                                 StartGameButton.IsEnabled = IsOwner;
-                                AddBotBlueTeam.IsEnabled = IsOwner;
-                                AddBotPurpleTeam.IsEnabled = IsOwner;
 
                                 if (Client.Whitelist.Count > 0)
                                 {
@@ -280,5 +290,22 @@ namespace LegendaryClient.Windows
                     return Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;
             }
         }
+
+        public string getLeftTeam()
+        {
+            return leftTeam;
+        }
+
+        public string getRightTeam()
+        {
+            return rightTeam;
+        }
+    }
+
+    public class PlayerItem
+    {
+        public string Username { get; set; }
+
+        public PlayerParticipant Participant { get; set; }
     }
 }

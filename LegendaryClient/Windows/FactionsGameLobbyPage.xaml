@@ -3,10 +3,11 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:Controls="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.CustomGameLobbyPage"
+      xmlns:Controls="clr-namespace:LegendaryClient.Controls"
+    x:Class="LegendaryClient.Windows.FactionsGameLobbyPage"
       mc:Ignorable="d"
       d:DesignHeight="678" d:DesignWidth="1280"
-	Title="CustomGameLobbyPage">
+	Title="FactionsGameLobbyPage">
 
     <Page.Resources>
         <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
@@ -18,8 +19,8 @@
         <Label x:Name="GameName" Content="Game Name" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
         <Button x:Name="QuitGameButton" Content="Quit Game" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="174" Click="QuitGameButton_Click" Grid.Column="1" />
 
-        <Label Content="Blue Team" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
-        <ListView x:Name="BlueTeamListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="350" Margin="10,80,0,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <Label x:Name="LeftTeamLabel" Content="Blue Team" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" Width="173" />
+        <ListView x:Name="BlueTeamListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="375" Margin="10,80,0,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -27,8 +28,8 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label Content="Purple Team" HorizontalAlignment="Left" Margin="415,41,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
-        <ListView x:Name="PurpleTeamListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="350" Margin="415,80,0,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <Label x:Name="RightTeamLabel" Content="Shadow Isles" HorizontalAlignment="Left" Margin="415,41,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" Width="194" />
+        <ListView x:Name="PurpleTeamListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="375" Margin="415,80,0,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -84,7 +85,5 @@
         <Label x:Name="ModeLabel" Content="CLASSIC" HorizontalAlignment="Right" Margin="0,0,10,110" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="TypeLabel" Content="Blind Pick" HorizontalAlignment="Right" Margin="0,0,10,70" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="SizeLabel" Content="5v5" HorizontalAlignment="Right" Margin="0,0,10,30" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
-        <Button x:Name="AddBotBlueTeam" Content="Add Bot" Style="{DynamicResource Square}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="10,430,0,0" IsEnabled="False"/>
-        <Button x:Name="AddBotPurpleTeam" Content="Add Bot" Style="{DynamicResource Square}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="415,430,0,0" IsEnabled="False"/>
     </Grid>
 </Page>

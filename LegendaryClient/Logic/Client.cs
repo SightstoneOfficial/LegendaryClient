@@ -539,7 +539,6 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static void SwitchPage(Page page)
         {
-            
             foreach (Page p in Pages) //Cache pages
             {
                 if (p.GetType() == page.GetType())
