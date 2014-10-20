@@ -322,6 +322,12 @@
     <Compile Include="Windows\ChatText.xaml.cs">
       <DependentUpon>ChatText.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\FactionsGameLobbyPage.xaml.cs">
+      <DependentUpon>FactionsGameLobbyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FactionsCreateGamePage.xaml.cs">
+      <DependentUpon>FactionsCreateGamePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\InGame.xaml.cs">
       <DependentUpon>InGame.xaml</DependentUpon>
     </Compile>
@@ -663,6 +669,14 @@
     <Page Include="Windows\ChatText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FactionsGameLobbyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\FactionsCreateGamePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\InGame.xaml">
       <SubType>Designer</SubType>

@@ -67,7 +67,6 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Client.InviteListView = InviteListView;
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
-            Client.OnMessage += Client_OnMessage;
             //MainWindow Window = new MainWindow();
             //Window.Hide();
             //Opps
@@ -437,9 +436,6 @@ namespace LegendaryClient.Windows
             newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
         }
-
-        private void Client_OnMessage(object sender, Message msg)
-        { /*Not needed anymore */ }
 
         internal List<Int32> QueueIds;
 

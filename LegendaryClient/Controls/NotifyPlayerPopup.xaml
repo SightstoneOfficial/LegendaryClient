@@ -12,10 +12,10 @@
             </Rectangle.Effect>
         </Rectangle>
         <Label x:Name="NotificationTypeLabel" Content="Notifycation" Margin="10,5,0,0" Foreground="White" FontWeight="ExtraLight" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="25" />
+        <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="25" Click="OkayButton_Click"/>
 
         <TextBox x:Name="NotificationTextBox" Text="" HorizontalAlignment="Left" Height="120" Margin="10,40,0,0" TextWrapping="Wrap" FontWeight="ExtraLight" FontSize="14" Foreground="White" VerticalAlignment="Top" Width="280" Background="#E5505050" BorderBrush="{x:Null}"/>
 
-        <Button x:Name="OkayButton" Style="{x:Null}" Content="Close" HorizontalAlignment="Left" Margin="10,165,0,0" Foreground="Black" VerticalAlignment="Top" Width="280" Height="27"/>
+        <Button x:Name="OkayButton" Style="{x:Null}" Content="Close" HorizontalAlignment="Left" Margin="10,165,0,0" Foreground="Black" VerticalAlignment="Top" Width="280" Height="27" Click="OkayButton_Click"/>
     </Grid>
 </UserControl>

@@ -37,6 +37,7 @@ namespace LCLog
             }
             catch
             {
+                LogfileName += "- FailedLog";
                 Log("Failed to do a log", "LoggerError");
             }
         }

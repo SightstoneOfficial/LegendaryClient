@@ -381,5 +381,11 @@ namespace LegendaryClient.Windows
             Queues.Clear();
             return true;
         }
+
+        private void CreateFactionGameButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.ClearPage(typeof(FactionsCreateGamePage));
+            Client.SwitchPage(new FactionsCreateGamePage());
+        }
     }
 }

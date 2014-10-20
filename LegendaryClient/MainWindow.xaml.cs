@@ -32,7 +32,7 @@ namespace LegendaryClient
             InitializeComponent();
             SwitchPage.Visibility = Visibility.Hidden;
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
+            var ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             Client.ExecutingDirectory = ExecutingDirectory.Replace("file:\\", "");
             LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";

@@ -18,6 +18,7 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -89,6 +90,19 @@ namespace LegendaryClient.Windows
         private bool QuickLoad = false; //Don't load masteries and runes on load at start
         private Room Chatroom;
         private Page previousPage;
+        private string[] bilgewaterChampions = { "Fizz", "Gangplank", "Graves", "Katarina", "Miss Fortune", "Nami", "Nautilus", "Twisted Fate" };
+        private string[] freljordChampions = { "Anivia", "Ashe", "Braum", "Lissandra", "Nunu", "Sejuani", "Tryndamere", "Volibear", "Gragas" };
+        private string[] ioniaChampions = { "Akali", "Irelia", "Karma", "Kennen", "Lee Sin", "Master Yi", "Shen", "Soraka", "Varus", "Ahri" };
+        private string[] shadowIslesChampions = { "Elise", "Evelynn", "Fiddlesticks", "Hecarim", "Karthus", "Mordekaiser", "Nocturne", "Thresh", "Yorick", "Urgot" };
+        private string[] demaciaChampions = { "Fiora", "Galio", "Garen", "Jarvan IV", "Leona", "Lucian", "Lux", "Poppy", "Quinn", "Shyvana", "Sona", "Vayne", "Xin Zhao" };
+        private string[] noxusChampions = { "Annie", "Cassiopeia", "Darius", "Dr. Mundo", "Draven", "Katarina", "LeBlanc", "Morgana", "Singed", "Sion", "Sivir", "Swain", "Talon", "Urgot", "Vladimir", "Warwick" };
+        private string[] piltoverChampions = { "Blitzcrank", "Caitlyn", "Corki", "Ezreal", "Heimerdinger", "Janna", "Jayce", "Jinx", "Orianna", "Vi", "Zac", "Ziggs", "Zilean" };
+        private string[] bandleCityChampions = { "Amumu", "Corki", "Heimerdinger", "Kennen", "Lulu", "Poppy", "Rumble", "Teemo", "Tristana", "Veigar", "Ziggs" };
+        private string[] zaunChampions = { "Blitzcrank", "Dr. Mundo", "Janna", "Jinx", "Renekton", "Singed", "Twisted Fate", "Twitch", "Urgot", "Viktor", "Warwick", "Zac" };
+        private string[] voidChampions = { "Cho'Gath", "Kha'Zix", "Kog'Maw", "Malzahar", "Vel'koz" };
+        private string[] shurimaChampions = { "Amumu", "Malzahar", "Nasus", "Renekton", "Sivir", "Skarner", "Xerath", "Zilean", "Azir" };
+        private string[] discordChampions = { "Aatrox", "Cho'Gath", "Karthus", "Kha'Zix", "Kog'Maw", "Malzahar", "Nocturne", "Shaco", "Thresh", "Vel'koz" };
+        bool AreWePurpleSide = false;
 
         public ChampSelectPage(Page previousPage)
         {
@@ -397,7 +411,7 @@ namespace LegendaryClient.Windows
 
                     //Aram hack, view other players champions & names (thanks to Andrew)
                     List<PlayerChampionSelectionDTO> OtherPlayers = new List<PlayerChampionSelectionDTO>(ChampDTO.PlayerChampionSelections.ToArray());
-                    bool AreWePurpleSide = false;
+                    AreWePurpleSide = false;
 
                     foreach (Participant participant in AllParticipants)
                     {
@@ -684,6 +698,52 @@ namespace LegendaryClient.Windows
                 foreach (ChampionDTO champ in ChampList)
                 {
                     champions getChamp = champions.GetChampion(champ.ChampionId);
+                    if (previousPage.GetType() == typeof(FactionsGameLobbyPage))
+                    {
+                        FactionsGameLobbyPage page = previousPage as FactionsGameLobbyPage;
+                        LeftTeamLabel.Content = page.getLeftTeam();
+                        RightTeamLabel.Content = page.getRightTeam();
+                        string myTeam = (AreWePurpleSide) ? page.getRightTeam() : page.getLeftTeam();
+                        switch (myTeam)
+                        {
+                            case "Ionia":
+                                if (!ioniaChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Bilgewater":
+                                if (!bilgewaterChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Freljord":
+                                if (!freljordChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Shadow Isles":
+                                if (!shadowIslesChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Demacia":
+                                if (!demaciaChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Noxus":
+                                if (!noxusChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Piltover":
+                                if (!piltoverChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Bandle City":
+                                if (!bandleCityChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Zaun":
+                                if (!zaunChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Void":
+                                if (!voidChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Shurima":
+                                if (!shurimaChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                            case "Discord":
+                                if (!discordChampions.Contains(getChamp.displayName)) continue;
+                                break;
+                        }
+                    }
                     if ((champ.Owned || champ.FreeToPlay) && getChamp.displayName.ToLower().Contains(SearchTextBox.Text.ToLower()))
                     {
                         //Add to ListView
@@ -1037,6 +1097,7 @@ namespace LegendaryClient.Windows
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = "DEV MODE: " + DevMode;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatTextBox.Text = "";
             }
             else
             {
@@ -1052,6 +1113,7 @@ namespace LegendaryClient.Windows
                         ChampionSelectListView.Visibility = Visibility.Hidden;
                         AfterChampionSelectGrid.Visibility = Visibility.Visible;
                     }
+                    ChatTextBox.Text = "";
                     return;
                 }
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
