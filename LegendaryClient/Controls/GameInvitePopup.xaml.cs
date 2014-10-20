@@ -19,7 +19,7 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class GameInvitePopup : UserControl
     {
-        string GameMetaData, InvitationStateAsString, InvitationState, InvitationId, Inviter, rankedTeamName, gameMode, gameType, MapName;
+        string GameMetaData, InvitationStateAsString, InvitationState, InvitationId, Inviter, rankedTeamName, gameMode, gameType, MapName, mode, type;
         int queueId, mapId, gameTypeConfigId;
         bool isRanked;
 
@@ -29,19 +29,24 @@ namespace LegendaryClient.Controls
             try
             {
                 InviteInfo info = Client.InviteData[stats.InvitationId];
+                if (info == null)
+                    throw new NullReferenceException("Tried to find a nonexistant popup");
                 switch(stats.InvitationState)
                 {
                     case "ON_HOLD":
                         info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now on hold", info.Inviter);
-                        Lockup();
+                        info.popup.Lockup();
+                        this.Visibility = Visibility.Hidden;
                         break;
                     case "TERMINATED":
                         info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has been terminated", info.Inviter);
-                        Lockup();;
+                        info.popup.Lockup();
+                        this.Visibility = Visibility.Hidden;
                         break;
                     case "REVOKED":
                         info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has timed out");
-                        Lockup();
+                        info.popup.Lockup();
+                        this.Visibility = Visibility.Hidden;
                         break;
                     case "ACTIVE":
                         info.popup.NotificationTextBox.Text = "";
@@ -49,7 +54,14 @@ namespace LegendaryClient.Controls
                             LoadGamePopupData(info.stats);
                         else
                             LoadGamePopupData(stats);
-                        Unlock();
+                        this.Visibility = Visibility.Hidden;
+
+                        RenderNotificationTextBox(info.popup.Inviter + " has invited you to a game");
+                        RenderNotificationTextBox("");
+                        RenderNotificationTextBox("Mode: " + info.popup.mode);
+                        RenderNotificationTextBox("Map: " + info.popup.MapName);
+                        RenderNotificationTextBox("Type: " + info.popup.type);
+                        info.popup.Unlock();
                         break;
                     default:
                         info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, Client.TitleCaseString(stats.InvitationState));
@@ -129,6 +141,8 @@ namespace LegendaryClient.Controls
             if (String.IsNullOrEmpty(Inviter))
                 Inviter = "An unknown player";
 
+            mode = gameModeLower;
+            type = removeAllUnder;
             RenderNotificationTextBox(Inviter + " has invited you to a game");
             RenderNotificationTextBox("");
             RenderNotificationTextBox("Mode: " + gameModeLower);
@@ -166,6 +180,7 @@ namespace LegendaryClient.Controls
                 Client.SwitchPage(new TeamQueuePage(InvitationId));
             }
             this.Visibility = Visibility.Hidden;
+            Client.InviteData.Remove(InvitationId);
             
         }
         private void Decline_Click(object sender, RoutedEventArgs e)
@@ -175,18 +190,13 @@ namespace LegendaryClient.Controls
                 this.Visibility = Visibility.Hidden;
             }));
             Client.PVPNet.Decline(InvitationId);
+            Client.InviteData.Remove(InvitationId);
         }
         private void Hide_Click(object sender, RoutedEventArgs e)
         {
             this.Visibility = Visibility.Hidden;
             InviteInfo x = Client.InviteData[InvitationId];
             x.PopupVisible = false;
-        }
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.Visibility = Visibility.Hidden;
-            Client.PVPNet.Decline(InvitationId);
-            Client.InviteData.Remove(InvitationId);
         }
     }
 }

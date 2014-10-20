@@ -1,43 +1,47 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LegendaryClient.Logic.Region
 {
-    public sealed class TR : BaseRegion
+    public sealed class SG : BaseRegion
     {
         public override string RegionName
         {
-            get { return "TR"; }
+            get { return "prod.lol.garenanow.com"; }
         }
 
         public override bool Garena
         {
-            get { return false; }
+            get { return true; }
         }
 
         public override string InternalName
         {
-            get { return "TR1"; }
+            get { return "SG"; }
         }
 
         public override string ChatName
         {
-            get { return "tr"; }
-        }
-
-        public override string Locale
-        {
-            get { return "en_US"; }
+            get { return "chat.lol.garenanow.com"; }
         }
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //This returns english (not spanish) characters
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/na/en_US.js"); } //http://lol.garena.com/landing.php?[garneaUser]
+        }
+
+        public override string Locale
+        {
+            get { return "en_SG"; }
         }
 
         public override PVPNetConnect.Region PVPRegion
         {
-            get { return PVPNetConnect.Region.TR; }
+            get { return PVPNetConnect.Region.SG; }
         }
 
         public override IPAddress[] PingAddresses
@@ -53,12 +57,12 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.tr.lol.riotgames.com:80/observer-mode/rest/"); }
+            get { return new Uri("http://203.116.112.222:8088/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress
         {
-            get { return "95.172.65.242:80"; }
+            get { return ""; }
         }
     }
 }

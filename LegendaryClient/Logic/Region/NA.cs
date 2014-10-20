@@ -9,6 +9,11 @@ namespace LegendaryClient.Logic.Region
         {
             LegendaryClient.Logic.Client.sqlite = "gameStats_en_US.sqlite";
         }
+        public override bool Garena
+        {
+            get { return false; }
+        }
+
         public override string RegionName
         {
             get { return "NA"; }

@@ -197,8 +197,15 @@
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Patcher\LegendaryClientPatcher.cs" />
     <Compile Include="Logic\Region\EUNE.cs" />
+    <Compile Include="Logic\Region\Garena\MY.cs" />
+    <Compile Include="Logic\Region\Garena\PH.cs" />
+    <Compile Include="Logic\Region\Garena\SGMY.cs" />
+    <Compile Include="Logic\Region\Garena\TH.cs" />
+    <Compile Include="Logic\Region\Garena\TW.cs" />
+    <Compile Include="Logic\Region\Garena\VN.cs" />
     <Compile Include="Logic\Region\LAN.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
+    <Compile Include="Logic\Region\Garena\SG.cs" />
     <Compile Include="Logic\Region\TR.cs" />
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
     <Compile Include="Logic\SoundLogic\ChampSelectSound.cs" />

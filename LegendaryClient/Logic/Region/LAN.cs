@@ -14,6 +14,11 @@ namespace LegendaryClient.Logic.Region
             get { return "LA1"; }
         }
 
+        public override bool Garena
+        {
+            get { return false; }
+        }
+
         public override string InternalName
         {
             get { return "LA1"; }
