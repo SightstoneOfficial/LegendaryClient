@@ -28,7 +28,7 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="760,80,444,0" FontWeight="ExtraLight" FontSize="50" Foreground="White" Height="65" />
+        <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,67,-330,0" FontWeight="ExtraLight" FontSize="50" Foreground="White" Height="65" />
         <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Height="296" Margin="0,10,10,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="66" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -37,7 +37,7 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="ItemsListView" HorizontalAlignment="Center" Height="64" Margin="576,10,278,0" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="426" Background="#66505050">
+        <ListView x:Name="ItemsListView" HorizontalAlignment="Center" Height="64" Margin="0,10,-330,0" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="426" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />

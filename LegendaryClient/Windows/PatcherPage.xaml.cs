@@ -112,8 +112,8 @@ namespace LegendaryClient.Windows
                     #region idk
 
                     client = new WebClient();
-                    client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
-                    client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp4"), Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
+                    if (!File.Exists("Login.mp3")) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
+                    if (!File.Exists("Login.mp4")) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp4"), Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
                     #endregion idk
 
                     #region DDragon
@@ -219,7 +219,7 @@ namespace LegendaryClient.Windows
                     LogTextBox("Current Air Assets Version: " + AirVersion);
                     WebClient UpdateClient = new WebClient();
                     string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
-                    string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                    string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[1];
 
                     if (AirVersion != LatestVersion)
                     {

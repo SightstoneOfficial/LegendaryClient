@@ -192,18 +192,19 @@ namespace LegendaryClient.Windows
         //Duo
         public static void TBCreateBotton_Click(object sender, RoutedEventArgs e)
         {
+            Client.ClearPage(typeof(TeamBuilderPage));
             Client.SwitchPage(new TeamBuilderPage(true));
         }
         //Solo
         public static void TBSearchButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.ClearPage(typeof(TeamBuilderPage));
             Client.SwitchPage(new TeamBuilderPage(false));
         }
         private async void TeamQueueButton_Click(object sender, RoutedEventArgs e)
         {
             //To leave all other queues
             await LeaveAllQueues();
-            Client.ClearPage(typeof(TeamQueuePage));
             InQueue = false;
             LastSender = (Button)sender;
             GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
@@ -219,7 +220,8 @@ namespace LegendaryClient.Windows
                 parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
                 Client.GameQueue = Convert.ToInt32(config.Id);
                 LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
-                
+
+                Client.ClearPage(typeof(TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(Lobby.InvitationID, Lobby));
             }
             else if (config.TypeString == "BOT")
@@ -256,6 +258,7 @@ namespace LegendaryClient.Windows
                 }
                 else if (config.Id == 61)
                 {
+                    Client.ClearPage(typeof(TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false));
                 }
                 return;
@@ -349,11 +352,13 @@ namespace LegendaryClient.Windows
 
         private void CreateCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.ClearPage(typeof(CreateCustomGamePage));
             Client.SwitchPage(new CreateCustomGamePage());
         }
 
         private void JoinCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.ClearPage(typeof(CustomGameListingPage));
             Client.SwitchPage(new CustomGameListingPage());
         }
 
