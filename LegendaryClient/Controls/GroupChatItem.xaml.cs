@@ -11,7 +11,7 @@ using System.Windows.Threading;
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for ChatItem.xaml
+    /// Interaction logic for GroupChatItem.xaml
     /// </summary>
     public partial class GroupChatItem : UserControl
     {

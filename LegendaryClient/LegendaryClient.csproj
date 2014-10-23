@@ -146,6 +146,9 @@
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\GroupChatItem.xaml.cs">
+      <DependentUpon>GroupChatItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameInvitePopup.xaml.cs">
       <DependentUpon>GameInvitePopup.xaml</DependentUpon>
     </Compile>
@@ -457,6 +460,10 @@
     <Page Include="Controls\ChampionDetailAbility.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GroupChatItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\GameInvitePopup.xaml">
       <SubType>Designer</SubType>
