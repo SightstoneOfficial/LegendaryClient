@@ -90,7 +90,7 @@ namespace LegendaryClient.Windows
                 Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 260, 50);
             }
-            else
+            else 
             {
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
@@ -184,10 +184,15 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void JoinChatButton_Click(object sender, RoutedEventArgs e)
         {
-
+            foreach (var element in Client.NotificationGrid.Children)
+                if (element.GetType() == typeof(JoinPublicChat))
+                    return;
+            JoinPublicChat pop = new JoinPublicChat();
+            pop.HorizontalAlignment = HorizontalAlignment.Right;
+            pop.VerticalAlignment = VerticalAlignment.Bottom;
+            Client.NotificationGrid.Children.Add(pop);
         }
-
     }
 }

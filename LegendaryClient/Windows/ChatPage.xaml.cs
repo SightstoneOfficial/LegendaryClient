@@ -3,6 +3,7 @@ using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -271,9 +272,11 @@ namespace LegendaryClient.Windows
             //Fix Add Friend Button
         }
 
-        private void SpectateGame_Click(object sender, RoutedEventArgs e)
+        private async void SpectateGame_Click(object sender, RoutedEventArgs e)
         {
-            //Almost finished this before I had to leave, will update when I get back
+            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
+            if(n.GameName != null)
+                Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress, n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId, Client.Region.InternalName);
         }
     }
 }

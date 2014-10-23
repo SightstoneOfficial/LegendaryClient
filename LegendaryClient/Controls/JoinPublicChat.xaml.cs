@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LegendaryClient.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,20 +17,23 @@ using System.Windows.Shapes;
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for NotifyPlayerPopup.xaml
+    /// Interaction logic for JoinPublicChat.xaml
     /// </summary>
-    public partial class NotifyPlayerPopup : UserControl
+    public partial class JoinPublicChat : UserControl
     {
-        public NotifyPlayerPopup(string title, string Content)
+        public JoinPublicChat()
         {
             InitializeComponent();
-            NotificationTypeLabel.Content = title;
-            NotificationTextBox.Text = Content;
         }
 
-        private void OkayButton_Click(object sender, RoutedEventArgs e)
+        private void JoinButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = System.Windows.Visibility.Hidden;
+            Client.ClearNotification(typeof(JoinPublicChat));
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.ClearNotification(typeof(JoinPublicChat));
         }
     }
 }

@@ -15,6 +15,8 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class GroupChatItem : UserControl
     {
+        public string ChatID { get; set; }
+
         public GroupChatItem()
         {
             InitializeComponent();
@@ -107,21 +109,7 @@ namespace LegendaryClient.Controls
             tr.Text = ChatTextBox.Text + Environment.NewLine;
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
-            ChatPlayerItem tempItem = null;
-            string JID = "";
-            foreach (KeyValuePair<string, ChatPlayerItem> x in Client.AllPlayers)
-            {
-                if (x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content)
-                {
-                    tempItem = x.Value;
-                    JID = x.Key + "@pvp.net";
-                    break;
-                }
-            }
-            tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
-            ChatText.ScrollToEnd();
-
-            Client.ChatClient.Message(JID, Environment.NewLine + ChatTextBox.Text);
+            Client.ChatClient.Message(ChatID, Environment.NewLine + ChatTextBox.Text);
 
             ChatTextBox.Text = "";
         }

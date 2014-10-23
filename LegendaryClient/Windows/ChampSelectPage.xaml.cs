@@ -976,6 +976,7 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.ClearPage(typeof(ChampSelectPage));
+            Client.ClearPage(typeof(FactionsCreateGamePage));
 
             Client.SwitchPage(new InGame());
         }

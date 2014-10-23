@@ -567,6 +567,18 @@ namespace LegendaryClient.Logic
             }
         }
 
+        internal static void ClearNotification(Type containerType)
+        {
+            foreach (UIElement element in NotificationGrid.Children)
+            {
+                if (element.GetType() == containerType)
+                {
+                    NotificationGrid.Children.Remove(element);
+                    return;
+                }
+            }
+        }
+
         #endregion WPF Tab Change
 
 
