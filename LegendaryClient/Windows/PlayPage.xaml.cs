@@ -254,7 +254,6 @@ namespace LegendaryClient.Windows
                     parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
                     Client.QueueId = config.Id;
                     Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
-                    InQueue = true;
                 }
                 else if (config.Id == 61)
                 {
@@ -265,8 +264,8 @@ namespace LegendaryClient.Windows
             } 
             else if (InQueue == true)
             {
+                InQueue = false;
                 await LeaveAllQueues();
-                InQueue = false; //Fixes LeaveAllQueues not setting it to false fast enough, causing you to never be able to queue.
             }
         }
 
@@ -310,21 +309,27 @@ namespace LegendaryClient.Windows
                 item.Content = "00:00";
                 ButtonTimers.Add(fakeButton, 0);
             }));
+            InQueue = true;
             Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 
         private void GotQueuePop(object sender, object message)
         {
-            if(Client.runonce == false)
+            if (Client.runonce == false && message is GameDTO)
             {
                 GameDTO Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                {
-                    Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
-                    Client.OverlayContainer.Visibility = Visibility.Visible;
-                }));
+                    {
+                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                    }));
                 Client.PVPNet.OnMessageReceived -= GotQueuePop;
-            }            
+            }
+        }
+
+        public void readdHandler()
+        {
+            Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 
         internal double HighestPingTime(IPAddress[] Addresses)
@@ -371,6 +376,7 @@ namespace LegendaryClient.Windows
         {
             await LeaveAllQueues();
         }
+
         private async Task<bool> LeaveAllQueues()
         {
             InQueue = false;

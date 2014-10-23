@@ -392,12 +392,15 @@ namespace LegendaryClient.Windows
                     else if (ChampDTO.GameState == "TERMINATED")
                     {
                         NotifyPlayerPopup pop = new NotifyPlayerPopup("Player Dodged", "Player has Dodged Queue.");
-                        pop.Height = 230;
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
                         Client.NotificationGrid.Children.Add(pop);
+                        Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+                        Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
                         if (previousPage is TeamQueuePage)
                             (previousPage as TeamQueuePage).readdHandler();
+                        else if (previousPage is PlayPage)
+                            (previousPage as PlayPage).readdHandler();
                         Client.SwitchPage(previousPage);
                         Client.ClearPage(typeof(ChampSelectPage));
                     }
@@ -1095,7 +1098,7 @@ namespace LegendaryClient.Windows
                 ChampionSelectListView.IsHitTestVisible = true;
                 ChampionSelectListView.Opacity = 1;
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = "DEV MODE: " + DevMode;
+                tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatTextBox.Text = "";
             }

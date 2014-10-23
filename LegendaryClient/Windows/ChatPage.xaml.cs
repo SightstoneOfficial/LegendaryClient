@@ -1,6 +1,7 @@
 ﻿using jabber.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using System;
 using System.Collections.Generic;
@@ -268,6 +269,11 @@ namespace LegendaryClient.Windows
         private void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
             //Fix Add Friend Button
+        }
+
+        private void SpectateGame_Click(object sender, RoutedEventArgs e)
+        {
+            //Almost finished this before I had to leave, will update when I get back
         }
     }
 }

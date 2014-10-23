@@ -338,9 +338,9 @@ namespace LegendaryClient.Windows
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        Client.ClearPage(typeof(QueuePopOverlay));
                         setStartButtonText("Start Game");
                         inQueue = false;
+                        Client.PVPNet.PurgeFromQueues();
                     }));
                 }
             }
@@ -348,7 +348,6 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    Client.ClearPage(typeof(QueuePopOverlay));
                     setStartButtonText("Start Game");
                     inQueue = false;
                 }));
@@ -406,7 +405,7 @@ namespace LegendaryClient.Windows
 
         private void GotQueuePop(object sender, object message)
         {
-            if (Client.runonce == false)
+            if (Client.runonce == false && message is GameDTO)
             {
                 GameDTO Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
