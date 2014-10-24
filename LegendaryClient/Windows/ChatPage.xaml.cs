@@ -274,9 +274,18 @@ namespace LegendaryClient.Windows
 
         private async void SpectateGame_Click(object sender, RoutedEventArgs e)
         {
-            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
-            if(n.GameName != null)
-                Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress, n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId, Client.Region.InternalName);
+            if (LastPlayerItem.GameStatus == "inGame")
+            {
+                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
+                if (n.GameName != null)
+                {
+                    Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress, n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId, Client.Region.InternalName);
+                }
+            }
+            else if (LastPlayerItem.GameStatus == "spectating")
+            {
+
+            }
         }
     }
 }

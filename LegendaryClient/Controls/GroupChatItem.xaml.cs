@@ -1,4 +1,5 @@
-﻿using LegendaryClient.Logic;
+﻿using jabber.connection;
+using LegendaryClient.Logic;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -16,102 +17,94 @@ namespace LegendaryClient.Controls
     public partial class GroupChatItem : UserControl
     {
         public string ChatID { get; set; }
+        private Room newRoom;
+        public List<SmallPlayer> participants = new List<SmallPlayer>();
 
-        public GroupChatItem()
+        public GroupChatItem(string id, string title)
         {
             InitializeComponent();
-            Client.ChatClient.OnMessage += GroupChatClient_OnMessage;
+            ChatID = id;
+            PlayerLabelName.Content = title;
+            ParticipantList.ItemsSource = participants;
+            newRoom = Client.ConfManager.GetRoom(new jabber.JID(ChatID));
+            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            newRoom.OnRoomMessage += GroupChatClient_OnMessage;
+            newRoom.OnParticipantJoin += GroupChatClient_OnParticipantJoin;
+            newRoom.OnParticipantLeave += GroupChatClient_OnParticipantLeave;
+            newRoom.Join("");
+        }
+
+        private void GroupChatClient_OnParticipantLeave(Room room, RoomParticipant participant)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = participant.Nick + " left the room." + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatText.ScrollToEnd();
+            }));
+        }
+
+        private void GroupChatClient_OnParticipantJoin(Room room, RoomParticipant participant)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatText.ScrollToEnd();
+                participants.Add(new SmallPlayer(participant));
+                ParticipantList.Items.Refresh();
+            }));
         }
 
         public void GroupChatClient_OnMessage(object sender, jabber.protocol.client.Message msg)
         {
-            if (Client.AllPlayers.ContainsKey(msg.From.User) && !String.IsNullOrWhiteSpace(msg.Body))
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                ChatPlayerItem chatItem = Client.AllPlayers[msg.From.User];
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                {
-                    if ((string)Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
-                    {
-                        Update();
-                    }
-                }));
-            }
-        }
 
-        public void Update()
-        {
-            ChatText.Document.Blocks.Clear();
-            ChatPlayerItem tempItem = null;
-            foreach (KeyValuePair<string, ChatPlayerItem> x in Client.AllPlayers)
-            {
-                if (x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content)
+                if (msg.Body != "This room is not anonymous")
                 {
-                    tempItem = x.Value;
-                    break;
+                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.From.Resource + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    ChatText.ScrollToEnd();
                 }
-            }
-
-            foreach (string x in tempItem.Messages.ToArray())
-            {
-                string[] Message = x.Split('|');
-                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                if (Message[0] == tempItem.Username)
-                {
-                    tr.Text = tempItem.Username + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Gold);
-                }
-                else
-                {
-                    tr.Text = Message[0] + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.SteelBlue);
-                }
-                tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = x.Replace(Message[0] + "|", "") + Environment.NewLine;
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            }
-
-            ChatText.ScrollToEnd();
+            }));
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.MainGrid.Children.Remove(Client.ChatItem);
-            Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
-            Client.ChatItem = null;
+            newRoom.OnRoomMessage -= GroupChatClient_OnMessage;
+            newRoom.OnParticipantJoin -= GroupChatClient_OnParticipantJoin;
+            newRoom.OnParticipantLeave -= GroupChatClient_OnParticipantLeave;
+            Client.ClearMainGrid(typeof(GroupChatItem));
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            NotificationChatPlayer tempPlayer = null;
-
-            foreach (NotificationChatPlayer x in Client.ChatListView.Items)
-            {
-                if (x.PlayerLabelName.Content == Client.ChatItem.PlayerLabelName.Content)
-                {
-                    tempPlayer = x;
-                    break;
-                }
-            }
-
-            Client.MainGrid.Children.Remove(Client.ChatItem);
-            Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
-            Client.ChatItem = null;
-
-            Client.ChatListView.Items.Remove(tempPlayer);
+            newRoom.OnRoomMessage -= GroupChatClient_OnMessage;
+            newRoom.OnParticipantJoin -= GroupChatClient_OnParticipantJoin;
+            newRoom.OnParticipantLeave -= GroupChatClient_OnParticipantLeave;
+            Client.ClearMainGrid(typeof(GroupChatItem));
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
             tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.SteelBlue);
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
             tr.Text = ChatTextBox.Text + Environment.NewLine;
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-
-            Client.ChatClient.Message(ChatID, Environment.NewLine + ChatTextBox.Text);
-
+            if (String.IsNullOrEmpty(ChatTextBox.Text))
+                return;
+            newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
+            ChatText.ScrollToEnd();
         }
     }
 }

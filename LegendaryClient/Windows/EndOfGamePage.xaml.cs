@@ -48,6 +48,7 @@ namespace LegendaryClient.Windows
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatText.ScrollToEnd();
             }));
         }
 
@@ -64,6 +65,7 @@ namespace LegendaryClient.Windows
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    ChatText.ScrollToEnd();
                 }
             }));
         }
@@ -80,6 +82,7 @@ namespace LegendaryClient.Windows
                 return;
             newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
+            ChatText.ScrollToEnd();
         }
 
         private void RenderStats(EndOfGameStats Statistics)
