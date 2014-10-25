@@ -219,39 +219,63 @@ namespace LegendaryClient.Windows
                     LogTextBox("Current Air Assets Version: " + AirVersion);
                     WebClient UpdateClient = new WebClient();
                     string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
-                    string LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[1];
+                    string[] LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
-                    if (AirVersion != LatestVersion)
+                    var vers = LatestVersion[0];
+                    if (AirVersion != LatestVersion[0])
                     {
                         //Download Air Assists from riot
                         try
                         {
-                            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/packages/files/packagemanifest");
+                            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
                             GetAllPngs(Package);
                             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
                                 File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                            string[] x = Package.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+
+                            string locationv = LatestVersion[0];
+                            foreach(string m in x)
+                            {
+                                if (m.Contains("/files/assets/data/gameStats/gameStats_en_US.sqlite"))
+                                {
+                                    string l = m.Split(',')[0];
+                                    locationv = l.Replace("/projects/lol_air_client/releases/", "").Replace("/files/assets/data/gameStats/gameStats_en_US.sqlite", "");
+                                }
+                            }
+                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + locationv + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
                             if (File.Exists(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                                 File.Delete(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                             var file = File.Create(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
-                            file.Write(encoding.GetBytes(LatestVersion), 0, encoding.GetBytes(LatestVersion).Length);
+                            file.Write(encoding.GetBytes(LatestVersion[0]), 0, encoding.GetBytes(LatestVersion[0]).Length);
                             file.Close();
                         }
                         catch
                         {
                             Client.Log("Probably riot updated air client version without actually releasing the latest version. Why riot, why? Trying to download last version.");
-                            LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[1];
+                            
+                            LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                             string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/packages/files/packagemanifest");
                             GetAllPngs(Package);
                             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
                                 File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                            string locationv = LatestVersion[1];
+                            string[] x = Package.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                            string locationm = LatestVersion[1];
+                            foreach (string m in x)
+                            {
+                                if (m.Contains("/files/assets/data/gameStats/gameStats_en_US.sqlite"))
+                                {
+                                    string l = m.Split(',')[0];
+                                    locationm = l.Replace("/projects/lol_air_client/releases/", "").Replace("/files/assets/data/gameStats/gameStats_en_US.sqlite", "");
+                                }
+                            }
+                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + locationv + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
                             if (File.Exists(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                                 File.Delete(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                             var file = File.Create(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
-                            file.Write(encoding.GetBytes(LatestVersion), 0, encoding.GetBytes(LatestVersion).Length);
+                            file.Write(encoding.GetBytes(LatestVersion[1]), 0, encoding.GetBytes(LatestVersion[1]).Length);
                             file.Close();
                         }
                     }
@@ -301,7 +325,7 @@ namespace LegendaryClient.Windows
 
 
 
-                    FinishPatching(LatestVersion);
+                    FinishPatching(LatestVersion[0]);
                 });
 
                 bgThead.Start();
@@ -451,7 +475,8 @@ namespace LegendaryClient.Windows
         private void FinishPatching(string LatestVersion)
         {
             WebClient UpdateClient = new WebClient();
-            UpdateClient.DownloadFileAsync(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/packages/files/packagemanifest");
+
             UpdateClient.DownloadFileCompleted += UpdateClient_DownloadFileCompleted;
 
         }
