@@ -146,6 +146,15 @@
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ChatItem.xaml.cs">
+      <DependentUpon>ChatItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SmallPlayer.xaml.cs">
+      <DependentUpon>SmallPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GroupChatItem.xaml.cs">
+      <DependentUpon>GroupChatItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameInvitePopup.xaml.cs">
       <DependentUpon>GameInvitePopup.xaml</DependentUpon>
     </Compile>
@@ -160,6 +169,9 @@
     </Compile>
     <Compile Include="Controls\LeagueItem.xaml.cs">
       <DependentUpon>LeagueItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\JoinPublicChat.xaml.cs">
+      <DependentUpon>JoinPublicChat.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\NotifyPlayerPopup.xaml.cs">
       <DependentUpon>NotifyPlayerPopup.xaml</DependentUpon>
@@ -215,9 +227,6 @@
     <Compile Include="Logic\SQLite\UpdateData.cs" />
     <Compile Include="ReplayElements\ChampionItem.xaml.cs">
       <DependentUpon>ChampionItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ChatItem.xaml.cs">
-      <DependentUpon>ChatItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ChatPlayer.xaml.cs">
       <DependentUpon>ChatPlayer.xaml</DependentUpon>
@@ -458,6 +467,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ChatItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SmallPlayer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GroupChatItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\GameInvitePopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -494,6 +515,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\JoinPublicChat.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\NotifyPlayerPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -517,12 +542,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ReplayElements\ChampionItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ChatItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
@@ -955,6 +974,7 @@
   <ItemGroup>
     <Resource Include="chat.png" />
     <Resource Include="Locked.png" />
+    <Resource Include="joinchat.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

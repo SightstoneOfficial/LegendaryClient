@@ -26,16 +26,6 @@ namespace LegendaryClient.Controls
             NotificationTypeLabel.Content = title;
             NotificationTextBox.Text = Content;
         }
-        public Button Okay()
-        {
-            Button OkayButtonx = OkayButton;
-            return OkayButtonx;
-        }
-        public Button Close()
-        {
-            Button CloseButtonx = CloseButton;
-            return CloseButtonx;
-        }
 
         private void OkayButton_Click(object sender, RoutedEventArgs e)
         {

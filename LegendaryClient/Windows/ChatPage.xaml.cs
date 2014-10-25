@@ -1,7 +1,9 @@
 ﻿using jabber.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -268,6 +270,22 @@ namespace LegendaryClient.Windows
         private void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
             //Fix Add Friend Button
+        }
+
+        private async void SpectateGame_Click(object sender, RoutedEventArgs e)
+        {
+            if (LastPlayerItem.GameStatus == "inGame")
+            {
+                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
+                if (n.GameName != null)
+                {
+                    Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress, n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId, Client.Region.InternalName);
+                }
+            }
+            else if (LastPlayerItem.GameStatus == "spectating")
+            {
+
+            }
         }
     }
 }

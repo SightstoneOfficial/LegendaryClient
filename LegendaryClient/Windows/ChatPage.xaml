@@ -21,7 +21,7 @@
             <MenuItem Header="Invite to Chat" />
             <MenuItem Header="Remove Friend" />
             <MenuItem Header="Ignore Friend" />
-            <MenuItem Header="Spectate Game" />
+            <MenuItem Header="Spectate Game" Click="SpectateGame_Click"/>
         </ContextMenu>
     </Page.Resources>
 

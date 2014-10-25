@@ -76,8 +76,11 @@ namespace LegendaryClient.Controls
         {
             foreach (JoinQueue item in myItems)
             {
-                QueueInfo t = await Client.PVPNet.GetQueueInformation(item.queueID);
-                item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
+                if (item != null)
+                {
+                    QueueInfo t = await Client.PVPNet.GetQueueInformation(item.queueID);
+                    item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
+                }
             }
             int amount = 0;
             for (int i = 0; i < myItems.Count; i++)

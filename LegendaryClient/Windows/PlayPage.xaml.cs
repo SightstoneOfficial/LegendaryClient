@@ -192,18 +192,19 @@ namespace LegendaryClient.Windows
         //Duo
         public static void TBCreateBotton_Click(object sender, RoutedEventArgs e)
         {
+            Client.ClearPage(typeof(TeamBuilderPage));
             Client.SwitchPage(new TeamBuilderPage(true));
         }
         //Solo
         public static void TBSearchButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.ClearPage(typeof(TeamBuilderPage));
             Client.SwitchPage(new TeamBuilderPage(false));
         }
         private async void TeamQueueButton_Click(object sender, RoutedEventArgs e)
         {
             //To leave all other queues
             await LeaveAllQueues();
-            Client.ClearPage(typeof(TeamQueuePage));
             InQueue = false;
             LastSender = (Button)sender;
             GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
@@ -219,7 +220,8 @@ namespace LegendaryClient.Windows
                 parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
                 Client.GameQueue = Convert.ToInt32(config.Id);
                 LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
-                
+
+                Client.ClearPage(typeof(TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(Lobby.InvitationID, Lobby));
             }
             else if (config.TypeString == "BOT")
@@ -252,18 +254,18 @@ namespace LegendaryClient.Windows
                     parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
                     Client.QueueId = config.Id;
                     Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
-                    InQueue = true;
                 }
                 else if (config.Id == 61)
                 {
+                    Client.ClearPage(typeof(TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false));
                 }
                 return;
             } 
             else if (InQueue == true)
             {
+                InQueue = false;
                 await LeaveAllQueues();
-                InQueue = false; //Fixes LeaveAllQueues not setting it to false fast enough, causing you to never be able to queue.
             }
         }
 
@@ -307,21 +309,27 @@ namespace LegendaryClient.Windows
                 item.Content = "00:00";
                 ButtonTimers.Add(fakeButton, 0);
             }));
+            InQueue = true;
             Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 
         private void GotQueuePop(object sender, object message)
         {
-            if(Client.runonce == false)
+            if (Client.runonce == false && message is GameDTO)
             {
                 GameDTO Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                {
-                    Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
-                    Client.OverlayContainer.Visibility = Visibility.Visible;
-                }));
+                    {
+                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                    }));
                 Client.PVPNet.OnMessageReceived -= GotQueuePop;
-            }            
+            }
+        }
+
+        public void readdHandler()
+        {
+            Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 
         internal double HighestPingTime(IPAddress[] Addresses)
@@ -349,11 +357,13 @@ namespace LegendaryClient.Windows
 
         private void CreateCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.ClearPage(typeof(CreateCustomGamePage));
             Client.SwitchPage(new CreateCustomGamePage());
         }
 
         private void JoinCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.ClearPage(typeof(CustomGameListingPage));
             Client.SwitchPage(new CustomGameListingPage());
         }
 
@@ -366,6 +376,7 @@ namespace LegendaryClient.Windows
         {
             await LeaveAllQueues();
         }
+
         private async Task<bool> LeaveAllQueues()
         {
             InQueue = false;

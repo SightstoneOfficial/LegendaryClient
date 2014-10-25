@@ -29,12 +29,17 @@
             <Button Style="{x:Null}" Content="←" HorizontalAlignment="Right" Margin="0,0,5,0" Foreground="Black" VerticalAlignment="Center" Width="25" />
         </Grid>
 
-        <Button x:Name="ChatButton" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,60,4" VerticalAlignment="Stretch" Width="50" Click="ChatButton_Click">
+        <Button x:Name="ChatButton" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,115,4" VerticalAlignment="Stretch" Width="50" Click="ChatButton_Click">
             <StackPanel>
                 <Image Source="/LegendaryClient;component/chat.png" Stretch="None" />
             </StackPanel>
         </Button>
         <Button x:Name="NotificationButton" Style="{x:Null}" Content="!" Foreground="Black" FontSize="20" HorizontalAlignment="Right" Margin="0,4,5,4" VerticalAlignment="Stretch" Width="50" Click="NotificationButton_Click" />
         <Controls:TextBoxWatermarked x:Name="DevCommand" HorizontalAlignment="Right" Margin="0,0,115,4" TextWrapping="Wrap" Watermark="Enter Dev Command here" Height="32" VerticalAlignment="Bottom" Width="254" FontSize="20" Visibility="Hidden"/>
+        <Button x:Name="JoinChat" Style="{x:Null}" HorizontalAlignment="Right" Margin="0,4,60,4" VerticalAlignment="Stretch" Width="50" Click="JoinChatButton_Click">
+            <StackPanel>
+                <Image Source="/LegendaryClient;component/joinchat.png" Stretch="Fill" Width="28" Height="28"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </Page>

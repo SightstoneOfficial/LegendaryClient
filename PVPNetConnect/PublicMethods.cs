@@ -100,13 +100,13 @@ namespace PVPNetConnect
         }
 
         /// 3.)
-        public void GetSumonerActiveBoosts(SummonerActiveBoostsDTO.Callback callback)
+        public void GetSummonerActiveBoosts(SummonerActiveBoostsDTO.Callback callback)
         {
             SummonerActiveBoostsDTO cb = new SummonerActiveBoostsDTO(callback);
             InvokeWithCallback("inventoryService", "getSumonerActiveBoosts", new object[] { }, cb);
         }
 
-        public async Task<SummonerActiveBoostsDTO> GetSumonerActiveBoosts()
+        public async Task<SummonerActiveBoostsDTO> GetSummonerActiveBoosts()
         {
             int Id = Invoke("inventoryService", "getSumonerActiveBoosts", new object[] { });
             while (!results.ContainsKey(Id))

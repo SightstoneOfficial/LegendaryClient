@@ -21,7 +21,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string InternalName
         {
-            get { return "SG"; }
+            get { return "SGMY"; }
         }
 
         public override string ChatName
@@ -36,12 +36,12 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string Locale
         {
-            get { return "en_SG"; }
+            get { return "en_SGMY"; }
         }
 
         public override PVPNetConnect.Region PVPRegion
         {
-            get { return PVPNetConnect.Region.SG; }
+            get { return PVPNetConnect.Region.SGMY; }
         }
 
         public override IPAddress[] PingAddresses

@@ -38,7 +38,7 @@
             <Label x:Name="GainedXP" Content="+50 XP" FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" />
         </Grid>
 
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="30,435,0,65" Width="300" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="30,305,0,65" Width="300" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
@@ -46,7 +46,7 @@
             </RichTextBox.Resources>
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="30,0,0,30" Width="200" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Button x:Name="ChatButton" Content="Send" Margin="240,0,0,30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" />
+        <Button x:Name="ChatButton" Content="Send" Margin="240,0,0,30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click"/>
 
     </Grid>
 </Page>

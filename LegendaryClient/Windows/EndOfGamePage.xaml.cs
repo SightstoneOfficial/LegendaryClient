@@ -24,6 +24,7 @@ namespace LegendaryClient.Windows
     public partial class EndOfGamePage : Page
     {
         private Room newRoom;
+
         public EndOfGamePage(EndOfGameStats Statistics)
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace LegendaryClient.Windows
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatText.ScrollToEnd();
             }));
         }
 
@@ -63,6 +65,7 @@ namespace LegendaryClient.Windows
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    ChatText.ScrollToEnd();
                 }
             }));
         }
@@ -75,8 +78,11 @@ namespace LegendaryClient.Windows
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
             tr.Text = ChatTextBox.Text + Environment.NewLine;
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+            if (String.IsNullOrEmpty(ChatTextBox.Text))
+                return;
             newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
+            ChatText.ScrollToEnd();
         }
 
         private void RenderStats(EndOfGameStats Statistics)

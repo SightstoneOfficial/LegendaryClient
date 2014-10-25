@@ -338,9 +338,9 @@ namespace LegendaryClient.Windows
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        Client.ClearPage(typeof(QueuePopOverlay));
                         setStartButtonText("Start Game");
                         inQueue = false;
+                        Client.PVPNet.PurgeFromQueues();
                     }));
                 }
             }
@@ -348,7 +348,6 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    Client.ClearPage(typeof(QueuePopOverlay));
                     setStartButtonText("Start Game");
                     inQueue = false;
                 }));
@@ -384,6 +383,7 @@ namespace LegendaryClient.Windows
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatText.ScrollToEnd();
             }));
         }
 
@@ -400,13 +400,14 @@ namespace LegendaryClient.Windows
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    ChatText.ScrollToEnd();
                 }
             }));
         }
 
         private void GotQueuePop(object sender, object message)
         {
-            if (Client.runonce == false)
+            if (Client.runonce == false && message is GameDTO)
             {
                 GameDTO Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -435,6 +436,7 @@ namespace LegendaryClient.Windows
                 return;
             newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
+            ChatText.ScrollToEnd();
         }
 
         internal List<Int32> QueueIds;

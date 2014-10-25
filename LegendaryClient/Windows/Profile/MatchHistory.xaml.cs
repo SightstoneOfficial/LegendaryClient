@@ -99,6 +99,7 @@ namespace LegendaryClient.Windows.Profile
                     item.GridView.Width = 250;
                     GamesListView.Items.Add(item);
                 }
+                if(GamesListView.Items.Count > 0) GamesListView.SelectedIndex = 0;
             }));
         }
 
