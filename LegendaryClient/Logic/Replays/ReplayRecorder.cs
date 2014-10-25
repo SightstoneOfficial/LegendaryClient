@@ -28,7 +28,6 @@ namespace LegendaryClient.Logic.Replays
         
         public ReplayRecorder(string Server, int GameId, string Region, string Key)
         {
-            //GameId = Client.GameID;
             this.GameId = GameId;
             this.Region = Region;
             this.Server = "http://" + Server;
@@ -105,7 +104,7 @@ namespace LegendaryClient.Logic.Replays
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(token);
 
-                int ChunkId = Convert.ToInt32(deserializedJSON["chunkId"]);
+                int ChunkId = (Int32)deserializedJSON["chunkId"];
                 if (ChunkId == 0)
                 {
                     //Try get chunk once avaliable

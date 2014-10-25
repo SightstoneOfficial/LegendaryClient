@@ -75,6 +75,7 @@
                     </ListView>
                     <Button x:Name="PrevGameButton" Content="Prev" HorizontalAlignment="Left" Margin="200,0,0,10" VerticalAlignment="Bottom" Width="75" Height="40" Click="PrevGameButton_Click" IsEnabled="False" />
                     <Button x:Name="SpectateButton" Content="Spectate" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="200" Height="40" Click="SpectateButton_Click" />
+                    <Button x:Name="RecordButton" Content="Record" HorizontalAlignment="Center" Margin="395,0,395,55" VerticalAlignment="Bottom" Width="200" Height="40" Click="RecordButton_Click" />
                     <Button x:Name="NextGameButton" Content="Next" HorizontalAlignment="Right" Margin="0,0,200,10" VerticalAlignment="Bottom" Width="75" Height="40" Click="NextGameButton_Click" />
                 </Grid>
             </TabItem>

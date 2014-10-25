@@ -3,6 +3,7 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.Region;
+using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
@@ -511,6 +512,42 @@ namespace LegendaryClient.Windows
 
         #endregion Featured Games
 
+        private void RecordButton_Click(object sender, RoutedEventArgs e)
+        {
+            var objectGame = gameList[SelectedGame];
+            Dictionary<string, object> SpectatorGame = objectGame as Dictionary<string, object>;
+            string key = "";
+            int gameId = 0;
+            string platformId = "";
+
+            foreach (KeyValuePair<string, object> pair in SpectatorGame)
+            {
+                if (pair.Key == "gameId")
+                {
+                    gameId = (int)pair.Value;
+                }
+                if (pair.Key == "observers")
+                {
+                    Dictionary<string, object> keyArray = pair.Value as Dictionary<string, object>;
+                    foreach (KeyValuePair<string, object> keyArrayPair in keyArray)
+                    {
+                        if (keyArrayPair.Key == "encryptionKey")
+                        {
+                            key = keyArrayPair.Value as string;
+                        }
+                    }
+                }
+                if (pair.Key == "platformId")
+                {
+                    platformId = pair.Value as string;
+                }
+            }
+
+            BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
+            //region.SpectatorIpAddress, key, gameId, platformId
+            var recorder = new ReplayRecorder(region.SpectatorIpAddress + ":8088", gameId, platformId, key);
+        }
+
         private void HoverLabel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Client.OverlayContainer.Content = new ChooseProfilePicturePage().Content;
@@ -561,6 +598,8 @@ namespace LegendaryClient.Windows
         {
             Client.PVPNet.SimulateEndOfGame();
         }
+
+        
 
     }
 }

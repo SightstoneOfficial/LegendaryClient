@@ -177,7 +177,7 @@
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WindowExtensions.cs" />
-    <Compile Include="Logic\AutoReplayRecorder.cs" />
+    <Compile Include="Logic\Replays\AutoReplayRecorder.cs" />
     <Compile Include="Logic\BotLogic\Bots.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\AlistarBot.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\AmumuBot.cs" />
@@ -286,7 +286,7 @@
     <Compile Include="Logic\Maps\Map12.cs" />
     <Compile Include="Logic\Maps\BaseMap.cs" />
     <Compile Include="Logic\Patcher\RiotPatcher.cs" />
-    <Compile Include="Logic\ReplayRecorder.cs" />
+    <Compile Include="Logic\Replays\ReplayRecorder.cs" />
     <Compile Include="Logic\SQLite\championAbilities.cs" />
     <Compile Include="Logic\SQLite\champions.cs" />
     <Compile Include="Logic\SQLite\championSearchTags.cs" />

@@ -13,6 +13,9 @@ using System.Windows.Threading;
 using LegendaryClient.Logic.Replays;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using RtmpSharp.IO;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
+using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Game;
 
 namespace LegendaryClient.Windows
 {
@@ -24,6 +27,7 @@ namespace LegendaryClient.Windows
         ReplayRecorder recorder;
         SerializationContext context;
         EndOfGameStats selectedStats;
+        bool User = false;
 
         public ReplayPage()
         {
@@ -37,16 +41,13 @@ namespace LegendaryClient.Windows
             waitAnimation.Completed += (o, e) =>
             {
                 var showAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
-                //ReplayGrid.BeginAnimation(Grid.OpacityProperty, showAnimation);
             };
-            //ReplayGrid.BeginAnimation(Grid.OpacityProperty, waitAnimation);
 
             Command.TextChanged += Command_TextChanged;
 
             #region Register Context
             context = new SerializationContext();
 
-            //Convert replay end of game stats to parsable object
             context.Register(typeof(EndOfGameStats));
             context.Register(typeof(PlayerParticipantStatsSummary));
             context.Register(typeof(RawStatDTO));
@@ -63,6 +64,7 @@ namespace LegendaryClient.Windows
             Command.Text = "Refresh";
             Command.Text = "Enter Username Here";
             Command.Watermark = "Enter Username Here";
+            User = true;
             Download.Visibility = Visibility.Hidden;
         }
 
@@ -72,6 +74,7 @@ namespace LegendaryClient.Windows
             Commandname.Visibility = System.Windows.Visibility.Hidden;
             Command.Watermark = "Paste Spectator Command";
             Command.Text = "Refresh";
+            User = false;
             Command.Text = "Paste Spectator Command";
             Command.Watermark = "Paste Spectator Command";
             Download.Visibility = Visibility.Hidden;
@@ -211,8 +214,42 @@ namespace LegendaryClient.Windows
             }
         }
         
-        private void Download_Click(object sender, RoutedEventArgs e)
+        private async void Download_Click(object sender, RoutedEventArgs e)
         {
+            if (User == true)
+            {
+                PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(Command.Text);
+                if (String.IsNullOrWhiteSpace(Summoner.Name))
+                {
+                    MessageOverlay overlay = new MessageOverlay();
+                    overlay.MessageTitle.Content = "No Summoner Found";
+                    overlay.MessageTextBox.Text = "The summoner \"" + Command.Text + "\" does not exist.";
+                    Client.OverlayContainer.Content = overlay.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                    return;
+                }
+                HintLabel.Content = "retrieving replay";
+                HintLabel.Visibility = Visibility.Visible;
+                var fadeLabelInAnimationx = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
+                HintLabel.BeginAnimation(Label.OpacityProperty, fadeLabelInAnimationx);
+                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Command.Text);
+                if (n.GameName != null)
+                {
+                    string IP = n.PlayerCredentials.ObserverServerIp;
+                    string Key = n.PlayerCredentials.ObserverEncryptionKey;
+                    int GameID = (Int32)n.PlayerCredentials.GameId;
+                    recorder = new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
+                    recorder.OnReplayRecorded += recorder_OnReplayRecorded;
+                    recorder.OnGotChunk += recorder_OnGotChunk;
+                    return;
+                }
+                else
+                {
+                    HintLabel.Content = "That player is not in a game";
+                    HintLabel.Visibility = Visibility.Visible;
+                    return;
+                }
+            }
             HintLabel.Content = "retrieving replay";
             HintLabel.Visibility = Visibility.Visible;
             var fadeLabelInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
