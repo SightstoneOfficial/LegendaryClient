@@ -82,7 +82,12 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// Button For Lobby
         /// </summary>
-        internal static Button LobbyButton;
+        internal static Button ReturnButton;
+
+        /// <summary>
+        /// Check if on Champion Select or Team Queue Lobby Page
+        /// </summary>
+        internal static Page CurrentPage;
 
         /// <summary>
         /// Update Data

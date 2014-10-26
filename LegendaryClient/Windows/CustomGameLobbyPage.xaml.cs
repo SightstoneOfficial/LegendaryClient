@@ -39,6 +39,9 @@ namespace LegendaryClient.Windows
                 GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
             }
             Client.InviteListView = InviteListView;
+            Client.CurrentPage = this;
+            Client.ReturnButton.Visibility = Visibility.Visible;
+            Client.ReturnButton.Content = "Return to Custom Game Lobby";
         }
 
         private void GameLobby_OnMessageReceived(object sender, object message)
@@ -223,7 +226,7 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.QuitGame();
             Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
             Client.ClearPage(typeof(CreateCustomGamePage));
-
+            Client.ReturnButton.Visibility = Visibility.Hidden;
             Client.SwitchPage(new MainPage());
         }
 

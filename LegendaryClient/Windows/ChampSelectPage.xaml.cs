@@ -113,7 +113,10 @@ namespace LegendaryClient.Windows
             AmbientChampSelect.PlayAmbientChampSelectSound(Sound);
             Client.LastPageContent = this.Content;
             Client.runonce = true;
-            Client.LobbyButton.Visibility = Visibility.Hidden;
+
+            Client.CurrentPage = this;
+            Client.ReturnButton.Visibility = Visibility.Visible;
+            Client.ReturnButton.Content = "Return to Champion Select";
         }
 
         /// <summary>
@@ -403,6 +406,7 @@ namespace LegendaryClient.Windows
                             (previousPage as PlayPage).readdHandler();
                         Client.SwitchPage(previousPage);
                         Client.ClearPage(typeof(ChampSelectPage));
+                        Client.ReturnButton.Visibility = Visibility.Hidden;
                     }
 
                     #region Display players
@@ -576,6 +580,7 @@ namespace LegendaryClient.Windows
                         }
                         Client.LaunchGame();
                         InGame();
+                        Client.ReturnButton.Visibility = Visibility.Hidden;
                     }));
                 }
 
@@ -945,6 +950,7 @@ namespace LegendaryClient.Windows
                         tr.Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     }
+                    ChatText.ScrollToEnd();
                 }
             }
         }
@@ -955,6 +961,7 @@ namespace LegendaryClient.Windows
             Warning pop = new Warning();
             //pop.hide.Click =
             //Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            Client.ReturnButton.Visibility = Visibility.Hidden;
             QuitCurrentGame();
         }
 
@@ -1049,6 +1056,7 @@ namespace LegendaryClient.Windows
                     TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = "Selected " + MasteryPageName + " as Mastery Page" + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    ChatText.ScrollToEnd();
                 }
                 bookDTO.BookPages.Add(MasteryPage);
             }
@@ -1082,6 +1090,7 @@ namespace LegendaryClient.Windows
                     TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = "Selected " + RunePageName + " as Rune Page" + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    ChatText.ScrollToEnd();
                 }
             }
             if (HasChanged)

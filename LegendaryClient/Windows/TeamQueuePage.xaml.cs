@@ -77,7 +77,9 @@ namespace LegendaryClient.Windows
                 LoadStats();
             }
 
-            Client.LobbyButton.Visibility = Visibility.Visible;
+            Client.CurrentPage = this;
+            Client.ReturnButton.Visibility = Visibility.Visible;
+            Client.ReturnButton.Content = "Return to Lobby";
         }
 
         public async void LoadStats()
@@ -373,7 +375,7 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.PurgeFromQueues();
             Client.ClearPage(typeof(TeamQueuePage));
             Client.SwitchPage(new MainPage());
-            Client.LobbyButton.Visibility = Visibility.Hidden;
+            Client.ReturnButton.Visibility = Visibility.Hidden;
         }
 
         private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)

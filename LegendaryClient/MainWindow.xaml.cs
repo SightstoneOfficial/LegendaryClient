@@ -30,7 +30,7 @@ namespace LegendaryClient
         public MainWindow()
         {
             InitializeComponent();
-            SwitchPage.Visibility = Visibility.Hidden;
+            ReturnToPage.Visibility = Visibility.Hidden;
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             Client.ExecutingDirectory = ExecutingDirectory.Replace("file:\\", "");
@@ -75,7 +75,7 @@ namespace LegendaryClient
             Client.NotificationContainer = NotificationContainer;
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;
-            Client.LobbyButton = SwitchPage;
+            Client.ReturnButton = ReturnToPage;
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
@@ -104,7 +104,7 @@ namespace LegendaryClient
 
         private void SwichToTeamQueue_Click(object Sender, RoutedEventArgs e)
         {
-            Client.SwitchPage(new TeamQueuePage(null, null, true));
+            Client.SwitchPage(Client.CurrentPage);
         }
 
         internal bool SwitchTeamPage = true;
@@ -113,12 +113,12 @@ namespace LegendaryClient
         {
             if (SwitchTeamPage == true)
             {
-                SwitchPage.Visibility = Visibility.Visible;
+                ReturnToPage.Visibility = Visibility.Visible;
                 SwitchTeamPage = false;
             }
             else if (SwitchTeamPage == false)
             {
-                SwitchPage.Visibility = Visibility.Hidden;
+                ReturnToPage.Visibility = Visibility.Hidden;
                 SwitchTeamPage = true;
             }
         }
