@@ -76,7 +76,7 @@ namespace LegendaryClient.Controls
         {
             foreach (JoinQueue item in myItems)
             {
-                if (item != null)
+                if (item != null && Client.IsOnPlayPage)
                 {
                     QueueInfo t = await Client.PVPNet.GetQueueInformation(item.queueID);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;

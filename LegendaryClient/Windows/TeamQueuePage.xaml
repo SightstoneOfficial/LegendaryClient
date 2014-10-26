@@ -21,7 +21,7 @@
         </ListView>
 
         <Button x:Name="CancelGameButton" Content="Cancel" HorizontalAlignment="Left" Margin="10,0,0,200" VerticalAlignment="Bottom" Width="200" Click="Leave_Click"/>
-        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Right" Margin="0,0,420,200" VerticalAlignment="Bottom" Width="300" Click="StartGameButton_Click"/>
+        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Right" Margin="0,0,420,200" VerticalAlignment="Bottom" Width="190" Click="StartGameButton_Click"/>
 
         <ListView x:Name="InviteListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Margin="0,50,15,230" VerticalAlignment="Stretch" Width="395" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
@@ -31,7 +31,7 @@
             </ListView.ItemsPanel>
         </ListView>
         <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Right" Margin="0,0,15,200" VerticalAlignment="Bottom" Width="395" Click="Invite_Click"/>
-        <CheckBox x:Name="AutoAcceptCheckBox" Content="Auto Accept Queue" HorizontalAlignment="Right" Margin="0,0,738,203" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" />
+        <CheckBox x:Name="AutoAcceptCheckBox" Content="Auto Accept Queue" HorizontalAlignment="Right" Margin="0,0,615,203" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" />
         <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="10,0,10,40" Height="150" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">

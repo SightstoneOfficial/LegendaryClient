@@ -200,7 +200,7 @@ namespace LegendaryClient.Controls
             else if (gameType == "NORMAL_GAME" && queueId == 61)
             {
                 LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
-                Client.SwitchPage(new TeamBuilderPage(false));
+                Client.SwitchPage(new TeamBuilderPage(false, NewLobby));
             }
             else if (gameType == "RANKED_GAME")
             {

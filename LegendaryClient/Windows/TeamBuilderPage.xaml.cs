@@ -28,6 +28,8 @@ using System.Windows.Threading;
 using Newtonsoft.Json;
 using System.Timers;
 using LegendaryClient.Controls;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using System.Globalization;
 
 namespace LegendaryClient.Windows
 {
@@ -73,15 +75,18 @@ namespace LegendaryClient.Windows
         internal string teambuilderGroupId;
         internal int teambuilderSlotId;
         internal int teambuilderCandidateAutoQuitTimeout;
-                
+
+        private LobbyStatus CurrentLobby;
+
         //TeamBuilder is just a little insane. This code is very messy too. :P
-        public TeamBuilderPage(bool iscreater)
+        public TeamBuilderPage(bool iscreater, LobbyStatus myLobby)
         {
             InitializeComponent();
             if (iscreater == false)
             {
                 Invite.IsEnabled = false;
             }
+            CurrentLobby = myLobby;
             //Start teambuilder
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveFeatureToggles", "{}");
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
@@ -98,7 +103,7 @@ namespace LegendaryClient.Windows
         /// </summary>
         /// <param name="ChatJID"></param>
         /// <param name="Pass"></param>
-        private void ConenctToChat(string ChatJID, string Pass)
+        private void ConnectToChat(string ChatJID, string Pass)
         {
             string JID = Client.GetChatroomJID(ChatJID, Pass, false);
             newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
@@ -470,20 +475,12 @@ namespace LegendaryClient.Windows
                     }
                 }
             }
-
-            skinImage.Source = Client.GetImage(uriSource);
-            skinImage.Width = 191;
-            skinImage.Stretch = Stretch.UniformToFill;
-            item.Tag = "0:" + ChampionId; //Hack
-            item.Content = skinImage;
-            SkinSelectListView.Items.Add(item);
         }
 
         private void LoadStats()
         {
-            string hi = "hi";
             ChampionSelectListView.Items.Clear();
-            if (hi == "hi")
+            if (true)
             {
                 ChampList = new List<ChampionDTO>(Client.PlayerChampions);
                 foreach (ChampionDTO champ in ChampList)
@@ -660,6 +657,18 @@ namespace LegendaryClient.Windows
             public string groupId { get; set; }
             public int slotId { get; set; }
             public int candidateAutoQuitTimeout { get; set; }
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.ClearPage(typeof(TeamBuilderPage));
+            Client.SwitchPage(new MainPage());
+        }
+
+        private void InviteButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new InvitePlayersPage().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
     }
 }
