@@ -289,9 +289,9 @@ namespace LegendaryClient.Windows
 
         void recorder_OnGotChunk(int ChunkId)
         {
-            HintLabel.Visibility = Visibility.Visible;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
             {
+                HintLabel.Visibility = Visibility.Visible;
                 HintLabel.Content = "retrieving replay (got chunk " + ChunkId + ")";
             }));
         }

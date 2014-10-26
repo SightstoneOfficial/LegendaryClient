@@ -846,6 +846,9 @@ namespace LegendaryClient.Logic
                 case "matching-queue-NIGHTMARE_BOT_3-5x5-game-queue":
                     return "Nightmare Bots 5v5 (Hard)";
 
+                case "matching-queue-TT-6x6-game-queue":
+                    return "Hexakill Twisted Treeline";
+
                 default:
                     return InternalQueue;
             }
