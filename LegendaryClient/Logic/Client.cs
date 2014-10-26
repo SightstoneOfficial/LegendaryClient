@@ -766,6 +766,17 @@ namespace LegendaryClient.Logic
                     //TypedObject body = (TypedObject)to["body"];
                     if (stats.Inviter != null)
                     {
+                        try
+                        {
+                            //Already existant popup. Do not create a new one
+                            var x = Client.InviteData[stats.InvitationId];
+                            if (x.Inviter != null)
+                                return;
+                        }
+                        catch
+                        {
+                            
+                        }
                         MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
                             GameInvitePopup pop = new GameInvitePopup(stats);

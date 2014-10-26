@@ -26,53 +26,81 @@ namespace LegendaryClient.Controls
         public GameInvitePopup(InvitationRequest stats)
         {
             InitializeComponent();
+            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             try
             {
                 InviteInfo info = Client.InviteData[stats.InvitationId];
+                Client.Log("Tried to find a popup that existed but should have been blocked. ", "Error");
                 if (info == null)
                     throw new NullReferenceException("Tried to find a nonexistant popup");
-                switch(stats.InvitationState)
-                {
-                    case "ON_HOLD":
-                        info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now on hold", info.Inviter);
-                        info.popup.Lockup();
-                        this.Visibility = Visibility.Hidden;
-                        break;
-                    case "TERMINATED":
-                        info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has been terminated", info.Inviter);
-                        info.popup.Lockup();
-                        this.Visibility = Visibility.Hidden;
-                        break;
-                    case "REVOKED":
-                        info.popup.NotificationTextBox.Text = string.Format("The invite from {0} has timed out");
-                        info.popup.Lockup();
-                        this.Visibility = Visibility.Hidden;
-                        break;
-                    case "ACTIVE":
-                        info.popup.NotificationTextBox.Text = "";
-                        if (stats.Inviter == null)
-                            LoadGamePopupData(info.stats);
-                        else
-                            LoadGamePopupData(stats);
-                        this.Visibility = Visibility.Hidden;
+                else
+                    PVPNet_OnMessageReceived(this, stats);
 
-                        RenderNotificationTextBox(info.popup.Inviter + " has invited you to a game");
-                        RenderNotificationTextBox("");
-                        RenderNotificationTextBox("Mode: " + info.popup.mode);
-                        RenderNotificationTextBox("Map: " + info.popup.MapName);
-                        RenderNotificationTextBox("Type: " + info.popup.type);
-                        info.popup.Unlock();
-                        break;
-                    default:
-                        info.popup.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, Client.TitleCaseString(stats.InvitationState));
-                        Lockup();
-                        break;
-                }
+                //This should be hidden
+                this.Visibility = Visibility.Hidden;
             }
             catch
             {
                 LoadGamePopupData(stats);
                 Unlock();
+            }
+        }
+
+        void PVPNet_OnMessageReceived(object sender, object message)
+        {
+            if (message is InvitationRequest)
+            {
+                InvitationRequest stats = (InvitationRequest)message;
+                try
+                {
+                    InviteInfo info = Client.InviteData[stats.InvitationId];
+                    //Data about this popup has changed. We want to set this
+                    if (info.popup == this)
+                    {
+                        switch (stats.InvitationState)
+                        {
+                            case "ON_HOLD":
+                                this.NotificationTextBox.Text = string.Format("The invite from {0} is now on hold", info.Inviter);
+                                this.Lockup();
+                                this.Visibility = Visibility.Hidden;
+                                break;
+                            case "TERMINATED":
+                                this.NotificationTextBox.Text = string.Format("The invite from {0} has been terminated", info.Inviter);
+                                this.Lockup();
+                                this.Visibility = Visibility.Hidden;
+                                break;
+                            case "REVOKED":
+                                this.NotificationTextBox.Text = string.Format("The invite from {0} has timed out");
+                                this.Lockup();
+                                this.Visibility = Visibility.Hidden;
+                                break;
+                            case "ACTIVE":
+                                this.NotificationTextBox.Text = "";
+                                if (stats.Inviter == null)
+                                    LoadGamePopupData(info.stats);
+                                else
+                                    LoadGamePopupData(stats);
+                                this.Visibility = Visibility.Hidden;
+
+                                RenderNotificationTextBox(this.Inviter + " has invited you to a game");
+                                RenderNotificationTextBox("");
+                                RenderNotificationTextBox("Mode: " + this.mode);
+                                RenderNotificationTextBox("Map: " + this.MapName);
+                                RenderNotificationTextBox("Type: " + this.type);
+                                this.Unlock();
+                                break;
+                            default:
+                                this.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, Client.TitleCaseString(stats.InvitationState));
+                                Lockup();
+                                break;
+                        }
+                    }
+                }
+                catch
+                {
+                    //We do not need this popup. it is a new one. Let it launch
+                    return;
+                }
             }
         }
         private void Lockup()
