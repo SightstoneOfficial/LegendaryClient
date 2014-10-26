@@ -137,8 +137,6 @@ namespace LegendaryClient.Windows
                         item.QueueButton.Click += QueueButton_Click;
                         item.TeamQueueButton.Tag = config;
                         item.TeamQueueButton.Click += TeamQueueButton_Click;
-                        item.TBCreateBotton.Click += TBCreateBotton_Click;
-                        item.TBSearchButton.Click += TBSearchButton_Click;
                         item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
                         item.queueID = config.Id;
                         QueueInfo t = await Client.PVPNet.GetQueueInformation(config.Id);
@@ -152,7 +150,6 @@ namespace LegendaryClient.Windows
                             seperators[2].Add(item);
                         else
                             seperators[1].Add(item);
-                        Client.Log(config.TypeString);
 
                         switch (Client.InternalQueueToPretty(config.CacheName))
                         {
@@ -189,18 +186,6 @@ namespace LegendaryClient.Windows
         /// </summary>
         private Button LastSender;
         
-        //Duo
-        public static void TBCreateBotton_Click(object sender, RoutedEventArgs e)
-        {
-            Client.ClearPage(typeof(TeamBuilderPage));
-            Client.SwitchPage(new TeamBuilderPage(true));
-        }
-        //Solo
-        public static void TBSearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            Client.ClearPage(typeof(TeamBuilderPage));
-            Client.SwitchPage(new TeamBuilderPage(false));
-        }
         private async void TeamQueueButton_Click(object sender, RoutedEventArgs e)
         {
             //To leave all other queues
@@ -230,7 +215,8 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                Client.SwitchPage(new TeamBuilderPage(true));
+                LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+                Client.SwitchPage(new TeamBuilderPage(true, Lobby));
             }
                 
         }
@@ -257,8 +243,10 @@ namespace LegendaryClient.Windows
                 }
                 else if (config.Id == 61)
                 {
+
+                    LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                     Client.ClearPage(typeof(TeamBuilderPage));
-                    Client.SwitchPage(new TeamBuilderPage(false));
+                    Client.SwitchPage(new TeamBuilderPage(false, Lobby));
                 }
                 return;
             } 
