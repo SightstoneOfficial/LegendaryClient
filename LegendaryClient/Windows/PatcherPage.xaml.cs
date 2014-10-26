@@ -323,12 +323,23 @@ namespace LegendaryClient.Windows
                     }
                     #endregion lol_game_client
 
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        TotalProgressLabel.Content = "100%";
+                        TotalProgessBar.Value = 100;
+                        SkipPatchButton.Content = "Play";
+                        CurrentProgressLabel.Content = "Finished Patching";
+                        CurrentStatusLabel.Content = "Ready To Play";
+                        SkipPatchButton.IsEnabled = true;
+                    }));
 
+                    LogTextBox("LegendaryClient Has Finished Patching");
 
-                    FinishPatching(LatestVersion[0]);
                 });
 
                 bgThead.Start();
+
+                Client.Log("LegendaryClient Has Finished Patching");
             }
             catch (Exception e)
             {
@@ -469,16 +480,6 @@ namespace LegendaryClient.Windows
                 LogTextBox("Finished Download");
                 CurrentProgressBar.Value = 0;
             }));
-        }
-
-
-        private void FinishPatching(string LatestVersion)
-        {
-            WebClient UpdateClient = new WebClient();
-            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/packages/files/packagemanifest");
-
-            UpdateClient.DownloadFileCompleted += UpdateClient_DownloadFileCompleted;
-
         }
 
         void UpdateClient_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
