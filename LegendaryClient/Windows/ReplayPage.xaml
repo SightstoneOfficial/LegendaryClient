@@ -14,7 +14,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="0,143,0,0" VerticalAlignment="Stretch" Width="420">
             <StackPanel x:Name="GamePanel" />
         </ScrollViewer>
-        <Controls:TextBoxWatermarked x:Name="Command" Text="" TextChanged="Command_TextChanged" HorizontalAlignment="Left" TextWrapping="Wrap" Watermark="Paste Spectator Command" VerticalAlignment="Top" Margin="10,49,0,0" Width="410" Height="24"/>
+        <Controls:TextBoxWatermarked x:Name="Command" Text="" TextChanged="Command_TextChanged" HorizontalAlignment="Left" TextWrapping="Wrap" Watermark="Enter username here" VerticalAlignment="Top" Margin="10,49,0,0" Width="410" Height="24"/>
         <Button x:Name="Download" Visibility="Hidden" Click="Download_Click" Content="Download" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="345,49,0,0" Height="24" FontSize="11"/>
         <Label x:Name="HintLabel" Content="" Margin="10,78,604,568"/>
         <Grid x:Name="ReplayOverviewGrid" Width="581" Margin="0,40,0,0" HorizontalAlignment="Right" Opacity="0" Visibility="Hidden">
