@@ -24,6 +24,5 @@
         <Label HorizontalAlignment="Stretch" Margin="0,100,0,0" VerticalAlignment="Bottom" Foreground="White">
             <TextBlock x:Name="InGameStatus" Text="In game as Shyvana" TextWrapping="WrapWithOverflow" Foreground="#FFFFFF99" Visibility="Collapsed"/>
         </Label>
-        <Image x:Name="Dev" HorizontalAlignment="Right" Height="20" Margin="0,0,25,96" VerticalAlignment="Bottom" Width="48" Visibility="Hidden" Source="/LegendaryClient;component/Dev.png" />
     </Grid>
 </UserControl>

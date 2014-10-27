@@ -15,18 +15,13 @@
             <StackPanel x:Name="GamePanel" />
         </ScrollViewer>
         <Controls:TextBoxWatermarked x:Name="Command" Text="" TextChanged="Command_TextChanged" HorizontalAlignment="Left" TextWrapping="Wrap" Watermark="Paste Spectator Command" VerticalAlignment="Top" Margin="10,49,0,0" Width="410" Height="24"/>
-        <Button x:Name="Download" Visibility="Hidden" Click="Download_Click" Content="Download" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="345,49,0,0" Height="24" FontSize="11" RenderTransformOrigin="4.307,2.45"/>
+        <Button x:Name="Download" Visibility="Hidden" Click="Download_Click" Content="Download" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="345,49,0,0" Height="24" FontSize="11"/>
         <Label x:Name="HintLabel" Content="" Margin="10,78,604,568"/>
-        <Button x:Name="Username" Click="Username_Click" Content="Switch Command to Username" HorizontalAlignment="Left" VerticalAlignment="Top" Width="410" Margin="10,104,0,0" Height="34" Visibility="Visible"/>
-        <Button x:Name="Commandname" Click="Commandname_Click" Content="Switch Username to Command" HorizontalAlignment="Left" VerticalAlignment="Top" Width="410" Margin="10,104,0,0" Height="34" Visibility="Hidden"/>
-        
-        
         <Grid x:Name="ReplayOverviewGrid" Width="581" Margin="0,40,0,0" HorizontalAlignment="Right" Opacity="0" Visibility="Hidden">
             <Button x:Name="WatchReplayButton" Content="Watch Replay" Background="#27ae60" HorizontalAlignment="Stretch" Margin="5,5,5,0" FontSize="16" Height="40" FontWeight="Bold" VerticalAlignment="Top" Foreground="White" Click="WatchReplayButton_Click" d:IsHidden="True" />
             <Label x:Name="GameId" Content="0" HorizontalAlignment="Center" FontStyle="Italic" Margin="0,50,0,0" Foreground="#FF838383" VerticalAlignment="Top" d:IsHidden="True"/>
             <Label x:Name="GameType" Content="classic" HorizontalAlignment="Center" FontStyle="Italic" Margin="0,50,0,0" Foreground="#FF838383" VerticalAlignment="Bottom" d:IsHidden="True"/>
             <Label x:Name="GameTime" Content="0:00" HorizontalAlignment="Right"  Margin="0,50,5,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Top" d:IsHidden="True"/>
-
             <StackPanel Margin="0,80,0,0">
                 <StackPanel x:Name="TeamOnePanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                 <Label Content="VS" HorizontalAlignment="Center" FontSize="30"/>

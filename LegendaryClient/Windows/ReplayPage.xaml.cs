@@ -11,11 +11,10 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Replays;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
 using RtmpSharp.IO;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 using LegendaryClient.Logic;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
 
 namespace LegendaryClient.Windows
 {
@@ -54,30 +53,6 @@ namespace LegendaryClient.Windows
             #endregion Register Context
 
             UpdateReplays();
-        }
-        
-        private void Username_Click(object sender, RoutedEventArgs e)
-        {
-            Commandname.Visibility = System.Windows.Visibility.Visible;
-            Username.Visibility = System.Windows.Visibility.Hidden;
-            Command.Watermark = "Enter Username Here";
-            Command.Text = "Refresh";
-            Command.Text = "Enter Username Here";
-            Command.Watermark = "Enter Username Here";
-            User = true;
-            Download.Visibility = Visibility.Hidden;
-        }
-
-        private void Commandname_Click(object sender, RoutedEventArgs e)
-        {
-            Username.Visibility = System.Windows.Visibility.Visible;
-            Commandname.Visibility = System.Windows.Visibility.Hidden;
-            Command.Watermark = "Paste Spectator Command";
-            Command.Text = "Refresh";
-            User = false;
-            Command.Text = "Paste Spectator Command";
-            Command.Watermark = "Paste Spectator Command";
-            Download.Visibility = Visibility.Hidden;
         }
 
         void Command_TextChanged(object sender, TextChangedEventArgs e)
@@ -241,6 +216,10 @@ namespace LegendaryClient.Windows
                     recorder = new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
                     recorder.OnReplayRecorded += recorder_OnReplayRecorded;
                     recorder.OnGotChunk += recorder_OnGotChunk;
+
+                    var fadeGridOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
+                    Command.Visibility = Visibility.Hidden;
+                    Download.Visibility = Visibility.Hidden;
                     return;
                 }
                 else
@@ -250,41 +229,6 @@ namespace LegendaryClient.Windows
                     return;
                 }
             }
-            HintLabel.Content = "retrieving replay";
-            HintLabel.Visibility = Visibility.Visible;
-            var fadeLabelInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
-            HintLabel.BeginAnimation(Label.OpacityProperty, fadeLabelInAnimation);
-
-            string SpectatorCommand = Command.Text;
-            string[] RemoveExcessInfo = SpectatorCommand.Split(new string[1] { "spectator " }, StringSplitOptions.None);
-
-            if (RemoveExcessInfo.Length != 2)
-            {
-                HintLabel.Content = "invalid command";
-                HintLabel.Visibility = Visibility.Visible;
-                return;
-            }
-
-            string[] Info = RemoveExcessInfo[1].Replace("\"", "").Split(' ');
-
-            if (Info.Length != 4)
-            {
-                HintLabel.Content = "invalid command";
-                HintLabel.Visibility = Visibility.Visible;
-                return;
-            }
-
-            Command.Text = "";
-
-            int GameId = Convert.ToInt32(Info[2]);
-
-            recorder = new ReplayRecorder(Info[0], GameId, Info[3], Info[1]);
-            recorder.OnReplayRecorded += recorder_OnReplayRecorded;
-            recorder.OnGotChunk += recorder_OnGotChunk;
-
-            var fadeGridOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
-            Command.Visibility = Visibility.Hidden;
-            Download.Visibility = Visibility.Hidden;
         }
 
         void recorder_OnGotChunk(int ChunkId)

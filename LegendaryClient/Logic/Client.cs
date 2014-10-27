@@ -748,9 +748,9 @@ namespace LegendaryClient.Logic
                     if(messageOver.MessageTitle.Content.ToString() != "PLAYER_QUIT")
                         Client.SwitchPage(new MainPage());
                 }
-                else if (message is EndOfGameStats)
+                else if (message is PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats)
                 {
-                    EndOfGameStats stats = message as EndOfGameStats;
+                    PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats stats = message as PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats;
                     EndOfGamePage EndOfGame = new EndOfGamePage(stats);
                     Client.ClearPage(typeof(TeamQueuePage));
                     Client.OverlayContainer.Visibility = Visibility.Visible;
