@@ -87,14 +87,14 @@ namespace LegendaryClient.Windows
             #region AboutTextbox
 
             AboutTextBox.Text =
-@"Copyright (c) 2013-2014, Eddy5641 (Eddy V - legendarycoding.weebly.com)
+@"Copyright (c) 2013-2014, Eddy5641 (Eddy V)
 All rights reserved.
 
 
 
 Thanks to " + Client.LoginPacket.AllSummonerData.Summoner.Name + @". Using this client means the most to me. Thank you very much!
 
-Big thanks to Snowl. Created most of this client.
+Big thanks to Snowl. Created the foundation of this custom client.
 Thanks to all the people at #riotcontrol, especially raler (for providing PVPNetConnect).
 Thanks to all the people who done the RTMPS work. Your help has been invaluable.
 
@@ -110,13 +110,19 @@ External libraries:
 Awesomium
 jabber-net
 MahApps.Metro
+Rtmp-sharp
 PVPNetConnect
 SharpZipLib
 sqlite
 zlib
 
 Donations are accepted at:
-Not accepted yet";
+Not accepted yet
+
+Donations will be used in ways that support LegendaryClient. Examples are:
+Domain name (LegendaryClient.ca|LegendaryClient.gg)
+
+";
 
             #endregion AboutTextbox
 
@@ -202,6 +208,7 @@ Not accepted yet";
             else
                 Properties.Settings.Default.DarkTheme = false;
             Properties.Settings.Default.Theme = Themes[ThemeBox.SelectedIndex].Item2;
+            
             mainWindow.ChangeTheme();
         }
     }

@@ -28,7 +28,7 @@ namespace LegendaryClient.Controls
 
         private void JoinButton_Click(object sender, RoutedEventArgs e)
         {
-            string JID = Client.GetChatroomJID(Client.GetObfuscatedChatroomName(ChatNameTextBox.Text, "pu"), "", true);
+            string JID = Client.GetChatroomJID(Client.GetObfuscatedChatroomName(ChatNameTextBox.Text, ChatPrefixes.Public), string.Empty, true);
             Client.MainGrid.Children.Add(new GroupChatItem(JID, ChatNameTextBox.Text));
             Client.ClearNotification(typeof(JoinPublicChat));
         }

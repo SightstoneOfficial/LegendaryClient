@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LegendaryClient.Controls"
              mc:Ignorable="d"
-             Height="350" Width="560">
-    
+             Height="350" Width="700">
+
     <Grid local:AccessKeyScoper.IsAccessKeyScope="True">
         <Rectangle Fill="#99505050" Stroke="#FF646464">
             <Rectangle.Effect>
@@ -26,8 +26,8 @@
         </RichTextBox>
 
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="250" />
-        <Button Style="{x:Null}" x:Name="SendButton" Content="Send" HorizontalAlignment="Right" Margin="0,0,220,10" VerticalAlignment="Bottom" Width="75" Foreground="Black" Click="SendButton_Click" IsDefault="True" />
-        <ListView x:Name="ParticipantList" HorizontalAlignment="Left" Height="303" Margin="345,35,0,0" VerticalAlignment="Top" Width="202">
+        <Button Style="{x:Null}" x:Name="SendButton" Content="Send" HorizontalAlignment="Right" Margin="0,0,360,10" VerticalAlignment="Bottom" Width="75" Foreground="Black" Click="SendButton_Click" IsDefault="True" Height="23" />
+        <ListView x:Name="ParticipantList" HorizontalAlignment="Left" Height="303" Margin="345,37,0,0" VerticalAlignment="Top" Width="345">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

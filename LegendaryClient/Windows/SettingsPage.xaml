@@ -11,8 +11,8 @@
         <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
             <TabItem Header="LegendaryClient">
                 <Grid>
-                    <CheckBox x:Name="StatsCheckbox" Content="Gather Statistics to enhance LegendaryClient" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Checked="StatsCheckbox_Checked" />
-                    <CheckBox x:Name="ErrorCheckbox" Content="Send Errors to LegendaryClient's developers to help fix bugs" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,30,0,0" Checked="ErrorCheckbox_Checked" />
+                    <CheckBox x:Name="StatsCheckbox" Content="Gather Statistics to enhance LegendaryClient" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Checked="StatsCheckbox_Checked" IsEnabled="False"/>
+                    <CheckBox x:Name="ErrorCheckbox" Content="Send Errors to LegendaryClient's developers to help fix bugs" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,30,0,0" Checked="ErrorCheckbox_Checked" IsEnabled="False"/>
                     <TextBox x:Name="AboutTextBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="200" TextWrapping="Wrap"  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" />
                 </Grid>
             </TabItem>
