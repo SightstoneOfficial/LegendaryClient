@@ -5,6 +5,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using System.Linq;
+using System.Windows.Input;
 
 namespace LegendaryClient.Windows
 {
@@ -48,7 +50,7 @@ namespace LegendaryClient.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     NotificationChatPlayer player = null;
-                    foreach (NotificationChatPlayer x in ChatListView.Items)
+                    foreach (NotificationChatPlayer x in ChatListView.Items.Cast<object>().Where(i => i.GetType() == typeof(NotificationChatPlayer)))
                     {
                         if (x.PlayerName == chatItem.Username)
                         {
@@ -90,7 +92,7 @@ namespace LegendaryClient.Windows
                 Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationOverlayContainer.Margin = new Thickness(0, 0, 260, 50);
             }
-            else 
+            else
             {
                 Client.ChatContainer.Visibility = System.Windows.Visibility.Hidden;
                 Client.NotificationContainer.Visibility = System.Windows.Visibility.Hidden;
@@ -114,85 +116,119 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ChatListView.SelectedIndex != -1)
-            {
-                NotificationChatPlayer item = (NotificationChatPlayer)ChatListView.SelectedItem;
-                ChatListView.SelectedIndex = -1;
-                if (Client.ChatItem == null)
-                {
-                    Client.ChatItem = new ChatItem();
-                    Client.MainGrid.Children.Add(Client.ChatItem);
-                }
-                else
-                {
-                    string CurrentName = (string)Client.ChatItem.PlayerLabelName.Content;
-                    Client.MainGrid.Children.Remove(Client.ChatItem);
-                    Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
-                    Client.ChatItem = null;
-                    if (CurrentName != (string)item.PlayerLabelName.Content)
-                    {
-                        Client.ChatItem = new ChatItem();
-                        Client.MainGrid.Children.Add(Client.ChatItem);
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
-
-                item.BlinkRectangle.Visibility = System.Windows.Visibility.Hidden;
-
-                Panel.SetZIndex(Client.ChatItem, 3);
-
-                Client.ChatItem.PlayerLabelName.Content = item.PlayerLabelName.Content;
-
-                Client.ChatItem.Update();
-
-                Client.ChatItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                Client.ChatItem.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-
-                Point relativePoint = item.TransformToAncestor(Client.MainWin).Transform(new Point(0, 0));
-
-                Client.ChatItem.Margin = new System.Windows.Thickness(relativePoint.X, 0, 0, 40);
-            }
-        }
-
-        private async void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            await Client.PVPNet.QuitGame();
-            //Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-            Client.ClearPage(typeof(CustomGameLobbyPage));
-            Client.ClearPage(typeof(CreateCustomGamePage));
-            Client.ClearPage(typeof(StatusPage));
-
-            Client.SwitchPage(new MainPage());
-        }
-
-        private void BackButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Client.LastPageContent != null)
-            {
-                Grid testGrid = (Grid)Client.LastPageContent;
-                //Already on this page
-                if (testGrid.Parent != null)
-                    return;
-                FakePage fakePage = new FakePage();
-                fakePage.Content = Client.LastPageContent;
-                Client.SwitchPage(fakePage);
-            }
-        }
-
         private void JoinChatButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (var element in Client.NotificationGrid.Children)
                 if (element.GetType() == typeof(JoinPublicChat))
+                {
+                    Client.ClearNotification(typeof(JoinPublicChat));
                     return;
+                }
             JoinPublicChat pop = new JoinPublicChat();
             pop.HorizontalAlignment = HorizontalAlignment.Right;
             pop.VerticalAlignment = VerticalAlignment.Bottom;
             Client.NotificationGrid.Children.Add(pop);
+        }
+
+        public void ChatListView_ItemClicked(object sender, MouseButtonEventArgs e)
+        {
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                var tItem = sender as ListViewItem;
+                if (tItem != null)
+                {
+                    tItem.IsSelected = true;
+                    if (ChatListView.SelectedItem.GetType() == typeof(NotificationChatPlayer))
+                    {
+                        if (Client.GroupIsShown)
+                        {
+                            foreach (GroupChatItem groupItem in Client.GroupChatItems)
+                                Client.MainGrid.Children.Remove(groupItem);
+                            Client.GroupIsShown = false;
+                        }
+                        NotificationChatPlayer item = (NotificationChatPlayer)ChatListView.SelectedItem;
+                        if (Client.ChatItem == null)
+                        {
+                            Client.ChatItem = new ChatItem();
+                            Client.MainGrid.Children.Add(Client.ChatItem);
+                            Client.PlayerChatIsShown = true;
+                        }
+                        else
+                        {
+                            string CurrentName = (string)Client.ChatItem.PlayerLabelName.Content;
+                            Client.MainGrid.Children.Remove(Client.ChatItem);
+                            Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
+                            Client.ChatItem = null;
+                            Client.PlayerChatIsShown = false;
+                            if (CurrentName != (string)item.PlayerLabelName.Content)
+                            {
+                                Client.ChatItem = new ChatItem();
+                                Client.MainGrid.Children.Add(Client.ChatItem);
+                                Client.PlayerChatIsShown = true;
+                            }
+                            else
+                            {
+                                Client.PlayerChatIsShown = false;
+                                return;
+                            }
+                        }
+
+                        item.BlinkRectangle.Visibility = System.Windows.Visibility.Hidden;
+
+                        Panel.SetZIndex(Client.ChatItem, 3);
+
+                        Client.ChatItem.PlayerLabelName.Content = item.PlayerLabelName.Content;
+
+                        Client.ChatItem.Update();
+
+                        Client.ChatItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                        Client.ChatItem.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
+
+                        Point relativePoint = item.TransformToAncestor(Client.MainWin).Transform(new Point(0, 0));
+
+                        Client.ChatItem.Margin = new System.Windows.Thickness(relativePoint.X, 0, 0, 40);
+                    }
+                    else
+                    {
+                        if (Client.PlayerChatIsShown)
+                        {
+                            Client.MainGrid.Children.Remove(Client.ChatItem);
+                            Client.PlayerChatIsShown = false;
+                        }
+                        if (!Client.GroupIsShown)
+                        {
+                            NotificationChatGroup item = (NotificationChatGroup)ChatListView.SelectedItem;
+                            Client.CurrentGroupChatItem = Client.GroupChatItems.Single(i => i.GroupTitle == (string)item.GroupLabelName.Content);
+                            if (!Client.MainGrid.Children.Contains(Client.CurrentGroupChatItem))
+                                Client.MainGrid.Children.Add(Client.CurrentGroupChatItem);
+                            Client.CurrentGroupChatItem.HorizontalAlignment = HorizontalAlignment.Left;
+                            Client.CurrentGroupChatItem.VerticalAlignment = VerticalAlignment.Bottom;
+                            Point relativePoint = item.TransformToAncestor(Client.MainWin).Transform(new Point(0, 0));
+
+                            Client.CurrentGroupChatItem.Margin = new System.Windows.Thickness(relativePoint.X, 0, 0, 40);
+                        }
+                        else
+                        {
+                            foreach (GroupChatItem item in Client.GroupChatItems)
+                                Client.MainGrid.Children.Remove(item);
+                            if (Client.CurrentGroupChatItem != Client.GroupChatItems.Single(i => i.GroupTitle == (string)(ChatListView.SelectedItem as NotificationChatGroup).GroupLabelName.Content))
+                            {
+                                Client.CurrentGroupChatItem = Client.GroupChatItems.Single(i => i.GroupTitle == (string)(ChatListView.SelectedItem as NotificationChatGroup).GroupLabelName.Content);
+                                Client.MainGrid.Children.Add(Client.CurrentGroupChatItem);
+                                Client.CurrentGroupChatItem.HorizontalAlignment = HorizontalAlignment.Left;
+                                Client.CurrentGroupChatItem.VerticalAlignment = VerticalAlignment.Bottom;
+                                Point relativePoint = (ChatListView.SelectedItem as NotificationChatGroup).TransformToAncestor(Client.MainWin).Transform(new Point(0, 0));
+
+                                Client.CurrentGroupChatItem.Margin = new System.Windows.Thickness(relativePoint.X, 0, 0, 40);
+                                Client.GroupIsShown = !Client.GroupIsShown;
+                            }
+                        }
+                        Client.ChatItem = null;
+                        Client.GroupIsShown = !Client.GroupIsShown;
+                    }
+                }
+            }));
         }
     }
 }

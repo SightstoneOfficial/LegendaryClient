@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -18,15 +19,15 @@ namespace LegendaryClient.Controls
     public partial class GroupChatItem : UserControl
     {
         public string ChatID { get; set; }
+        public string GroupTitle { get; set; }
         private Room newRoom;
-        public List<SmallPlayer> participants = new List<SmallPlayer>();
 
         public GroupChatItem(string id, string title)
         {
             InitializeComponent();
             ChatID = id;
             PlayerLabelName.Content = title;
-            ParticipantList.ItemsSource = participants;
+            GroupTitle = title;
             newRoom = Client.ConfManager.GetRoom(new jabber.JID(ChatID));
             newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
             newRoom.OnRoomMessage += GroupChatClient_OnMessage;
@@ -60,15 +61,16 @@ namespace LegendaryClient.Controls
                 tr.Text = participant.Nick + " left the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatText.ScrollToEnd();
-            }));
-            foreach(GroupChatPlayer x in ParticipantList.Items)
-            {
-                if (participant.Nick == x.SName.Content)
+                foreach (GroupChatPlayer x in ParticipantList.Items)
                 {
-                    ParticipantList.Items.Remove(x);
-                    ParticipantList.Items.Refresh();
+                    if (participant.Nick == (string)x.SName.Content)
+                    {
+                        ParticipantList.Items.Remove(x);
+                        ParticipantList.Items.Refresh();
+                        break;
+                    }
                 }
-            }
+            }));
         }
 
         private async void GroupChatClient_OnParticipantJoin(Room room, RoomParticipant participant)
@@ -80,7 +82,7 @@ namespace LegendaryClient.Controls
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatText.ScrollToEnd();
                 var x = new GroupChatPlayer();
-                x.Name = participant.Nick;
+                x.SName.Content = participant.Nick;
                 PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(participant.Nick);
                 var uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId + ".png");
                 x.sIcon.Source = Client.GetImage(uriSource);

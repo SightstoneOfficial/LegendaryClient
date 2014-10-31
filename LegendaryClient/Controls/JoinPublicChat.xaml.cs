@@ -29,7 +29,17 @@ namespace LegendaryClient.Controls
         private void JoinButton_Click(object sender, RoutedEventArgs e)
         {
             string JID = Client.GetChatroomJID(Client.GetObfuscatedChatroomName(ChatNameTextBox.Text, ChatPrefixes.Public), string.Empty, true);
-            Client.MainGrid.Children.Add(new GroupChatItem(JID, ChatNameTextBox.Text));
+            GroupChatItem item = new GroupChatItem(JID, ChatNameTextBox.Text);
+            NotificationChatGroup ChatGroup = new NotificationChatGroup();
+            ChatGroup.Tag = item;
+            ChatGroup.GroupTitle = item.GroupTitle;
+            ChatGroup.Margin = new Thickness(1, 0, 1, 0);
+            ChatGroup.GroupLabelName.Content = item.GroupTitle;
+            if (!Client.GroupChatItems.Any(i => i.GroupTitle == ChatNameTextBox.Text))
+            {
+                Client.ChatListView.Items.Add(ChatGroup);
+                Client.GroupChatItems.Add(item);
+            }
             Client.ClearNotification(typeof(JoinPublicChat));
         }
 

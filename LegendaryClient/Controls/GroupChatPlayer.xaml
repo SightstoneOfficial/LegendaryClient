@@ -3,11 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="343">
+             mc:Ignorable="d" Width="201" Height="29">
     <Grid>
-        <Image x:Name="sIcon" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50"/>
-        <Label x:Name="SName" Content="Eddy5641" HorizontalAlignment="Left" VerticalAlignment="Top" Width="278" Margin="55,10,0,0" VerticalContentAlignment="Center" Height="30"/>
+        <Image x:Name="sIcon" HorizontalAlignment="Left" Height="29" VerticalAlignment="Top" Width="29" Margin="1,0,0,0"/>
+        <Label x:Name="SName" Content="Eddy5641" HorizontalAlignment="Left" VerticalAlignment="Top" Width="129" Margin="35,-1,0,0" VerticalContentAlignment="Center" Height="30"/>
 
     </Grid>
 </UserControl>

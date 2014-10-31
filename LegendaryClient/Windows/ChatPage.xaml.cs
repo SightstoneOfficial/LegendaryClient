@@ -234,10 +234,11 @@ namespace LegendaryClient.Windows
                 ChatListView.SelectedIndex = -1;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
                 LastPlayerItem = playerItem;
-                foreach (NotificationChatPlayer x in Client.ChatListView.Items)
+                foreach (object x in Client.ChatListView.Items)
                 {
-                    if ((string)x.PlayerLabelName.Content == playerItem.Username)
-                        return;
+                    if(x.GetType() == typeof(NotificationChatPlayer))
+                        if ((string)(x as NotificationChatPlayer).PlayerLabelName.Content == playerItem.Username)
+                            return;
                 }
                 NotificationChatPlayer ChatPlayer = new NotificationChatPlayer();
                 ChatPlayer.Tag = playerItem;
