@@ -90,6 +90,7 @@ namespace LegendaryClient.Windows
         private bool QuickLoad = false; //Don't load masteries and runes on load at start
         private Room Chatroom;
         private Page previousPage;
+        #region champs
         private string[] bilgewaterChampions = { "Fizz", "Gangplank", "Graves", "Katarina", "Miss Fortune", "Nami", "Nautilus", "Twisted Fate" };
         private string[] freljordChampions = { "Anivia", "Ashe", "Braum", "Lissandra", "Nunu", "Sejuani", "Tryndamere", "Volibear", "Gragas" };
         private string[] ioniaChampions = { "Akali", "Irelia", "Karma", "Kennen", "Lee Sin", "Master Yi", "Shen", "Soraka", "Varus", "Ahri" };
@@ -102,6 +103,7 @@ namespace LegendaryClient.Windows
         private string[] voidChampions = { "Cho'Gath", "Kha'Zix", "Kog'Maw", "Malzahar", "Vel'koz" };
         private string[] shurimaChampions = { "Amumu", "Malzahar", "Nasus", "Renekton", "Sivir", "Skarner", "Xerath", "Zilean", "Azir" };
         private string[] discordChampions = { "Aatrox", "Cho'Gath", "Karthus", "Kha'Zix", "Kog'Maw", "Malzahar", "Nocturne", "Shaco", "Thresh", "Vel'koz" };
+        #endregion champs
         bool AreWePurpleSide = false;
 
         public ChampSelectPage(Page previousPage)
