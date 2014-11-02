@@ -15,7 +15,12 @@
     </Page.Resources>
 
     <Grid Background="#FF141414">
-        <ListView x:Name="ChatListView" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="1,0,374,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" SelectionChanged="ChatListView_SelectionChanged">
+        <ListView x:Name="ChatListView" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="1,0,374,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" >
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ChatListView_ItemClicked" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />

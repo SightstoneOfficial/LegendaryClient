@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LegendaryClient.Controls"
              mc:Ignorable="d"
-             Height="350" Width="560">
-    
+             Height="350" Width="600">
+
     <Grid local:AccessKeyScoper.IsAccessKeyScope="True">
         <Rectangle Fill="#99505050" Stroke="#FF646464">
             <Rectangle.Effect>
@@ -14,8 +14,8 @@
             </Rectangle.Effect>
         </Rectangle>
         <Label x:Name="PlayerLabelName" Content="Eddy5641" Margin="10,5,0,0" Foreground="White" FontWeight="ExtraLight" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Button x:Name="MinimizeButton" Style="{x:Null}" Foreground="Black" Content="_" HorizontalAlignment="Right" Margin="0,8,43,0" VerticalAlignment="Top" Width="25" Click="MinimizeButton_Click" />
-        <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right" Margin="0,8,13,0" VerticalAlignment="Top" Width="25" Click="CloseButton_Click" />
+        <Button x:Name="MinimizeButton" Style="{x:Null}" Foreground="Black" Content="_" HorizontalAlignment="Right" Margin="0,10,43,0" VerticalAlignment="Top" Width="25" Click="MinimizeButton_Click" />
+        <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right" Margin="0,10,13,0" VerticalAlignment="Top" Width="25" Click="CloseButton_Click" />
 
         <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="10,35,0,40" Width="330" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Auto" Background="#E5505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
@@ -26,8 +26,13 @@
         </RichTextBox>
 
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="10,0,0,10" TextWrapping="Wrap" VerticalAlignment="Bottom" Width="250" />
-        <Button Style="{x:Null}" x:Name="SendButton" Content="Send" HorizontalAlignment="Right" Margin="0,0,220,10" VerticalAlignment="Bottom" Width="75" Foreground="Black" Click="SendButton_Click" IsDefault="True" />
-        <ListView x:Name="ParticipantList" HorizontalAlignment="Left" Height="303" Margin="345,35,0,0" VerticalAlignment="Top" Width="202">
+        <Button Style="{x:Null}" x:Name="SendButton" Content="Send" HorizontalAlignment="Right" Margin="0,0,260,10" VerticalAlignment="Bottom" Width="75" Foreground="Black" Click="SendButton_Click" IsDefault="True" Height="23" />
+        <ListView x:Name="ParticipantList" HorizontalAlignment="Left" Height="303" Margin="345,37,0,0" VerticalAlignment="Top" Width="242">
+            <ListView.Resources>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </ListView.Resources>
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

@@ -520,6 +520,8 @@ namespace LegendaryClient.Logic
         internal static ContentControl NotificationContainer;
         internal static ListView ChatListView;
         internal static ChatItem ChatItem;
+        internal static List<GroupChatItem> GroupChatItems = new List<GroupChatItem>();
+        internal static GroupChatItem CurrentGroupChatItem;
 
         internal static ListView InviteListView;
         internal static Image MainPageProfileImage;
@@ -1051,6 +1053,8 @@ namespace LegendaryClient.Logic
         #endregion League Of Legends Logic
 
         internal static MainWindow MainWin;
+        internal static bool GroupIsShown;
+        internal static bool PlayerChatIsShown;
 
         #region Public Helper Methods
         internal static void FocusClient()
