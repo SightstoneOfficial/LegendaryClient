@@ -31,6 +31,11 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
+
+
+            Client.CurrentPage = this;
+            Client.ReturnButton.Visibility = Visibility.Visible;
+            Client.ReturnButton.Content = "Return to Reconnect Page";
         }
 
         private void Update_OnMessageReceived(object sender, object message)
@@ -41,6 +46,7 @@ namespace LegendaryClient.Windows
                 {
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
+                        Client.ReturnButton.Visibility = Visibility.Hidden;
                         Client.SwitchPage(new MainPage());
                     }));
                 }

@@ -150,7 +150,6 @@
     <Compile Include="Controls\ChatItem.xaml.cs">
       <DependentUpon>ChatItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\EndofGamePageColumn.cs" />
     <Compile Include="Controls\GroupChatPlayer.xaml.cs">
       <DependentUpon>GroupChatPlayer.xaml</DependentUpon>
     </Compile>
