@@ -987,7 +987,7 @@ namespace LegendaryClient.Logic
 
         internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)
         {
-            string GameDirectory = GetGameDirectory();
+            string GameDirectory = Location;
 
             var p = new System.Diagnostics.Process();
             p.StartInfo.WorkingDirectory = GameDirectory;

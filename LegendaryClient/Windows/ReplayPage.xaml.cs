@@ -33,8 +33,8 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Download.Visibility = Visibility.Hidden;
 
-            if (!Directory.Exists("cabinet"))
-                Directory.CreateDirectory("cabinet");
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "cabinet"));
 
             var waitAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.5));
             waitAnimation.Completed += (o, e) =>
@@ -83,21 +83,21 @@ namespace LegendaryClient.Windows
         {
             GamePanel.Children.Clear();
 
-            var dir = new DirectoryInfo("cabinet");
+            var dir = new DirectoryInfo(Path.Combine(Client.ExecutingDirectory,"cabinet"));
             var directories = dir.EnumerateDirectories()
                                 .OrderBy(d => d.CreationTime);
 
-            string[] Replays = Directory.GetDirectories("cabinet");
+            string[] Replays = Directory.GetDirectories(Path.Combine(Client.ExecutingDirectory, "cabinet"));
 
             foreach (DirectoryInfo di in directories)
             {
                 string d = di.Name;
-                if (!File.Exists(Path.Combine("cabinet", d, "token")) ||
-                    !File.Exists(Path.Combine("cabinet", d, "key")) ||
-                    !File.Exists(Path.Combine("cabinet", d, "endOfGameStats")))
+                if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "token")) ||
+                    !File.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "key")) ||
+                    !File.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "endOfGameStats")))
                     continue;
 
-                byte[] Base64Stats = Convert.FromBase64String(File.ReadAllText(Path.Combine("cabinet", d, "endOfGameStats")));
+                byte[] Base64Stats = Convert.FromBase64String(File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "endOfGameStats")));
                 AmfReader statsReader = new AmfReader(new MemoryStream(Base64Stats), context);
 
                 EndOfGameStats stats = (EndOfGameStats)statsReader.ReadAmf3Item();
@@ -122,8 +122,7 @@ namespace LegendaryClient.Windows
                     image.Width = 38;
                     image.Height = 38;
 
-                    Uri UriSource = new Uri("/LegendaryClient;component/Assets/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                    image.ChampionImage.Source = new BitmapImage(UriSource);
+                    image.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
 
                     item.TeamOnePanel.Children.Add(image);
                 }
@@ -134,8 +133,7 @@ namespace LegendaryClient.Windows
                     image.Width = 38;
                     image.Height = 38;
 
-                    Uri UriSource = new Uri("/LegendaryClient;component/Assets/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                    image.ChampionImage.Source = new BitmapImage(UriSource);
+                    image.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
 
                     item.TeamTwoPanel.Children.Add(image);
                 }
@@ -171,8 +169,8 @@ namespace LegendaryClient.Windows
                 PlayerItemReplay player = new PlayerItemReplay();
                 player.PlayerNameLabel.Content = summary.SummonerName;
 
-                Uri UriSource = new Uri("/LegendaryReplays;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                player.ChampionIcon.ChampionImage.Source = new BitmapImage(UriSource);
+                player.ChampionIcon.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
+                player.File.Content = summary.SkinName;
 
                 TeamOnePanel.Children.Add(player);
             }
@@ -182,8 +180,9 @@ namespace LegendaryClient.Windows
                 PlayerItemReplay player = new PlayerItemReplay();
                 player.PlayerNameLabel.Content = summary.SummonerName;
 
-                Uri UriSource = new Uri("/LegendaryReplays;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                player.ChampionIcon.ChampionImage.Source = new BitmapImage(UriSource);
+
+                player.File.Content = summary.SkinName;
+                player.ChampionIcon.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
 
                 TeamTwoPanel.Children.Add(player);
             }
@@ -258,15 +257,9 @@ namespace LegendaryClient.Windows
             Environment.Exit(0);
         }
 
-        private void SettingsButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //FindLolWindow window = new FindLolWindow();
-            //window.ShowDialog();
-        }
-
         private void WatchReplayButton_Click(object sender, RoutedEventArgs e)
         {
-            string Directory = Path.Combine(@"RADS/projects/lol_game_client/releases");
+            string Directory = Client.Location;
             if (String.IsNullOrEmpty(Directory))
             {
                 MessageBoxResult result = MessageBox.Show("You need to set your League of Legends installation location in settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -274,7 +267,8 @@ namespace LegendaryClient.Windows
             }
 
             ProcessStartInfo Replay = new ProcessStartInfo();
-            Replay.FileName = "ReplayHandler.exe";
+            Replay.FileName = Path.Combine(Client.ExecutingDirectory, "ReplayHandler.exe");
+            Replay.Verb = "runas";
             Replay.Arguments = selectedStats.Difficulty.Replace('-', ' ');
             Process.Start(Replay);
 
@@ -293,7 +287,7 @@ namespace LegendaryClient.Windows
                 latestVersion = info.Name;
             }
 
-            Directory = Path.Combine(Directory, latestVersion, "deploy");
+            Directory = Path.Combine(Client.Location);
 
             if (!File.Exists(Path.Combine(Directory, "League of Legends.exe")))
             {
@@ -301,15 +295,7 @@ namespace LegendaryClient.Windows
             }
 
             string[] details = selectedStats.Difficulty.Split('-');
-            var p = new System.Diagnostics.Process();
-            p.StartInfo.WorkingDirectory = Directory;
-            p.StartInfo.FileName = Path.Combine(Directory, "League of Legends.exe");
-            p.StartInfo.Arguments = "\"8393\" \"LoLLauncher.exe\" \"\" \"spectator "
-                + "127.0.0.1:5651" + " "
-                + File.ReadAllText(Path.Combine("cabinet", selectedStats.Difficulty, "key")) + " "
-                + details[0] + " "
-                + details[1] + "\"";
-            p.Start();
+            Client.LaunchSpectatorGame("127.0.0.1:5651", File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", selectedStats.Difficulty, "key")), Convert.ToInt32(details[0]), details[1]);
         }
     }
 

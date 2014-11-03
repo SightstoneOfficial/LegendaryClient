@@ -9,6 +9,7 @@
     <Grid>
         <local:SmallChampionItem x:Name="ChampionIcon" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Center"/>
         <Label x:Name="PlayerNameLabel" Content="Snowl" HorizontalAlignment="Left" Margin="40,0,0,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Center"/>
+        <Label x:Name="File" Content="eddy.png" HorizontalAlignment="Left" Margin="349,7,0,7" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Center"/>
         <!--PUSH-->
     </Grid>
 </UserControl>

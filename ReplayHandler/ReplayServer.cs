@@ -17,16 +17,18 @@ namespace ReplayHandler
 
         public ReplayServer(string GameId, string Region)
         {
-            if (!Directory.Exists(Path.Combine("cabinet", GameId + "-" + Region)))
+            var dir = (System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)).ToString().Replace("file:\\", "");
+            if (!Directory.Exists(Path.Combine(dir, "cabinet", GameId + "-" + Region)))
             {
-                Console.WriteLine("Cannot find replay");
+                Console.WriteLine("Cannot find replay in: " + dir + " " + GameId + " " + Region);
+                Console.ReadLine();
                 return;
             }
 
             LatestChunk = 1;
             NextChunk = 2;
             LatestKeyframe = 1;
-            GameFolder = Path.Combine("cabinet", GameId + "-" + Region);
+            GameFolder = Path.Combine(dir, "cabinet", GameId + "-" + Region);
 
             DirectoryInfo di = new DirectoryInfo(GameFolder);
             FileInfo[] files = di.GetFiles("chunk-*");

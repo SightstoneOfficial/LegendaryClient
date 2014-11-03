@@ -66,7 +66,7 @@ namespace LegendaryClient.Windows
             //Get client data after patcher completed
 
             //Client.SQLiteDatabase = new SQLite.SQLiteConnection("gameStats_en_US.sqlite");
-            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Client.sqlite);
+            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
                                 orderby s.name
                                 select s).ToList();
