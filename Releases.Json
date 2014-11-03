@@ -1,5 +1,6 @@
 {"LCVersions":[
-{"isLatest":true, "VersionId":"2.0.1.1-Fix","VersionName":"No more random crashing","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.1.2-Fix/Client.zip","IsPrerelease":false,"IsBeta":false},
+{"isLatest":true, "VersionId":"2.1.0.0","VersionName":"Upgraded LegendaryClient","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.1.0.0/LegenadryClient.V.2.1.0.0.zip","IsPrerelease":false,"IsBeta":false},
+{"isLatest":false, "VersionId":"2.0.1.1-Fix","VersionName":"No more random crashing","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.1.2-Fix/Client.zip","IsPrerelease":false,"IsBeta":false},
 {"isLatest":false, "VersionId":"2.0.1.1 Crash fix","VersionName":"No more crashing from KogMaw","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.1.1/Client.zip","IsPrerelease":false,"IsBeta":false},
 {"isLatest":false, "VersionId":"2.0.1.0-LogUpdate","VersionName":"Added a logger + no more crashing for some","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.1.0-LogUpdate/Client.zip","IsPrerelease":true,"IsBeta":false},
 {"isLatest":false, "VersionId":"2.0.1.0","VersionName":"","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.0.1.0/Client.zip","IsPrerelease":true,"IsBeta":false},
