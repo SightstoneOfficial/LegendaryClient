@@ -96,7 +96,6 @@ namespace LegendaryClient.Windows
             }
         }
 
-
         private void InvitedPlayerListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (InvitedPlayerListView.SelectedIndex != -1)

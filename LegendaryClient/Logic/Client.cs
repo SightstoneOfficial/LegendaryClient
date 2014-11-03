@@ -754,6 +754,7 @@ namespace LegendaryClient.Logic
                 {
                     PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats stats = message as PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats;
                     EndOfGamePage EndOfGame = new EndOfGamePage(stats);
+                    Client.IsInGame = false;
                     Client.ClearPage(typeof(TeamQueuePage));
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                     Client.OverlayContainer.Content = EndOfGame.Content;

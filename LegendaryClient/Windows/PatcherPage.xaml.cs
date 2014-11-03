@@ -112,8 +112,8 @@ namespace LegendaryClient.Windows
                     #region idk
 
                     client = new WebClient();
-                    if (!File.Exists("Login.mp3")) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
-                    if (!File.Exists("Login.mp4")) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp4"), Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
+                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory,"Login.mp3"))) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
+                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory,"Login.mp4"))) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp4"), Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
                     #endregion idk
 
                     #region DDragon

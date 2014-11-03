@@ -1129,7 +1129,6 @@ namespace LegendaryClient.Windows
                         AfterChampionSelectGrid.Visibility = Visibility.Visible;
                     }
                     ChatTextBox.Text = "";
-                    return;
                 }
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";

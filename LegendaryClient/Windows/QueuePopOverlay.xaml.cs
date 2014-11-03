@@ -150,7 +150,8 @@ namespace LegendaryClient.Windows
             {
                 ReverseString = true;
             }
-            AllParticipants = AllParticipants.Distinct().ToList();
+            AllParticipants = AllParticipants.Distinct().ToList(); //Seems to have fixed the queuepopoverlay page crashing.
+                                                                   //whichever team you're on sometimes duplicates and could not find a reason as it doesn't happen a lot.
 
             foreach (Participant p in AllParticipants)
             {

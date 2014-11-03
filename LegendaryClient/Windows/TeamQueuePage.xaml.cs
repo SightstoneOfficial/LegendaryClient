@@ -337,8 +337,7 @@ namespace LegendaryClient.Windows
             {
                 GameDTO Queue = message as GameDTO;
                 if (Queue.GameState == "TERMINATED")
-                {
-                    Client.Log(Queue.StatusOfParticipants.ToString());
+                { // Why does it return NOT_TERMINATED no matter what?... need to fix it just purging
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         setStartButtonText("Start Game");
@@ -457,7 +456,6 @@ namespace LegendaryClient.Windows
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
                 parameters.QueueIds = QueueIds.ToArray();
-                //parameters.QueueIds = new int[]{ 4 };
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;

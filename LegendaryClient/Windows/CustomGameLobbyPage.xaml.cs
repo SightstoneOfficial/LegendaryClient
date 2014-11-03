@@ -2,6 +2,8 @@
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
@@ -96,8 +98,6 @@ namespace LegendaryClient.Windows
                             {
                                 PlayerParticipant player = playerTeam as PlayerParticipant;
                                 lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                ///BotParticipant botParticipant = playerTeam as BotParticipant;
-                                //botPlayer = RenderBot(botParticipant);
                                 IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
                                 StartGameButton.IsEnabled = IsOwner;
                                 AddBotBlueTeam.IsEnabled = IsOwner;
@@ -110,6 +110,11 @@ namespace LegendaryClient.Windows
                                         await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
                                     }
                                 }
+                            }
+                            else if (playerTeam is BotParticipant)
+                            {
+                                BotParticipant botParticipant = playerTeam as BotParticipant;
+                                botPlayer = RenderBot(botParticipant);
                             }
 
                             if (i > dto.TeamOne.Count)
@@ -212,10 +217,8 @@ namespace LegendaryClient.Windows
         {
             BotControl botPlayer = new BotControl();
             botPlayer.PlayerName.Content = BotPlayer.SummonerName;
-
-            //var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", BotPlayer.Champion + ".png"), UriKind.RelativeOrAbsolute);
-            //botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
-
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", BotPlayer.Champion + ".png"), UriKind.RelativeOrAbsolute);
+            botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
             botPlayer.BanButton.Tag = BotPlayer;
             botPlayer.BanButton.Click += KickAndBan_Click;
             return botPlayer;
@@ -282,6 +285,32 @@ namespace LegendaryClient.Windows
                 default:
                     return Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;
             }
+        }
+
+        private void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                BotParticipant participant = new BotParticipant();
+                participant.BotSkillLevel = 0;
+                ChampionDTO champion = new ChampionDTO();
+                champion.ChampionId = 81;
+                champion.BotEnabled = true;
+                participant.Champion = champion;
+            }));
+        }
+
+        private void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                BotParticipant participant = new BotParticipant();
+                participant.BotSkillLevel = 0;
+                ChampionDTO champion = new ChampionDTO();
+                champion.ChampionId = 81;
+                champion.BotEnabled = true;
+                participant.Champion = champion;
+            }));
         }
     }
 }

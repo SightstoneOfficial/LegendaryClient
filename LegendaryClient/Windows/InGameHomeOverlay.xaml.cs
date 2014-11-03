@@ -33,6 +33,7 @@ namespace LegendaryClient.Windows
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.IsInGame = false;
             Client.SwitchPage(new MainPage());
         }
     }

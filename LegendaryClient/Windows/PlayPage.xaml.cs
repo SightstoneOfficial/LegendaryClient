@@ -44,10 +44,6 @@ namespace LegendaryClient.Windows
             PingElapsed(1, null);
         }
 
-        private void PingRectangle_MouseDown(object sender, ElapsedEventArgs e)
-        {
-            //Client.SwitchPage(new TeamQueuePage());
-        }
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
             //TeambuilderCorrect();
@@ -165,7 +161,8 @@ namespace LegendaryClient.Windows
                                 break;
                         }
                         currentAmount++;
-                        if (currentAmount == OpenQueues.Length) {
+                        if (currentAmount == OpenQueues.Length)
+                        {
                             DoneLoading = true;
                             WaitingForQueues.Visibility = Visibility.Hidden;
                             foreach (GameSeperator seperator in seperators)
@@ -174,7 +171,7 @@ namespace LegendaryClient.Windows
                     }
 
                 }
-                else if(seperators[seperators.Length - 1] != null)
+                else if (seperators[seperators.Length - 1] != null)
                     foreach (GameSeperator seperator in seperators)
                         seperator.UpdateLabels();
             }));
@@ -185,9 +182,10 @@ namespace LegendaryClient.Windows
         /// Queue bool
         /// </summary>
         private Button LastSender;
-        
+
         private async void TeamQueueButton_Click(object sender, RoutedEventArgs e)
         {
+            if (isInGame()) return;
             //To leave all other queues
             await LeaveAllQueues();
             InQueue = false;
@@ -218,11 +216,12 @@ namespace LegendaryClient.Windows
                 LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                 Client.SwitchPage(new TeamBuilderPage(true, Lobby));
             }
-                
+
         }
 
         private async void QueueButton_Click(object sender, RoutedEventArgs e)
         {
+            if (isInGame()) return;
             //to queue
             if (InQueue == false)
             {
@@ -249,7 +248,7 @@ namespace LegendaryClient.Windows
                     Client.SwitchPage(new TeamBuilderPage(false, Lobby));
                 }
                 return;
-            } 
+            }
             else if (InQueue == true)
             {
                 InQueue = false;
@@ -345,12 +344,31 @@ namespace LegendaryClient.Windows
 
         private void CreateCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
+            if (isInGame()) return;
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.SwitchPage(new CreateCustomGamePage());
         }
 
+        private bool isInGame()
+        {
+            if (Client.IsInGame)
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    MessageOverlay message = new MessageOverlay();
+                    message.MessageTitle.Content = "Failed to join queue";
+                    message.MessageTextBox.Text = "You are currently in a game, if you need to reconnect please return to the reconnect page above!";
+                    Client.OverlayContainer.Content = message.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                }));
+                return true;
+            }
+            return false;
+        }
+
         private void JoinCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
+            if (isInGame()) return;
             Client.ClearPage(typeof(CustomGameListingPage));
             Client.SwitchPage(new CustomGameListingPage());
         }
@@ -376,13 +394,14 @@ namespace LegendaryClient.Windows
                 realButton.Content = "Queue";
             }
             ButtonTimers.Clear();
-            
+
             Queues.Clear();
             return true;
         }
 
         private void CreateFactionGameButton_Click(object sender, RoutedEventArgs e)
         {
+            if (isInGame()) return;
             Client.ClearPage(typeof(FactionsCreateGamePage));
             Client.SwitchPage(new FactionsCreateGamePage());
         }

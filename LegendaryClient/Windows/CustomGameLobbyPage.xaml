@@ -84,7 +84,7 @@
         <Label x:Name="ModeLabel" Content="CLASSIC" HorizontalAlignment="Right" Margin="0,0,10,110" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="TypeLabel" Content="Blind Pick" HorizontalAlignment="Right" Margin="0,0,10,70" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="SizeLabel" Content="5v5" HorizontalAlignment="Right" Margin="0,0,10,30" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
-        <Button x:Name="AddBotBlueTeam" Content="Add Bot" Style="{DynamicResource Square}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="10,430,0,0" IsEnabled="False"/>
-        <Button x:Name="AddBotPurpleTeam" Content="Add Bot" Style="{DynamicResource Square}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="415,430,0,0" IsEnabled="False"/>
+        <Button x:Name="AddBotBlueTeam" Content="Add Bot" Style="{DynamicResource Square}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="10,430,0,0" IsEnabled="False" Click="AddBotBlueTeam_Click"/>
+        <Button x:Name="AddBotPurpleTeam" Content="Add Bot" Style="{DynamicResource Square}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="415,430,0,0" IsEnabled="False" Click="AddBotPurpleTeam_Click"/>
     </Grid>
 </Page>
