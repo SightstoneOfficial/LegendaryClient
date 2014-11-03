@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Threading;
+using System.Linq;
 
 namespace LegendaryClient.Windows
 {
@@ -143,13 +144,13 @@ namespace LegendaryClient.Windows
 
         public async void InitializePop(GameDTO InitialDTO)
         {
-            
             List<Participant> AllParticipants = InitialDTO.TeamOne;
             AllParticipants.AddRange(InitialDTO.TeamTwo);
             if (InitialDTO.TeamOne[0] is ObfuscatedParticipant)
             {
                 ReverseString = true;
             }
+            AllParticipants = AllParticipants.Distinct().ToList();
 
             foreach (Participant p in AllParticipants)
             {
