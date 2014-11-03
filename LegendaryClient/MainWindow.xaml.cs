@@ -32,7 +32,8 @@ namespace LegendaryClient
             InitializeComponent();
             ReturnToPage.Visibility = Visibility.Hidden;
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            //Keep this this way that way the auto updator knows what to update
+            var ExecutingDirectory = System.IO.Directory.GetParent(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
             
             Client.ExecutingDirectory = ExecutingDirectory.ToString().Replace("file:\\", "");
             LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
