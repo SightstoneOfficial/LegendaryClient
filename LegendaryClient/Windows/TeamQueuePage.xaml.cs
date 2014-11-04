@@ -337,12 +337,20 @@ namespace LegendaryClient.Windows
             {
                 GameDTO Queue = message as GameDTO;
                 if (Queue.GameState == "TERMINATED")
-                { // Why does it return NOT_TERMINATED no matter what?... need to fix it just purging
+                {
+                    Client.Log(Queue.TerminatedCondition);
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        setStartButtonText("Start Game");
-                        inQueue = false;
-                        Client.PVPNet.PurgeFromQueues();
+                        if (Queue.TerminatedCondition != "NOT_TERMINATED")
+                        {
+                            setStartButtonText("Start Game");
+                            inQueue = false;
+                            Client.PVPNet.PurgeFromQueues();
+                        }
+                        else
+                        {
+                            Client.PVPNet.OnMessageReceived += GotQueuePop;
+                        }
                     }));
                 }
             }
