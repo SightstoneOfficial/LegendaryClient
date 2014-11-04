@@ -136,7 +136,7 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tItem = sender as ListViewItem;
-                if (tItem != null)
+                if (tItem != null && ChatListView.SelectedItem != null)
                 {
                     tItem.IsSelected = true;
                     if (ChatListView.SelectedItem.GetType() == typeof(NotificationChatPlayer))

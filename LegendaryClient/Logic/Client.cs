@@ -546,6 +546,8 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static void SwitchPage(Page page)
         {
+            if (page.GetType() == typeof(PlayPage)) IsOnPlayPage = true;
+            else IsOnPlayPage = false;
             foreach (Page p in Pages) //Cache pages
             {
                 if (p.GetType() == page.GetType())
