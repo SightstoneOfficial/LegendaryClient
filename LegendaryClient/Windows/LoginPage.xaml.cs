@@ -280,6 +280,7 @@ namespace LegendaryClient.Windows
                 Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
                 Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                 Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
+                Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
                 Client.ChatClient.Connect();
 
                 Client.RostManager = new RosterManager();
@@ -295,7 +296,7 @@ namespace LegendaryClient.Windows
 
                 Client.ConfManager = new ConferenceManager();
                 Client.ConfManager.Stream = Client.ChatClient;
-                Client.Log("Connected and logged in as" + Client.ChatClient.User);
+                Client.Log("Connected and logged in as " + Client.ChatClient.User);
 
                 Client.SwitchPage(new MainPage());
                 Client.ClearPage(typeof(LoginPage));

@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="LegendaryClient" Height="768" Width="1280" MinHeight="550" MinWidth="1024"
-        SaveWindowPosition="True" TitleCaps="False">
+        SaveWindowPosition="True" TitleCaps="False"
+        Closing="MainWindow_Closing">
 
     <Controls:MetroWindow.WindowCommands>
         <Controls:WindowCommands>

@@ -94,7 +94,6 @@ namespace LegendaryClient
                 }
             }
 #endif
-            this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
         }
 
         public void ChangeTheme()
@@ -203,10 +202,9 @@ namespace LegendaryClient
         
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            Client.PVPNet.PurgeFromQueues();
             Client.PVPNet.Leave();
+            Client.PVPNet.PurgeFromQueues();
             Client.PVPNet.Disconnect();
-            Environment.Exit(0);
 
             if (QuitMe == true)
             {

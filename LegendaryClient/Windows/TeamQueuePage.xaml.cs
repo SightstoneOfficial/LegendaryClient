@@ -107,9 +107,6 @@ namespace LegendaryClient.Windows
                 newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
                 newRoom.Join(CurrentLobby.ChatKey);
 
-
-                ///Way smarter way then just putting the code here
-
                 RenderLobbyData();
             }
             else
@@ -149,7 +146,7 @@ namespace LegendaryClient.Windows
 
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
-            if (i++ < 10) //Ping every 10 seconds
+            if (i++ < 10)//Ping every 10 seconds
                 return;
             i = 0;
             double PingAverage = HighestPingTime(Client.Region.PingAddresses);
@@ -401,7 +398,6 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-
                 if (msg.Body != "This room is not anonymous")
                 {
                     TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
