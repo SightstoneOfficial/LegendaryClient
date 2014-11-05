@@ -185,6 +185,7 @@ namespace LegendaryClient
             Properties.Settings.Default.AutoLogin = false;
             if (Client.IsLoggedIn)
             {
+                Client.ReturnButton.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
                 Client.PVPNet.QuitGame();

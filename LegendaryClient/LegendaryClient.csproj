@@ -358,8 +358,8 @@
     <Compile Include="Windows\NonExistantPage.xaml.cs">
       <DependentUpon>NonExistantPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\NotificationsPage.xaml.cs">
-      <DependentUpon>NotificationsPage.xaml</DependentUpon>
+    <Compile Include="Windows\NotificationPage.xaml.cs">
+      <DependentUpon>NotificationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Profile\AggregatedStatsOverlay.xaml.cs">
       <DependentUpon>AggregatedStatsOverlay.xaml</DependentUpon>
@@ -732,7 +732,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\NotificationsPage.xaml">
+    <Page Include="Windows\NotificationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

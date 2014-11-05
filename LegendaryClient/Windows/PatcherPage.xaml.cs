@@ -250,33 +250,9 @@ namespace LegendaryClient.Windows
                             file.Write(encoding.GetBytes(LatestVersion[0]), 0, encoding.GetBytes(LatestVersion[0]).Length);
                             file.Close();
                         }
-                        catch
+                        catch (Exception e)
                         {
-                            Client.Log("Probably riot updated air client version without actually releasing the latest version. Why riot, why? Trying to download last version.");
-                            
-                            LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion + "/packages/files/packagemanifest");
-                            GetAllPngs(Package);
-                            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
-                                File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-                            string locationv = LatestVersion[1];
-                            string[] x = Package.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                            string locationm = LatestVersion[1];
-                            foreach (string m in x)
-                            {
-                                if (m.Contains("/files/assets/data/gameStats/gameStats_en_US.sqlite"))
-                                {
-                                    string l = m.Split(',')[0];
-                                    locationm = l.Replace("/projects/lol_air_client/releases/", "").Replace("/files/assets/data/gameStats/gameStats_en_US.sqlite", "");
-                                }
-                            }
-                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + locationv + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-
-                            if (File.Exists(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
-                                File.Delete(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
-                            var file = File.Create(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
-                            file.Write(encoding.GetBytes(LatestVersion[1]), 0, encoding.GetBytes(LatestVersion[1]).Length);
-                            file.Close();
+                            Client.Log(e.Message);
                         }
                     }
 
@@ -666,6 +642,18 @@ namespace LegendaryClient.Windows
                             string SaveName = Location.Split(new string[] { "/champions/" }, StringSplitOptions.None)[1];
                             LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
                             newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "champions", SaveName));
+                        }
+                    }
+                    else if (SavePlace.Contains("assets/images/abilities/"))
+                    {
+                        using (WebClient newClient = new WebClient())
+                        {
+                            string SaveName = Location.Split(new string[] { "/abilities/" }, StringSplitOptions.None)[1];
+                            LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
+                            if(SaveName.ToLower().Contains("passive"))
+                                newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "passive", SaveName));
+                            else
+                                newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SaveName));
                         }
                     }
                 }

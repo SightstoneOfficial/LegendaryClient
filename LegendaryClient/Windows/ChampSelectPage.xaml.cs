@@ -628,6 +628,7 @@ namespace LegendaryClient.Windows
             }
         }
 
+
         /// <summary>
         /// Render the post selection grid after locked in
         /// </summary>
@@ -655,21 +656,45 @@ namespace LegendaryClient.Windows
             item.Tag = "0:" + Champion.id; //Hack
             item.Content = skinImage;
             SkinSelectListView.Items.Add(item);
-
             //Render abilities
             List<championAbilities> Abilities = championAbilities.GetAbilities(selection.ChampionId);
+            List<ChampionAbility> abilities = new List<ChampionAbility>();
             foreach (championAbilities ability in Abilities)
             {
                 ChampionAbility championAbility = new ChampionAbility();
-                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "abilities", ability.iconPath);
+                if (ability.iconPath.ToLower().Contains("passive"))
+                    uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "passive", ability.iconPath);
+                else
+                    uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", ability.iconPath);
                 championAbility.AbilityImage.Source = Client.GetImage(uriSource);
                 championAbility.AbilityHotKey.Content = ability.hotkey;
+                switch (ability.hotkey)
+                {
+                    case "":
+                        championAbility.Order = 0;
+                        break;
+                    case "Q":
+                        championAbility.Order = 1;
+                        break;
+                    case "W":
+                        championAbility.Order = 2;
+                        break;
+                    case "E":
+                        championAbility.Order = 3;
+                        break;
+                    case "R":
+                        championAbility.Order = 4;
+                        break;
+                }
                 championAbility.AbilityName.Content = ability.name;
                 championAbility.AbilityDescription.Text = ability.description;
                 championAbility.Width = 375;
                 championAbility.Height = 75;
-                AbilityListView.Items.Add(championAbility);
+                abilities.Add(championAbility);
             }
+            abilities.Sort();
+            foreach (ChampionAbility a in abilities)
+                AbilityListView.Items.Add(a);
 
             //Render champions
             foreach (ChampionDTO champ in ChampList)
