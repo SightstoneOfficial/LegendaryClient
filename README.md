@@ -28,6 +28,7 @@ Known Issues / TODO
 * Shop is just bad, but that's like last. (again, use official client for now if you need to purchase RP, etc.)
 * Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
 * Finish Factions
+* Try implementing up to Quadre ranked queue (I am not sure but will try)
 
 LegacyPVP
 =========
