@@ -31,8 +31,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
-
-
+            Client.IsInGame = true;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Reconnect Page";

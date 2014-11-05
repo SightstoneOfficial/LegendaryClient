@@ -454,12 +454,12 @@ namespace LegendaryClient.Logic
 
         internal static void Message(string To, string Message, ChatSubjects Subject)
         {
-            Message msg = new Message(Client.ChatClient.Document);
+            Message msg = new Message(ChatClient.Document);
             msg.Type = MessageType.normal;
             msg.To = To + "@pvp.net";
             msg.Subject = ((ChatSubjects)Subject).ToString();
             msg.Body = Message;
-            Client.ChatClient.Write(msg);
+            ChatClient.Write(msg);
         }
 
         //Why do you even have to do this, riot?
@@ -1143,6 +1143,11 @@ namespace LegendaryClient.Logic
 
 
         public static Accent CurrentAccent { get; set; }
+
+        internal static void ChatClient_OnPresence(object sender, Presence pres)
+        {
+            if(pres.InnerText == "") ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
+        }
     }
 
 

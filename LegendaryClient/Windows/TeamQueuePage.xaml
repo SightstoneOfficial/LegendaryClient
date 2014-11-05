@@ -39,7 +39,7 @@
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
-        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="5,0,120,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="10,0,120,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Button x:Name="ChatButton" Content="Send" Margin="470,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
         <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="25" Stroke="Black" VerticalAlignment="Top" Width="70" Margin="0,18,13,0"/>
         <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging" VerticalAlignment="Top" Margin="0,18,15,0" Height="23" Width="68" Foreground="White" FontSize="16" TextAlignment="Center" RenderTransformOrigin="0.159,-0.961"/>
