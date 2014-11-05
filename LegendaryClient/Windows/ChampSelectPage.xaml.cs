@@ -640,8 +640,14 @@ namespace LegendaryClient.Windows
 
             LockInButton.Content = "Locked In";
 
-            //
-            champions Champion = champions.GetChampion(selection.ChampionId);
+            Switch.IsChecked = true;
+
+            ChangeSelectedChampionSkins(selection.ChampionId);
+        }
+
+        internal void ChangeSelectedChampionSkins(int selectedChampionID)
+        {
+            champions Champion = champions.GetChampion(selectedChampionID);
 
             SkinSelectListView.Items.Clear();
             AbilityListView.Items.Clear();
@@ -657,7 +663,7 @@ namespace LegendaryClient.Windows
             item.Content = skinImage;
             SkinSelectListView.Items.Add(item);
             //Render abilities
-            List<championAbilities> Abilities = championAbilities.GetAbilities(selection.ChampionId);
+            List<championAbilities> Abilities = championAbilities.GetAbilities(selectedChampionID);
             List<ChampionAbility> abilities = new List<ChampionAbility>();
             foreach (championAbilities ability in Abilities)
             {
@@ -667,7 +673,7 @@ namespace LegendaryClient.Windows
                 else
                     uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", ability.iconPath);
                 championAbility.AbilityImage.Source = Client.GetImage(uriSource);
-                championAbility.AbilityHotKey.Content = ability.hotkey;
+                if (!String.IsNullOrEmpty(ability.hotkey)) championAbility.AbilityHotKey.Content = ability.hotkey;
                 switch (ability.hotkey)
                 {
                     case "":
@@ -699,7 +705,7 @@ namespace LegendaryClient.Windows
             //Render champions
             foreach (ChampionDTO champ in ChampList)
             {
-                if (champ.ChampionId == selection.ChampionId)
+                if (champ.ChampionId == selectedChampionID)
                 {
                     foreach (ChampionSkinDTO skin in champ.ChampionSkins)
                     {
@@ -939,6 +945,7 @@ namespace LegendaryClient.Windows
                         };
 
                         BackgroundSplash.BeginAnimation(Image.OpacityProperty, fadingAnimation);
+                        ChangeSelectedChampionSkins((int)item.Tag);
                     }
                 }
                 else
@@ -1193,6 +1200,28 @@ namespace LegendaryClient.Windows
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatText.ScrollToEnd();
             }));
+        }
+
+        private void Switch_Click(object sender, RoutedEventArgs e)
+        {
+            if (Switch.IsChecked.HasValue)
+            {
+                if ((bool)Switch.IsChecked)
+                {
+                    Switch.Content = "Champions";
+                    BrushConverter bc = new BrushConverter();
+                    Switch.Background = (Brush)bc.ConvertFrom("#FFCDCDCD");
+                    Switch.Foreground = (Brush)bc.ConvertFrom("#FF000000");
+                    ChampionSelectListView.Visibility = Visibility.Hidden;
+                    AfterChampionSelectGrid.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    Switch.Content = "Skins";
+                    ChampionSelectListView.Visibility = Visibility.Visible;
+                    AfterChampionSelectGrid.Visibility = Visibility.Hidden;
+                }
+            }
         }
     }
 }
