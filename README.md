@@ -18,16 +18,16 @@ It come with a metro-like installer [no dlls needed, a stand alone program]
 
 Known Issues / TODO
 ===================
--Ranked queue will crash - don't try it
--Solo Queue is buggy (if someone dodges / leaves champ select you have to restart client, for now use team queueing even for solo)
--Team Builder is not implemented
--Logging out doesn't update friends list / crashes. (just restart the client)
--Replays are in work
--ARAM sometimes shows the wrong team
--Can't reconnect to game if client closes (use the official client if you're in a game and need to reconnect)
--Shop is just bad, but that's like last. (again, use official client for now if you need to purchase RP, etc.)
--Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
--Finish Factions
+* Ranked queue will crash - don't try it
+* Solo Queue is buggy (if someone dodges / leaves champ select you have to restart client, for now use team queueing even for solo)
+* Team Builder is not implemented
+* Logging out doesn't update friends list / crashes. (just restart the client)
+* Replays are in work
+* ARAM sometimes shows the wrong team
+* Can't reconnect to game if client closes (use the official client if you're in a game and need to reconnect)
+* Shop is just bad, but that's like last. (again, use official client for now if you need to purchase RP, etc.)
+* Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
+* Finish Factions
 
 LegacyPVP
 =========
