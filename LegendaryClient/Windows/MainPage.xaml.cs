@@ -54,23 +54,26 @@ namespace LegendaryClient.Windows
 
             timer.Elapsed += (o, e) =>
             {
-                string JID = Client.GetChatroomJID(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public), string.Empty, true);
-
-                GroupChatItem item = Join(JID, "LegendaryClient");
-                NotificationChatGroup ChatGroup = new NotificationChatGroup();
-                ChatGroup.Tag = item;
-                ChatGroup.GroupTitle = item.GroupTitle;
-                ChatGroup.Margin = new Thickness(1, 0, 1, 0);
-                ChatGroup.GroupLabelName.Content = item.GroupTitle;
-                if (!Client.GroupChatItems.Any(i => i.GroupTitle == "LegendaryClient"))
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    Client.ChatListView.Items.Add(ChatGroup);
-                    Client.GroupChatItems.Add(item);
-                }
+                    string JID = Client.GetChatroomJID(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public), string.Empty, true);
 
-                timer.Stop();
+                    GroupChatItem item = Join(JID, "LegendaryClient");
+                    NotificationChatGroup ChatGroup = new NotificationChatGroup();
+                    ChatGroup.Tag = item;
+                    ChatGroup.GroupTitle = item.GroupTitle;
+                    ChatGroup.Margin = new Thickness(1, 0, 1, 0);
+                    ChatGroup.GroupLabelName.Content = item.GroupTitle;
+                    if (!Client.GroupChatItems.Any(i => i.GroupTitle == "LegendaryClient"))
+                    {
+                        Client.ChatListView.Items.Add(ChatGroup);
+                        Client.GroupChatItems.Add(item);
+                    }
+
+                    timer.Stop();
+                }));
             };
-            
+
         }
 
         [STAThread]
@@ -180,7 +183,8 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(CurrentLP)) {
+                    if (string.IsNullOrEmpty(CurrentLP))
+                    {
                         CurrentLP = "0";
                     }
                     PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
@@ -287,12 +291,15 @@ namespace LegendaryClient.Windows
 
         private void ChangeSpectatorRegion(BaseRegion region)
         {
-            try {
+            try
+            {
                 // @TODO: Move to global worker to prevent mutiple requests on fast region switch
                 BackgroundWorker worker = new BackgroundWorker();
-                worker.DoWork += delegate {
+                worker.DoWork += delegate
+                {
                     string spectatorJSON = "";
-                    using (WebClient client = new WebClient()) {
+                    using (WebClient client = new WebClient())
+                    {
                         spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
                     }
                     JavaScriptSerializer serializer = new JavaScriptSerializer();
@@ -302,7 +309,8 @@ namespace LegendaryClient.Windows
 
                 worker.RunWorkerCompleted += (s, args) => ParseSpectatorGames();
                 worker.RunWorkerAsync();
-            } catch { }
+            }
+            catch { }
         }
 
         private void ParseSpectatorGames()
@@ -409,7 +417,7 @@ namespace LegendaryClient.Windows
                 }
                 else if (pair.Key == "gameLength")
                 {
-                    var seconds = (int) pair.Value;
+                    var seconds = (int)pair.Value;
                     GameTimeLabel.Content = string.Format("{0:D}:{1:00} min", seconds / 60, seconds % 60);
                 }
                 else if (pair.Key == "bannedChampions")
@@ -628,7 +636,7 @@ namespace LegendaryClient.Windows
             Client.PVPNet.SimulateEndOfGame();
         }
 
-        
+
 
     }
 }
