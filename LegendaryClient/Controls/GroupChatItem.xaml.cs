@@ -28,7 +28,17 @@ namespace LegendaryClient.Controls
             ChatID = id;
             PlayerLabelName.Content = title;
             GroupTitle = title;
-            newRoom = Client.ConfManager.GetRoom(new jabber.JID(ChatID));
+            if (ChatID == null)
+                return;
+            try
+            {
+                newRoom = Client.ConfManager.GetRoom(new jabber.JID(ChatID));
+            }
+            catch
+            {
+                return;
+            }
+            
             newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
             newRoom.OnRoomMessage += GroupChatClient_OnMessage;
             newRoom.OnParticipantJoin += GroupChatClient_OnParticipantJoin;

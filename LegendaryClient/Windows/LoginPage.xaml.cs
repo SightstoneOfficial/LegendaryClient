@@ -1,5 +1,6 @@
 ﻿using jabber.client;
 using jabber.connection;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Region;
@@ -262,9 +263,9 @@ namespace LegendaryClient.Windows
             Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
             Client.IsLoggedIn = true;
 
-            
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 Client.StatusContainer.Visibility = System.Windows.Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
@@ -314,10 +315,9 @@ namespace LegendaryClient.Windows
                 //We need this HeartBeat so it looks like this is the real client
                 await Client.PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(Client.LoginPacket.AllSummonerData.Summoner.AcctId), Client.PlayerSession.Token, Client.HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-'%K"));
                 Client.HeartbeatCount++;
-            }));
-
-            
+            }));          
         }
+
         public static string GetNewIpAddress()
         {
             StringBuilder sb = new StringBuilder();

@@ -37,7 +37,7 @@ namespace LegendaryClient.Windows
         internal int SelectedGame = 0;
         internal ArrayList gameList;
         internal ArrayList newsList;
-
+        internal static System.Timers.Timer timer = new System.Timers.Timer();
         public MainPage()
         {
             InitializeComponent();
@@ -48,6 +48,35 @@ namespace LegendaryClient.Windows
             ChangeSpectatorRegion(region);
 
             GetNews(region);
+
+            timer.Interval = (5000);
+            //timer.Start();
+
+            timer.Elapsed += (o, e) =>
+            {
+                string JID = Client.GetChatroomJID(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public), string.Empty, true);
+
+                GroupChatItem item = Join(JID, "LegendaryClient");
+                NotificationChatGroup ChatGroup = new NotificationChatGroup();
+                ChatGroup.Tag = item;
+                ChatGroup.GroupTitle = item.GroupTitle;
+                ChatGroup.Margin = new Thickness(1, 0, 1, 0);
+                ChatGroup.GroupLabelName.Content = item.GroupTitle;
+                if (!Client.GroupChatItems.Any(i => i.GroupTitle == "LegendaryClient"))
+                {
+                    Client.ChatListView.Items.Add(ChatGroup);
+                    Client.GroupChatItems.Add(item);
+                }
+
+                timer.Stop();
+            };
+            
+        }
+
+        [STAThread]
+        GroupChatItem Join(string JID, string Chat)
+        {
+            return new GroupChatItem(JID, "LegendaryClient");
         }
 
         private void GotPlayerData(LoginDataPacket packet)
