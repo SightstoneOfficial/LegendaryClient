@@ -29,6 +29,7 @@ Known Issues / TODO
 * Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
 * Finish Factions
 * Try implementing up to Quadre ranked queue (I am not sure but will try)
+* Everything breaks with slow internet speed, if you don't finish loading play page before it loops again it creates multiple instances of queue items.
 
 LegacyPVP
 =========
