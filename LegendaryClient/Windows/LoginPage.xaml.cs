@@ -269,7 +269,7 @@ namespace LegendaryClient.Windows
             {
                 Client.StatusContainer.Visibility = System.Windows.Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
-                
+
                 //Setup chat
                 Client.ChatClient.AutoReconnect = 30;
                 Client.ChatClient.KeepAlive = 10;
@@ -299,7 +299,13 @@ namespace LegendaryClient.Windows
                 Client.ConfManager.Stream = Client.ChatClient;
                 Client.Log("Connected and logged in as " + Client.ChatClient.User);
 
-                Client.SwitchPage(new MainPage());
+                if (Client.LoginPacket.ReconnectInfo != null && Client.LoginPacket.ReconnectInfo.Game != null)
+                {
+                    Client.CurrentGame = Client.LoginPacket.ReconnectInfo.PlayerCredentials;
+                    Client.SwitchPage(new InGame());
+                }
+                else
+                    Client.SwitchPage(new MainPage());
                 Client.ClearPage(typeof(LoginPage));
 
                 AuthenticationCredentials newCredentials = new AuthenticationCredentials();
@@ -316,7 +322,7 @@ namespace LegendaryClient.Windows
                 //We need this HeartBeat so it looks like this is the real client
                 await Client.PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(Client.LoginPacket.AllSummonerData.Summoner.AcctId), Client.PlayerSession.Token, Client.HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-'%K"));
                 Client.HeartbeatCount++;
-            }));          
+            }));
         }
 
         public static string GetNewIpAddress()

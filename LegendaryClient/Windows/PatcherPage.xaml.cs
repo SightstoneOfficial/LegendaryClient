@@ -307,6 +307,7 @@ namespace LegendaryClient.Windows
                         CurrentProgressLabel.Content = "Finished Patching";
                         CurrentStatusLabel.Content = "Ready To Play";
                         SkipPatchButton.IsEnabled = true;
+                        SkipPatchButton_Click(null, null);
                     }));
 
                     LogTextBox("LegendaryClient Has Finished Patching");

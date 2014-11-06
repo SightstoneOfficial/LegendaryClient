@@ -64,7 +64,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
         public Double IpBalance { get; set; }
 
         [InternalName("reconnectInfo")]
-        public object ReconnectInfo { get; set; }
+        public PlatformGameLifecycleDTO ReconnectInfo { get; set; }
 
         [InternalName("languages")]
         public List<String> Languages { get; set; }

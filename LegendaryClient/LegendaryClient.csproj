@@ -349,9 +349,6 @@
     <Compile Include="Windows\InGame.xaml.cs">
       <DependentUpon>InGame.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\InGameHomeOverlay.xaml.cs">
-      <DependentUpon>InGameHomeOverlay.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\InvitePlayersPage.xaml.cs">
       <DependentUpon>InvitePlayersPage.xaml</DependentUpon>
     </Compile>
@@ -711,12 +708,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\InGame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\InGameHomeOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>

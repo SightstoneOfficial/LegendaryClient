@@ -56,10 +56,5 @@ namespace LegendaryClient.Windows
         {
             Client.LaunchGame();
         }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Client.SwitchPage(new InGameHomeOverlay());
-        }
     }
 }

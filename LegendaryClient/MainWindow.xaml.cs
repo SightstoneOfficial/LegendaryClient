@@ -82,18 +82,6 @@ namespace LegendaryClient
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
             Client.SwitchPage(new PatcherPage());
-#if Debug
-            using (WebClient client = new WebClient())
-            {
-                if (FileVersionInfo.GetVersionInfo("LegendaryClient.exe").FileVersion != client.DownloadString("http://dispersia.github.io/Version.txt"))
-                {
-
-                    Process.Start("LegendaryClientUpdater.exe");
-                    Environment.Exit(Environment.ExitCode);
-
-                }
-            }
-#endif
         }
 
         public void ChangeTheme()
