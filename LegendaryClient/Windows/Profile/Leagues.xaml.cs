@@ -155,41 +155,44 @@ namespace LegendaryClient.Windows.Profile
                 List<AggregatedChampion> ChampionStats = new List<AggregatedChampion>();
                 int i = 0;
 
-                if (SelectedAggregatedStats.LifetimeStatistics.Count() > 0)
+                if (SelectedAggregatedStats.LifetimeStatistics != null)
                 {
-                    foreach (AggregatedStat stat in SelectedAggregatedStats.LifetimeStatistics)
+                    if (SelectedAggregatedStats.LifetimeStatistics.Count() > 0)
                     {
-                        AggregatedChampion Champion = null;
-                        Champion = ChampionStats.Find(x => x.ChampionId == stat.ChampionId);
-                        if (Champion == null)
+                        foreach (AggregatedStat stat in SelectedAggregatedStats.LifetimeStatistics)
                         {
-                            Champion = new AggregatedChampion();
-                            Champion.ChampionId = stat.ChampionId;
-                            ChampionStats.Add(Champion);
+                            AggregatedChampion Champion = null;
+                            Champion = ChampionStats.Find(x => x.ChampionId == stat.ChampionId);
+                            if (Champion == null)
+                            {
+                                Champion = new AggregatedChampion();
+                                Champion.ChampionId = stat.ChampionId;
+                                ChampionStats.Add(Champion);
+                            }
+
+                            var type = typeof(AggregatedChampion);
+                            string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
+                            var f = type.GetField(fieldName);
+                            f.SetValue(Champion, stat.Value);
                         }
 
-                        var type = typeof(AggregatedChampion);
-                        string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
-                        var f = type.GetField(fieldName);
-                        f.SetValue(Champion, stat.Value);
-                    }
+                        ChampionStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
 
-                    ChampionStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
-
-                    foreach (AggregatedChampion info in ChampionStats)
-                    {
-                        if (i++ > 6)
-                            break;
-                        ViewAggregatedStatsButton.IsEnabled = true;
-                        if (info.ChampionId != 0.0)
+                        foreach (AggregatedChampion info in ChampionStats)
                         {
-                            ChatPlayer player = new ChatPlayer();
-                            champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
-                            player.LevelLabel.Visibility = System.Windows.Visibility.Hidden;
-                            player.PlayerName.Content = Champion.displayName;
-                            player.PlayerStatus.Content = info.TotalSessionsPlayed + " games played";
-                            player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
-                            TopChampionsListView.Items.Add(player);
+                            if (i++ > 6)
+                                break;
+                            ViewAggregatedStatsButton.IsEnabled = true;
+                            if (info.ChampionId != 0.0)
+                            {
+                                ChatPlayer player = new ChatPlayer();
+                                champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
+                                player.LevelLabel.Visibility = System.Windows.Visibility.Hidden;
+                                player.PlayerName.Content = Champion.displayName;
+                                player.PlayerStatus.Content = info.TotalSessionsPlayed + " games played";
+                                player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
+                                TopChampionsListView.Items.Add(player);
+                            }
                         }
                     }
                 }
