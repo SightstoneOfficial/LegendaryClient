@@ -37,8 +37,8 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Version.TextChanged += WaterTextbox_TextChanged;
-            if (Client.Version == "4.17.1")	
-                Client.Version = "4.18.1";
+            if (Client.Version == "4.18.1" || Client.Version == "0.0.0")	
+                Client.Version = "4.19.1";
             Version.Text = Client.Version;
 
             if (!Properties.Settings.Default.DisableLoginMusic)

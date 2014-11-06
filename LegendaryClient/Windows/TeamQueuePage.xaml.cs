@@ -430,19 +430,34 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 
+        private bool DevMode = false, makeRanked = false;
+
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
-            TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-            tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-            tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-            tr.Text = ChatTextBox.Text + Environment.NewLine;
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            if (String.IsNullOrEmpty(ChatTextBox.Text))
-                return;
-            newRoom.PublicMessage(ChatTextBox.Text);
-            ChatTextBox.Text = "";
-            ChatText.ScrollToEnd();
+            if (ChatTextBox.Text == "!~dev")
+            {
+                DevMode = !DevMode;
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatTextBox.Text = "";
+                if (DevMode) CreateRankedCheckBox.Visibility = Visibility.Visible;
+                else CreateRankedCheckBox.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = ChatTextBox.Text + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                if (String.IsNullOrEmpty(ChatTextBox.Text))
+                    return;
+                newRoom.PublicMessage(ChatTextBox.Text);
+                ChatTextBox.Text = "";
+                ChatText.ScrollToEnd();
+            }
         }
 
         internal List<Int32> QueueIds;
@@ -459,7 +474,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = QueueIds.ToArray();
+                parameters.QueueIds = (makeRanked ? new int[] { 4 } : QueueIds.ToArray());
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
@@ -513,6 +528,13 @@ namespace LegendaryClient.Windows
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
+        }
+
+        private void CreateRankedCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            //To quadra queue ranked, simply make a Normal 5v5 game then check the box.
+            //Does not bypass division differences, only allows multiple people as the lobby isn't that of ranked.
+            makeRanked = !makeRanked;
         }
     }
 }
