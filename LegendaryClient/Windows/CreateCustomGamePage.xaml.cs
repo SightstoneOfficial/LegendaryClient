@@ -140,7 +140,6 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    Client.InGame = true;
                     Client.GameID = result.Id;
                     Client.GameName = result.Name;
                     Client.GameLobbyDTO = result;

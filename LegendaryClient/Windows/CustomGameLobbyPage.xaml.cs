@@ -5,8 +5,10 @@ using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -29,7 +31,7 @@ namespace LegendaryClient.Windows
         private bool HasConnectedToChat;
         private Room newRoom;
 
-        public CustomGameLobbyPage()
+        public CustomGameLobbyPage(GameDTO gameLobby = null)
         {
             InitializeComponent();
 
@@ -38,6 +40,11 @@ namespace LegendaryClient.Windows
             //If client has created game use initial DTO
             if (Client.GameLobbyDTO != null)
             {
+                GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
+            }
+            else
+            {
+                Client.GameLobbyDTO = gameLobby;
                 GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
             }
             Client.InviteListView = InviteListView;
@@ -291,12 +298,7 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                BotParticipant participant = new BotParticipant();
-                participant.BotSkillLevel = 0;
-                ChampionDTO champion = new ChampionDTO();
-                champion.ChampionId = 81;
-                champion.BotEnabled = true;
-                participant.Champion = champion;
+                //Needs looked into
             }));
         }
 
@@ -304,12 +306,7 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                BotParticipant participant = new BotParticipant();
-                participant.BotSkillLevel = 0;
-                ChampionDTO champion = new ChampionDTO();
-                champion.ChampionId = 81;
-                champion.BotEnabled = true;
-                participant.Champion = champion;
+                //Needs looked into
             }));
         }
     }

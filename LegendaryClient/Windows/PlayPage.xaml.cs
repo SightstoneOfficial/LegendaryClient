@@ -69,6 +69,7 @@ namespace LegendaryClient.Windows
             {
                 if (!DoneLoading)
                 {
+                    DoneLoading = true;
                     WaitingForQueues.Visibility = Visibility.Visible;
                     for (int b = 0; b < 3; b++)
                     {
@@ -163,7 +164,6 @@ namespace LegendaryClient.Windows
                         currentAmount++;
                         if (currentAmount == OpenQueues.Length)
                         {
-                            DoneLoading = true;
                             WaitingForQueues.Visibility = Visibility.Hidden;
                             foreach (GameSeperator seperator in seperators)
                                 seperator.UpdateLabels();

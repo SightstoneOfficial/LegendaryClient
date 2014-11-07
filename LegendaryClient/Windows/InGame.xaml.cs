@@ -46,6 +46,7 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         Client.ReturnButton.Visibility = Visibility.Hidden;
+                        Client.IsInGame = false;
                         Client.SwitchPage(new MainPage());
                     }));
                 }

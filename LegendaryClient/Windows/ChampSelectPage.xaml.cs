@@ -1147,20 +1147,6 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                if (DevMode)
-                {
-                    if (ChatTextBox.Text == "!~champ")
-                    {
-                        ChampionSelectListView.Visibility = Visibility.Visible;
-                        AfterChampionSelectGrid.Visibility = Visibility.Hidden;
-                    }
-                    else if (ChatTextBox.Text == "!~skin")
-                    {
-                        ChampionSelectListView.Visibility = Visibility.Hidden;
-                        AfterChampionSelectGrid.Visibility = Visibility.Visible;
-                    }
-                    ChatTextBox.Text = "";
-                }
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);

@@ -666,11 +666,6 @@ namespace LegendaryClient.Logic
         internal static bool IsLoggedIn = false;
 
         /// <summary>
-        /// Is the player in game at the moment
-        /// </summary>
-        internal static bool InGame = false;
-
-        /// <summary>
         /// GameID of the current game that the client is connected to
         /// </summary>
         internal static double GameID = 0;
@@ -789,7 +784,6 @@ namespace LegendaryClient.Logic
                 {
                     PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats stats = message as PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats;
                     EndOfGamePage EndOfGame = new EndOfGamePage(stats);
-                    Client.IsInGame = false;
                     Client.ClearPage(typeof(TeamQueuePage));
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                     Client.OverlayContainer.Content = EndOfGame.Content;

@@ -194,7 +194,6 @@ namespace LegendaryClient.Controls
             //goddammit teambuilder
             else if (gameType == "NORMAL_GAME" && queueId != 61)
             {
-                LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
                 Client.SwitchPage(new TeamQueuePage(InvitationId));
             }
             else if (gameType == "NORMAL_GAME" && queueId == 61)
@@ -204,13 +203,12 @@ namespace LegendaryClient.Controls
             }
             else if (gameType == "RANKED_GAME")
             {
-                LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
                 Client.SwitchPage(new TeamQueuePage(InvitationId));
             }
             this.Visibility = Visibility.Hidden;
             Client.InviteData.Remove(InvitationId);
-            
         }
+
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
