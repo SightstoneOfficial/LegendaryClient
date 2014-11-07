@@ -121,6 +121,7 @@ Not accepted yet
 
 Donations will be used in ways that support LegendaryClient. Examples are:
 Domain name (LegendaryClient.ca|LegendaryClient.gg)
+A code signing license (So you know that you are using LegendaryClient)
 
 ";
 

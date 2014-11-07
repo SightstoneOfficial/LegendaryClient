@@ -34,6 +34,7 @@ using System.Windows.Threading;
 using System.Xml;
 using log4net;
 using MahApps.Metro;
+using System.Threading.Tasks;
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
 namespace LegendaryClient.Logic
@@ -43,6 +44,38 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
+        /// <summary>
+        /// This is all accounts that have been added to LegendaryClient
+        /// Use this for multiaccount in futuree
+        /// <Accountname, LoginDataPacket>
+        /// </summary>
+        internal static Dictionary<String, LoginDataPacket> accountslist = new Dictionary<String, LoginDataPacket>();
+
+        internal static Dictionary<String, PVPNetConnection> pvpnetlist = new Dictionary<String, PVPNetConnection>();
+
+        internal async static Task<LoginDataPacket> AddAccount()
+        {
+            return new LoginDataPacket();
+        }
+        internal async static Task<LoginDataPacket> AddAccount(LoginDataPacket packet)
+        {
+            if (packet == null)
+                return new LoginDataPacket();
+
+            accountslist.Add(packet.AllSummonerData.Summoner.Name, packet);
+            return packet;
+        }
+        internal async static Task<LoginDataPacket> AddAccount(string Username, string Password)
+        {
+            PVPNetConnection pvp = new PVPNetConnection();
+            AuthenticationCredentials credentials = new AuthenticationCredentials();
+            credentials.ClientVersion = Client.Version;
+            credentials.AuthToken = "";
+            credentials.Password = Password;
+            credentials.IpAddress = "";
+            pvp.Login()
+            return new LoginDataPacket();
+        }
 
         /// <summary>
         /// Use this to play sounds
@@ -681,15 +714,15 @@ namespace LegendaryClient.Logic
         internal static bool RunonePop = false;
 
         /// <summary>
-        /// When an error occurs while connected. Currently un-used
+        /// When an error occurs while connected. Currently just logged
         /// </summary>
-        /// 
-
-
         internal static void PVPNet_OnError(object sender, PVPNetConnect.Error error)
         {
-            ;
+            Log(error.Type.ToString(), "PVPNetError");
+            Log(error.Message, "PVPNetError");
         }
+
+
 
         internal static System.Timers.Timer HeartbeatTimer;
         internal static int HeartbeatCount;

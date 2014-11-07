@@ -9,6 +9,7 @@ using LegendaryClient.Logic.SWF;
 using LegendaryClient.Logic.SWF.SWFTypes;
 using LegendaryClient.Windows;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Login;
 using System;
 using System.Collections.Generic;
@@ -299,9 +300,12 @@ namespace LegendaryClient.Windows
                 Client.ConfManager.Stream = Client.ChatClient;
                 Client.Log("Connected and logged in as " + Client.ChatClient.User);
 
-                if (Client.LoginPacket.ReconnectInfo != null && Client.LoginPacket.ReconnectInfo.Game != null)
+                //Gather data and convert it that way that it does not cause errors
+                PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)Client.LoginPacket.ReconnectInfo;
+
+                if (data != null && data.Game != null)
                 {
-                    Client.CurrentGame = Client.LoginPacket.ReconnectInfo.PlayerCredentials;
+                    Client.CurrentGame = data.PlayerCredentials;
                     Client.SwitchPage(new InGame());
                 }
                 else
