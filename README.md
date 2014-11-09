@@ -24,12 +24,12 @@ Known Issues / TODO
 * Logging out doesn't update friends list / crashes. (just restart the client)
 * Replays are in work
 * ARAM sometimes shows the wrong team
-* Can't reconnect to game if client closes (use the official client if you're in a game and need to reconnect)
 * Shop is just bad, but that's like last. (again, use official client for now if you need to purchase RP, etc.)
 * Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
 * Finish Factions
 * Try implementing up to Quadre ranked queue (I am not sure but will try)
 * Everything breaks with slow internet speed, if you don't finish loading play page before it loops again it creates multiple instances of queue items.
+* Can't join custom game if invited
 
 LegacyPVP
 =========

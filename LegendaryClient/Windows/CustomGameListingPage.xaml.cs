@@ -106,7 +106,6 @@ namespace LegendaryClient.Windows
             else
                 Client.PVPNet.JoinGame(GameID);
 
-            Client.InGame = true;
             Client.GameID = GameID;
             Client.GameName = GameName;
 

@@ -307,6 +307,7 @@ namespace LegendaryClient.Windows
                         CurrentProgressLabel.Content = "Finished Patching";
                         CurrentStatusLabel.Content = "Ready To Play";
                         SkipPatchButton.IsEnabled = true;
+                        SkipPatchButton_Click(null, null);
                     }));
 
                     LogTextBox("LegendaryClient Has Finished Patching");
@@ -343,7 +344,7 @@ namespace LegendaryClient.Windows
                 var valueName = tuple.Item2;
                 try
                 {
-                    var value = Microsoft.Win32.Registry.GetValue(path, valueName, string.Empty);
+                    var value = Registry.GetValue(path, valueName, string.Empty);
                     if (value != null && value.ToString() != string.Empty)
                     {
                         return value.ToString();
@@ -368,6 +369,8 @@ namespace LegendaryClient.Windows
             Nullable<bool> result = FindLeagueDialog.ShowDialog();
             if (result == true)
             {
+                RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
+                key.SetValue("Path", FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
                 return FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
             }
             else
@@ -442,7 +445,6 @@ namespace LegendaryClient.Windows
                 p.Start();
 
                 Application.Current.Shutdown();
-                System.Windows.Forms.Application.Exit();
                 System.Environment.Exit(0);
             }));
 

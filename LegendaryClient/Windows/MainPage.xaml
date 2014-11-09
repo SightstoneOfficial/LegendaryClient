@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:LegendaryClient.Controls"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1280"
-	Title="MainPage">
+	  Title="MainPage">
 
     <Page.Resources>
         <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">

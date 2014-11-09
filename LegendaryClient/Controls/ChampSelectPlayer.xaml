@@ -16,7 +16,7 @@
                 <Image Source="/LegendaryClient;component/trade.png" />
             </StackPanel>
         </Button>
-        <Image x:Name="LockedInIcon" HorizontalAlignment="Left" Height="22" Margin="95,35,0,0" VerticalAlignment="Top" Width="22" Source="/LegendaryClient;component/Unlocked.png" Visibility="Hidden" />
+        <Image x:Name="LockedInIcon" HorizontalAlignment="Left" Height="22" Margin="95,35,0,0" VerticalAlignment="Top" Width="22" Visibility="Visible" />
         <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="4,55,0,0" VerticalAlignment="Top" Width="131" Foreground="White" FontSize="11" />
     </Grid>
 </UserControl>

@@ -46,6 +46,7 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         Client.ReturnButton.Visibility = Visibility.Hidden;
+                        Client.IsInGame = false;
                         Client.SwitchPage(new MainPage());
                     }));
                 }
@@ -55,11 +56,6 @@ namespace LegendaryClient.Windows
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Client.LaunchGame();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Client.SwitchPage(new InGameHomeOverlay());
         }
     }
 }

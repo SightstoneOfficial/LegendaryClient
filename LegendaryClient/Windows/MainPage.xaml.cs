@@ -9,6 +9,7 @@ using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Broadcast;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
@@ -73,7 +74,6 @@ namespace LegendaryClient.Windows
                     timer.Stop();
                 }));
             };
-
         }
 
         [STAThread]
@@ -118,11 +118,6 @@ namespace LegendaryClient.Windows
                     Client.AmountOfWins = x.Wins;
                     break;
                 }
-            }
-
-            if (packet.ReconnectInfo != null)
-            {
-                ;
             }
 
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
@@ -635,8 +630,5 @@ namespace LegendaryClient.Windows
         {
             Client.PVPNet.SimulateEndOfGame();
         }
-
-
-
     }
 }
