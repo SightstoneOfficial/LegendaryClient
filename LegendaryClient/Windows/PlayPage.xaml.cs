@@ -44,6 +44,8 @@ namespace LegendaryClient.Windows
             PingElapsed(1, null);
         }
 
+        private bool RunOnce = false;
+
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
             //TeambuilderCorrect();
@@ -67,9 +69,9 @@ namespace LegendaryClient.Windows
             double PingAverage = HighestPingTime(Client.Region.PingAddresses);
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
-                if (!DoneLoading)
+                if (!RunOnce)
                 {
-                    DoneLoading = true;
+                    RunOnce = true;
                     WaitingForQueues.Visibility = Visibility.Visible;
                     for (int b = 0; b < 3; b++)
                     {
@@ -167,6 +169,7 @@ namespace LegendaryClient.Windows
                             WaitingForQueues.Visibility = Visibility.Hidden;
                             foreach (GameSeperator seperator in seperators)
                                 seperator.UpdateLabels();
+                            DoneLoading = true;
                         }
                     }
 

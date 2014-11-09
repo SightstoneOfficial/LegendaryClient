@@ -335,7 +335,6 @@ namespace LegendaryClient.Windows
                 GameDTO Queue = message as GameDTO;
                 if (Queue.GameState == "TERMINATED")
                 {
-                    Client.Log(Queue.TerminatedCondition);
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         if (Queue.TerminatedCondition != "NOT_TERMINATED")

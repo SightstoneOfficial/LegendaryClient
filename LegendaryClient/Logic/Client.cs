@@ -73,7 +73,7 @@ namespace LegendaryClient.Logic
             credentials.AuthToken = "";
             credentials.Password = Password;
             credentials.IpAddress = "";
-            pvp.Login()
+            //pvp.Login()
             return new LoginDataPacket();
         }
 

@@ -440,7 +440,7 @@ namespace LegendaryClient.Windows
                             else
                             {
                                 AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.SummonerId);
-                                if (!String.IsNullOrEmpty(Summoner.Summoner.Name))
+                                if (Summoner.Summoner != null && !String.IsNullOrEmpty(Summoner.Summoner.Name))
                                     control.PlayerName.Content = Summoner.Summoner.Name;
                                 else
                                     control.PlayerName.Content = "Unknown Player";

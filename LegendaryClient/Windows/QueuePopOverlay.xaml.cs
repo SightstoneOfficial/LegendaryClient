@@ -165,35 +165,23 @@ namespace LegendaryClient.Windows
                     {
                         player.PlayerLabel.Content = playerPart.SummonerName;
                         player.RankLabel.Content = "";
+                        SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
+                        foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
+                        {
+                            if (x.Queue == "RANKED_SOLO_5x5")
+                            {
+                                player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+                            }
+                        }
+                        if (String.IsNullOrEmpty(player.RankLabel.Content.ToString()))
+                            player.RankLabel.Content = "Unranked";
                         Team1ListBox.Items.Add(player);
                     }
                     else
                     {
-                        try
-                        {
-                            AllPublicSummonerDataDTO Summoner = await Client.PVPNet.GetAllPublicSummonerDataByAccount(playerPart.AccountId);
-                            player.PlayerLabel.Content = Summoner.Summoner.Name;
-                            SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.AccountId);
-                            foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
-                            {
-                                if (x.Queue == "RANKED_SOLO_5x5")
-                                {
-                                    player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
-                                }
-                            }
-                            //People can be ranked without having solo queue so don't put if statement checking List.Length
-                            if (String.IsNullOrEmpty((string)player.RankLabel.Content))
-                            {
-                                player.RankLabel.Content = "Unranked";
-                            }
-                            Team2ListBox.Items.Add(player);
-                        }
-                        catch
-                        {
-                            player.PlayerLabel.Content = "Enemy";
-                            player.RankLabel.Content = "";
-                            Team2ListBox.Items.Add(player);
-                        }
+                        player.PlayerLabel.Content = "Enemy";
+                        player.RankLabel.Content = "";
+                        Team2ListBox.Items.Add(player);
                     }
                 }
                 else
@@ -203,38 +191,7 @@ namespace LegendaryClient.Windows
                     Team2ListBox.Items.Add(player);
                 }
             }
-
-            int i = 0;
-            foreach (Participant p in AllParticipants) //Gets spammed with PlayerParticipant
-            {
-                try
-                {
-                    if (p is PlayerParticipant)
-                    {
-                        QueuePopPlayer player = (QueuePopPlayer)Team1ListBox.Items[i];
-                        PlayerParticipant playerPart = (PlayerParticipant)p;
-                        SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
-                        foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
-                        {
-                            if (x.Queue == "RANKED_SOLO_5x5")
-                            {
-                                player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
-                            }
-                        }
-                        //People can be ranked without having solo queue so don't put if statement checking List.Length
-                        if (String.IsNullOrEmpty((string)player.RankLabel.Content))
-                        {
-                            player.RankLabel.Content = "Unranked";
-                        }
-                        i++;
-                    }
-                }
-                catch
-                {
-
-                }                
-            }
-
+            
             if (Client.AutoAcceptQueue)
             {
                 await Client.PVPNet.AcceptPoppedGame(true);

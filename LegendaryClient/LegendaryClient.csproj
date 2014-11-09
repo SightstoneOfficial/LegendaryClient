@@ -989,7 +989,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="trade.png" />
-    <Resource Include="Unlocked.png" />
     <Resource Include="star.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
