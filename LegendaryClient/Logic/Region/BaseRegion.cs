@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LegendaryClient.Logic.Region.Garena;
+using System;
 using System.Net;
 
 namespace LegendaryClient.Logic.Region
@@ -34,7 +35,7 @@ namespace LegendaryClient.Logic.Region
                 return (BaseRegion)Activator.CreateInstance(t);
             else
             {
-                t = Type.GetType("LegendaryClient.Logic.Region.Garena" + RequestedRegion);
+                t = Type.GetType("LegendaryClient.Logic.Region.Garena." + RequestedRegion);
                 if (t != null)
                     return (BaseRegion)Activator.CreateInstance(t);
             }

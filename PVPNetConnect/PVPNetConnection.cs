@@ -64,7 +64,7 @@ namespace PVPNetConnect
         /** Garena information */
         private bool useGarena = false;
         private string garenaToken;
-        private string userID;
+        public string userID;
 
         //Invoke Variables
         private Random rand = new Random();
@@ -146,6 +146,7 @@ namespace PVPNetConnect
                         if (!GetGarenaToken())
                             return;
 
+
                     if (!GetAuthKey())
                         return;
 
@@ -187,96 +188,143 @@ namespace PVPNetConnect
         }
 
         private bool GetGarenaToken()
+        {            
+            try
+            {
+                System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+                byte[] junk = new byte[] { 0x49, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x79, 0x2f };
+                System.Security.Cryptography.MD5 md5Cryp = System.Security.Cryptography.MD5.Create();
+                byte[] inputBytes = encoding.GetBytes(password);
+                byte[] md5 = md5Cryp.ComputeHash(inputBytes);
+                /*
+                //GET OUR USER ID
+                List<byte> userIdRequestBytes = new List<byte>();
+
+                byte[] junk = new byte[] { 0x49, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x79, 0x2f };
+                userIdRequestBytes.AddRange(junk);
+                userIdRequestBytes.AddRange(encoding.GetBytes(user));
+                for (int i = 0; i < 16; i++)
+                    userIdRequestBytes.Add(0x00);
+
+                System.Security.Cryptography.MD5 md5Cryp = System.Security.Cryptography.MD5.Create();
+                byte[] inputBytes = encoding.GetBytes(password);
+                byte[] md5 = md5Cryp.ComputeHash(inputBytes);
+
+                foreach (byte b in md5)
+                    userIdRequestBytes.AddRange(encoding.GetBytes(String.Format("%02x", b)));
+
+                userIdRequestBytes.Add(0x00);
+                userIdRequestBytes.Add(0x01);
+                junk = new byte[] { 0xD4, 0xAE, 0x52, 0xC0, 0x2E, 0xBA, 0x72, 0x03 };
+                userIdRequestBytes.AddRange(junk);
+
+                int timestamp = (int)(DateTime.UtcNow.TimeOfDay.TotalMilliseconds / 1000);
+                for (int i = 0; i < 4; i++)
+                    userIdRequestBytes.Add((byte)((timestamp >> (8 * i)) & 0xFF));
+
+                userIdRequestBytes.Add(0x00);
+                userIdRequestBytes.AddRange(encoding.GetBytes("intl"));
+                userIdRequestBytes.Add(0x00);
+
+                byte[] userIdBytes = userIdRequestBytes.ToArray();
+
+                var client = new TcpClient("203.117.158.170", 9100);
+
+                client.GetStream().Write(userIdBytes, 0, userIdBytes.Length);
+                client.GetStream().Flush();
+
+                int id = 0;
+                for (int i = 0; i < 4; i++)
+                    id += client.GetStream().ReadByte() * (1 << (8 * i));                
+                userID = Convert.ToString(id);
+                //*/
+                //GET TOKEN
+                List<byte> tokenRequestBytes = new List<byte>();
+                junk = new byte[] { 0x32, 0x00, 0x00, 0x00, 0x01, 0x03, 0x80, 0x00, 0x00 };
+                tokenRequestBytes.AddRange(junk);
+                tokenRequestBytes.AddRange(encoding.GetBytes(user));
+                tokenRequestBytes.Add(0x00);
+                foreach (byte b in md5)
+                    tokenRequestBytes.AddRange(encoding.GetBytes(String.Format("%02x", b)));
+                tokenRequestBytes.Add(0x00);
+                tokenRequestBytes.Add(0x00);
+                tokenRequestBytes.Add(0x00);
+
+                byte[] tokenBytes = tokenRequestBytes.ToArray();
+
+                client = new TcpClient("lol.auth.garenanow.com", 12000);
+                NetworkStream stream = client.GetStream();
+                stream.Write(tokenBytes, 0, tokenBytes.Length);
+                stream.Flush();
+                byte[] bytes = new byte[client.ReceiveBufferSize];
+                var x = stream.Read(bytes, 0, (int)client.ReceiveBufferSize);
+                garenaToken = x.ToString();
+                /*
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < 5; i++)
+                    client.GetStream().ReadByte();
+                int c;
+                while ((c = client.GetStream().ReadByte()) != 0)
+                    sb.Append((char)c);
+
+                garenaToken = sb.ToString();
+
+                client.GetStream().Flush();
+                client.Close();
+                //*/
+                return true;
+            }
+            catch
+            {
+                //Error("Unable to acquire garena token", ErrorType.Login);
+                Error("Garena is in dev. This may not work", ErrorType.Login);
+                Disconnect();
+                return false;
+            }
+        }
+
+        void GetToken()
         {
-            
-         try
-         {
-             System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
+            try
+            {
+                List<byte> tokenRequestBytes = new List<byte>();
+                System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
 
-             //GET OUR USER ID
-             List<byte> userIdRequestBytes = new List<byte>();
+                System.Security.Cryptography.MD5 md5Cryp = System.Security.Cryptography.MD5.Create();
+                byte[] inputBytes = encoding.GetBytes(password);
+                byte[] md5 = md5Cryp.ComputeHash(inputBytes);
+                byte[] junk = new byte[] { 0x32, 0x00, 0x00, 0x00, 0x01, 0x03, 0x80, 0x00, 0x00 };
+                tokenRequestBytes.AddRange(junk);
+                tokenRequestBytes.AddRange(encoding.GetBytes(user));
+                tokenRequestBytes.Add(0x00);
+                foreach (byte b in md5)
+                    tokenRequestBytes.AddRange(encoding.GetBytes(String.Format("%02x", b)));
+                tokenRequestBytes.Add(0x00);
+                tokenRequestBytes.Add(0x00);
+                tokenRequestBytes.Add(0x00);
 
-             byte[] junk = new byte[] { 0x49, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x79, 0x2f };
-             userIdRequestBytes.AddRange(junk);
-             userIdRequestBytes.AddRange(encoding.GetBytes(user));
-             for (int i = 0; i < 16; i++)
-                 userIdRequestBytes.Add(0x00);
+                byte[] tokenBytes = tokenRequestBytes.ToArray();
 
-             System.Security.Cryptography.MD5 md5Cryp = System.Security.Cryptography.MD5.Create();
-             byte[] inputBytes = encoding.GetBytes(password);
-             byte[] md5 = md5Cryp.ComputeHash(inputBytes);
+                client = new TcpClient("lol.auth.garenanow.com", 12000);
+                client.GetStream().Write(tokenBytes, 0, tokenBytes.Length);
+                //client.GetStream().Flush();
 
-             foreach (byte b in md5)
-                 userIdRequestBytes.AddRange(encoding.GetBytes(String.Format("%02x", b)));
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < 5; i++)
+                    client.GetStream().ReadByte();
+                int c;
+                while ((c = client.GetStream().ReadByte()) != 0)
+                    sb.Append((char)c);
 
-             userIdRequestBytes.Add(0x00);
-             userIdRequestBytes.Add(0x01);
-             junk = new byte[] { 0xD4, 0xAE, 0x52, 0xC0, 0x2E, 0xBA, 0x72, 0x03 };
-             userIdRequestBytes.AddRange(junk);
+                garenaToken = sb.ToString();
+                client.GetStream().Flush();
+                client.Close();
 
-             int timestamp = (int)(DateTime.UtcNow.TimeOfDay.TotalMilliseconds / 1000);
-             for (int i = 0; i < 4; i++)
-                 userIdRequestBytes.Add((byte)((timestamp >> (8 * i)) & 0xFF));
+            }
+            catch
+            {
 
-             userIdRequestBytes.Add(0x00);
-             userIdRequestBytes.AddRange(encoding.GetBytes("intl"));
-             userIdRequestBytes.Add(0x00);
-
-             byte[] userIdBytes = userIdRequestBytes.ToArray();
-
-             TcpClient client = new TcpClient("203.117.158.170", 9100);
-             client.GetStream().Write(userIdBytes, 0, userIdBytes.Length);
-             client.GetStream().Flush();
-
-             int id = 0;
-             for (int i = 0; i < 4; i++)
-                 id += client.GetStream().ReadByte() * (1 << (8 * i));
-
-             userID = Convert.ToString(id);
-
-             //GET TOKEN
-             List<byte> tokenRequestBytes = new List<byte>();
-             junk = new byte[] { 0x32, 0x00, 0x00, 0x00, 0x01, 0x03, 0x80, 0x00, 0x00 };
-             tokenRequestBytes.AddRange(junk);
-             tokenRequestBytes.AddRange(encoding.GetBytes(user));
-             tokenRequestBytes.Add(0x00);
-             foreach (byte b in md5)
-                 tokenRequestBytes.AddRange(encoding.GetBytes(String.Format("%02x", b)));
-             tokenRequestBytes.Add(0x00);
-             tokenRequestBytes.Add(0x00);
-             tokenRequestBytes.Add(0x00);
-
-             byte[] tokenBytes = tokenRequestBytes.ToArray();
-
-             client = new TcpClient("lol.auth.garenanow.com", 12000);
-             client.GetStream().Write(tokenBytes, 0, tokenBytes.Length);
-             client.GetStream().Flush();
-
-             StringBuilder sb = new StringBuilder();
-             for (int i = 0; i < 5; i++)
-                 client.GetStream().ReadByte();
-             int c;
-             while ((c = client.GetStream().ReadByte()) != 0)
-                 sb.Append((char)c);
-
-             garenaToken = sb.ToString();
-
-             client.Close();
-             return true;
-         }
-         catch
-         {
-             //Error("Unable to acquire garena token", ErrorType.Login);
-             Error("Garena is in dev. This may not work", ErrorType.Login);
-             Disconnect();
-             return false;
-         }
-          /*
-
-            Error("Garena Servers are not yet supported", ErrorType.Login);
-            Disconnect();
-            return false;
-            //*/
+            }
         }
 
         private bool GetAuthKey()

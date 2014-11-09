@@ -36,7 +36,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string Locale
         {
-            get { return "en_SGMY"; }
+            get { return "en_SG"; }
         }
 
         public override PVPNetConnect.Region PVPRegion

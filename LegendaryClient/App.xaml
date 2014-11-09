@@ -112,6 +112,14 @@
             <sys:String>LAN</sys:String>
             <sys:String>TR</sys:String>
             
+            <sys:String>MY</sys:String>
+            <sys:String>PH</sys:String>
+            <sys:String>SG</sys:String>
+            <sys:String>SGMY</sys:String>
+            <sys:String>TH</sys:String>
+            <sys:String>TW</sys:String>
+            <sys:String>VN</sys:String>
+
             <!--Garena Regions-->
             <!--<sys:String>MY</sys:String>
             <sys:String>PH</sys:String>
