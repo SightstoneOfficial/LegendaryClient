@@ -473,7 +473,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = (makeRanked ? new int[] { 4 } : QueueIds.ToArray());
+                parameters.QueueIds = QueueIds.ToArray();
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
@@ -531,9 +531,7 @@ namespace LegendaryClient.Windows
 
         private void CreateRankedCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            //To quadra queue ranked, simply make a Normal 5v5 game then check the box.
-            //Does not bypass division differences, only allows multiple people as the lobby isn't that of ranked.
-            makeRanked = !makeRanked;
+
         }
     }
 }

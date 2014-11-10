@@ -27,6 +27,7 @@ Known Issues / TODO
 * Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
 * Finish Factions
 * Can't join custom game if invited
+* If in a lobby, need to make it if you go to join another one to clear the old one before joining new one
 
 LegacyPVP
 =========

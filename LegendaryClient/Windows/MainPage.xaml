@@ -7,10 +7,12 @@
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1280"
 	  Title="MainPage">
-
     <Page.Resources>
         <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style x:Key="style" TargetType="ProgressBar">
+            <Setter Property="Foreground" Value="Blue"/>
         </Style>
     </Page.Resources>
 
@@ -21,7 +23,15 @@
         <local:HoverOverLabel x:Name="HoverLabel" HorizontalAlignment="Left" Margin="27,30,0,0" Height="100" Width="100" VerticalAlignment="Top" MouseDown="HoverLabel_MouseDown" MouseEnter="HoverLabel_MouseEnter" MouseLeave="HoverLabel_MouseLeave" Opacity="0" />
         <Label x:Name="SummonerNameLabel" Content="Summoner Name" HorizontalAlignment="Left" Margin="165,40,0,0" VerticalAlignment="Top" FontSize="22" />
 
-        <ProgressBar x:Name="PlayerProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="23" Margin="170,80,0,0" VerticalAlignment="Top" Width="250" Value="75" Foreground="#FF9C9C9C" />
+        <ProgressBar x:Name="PlayerProgressBar" Style="{StaticResource style}" HorizontalAlignment="Left" Height="23" Margin="170,80,0,0" VerticalAlignment="Top" Width="250" Value="75" Background="#CC505050">
+            <ProgressBar.BorderBrush>
+                <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                    <GradientStop Color="#FFB2B2B2" Offset="0"/>
+                    <GradientStop Color="#FF8C8C8C" Offset="1"/>
+                </LinearGradientBrush>
+            </ProgressBar.BorderBrush>
+
+        </ProgressBar>
         <Label x:Name="PlayerCurrentProgressLabel" Style="{x:Null}" Content="75LP" HorizontalAlignment="Left" Margin="170,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
         <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Silver II" HorizontalAlignment="Left" Margin="265,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
         <Label x:Name="PlayerAimProgressLabel" Style="{x:Null}" Content="100LP" HorizontalAlignment="Left" Margin="365,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
