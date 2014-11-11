@@ -301,7 +301,7 @@ namespace LegendaryClient.Windows
                 Client.Log("Connected and logged in as " + Client.ChatClient.User);
 
                 //Gather data and convert it that way that it does not cause errors
-                PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)Client.LoginPacket.ReconnectInfo;
+                PlatformGameLifecycleDTO data = Client.LoginPacket.ReconnectInfo;
 
                 if (data != null && data.Game != null)
                 {

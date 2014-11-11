@@ -72,9 +72,11 @@ namespace LegendaryClient.Windows
         #endregion DLL Stuff
 
         private List<string> Resolutions = new List<string>();
-        private List<Tuple<string, string>> Themes = new List<Tuple<string, string>>();
         private MainWindow mainWindow;
 
+        private Dictionary<string, WinThemes> list = new Dictionary<string, WinThemes>();
+        private Dictionary<WinThemes, string> list2 = new Dictionary<WinThemes, string>();
+        private Dictionary<string, string> list3 = new Dictionary<string, string>();
         public SettingsPage(MainWindow window)
         {
             InitializeComponent();
@@ -127,24 +129,50 @@ A code signing license (So you know that you are using LegendaryClient)
 
             #endregion AboutTextbox
 
-            Themes.Add(new Tuple<string, string>("Dark Steel", "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml"));
-            Themes.Add(new Tuple<string, string>("Light Steel", "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml"));
-            Themes.Add(new Tuple<string, string>("Dark Blue", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml"));
-            Themes.Add(new Tuple<string, string>("Light Blue", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml"));
-            Themes.Add(new Tuple<string, string>("Dark Red", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml"));
-            Themes.Add(new Tuple<string, string>("Light Red", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml"));
-            Themes.Add(new Tuple<string, string>("Dark Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml"));
-            Themes.Add(new Tuple<string, string>("Light Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml"));
-
-            ThemeBox.ItemsSource = Themes;
-            foreach (var item in Themes)
-            {
-                if (item.Item2.Equals(Properties.Settings.Default.Theme) && item.Item1.Contains((Properties.Settings.Default.DarkTheme) ? "Dark" : "Light"))
+            Addtheme("Dark Steel", "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml");
+            Addtheme("Light Steel", "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml");
+            Addtheme("Dark Blue", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml");
+            Addtheme("Light Blue", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml");
+            Addtheme("Dark Red", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml");
+            Addtheme("Light Red", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml");
+            Addtheme("Dark Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml");
+            Addtheme("Light Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml");
+            if (Properties.Settings.Default.Theme != null)
+                foreach(var x in list2)
                 {
-                    ThemeBox.SelectedItem = item;
-                    break;
+                    WinThemes m = x.Key;
+                    if (x.Value.Contains("Light") && Properties.Settings.Default.DarkTheme == false)
+                    {
+                        foreach (var h in list3)
+                        {
+                            if (h.Value == Properties.Settings.Default.Theme)
+                            {
+                                ThemeBox.SelectedItem = m;
+                            }
+                        }
+                    }
+                    else if (x.Value.Contains("Dark") && Properties.Settings.Default.DarkTheme == true)
+                    {
+                        foreach (var h in list3)
+                        {
+                            if (h.Value == Properties.Settings.Default.Theme)
+                            {
+                                ThemeBox.SelectedItem = m;
+                            }
+                        }
+                    }
                 }
-            }
+        }
+
+        public void Addtheme(string Text, string Value)
+        {
+            WinThemes theme = new WinThemes();
+            theme.Text = Text;
+            theme.Value = Value;
+            ThemeBox.Items.Add(theme);
+            list.Add(Text, theme);
+            list2.Add(theme, Text);
+            list3.Add(Text, Value);
         }
 
         public void InsertDefaultValues()
@@ -204,13 +232,22 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void ThemeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Themes[ThemeBox.SelectedIndex].Item1.Contains("Dark"))
+            if ((ThemeBox.SelectedItem as WinThemes).Text.Contains("Dark"))
                 Properties.Settings.Default.DarkTheme = true;
             else
                 Properties.Settings.Default.DarkTheme = false;
-            Properties.Settings.Default.Theme = Themes[ThemeBox.SelectedIndex].Item2;
+            Properties.Settings.Default.Theme = (string)(ThemeBox.SelectedItem as WinThemes).Value;
             
             mainWindow.ChangeTheme();
+        }
+    }
+    public class WinThemes
+    {
+        public string Text { get; set; }
+        public object Value { get; set; }
+        public override string ToString()
+        {
+            return Text;
         }
     }
 }

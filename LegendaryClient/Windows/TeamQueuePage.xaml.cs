@@ -62,7 +62,7 @@ namespace LegendaryClient.Windows
         /// When invited to a team
         /// </summary>
         /// <param name="Message"></param>
-        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false)
+        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, bool isranked = false)
         {
             InitializeComponent();
             Client.InviteListView = InviteListView;
@@ -76,6 +76,9 @@ namespace LegendaryClient.Windows
             {
                 LoadStats();
             }
+
+            if (isranked)
+                DevMode = true;
 
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
@@ -473,7 +476,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = (makeRanked ? new int[] { 4 } : QueueIds.ToArray());
+                parameters.QueueIds = (QueueIds.ToArray());
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
