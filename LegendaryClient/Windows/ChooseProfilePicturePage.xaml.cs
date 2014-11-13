@@ -65,6 +65,7 @@ namespace LegendaryClient.Windows
                 Client.MainPageProfileImage.Source = new BitmapImage(uriSource);
             }
             Client.OverlayContainer.Visibility = Visibility.Hidden;
+            Client.done = true;
         }
     }
 }

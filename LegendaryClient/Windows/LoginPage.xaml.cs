@@ -253,9 +253,36 @@ namespace LegendaryClient.Windows
 
 #pragma warning disable 4014 //Code does not need to be awaited
 
+
         private async void GotLoginPacket(LoginDataPacket packet)
         {
+            if (packet.AllSummonerData == null)
+            {
+                //Just Created Account, need to put logic here.
+                Client.done = false;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    CreateSummonerNameOverlay createSummoner = new CreateSummonerNameOverlay();
+                    Client.OverlayContainer.Content = createSummoner.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                }));
+                while (!Client.done) ;
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
+                return;
+            }
             Client.LoginPacket = packet;
+            if (packet.AllSummonerData.Summoner.ProfileIconId == -1)
+            {
+                Client.done = false;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    Client.OverlayContainer.Content = new ChooseProfilePicturePage().Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                }));
+                while (!Client.done) ;
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
+                return;
+            }
             Client.PlayerChampions = await Client.PVPNet.GetAvailableChampions();
             Client.PVPNet.OnError -= PVPNet_OnError;
             Client.GameConfigs = packet.GameTypeConfigs;

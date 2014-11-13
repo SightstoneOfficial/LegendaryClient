@@ -128,6 +128,11 @@ namespace LegendaryClient.Logic
         internal static int LegendaryClientReleaseNumber = 3;
 
         /// <summary>
+        /// If Player is creating an account
+        /// </summary>
+        internal static bool done = true;
+
+        /// <summary>
         /// Sets Sqlite Version
         /// Like the language pack
         /// </summary>

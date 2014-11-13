@@ -355,6 +355,9 @@
     <Compile Include="Windows\InvitePlayersPage.xaml.cs">
       <DependentUpon>InvitePlayersPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\CreateSummonerNameOverlay.xaml.cs">
+      <DependentUpon>CreateSummonerNameOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\NonExistantPage.xaml.cs">
       <DependentUpon>NonExistantPage.xaml</DependentUpon>
     </Compile>
@@ -723,6 +726,10 @@
     <Page Include="Windows\InvitePlayersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\CreateSummonerNameOverlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\NonExistantPage.xaml">
       <SubType>Designer</SubType>
