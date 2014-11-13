@@ -15,6 +15,8 @@ using log4net.Config;
 using System.Security.Permissions;
 using System.Net;
 using System.Diagnostics;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace LegendaryClient
 {
@@ -70,6 +72,7 @@ namespace LegendaryClient
             Client.PlayButton = PlayButton;
             Client.Pages = new List<Page>();
             Client.MainGrid = MainGrid;
+            Client.BackgroundImage = BackImage;
             Client.NotificationGrid = NotificationTempGrid;
             Client.MainWin = this;
             Client.Container = Container;
@@ -82,6 +85,12 @@ namespace LegendaryClient
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
             Client.SwitchPage(new PatcherPage());
+
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
+            {
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
+                    BackImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
+            }
         }
 
         public void ChangeTheme()

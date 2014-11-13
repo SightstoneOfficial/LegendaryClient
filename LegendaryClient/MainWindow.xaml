@@ -37,6 +37,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="BackTex.png" TileMode="FlipY" Stretch="Uniform" AlignmentY="Top" Viewport="0,0,150,150" ViewportUnits="Absolute" Opacity="0.4" />
         </Grid.Background>
+        <Image x:Name="BackImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Opacity="0.4" />
         <MediaElement x:Name="SoundPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0"/>
         <MediaElement x:Name="ASoundPlayer" LoadedBehavior="Manual" UnloadedBehavior="Stop" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0"/>
         <ContentControl x:Name="NotificationContainer" VerticalAlignment="Stretch" HorizontalAlignment="Right" Width="250" Visibility="Hidden" Panel.ZIndex="3" Margin="0,0,0,40" />
