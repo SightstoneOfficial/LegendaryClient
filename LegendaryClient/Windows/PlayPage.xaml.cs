@@ -397,6 +397,7 @@ namespace LegendaryClient.Windows
         {
             InQueue = false;
             await Client.PVPNet.PurgeFromQueues();
+            await Client.PVPNet.Leave();
 
             foreach (Button btn in ButtonTimers.Keys)
             {

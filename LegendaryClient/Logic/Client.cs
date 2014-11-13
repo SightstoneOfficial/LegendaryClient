@@ -536,6 +536,7 @@ namespace LegendaryClient.Logic
         internal static Grid MainGrid;
         internal static Grid NotificationGrid;
         internal static Grid StatusGrid = new Grid();
+        internal static Image BackgroundImage;
 
         internal static Label StatusLabel;
         internal static Label InfoLabel;
@@ -575,6 +576,8 @@ namespace LegendaryClient.Logic
         {
             if (page.GetType() == typeof(PlayPage)) IsOnPlayPage = true;
             else IsOnPlayPage = false;
+            if (page.GetType() == typeof(ChampSelectPage)) BackgroundImage.Visibility = Visibility.Hidden;
+            else BackgroundImage.Visibility = Visibility.Visible;
             foreach (Page p in Pages) //Cache pages
             {
                 if (p.GetType() == page.GetType())

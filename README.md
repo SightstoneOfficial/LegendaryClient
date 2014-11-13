@@ -27,7 +27,6 @@ Known Issues / TODO
 * Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
 * Finish Factions
 * Can't join custom game if invited
-* If in a lobby, need to make it if you go to join another one to clear the old one before joining new one
 
 LegacyPVP
 =========
@@ -78,8 +77,8 @@ Check out these links:
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/aG5XoQ0.png)
-![News Screen](http://i.imgur.com/Y4ZJ0fk.png)
+![Login](http://i.imgur.com/RWzqFKv.png)
+![News Screen](http://i.imgur.com/cqnoYXF.png)
 ![Match History](http://i.imgur.com/03K5nmC)
 ![Store](http://i.imgur.com/1Bq26WV.png)
 
@@ -87,7 +86,7 @@ Still-in Progress Screenshots
 =============================
 
 ![Chat](http://puu.sh/5FVHS.png)
-![Queue](http://i.imgur.com/ZpZiyJ5.png)
+![Queue](http://i.imgur.com/yOea3kR.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)
 ![ChampSelect2](http://i.imgur.com/FBK2dw3.jpg)
@@ -113,6 +112,10 @@ Other Features
 **View other teams champions in ARAM**
 
 ![AramHack](http://i.imgur.com/9tPrxGy)
+
+**Customizable Client - Even use your favorite fanarts!**
+
+![Customizable](http://i.imgur.com/1aaZxDp.png)
 
 Please Note
 ======

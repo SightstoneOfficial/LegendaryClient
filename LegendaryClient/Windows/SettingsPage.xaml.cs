@@ -85,6 +85,7 @@ namespace LegendaryClient.Windows
 
             StatsCheckbox.IsChecked = Properties.Settings.Default.GatherStatistics;
             ErrorCheckbox.IsChecked = Properties.Settings.Default.SendErrors;
+            UseAsBackground.IsChecked = Properties.Settings.Default.UseAsBackgroundImage;
 
             #region AboutTextbox
 
@@ -137,31 +138,6 @@ A code signing license (So you know that you are using LegendaryClient)
             Addtheme("Light Red", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml");
             Addtheme("Dark Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml");
             Addtheme("Light Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml");
-            if (Properties.Settings.Default.Theme != null)
-                foreach(var x in list2)
-                {
-                    WinThemes m = x.Key;
-                    if (x.Value.Contains("Light") && Properties.Settings.Default.DarkTheme == false)
-                    {
-                        foreach (var h in list3)
-                        {
-                            if (h.Value == Properties.Settings.Default.Theme)
-                            {
-                                ThemeBox.SelectedItem = m;
-                            }
-                        }
-                    }
-                    else if (x.Value.Contains("Dark") && Properties.Settings.Default.DarkTheme == true)
-                    {
-                        foreach (var h in list3)
-                        {
-                            if (h.Value == Properties.Settings.Default.Theme)
-                            {
-                                ThemeBox.SelectedItem = m;
-                            }
-                        }
-                    }
-                }
         }
 
         public void Addtheme(string Text, string Value)
@@ -239,6 +215,16 @@ A code signing license (So you know that you are using LegendaryClient)
             Properties.Settings.Default.Theme = (string)(ThemeBox.SelectedItem as WinThemes).Value;
             
             mainWindow.ChangeTheme();
+        }
+
+        private void UseAsBackground_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UseAsBackground_Changed(object sender, RoutedEventArgs e)
+        {
+            if(UseAsBackground.HasContent) Properties.Settings.Default.UseAsBackgroundImage = (bool)UseAsBackground.IsChecked;
         }
     }
     public class WinThemes

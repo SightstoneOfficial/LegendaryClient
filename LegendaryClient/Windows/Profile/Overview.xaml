@@ -33,7 +33,7 @@
         <Button x:Name="ViewAggregatedStatsButton" Content="View Champion Stats" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Right" Margin="0,480,10,0" VerticalAlignment="Top" Height="50" Width="280" Click="ViewAggregatedStatsButton_Click" />
 
         <ComboBox x:Name="StatsComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="300" SelectionChanged="StatsComboBox_SelectionChanged" />
-        <ListView x:Name="StatsListView" HorizontalAlignment="Stretch" Margin="10,40,300,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
+        <ListView x:Name="StatsListView" HorizontalAlignment="Stretch" Margin="10,40,300,10" VerticalAlignment="Stretch" Foreground="White" Background="#66505050">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn x:Name="KeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}" />

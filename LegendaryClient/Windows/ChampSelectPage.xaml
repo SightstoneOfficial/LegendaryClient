@@ -22,8 +22,8 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label x:Name="BlueBansLabel" Content="Blue Bans" HorizontalAlignment="Left" Margin="10,0,0,240" VerticalAlignment="Bottom" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
-        <ListView x:Name="BlueBanListView" HorizontalAlignment="Left" Margin="5,0,0,10" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="225" Width="58" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
+        <Label x:Name="BlueBansLabel" Content="Blue Bans" HorizontalAlignment="Left" Margin="28,474,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
+        <ListView x:Name="BlueBanListView" HorizontalAlignment="Left" Margin="5,513,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="225" Width="58" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -43,8 +43,8 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label x:Name="PurpleBansLabel" Content="Purple Bans" HorizontalAlignment="Right" Margin="0,0,10,240" VerticalAlignment="Bottom" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
-        <ListView x:Name="PurpleBanListView" HorizontalAlignment="Right" Margin="0,0,5,10" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="225" Width="58" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
+        <Label x:Name="PurpleBansLabel" Content="Purple Bans" HorizontalAlignment="Right" Margin="0,474,15,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
+        <ListView x:Name="PurpleBanListView" HorizontalAlignment="Right" Margin="0,513,10,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="225" Width="58" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />

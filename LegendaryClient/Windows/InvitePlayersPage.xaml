@@ -16,12 +16,12 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="#B2000000">
-        <Grid HorizontalAlignment="Center" Margin="0,50,0,50" VerticalAlignment="Stretch" Width="600" Background="#FF2B2B2B">
+    <Grid Background="#A5000000">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="513" Height="550" Background="#A5000000">
             <Label Content="Invite Players" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
 
             <Label Content="Available Players" HorizontalAlignment="Left" Margin="10,60,0,0" FontWeight="ExtraLight" FontSize="26" VerticalAlignment="Top" />
-            <ListView Style="{StaticResource NoFocus}" x:Name="AvailablePlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="10,115,0,50" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="AvailablePlayerListView_SelectionChanged">
+            <ListView Style="{StaticResource NoFocus}" x:Name="AvailablePlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="10,115,0,50" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="AvailablePlayerListView_SelectionChanged" Width="250">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                         <GridViewColumn Width="250" />
@@ -30,7 +30,7 @@
             </ListView>
 
             <Label Content="Invited Players" HorizontalAlignment="Right" Margin="0,60,10,0" FontWeight="ExtraLight" FontSize="26" VerticalAlignment="Top" />
-            <ListView Style="{StaticResource NoFocus}" x:Name="InvitedPlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Right" Margin="0,115,10,50" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="InvitedPlayerListView_SelectionChanged">
+            <ListView Style="{StaticResource NoFocus}" x:Name="InvitedPlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Right" Margin="0,115,10,50" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="InvitedPlayerListView_SelectionChanged" Width="238">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                         <GridViewColumn Width="250" />
