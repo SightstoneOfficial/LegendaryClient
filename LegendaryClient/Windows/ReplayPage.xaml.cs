@@ -26,7 +26,7 @@ namespace LegendaryClient.Windows
         ReplayRecorder recorder;
         SerializationContext context;
         EndOfGameStats selectedStats;
-        bool User = false;
+        bool User = true;
 
         public ReplayPage()
         {
@@ -219,6 +219,8 @@ namespace LegendaryClient.Windows
                     var fadeGridOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
                     Command.Visibility = Visibility.Hidden;
                     Download.Visibility = Visibility.Hidden;
+                    HintLabel.Visibility = Visibility.Visible;
+                    HintLabel.Content = "Starting replay download";
                     return;
                 }
                 else

@@ -476,7 +476,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = (QueueIds.ToArray());
+                parameters.QueueIds = QueueIds.ToArray();
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;

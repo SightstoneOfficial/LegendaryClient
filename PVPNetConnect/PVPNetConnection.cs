@@ -174,7 +174,7 @@ namespace PVPNetConnect
                     if (!Login())
                         return;
 
-                    //StartHeartbeat();
+                    StartHeartbeat();
                 });
                 t.IsBackground = true;
                 t.Start();

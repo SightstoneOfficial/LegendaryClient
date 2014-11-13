@@ -35,8 +35,13 @@ namespace LegendaryClient.Windows
             {
                 NameInvalidLabel.Visibility = Visibility.Hidden;
                 PracticeGameConfig gameConfig = new PracticeGameConfig();
-                gameConfig.GameName = NameTextBox.Text + "~" + Team1.Text + ":"+ Team2.Text;
+                gameConfig.GameName = NameTextBox.Text +  "– " + Team1.Text + " vs. " + Team2.Text;
                 gameConfig.GamePassword = PasswordTextBox.Text;
+                if ((bool)EasyCreate.IsChecked)
+                {
+                    gameConfig.GameName = "FACTIONS – " + Team1.Text + " vs. " + Team2.Text;
+                    gameConfig.GamePassword = "factions";
+                }
                 gameConfig.MaxNumPlayers = Convert.ToInt32(TeamSizeComboBox.SelectedItem) * 2;
                 switch ((string)GameTypeComboBox.SelectedItem)
                 {
@@ -86,6 +91,13 @@ namespace LegendaryClient.Windows
                     case "Howling Abyss":
                         gameConfig.GameMap = GameMap.HowlingAbyss;
                         gameConfig.GameMode = "ARAM";
+                        if (gameConfig.MaxNumPlayers < 6)
+                        {
+                            NameInvalidLabel.Content = "Team size must be higher or equal to 3";
+                            NameInvalidLabel.Visibility = Visibility.Visible;
+                            CreateGameButton.IsEnabled = false;
+                            return gameConfig;
+                        }
                         break;
 
                     case "The Twisted Treeline":
@@ -244,6 +256,20 @@ namespace LegendaryClient.Windows
                 {
                     WhitelistListBox.Items.Remove(WhitelistListBox.SelectedValue);
                 }));
+            }
+        }
+
+        private void EasyCreate_Checked(object sender, RoutedEventArgs e)
+        {
+            if ((bool)EasyCreate.IsChecked)
+            {
+                NameTextBox.IsEnabled = false;
+                PasswordTextBox.IsEnabled = false;
+            }
+            else
+            {
+                NameTextBox.IsEnabled = true;
+                PasswordTextBox.IsEnabled = true;
             }
         }
     }

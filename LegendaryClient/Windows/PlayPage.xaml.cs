@@ -351,6 +351,13 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.SwitchPage(new CreateCustomGamePage());
         }
+        private void JoinFactionGameButton_Click(object sender, object e)
+        {
+            if (isInGame()) 
+                return;
+            Client.ClearPage(typeof(FactionsJoinGamePage));
+            Client.SwitchPage(new FactionsJoinGamePage());
+        }
 
         private bool isInGame()
         {

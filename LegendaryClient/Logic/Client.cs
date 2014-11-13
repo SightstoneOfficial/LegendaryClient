@@ -216,7 +216,7 @@ namespace LegendaryClient.Logic
 
         internal static ChampionDTO[] PlayerChampions;
 
-        internal static AutoReplayRecorder Autorecorder;
+        internal static ReplayRecorder Autorecorder;
 
         internal static List<string> Whitelist = new List<string>();
 
@@ -333,11 +333,11 @@ namespace LegendaryClient.Logic
         {
             if (Dev == false)
             {
-                Client.LegendaryClientAddition = CurrentStatus + "∟";
+                Client.LegendaryClientAddition = CurrentStatus;
             }
             else if (Dev == true)
             {
-                Client.LegendaryClientAddition = CurrentStatus + "♒";
+                Client.LegendaryClientAddition = CurrentStatus;
             }
             else if (hidelegendaryaddition == true)
             {
@@ -347,10 +347,9 @@ namespace LegendaryClient.Logic
 
         internal static string GetPresence()
         {
-            NewStatus();
             return "<body>" +
                   "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
-                  "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level>" +
+                  "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level> <UsingLegendaryClient>true</UsingLegendaryClient>" +
                   "<wins>" + AmountOfWins + "</wins>" +
                   (IsRanked ?
                   "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
@@ -360,7 +359,7 @@ namespace LegendaryClient.Logic
                   "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
                   "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
                   "<gameStatus>" + GameStatus + "</gameStatus>" +
-                  "<statusMsg>" + LegendaryClientAddition + "</statusMsg>" +
+                  "<statusMsg>" + CurrentStatus + "</statusMsg>" +
                 //Look for "∟" to recognize LegendaryClient Users
                 //Look for "♒" to recongnize Devs
                     "</body>";
@@ -437,15 +436,10 @@ namespace LegendaryClient.Logic
                                 case "statusMsg":
                                     reader.Read();
                                     Player.Status = reader.Value;
-                                    if (Player.Status.EndsWith("∟"))
-                                    {
-                                        Player.UsingLegendary = true;
-                                    }
-                                    else if (Player.Status.EndsWith("♒"))
-                                    {
-                                        Player.IsLegendaryDev = true;
-                                        Player.UsingLegendary = true;
-                                    }
+                                    break;
+
+                                case "UsingLegendaryClient":
+                                    Player.UsingLegendary = true;
                                     break;
 
                                 case "gameStatus":
@@ -722,25 +716,6 @@ namespace LegendaryClient.Logic
         internal static System.Timers.Timer HeartbeatTimer;
         internal static int HeartbeatCount;
 
-        internal static void StartHeartbeat()
-        {
-            HeartbeatTimer = new System.Timers.Timer();
-            HeartbeatTimer.Elapsed += new ElapsedEventHandler(DoHeartbeat);
-            HeartbeatTimer.Interval = 120000; // in milliseconds
-            HeartbeatTimer.Start();
-        }
-
-        internal async static void DoHeartbeat(object sender, ElapsedEventArgs e)
-        {
-            if (IsLoggedIn)
-            {
-                //string LCDSHeartBeatString = Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId) + "|" + PlayerSession.Token, HeartbeatCount + "|" + DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT'KKKK");
-                Client.Log("Preforming LCDSHeartBeat");
-                await PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId), PlayerSession.Token, HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT'KKKK"));
-
-                HeartbeatCount++;
-            }
-        }
 
         //internal static Inviter CurrentInviter;
 
@@ -975,44 +950,31 @@ namespace LegendaryClient.Logic
             p.StartInfo.WorkingDirectory = GameDirectory;
             p.StartInfo.FileName = Path.Combine(GameDirectory, "League of Legends.exe");
             p.Exited += p_Exited;
-            //"8394" "LoLLauncher.exe" "" "127.0.0.1 5119 17BLOhi6KZsTtldTsizvHg== 47917791"
             p.StartInfo.Arguments = "\"8394\" \"" + RootLocation + "LoLLauncher.exe" + "\" \"" + "\" \"" +
                 CurrentGame.ServerIp + " " +
                 CurrentGame.ServerPort + " " +
                 CurrentGame.EncryptionKey + " " +
                 CurrentGame.SummonerId + "\"";
             p.Start();
+            MainWin.Visibility = Visibility.Hidden;
             MainWin.Hide();
-            
-            ReplayTimer = new System.Windows.Forms.Timer();
-            ReplayTimer.Tick += new EventHandler(CountdownTimer_Tick);
-            ReplayTimer.Interval = 10000; // 10 seconds
-            ReplayTimer.Start();
-        }
-
-        static void p_Exited(object sender, EventArgs e)
-        {
-            MainWin.Show();
-        }
-
-
-        private static void CountdownTimer_Tick(object sender, EventArgs e)
-        {
             string ObserverServerIp;
             double GameId;
             string InternalName;
             string ObserverEncryptionKey;
 
-            PlayerCredentialsDto replaydata = new PlayerCredentialsDto();
+            PlayerCredentialsDto replaydata = CurrentGame;
             ObserverServerIp = replaydata.ObserverServerIp;
             GameId = replaydata.GameId;
             InternalName = Region.InternalName;
             ObserverEncryptionKey = replaydata.ObserverEncryptionKey;
-            if (ReplayTimer.Interval == 0)
-            {
-                ReplayTimer.Stop();
-                Autorecorder = new LegendaryClient.Logic.Replays.AutoReplayRecorder(ObserverServerIp, GameId, InternalName, ObserverEncryptionKey);
-            }
+            Autorecorder = new LegendaryClient.Logic.Replays.ReplayRecorder(ObserverServerIp, (Int32)GameId, InternalName, ObserverEncryptionKey);
+        }
+
+        static void p_Exited(object sender, EventArgs e)
+        {
+            MainWin.Show();
+            MainWin.Visibility = Visibility.Visible;
         }
 
         internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)
@@ -1173,7 +1135,8 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnPresence(object sender, Presence pres)
         {
-            if(pres.InnerText == "") ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
+            if(pres.InnerText == "")
+                ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
         }
     }
 

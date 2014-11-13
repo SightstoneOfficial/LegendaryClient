@@ -19,7 +19,14 @@ namespace LegendaryClient.Logic.Patcher
             string dragonJSON = "";
             using (WebClient client = new WebClient())
             {
-                dragonJSON = client.DownloadString("http://ddragon.leagueoflegends.com/realms/na.js");
+                try
+                {
+                    dragonJSON = client.DownloadString("http://ddragon.leagueoflegends.com/realms/na.js");
+                }
+                catch
+                {
+                    
+                }
             }
             dragonJSON = dragonJSON.Replace("Riot.DDragon.m=", "").Replace(";", "");
             JavaScriptSerializer serializer = new JavaScriptSerializer();

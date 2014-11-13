@@ -42,12 +42,12 @@ namespace LegendaryClient.Windows
                 GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
             }
             Client.InviteListView = InviteListView;
-            Regex r = new Regex("~(.*[^:]):(.*)");
-            Match m = r.Match(GameName.Content.ToString());
-            if (m.Success)
+            string result = GameName.Content.ToString().Replace("FACTIONS – ", "").Replace(" vs. ","|");
+            string[] x = result.Split('|');
+            if (x.Length == 2)
             {
-                leftTeam = m.Groups[1].Value;
-                rightTeam = m.Groups[2].Value;
+                leftTeam = x[0];
+                rightTeam = x[1];
                 LeftTeamLabel.Content = leftTeam;
                 RightTeamLabel.Content = rightTeam;
             }

@@ -165,13 +165,11 @@ namespace LegendaryClient.Windows
                 PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
                 if (playerItem.Status != null)
                 {
-                    //Client.hidelegendaryaddition = true;
-                    Client.NewStatus();
+
                 }
                 else if (playerItem.Status == null)
                 {
                     Client.hidelegendaryaddition = true;
-                    Client.NewStatus();
                 }
                 else
                 {

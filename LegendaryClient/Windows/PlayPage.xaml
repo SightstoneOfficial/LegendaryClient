@@ -35,6 +35,7 @@
                 <DropShadowEffect />
             </Controls:ProgressRing.Effect>
         </Controls:ProgressRing>
-        <Button x:Name="CreateFactionGameButton" Content="Create Faction Game" HorizontalAlignment="Left" Margin="300,0,0,10" VerticalAlignment="Bottom" Width="140" Height="42" Click="CreateFactionGameButton_Click" />
+        <Button x:Name="CreateFactionGameButton" Content="Create a Faction Game" HorizontalAlignment="Left" Margin="300,0,0,10" VerticalAlignment="Bottom" Width="140" Height="42" Click="CreateFactionGameButton_Click" />
+        <Button x:Name="JoinFactionGameButton" Content="Join a Faction Game" HorizontalAlignment="Left" Margin="445,0,0,10" VerticalAlignment="Bottom" Width="140" Height="42" Click="JoinFactionGameButton_Click" />
     </Grid>
 </Page>

@@ -31,9 +31,9 @@ namespace LegendaryClient.Logic.Replays
             this.GameId = GameId;
             this.Region = Region;
             this.Server = "http://" + Server;
-            Directory.CreateDirectory(Path.Combine("cabinet", GameId + "-" + Region));
+            Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region));
 
-            File.WriteAllText(Path.Combine("cabinet", GameId + "-" + Region, "key"), Key);
+            File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "key"), Key);
 
             int ChunkTimeInterval;
             int LastChunk = 0;
@@ -41,15 +41,16 @@ namespace LegendaryClient.Logic.Replays
             {
                 client.DownloadFile(
                     String.Format("{0}/consumer/version", this.Server + "/observer-mode/rest"),
-                Path.Combine("cabinet", GameId + "-" + Region, "version"));
+                Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "version"));
 
                 string token = client.DownloadString(
-                    String.Format("{0}/consumer/{1}/{2}/{3}/token", this.Server + "/observer-mode/rest",
+                    String.Format("{0}/consumer/{1}/{2}/{3}/token", 
+                    this.Server + "/observer-mode/rest",
                     "getGameMetaData",
                     Region,
                     GameId));
 
-                using (StreamWriter outfile = new StreamWriter(Path.Combine("cabinet", GameId + "-" + Region, "token")))
+                using (StreamWriter outfile = new StreamWriter(Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "token")))
                 {
                     outfile.Write(token);
                 }
@@ -75,7 +76,7 @@ namespace LegendaryClient.Logic.Replays
                                 Region,
                                 GameId,
                                 i),
-                                Path.Combine("cabinet", GameId + "-" + Region, "chunk-" + i));
+                                Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + i));
 
                             if (OnGotChunk != null)
                                 OnGotChunk(i);
@@ -120,14 +121,14 @@ namespace LegendaryClient.Logic.Replays
                             Region,
                             GameId,
                             1),
-                        Path.Combine("cabinet", GameId + "-" + Region, "chunk-" + 1));
+                        Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + 1));
 
                     client.DownloadFile(
                         String.Format("{0}/consumer/{1}/{2}/{3}/token", Server + "/observer-mode/rest",
                         "endOfGameStats",
                         Region,
                         GameId),
-                    Path.Combine("cabinet", GameId + "-" + Region, "endOfGameStats"));
+                    Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "endOfGameStats"));
 
                     if (OnReplayRecorded != null)
                         OnReplayRecorded();
@@ -148,7 +149,7 @@ namespace LegendaryClient.Logic.Replays
                             Region,
                             GameId,
                             KeyFrameId),
-                        Path.Combine("cabinet", GameId + "-" + Region, "key-" + KeyFrameId));
+                        Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "key-" + KeyFrameId));
                     }
                 }
 
@@ -158,7 +159,7 @@ namespace LegendaryClient.Logic.Replays
                         Region,
                         GameId,
                         ChunkId),
-                    Path.Combine("cabinet", GameId + "-" + Region, "chunk-" + ChunkId));
+                    Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + ChunkId));
 
                 if (OnGotChunk != null)
                     OnGotChunk(ChunkId);

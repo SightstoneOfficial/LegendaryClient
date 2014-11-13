@@ -97,7 +97,6 @@ namespace LegendaryClient.Windows
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
-            Client.StartHeartbeat();
 
             //Retrieve latest client version
             /*
@@ -272,6 +271,17 @@ namespace LegendaryClient.Windows
                 Client.StatusContainer.Visibility = System.Windows.Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
 
+                AuthenticationCredentials newCredentials = new AuthenticationCredentials();
+                newCredentials.Username = LoginUsernameBox.Text;
+                newCredentials.Password = LoginPasswordBox.Password;
+                newCredentials.ClientVersion = Client.Version;
+                newCredentials.IpAddress = GetNewIpAddress();
+                newCredentials.Locale = Client.Region.Locale;
+                newCredentials.Domain = "lolclient.lol.riotgames.com";
+
+                Session login = await Client.PVPNet.Login(newCredentials);
+                Client.PlayerSession = login;
+
                 //Setup chat
                 Client.ChatClient.AutoReconnect = 30;
                 Client.ChatClient.KeepAlive = 10;
@@ -312,21 +322,6 @@ namespace LegendaryClient.Windows
                 else
                     Client.SwitchPage(new MainPage());
                 Client.ClearPage(typeof(LoginPage));
-
-                AuthenticationCredentials newCredentials = new AuthenticationCredentials();
-                newCredentials.Username = LoginUsernameBox.Text;
-                newCredentials.Password = LoginPasswordBox.Password;
-                newCredentials.ClientVersion = Client.Version;
-                newCredentials.IpAddress = GetNewIpAddress();
-                newCredentials.Locale = Client.Region.Locale;
-                newCredentials.Domain = "lolclient.lol.riotgames.com";
-
-                Session login = await Client.PVPNet.Login(newCredentials);
-                Client.PlayerSession = login;
-
-                //We need this HeartBeat so it looks like this is the real client
-                await Client.PVPNet.PerformLCDSHeartBeat(Convert.ToInt32(Client.LoginPacket.AllSummonerData.Summoner.AcctId), Client.PlayerSession.Token, Client.HeartbeatCount, DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-'%K"));
-                Client.HeartbeatCount++;
             }));
         }
 

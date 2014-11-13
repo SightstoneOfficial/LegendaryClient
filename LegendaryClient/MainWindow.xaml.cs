@@ -43,7 +43,6 @@ namespace LegendaryClient
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
 
             Client.InfoLabel = InfoLabel;
-            Client.StartHeartbeat();
             Client.PVPNet = new PVPNetConnection();
             Client.PVPNet.KeepDelegatesOnLogout = false;
             Client.PVPNet.OnError += Client.PVPNet_OnError;
