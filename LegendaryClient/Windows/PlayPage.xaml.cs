@@ -397,7 +397,13 @@ namespace LegendaryClient.Windows
         {
             InQueue = false;
             await Client.PVPNet.PurgeFromQueues();
+            await Client.PVPNet.QuitGame();
             await Client.PVPNet.Leave();
+            Client.ClearPage(typeof(CustomGameLobbyPage));
+            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ClearPage(typeof(FactionsCreateGamePage));
+            Client.ClearPage(typeof(FactionsGameLobbyPage));
+            Client.ClearPage(typeof(ChampSelectPage));
 
             foreach (Button btn in ButtonTimers.Keys)
             {

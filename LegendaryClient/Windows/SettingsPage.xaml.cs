@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Media.Imaging;
 
 namespace LegendaryClient.Windows
 {
@@ -138,6 +139,8 @@ A code signing license (So you know that you are using LegendaryClient)
             Addtheme("Light Red", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Red.xaml");
             Addtheme("Dark Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml");
             Addtheme("Light Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml");
+            Addtheme("Dark Purple", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Purple.xaml");
+            Addtheme("Light Purple", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Purple.xaml");
         }
 
         public void Addtheme(string Text, string Value)
@@ -188,6 +191,9 @@ A code signing license (So you know that you are using LegendaryClient)
         private void LoginImageBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             Properties.Settings.Default.LoginPageImage = LoginImageBox.Text;
+
+            if (UseAsBackground.HasContent && (bool)UseAsBackground.IsChecked && File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
+                Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
         }
 
         private void LoginImageBox_DropDownClosed(object sender, EventArgs e)
@@ -195,6 +201,8 @@ A code signing license (So you know that you are using LegendaryClient)
             string temp = Properties.Settings.Default.LoginPageImage;
             LoginImageBox.Items.Clear();
             LoginImageBox.Text = temp;
+            if (UseAsBackground.HasContent && (bool)UseAsBackground.IsChecked && File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
+                Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
         }
 
         private void LoginImageBox_DropDownOpened(object sender, EventArgs e)
@@ -217,14 +225,10 @@ A code signing license (So you know that you are using LegendaryClient)
             mainWindow.ChangeTheme();
         }
 
-        private void UseAsBackground_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void UseAsBackground_Changed(object sender, RoutedEventArgs e)
         {
-            if(UseAsBackground.HasContent) Properties.Settings.Default.UseAsBackgroundImage = (bool)UseAsBackground.IsChecked;
+            if (UseAsBackground.HasContent)
+                Properties.Settings.Default.UseAsBackgroundImage = (bool)UseAsBackground.IsChecked;
         }
     }
     public class WinThemes

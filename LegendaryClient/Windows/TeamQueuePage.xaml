@@ -32,7 +32,7 @@
         </ListView>
         <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Right" Margin="0,0,15,200" VerticalAlignment="Bottom" Width="395" Click="Invite_Click"/>
         <CheckBox x:Name="AutoAcceptCheckBox" Content="Auto Accept Queue" HorizontalAlignment="Right" Margin="0,0,615,203" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked"/>
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="10,0,10,40" Height="150" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="10,0,15,40" Height="150" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
@@ -40,7 +40,7 @@
             </RichTextBox.Resources>
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="10,0,120,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Button x:Name="ChatButton" Content="Send" Margin="470,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
+        <Button x:Name="ChatButton" Content="Send" Margin="0,0,15,9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
         <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="25" Stroke="Black" VerticalAlignment="Top" Width="70" Margin="0,18,13,0"/>
         <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging" VerticalAlignment="Top" Margin="0,18,15,0" Height="23" Width="68" Foreground="White" FontSize="16" TextAlignment="Center" RenderTransformOrigin="0.159,-0.961"/>
         <CheckBox x:Name="CreateRankedCheckBox" Visibility="Hidden" Content="Make Ranked" HorizontalAlignment="Left" Margin="215,0,0,203" VerticalAlignment="Bottom" Checked="CreateRankedCheckBox_Checked" Unchecked="CreateRankedCheckBox_Checked" />
