@@ -91,19 +91,12 @@ namespace LegendaryClient.Windows
                     case "Howling Abyss":
                         gameConfig.GameMap = GameMap.HowlingAbyss;
                         gameConfig.GameMode = "ARAM";
-                        if (gameConfig.MaxNumPlayers < 6)
-                        {
-                            NameInvalidLabel.Content = "Team size must be higher or equal to 3";
-                            NameInvalidLabel.Visibility = Visibility.Visible;
-                            CreateGameButton.IsEnabled = false;
-                            return gameConfig;
-                        }
                         break;
 
                     case "The Twisted Treeline":
                         gameConfig.GameMap = GameMap.TheTwistedTreeline;
                         gameConfig.GameMode = "CLASSIC";
-                        if (gameConfig.MaxNumPlayers > 6)
+                        if (gameConfig.MaxNumPlayers < 3)
                         {
                             NameInvalidLabel.Content = "Team size must be lower or equal to 3";
                             NameInvalidLabel.Visibility = Visibility.Visible;

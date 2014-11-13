@@ -91,13 +91,6 @@ namespace LegendaryClient.Windows
                     case "The Twisted Treeline":
                         gameConfig.GameMap = GameMap.TheTwistedTreeline;
                         gameConfig.GameMode = "CLASSIC";
-                        if (gameConfig.MaxNumPlayers > 6)
-                        {
-                            NameInvalidLabel.Content = "Team size must be lower or equal to 3";
-                            NameInvalidLabel.Visibility = Visibility.Visible;
-                            CreateGameButton.IsEnabled = false;
-                            return gameConfig;
-                        }
                         break;
 
                     default:

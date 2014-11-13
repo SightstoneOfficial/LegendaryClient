@@ -42,7 +42,7 @@ namespace LegendaryClient.Windows
                 GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
             }
             Client.InviteListView = InviteListView;
-            string result = GameName.Content.ToString().Replace("FACTIONS – ", "").Replace(" vs. ","|");
+            string result = GameName.Content.ToString().Replace("FACTIONS – ", "").Replace(" vs. ", "|").Replace(Client.GameLobbyDTO.OwnerSummary.SummonerName + "'s game– ", "");
             string[] x = result.Split('|');
             if (x.Length == 2)
             {
