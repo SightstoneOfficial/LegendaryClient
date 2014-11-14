@@ -583,6 +583,9 @@ namespace LegendaryClient.Logic
             else IsOnPlayPage = false;
             if (page.GetType() == typeof(ChampSelectPage)) BackgroundImage.Visibility = Visibility.Hidden;
             else BackgroundImage.Visibility = Visibility.Visible;
+
+            TrueCurrentPage = page;
+
             foreach (Page p in Pages) //Cache pages
             {
                 if (p.GetType() == page.GetType())
@@ -1051,13 +1054,13 @@ namespace LegendaryClient.Logic
         }
 
         #endregion League Of Legends Logic
-
-        internal static MainWindow MainWin;
-        internal static bool GroupIsShown;
-        internal static bool PlayerChatIsShown;
         internal static StatusPage statusPage;
         internal static ChatPage chatPage;
         internal static NotificationPage notificationPage;
+        internal static MainWindow MainWin;
+        internal static bool GroupIsShown;
+        internal static bool PlayerChatIsShown;
+        internal static Page TrueCurrentPage;
 
         #region Public Helper Methods
         internal static void FocusClient()

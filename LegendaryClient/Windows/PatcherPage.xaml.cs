@@ -639,6 +639,7 @@ namespace LegendaryClient.Windows
         private void GetAllPngs(string PackageManifest)
         {
             string[] FileMetaData = PackageManifest.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
+            Version currentVersion = new Version(File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")));
             foreach (string s in FileMetaData)
             {
                 if (String.IsNullOrEmpty(s))
@@ -648,30 +649,34 @@ namespace LegendaryClient.Windows
                 //Remove size and type metadata
                 string Location = s.Split(',')[0];
                 //Get save position
-                string SavePlace = Location.Split(new string[] { "/files/" }, StringSplitOptions.None)[1];
-                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions")))
-                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "champions"));
-                if (SavePlace.EndsWith(".jpg") || SavePlace.EndsWith(".png"))
+                Version version = new Version(Location.Split(new string[] { "/releases/", "/files/" }, StringSplitOptions.None)[1]);
+                if (version > currentVersion)
                 {
-                    if (SavePlace.Contains("assets/images/champions/"))
+                    string SavePlace = Location.Split(new string[] { "/files/" }, StringSplitOptions.None)[1];
+                    if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions")))
+                        Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "champions"));
+                    if (SavePlace.EndsWith(".jpg") || SavePlace.EndsWith(".png"))
                     {
-                        using (WebClient newClient = new WebClient())
+                        if (SavePlace.Contains("assets/images/champions/"))
                         {
-                            string SaveName = Location.Split(new string[] { "/champions/" }, StringSplitOptions.None)[1];
-                            LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "champions", SaveName));
+                            using (WebClient newClient = new WebClient())
+                            {
+                                string SaveName = Location.Split(new string[] { "/champions/" }, StringSplitOptions.None)[1];
+                                LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
+                                newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "champions", SaveName));
+                            }
                         }
-                    }
-                    else if (SavePlace.Contains("assets/images/abilities/"))
-                    {
-                        using (WebClient newClient = new WebClient())
+                        else if (SavePlace.Contains("assets/images/abilities/"))
                         {
-                            string SaveName = Location.Split(new string[] { "/abilities/" }, StringSplitOptions.None)[1];
-                            LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
-                            if(SaveName.ToLower().Contains("passive"))
-                                newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "passive", SaveName));
-                            else
-                                newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SaveName));
+                            using (WebClient newClient = new WebClient())
+                            {
+                                string SaveName = Location.Split(new string[] { "/abilities/" }, StringSplitOptions.None)[1];
+                                LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
+                                if (SaveName.ToLower().Contains("passive"))
+                                    newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "passive", SaveName));
+                                else
+                                    newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SaveName));
+                            }
                         }
                     }
                 }

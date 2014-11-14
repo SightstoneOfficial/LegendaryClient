@@ -239,7 +239,7 @@ namespace LegendaryClient.Windows
             if (y.Contains("Steel"))
                 BackBar.Background = (Brush)bc.ConvertFrom("#FF141414");
             else if (y.Contains("Blue"))
-                BackBar.Background = (Brush)bc.ConvertFrom("#FF1EA0AF");
+                BackBar.Background = (Brush)bc.ConvertFrom("#FF1585B5");
             else if (y.Contains("Red"))
                 BackBar.Background = (Brush)bc.ConvertFrom("#FFA01414");
             else if (y.Contains("Green"))

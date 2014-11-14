@@ -150,6 +150,9 @@
     <Compile Include="Controls\ChatItem.xaml.cs">
       <DependentUpon>ChatItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PlayerStatisticsChampSelect.xaml.cs">
+      <DependentUpon>PlayerStatisticsChampSelect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GroupChatPlayer.xaml.cs">
       <DependentUpon>GroupChatPlayer.xaml</DependentUpon>
     </Compile>
@@ -193,6 +196,8 @@
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WindowExtensions.cs" />
+    <Compile Include="Logic\GameClientSettings\General.cs" />
+    <Compile Include="Logic\GameClientSettings\LOLGCSettings.cs" />
     <Compile Include="Logic\Replays\AutoReplayRecorder.cs" />
     <Compile Include="Logic\BotLogic\Bots.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\AlistarBot.cs" />
@@ -480,6 +485,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ChatItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PlayerStatisticsChampSelect.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
