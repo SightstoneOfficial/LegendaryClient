@@ -24,6 +24,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms.Integration;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -40,6 +41,14 @@ namespace LegendaryClient.Windows
             Version.TextChanged += WaterTextbox_TextChanged;
             if (Client.Version == "4.18.1" || Client.Version == "0.0.0")	
                 Client.Version = "4.19.1";
+            bool x = Properties.Settings.Default.DarkTheme;
+            if (!x)
+            {
+                var bc = new BrushConverter();
+                HideGrid.Background = (Brush)bc.ConvertFrom("#B24F4F4F");
+                LoggingInProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
+            }
+            //#B2C8C8C8
             Version.Text = Client.Version;
 
             if (!Properties.Settings.Default.DisableLoginMusic)
@@ -369,6 +378,33 @@ namespace LegendaryClient.Windows
             Dictionary<string, string> deserializedJSON = serializer.Deserialize<Dictionary<string, string>>(sb.ToString());
 
             return deserializedJSON["ip_address"];
+        }
+
+        private Vector MoveOffset;
+        private Point CurrentLocation;
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
+                CurrentLocation = Mouse.GetPosition(MouseGrid);
+                MoveOffset = new Vector(tt.X, tt.Y);
+                HideGrid.CaptureMouse();
+            }
+        }
+
+        private void Grid_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (HideGrid.IsMouseCaptured)
+            {
+                Vector offset = Point.Subtract(e.GetPosition(MouseGrid), CurrentLocation);
+
+                tt.X = MoveOffset.X + offset.X;
+                tt.Y = MoveOffset.Y + offset.Y;
+            }
+        }
+        private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            HideGrid.ReleaseMouseCapture();
         }
     }
 }

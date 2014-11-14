@@ -1055,6 +1055,9 @@ namespace LegendaryClient.Logic
         internal static MainWindow MainWin;
         internal static bool GroupIsShown;
         internal static bool PlayerChatIsShown;
+        internal static StatusPage statusPage;
+        internal static ChatPage chatPage;
+        internal static NotificationPage notificationPage;
 
         #region Public Helper Methods
         internal static void FocusClient()

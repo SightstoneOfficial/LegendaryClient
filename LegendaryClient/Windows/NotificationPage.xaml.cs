@@ -37,6 +37,16 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             LoadTimer();
             UpdateData();
+            Change();
+        }
+        public void Change()
+        {
+            var bc = new BrushConverter();
+            bool x = Properties.Settings.Default.DarkTheme;
+            if (x)
+                TheGrid.Background = (Brush)bc.ConvertFrom("#E5000000");
+            else
+                TheGrid.Background = (Brush)bc.ConvertFrom("#E5B4B4B4");
         }
         private void LoadTimer()
         {

@@ -9,15 +9,19 @@
       xmlns:my="http://schemas.awesomium.com/winfx" 
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="LoginPage">
-    <Grid Background="Black" Margin="0">
+    <Grid x:Name="MouseGrid" Background="Black" Margin="0">
         <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
 
         <MediaElement x:Name="LoginPic" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1"/>
-        <Grid x:Name="HideGrid" HorizontalAlignment="Left" Height="331" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
+        <Grid x:Name="HideGrid" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp" HorizontalAlignment="Left" Height="331" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
             <Grid.Effect>
                 <DropShadowEffect />
             </Grid.Effect>
+            <Grid.RenderTransform>
+                <TranslateTransform x:Name="tt"/>
+            </Grid.RenderTransform>
+            
             <Label x:Name="WelcomeLabel" Content="Login to League of Legends" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" />
             <Grid x:Name="LoginGrid" HorizontalAlignment="Left" Height="230" Margin="0,50,0,0" VerticalAlignment="Top" Width="350">
                 <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="White" Margin="10,10,0,0" FontSize="18" FontWeight="Bold" />
