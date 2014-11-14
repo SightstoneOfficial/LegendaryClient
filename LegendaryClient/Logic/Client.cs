@@ -1054,7 +1054,9 @@ namespace LegendaryClient.Logic
         }
 
         #endregion League Of Legends Logic
-
+        internal static StatusPage statusPage;
+        internal static ChatPage chatPage;
+        internal static NotificationPage notificationPage;
         internal static MainWindow MainWin;
         internal static bool GroupIsShown;
         internal static bool PlayerChatIsShown;
