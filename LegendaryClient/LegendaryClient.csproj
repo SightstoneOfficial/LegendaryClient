@@ -150,6 +150,9 @@
     <Compile Include="Controls\ChatItem.xaml.cs">
       <DependentUpon>ChatItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PlayerStatisticsChampSelect.xaml.cs">
+      <DependentUpon>PlayerStatisticsChampSelect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GroupChatPlayer.xaml.cs">
       <DependentUpon>GroupChatPlayer.xaml</DependentUpon>
     </Compile>
@@ -480,6 +483,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ChatItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PlayerStatisticsChampSelect.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

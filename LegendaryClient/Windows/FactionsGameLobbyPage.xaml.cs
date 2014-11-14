@@ -51,10 +51,9 @@ namespace LegendaryClient.Windows
                 LeftTeamLabel.Content = leftTeam;
                 RightTeamLabel.Content = rightTeam;
             }
-
-            Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Factions Game Lobby";
+            Client.CurrentPage = this;
         }
 
         private void GameLobby_OnMessageReceived(object sender, object message)
