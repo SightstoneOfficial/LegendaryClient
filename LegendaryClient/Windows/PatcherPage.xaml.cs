@@ -18,6 +18,7 @@ using System.Linq;
 using RAFlibPlus;
 using ComponentAce.Compression.Libs.zlib;
 using Microsoft.Win32;
+using System.Windows.Media;
 
 namespace LegendaryClient.Windows
 {
@@ -26,12 +27,21 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class PatcherPage : Page
     {
+        //#FF2E2E2E
         internal static bool LoLDataIsUpToDate = false;
         internal static string LatestLolDataVersion = "";
         internal static string LolDataVersion = "";
         public PatcherPage()
         {
             InitializeComponent();
+            bool x = Properties.Settings.Default.DarkTheme;
+            if (!x)
+            {
+                var bc = new BrushConverter();
+                PatchTextBox.Background = (Brush)bc.ConvertFrom("#FFECECEC");
+                DevKey.Background = (Brush)bc.ConvertFrom("#FFECECEC");
+                PatchTextBox.Foreground = (Brush)bc.ConvertFrom("#FF1B1919");
+            }
             DevKey.TextChanged += DevKey_TextChanged;
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");

@@ -93,7 +93,7 @@ namespace LegendaryClient.Windows
         #region champs
         private string[] bilgewaterChampions = { "Fizz", "Gangplank", "Graves", "Katarina", "Miss Fortune", "Nami", "Nautilus", "Twisted Fate" };
         private string[] freljordChampions = { "Anivia", "Ashe", "Braum", "Lissandra", "Nunu", "Sejuani", "Tryndamere", "Volibear", "Gragas" };
-        private string[] ioniaChampions = { "Akali", "Irelia", "Karma", "Kennen", "Lee Sin", "Master Yi", "Shen", "Soraka", "Varus", "Ahri" };
+        private string[] ioniaChampions = { "Akali", "Irelia", "Karma", "Kennen", "Lee Sin", "Master Yi", "Shen", "Soraka", "Varus", "Ahri", "Yasuo" };
         private string[] shadowIslesChampions = { "Elise", "Evelynn", "Fiddlesticks", "Hecarim", "Karthus", "Mordekaiser", "Nocturne", "Thresh", "Yorick", "Urgot" };
         private string[] demaciaChampions = { "Fiora", "Galio", "Garen", "Jarvan IV", "Leona", "Lucian", "Lux", "Poppy", "Quinn", "Shyvana", "Sona", "Vayne", "Xin Zhao" };
         private string[] noxusChampions = { "Annie", "Cassiopeia", "Darius", "Dr. Mundo", "Draven", "Katarina", "LeBlanc", "Morgana", "Singed", "Sion", "Sivir", "Swain", "Talon", "Urgot", "Vladimir", "Warwick" };
@@ -416,6 +416,8 @@ namespace LegendaryClient.Windows
 
                     BlueListView.Items.Clear();
                     PurpleListView.Items.Clear();
+                    BlueListView.Items.Refresh();
+                    PurpleListView.Items.Refresh();
                     int i = 0;
                     bool PurpleSide = false;
 

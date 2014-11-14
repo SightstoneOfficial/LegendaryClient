@@ -54,9 +54,12 @@ namespace LegendaryClient
             ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
 
             Client.ChatClient = new JabberClient();
-            ChatContainer.Content = new ChatPage().Content;
-            NotificationContainer.Content = new NotificationPage().Content;
-            StatusContainer.Content = new StatusPage().Content;
+            Client.chatPage = new ChatPage();
+            ChatContainer.Content = Client.chatPage.Content;
+            Client.notificationPage = new NotificationPage();
+            NotificationContainer.Content = Client.notificationPage.Content;
+            Client.statusPage = new StatusPage();
+            StatusContainer.Content = Client.statusPage.Content;
             NotificationOverlayContainer.Content = new FakePage().Content;
 
             Grid NotificationTempGrid = null;

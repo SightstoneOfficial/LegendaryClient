@@ -37,6 +37,7 @@ namespace LegendaryClient.Windows
             UpdateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateChat);
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
+            Change();
         }
 
         private void PresenceChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -253,6 +254,16 @@ namespace LegendaryClient.Windows
         }
 
 #pragma warning disable 4014
+
+        public void Change()
+        {
+            var bc = new BrushConverter();
+            bool x = Properties.Settings.Default.DarkTheme;
+            if (x)
+                TheGrid.Background = (Brush)bc.ConvertFrom("#E5000000");
+            else
+                TheGrid.Background = (Brush)bc.ConvertFrom("#E5B4B4B4");
+        }
 
         private void Invite_Click(object sender, RoutedEventArgs e)
         {

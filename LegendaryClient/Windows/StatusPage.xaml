@@ -14,7 +14,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="#FF141414">
+    <Grid x:Name="BackBar" Background="#FF141414">
         <ListView x:Name="ChatListView" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Margin="1,0,374,0" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}" >
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">

@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Linq;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace LegendaryClient.Windows
 {
@@ -22,6 +23,7 @@ namespace LegendaryClient.Windows
             //Client.StatusGrid = StatusGrid;
             Client.ChatListView = ChatListView;
             Client.ChatClient.OnMessage += ChatClient_OnMessage;
+            Change();
         }
 
         //Blink and add to notification list if messaged
@@ -132,7 +134,6 @@ namespace LegendaryClient.Windows
 
         public void ChatListView_ItemClicked(object sender, MouseButtonEventArgs e)
         {
-
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tItem = sender as ListViewItem;
@@ -229,6 +230,22 @@ namespace LegendaryClient.Windows
                     }
                 }
             }));
+        }
+        public void Change()
+        {
+            bool x = Properties.Settings.Default.DarkTheme;
+            string y = Properties.Settings.Default.Theme;
+            var bc = new BrushConverter();
+            if (y.Contains("Steel"))
+                BackBar.Background = (Brush)bc.ConvertFrom("#FF141414");
+            else if (y.Contains("Blue"))
+                BackBar.Background = (Brush)bc.ConvertFrom("#FF1EA0AF");
+            else if (y.Contains("Red"))
+                BackBar.Background = (Brush)bc.ConvertFrom("#FFA01414");
+            else if (y.Contains("Green"))
+                BackBar.Background = (Brush)bc.ConvertFrom("#FF2DA014");
+            else if (y.Contains("Purple"))
+                BackBar.Background = (Brush)bc.ConvertFrom("#FF5A14A0");
         }
     }
 }

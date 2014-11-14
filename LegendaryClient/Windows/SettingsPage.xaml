@@ -37,6 +37,8 @@
                     <Slider x:Name="VoiceVolumeSlider" HorizontalAlignment="Stretch" Margin="180,225,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
                     <Label Content="Announcer Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,278,0,0" VerticalAlignment="Top" />
                     <Slider x:Name="AnnouncerVolumeSlider" HorizontalAlignment="Stretch" Margin="180,285,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
+                    <Label Content="Announcer Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,329,0,0" VerticalAlignment="Top" />
+                    <Slider x:Name="AnnouncerVolumeSlider_Copy" HorizontalAlignment="Stretch" Margin="180,342,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
                 </Grid>
             </TabItem>
             <TabItem Header="Interface">

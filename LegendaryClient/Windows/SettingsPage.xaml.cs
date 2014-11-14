@@ -223,6 +223,9 @@ A code signing license (So you know that you are using LegendaryClient)
             Properties.Settings.Default.Theme = (string)(ThemeBox.SelectedItem as WinThemes).Value;
             
             mainWindow.ChangeTheme();
+            Client.statusPage.Change();
+            Client.chatPage.Change();
+            Client.notificationPage.Change();
         }
 
         private void UseAsBackground_Changed(object sender, RoutedEventArgs e)
