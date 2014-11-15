@@ -234,6 +234,7 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnLogin += PVPNet_OnLogin;
             Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
             BaseRegion SelectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+
             Client.Region = SelectedRegion;
             //Client.Version = "4.18.14";
             Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);

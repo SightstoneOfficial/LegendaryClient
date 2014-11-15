@@ -47,7 +47,6 @@ namespace LegendaryClient.Windows
             SpectatorComboBox.SelectedValue = Client.LoginPacket.CompetitiveRegion;
             BaseRegion region = BaseRegion.GetRegion(Client.LoginPacket.CompetitiveRegion);
             ChangeSpectatorRegion(region);
-
             GetNews(region);
 
             timer.Interval = (5000);

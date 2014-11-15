@@ -247,6 +247,8 @@ namespace LegendaryClient.Windows
             LobbyTimeLabel.Content = counter;
         }
 
+        List<Participant> AllParticipants;
+
         /// <summary>
         /// Main logic behind Champion Select
         /// </summary>
@@ -271,10 +273,12 @@ namespace LegendaryClient.Windows
                     }
 
                     //Push all teams into one array to save a foreach call (looks messy)
-                    List<Participant> AllParticipants = new List<Participant>(ChampDTO.TeamOne.ToArray());
-                    AllParticipants.AddRange(ChampDTO.TeamTwo);
+                    if (AllParticipants == null)
+                    {
+                        AllParticipants = new List<Participant>(ChampDTO.TeamOne.ToArray());
+                        AllParticipants.AddRange(ChampDTO.TeamTwo);
+                    }
 
-                    AllParticipants = AllParticipants.Distinct().ToList();
                     foreach (Participant p in AllParticipants)
                     {
                         if (p is PlayerParticipant)
