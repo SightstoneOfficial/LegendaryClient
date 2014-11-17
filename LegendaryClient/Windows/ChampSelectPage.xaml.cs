@@ -247,8 +247,6 @@ namespace LegendaryClient.Windows
             LobbyTimeLabel.Content = counter;
         }
 
-        List<Participant> AllParticipants;
-
         /// <summary>
         /// Main logic behind Champion Select
         /// </summary>
@@ -273,11 +271,11 @@ namespace LegendaryClient.Windows
                     }
 
                     //Push all teams into one array to save a foreach call (looks messy)
-                    if (AllParticipants == null)
-                    {
-                        AllParticipants = new List<Participant>(ChampDTO.TeamOne.ToArray());
-                        AllParticipants.AddRange(ChampDTO.TeamTwo);
-                    }
+                    
+                    List<Participant> AllParticipants = new List<Participant>(ChampDTO.TeamOne.ToArray());
+                    AllParticipants.AddRange(ChampDTO.TeamTwo);
+
+                    int t = 1;
 
                     foreach (Participant p in AllParticipants)
                     {
@@ -295,6 +293,7 @@ namespace LegendaryClient.Windows
                                     break;
                                 }
                             }
+                            if (String.IsNullOrEmpty((p as PlayerParticipant).SummonerName)) { (p as PlayerParticipant).SummonerName = "Summoner " + t; t++; }
                         }
                         //Otherwise block selection of champions unless in dev mode
                         if (!DevMode)
@@ -304,6 +303,8 @@ namespace LegendaryClient.Windows
                         }
                         GameStatusLabel.Content = "Waiting for others to pick...";
                     }
+
+                    AllParticipants = AllParticipants.Distinct().ToList();
 
                     //Champion select was cancelled 
                     if (ChampDTO.GameState == "TEAM_SELECT")
