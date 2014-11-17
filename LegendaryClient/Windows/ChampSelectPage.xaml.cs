@@ -877,7 +877,6 @@ namespace LegendaryClient.Windows
                 //Full opacity when not picking or banning
                 control.Opacity = 1;
             }
-            Client.Log(player.SummonerName + " - " + player.PickTurn + " - " + LatestDto.PickTurn);
             //If trading with this player is possible
             if (CanTradeWith != null && (CanTradeWith.PotentialTraders.Contains(player.SummonerInternalName) || DevMode))
             {
