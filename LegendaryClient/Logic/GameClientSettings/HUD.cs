@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace LegendaryClient.Logic.GameClientSettings
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-    public class General : Attribute
+    class HUD : Attribute
     {
         public string name { get; set; }
-        public bool isGeneral { get; set; }
-        public General(string name)
+        public bool isHUD { get; set; }
+        public HUD(string name)
         {
             this.name = name;
-            this.isGeneral = true;
+            this.isHUD = true;
         }
     }
 }

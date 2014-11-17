@@ -197,6 +197,7 @@
     </Compile>
     <Compile Include="Controls\WindowExtensions.cs" />
     <Compile Include="Logic\GameClientSettings\General.cs" />
+    <Compile Include="Logic\GameClientSettings\HUD.cs" />
     <Compile Include="Logic\GameClientSettings\LOLGCSettings.cs" />
     <Compile Include="Logic\Replays\AutoReplayRecorder.cs" />
     <Compile Include="Logic\BotLogic\Bots.cs" />
@@ -1007,6 +1008,7 @@
     </Content>
     <Resource Include="NONE.png" />
     <Resource Include="ReplayControls\noise.png" />
+    <Resource Include="noise.png" />
     <Content Include="PVPNetConnect.csproj" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -31,6 +31,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
+            Client.LaunchGame();
             Client.IsInGame = true;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;

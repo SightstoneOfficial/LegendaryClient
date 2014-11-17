@@ -587,7 +587,7 @@ namespace LegendaryClient.Windows
                         {
                             CountdownTimer.Stop();
                         }
-                        Client.LaunchGame();
+                        //Client.LaunchGame();
                         InGame();
                         Client.ReturnButton.Visibility = Visibility.Hidden;
                     }));

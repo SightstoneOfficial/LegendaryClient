@@ -967,8 +967,6 @@ namespace LegendaryClient.Logic
                 CurrentGame.EncryptionKey + " " +
                 CurrentGame.SummonerId + "\"";
             p.Start();
-            MainWin.Visibility = Visibility.Hidden;
-            MainWin.Hide();
             string ObserverServerIp;
             double GameId;
             string InternalName;

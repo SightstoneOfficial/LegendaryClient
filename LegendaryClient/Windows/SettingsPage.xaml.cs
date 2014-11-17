@@ -3,7 +3,9 @@ using MahApps.Metro;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -232,6 +234,39 @@ A code signing license (So you know that you are using LegendaryClient)
         {
             if (UseAsBackground.HasContent)
                 Properties.Settings.Default.UseAsBackgroundImage = (bool)UseAsBackground.IsChecked;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string x = HudLink.Text;
+            x = x.Replace("http://leaguecraft.com/uimods/", "");
+            string y = x.Split('-')[0];
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    client.DownloadFileAsync(new Uri("http://leaguecraft.com/uimods/download/?id=" + y), Path.Combine(Client.ExecutingDirectory, "LCHudFile.zip"));
+                    client.DownloadFileCompleted += (o, xm) => 
+                    { 
+                        ResultTextbox.Content = "Hud downloaded. Extracting your hud";
+                        ResultTextbox.Visibility = Visibility.Visible;
+                        string final = Path.Combine(Client.Location, "DATA", "menu", "hud");
+                        string[] files = Directory.GetFiles(final);
+                        foreach (string file in files)
+                        {
+                            if (file.EndsWith(".tga"))
+                                File.Delete(Path.Combine(final, file));
+                        }
+                        ZipFile.ExtractToDirectory(Path.Combine(Client.ExecutingDirectory, "LCHudFile.zip"), final);
+                        
+                    };
+                }
+                catch
+                {
+                    ResultTextbox.Content = "Unable to install hud. Please check the link or try running LegendaryClient as admin.";
+                    ResultTextbox.Visibility = Visibility.Visible;
+                }
+            }
         }
     }
     public class WinThemes
