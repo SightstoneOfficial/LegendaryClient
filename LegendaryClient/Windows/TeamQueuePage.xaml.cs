@@ -147,7 +147,7 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.MakeOwner(stats.SummonerId);
         }
 
-        double startTime = 1;
+        double startTime = 0;
 
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
@@ -363,26 +363,6 @@ namespace LegendaryClient.Windows
                             Client.PVPNet.OnMessageReceived += GotQueuePop;
                         }
                         return;
-                    }
-                    else if (QueueDTO.GameState == "CHAMP_SELECT")
-                    {
-                        string s = QueueDTO.GameState;
-                        Client.ChampSelectDTO = QueueDTO;
-                        Client.GameID = QueueDTO.Id;
-                        Client.ChampSelectDTO = QueueDTO;
-                        Client.LastPageContent = Client.Container.Content;
-                        Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.SwitchPage(new ChampSelectPage(this));
-                    }
-                    else if (QueueDTO.GameState == "PRE_CHAMP_SELECT")
-                    {
-                        string s = QueueDTO.GameState;
-                        Client.ChampSelectDTO = QueueDTO;
-                        Client.GameID = QueueDTO.Id;
-                        Client.ChampSelectDTO = QueueDTO;
-                        Client.LastPageContent = Client.Container.Content;
-                        Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.SwitchPage(new ChampSelectPage(this));
                     }
                 }));
             }
