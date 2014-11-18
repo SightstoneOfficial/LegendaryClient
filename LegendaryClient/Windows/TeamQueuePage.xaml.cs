@@ -147,10 +147,20 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.MakeOwner(stats.SummonerId);
         }
 
+        double startTime = 1;
+
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
-            if (i++ < 10)//Ping every 10 seconds
+            if (i++ < 10)
+            {
+                if (inQueue)
+                {
+                    TimeSpan time = TimeSpan.FromSeconds(startTime);
+                    startTime++;
+                    setStartButtonText(string.Format("{0:D2}:{1:D2} Re-Click To Leave", time.Minutes, time.Seconds));
+                }
                 return;
+            }
             i = 0;
             double PingAverage = HighestPingTime(Client.Region.PingAddresses);
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -335,12 +345,14 @@ namespace LegendaryClient.Windows
             }
             else if (message is GameDTO)
             {
-                GameDTO Queue = message as GameDTO;
-                if (Queue.GameState == "TERMINATED")
+                GameDTO QueueDTO = message as GameDTO;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    if (QueueDTO.GameState == "TERMINATED")
                     {
-                        if (Queue.TerminatedCondition != "NOT_TERMINATED")
+                        Client.OverlayContainer.Visibility = Visibility.Hidden;
+                        Client.OverlayContainer.Content = null;
+                        if (QueueDTO.QueuePosition == 0)
                         {
                             setStartButtonText("Start Game");
                             inQueue = false;
@@ -350,8 +362,29 @@ namespace LegendaryClient.Windows
                         {
                             Client.PVPNet.OnMessageReceived += GotQueuePop;
                         }
-                    }));
-                }
+                        return;
+                    }
+                    else if (QueueDTO.GameState == "CHAMP_SELECT")
+                    {
+                        string s = QueueDTO.GameState;
+                        Client.ChampSelectDTO = QueueDTO;
+                        Client.GameID = QueueDTO.Id;
+                        Client.ChampSelectDTO = QueueDTO;
+                        Client.LastPageContent = Client.Container.Content;
+                        Client.OverlayContainer.Visibility = Visibility.Hidden;
+                        Client.SwitchPage(new ChampSelectPage(this));
+                    }
+                    else if (QueueDTO.GameState == "PRE_CHAMP_SELECT")
+                    {
+                        string s = QueueDTO.GameState;
+                        Client.ChampSelectDTO = QueueDTO;
+                        Client.GameID = QueueDTO.Id;
+                        Client.ChampSelectDTO = QueueDTO;
+                        Client.LastPageContent = Client.Container.Content;
+                        Client.OverlayContainer.Visibility = Visibility.Hidden;
+                        Client.SwitchPage(new ChampSelectPage(this));
+                    }
+                }));
             }
             else if (message is GameNotification)
             {
@@ -415,7 +448,7 @@ namespace LegendaryClient.Windows
 
         private void GotQueuePop(object sender, object message)
         {
-            if (Client.runonce == false && message is GameDTO)
+            if (Client.runonce == false && message is GameDTO && (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
             {
                 GameDTO Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -425,11 +458,6 @@ namespace LegendaryClient.Windows
                 }));
                 Client.PVPNet.OnMessageReceived -= GotQueuePop;
             }
-        }
-
-        public void readdHandler()
-        {
-            Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 
         private bool DevMode = false, makeRanked = false;
@@ -523,7 +551,8 @@ namespace LegendaryClient.Windows
                 return;
             }
             Client.PVPNet.OnMessageReceived += GotQueuePop;
-            setStartButtonText("In Queue...");
+            setStartButtonText("Joining Queue");
+            startTime = 1;
             inQueue = true;
         }
 

@@ -20,8 +20,6 @@ It come with a metro-like installer [no dlls needed, a stand alone program]
 
 Known Issues / TODO
 ===================
-* Ranked / draft is glitchy. It will spawn multiple of the same player. Expect it, it will happen, but it works fine.
-* Solo Queue is buggy (if someone dodges / leaves champ select you have to restart client, for now use team queueing even for solo)
 * Team Builder is not implemented
 * Logging out doesn't update friends list / crashes. (just restart the client)
 * Replays are in work

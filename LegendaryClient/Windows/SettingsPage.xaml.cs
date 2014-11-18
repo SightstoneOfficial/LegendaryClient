@@ -233,7 +233,21 @@ A code signing license (So you know that you are using LegendaryClient)
         private void UseAsBackground_Changed(object sender, RoutedEventArgs e)
         {
             if (UseAsBackground.HasContent)
+            {
                 Properties.Settings.Default.UseAsBackgroundImage = (bool)UseAsBackground.IsChecked;
+                if (Properties.Settings.Default.UseAsBackgroundImage)
+                {
+                    if (UseAsBackground.HasContent && (bool)UseAsBackground.IsChecked && File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
+                    {
+                        Client.BackgroundImage.Visibility = Visibility.Visible;
+                        Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
+                    }
+                }
+                else
+                {
+                    Client.BackgroundImage.Visibility = Visibility.Hidden;
+                }
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

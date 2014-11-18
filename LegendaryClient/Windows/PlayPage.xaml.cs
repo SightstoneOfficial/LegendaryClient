@@ -134,6 +134,7 @@ namespace LegendaryClient.Windows
                         item.Height = 80;
                         item.QueueButton.Tag = config;
                         item.QueueButton.Click += QueueButton_Click;
+                        item.QueueButton.IsEnabled = false;
                         item.TeamQueueButton.Tag = config;
                         item.TeamQueueButton.Click += TeamQueueButton_Click;
                         item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);

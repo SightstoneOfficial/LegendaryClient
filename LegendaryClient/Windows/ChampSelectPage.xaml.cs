@@ -109,6 +109,7 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(Page previousPage)
         {
             InitializeComponent();
+            Client.OverlayContainer.Content = null;
             StartChampSelect();
             this.previousPage = previousPage;
             string Sound = AmbientChampSelect.currentQueueToSoundFile(Client.QueueId);
@@ -408,10 +409,6 @@ namespace LegendaryClient.Windows
                         Client.NotificationGrid.Children.Add(pop);
                         Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                         Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
-                        if (previousPage is TeamQueuePage)
-                            (previousPage as TeamQueuePage).readdHandler();
-                        else if (previousPage is PlayPage)
-                            (previousPage as PlayPage).readdHandler();
                         Client.SwitchPage(previousPage);
                         Client.ClearPage(typeof(ChampSelectPage));
                         Client.ReturnButton.Visibility = Visibility.Hidden;
@@ -588,7 +585,7 @@ namespace LegendaryClient.Windows
                         {
                             CountdownTimer.Stop();
                         }
-                        //Client.LaunchGame();
+                        Client.LaunchGame();
                         InGame();
                         Client.ReturnButton.Visibility = Visibility.Hidden;
                     }));
