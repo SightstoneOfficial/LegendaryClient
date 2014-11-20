@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Maps
 
         public static BaseMap GetMap(int RequestedMap)
         {
-            Type t = Type.GetType("LegendaryClient.Logic.Maps." + RequestedMap);
+            Type t = Type.GetType("LegendaryClient.Logic.Maps.Map" + RequestedMap);
 
             if (t != null)
             {
