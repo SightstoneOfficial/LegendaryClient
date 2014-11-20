@@ -405,9 +405,18 @@ namespace LegendaryClient.Windows
                 {
                     GameId = (int)pair.Value;
                 }
+                    //tried this, caused a crash, worked fine when deleted
                 else if (pair.Key == "mapId")
                 {
-                    MapLabel.Content = BaseMap.GetMap((int)pair.Value).DisplayName;
+                    try
+                    {
+                        MapLabel.Content = BaseMap.GetMap((int)pair.Value).DisplayName;
+                    }
+                    catch (Exception e)
+                    {
+                        Client.Log(e.Source, "Error");
+                        Client.Log(e.Message, "Error");
+                    }
                 }
                 else if (pair.Key == "gameLength")
                 {

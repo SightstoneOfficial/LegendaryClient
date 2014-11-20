@@ -8,13 +8,20 @@ namespace LegendaryClient.Logic.Maps
 
         public static BaseMap GetMap(int RequestedMap)
         {
-            Type t = Type.GetType("LegendaryClient.Logic.Maps.Map" + RequestedMap);
+            Type t = Type.GetType("LegendaryClient.Logic.Maps." + RequestedMap);
 
             if (t != null)
             {
                 return (BaseMap)Activator.CreateInstance(t);
             }
-            return null;
+            return new UnknownMap();
+        }
+    }
+    public class UnknownMap : BaseMap
+    {
+        public override string DisplayName
+        {
+            get { return "Unknown Map"; }
         }
     }
 }
