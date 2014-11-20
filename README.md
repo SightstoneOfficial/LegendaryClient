@@ -30,6 +30,7 @@ Known Issues / TODO
 
 LegacyPVP
 =========
+[THIS PUSHED AFTER COMPLETION OF LC. DO NOT ASK QUESTIONS]
 The new rework of LegendaryClient. I will leave this here to honor Snowl's work.
 https://github.com/eddy5641/LegacyPVP
 This will still be worked on, You will not see much difference between the time I put into LegendaryClient (I finished a different project)
