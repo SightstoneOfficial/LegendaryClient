@@ -43,8 +43,10 @@ namespace LegendaryClient.Logic.GameClientSettings
         [General("CfgVersion")]
         public string cfgVersion { get; set; }
         #endregion
+
         #region HUD
         [HUD("ShowTimestamps")]
+        public int showTimestamps { get; set; }
         [HUD("ChatScale")]
         [HUD("NewAggroIndicator")]
         [HUD("NameTagDisplay")]

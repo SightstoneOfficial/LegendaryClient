@@ -5,8 +5,8 @@ namespace PVPNetConnect
 {
     public enum Region
     {
-        [ServerValue("prod.na1.lol.riotgames.com")]
-        [LoginQueueValue("https://lq.na1.lol.riotgames.com/")]
+        [ServerValue("prod.na2.lol.riotgames.com")]
+        [LoginQueueValue("https://lq.na2.lol.riotgames.com/")]
         [LocaleValue("en_US")]
         [UseGarenaValue(false)]
         NA,

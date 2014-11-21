@@ -14,7 +14,14 @@ namespace LegendaryClient.Logic.Maps
             {
                 return (BaseMap)Activator.CreateInstance(t);
             }
-            return null;
+            return new UnknownMap();
+        }
+    }
+    public class UnknownMap : BaseMap
+    {
+        public override string DisplayName
+        {
+            get { return "Unknown Map"; }
         }
     }
 }

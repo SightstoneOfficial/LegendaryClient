@@ -20,8 +20,9 @@ It come with a metro-like installer [no dlls needed, a stand alone program]
 
 Known Issues / TODO
 ===================
-* Team Builder is not implemented
+* Team Builder is not implemented / superbuggy
 * Logging out doesn't update friends list / crashes. (just restart the client)
+* If you login, all LC users will be unable to see your name (lol client is fine) also you won't be added to friends list if you login and one of your friends use lc (will fix this)
 * Replays are in work
 * Shop is just bad, but that's like last. (again, use official client for now if you need to purchase RP, etc.)
 * Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
@@ -30,6 +31,7 @@ Known Issues / TODO
 
 LegacyPVP
 =========
+[THIS PUSHED AFTER COMPLETION OF LC. DO NOT ASK QUESTIONS]
 The new rework of LegendaryClient. I will leave this here to honor Snowl's work.
 https://github.com/eddy5641/LegacyPVP
 This will still be worked on, You will not see much difference between the time I put into LegendaryClient (I finished a different project)

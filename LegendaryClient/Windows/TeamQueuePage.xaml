@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:Controls="clr-namespace:LegendaryClient.Controls"
       x:Class="LegendaryClient.Windows.TeamQueuePage" 
       mc:Ignorable="d" 
       d:DesignHeight="568" d:DesignWidth="1280"
@@ -44,6 +44,7 @@
         <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="25" Stroke="Black" VerticalAlignment="Top" Width="70" Margin="0,18,13,0"/>
         <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging" VerticalAlignment="Top" Margin="0,18,15,0" Height="23" Width="68" Foreground="White" FontSize="16" TextAlignment="Center" RenderTransformOrigin="0.159,-0.961"/>
         <CheckBox x:Name="CreateRankedCheckBox" Visibility="Hidden" Content="Make Ranked" HorizontalAlignment="Left" Margin="215,0,0,203" VerticalAlignment="Bottom" Checked="CreateRankedCheckBox_Checked" Unchecked="CreateRankedCheckBox_Checked" />
+        <Controls:TextBoxWatermarked x:Name="SelectChampBox" Visibility="Hidden" HorizontalAlignment="Left" Height="23" Margin="309,0,0,200" TextWrapping="Wrap" Watermark="Auto Lock Champ" VerticalAlignment="Bottom" Width="120"/>
 
     </Grid>
 </Page>

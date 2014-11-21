@@ -803,6 +803,10 @@ namespace LegendaryClient.Windows
                         item.Tag = champ.ChampionId;
                         item.Content = championImage.Content;
                         ChampionSelectListView.Items.Add(item);
+                        if (previousPage is TeamQueuePage && !String.IsNullOrEmpty((previousPage as TeamQueuePage).SelectChampBox.Text) && (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower() == getChamp.displayName.ToLower())
+                        {
+                            Client.PVPNet.SelectChampion(SelectChampion.SelectChamp(champ.ChampionId));
+                        }
                     }
                 }
             }
@@ -1201,9 +1205,6 @@ namespace LegendaryClient.Windows
                 if ((bool)Switch.IsChecked)
                 {
                     Switch.Content = "Champions";
-                    BrushConverter bc = new BrushConverter();
-                    Switch.Background = (Brush)bc.ConvertFrom("#FFCDCDCD");
-                    Switch.Foreground = (Brush)bc.ConvertFrom("#FF000000");
                     ChampionSelectListView.Visibility = Visibility.Hidden;
                     AfterChampionSelectGrid.Visibility = Visibility.Visible;
                 }

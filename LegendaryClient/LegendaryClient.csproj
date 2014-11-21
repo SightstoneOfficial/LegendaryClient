@@ -199,6 +199,7 @@
     <Compile Include="Logic\GameClientSettings\General.cs" />
     <Compile Include="Logic\GameClientSettings\HUD.cs" />
     <Compile Include="Logic\GameClientSettings\LOLGCSettings.cs" />
+    <Compile Include="Logic\Maps\Map11.cs" />
     <Compile Include="Logic\Replays\AutoReplayRecorder.cs" />
     <Compile Include="Logic\BotLogic\Bots.cs" />
     <Compile Include="Logic\BotLogic\PlayableBots\AlistarBot.cs" />

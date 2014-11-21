@@ -60,7 +60,7 @@
                     <Controls:TextBoxWatermarked Text="" x:Name="HudLink" HorizontalAlignment="Stretch" TextWrapping="Wrap" Watermark="Enter your LeagueCraft HUD URL here (http://leaguecraft.com/uimods/10913-c9-hud-bamban11.xhtml) and click install HUD" VerticalAlignment="Top" Margin="10,31,5,0"/>
                     <Button Content="Install HUD" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,58,10,0" Click="Button_Click"/>
                     <Label x:Name="ResultTextbox" Content="Unable to install hud. Please check the link. Hud installed successfully" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="914" Margin="15,58,0,0" FontSize="9"/>
-                    <Label Content="Ever wanted a hud of LeagueCraft except you didn't know how to do it. Well now just copy the hud " HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="9" Margin="111,4,0,0"/>
+                    <Label Content="Ever wanted a hud of LeagueCraft except you didn't know how to do it. Well now just copy the hud. Please note that not all huds work." HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="9" Margin="111,4,0,0"/>
                 </Grid>
             </TabItem>
         </TabControl>

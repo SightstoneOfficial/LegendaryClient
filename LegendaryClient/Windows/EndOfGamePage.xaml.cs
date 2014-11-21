@@ -92,6 +92,11 @@ namespace LegendaryClient.Windows
             ModeLabel.Content = Statistics.GameMode;
             TypeLabel.Content = Statistics.GameType;
 
+            GainedIP.Content = "+" + Statistics.IpEarned + " IP";
+            TotalIP.Content = Statistics.IpTotal.ToString().Replace(".0", "") + " IP Total";
+
+            GainedXP.Content = Statistics.ExperienceEarned;
+
             List<PlayerParticipantStatsSummary> AllParticipants = new List<PlayerParticipantStatsSummary>(Statistics.TeamPlayerParticipantStats.ToArray());
             AllParticipants.AddRange(Statistics.OtherTeamPlayerParticipantStats);
 
