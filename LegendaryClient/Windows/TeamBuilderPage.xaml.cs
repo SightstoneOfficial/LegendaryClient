@@ -556,7 +556,10 @@ namespace LegendaryClient.Windows
                     tr.Text = msg.From.Resource + ": ";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    if (Client.Filter)
+                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() + Environment.NewLine;
+                    else
+                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 }
             }));
@@ -576,7 +579,10 @@ namespace LegendaryClient.Windows
                 tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = ChatTextBox.Text + Environment.NewLine;
+                if (Client.Filter)
+                    tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
+                else
+                    tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 newRoom.PublicMessage(ChatTextBox.Text);
                 ChatTextBox.Text = "";
@@ -584,7 +590,7 @@ namespace LegendaryClient.Windows
             else if (connectedToChat == false)
             {
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = "You are not connected to chat! Join a teambuilder lobby to connect to chat.";
+                tr.Text = "You are not connected to chat! Join a teambuilder lobby to connect to chat." + Environment.NewLine;
             }
         }
 

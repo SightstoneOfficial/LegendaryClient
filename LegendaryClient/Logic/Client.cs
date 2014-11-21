@@ -35,6 +35,7 @@ using System.Xml;
 using log4net;
 using MahApps.Metro;
 using System.Threading.Tasks;
+using System.Linq;
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
 namespace LegendaryClient.Logic
@@ -76,6 +77,8 @@ namespace LegendaryClient.Logic
             //pvp.Login()
             return new LoginDataPacket();
         }
+
+        internal static bool Filter = true;
 
         /// <summary>
         /// Use this to play sounds
