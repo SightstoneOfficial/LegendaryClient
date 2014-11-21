@@ -291,14 +291,21 @@ namespace LegendaryClient.Windows
                 BackgroundWorker worker = new BackgroundWorker();
                 worker.DoWork += delegate
                 {
-                    string spectatorJSON = "";
-                    using (WebClient client = new WebClient())
+                    try
                     {
-                        spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
+                        string spectatorJSON = "";
+                        using (WebClient client = new WebClient())
+                        {
+                            spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
+                        }
+                        JavaScriptSerializer serializer = new JavaScriptSerializer();
+                        Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
+                        gameList = deserializedJSON["gameList"] as ArrayList;
                     }
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
-                    gameList = deserializedJSON["gameList"] as ArrayList;
+                    catch (WebException e)
+                    {
+                        Client.Log("Spectator JSON download timed out.");
+                    }
                 };
 
                 worker.RunWorkerCompleted += (s, args) => ParseSpectatorGames();

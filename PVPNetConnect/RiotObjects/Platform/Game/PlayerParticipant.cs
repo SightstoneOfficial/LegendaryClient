@@ -3,7 +3,7 @@ using System;
 
 namespace PVPNetConnect.RiotObjects.Platform.Game
 {
-    public class PlayerParticipant : Participant
+    public class PlayerParticipant : GameParticipant
     {
         public override string TypeName
         {

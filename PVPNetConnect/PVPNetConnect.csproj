@@ -88,6 +88,7 @@
     <Compile Include="RiotObjects\Platform\Game\ChampionBanInfoDTO.cs" />
     <Compile Include="RiotObjects\Platform\Game\GameDTO.cs" />
     <Compile Include="RiotObjects\Platform\Game\GameObserver.cs" />
+    <Compile Include="RiotObjects\Platform\Game\GameParticipant.cs" />
     <Compile Include="RiotObjects\Platform\Game\GameTypeConfigDTO.cs" />
     <Compile Include="RiotObjects\Platform\Game\Map\GameMap.cs" />
     <Compile Include="RiotObjects\Platform\Game\Message\GameNotification.cs" />

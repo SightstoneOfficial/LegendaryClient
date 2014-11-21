@@ -500,7 +500,7 @@ namespace LegendaryClient.Windows
                         }
                         else if (tempParticipant is ObfuscatedParticipant)
                         {
-                            control.PlayerName.Content = "Summoner " + i;
+                            control.PlayerName.Content = "Summoner " + ((tempParticipant as ObfuscatedParticipant).GameUniqueId - ((tempParticipant as ObfuscatedParticipant).GameUniqueId > 5 ? 5 : 0));
                         }
                         else if (tempParticipant is BotParticipant)
                         {
@@ -661,74 +661,81 @@ namespace LegendaryClient.Windows
             //Render default skin
             ListViewItem item = new ListViewItem();
             Image skinImage = new Image();
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
-            skinImage.Source = Client.GetImage(uriSource);
-            skinImage.Width = 191;
-            skinImage.Stretch = Stretch.UniformToFill;
-            item.Tag = "0:" + Champion.id; //Hack
-            item.Content = skinImage;
-            SkinSelectListView.Items.Add(item);
-            //Render abilities
-            List<championAbilities> Abilities = championAbilities.GetAbilities(selectedChampionID);
-            List<ChampionAbility> abilities = new List<ChampionAbility>();
-            foreach (championAbilities ability in Abilities)
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath)))
             {
-                ChampionAbility championAbility = new ChampionAbility();
-                if (ability.iconPath.ToLower().Contains("passive"))
-                    uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "passive", ability.iconPath);
-                else
-                    uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", ability.iconPath);
-                championAbility.AbilityImage.Source = Client.GetImage(uriSource);
-                if (!String.IsNullOrEmpty(ability.hotkey)) championAbility.AbilityHotKey.Content = ability.hotkey;
-                switch (ability.hotkey)
+                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
+                skinImage.Source = Client.GetImage(uriSource);
+                skinImage.Width = 191;
+                skinImage.Stretch = Stretch.UniformToFill;
+                item.Tag = "0:" + Champion.id; //Hack
+                item.Content = skinImage;
+                SkinSelectListView.Items.Add(item);
+                //Render abilities
+                List<championAbilities> Abilities = championAbilities.GetAbilities(selectedChampionID);
+                List<ChampionAbility> abilities = new List<ChampionAbility>();
+                foreach (championAbilities ability in Abilities)
                 {
-                    case "":
-                        championAbility.Order = 0;
-                        break;
-                    case "Q":
-                        championAbility.Order = 1;
-                        break;
-                    case "W":
-                        championAbility.Order = 2;
-                        break;
-                    case "E":
-                        championAbility.Order = 3;
-                        break;
-                    case "R":
-                        championAbility.Order = 4;
-                        break;
-                }
-                championAbility.AbilityName.Content = ability.name;
-                championAbility.AbilityDescription.Text = ability.description;
-                championAbility.Width = 375;
-                championAbility.Height = 75;
-                abilities.Add(championAbility);
-            }
-            abilities.Sort();
-            foreach (ChampionAbility a in abilities)
-                AbilityListView.Items.Add(a);
-
-            //Render champions
-            foreach (ChampionDTO champ in ChampList)
-            {
-                if (champ.ChampionId == selectedChampionID)
-                {
-                    foreach (ChampionSkinDTO skin in champ.ChampionSkins)
+                    ChampionAbility championAbility = new ChampionAbility();
+                    if (ability.iconPath.ToLower().Contains("passive"))
+                        uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "passive", ability.iconPath);
+                    else
+                        uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", ability.iconPath);
+                    championAbility.AbilityImage.Source = Client.GetImage(uriSource);
+                    if (!String.IsNullOrEmpty(ability.hotkey)) championAbility.AbilityHotKey.Content = ability.hotkey;
+                    switch (ability.hotkey)
                     {
-                        if (skin.Owned)
+                        case "":
+                            championAbility.Order = 0;
+                            break;
+                        case "Q":
+                            championAbility.Order = 1;
+                            break;
+                        case "W":
+                            championAbility.Order = 2;
+                            break;
+                        case "E":
+                            championAbility.Order = 3;
+                            break;
+                        case "R":
+                            championAbility.Order = 4;
+                            break;
+                    }
+                    championAbility.AbilityName.Content = ability.name;
+                    championAbility.AbilityDescription.Text = ability.description;
+                    championAbility.Width = 375;
+                    championAbility.Height = 75;
+                    abilities.Add(championAbility);
+                }
+                abilities.Sort();
+                foreach (ChampionAbility a in abilities)
+                    AbilityListView.Items.Add(a);
+
+                //Render champions
+                foreach (ChampionDTO champ in ChampList)
+                {
+                    if (champ.ChampionId == selectedChampionID)
+                    {
+                        foreach (ChampionSkinDTO skin in champ.ChampionSkins)
                         {
-                            item = new ListViewItem();
-                            skinImage = new Image();
-                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath);
-                            skinImage.Source = Client.GetImage(uriSource);
-                            skinImage.Width = 191;
-                            skinImage.Stretch = Stretch.UniformToFill;
-                            item.Tag = skin.SkinId;
-                            item.Content = skinImage;
-                            SkinSelectListView.Items.Add(item);
+                            if (skin.Owned)
+                            {
+                                item = new ListViewItem();
+                                skinImage = new Image();
+                                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath);
+                                skinImage.Source = Client.GetImage(uriSource);
+                                skinImage.Width = 191;
+                                skinImage.Stretch = Stretch.UniformToFill;
+                                item.Tag = skin.SkinId;
+                                item.Content = skinImage;
+                                SkinSelectListView.Items.Add(item);
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                Client.Log("File not found.");
             }
         }
 
