@@ -451,8 +451,8 @@ namespace LegendaryClient.Windows
                 tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatTextBox.Text = "";
-                if (DevMode) CreateRankedCheckBox.Visibility = Visibility.Visible;
-                else CreateRankedCheckBox.Visibility = Visibility.Hidden;
+                if (DevMode) { CreateRankedCheckBox.Visibility = Visibility.Visible; SelectChampBox.Visibility = Visibility.Visible; }
+                else { CreateRankedCheckBox.Visibility = Visibility.Hidden; SelectChampBox.Visibility = Visibility.Hidden; }
             }
             else
             {
@@ -468,6 +468,10 @@ namespace LegendaryClient.Windows
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }
+        }
+
+        internal string getSelectChamp() {
+            return SelectChampBox.Text;
         }
 
         internal List<Int32> QueueIds;
