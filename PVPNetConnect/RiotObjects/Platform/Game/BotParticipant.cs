@@ -49,7 +49,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public String TeamId { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public new String SummonerName { get; set; }
 
     }
 }
