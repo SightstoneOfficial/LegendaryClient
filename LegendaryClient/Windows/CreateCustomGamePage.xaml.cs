@@ -94,7 +94,7 @@ namespace LegendaryClient.Windows
                         break;
 
                     default:
-                        gameConfig.GameMap = GameMap.SummonersRift;
+                        gameConfig.GameMap = GameMap.NewSummonersRift;
                         gameConfig.GameMode = "CLASSIC";
                         break;
                 }
