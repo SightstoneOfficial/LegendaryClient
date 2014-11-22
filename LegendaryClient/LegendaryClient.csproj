@@ -196,6 +196,7 @@
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WindowExtensions.cs" />
+    <Compile Include="Logic\FilterChat.cs" />
     <Compile Include="Logic\GameClientSettings\General.cs" />
     <Compile Include="Logic\GameClientSettings\HUD.cs" />
     <Compile Include="Logic\GameClientSettings\LOLGCSettings.cs" />
