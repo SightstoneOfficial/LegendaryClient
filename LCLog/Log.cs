@@ -39,6 +39,7 @@ namespace LCLog
             Exception ex = (Exception)x.ExceptionObject;
             WriteToLog.Log(ex.Message, "UNHANDLEDEXCEPTION");
             WriteToLog.Log(ex.StackTrace, "UNHANDLEDEXCEPTION");
+
         }
 
         public static void Application_ThreadException(object sender, ThreadExceptionEventArgs t)

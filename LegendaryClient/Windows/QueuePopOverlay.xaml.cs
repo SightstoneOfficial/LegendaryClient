@@ -152,7 +152,7 @@ namespace LegendaryClient.Windows
             }
             AllParticipants = AllParticipants.Distinct().ToList(); //Seems to have fixed the queuepopoverlay page crashing.
                                                                    //whichever team you're on sometimes duplicates and could not find a reason as it doesn't happen a lot.
-
+            int i = 1;
             foreach (Participant p in AllParticipants)
             {
                 QueuePopPlayer player = new QueuePopPlayer();
@@ -179,14 +179,17 @@ namespace LegendaryClient.Windows
                     }
                     else
                     {
-                        player.PlayerLabel.Content = "Enemy";
+                        Client.Log(playerPart.SummonerId.ToString());
+                        player.PlayerLabel.Content = "Summoner " + i;
+                        i++;
                         player.RankLabel.Content = "";
                         Team2ListBox.Items.Add(player);
                     }
                 }
                 else
                 {
-                    player.PlayerLabel.Content = "Enemy";
+                    ObfuscatedParticipant oPlayer = p as ObfuscatedParticipant;
+                    player.PlayerLabel.Content = "Summoner " + (oPlayer.GameUniqueId - (oPlayer.GameUniqueId > 5 ? 5 : 0));
                     player.RankLabel.Content = "";
                     Team2ListBox.Items.Add(player);
                 }
