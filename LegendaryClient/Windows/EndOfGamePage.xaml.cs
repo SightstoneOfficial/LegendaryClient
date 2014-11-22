@@ -100,8 +100,8 @@ namespace LegendaryClient.Windows
 
             GainedIP.Content = "+" + Statistics.IpEarned + " IP";
             TotalIP.Content = Statistics.IpTotal.ToString().Replace(".0", "") + " IP Total";
-
-            GainedXP.Content = Statistics.ExperienceEarned;
+            string game = " XP";
+                    
 
             List<PlayerParticipantStatsSummary> AllParticipants = new List<PlayerParticipantStatsSummary>(Statistics.TeamPlayerParticipantStats.ToArray());
             AllParticipants.AddRange(Statistics.OtherTeamPlayerParticipantStats);
@@ -122,6 +122,27 @@ namespace LegendaryClient.Windows
                 double Assists = 0;
                 double Deaths = 0;
 
+                bool victory = false;
+                foreach (RawStatDTO stat in summary.Statistics)
+                {
+                    if (stat.StatTypeName.ToLower() == "win")
+                    {
+                        victory = true;
+                    }
+                }
+
+                if (Statistics.Ranked)
+                {
+                    game = " LP";
+
+                    GainedXP.Content = (victory ? "+" : "-") + Statistics.ExperienceEarned + game;
+                    TotalXP.Content = Statistics.ExperienceTotal + game;
+                }
+                else
+                {
+                    GainedXP.Content = "+" + Statistics.ExperienceEarned + game;
+                    TotalXP.Content = Statistics.ExperienceTotal + game;
+                }    
                 foreach (RawStatDTO stat in summary.Statistics)
                 {
                     if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
