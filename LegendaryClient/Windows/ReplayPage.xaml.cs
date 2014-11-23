@@ -299,6 +299,11 @@ namespace LegendaryClient.Windows
             string[] details = selectedStats.Difficulty.Split('-');
             Client.LaunchSpectatorGame("127.0.0.1:5651", File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", selectedStats.Difficulty, "key")), Convert.ToInt32(details[0]), details[1]);
         }
+
+        private void refresh_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateReplays();
+        }
     }
 
     public class FocusVisualTreeChanger

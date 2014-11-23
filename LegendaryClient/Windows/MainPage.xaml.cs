@@ -39,9 +39,12 @@ namespace LegendaryClient.Windows
         internal ArrayList gameList;
         internal ArrayList newsList;
         internal static System.Timers.Timer timer = new System.Timers.Timer();
+        internal List<int> curentlyRecording;
+
         public MainPage()
         {
             InitializeComponent();
+            curentlyRecording = new List<int>();
             AppDomain current = AppDomain.CurrentDomain;
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.LoginPacket.CompetitiveRegion;
@@ -503,8 +506,27 @@ namespace LegendaryClient.Windows
                 catch (Exception e) {
                     Client.Log(e.Message);
                 }
+<<<<<<< HEAD
 
             }));
+=======
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
+                MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
+            }
+            catch { MMRLabel.Content = "N/A"; }
+
+            if (curentlyRecording.Contains(GameId))
+            {
+                RecordButton.IsEnabled = false;
+                RecordButton.Content = "Recording...";
+            }
+            else
+            {
+                RecordButton.IsEnabled = true;
+                RecordButton.Content = "Record";
+            }
+>>>>>>> origin/master
         }
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)
@@ -603,6 +625,12 @@ namespace LegendaryClient.Windows
             BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
             //region.SpectatorIpAddress, key, gameId, platformId
             var recorder = new ReplayRecorder(region.SpectatorIpAddress + ":8088", gameId, platformId, key);
+            recorder.OnReplayRecorded += () => {
+                curentlyRecording.Remove(gameId);
+            };
+            curentlyRecording.Add(gameId);
+            RecordButton.IsEnabled = false;
+            RecordButton.Content = "Recording...";
         }
 
         private void HoverLabel_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
