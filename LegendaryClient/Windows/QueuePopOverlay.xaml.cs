@@ -91,36 +91,16 @@ namespace LegendaryClient.Windows
                         if (c == '1') //If checked
                         {
                             QueuePopPlayer player = null;
-                            if (i < (PlayerParticipantStatus.Length / 2)) //Team 1
+                            if (i < (PlayerParticipantStatus.Length / 2) && i < Team1ListBox.Items.Count - 1) //Team 1
                             {
-                                try
-                                {
-                                    player = (QueuePopPlayer)Team1ListBox.Items[i];
-                                }
-                                catch
-                                {
-                                    Client.Log("Error with queue pop");
-                                }
+                                player = (QueuePopPlayer)Team1ListBox.Items[i];
                             }
-                            else //Team 2
+                            //Team 2
+                            else if (i < Team2ListBox.Items.Count - 1)
                             {
-                                try
-                                {
-                                    player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
-                                }
-                                catch
-                                {
-                                    Client.Log("Error with queue pop");
-                                }
+                                player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
                             }
-                            try
-                            {
-                                player.ReadyCheckBox.IsChecked = true;
-                            }
-                            catch
-                            {
-                                Client.Log("Error with queue pop");
-                            }
+                            if(player != null) player.ReadyCheckBox.IsChecked = true;
                         }
                         i++;
                     }

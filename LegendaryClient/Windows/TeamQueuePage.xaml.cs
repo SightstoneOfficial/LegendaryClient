@@ -352,7 +352,7 @@ namespace LegendaryClient.Windows
                     {
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.OverlayContainer.Content = null;
-                        if (QueueDTO.QueuePosition == 0)
+                        if (QueueDTO.QueuePosition == 0) //They changed this as soon as I fixed it. Damnit riot lol.
                         {
                             setStartButtonText("Start Game");
                             inQueue = false;
@@ -362,7 +362,6 @@ namespace LegendaryClient.Windows
                         {
                             Client.PVPNet.OnMessageReceived += GotQueuePop;
                         }
-                        return;
                     }
                 }));
             }

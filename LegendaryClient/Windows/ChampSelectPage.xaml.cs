@@ -191,7 +191,7 @@ namespace LegendaryClient.Windows
             //Signal to the server we are in champion select
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
             //Selects Champion
-            if (previousPage is TeamQueuePage && !String.IsNullOrEmpty((previousPage as TeamQueuePage).SelectChampBox.Text))
+            if (previousPage is TeamQueuePage && (previousPage as TeamQueuePage).SelectChampBox.Text != "Auto Select Champ")
             {
                 await Client.PVPNet.SelectChampion(ChampList.FirstOrDefault(x => champions.GetChampion(x.ChampionId).displayName.ToLower() == (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower()).ChampionId);
             }
