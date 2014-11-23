@@ -91,12 +91,12 @@ namespace LegendaryClient.Windows
                         if (c == '1') //If checked
                         {
                             QueuePopPlayer player = null;
-                            if (i < (PlayerParticipantStatus.Length / 2) && i < Team1ListBox.Items.Count - 1) //Team 1
+                            if (i < PlayerParticipantStatus.Length / 2) //Team 1
                             {
-                                player = (QueuePopPlayer)Team1ListBox.Items[i];
+                                if(i <= Team1ListBox.Items.Count - 1) player = (QueuePopPlayer)Team1ListBox.Items[i];
                             }
                             //Team 2
-                            else if (i < Team2ListBox.Items.Count - 1)
+                            else if (i - 5 <= Team2ListBox.Items.Count - 1)
                             {
                                 player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
                             }
