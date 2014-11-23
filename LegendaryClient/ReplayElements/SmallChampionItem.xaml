@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              Height="32" Width="32">
     <Grid Width="42" Height="42" Margin="-2,-2,0,0" >
-        <Image x:Name="ChampionImage" Source="/LegendaryClient;component/Assets/champion/Twitch.png" >
+        <Image x:Name="ChampionImage" Margin="0,0,10,10" >
             <!--PUSH-->
             <Image.Clip>
                 <RectangleGeometry Rect="2,2,38,38"/>
