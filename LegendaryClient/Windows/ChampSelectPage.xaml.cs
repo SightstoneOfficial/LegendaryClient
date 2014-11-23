@@ -154,9 +154,6 @@ namespace LegendaryClient.Windows
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
-            if (previousPage is TeamQueuePage && !String.IsNullOrEmpty((previousPage as TeamQueuePage).SelectChampBox.Text))
-                await Client.PVPNet.SelectChampion(ChampList.First(x => x.DisplayName.ToLower() == (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower()).ChampionId);
-
             //Retrieve masteries and runes
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
@@ -813,6 +810,10 @@ namespace LegendaryClient.Windows
                         item.Tag = champ.ChampionId;
                         item.Content = championImage.Content;
                         ChampionSelectListView.Items.Add(item);
+                        if (previousPage is TeamQueuePage && !String.IsNullOrEmpty((previousPage as TeamQueuePage).SelectChampBox.Text) && (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower() == getChamp.displayName.ToLower())
+                        {
+                            Client.PVPNet.SelectChampion(SelectChampion.SelectChamp(champ.ChampionId));
+                        }
                     }
                 }
             }

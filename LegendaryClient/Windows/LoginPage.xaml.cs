@@ -354,7 +354,6 @@ namespace LegendaryClient.Windows
 
                 if (data != null && data.Game != null)
                 {
-                    Client.Log(data.PlayerCredentials.ChampionId.ToString());
                     Client.CurrentGame = data.PlayerCredentials;
                     Client.SwitchPage(new InGame());
                 }
