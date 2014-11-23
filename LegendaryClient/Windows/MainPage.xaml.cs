@@ -319,7 +319,7 @@ namespace LegendaryClient.Windows
 
         private async void ParseSpectatorGames()
         {
-            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 try
                 {
@@ -502,31 +502,23 @@ namespace LegendaryClient.Windows
                         MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
                     }
                     catch { MMRLabel.Content = "N/A"; }
+
+                    if (curentlyRecording.Contains(GameId))
+                    {
+                        RecordButton.IsEnabled = false;
+                        RecordButton.Content = "Recording...";
+                    }
+                    else
+                    {
+                        RecordButton.IsEnabled = true;
+                        RecordButton.Content = "Record";
+                    }
                 }
                 catch (Exception e) {
                     Client.Log(e.Message);
                 }
-<<<<<<< HEAD
-
             }));
-=======
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
-                MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
-            }
-            catch { MMRLabel.Content = "N/A"; }
-
-            if (curentlyRecording.Contains(GameId))
-            {
-                RecordButton.IsEnabled = false;
-                RecordButton.Content = "Recording...";
-            }
-            else
-            {
-                RecordButton.IsEnabled = true;
-                RecordButton.Content = "Record";
-            }
->>>>>>> origin/master
+                
         }
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)

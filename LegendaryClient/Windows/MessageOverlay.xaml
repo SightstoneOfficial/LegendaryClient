@@ -8,7 +8,7 @@
 	Title="MessageOverlay">
 
     <Grid Background="#B2000000">
-        <Grid HorizontalAlignment="Center" Width="750" Height="500" Margin="0,0,0,0" VerticalAlignment="Center" Background="#FF2B2B2B">
+        <Grid HorizontalAlignment="Center" Width="500" Height="450" Margin="0,0,0,0" VerticalAlignment="Center" Background="#B22B2B2B">
             <Label x:Name="MessageTitle" Content="Alert!" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="40" VerticalAlignment="Top" />
             <Button x:Name="AcceptButton" Content="OK" HorizontalAlignment="Stretch" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="30" Click="AcceptButton_Click" />
             <TextBox x:Name="MessageTextBox" HorizontalAlignment="Stretch" Margin="10,80,10,50" FontSize="20" FontWeight="ExtraLight" TextWrapping="Wrap" Background="{x:Null}" BorderBrush="{x:Null}" />

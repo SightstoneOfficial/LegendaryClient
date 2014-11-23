@@ -232,7 +232,7 @@ namespace LegendaryClient.Windows
                     TeamListView.Items.Clear();
                     IsOwner = false;
 
-                    if(CurrentLobby.Owner.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                    if(CurrentLobby.Owner != null && CurrentLobby.Owner.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
                     {
                         IsOwner = true;
                     }
@@ -531,9 +531,20 @@ namespace LegendaryClient.Windows
                     messageOver.MessageTitle.Content = "Could not join the queue";
                     foreach (QueueDodger x in result.PlayerJoinFailures)
                     {
-                        messageOver.MessageTextBox.Text += x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
                         TimeSpan time = TimeSpan.FromMilliseconds(x.PenaltyRemainingTime);
-                        messageOver.MessageTextBox.Text += "You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
+                        switch (x.ReasonFailed)
+                        {
+                            case "LEAVER_BUSTER_TAINT_WARNING":
+                                messageOver.MessageTextBox.Text += "You have left a game in progress. Please use the official client to remove the warning for now."; //Need to implement their new warning for leaving.
+                                break;
+                            case "QUEUE_DODGER":
+                                messageOver.MessageTextBox.Text += " - " + x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
+                                messageOver.MessageTextBox.Text += " - You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
+                                break;
+                            default:
+                                messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
+                                break;
+                        }
                     }
                     Client.OverlayContainer.Content = messageOver.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
