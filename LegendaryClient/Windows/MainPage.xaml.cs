@@ -319,7 +319,7 @@ namespace LegendaryClient.Windows
 
         private async void ParseSpectatorGames()
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 try
                 {
@@ -514,11 +514,11 @@ namespace LegendaryClient.Windows
                         RecordButton.Content = "Record";
                     }
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Client.Log(e.Message);
                 }
             }));
-                
         }
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)
@@ -617,7 +617,8 @@ namespace LegendaryClient.Windows
             BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
             //region.SpectatorIpAddress, key, gameId, platformId
             var recorder = new ReplayRecorder(region.SpectatorIpAddress + ":8088", gameId, platformId, key);
-            recorder.OnReplayRecorded += () => {
+            recorder.OnReplayRecorded += () =>
+            {
                 curentlyRecording.Remove(gameId);
             };
             curentlyRecording.Add(gameId);
