@@ -319,7 +319,7 @@ namespace LegendaryClient.Windows
 
         private async void ParseSpectatorGames()
         {
-            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 try
                 {

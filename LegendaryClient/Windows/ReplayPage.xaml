@@ -14,7 +14,7 @@
         <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="0,143,0,0" VerticalAlignment="Stretch" Width="420">
             <StackPanel x:Name="GamePanel" />
         </ScrollViewer>
-        <Button Name="refresh" Content="Refresh Replays" HorizontalAlignment="Left" Margin="425,650,0,0" VerticalAlignment="Top" Width="100" Click="refresh_Click"/>
+        <Button Name="refresh" Content="Refresh Replays" HorizontalAlignment="Left" Margin="425,0,0,10" VerticalAlignment="Bottom" Width="100" Click="refresh_Click"/>
         <Controls:TextBoxWatermarked x:Name="Command" Text="" TextChanged="Command_TextChanged" HorizontalAlignment="Left" TextWrapping="Wrap" Watermark="Enter username here" VerticalAlignment="Top" Margin="10,49,0,0" Width="330" Height="24"/>
         <Button x:Name="Download" Visibility="Hidden" Click="Download_Click" Content="Download" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="345,49,0,0" Height="24" FontSize="11"/>
         <Label x:Name="HintLabel" Content="" Margin="10,78,604,568"/>

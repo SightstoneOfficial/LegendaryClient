@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Threading;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LegendaryClient.Windows
 {
@@ -131,16 +132,21 @@ namespace LegendaryClient.Windows
                     {
                         player.PlayerLabel.Content = playerPart.SummonerName;
                         player.RankLabel.Content = "";
-                        SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
-                        foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
+
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            if (x.Queue == "RANKED_SOLO_5x5")
+                            var playerLeagues = Task<SummonerLeaguesDTO>.Factory.StartNew(() => Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId).Result).Result;
+                            foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
                             {
-                                player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+                                if (x.Queue == "RANKED_SOLO_5x5")
+                                {
+                                    player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+                                }
                             }
-                        }
-                        if (String.IsNullOrEmpty(player.RankLabel.Content.ToString()))
-                            player.RankLabel.Content = "Unranked";
+                            if (String.IsNullOrEmpty(player.RankLabel.Content.ToString()))
+                                player.RankLabel.Content = "Unranked";
+                        }));
+
                         Team1ListBox.Items.Add(player);
                     }
                     else
