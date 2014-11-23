@@ -5,11 +5,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Controls.PlayerItemReplay"
              mc:Ignorable="d"
-             d:DesignHeight="40" d:DesignWidth="400">
+             d:DesignHeight="40" Width="443">
     <Grid>
         <local:SmallChampionItem x:Name="ChampionIcon" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Center"/>
         <Label x:Name="PlayerNameLabel" Content="Snowl" HorizontalAlignment="Left" Margin="40,0,0,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Center"/>
-        <Label x:Name="File" Content="eddy.png" HorizontalAlignment="Left" Margin="339,7,0,7" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Center"/>
+        <Label x:Name="File" Content="eddy.png" HorizontalAlignment="Left" Margin="374,7,0,7" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Center"/>
+        <local:SmallChampionItem x:Name="gameItem1" HorizontalAlignment="Left" Margin="152,4,0,4" VerticalAlignment="Center"/>
+        <local:SmallChampionItem x:Name="gameItem2" HorizontalAlignment="Left" Margin="189,4,0,4" VerticalAlignment="Center"/>
+        <local:SmallChampionItem x:Name="gameItem3" HorizontalAlignment="Left" Margin="226,4,0,4" VerticalAlignment="Center"/>
+        <local:SmallChampionItem x:Name="gameItem4" HorizontalAlignment="Left" Margin="263,4,0,4" VerticalAlignment="Center"/>
+        <local:SmallChampionItem x:Name="gameItem5" HorizontalAlignment="Left" Margin="300,4,0,4" VerticalAlignment="Center"/>
+        <local:SmallChampionItem x:Name="gameTrinket" HorizontalAlignment="Left" Margin="337,4,0,4" VerticalAlignment="Center"/>
         <!--PUSH-->
     </Grid>
 </UserControl>
