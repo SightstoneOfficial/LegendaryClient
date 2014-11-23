@@ -502,31 +502,24 @@ namespace LegendaryClient.Windows
                         MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
                     }
                     catch { MMRLabel.Content = "N/A"; }
+                   
+                    if (curentlyRecording.Contains(GameId))
+                    {
+                        RecordButton.IsEnabled = false;
+                        RecordButton.Content = "Recording...";
+                    }
+                    else
+                    {
+                        RecordButton.IsEnabled = true;
+                        RecordButton.Content = "Record";
+                    }
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     Client.Log(e.Message);
                 }
-<<<<<<< HEAD
 
             }));
-=======
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
-                MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
-            }
-            catch { MMRLabel.Content = "N/A"; }
-
-            if (curentlyRecording.Contains(GameId))
-            {
-                RecordButton.IsEnabled = false;
-                RecordButton.Content = "Recording...";
-            }
-            else
-            {
-                RecordButton.IsEnabled = true;
-                RecordButton.Content = "Record";
-            }
->>>>>>> origin/master
         }
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)
@@ -625,7 +618,8 @@ namespace LegendaryClient.Windows
             BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
             //region.SpectatorIpAddress, key, gameId, platformId
             var recorder = new ReplayRecorder(region.SpectatorIpAddress + ":8088", gameId, platformId, key);
-            recorder.OnReplayRecorded += () => {
+            recorder.OnReplayRecorded += () =>
+            {
                 curentlyRecording.Remove(gameId);
             };
             curentlyRecording.Add(gameId);
