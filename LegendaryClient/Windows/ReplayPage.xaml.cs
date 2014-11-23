@@ -166,8 +166,10 @@ namespace LegendaryClient.Windows
 
             foreach (PlayerParticipantStatsSummary summary in stats.TeamPlayerParticipantStats)
             {
+                double k = -1, d = -1, a = -1;
                 PlayerItemReplay player = new PlayerItemReplay();
                 player.PlayerNameLabel.Content = summary.SummonerName;
+
                 foreach (RawStatDTO stat in summary.Statistics)
                 {
                     if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
@@ -196,15 +198,31 @@ namespace LegendaryClient.Windows
                                 break;
                         }
                     }
+                    switch(stat.StatTypeName)
+                    {
+                        case "CHAMPIONS_KILLED":
+                            k = stat.Value;
+                            break;
+                        case "NUM_DEATHS":
+                            d = stat.Value;
+                            break;
+                        case "ASSISTS":
+                            a = stat.Value;
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 player.ChampionIcon.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
                 player.File.Content = summary.SkinName;
+                player.KDA.Content = k + "/" + d + "/" + a;
 
                 TeamOnePanel.Children.Add(player);
             }
 
             foreach (PlayerParticipantStatsSummary summary in stats.OtherTeamPlayerParticipantStats)
             {
+                double k = -1, d = -1, a = -1;
                 PlayerItemReplay player = new PlayerItemReplay();
                 player.PlayerNameLabel.Content = summary.SummonerName;
                 foreach (RawStatDTO stat in summary.Statistics)
@@ -235,9 +253,24 @@ namespace LegendaryClient.Windows
                                 break;
                         }
                     }
+                    switch (stat.StatTypeName)
+                    {
+                        case "CHAMPIONS_KILLED":
+                            k = stat.Value;
+                            break;
+                        case "NUM_DEATHS":
+                            d = stat.Value;
+                            break;
+                        case "ASSISTS":
+                            a = stat.Value;
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 player.File.Content = summary.SkinName;
                 player.ChampionIcon.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
+                player.KDA.Content = k + "/" + d + "/" + a;
 
                 TeamTwoPanel.Children.Add(player);
             }
