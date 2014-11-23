@@ -26,7 +26,7 @@ namespace LegendaryClient.Logic
             var filter = input.ToLower();
             foreach(String wordlist in FilteredWords)
             {
-                if (filter.Contains(wordlist) && wordlist.Length != 0)
+                if (filter.Contains(wordlist))
                 {
                     filter.Replace(wordlist, String.Concat(Enumerable.Repeat("*", wordlist.Length)));
                 }
