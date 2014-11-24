@@ -13,7 +13,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
             get { return this.type; }
         }
 
-        private string type = "com.riotgames.platform.gameinvite.contract.LobbyStatus";
+        private string type = "com.riotgames.platform.gameinvite.contract.Player";
 
         public Player()
         {

@@ -34,6 +34,7 @@ using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System.Globalization;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
+using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 
 namespace LegendaryClient.Windows
 {
@@ -67,6 +68,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Client.InviteListView = InviteListView;
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
+
             //MainWindow Window = new MainWindow();
             //Window.Hide();
             //Opps
@@ -120,14 +122,6 @@ namespace LegendaryClient.Windows
             }
         }
 
-
-        private async void Inviter_Click(object sender, RoutedEventArgs e)
-        {
-            LastSender = (Button)sender;
-            Member stats = (Member)LastSender.Tag;
-            await Client.PVPNet.GrantInvite(stats.SummonerId);
-
-        }
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
@@ -220,10 +214,10 @@ namespace LegendaryClient.Windows
 
         private void RenderLobbyData()
         {
-            try 
+            try
             {
                 int Players = 0;
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
                     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
                     TextInfo textInfo = cultureInfo.TextInfo;
@@ -232,7 +226,7 @@ namespace LegendaryClient.Windows
                     TeamListView.Items.Clear();
                     IsOwner = false;
 
-                    if(CurrentLobby.Owner != null && CurrentLobby.Owner.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                    if (CurrentLobby.Owner != null && CurrentLobby.Owner.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
                     {
                         IsOwner = true;
                     }
@@ -270,20 +264,42 @@ namespace LegendaryClient.Windows
 
                     foreach (Member stats in CurrentLobby.Members)
                     {
-                    //Your kidding me right
+                        //Your kidding me right
                         TeamControl TeamPlayer = new TeamControl();
                         TeamPlayerStats = TeamPlayer;
                         TeamPlayer.Name.Content = stats.SummonerName;
                         TeamPlayer.SumID.Content = stats.SummonerName;
                         TeamPlayer.Kick.Tag = stats;
                         TeamPlayer.Inviter.Tag = stats;
+                        TeamPlayer.unInviter.Tag = stats;
                         TeamPlayer.Profile.Tag = stats;
                         TeamPlayer.Owner.Tag = stats;
                         TeamPlayer.Width = 1500;
                         TeamPlayer.HorizontalAlignment = HorizontalAlignment.Stretch;
 
                         TeamPlayer.Kick.Click += Kick_Click;
-                        TeamPlayer.Inviter.Click += Inviter_Click;
+                        TeamPlayer.Inviter.Click += async (object sender, RoutedEventArgs e) =>
+                        {
+                            LastSender = (Button)sender;
+                            Member s = (Member)LastSender.Tag;
+                            await Client.PVPNet.GrantInvite(s.SummonerId);
+                            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            {
+                                TeamPlayer.Inviter.Visibility = Visibility.Hidden;
+                                TeamPlayer.unInviter.Visibility = Visibility.Visible;
+                            }));
+                        };
+                        TeamPlayer.unInviter.Click += async (object sender, RoutedEventArgs e) =>
+                        {
+                            LastSender = (Button)sender;
+                            Member s = (Member)LastSender.Tag;
+                            await Client.PVPNet.revokeInvite(s.SummonerId);
+                            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            {
+                                TeamPlayer.Inviter.Visibility = Visibility.Visible;
+                                TeamPlayer.unInviter.Visibility = Visibility.Hidden;
+                            }));
+                        };
                         TeamPlayer.Profile.Click += Profile_Click;
                         TeamPlayer.Owner.Click += Owner_Click;
                         Players++;
@@ -301,6 +317,7 @@ namespace LegendaryClient.Windows
                         {
                             TeamPlayer.Kick.Visibility = Visibility.Hidden;
                             TeamPlayer.Inviter.Visibility = Visibility.Hidden;
+                            TeamPlayer.unInviter.Visibility = Visibility.Hidden;
                             TeamPlayer.Profile.Visibility = Visibility.Hidden;
                             TeamPlayer.Owner.Visibility = Visibility.Hidden;
                             if (stats.hasDelegatedInvitePower == true && IsOwner == false)
@@ -317,6 +334,7 @@ namespace LegendaryClient.Windows
                             //So you don't crash trying to kick someone when you can't
                             TeamPlayer.Kick.Visibility = Visibility.Hidden;
                             TeamPlayer.Inviter.Visibility = Visibility.Hidden;
+                            TeamPlayer.unInviter.Visibility = Visibility.Hidden;
                             TeamPlayer.Owner.Visibility = Visibility.Hidden;
                         }
                         TeamListView.Items.Add(TeamPlayer);
@@ -328,11 +346,15 @@ namespace LegendaryClient.Windows
                         else
                             InviteButton.IsEnabled = true;
                     }
-                    
+                    if (IsOwner)
+                    {
+                        Client.PVPNet.Call(Guid.NewGuid().ToString(), "suggestedPlayers", "retrieveOnlineFriendsOfFriends", "{\"queueId\":" + queueId + "}");
+                    }
+
                 }));
             }
             catch { }
-            
+
         }
 
         private void Update_OnMessageReceived(object sender, object message)
@@ -378,6 +400,77 @@ namespace LegendaryClient.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     EnteredQueue(message as SearchingForMatchNotification);
+                }));
+            }
+            else if (message is InvitePrivileges)
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    InvitePrivileges priv = message as InvitePrivileges;
+                    if (priv.canInvite)
+                    {
+                        TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                        tr.Text = "You may invite players to this game." + Environment.NewLine;
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        InviteButton.IsEnabled = true;
+                    }
+                    else
+                    {
+                        TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                        tr.Text = "You may no longer invite players to this game." + Environment.NewLine;
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        InviteButton.IsEnabled = false;
+                    }
+                }));
+            }
+            else if (message is LcdsServiceProxyResponse)
+            {
+                parseLcdsMessage(message as LcdsServiceProxyResponse); //Don't look there, its ugly!!! :)))
+            }
+        }
+
+        private void parseLcdsMessage(LcdsServiceProxyResponse ProxyResponse)
+        {
+            if (ProxyResponse.MethodName == "retrieveOnlineFriendsOfFriends")
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    FriendsOfFriendsView.Items.Clear();
+                    SuggestedFriend[] suggestedFriends = JsonConvert.DeserializeObject<SuggestedFriend[]>(ProxyResponse.Payload);
+                    foreach (SuggestedFriend s in suggestedFriends)
+                    {
+                        SuggestedPlayerItem invitePlayer = new SuggestedPlayerItem();
+                        invitePlayer.PlayerLabel.Content = s.summonerName;
+                        invitePlayer.inviteButton.Click += (object obj, RoutedEventArgs e) =>
+                        {
+                            Client.PVPNet.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
+                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            {
+                                foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
+                                {
+                                    if ((string)item.PlayerLabel.Content == s.summonerName)
+                                    {
+                                        item.inviteButton.IsEnabled = false;
+                                        item.inviteButton.Content = "Invited";
+                                        Timer t = new Timer();
+                                        t.AutoReset = false;
+                                        t.Elapsed += (object source, ElapsedEventArgs args) =>
+                                        {
+                                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                                            {
+                                                item.inviteButton.IsEnabled = true;
+                                                item.inviteButton.Content = "Invite";
+                                            }));
+                                        };
+                                        t.Interval = 5000;
+                                        t.Start();
+
+                                    }
+                                }
+                            }));
+                        };
+                        FriendsOfFriendsView.Items.Add(invitePlayer);
+                    }
                 }));
             }
         }
@@ -475,7 +568,8 @@ namespace LegendaryClient.Windows
             }
         }
 
-        internal string getSelectChamp() {
+        internal string getSelectChamp()
+        {
             return SelectChampBox.Text;
         }
 
@@ -568,6 +662,15 @@ namespace LegendaryClient.Windows
         private void CreateRankedCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             makeRanked = !makeRanked;
+        }
+
+        private class SuggestedFriend
+        {
+            public double summonerId { get; set; }
+            public double commonFriendId { get; set; }
+            public string summonerName { get; set; }
+            public string commonFriendName { get; set; }
+            public string SuggestedPlayerType { get; set; }
         }
     }
 }

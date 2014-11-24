@@ -78,6 +78,7 @@
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\InvitationRequest.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Invitee.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Inviter.cs" />
+    <Compile Include="RiotObjects\Platform\Gameinvite\Contract\InvitePrivileges.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\LobbyStatus.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Member.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Owner.cs" />
