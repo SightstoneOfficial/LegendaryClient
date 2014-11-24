@@ -81,7 +81,10 @@ namespace LegendaryClient.Controls
                         if (wins / total * 100.0 != 0) stats.Champ3ProgressBar.Value = wins / total * 100.0;
                         else stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
                     }
-                    if(!Client.MainGrid.Children.Contains(stats)) Client.MainGrid.Children.Add(stats);
+                    lock (Client.MainGrid.Children)
+                    {
+                        if (!Client.MainGrid.Children.Contains(stats)) Client.MainGrid.Children.Add(stats);
+                    }
                 }
                 if (loading && !Client.MainGrid.Children.Contains(stats)) Client.MainGrid.Children.Add(stats);
                 Point MouseLocation = e.GetPosition(Client.MainGrid);

@@ -540,6 +540,10 @@ namespace LegendaryClient.Windows
                                 messageOver.MessageTextBox.Text += " - " + x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
                                 messageOver.MessageTextBox.Text += " - You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
                                 break;
+                            case "QUEUE_RESTRICTED":
+                                messageOver.MessageTextBox.Text += " - You are too far apart in ranked to queue together.";
+                                messageOver.MessageTextBox.Text += " - For instance, Silvers can only queue with Bronze, Silver, or Gold players.";
+                                break;
                             default:
                                 messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
                                 break;
