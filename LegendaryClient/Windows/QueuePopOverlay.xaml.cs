@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Threading;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LegendaryClient.Windows
 {
@@ -22,7 +23,6 @@ namespace LegendaryClient.Windows
     public partial class QueuePopOverlay : Page
     {
         public bool ReverseString = false;
-        public bool HasStartedChampSelect = false;
         private static System.Timers.Timer QueueTimer;
         public int TimeLeft = 12;
         private Page previousPage;
@@ -67,9 +67,8 @@ namespace LegendaryClient.Windows
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         return;
                     }
-                    else if (QueueDTO.GameState == "CHAMP_SELECT")
+                    else if (QueueDTO.GameState == "PRE_CHAMP_SELECT" || QueueDTO.GameState == "CHAMP_SELECT")
                     {
-                        HasStartedChampSelect = true;
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         string s = QueueDTO.GameState;
                         Client.ChampSelectDTO = QueueDTO;
@@ -78,18 +77,6 @@ namespace LegendaryClient.Windows
                         Client.LastPageContent = Client.Container.Content;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.SwitchPage(new ChampSelectPage(previousPage));
-                    }
-                    else if (QueueDTO.GameState == "PRE_CHAMP_SELECT")
-                    {
-                        HasStartedChampSelect = true;
-                        Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
-                        string s = QueueDTO.GameState;
-                        Client.ChampSelectDTO = QueueDTO;
-                        Client.GameID = QueueDTO.Id;
-                        Client.ChampSelectDTO = QueueDTO;
-                        Client.LastPageContent = Client.Container.Content;
-                        Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.SwitchPage(new ChampSelectPage(this));
                     }
 
                     int i = 0;
@@ -105,36 +92,16 @@ namespace LegendaryClient.Windows
                         if (c == '1') //If checked
                         {
                             QueuePopPlayer player = null;
-                            if (i < (PlayerParticipantStatus.Length / 2)) //Team 1
+                            if (i < PlayerParticipantStatus.Length / 2) //Team 1
                             {
-                                try
-                                {
-                                    player = (QueuePopPlayer)Team1ListBox.Items[i];
-                                }
-                                catch
-                                {
-                                    Client.Log("Error with queue pop");
-                                }
+                                if(i <= Team1ListBox.Items.Count - 1) player = (QueuePopPlayer)Team1ListBox.Items[i];
                             }
-                            else //Team 2
+                            //Team 2
+                            else if (i - 5 <= Team2ListBox.Items.Count - 1)
                             {
-                                try
-                                {
-                                    player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
-                                }
-                                catch
-                                {
-                                    Client.Log("Error with queue pop");
-                                }
+                                player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
                             }
-                            try
-                            {
-                                player.ReadyCheckBox.IsChecked = true;
-                            }
-                            catch
-                            {
-                                Client.Log("Error with queue pop");
-                            }
+                            if(player != null) player.ReadyCheckBox.IsChecked = true;
                         }
                         i++;
                     }
@@ -165,16 +132,21 @@ namespace LegendaryClient.Windows
                     {
                         player.PlayerLabel.Content = playerPart.SummonerName;
                         player.RankLabel.Content = "";
-                        SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
-                        foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
+
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            if (x.Queue == "RANKED_SOLO_5x5")
+                            var playerLeagues = Task<SummonerLeaguesDTO>.Factory.StartNew(() => Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId).Result).Result;
+                            foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
                             {
-                                player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+                                if (x.Queue == "RANKED_SOLO_5x5")
+                                {
+                                    player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+                                }
                             }
-                        }
-                        if (String.IsNullOrEmpty(player.RankLabel.Content.ToString()))
-                            player.RankLabel.Content = "Unranked";
+                            if (String.IsNullOrEmpty(player.RankLabel.Content.ToString()))
+                                player.RankLabel.Content = "Unranked";
+                        }));
+
                         Team1ListBox.Items.Add(player);
                     }
                     else

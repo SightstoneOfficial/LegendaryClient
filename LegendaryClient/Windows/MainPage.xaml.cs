@@ -319,7 +319,7 @@ namespace LegendaryClient.Windows
 
         private async void ParseSpectatorGames()
         {
-            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 try
                 {
@@ -502,7 +502,7 @@ namespace LegendaryClient.Windows
                         MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
                     }
                     catch { MMRLabel.Content = "N/A"; }
-                   
+
                     if (curentlyRecording.Contains(GameId))
                     {
                         RecordButton.IsEnabled = false;
@@ -518,7 +518,6 @@ namespace LegendaryClient.Windows
                 {
                     Client.Log(e.Message);
                 }
-
             }));
         }
 

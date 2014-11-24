@@ -74,20 +74,24 @@ namespace LegendaryClient.Controls
 
         internal async void UpdateLabels()
         {
-            foreach (JoinQueue item in myItems)
+            try
             {
-                if (item != null && Client.IsOnPlayPage)
+                foreach (JoinQueue item in myItems)
                 {
-                    QueueInfo t = await Client.PVPNet.GetQueueInformation(item.queueID);
-                    item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
+                    if (item != null && Client.IsOnPlayPage)
+                    {
+                        QueueInfo t = await Client.PVPNet.GetQueueInformation(item.queueID);
+                        item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
+                    }
                 }
+                int amount = 0;
+                for (int i = 0; i < myItems.Count; i++)
+                {
+                    amount += int.Parse(Regex.Match(myItems[i].AmountInQueueLabel.Content as string, "\\d+").Value);
+                }
+                AmountInQueueLabel.Content = "People in queue: " + amount;
             }
-            int amount = 0;
-            for (int i = 0; i < myItems.Count; i++)
-            {
-                amount += int.Parse(Regex.Match(myItems[i].AmountInQueueLabel.Content as string, "\\d+").Value);
-            }
-            AmountInQueueLabel.Content = "People in queue: " + amount;
+            catch { Client.Log("Items collection was most likely modified."); }
         }
     }
 }

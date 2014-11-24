@@ -110,8 +110,8 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Client.OverlayContainer.Content = null;
-            StartChampSelect();
             this.previousPage = previousPage;
+            StartChampSelect();
             string Sound = AmbientChampSelect.currentQueueToSoundFile(Client.QueueId);
             AmbientChampSelect.PlayAmbientChampSelectSound(Sound);
             Client.LastPageContent = this.Content;
@@ -154,9 +154,6 @@ namespace LegendaryClient.Windows
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
-            if (previousPage is TeamQueuePage && !String.IsNullOrEmpty((previousPage as TeamQueuePage).SelectChampBox.Text))
-                await Client.PVPNet.SelectChampion(ChampList.First(x => x.DisplayName.ToLower() == (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower()).ChampionId);
-
             //Retrieve masteries and runes
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
@@ -193,6 +190,11 @@ namespace LegendaryClient.Windows
 
             //Signal to the server we are in champion select
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
+            //Selects Champion
+            if (previousPage is TeamQueuePage && (previousPage as TeamQueuePage).SelectChampBox.Text != "Auto Select Champ")
+            {
+                await Client.PVPNet.SelectChampion(ChampList.FirstOrDefault(x => champions.GetChampion(x.ChampionId).displayName.ToLower() == (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower()).ChampionId);
+            }
             //Retrieve the latest GameDTO
             GameDTO latestDTO = await Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState, Client.ChampSelectDTO.PickTurn);
             //Find the game config for timers
