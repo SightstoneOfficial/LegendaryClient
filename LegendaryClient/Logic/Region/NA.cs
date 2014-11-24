@@ -21,7 +21,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string InternalName
         {
-            get { return "NA2"; }
+            get { return "NA1"; }
         }
 
         public override string ChatName
@@ -59,7 +59,7 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.na1.lol.riotgames.com/observer-mode/rest/"); }
+            get { return new Uri("http://spectator.na1.lol.riotgames.com:80/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress
