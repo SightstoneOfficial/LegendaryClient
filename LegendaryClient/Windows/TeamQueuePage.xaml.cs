@@ -628,7 +628,7 @@ namespace LegendaryClient.Windows
                         switch (x.ReasonFailed)
                         {
                             case "LEAVER_BUSTER_TAINT_WARNING":
-                                messageOver.MessageTextBox.Text += "You have left a game in progress. Please use the official client to remove the warning for now."; //Need to implement their new warning for leaving.
+                                messageOver.MessageTextBox.Text += " - You have left a game in progress. Please use the official client to remove the warning for now."; //Need to implement their new warning for leaving.
                                 break;
                             case "QUEUE_DODGER":
                                 messageOver.MessageTextBox.Text += " - " + x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
