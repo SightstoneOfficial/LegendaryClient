@@ -15,6 +15,8 @@ using RtmpSharp.IO;
 using LegendaryClient.Logic;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
+using LegendaryClient.Logic.SQLite;
+using System.Text.RegularExpressions;
 
 namespace LegendaryClient.Windows
 {
@@ -64,7 +66,7 @@ namespace LegendaryClient.Windows
                 fadeButtonOutAnimation.Completed += (x, y) => Download.Visibility = Visibility.Hidden;
                 Download.BeginAnimation(Button.OpacityProperty, fadeButtonOutAnimation);
             }
-            
+
             else if (Command.Text.Length > 1)
             {
                 Download.Visibility = Visibility.Visible;
@@ -83,7 +85,7 @@ namespace LegendaryClient.Windows
         {
             GamePanel.Children.Clear();
 
-            var dir = new DirectoryInfo(Path.Combine(Client.ExecutingDirectory,"cabinet"));
+            var dir = new DirectoryInfo(Path.Combine(Client.ExecutingDirectory, "cabinet"));
             var directories = dir.EnumerateDirectories()
                                 .OrderBy(d => d.CreationTime);
 
@@ -183,7 +185,7 @@ namespace LegendaryClient.Windows
                                 player.gameItem2.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
                                 break;
                             case "ITEM3":
-                                player.gameItem3.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png")); 
+                                player.gameItem3.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
                                 break;
                             case "ITEM4":
                                 player.gameItem4.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
@@ -198,7 +200,7 @@ namespace LegendaryClient.Windows
                                 break;
                         }
                     }
-                    switch(stat.StatTypeName)
+                    switch (stat.StatTypeName)
                     {
                         case "CHAMPIONS_KILLED":
                             k = stat.Value;
@@ -213,6 +215,15 @@ namespace LegendaryClient.Windows
                             break;
                     }
                 }
+                foreach (object element in player.getChildElements())
+                {
+                    if (element is SmallChampionItem && ((SmallChampionItem)element).Name.StartsWith("game"))
+                    {
+                        ((SmallChampionItem)element).MouseMove += img_MouseMove;
+                        ((SmallChampionItem)element).MouseLeave += img_MouseLeave;
+                    }
+                }
+
                 player.ChampionIcon.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
                 player.File.Content = summary.SkinName;
                 player.KDA.Content = k + "/" + d + "/" + a;
@@ -268,6 +279,15 @@ namespace LegendaryClient.Windows
                             break;
                     }
                 }
+                foreach (object element in player.getChildElements())
+                {
+                    if (element is SmallChampionItem && ((SmallChampionItem)element).Name.StartsWith("game"))
+                    {
+                        ((SmallChampionItem)element).MouseMove += img_MouseMove;
+                        ((SmallChampionItem)element).MouseLeave += img_MouseLeave;
+                    }
+                }
+
                 player.File.Content = summary.SkinName;
                 player.ChampionIcon.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
                 player.KDA.Content = k + "/" + d + "/" + a;
@@ -275,7 +295,70 @@ namespace LegendaryClient.Windows
                 TeamTwoPanel.Children.Add(player);
             }
         }
-        
+        private void img_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SmallChampionItem icon = (SmallChampionItem)sender;
+            LargeChatPlayer PlayerItem = (LargeChatPlayer)icon.Tag;
+
+            if (PlayerItem != null)
+            {
+                Client.MainGrid.Children.Remove(PlayerItem);
+                icon.Tag = null;
+            }
+        }
+
+        private void img_MouseMove(object sender, MouseEventArgs e)
+        {
+            SmallChampionItem icon = (SmallChampionItem)sender;
+            BitmapImage img = (BitmapImage)icon.ChampionImage.Source;
+            if (img == null)
+                return;
+
+            LargeChatPlayer PlayerItem = (LargeChatPlayer)icon.Tag;
+            if (PlayerItem == null)
+            {
+                PlayerItem = new LargeChatPlayer();
+                string[] s = img.UriSource.Segments;
+                int id = int.Parse(s[s.Length - 1].Replace(".png", ""));
+                Client.MainGrid.Children.Add(PlayerItem);
+
+                items Item = items.GetItem(id);
+
+                PlayerItem.PlayerName.Content = Item.name;
+
+                PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                if (PlayerItem.PlayerName.DesiredSize.Width > 250) //Make title fit in item
+                    PlayerItem.Width = PlayerItem.PlayerName.DesiredSize.Width;
+                else
+                    PlayerItem.Width = 250;
+
+                PlayerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
+                PlayerItem.PlayerLeague.Content = "Item ID " + Item.id;
+                PlayerItem.LevelLabel.Content = "";
+                PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
+
+                string ParsedDescription = Item.description;
+                ParsedDescription = ParsedDescription.Replace("<br>", Environment.NewLine);
+                ParsedDescription = Regex.Replace(ParsedDescription, "<.*?>", string.Empty);
+                PlayerItem.PlayerStatus.Text = ParsedDescription;
+
+                PlayerItem.ProfileImage.Source = img;
+                PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                PlayerItem.Visibility = Visibility.Hidden;
+                icon.Tag = PlayerItem;
+            }
+
+            if (PlayerItem.ActualHeight != 0 && PlayerItem.ActualWidth != 0)
+            {
+                double YMargin = (Client.MainGrid.ActualHeight / 2) - (PlayerItem.ActualHeight / 2);
+                double XMargin = (Client.MainGrid.ActualWidth / 2) - (PlayerItem.ActualWidth / 2);
+                PlayerItem.Margin = new Thickness(XMargin, YMargin, 0, 0);
+                if (PlayerItem.Visibility == Visibility.Hidden)
+                    PlayerItem.Visibility = Visibility.Visible;
+            }
+        }
+
         private async void Download_Click(object sender, RoutedEventArgs e)
         {
             if (User == true)
