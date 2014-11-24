@@ -980,7 +980,20 @@ namespace LegendaryClient.Logic
             GameId = replaydata.GameId;
             InternalName = Region.InternalName;
             ObserverEncryptionKey = replaydata.ObserverEncryptionKey;
-            Autorecorder = new LegendaryClient.Logic.Replays.ReplayRecorder(ObserverServerIp, (Int32)GameId, InternalName, ObserverEncryptionKey);
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval=5000;
+            timer.Elapsed += (o, e) =>
+                {
+
+                    var x = new System.Diagnostics.Process();
+                    x.StartInfo.WorkingDirectory = ExecutingDirectory;
+                    x.StartInfo.FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe");
+                    x.StartInfo.Arguments = "\"" + ExecutingDirectory + "\" \"" + GameId + "\" \"" + ObserverEncryptionKey + "\" \"" +
+                        InternalName + "\" \"" + ObserverServerIp + "\"";
+                    x.Start();
+                    timer.Stop();
+                };
+            timer.Start();
         }
 
         static void p_Exited(object sender, EventArgs e)
