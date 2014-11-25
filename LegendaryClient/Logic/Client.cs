@@ -24,6 +24,7 @@ using System.IO;
 using System.Net.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Timers;
@@ -331,7 +332,7 @@ namespace LegendaryClient.Logic
 
         internal static void SetChatHover()
         {
-            ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
+            ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
         }
 
         internal static bool hidelegendaryaddition;
@@ -355,25 +356,68 @@ namespace LegendaryClient.Logic
 
         internal static string GetPresence()
         {
-            return "<body>" +
-                  "<profileIcon>" + LoginPacket.AllSummonerData.Summoner.ProfileIconId + "</profileIcon>" +
-                  "<level>" + LoginPacket.AllSummonerData.SummonerLevel.Level + "</level> <UsingLegendaryClient>true</UsingLegendaryClient>" +
-                  "<wins>" + AmountOfWins + "</wins>" +
-                  (IsRanked ?
-                  "<queueType /><rankedLosses>0</rankedLosses><rankedRating>0</rankedRating><tier>UNRANKED</tier>" + //Unused?
-                  "<rankedLeagueName>" + LeagueName + "</rankedLeagueName>" +
-                  "<rankedLeagueDivision>" + Tier + "</rankedLeagueDivision>" +
-                  "<rankedLeagueTier>" + TierName + "</rankedLeagueTier>" +
-                  "<rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue>" +
-                  "<rankedWins>" + AmountOfWins + "</rankedWins>" : "") +
-                  "<gameStatus>" + GameStatus + "</gameStatus>" +
-                  "<statusMsg>" + CurrentStatus + "</statusMsg>" +
-                //Look for "∟" to recognize LegendaryClient Users
-                //Look for "♒" to recongnize Devs
-                    "</body>";
+            //TODO?
+            //Look for "∟" to recognize LegendaryClient Users
+            //Look for "♒" to recongnize Devs
+
+            //Queue types
+            //NONE,NORMAL,NORMAL_3x3,ODIN_UNRANKED,ARAM_UNRANKED_5x5,BOT,BOT_3x3,RANKED_SOLO_5x5,RANKED_TEAM_3x3,RANKED_TEAM_5x5,
+            //ONEFORALL_5x5,FIRSTBLOOD_1x1,FIRSTBLOOD_2x2,SR_6x6,CAP_5x5,URF,URF_BOT,NIGHTMARE_BOT
+
+            //TODO: GameStatus values:
+            //"teamSelect","hostingNormalGame","hostingPracticeGame","hostingRankedGame","hostingCoopVsAIGame","inQueue"
+            //"spectating","outOfGame","championSelect","inGame","inTeamBuilder","tutorial"
+
+           if (GameStatus != "busy")
+            {
+                switch (GameStatus)
+                {
+                    case "inQueue":
+                    case "championSelect":
+                    case "inGame":
+                        presenceStatus = "dnd";
+                        break;
+                    case "outOfGame":
+                        presenceStatus = "chat";
+                        break;
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.Append("<body><profileIcon>");
+            sb.Append(LoginPacket.AllSummonerData.Summoner.ProfileIconId);
+            sb.Append("</profileIcon><level>");
+            sb.Append(LoginPacket.AllSummonerData.SummonerLevel.Level);
+            sb.Append("</level><wins>");
+            sb.Append(AmountOfWins);
+            sb.Append("</wins><leaves>0</leaves><odinWins>0</odinWins><odinLeaves>0</odinLeaves>"); // TODO
+            sb.Append("<queueType />");
+            sb.Append("<rankedLosses>0</rankedLosses><rankedRating>0</rankedRating>"); // unused for now
+            if (IsRanked)
+                sb.Append("<tier>UNRANKED</tier>");
+            else
+                sb.Append("<tier>" + TierName + "</tier>");
+            sb.Append("<rankedSoloRestricted>");
+            sb.Append(Client.LoginPacket.restrictedGamesRemainingForRanked != -1);
+            sb.Append("</rankedSoloRestricted>");
+            if (IsRanked)
+                sb.Append("<rankedLeagueName>" + LeagueName + "</rankedLeagueName><rankedLeagueDivision>" + Tier + "</rankedLeagueDivision><rankedLeagueTier>" + TierName + "</rankedLeagueTier><rankedLeagueQueue>RANKED_SOLO_5x5</rankedLeagueQueue><rankedWins>" + AmountOfWins + "</rankedWins>");
+            else
+                sb.Append("<rankedLeagueName /><rankedLeagueDivision /><rankedLeagueTier /><rankedLeagueQueue />");
+            sb.Append("<gameStatus>");
+            sb.Append(GameStatus);
+            sb.Append("</gameStatus>");
+            if (GameStatus == "inQueue")
+                sb.Append("<timeStamp>" + timeStampSince + "</timeStamp>");
+            else if (GameStatus == "championSelect" || GameStatus == "inGame") //TODO: Spectate-able, queue type & champ name
+                sb.Append("<gameQueueType>NONE</gameQueueType><isObservable>ALL</isObservable><skinname>Random</skinname>");
+            if (CurrentStatus == "Online")
+                sb.Append("<statusMsg />");
+            else
+                sb.Append("<statusMsg>" + CurrentStatus + "</statusMsg>");
+            sb.Append("</body>");
+
+            return sb.ToString();
         }
-
-
 
         internal static void RostManager_OnRosterItem(object sender, jabber.protocol.iq.Item ri)
         {
@@ -538,6 +582,8 @@ namespace LegendaryClient.Logic
         internal static string Tier;
         internal static string LeagueName;
         internal static string GameStatus = "outOfGame";
+        internal static string presenceStatus = "chat";
+        internal static double timeStampSince = 0;
 
         #endregion Chat
 
@@ -766,7 +812,7 @@ namespace LegendaryClient.Logic
                     Client.OverlayContainer.Content = messageOver.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                     Client.ClearPage(typeof(CustomGameLobbyPage));
-                    if(messageOver.MessageTitle.Content.ToString() != "PLAYER_QUIT")
+                    if (messageOver.MessageTitle.Content.ToString() != "PLAYER_QUIT")
                         Client.SwitchPage(new MainPage());
                 }
                 else if (message is PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats)
@@ -801,7 +847,7 @@ namespace LegendaryClient.Logic
                         }
                         catch
                         {
-                            
+
                         }
                         MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
@@ -906,7 +952,7 @@ namespace LegendaryClient.Logic
             var start = QueueName.Replace("matching-queue-", "").Replace("-game-queue", "");
             string[] x = start.Split('_');
             string[] y = start.Split('-');
-            foreach(string vs in y)
+            foreach (string vs in y)
             {
 
             }
@@ -1166,8 +1212,8 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnPresence(object sender, Presence pres)
         {
-            if(pres.InnerText == "")
-                ChatClient.Presence(CurrentPresence, GetPresence(), null, 0);
+            if (pres.InnerText == "")
+                ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
         }
     }
 

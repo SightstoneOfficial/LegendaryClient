@@ -116,6 +116,8 @@ namespace LegendaryClient.Windows
             }
             else
             {
+                Client.GameStatus = "outOfGame";
+                Client.SetChatHover();
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.SwitchPage(new MainPage());
                 Client.Log("Failed to join room.");
@@ -485,6 +487,8 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.Leave();
             await Client.PVPNet.PurgeFromQueues();
+            Client.GameStatus = "outOfGame";
+            Client.SetChatHover();
             Client.ClearPage(typeof(TeamQueuePage));
             Client.SwitchPage(new MainPage());
             Client.ReturnButton.Visibility = Visibility.Hidden;
@@ -598,7 +602,6 @@ namespace LegendaryClient.Windows
                     InviteList.Add(GameInvitePlayerList);
                 }
                 parameters.Team = InviteList;
-
                 Client.PVPNet.AttachTeamToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
             }
             else
@@ -606,6 +609,8 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.PurgeFromQueues();
                 setStartButtonText("Start Game");
                 inQueue = false;
+                Client.GameStatus = "outOfGame";
+                Client.SetChatHover();
             }
         }
 
@@ -652,6 +657,9 @@ namespace LegendaryClient.Windows
             setStartButtonText("Joining Queue");
             startTime = 1;
             inQueue = true;
+            Client.GameStatus = "inQueue";
+            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.SetChatHover();
         }
 
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)

@@ -247,7 +247,6 @@ namespace LegendaryClient.Windows
                 }
                 else if (config.Id == 61)
                 {
-
                     LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                     Client.ClearPage(typeof(TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false, Lobby));
@@ -257,6 +256,8 @@ namespace LegendaryClient.Windows
             else if (InQueue == true)
             {
                 InQueue = false;
+                Client.GameStatus = "outOfGame";
+                Client.SetChatHover();
                 await LeaveAllQueues();
             }
         }
@@ -302,6 +303,9 @@ namespace LegendaryClient.Windows
                 ButtonTimers.Add(fakeButton, 0);
             }));
             InQueue = true;
+            Client.GameStatus = "inQueue";
+            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.SetChatHover();
             Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
 

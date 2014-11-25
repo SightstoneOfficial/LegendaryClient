@@ -414,6 +414,8 @@ namespace LegendaryClient.Windows
                         Client.NotificationGrid.Children.Add(pop);
                         Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                         Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
+                        Client.GameStatus = "inQueue";
+                        Client.SetChatHover();
                         Client.SwitchPage(previousPage);
                         Client.ClearPage(typeof(ChampSelectPage));
                         Client.ReturnButton.Visibility = Visibility.Hidden;
@@ -659,6 +661,9 @@ namespace LegendaryClient.Windows
         internal void ChangeSelectedChampionSkins(int selectedChampionID)
         {
             champions Champion = champions.GetChampion(selectedChampionID);
+
+            if (Champion == null)
+                return;
 
             SkinSelectListView.Items.Clear();
             AbilityListView.Items.Clear();
@@ -1023,7 +1028,8 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.ClearPage(typeof(ChampSelectPage));
-
+            Client.GameStatus = "outOfGame";
+            Client.SetChatHover();
             Client.SwitchPage(new MainPage());
         }
 
@@ -1035,6 +1041,9 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.ClearPage(typeof(ChampSelectPage));
             Client.ClearPage(typeof(FactionsCreateGamePage));
+            Client.GameStatus = "inGame";
+            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.SetChatHover();
 
             Client.SwitchPage(new InGame());
         }

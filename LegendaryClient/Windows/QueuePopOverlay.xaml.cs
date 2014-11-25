@@ -76,6 +76,8 @@ namespace LegendaryClient.Windows
                         Client.ChampSelectDTO = QueueDTO;
                         Client.LastPageContent = Client.Container.Content;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
+                        Client.GameStatus = "championSelect";
+                        Client.SetChatHover();
                         Client.SwitchPage(new ChampSelectPage(previousPage));
                     }
 

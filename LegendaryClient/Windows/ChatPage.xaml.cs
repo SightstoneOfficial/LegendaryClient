@@ -48,9 +48,14 @@ namespace LegendaryClient.Windows
                 {
                     case "Online":
                         Client.CurrentPresence = PresenceType.available;
+                        Client.presenceStatus = "chat";
                         break;
-
+                    case "Busy": //TODO: fix away status, for some reason its not doing anything but there is a function depending on presenceStatus being "away" or not so...
+                        Client.CurrentPresence = PresenceType.available;
+                        Client.presenceStatus = "away";
+                        break;
                     case "Invisible":
+                        Client.presenceStatus = "";
                         Client.CurrentPresence = PresenceType.invisible;
                         break;
                 }

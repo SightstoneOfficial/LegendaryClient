@@ -147,6 +147,8 @@ namespace LegendaryClient.Windows
                             Client.ChampSelectDTO = dto;
                             Client.LastPageContent = Client.Container.Content;
                             Client.SwitchPage(new ChampSelectPage(this));
+                            Client.GameStatus = "championSelect";
+                            Client.SetChatHover();
                             LaunchedTeamSelect = true;
                         }
                     }

@@ -42,6 +42,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
             callback(this);
         }
 
+        [InternalName("restrictedGamesRemainingForRanked")]
+        public Int32 restrictedGamesRemainingForRanked { get; set; }
+
         [InternalName("playerStatSummaries")]
         public PlayerStatSummaries PlayerStatSummaries { get; set; }
 
