@@ -30,12 +30,16 @@ namespace LegendaryClient.Logic.Patcher
             }
             dragonJSON = dragonJSON.Replace("Riot.DDragon.m=", "").Replace(";", "");
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(dragonJSON);
-            string Version = (string)deserializedJSON["v"];
-            string CDN = (string)deserializedJSON["cdn"];
-            string s = CDN + "/dragontail-" + Version + ".tgz";
-            DDragonVersion = Version;
-            return s;
+            if (!String.IsNullOrEmpty(dragonJSON))
+            {
+                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(dragonJSON);
+                string Version = (string)deserializedJSON["v"];
+                string CDN = (string)deserializedJSON["cdn"];
+                string s = CDN + "/dragontail-" + Version + ".tgz";
+                DDragonVersion = Version;
+                return s;
+            }
+            else return String.Empty;
         }
 
         public string GetLatestAir()

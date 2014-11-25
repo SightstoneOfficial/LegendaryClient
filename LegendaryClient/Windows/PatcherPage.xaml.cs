@@ -150,61 +150,69 @@ namespace LegendaryClient.Windows
 
                     RiotPatcher patcher = new RiotPatcher();
                     string DDragonDownloadURL = patcher.GetDragon();
-                    LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
-                    string DDragonVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
-                    LogTextBox("Current DataDragon Version: " + DDragonVersion);
-
-                    Client.Version = DDragonVersion;
-                    Client.Log("DDragon Version (LOL Version) = " + DDragonVersion);
-
-                    LogTextBox("Client Version: " + Client.Version);
-
-                    if (patcher.DDragonVersion != DDragonVersion)
+                    if (!String.IsNullOrEmpty(DDragonDownloadURL))
                     {
-                        try
+                        LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
+                        string DDragonVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
+                        LogTextBox("Current DataDragon Version: " + DDragonVersion);
+
+                        Client.Version = DDragonVersion;
+                        Client.Log("DDragon Version (LOL Version) = " + DDragonVersion);
+
+                        LogTextBox("Client Version: " + Client.Version);
+
+                        if (patcher.DDragonVersion != DDragonVersion)
                         {
-                            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "temp")))
+                            try
                             {
-                                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
+                                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "temp")))
+                                {
+                                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
+                                }
+
+                                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                                {
+                                    CurrentProgressLabel.Content = "Downloading DataDragon";
+                                }));
+                                client.DownloadFile(DDragonDownloadURL, Path.Combine(Client.ExecutingDirectory, "Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
+
+
+                                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                                {
+                                    CurrentProgressLabel.Content = "Extracting DataDragon";
+                                }));
+
+                                Stream inStream = File.OpenRead(Path.Combine(Client.ExecutingDirectory, "Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
+
+                                using (GZipInputStream gzipStream = new GZipInputStream(inStream))
+                                {
+                                    TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
+                                    tarArchive.ExtractContents(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
+                                    //tarArchive.Close();
+                                    tarArchive = null;
+                                }
+                                inStream.Close();
+
+                                Copy(Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion, "data"), Path.Combine(Client.ExecutingDirectory, "Assets", "data"));
+                                Copy(Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion, "img"), Path.Combine(Client.ExecutingDirectory, "Assets"));
+                                DeleteDirectoryRecursive(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
+
+                                var VersionDDragon = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
+                                VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
+
+                                Client.Version = DDragonVersion;
+                                VersionDDragon.Close();
                             }
-
-                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            catch
                             {
-                                CurrentProgressLabel.Content = "Downloading DataDragon";
-                            }));
-                            client.DownloadFile(DDragonDownloadURL, Path.Combine(Client.ExecutingDirectory, "Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
-
-
-                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                            {
-                                CurrentProgressLabel.Content = "Extracting DataDragon";
-                            }));
-
-                            Stream inStream = File.OpenRead(Path.Combine(Client.ExecutingDirectory, "Assets", "dragontail-" + patcher.DDragonVersion + ".tgz"));
-
-                            using (GZipInputStream gzipStream = new GZipInputStream(inStream))
-                            {
-                                TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
-                                tarArchive.ExtractContents(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
-                                //tarArchive.Close();
-                                tarArchive = null;
+                                Client.Log("Probably updated version number without actually uploading the files. Thanks riot.");
                             }
-                            inStream.Close();
-
-                            Copy(Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion, "data"), Path.Combine(Client.ExecutingDirectory, "Assets", "data"));
-                            Copy(Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion, "img"), Path.Combine(Client.ExecutingDirectory, "Assets"));
-                            DeleteDirectoryRecursive(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
-
-                            var VersionDDragon = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
-                            VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0, encoding.GetBytes(patcher.DDragonVersion).Length);
-
-                            Client.Version = DDragonVersion;
-                            VersionDDragon.Close();
                         }
-                        catch
-                        {
-                            Client.Log("Probably updated version number without actually uploading the files. Thanks riot.");
-                        }
+                    }
+                    else
+                    {
+                        LogTextBox("Failed to get DDragon version. Either not able to be found or unknown error (most likely the website is in maitenance, please try again in an hour or so)");
+                        LogTextBox("Continuing could cause errors. Report this as an issue if it occurs again in a few hours.");
                     }
 
                     #endregion DDragon
