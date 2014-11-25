@@ -39,6 +39,11 @@
     <OutputPath>bin\PubRelease\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DispersiaRelease|AnyCPU'">
+    <OutputPath>bin\DispersiaRelease\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,6 +83,7 @@
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\InvitationRequest.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Invitee.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Inviter.cs" />
+    <Compile Include="RiotObjects\Platform\Gameinvite\Contract\InvitePrivileges.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\LobbyStatus.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Member.cs" />
     <Compile Include="RiotObjects\Platform\Gameinvite\Contract\Owner.cs" />

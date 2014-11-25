@@ -67,6 +67,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PubRelease|AnyCPU'">
     <OutputPath>bin\PubRelease\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DispersiaRelease|AnyCPU'">
+    <OutputPath>bin\DispersiaRelease\Client\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Awesomium.Core, Version=1.7.4.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -182,6 +188,9 @@
     </Compile>
     <Compile Include="Controls\NotifyPlayerPopup.xaml.cs">
       <DependentUpon>NotifyPlayerPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SuggestedPlayerItem.xaml.cs">
+      <DependentUpon>SuggestedPlayerItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TeamBuilder\TeamBuilderChoose.xaml.cs">
       <DependentUpon>TeamBuilderChoose.xaml</DependentUpon>
@@ -550,6 +559,10 @@
     <Page Include="Controls\NotifyPlayerPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SuggestedPlayerItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\TeamBuilder\TeamBuilderChoose.xaml">
       <SubType>Designer</SubType>

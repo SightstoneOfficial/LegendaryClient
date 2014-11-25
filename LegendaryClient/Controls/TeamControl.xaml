@@ -11,6 +11,7 @@
         <Label x:Name="Name" Content="Eddy5641" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,0,0,0" FontSize="20"/>
         <Button x:Name="Kick" Style="{DynamicResource Square}" Content="Kick" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="277,35,0,0"/>
         <Button x:Name="Inviter" Style="{DynamicResource Square}" Content="Allow Invites" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="182,35,0,0"/>
+        <Button x:Name="unInviter" Style="{DynamicResource Square}" Content="Reject Invites" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="182,35,0,0" Visibility="Hidden"/>
         <Button x:Name="Profile" Style="{DynamicResource Square}" Content="View Profile" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="87,35,0,0"/>
         <Button x:Name="Owner" Style="{DynamicResource Square}" Content="Make Owner" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="372,35,0,0"/>
         <Label x:Name="SumID" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="504,0,0,0" FontSize="20" Visibility="Hidden"/>

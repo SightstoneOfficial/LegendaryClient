@@ -1353,7 +1353,14 @@ namespace PVPNetConnect
             results.Remove(Id);
             return null;
         }
-
+        public async Task<object> revokeInvite(double Summoner_ID)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "revokeInvitePrivileges", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
         public async Task<object> MakeOwner(double Summoner_ID)
         {
             int Id = Invoke("lcdsGameInvitationService", "transferOwnership", new object[] { Summoner_ID });
@@ -1448,10 +1455,17 @@ namespace PVPNetConnect
             results.Remove(Id);
             return null;
         }
-
         public async Task<object> Invite(double Summoner_ID)
         {
             int Id = Invoke("lcdsGameInvitationService", "invite", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+        public async Task<object> InviteFriendOfFriend(double summonerID, double commonFriendId)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "invite", new object[] { summonerID, "FRIEND_OF_FRIEND", "{\"commonFriendId\":" + commonFriendId + "}" });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);
