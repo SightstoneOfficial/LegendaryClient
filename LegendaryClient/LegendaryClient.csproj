@@ -183,6 +183,9 @@
     <Compile Include="Controls\NotifyPlayerPopup.xaml.cs">
       <DependentUpon>NotifyPlayerPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SuggestedPlayerItem.xaml.cs">
+      <DependentUpon>SuggestedPlayerItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TeamBuilder\TeamBuilderChoose.xaml.cs">
       <DependentUpon>TeamBuilderChoose.xaml</DependentUpon>
     </Compile>
@@ -527,10 +530,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SuggestedPlayerItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\GameSeperator.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -554,6 +553,10 @@
     <Page Include="Controls\NotifyPlayerPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SuggestedPlayerItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\TeamBuilder\TeamBuilderChoose.xaml">
       <SubType>Designer</SubType>
