@@ -8,6 +8,8 @@
 	Title="PatcherSettingsPage">
 
     <Grid Background="#7FFFFFFF">
-        
+        <Grid Height="700" Width="1000" Background="WhiteSmoke" HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+        </Grid>
     </Grid>
 </Page>

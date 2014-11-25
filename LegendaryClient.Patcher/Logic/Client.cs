@@ -49,11 +49,17 @@ namespace LegendaryClient.Patcher.Logic
         /// <summary>
         /// Used to Create an overlay or a notification
         /// </summary>
+        internal static Grid OverlayContainer;
+
+        /// <summary>
+        /// Used to Create an overlay or a notification
+        /// </summary>
         internal static ContentControl OverlayContainer;
 
 
         internal static Type CurrentPage; //Stop changing to same page
         internal static List<Page> CachedPages = new List<Page>();
+        
         internal static void SwitchPage<T>(bool Fade = false, params object[] Arguments)
         {
             if (CurrentPage == typeof(T))

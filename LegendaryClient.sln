@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiotPatch", "RiotPatch\Riot
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReplayRecorder", "ReplayRecorder\ReplayRecorder.csproj", "{3905C5B7-196E-4628-9055-3681DBAEABDB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClientMLaunch", "LegendaryClientMLaunch\LegendaryClientMLaunch.csproj", "{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,6 +68,12 @@ Global
 		{3905C5B7-196E-4628-9055-3681DBAEABDB}.PubRelease|Any CPU.Build.0 = Release|Any CPU
 		{3905C5B7-196E-4628-9055-3681DBAEABDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3905C5B7-196E-4628-9055-3681DBAEABDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.PubRelease|Any CPU.Build.0 = Release|Any CPU
+		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

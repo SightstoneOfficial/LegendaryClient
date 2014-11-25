@@ -14,11 +14,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LegendaryClient.Patcher.Logic;
+using System.Web.Script.Serialization;
 
 namespace LegendaryClient.Patcher.Pages
 {
     /// <summary>
     /// Interaction logic for PatcherPage.xaml
+    /// 
+    /// Future patcher that will make it so users will no longer need League of Legends on their PCs
+    /// Updates SplashUpdate as well just incase it is needed
     /// </summary>
     public partial class PatcherPage : Page
     {
@@ -30,6 +34,22 @@ namespace LegendaryClient.Patcher.Pages
 
             IsLogVisible = false;
             //Finds where the patcher was started
+            if (!File.Exists(System.IO.Path.Combine(ExecutingDirectory, "Patcher.settings")))
+            {
+                var x = File.Create(System.IO.Path.Combine(ExecutingDirectory, "Patcher.settings"));
+                Client.OverlayGrid.Content
+                x.Close();
+            }
+            else
+            {
+
+                File.ReadAllText(System.IO.Path.Combine(ExecutingDirectory, "Patcher.settings"));
+                JavaScriptSerializer json = new JavaScriptSerializer();
+
+            }
+            
+
+
             ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
             if (File.Exists(System.IO.Path.Combine(ExecutingDirectory, "LegendaryClientPatcher.log")))

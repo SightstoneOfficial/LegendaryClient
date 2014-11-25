@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace LegendaryClient.Patcher.Pages
+namespace LegendaryClientMLaunch
 {
     /// <summary>
-    /// Interaction logic for PatcherSettings.xaml
+    /// Interaction logic for Option.xaml
     /// </summary>
-    public partial class PatcherSettingsPage : Page
+    public partial class Option : UserControl
     {
-        public PatcherSettingsPage(bool newsettings = false)
+        public Option()
         {
             InitializeComponent();
         }
