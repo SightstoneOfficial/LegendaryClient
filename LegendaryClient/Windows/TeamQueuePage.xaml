@@ -12,7 +12,7 @@
     <Grid>
         <Label Content="Invite Friends" HorizontalAlignment="Right" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" Margin="0,10,266,0" />
         <Label Content="Your Team" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
-        <ListView x:Name="TeamListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,50,420,230" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <ListView x:Name="TeamListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,50,420,227" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -32,7 +32,7 @@
         </ListView>
         <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Right" Margin="0,0,15,278" VerticalAlignment="Bottom" Width="395" Click="Invite_Click"/>
         <CheckBox x:Name="AutoAcceptCheckBox" Content="Auto Accept Queue" HorizontalAlignment="Right" Margin="0,0,615,203" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked"/>
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="10,0,420,40" Height="150" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="10,0,420,40" Height="155" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
@@ -45,7 +45,7 @@
         <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging" VerticalAlignment="Top" Margin="0,18,15,0" Height="23" Width="68" Foreground="White" FontSize="16" TextAlignment="Center" RenderTransformOrigin="0.159,-0.961"/>
         <CheckBox x:Name="CreateRankedCheckBox" Visibility="Hidden" Content="Make Ranked" HorizontalAlignment="Left" Margin="215,0,0,203" VerticalAlignment="Bottom" Checked="CreateRankedCheckBox_Checked" Unchecked="CreateRankedCheckBox_Checked" />
         <Controls:TextBoxWatermarked x:Name="SelectChampBox" Visibility="Hidden" HorizontalAlignment="Left" Height="23" Margin="309,0,0,200" TextWrapping="Wrap" Watermark="Auto Select Champ" VerticalAlignment="Bottom" Width="120"/>
-        <ListView  x:Name="FriendsOfFriendsView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Margin="0,403,15,10" VerticalAlignment="Stretch" Width="395" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <ListView  x:Name="FriendsOfFriendsView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Margin="0,0,15,10" VerticalAlignment="Bottom" Width="395" Foreground="White" Background="#66505050" BorderBrush="{x:Null}" Height="263">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />

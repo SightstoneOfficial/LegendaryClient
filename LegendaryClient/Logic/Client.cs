@@ -975,25 +975,28 @@ namespace LegendaryClient.Logic
             string InternalName;
             string ObserverEncryptionKey;
 
-            PlayerCredentialsDto replaydata = CurrentGame;
-            ObserverServerIp = replaydata.ObserverServerIp;
-            GameId = replaydata.GameId;
-            InternalName = Region.InternalName;
-            ObserverEncryptionKey = replaydata.ObserverEncryptionKey;
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval=5000;
-            timer.Elapsed += (o, e) =>
-                {
+            if (File.Exists(Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe")))
+            {
+                PlayerCredentialsDto replaydata = CurrentGame;
+                ObserverServerIp = replaydata.ObserverServerIp;
+                GameId = replaydata.GameId;
+                InternalName = Region.InternalName;
+                ObserverEncryptionKey = replaydata.ObserverEncryptionKey;
+                System.Timers.Timer timer = new System.Timers.Timer();
+                timer.Interval = 5000;
+                timer.Elapsed += (o, e) =>
+                    {
 
-                    var x = new System.Diagnostics.Process();
-                    x.StartInfo.WorkingDirectory = ExecutingDirectory;
-                    x.StartInfo.FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe");
-                    x.StartInfo.Arguments = "\"" + ExecutingDirectory + "\" \"" + GameId + "\" \"" + ObserverEncryptionKey + "\" \"" +
-                        InternalName + "\" \"" + ObserverServerIp + "\"";
-                    x.Start();
-                    timer.Stop();
-                };
-            timer.Start();
+                        var x = new System.Diagnostics.Process();
+                        x.StartInfo.WorkingDirectory = ExecutingDirectory;
+                        x.StartInfo.FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe");
+                        x.StartInfo.Arguments = "\"" + ExecutingDirectory + "\" \"" + GameId + "\" \"" + ObserverEncryptionKey + "\" \"" +
+                            InternalName + "\" \"" + ObserverServerIp + "\"";
+                        x.Start();
+                        timer.Stop();
+                    };
+                timer.Start();
+            }
         }
 
         static void p_Exited(object sender, EventArgs e)
