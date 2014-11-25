@@ -7,6 +7,6 @@
              MinHeight="20" Width="400">
     <Grid Background="#66505050">
         <Label x:Name="PlayerLabel" Content="Eddy5641" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="White" />
-        <Button x:Name="inviteButton" Style="{DynamicResource Square}" Content="Invite" HorizontalAlignment="Left" VerticalAlignment="Top" Width="90" Margin="310,2,0,0" Height="29"/>
+        <Button x:Name="inviteButton" Style="{DynamicResource Square}" Content="Invite" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="90"/>
     </Grid>
 </UserControl>

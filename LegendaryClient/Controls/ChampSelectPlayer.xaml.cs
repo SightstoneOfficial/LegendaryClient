@@ -18,96 +18,100 @@ namespace LegendaryClient.Controls
     public partial class ChampSelectPlayer : UserControl
     {
         private PlayerStatisticsChampSelect stats;
-        private bool loading = false;
 
         public ChampSelectPlayer()
         {
             InitializeComponent();
-            stats = new PlayerStatisticsChampSelect();
         }
 
         private async void ChampPlayer_MouseOver(object sender, MouseEventArgs e)
         {
             if (Client.TrueCurrentPage.GetType() == typeof(ChampSelectPage) && !PlayerName.Content.ToString().StartsWith("Summoner ")) //Need to check if on your team incase you have a teammate such as Summoner I am a summoner... etc
             {
-                if (!loading) {
-                    loading = true;
-                    PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
-                    ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
-                    stats.PlayerName.Content = summoner.Name;
-                    if (TopChampions[1] != null)
-                        stats.MostPlayed.Source = champions.GetChampion((int)TopChampions[1].ChampionId).icon;
-                    if (TopChampions[1] != null)
+                try
+                {
+                    if (stats == null)
                     {
-                        stats.Champion1.Content = champions.GetChampion((int)TopChampions[1].ChampionId).displayName + " - Games: " + TopChampions[1].TotalGamesPlayed;
-                        double wins = 0.0;
-                        double total = 0.0;
-                        foreach (var stat in TopChampions[1].Stats)
+
+                        stats = new PlayerStatisticsChampSelect();
+                        PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
+                        ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
+                        stats.PlayerName.Content = summoner.Name;
+                        if (TopChampions[1] != null)
+                            stats.MostPlayed.Source = champions.GetChampion((int)TopChampions[1].ChampionId).icon;
+                        if (TopChampions[1] != null)
                         {
-                            if (stat.StatType == "TOTAL_SESSIONS_WON")
-                                wins = stat.Value;
-                            else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
-                                total = stat.Value;
+                            stats.Champion1.Content = champions.GetChampion((int)TopChampions[1].ChampionId).displayName + " - Games: " + TopChampions[1].TotalGamesPlayed;
+                            double wins = 0.0;
+                            double total = 0.0;
+                            foreach (var stat in TopChampions[1].Stats)
+                            {
+                                if (stat.StatType == "TOTAL_SESSIONS_WON")
+                                    wins = stat.Value;
+                                else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
+                                    total = stat.Value;
+                            }
+
+                            if (wins / total * 100.0 != 0) stats.Champ1ProgressBar.Value = wins / total * 100.0;
+                            else stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
                         }
+                        if (TopChampions[2] != null)
+                        {
+                            stats.Champion2.Content = champions.GetChampion((int)TopChampions[2].ChampionId).displayName + " - Games: " + TopChampions[2].TotalGamesPlayed;
+                            double wins = 0.0;
+                            double total = 0.0;
+                            foreach (var stat in TopChampions[2].Stats)
+                                if (stat.StatType == "TOTAL_SESSIONS_WON")
+                                    wins = stat.Value;
+                                else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
+                                    total = stat.Value;
 
-                        if (wins / total * 100.0 != 0) stats.Champ1ProgressBar.Value = wins / total * 100.0;
-                        else stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
-                    }
-                    if (TopChampions[2] != null)
-                    {
-                        stats.Champion2.Content = champions.GetChampion((int)TopChampions[2].ChampionId).displayName + " - Games: " + TopChampions[2].TotalGamesPlayed;
-                        double wins = 0.0;
-                        double total = 0.0;
-                        foreach (var stat in TopChampions[2].Stats)
-                            if (stat.StatType == "TOTAL_SESSIONS_WON")
-                                wins = stat.Value;
-                            else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
-                                total = stat.Value;
+                            if (wins / total * 100.0 != 0) stats.Champ2ProgressBar.Value = wins / total * 100.0;
+                            else stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
+                        }
+                        if (TopChampions[3] != null)
+                        {
+                            stats.Champion3.Content = champions.GetChampion((int)TopChampions[3].ChampionId).displayName + " - Games: " + TopChampions[3].TotalGamesPlayed;
+                            double wins = 0.0;
+                            double total = 0.0;
+                            foreach (var stat in TopChampions[3].Stats)
+                                if (stat.StatType == "TOTAL_SESSIONS_WON")
+                                    wins = stat.Value;
+                                else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
+                                    total = stat.Value;
 
-                        if (wins / total * 100.0 != 0) stats.Champ2ProgressBar.Value = wins / total * 100.0;
-                        else stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
+                            if (wins / total * 100.0 != 0) stats.Champ3ProgressBar.Value = wins / total * 100.0;
+                            else stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
+                        }
+                        Client.MainGrid.Children.Add(stats);
                     }
-                    if (TopChampions[3] != null)
+                    Point MouseLocation = e.GetPosition(Client.MainGrid);
+                    double YMargin = MouseLocation.Y - 25;
+                    if (Mouse.GetPosition(Client.MainGrid).X < 200)
                     {
-                        stats.Champion3.Content = champions.GetChampion((int)TopChampions[3].ChampionId).displayName + " - Games: " + TopChampions[3].TotalGamesPlayed;
-                        double wins = 0.0;
-                        double total = 0.0;
-                        foreach (var stat in TopChampions[3].Stats)
-                            if (stat.StatType == "TOTAL_SESSIONS_WON")
-                                wins = stat.Value;
-                            else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
-                                total = stat.Value;
-
-                        if (wins / total * 100.0 != 0) stats.Champ3ProgressBar.Value = wins / total * 100.0;
-                        else stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
+                        stats.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                        stats.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                        stats.Margin = new Thickness(142, YMargin, 0, 0);
                     }
-                    lock (Client.MainGrid.Children)
+                    else
                     {
-                        if (!Client.MainGrid.Children.Contains(stats)) Client.MainGrid.Children.Add(stats);
+                        stats.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                        stats.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                        stats.Margin = new Thickness(0, YMargin, 155, 0);
                     }
                 }
-                if (loading && !Client.MainGrid.Children.Contains(stats)) Client.MainGrid.Children.Add(stats);
-                Point MouseLocation = e.GetPosition(Client.MainGrid);
-                double YMargin = MouseLocation.Y - 25;
-                if (Mouse.GetPosition(Client.MainGrid).X < 200)
-                {
-                    stats.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                    stats.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                    stats.Margin = new Thickness(142, YMargin, 0, 0);
-                }
-                else
-                {
-                    stats.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                    stats.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-                    stats.Margin = new Thickness(0, YMargin, 155, 0);
-                }
+                catch { }
             }
         }
-        
+
 
         private void ChampPlayer_MouseLeave(object sender, MouseEventArgs e)
         {
-            Client.MainGrid.Children.Remove(stats);
+            if (stats != null)
+            {
+                Client.MainGrid.Children.Remove(stats);
+                stats = null;
+            }
         }
     }
 }

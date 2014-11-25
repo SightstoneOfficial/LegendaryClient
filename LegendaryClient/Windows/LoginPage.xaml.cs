@@ -53,7 +53,7 @@ namespace LegendaryClient.Windows
 
             if (!Properties.Settings.Default.DisableLoginMusic)
             {
-                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
+                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
             }
@@ -61,7 +61,7 @@ namespace LegendaryClient.Windows
 
             if (Properties.Settings.Default.LoginPageImage == "")
             {
-                LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
+                LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
                 LoginPic.LoadedBehavior = MediaState.Manual;
                 LoginPic.MediaEnded += LoginPic_MediaEnded;
                 SoundPlayer.MediaEnded += SoundPlayer_MediaEnded;
@@ -77,8 +77,7 @@ namespace LegendaryClient.Windows
 
             //Get client data after patcher completed
 
-            //Client.SQLiteDatabase = new SQLite.SQLiteConnection("gameStats_en_US.sqlite");
-            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
+            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, "Client", Client.sqlite));
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
                                 orderby s.name
                                 select s).ToList();
@@ -177,7 +176,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
+                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
                 PlayingSound = true;
