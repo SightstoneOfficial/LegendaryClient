@@ -128,8 +128,8 @@ namespace LegendaryClient.Windows
                     #region idk
 
                     client = new WebClient();
-                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory,"Login.mp3"))) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Login.mp3"));
-                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory,"Login.mp4"))) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp4"), Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
+                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"))) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp3"), Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
+                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"))) client.DownloadFile(new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.mp4"), Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
                     #endregion idk
 
                     #region DDragon
@@ -253,8 +253,8 @@ namespace LegendaryClient.Windows
                         {
                             string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
                             GetAllPngs(Package);
-                            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
-                                File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite")))
+                                File.Delete(Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
                             string[] x = Package.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
                             string locationv = LatestVersion[0];
@@ -266,7 +266,7 @@ namespace LegendaryClient.Windows
                                     locationv = l.Replace("/projects/lol_air_client/releases/", "").Replace("/files/assets/data/gameStats/gameStats_en_US.sqlite", "");
                                 }
                             }
-                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + locationv + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + locationv + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
 
                             if (File.Exists(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                                 File.Delete(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
