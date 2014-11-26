@@ -197,8 +197,11 @@ namespace LegendaryClient.Windows
             championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
             try
             {
-                var skinSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
-                SkinImage.Source = new BitmapImage(skinSource);
+                if (Skin != null)
+                {
+                    var skinSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
+                    SkinImage.Source = new BitmapImage(skinSource);
+                }
             }
             catch
             {
