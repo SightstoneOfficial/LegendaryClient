@@ -205,6 +205,14 @@ namespace PVPNetConnect.RiotObjects
                             {
                                 objectList.Add((string)data);
                             }
+                            else if (elementType == typeof(Int64))
+                            {
+                                objectList.Add(Convert.ToInt64(data));
+                            }
+                            else if (elementType == typeof(Int32))
+                            {
+                                objectList.Add(Convert.ToInt32(data));
+                            }
                             else if (elementType == typeof(PVPNetConnect.RiotObjects.Platform.Game.Participant))
                             {
                                 TypedObject dataAsTo = (TypedObject)data;
