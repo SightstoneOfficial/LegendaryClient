@@ -210,21 +210,6 @@
     <Compile Include="Logic\GameClientSettings\HUD.cs" />
     <Compile Include="Logic\GameClientSettings\LOLGCSettings.cs" />
     <Compile Include="Logic\Maps\Map11.cs" />
-    <Compile Include="Logic\Replays\AutoReplayRecorder.cs" />
-    <Compile Include="Logic\BotLogic\Bots.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\AlistarBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\AmumuBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\AnnieBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\AsheBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\BlitzcrankBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\BrandBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\CaitlynBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\CassiopeiaBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\ChoGathBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\DariusBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\EzrealBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\FiddlesticksBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\MundoBot.cs" />
     <Compile Include="Logic\InviteInfo.cs" />
     <Compile Include="Logic\JSON\Champions.cs" />
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
@@ -240,17 +225,15 @@
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\Garena\SG.cs" />
     <Compile Include="Logic\Region\TR.cs" />
-    <Compile Include="Logic\Replays\EndOfGameStats.cs" />
-    <Compile Include="Logic\Replays\PlayerParticipantStatsSummary.cs" />
-    <Compile Include="Logic\Replays\RawStatDTO.cs" />
-    <Compile Include="Logic\Replays\TeamId.cs" />
-    <Compile Include="Logic\Replays\TeamInfo.cs" />
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
     <Compile Include="Logic\SoundLogic\ChampSelectSound.cs" />
     <Compile Include="Logic\SoundLogic\SelectChampion.cs" />
     <Compile Include="Logic\SQLite\invitationRequest.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\UpdateData.cs" />
+    <Compile Include="Logic\TempRunes\LCRunePages.cs" />
+    <Compile Include="Logic\TempRunes\LcRunes\Rune.cs" />
+    <Compile Include="Logic\TempRunes\LcRunes\RuneStats.cs" />
     <Compile Include="ReplayElements\ChampionItem.xaml.cs">
       <DependentUpon>ChampionItem.xaml</DependentUpon>
     </Compile>
@@ -321,7 +304,6 @@
     <Compile Include="Logic\Maps\Map12.cs" />
     <Compile Include="Logic\Maps\BaseMap.cs" />
     <Compile Include="Logic\Patcher\RiotPatcher.cs" />
-    <Compile Include="Logic\Replays\ReplayRecorder.cs" />
     <Compile Include="Logic\SQLite\championAbilities.cs" />
     <Compile Include="Logic\SQLite\champions.cs" />
     <Compile Include="Logic\SQLite\championSearchTags.cs" />
