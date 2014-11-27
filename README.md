@@ -21,6 +21,7 @@ It come with a metro-like installer [no dlls needed, a stand alone program]
 Known Issues / TODO
 ===================
 * Team Builder is not implemented / superbuggy
+* Need a HTML website (I am not good at html)
 * Logging out doesn't update friends list / crashes. (just restart the client)
 * If you login, all LC users will be unable to see your name (lol client is fine) also you won't be added to friends list if you login and one of your friends use lc (will fix this)
 * Replays are in work
