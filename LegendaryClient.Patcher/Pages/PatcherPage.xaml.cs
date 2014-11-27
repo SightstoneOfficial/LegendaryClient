@@ -37,7 +37,7 @@ namespace LegendaryClient.Patcher.Pages
             if (!File.Exists(System.IO.Path.Combine(ExecutingDirectory, "Patcher.settings")))
             {
                 var x = File.Create(System.IO.Path.Combine(ExecutingDirectory, "Patcher.settings"));
-                Client.OverlayGrid.Content
+                //Client.OverlayGrid.Content
                 x.Close();
             }
             else

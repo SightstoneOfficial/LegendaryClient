@@ -258,15 +258,6 @@ namespace LegendaryClient.Windows
                                 File.Delete(Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
                             string[] x = Package.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
-                            string locationv = LatestVersion[0];
-                            foreach(string m in x)
-                            {
-                                if (m.Contains("/files/assets/data/gameStats/gameStats_en_US.sqlite"))
-                                {
-                                    string l = m.Split(',')[0];
-                                    locationv = l.Replace("/projects/lol_air_client/releases/", "").Replace("/files/assets/data/gameStats/gameStats_en_US.sqlite", "");
-                                }
-                            }
                             if (File.Exists(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                                 File.Delete(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                             using (var file = File.Create(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))

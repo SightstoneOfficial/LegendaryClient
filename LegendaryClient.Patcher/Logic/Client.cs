@@ -49,11 +49,6 @@ namespace LegendaryClient.Patcher.Logic
         /// <summary>
         /// Used to Create an overlay or a notification
         /// </summary>
-        internal static Grid OverlayContainer;
-
-        /// <summary>
-        /// Used to Create an overlay or a notification
-        /// </summary>
         internal static ContentControl OverlayContainer;
 
 
