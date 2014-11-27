@@ -17,6 +17,7 @@ using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using LegendaryClient.Logic.SQLite;
 using System.Text.RegularExpressions;
+using System.Windows.Media;
 
 namespace LegendaryClient.Windows
 {
@@ -110,7 +111,11 @@ namespace LegendaryClient.Windows
                 stats.Difficulty = d;
 
                 item.Tag = stats;
-                item.GameId.Content = d;
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "name")))
+                    item.GameId.Text = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "name"));
+                else
+                    item.GameId.Text = d;
+                item.GameId.Tag = d;
                 item.GameType.Content = stats.GameMode.ToLower();
                 item.GameDate.Content = di.CreationTime.ToShortTimeString() + " " + di.CreationTime.ToShortDateString();
                 double seconds = stats.GameLength % 60;
@@ -141,6 +146,9 @@ namespace LegendaryClient.Windows
                 }
 
                 item.MouseDown += item_MouseDown;
+                item.GameId.MouseDoubleClick += GameId_MouseDoubleClick;
+                item.GameId.MouseLeave += GameId_MouseLeave;
+                item.KeyDown += item_KeyDown;
 
                 //Insert on top
                 GamePanel.Children.Insert(0, item);
@@ -295,6 +303,35 @@ namespace LegendaryClient.Windows
                 TeamTwoPanel.Children.Add(player);
             }
         }
+
+        private void GameId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            TextBox item = (TextBox)sender;
+            if (item.IsReadOnly)
+            {
+                item.IsReadOnly = false;
+                System.Drawing.Color c = System.Drawing.Color.White;
+                item.Background = new SolidColorBrush(Color.FromRgb(c.R, c.B, c.G));
+            }
+        }
+
+        private void GameId_MouseLeave(object sender, MouseEventArgs e)
+        {
+            TextBox item = (TextBox)sender;
+            if (!item.IsReadOnly)
+            {
+                item.IsReadOnly = true;
+                item.Background = ((Grid)item.Parent).Background;
+                File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", (string)item.Tag, "name"), item.Text);
+            }
+        }
+
+        void item_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                GameId_MouseLeave(((ReplayItem)sender).GameId, null);
+        }
+
         private void img_MouseLeave(object sender, MouseEventArgs e)
         {
             SmallChampionItem icon = (SmallChampionItem)sender;

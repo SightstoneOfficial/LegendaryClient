@@ -14,7 +14,7 @@
                 <ImageBrush ImageSource="/LegendaryClient;component/noise.png" Viewport="0,0,100,100" ViewportUnits="Absolute" TileMode="Tile" Stretch="None" AlignmentX="Left" AlignmentY="Top"  />
             </Grid.Background>
         </Grid>
-        <Label x:Name="GameId" Content="0" HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Top"/>
+        <TextBox x:Name="GameId" Text="0" TextAlignment="Center" IsReadOnly="True" HorizontalAlignment="Center" FontStyle="Italic" Background="Transparent" BorderThickness="0,0,0,0" BorderBrush="Transparent" Foreground="#FF838383" VerticalAlignment="Top" Margin="120,0,104,0" Width="176"/>
         <Label x:Name="GameType" Content="classic" HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Bottom"/>
         <Label x:Name="GameTime" Content="0:00" HorizontalAlignment="Right" Margin="0,0,5,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Top"/>
         <Label x:Name="GameDate" Content="2:23PM 1/1/14" HorizontalAlignment="Right" Margin="0,0,5,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Bottom"/>
