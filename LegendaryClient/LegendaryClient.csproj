@@ -225,6 +225,12 @@
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\Garena\SG.cs" />
     <Compile Include="Logic\Region\TR.cs" />
+    <Compile Include="Logic\Replays\EndOfGameStats.cs" />
+    <Compile Include="Logic\Replays\PlayerParticipantStatsSummary.cs" />
+    <Compile Include="Logic\Replays\RawStatDTO.cs" />
+    <Compile Include="Logic\Replays\ReplayRecorder.cs" />
+    <Compile Include="Logic\Replays\TeamId.cs" />
+    <Compile Include="Logic\Replays\TeamInfo.cs" />
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
     <Compile Include="Logic\SoundLogic\ChampSelectSound.cs" />
     <Compile Include="Logic\SoundLogic\SelectChampion.cs" />

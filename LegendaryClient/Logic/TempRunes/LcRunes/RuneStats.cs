@@ -25,7 +25,5 @@ namespace LegendaryClient.Logic.TempRunes.LcRunes
         internal static int AdPerLevel { get; set; }
         internal static int ManaRegen { get; set; }
         internal static int ApPerLevel { get; set; }
-        internal static int ArmorPen { get; set; }
-        internal static int MagicPen { get; set; }
     }
 }
