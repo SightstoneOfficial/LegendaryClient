@@ -28,6 +28,7 @@ Known Issues / TODO
 * Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
 * Finish Factions
 * Can't join custom game if invited
+* Work on more rune pages (temp storage)
 
 LegacyPVP
 =========
