@@ -43,6 +43,8 @@ namespace LegendaryClient.Windows
             {
                 if (((GameDTO)message).GameState == "TERMINATED")
                 {
+                    Client.GameStatus = "outOfGame";
+                    Client.SetChatHover();
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         Client.ReturnButton.Visibility = Visibility.Hidden;

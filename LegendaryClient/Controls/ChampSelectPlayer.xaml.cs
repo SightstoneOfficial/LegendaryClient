@@ -32,15 +32,16 @@ namespace LegendaryClient.Controls
                 {
                     if (stats == null)
                     {
-
-                        stats = new PlayerStatisticsChampSelect();
                         PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
+                        if (summoner == null)
+                            return;
                         ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
+                        stats = new PlayerStatisticsChampSelect();
                         stats.PlayerName.Content = summoner.Name;
-                        if (TopChampions[1] != null)
-                            stats.MostPlayed.Source = champions.GetChampion((int)TopChampions[1].ChampionId).icon;
+
                         if (TopChampions[1] != null)
                         {
+                            stats.MostPlayed.Source = champions.GetChampion((int)TopChampions[1].ChampionId).icon;
                             stats.Champion1.Content = champions.GetChampion((int)TopChampions[1].ChampionId).displayName + " - Games: " + TopChampions[1].TotalGamesPlayed;
                             double wins = 0.0;
                             double total = 0.0;
@@ -52,7 +53,7 @@ namespace LegendaryClient.Controls
                                     total = stat.Value;
                             }
 
-                            if (wins / total * 100.0 != 0) stats.Champ1ProgressBar.Value = wins / total * 100.0;
+                            if ((wins / total * 100.0 != 0) && total != 0.0) stats.Champ1ProgressBar.Value = wins / total * 100.0;
                             else stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
                         }
                         if (TopChampions[2] != null)
@@ -66,7 +67,7 @@ namespace LegendaryClient.Controls
                                 else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
                                     total = stat.Value;
 
-                            if (wins / total * 100.0 != 0) stats.Champ2ProgressBar.Value = wins / total * 100.0;
+                            if ((wins / total * 100.0 != 0) && total != 0.0) stats.Champ2ProgressBar.Value = wins / total * 100.0;
                             else stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
                         }
                         if (TopChampions[3] != null)
@@ -80,7 +81,7 @@ namespace LegendaryClient.Controls
                                 else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
                                     total = stat.Value;
 
-                            if (wins / total * 100.0 != 0) stats.Champ3ProgressBar.Value = wins / total * 100.0;
+                            if ((wins / total * 100.0 != 0) && total != 0.0) stats.Champ3ProgressBar.Value = wins / total * 100.0;
                             else stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
                         }
                         Client.MainGrid.Children.Add(stats);
