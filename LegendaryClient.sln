@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClient", "LegendaryClient\LegendaryClient.csproj", "{A6F20D1A-8523-42EF-BED7-90915047AB44}"
 EndProject
@@ -85,6 +85,7 @@ Global
 		{3905C5B7-196E-4628-9055-3681DBAEABDB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.DispersiaRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.PubRelease|Any CPU.Build.0 = Release|Any CPU
 		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Release|Any CPU.ActiveCfg = Release|Any CPU
