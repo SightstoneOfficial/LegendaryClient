@@ -240,5 +240,20 @@ namespace LegendaryClient.Properties {
                 this["UseAsBackgroundImage"] = value;
             }
         }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoRecordGames
+        {
+            get
+            {
+                return ((bool)(this["AutoRecordGames"]));
+            }
+            set
+            {
+                this["AutoRecordGames"] = value;
+            }
+        }
     }
 }

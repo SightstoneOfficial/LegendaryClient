@@ -52,7 +52,9 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Game">
-                <Grid />
+                <Grid>
+                    <CheckBox x:Name="AutoRecordCheckbox" Content="Auto record games" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Checked="AutoRecordCheckbox_Changed" Unchecked="AutoRecordCheckbox_Changed"/>
+                </Grid>
             </TabItem>
             <TabItem Header="Advanced">
                 <Grid >

@@ -15,11 +15,13 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class CreateCustomGamePage : Page
     {
+        private bool initFinished = false;
         public CreateCustomGamePage()
         {
             InitializeComponent();
             Client.Whitelist = new List<string>();
             NameTextBox.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + "'s game";
+            initFinished = true;
         }
 
         private void CreateGameButton_Click(object sender, RoutedEventArgs e)
@@ -178,6 +180,8 @@ namespace LegendaryClient.Windows
 
         private void GenerateSpectatorCode()
         {
+            if (!initFinished)
+                return;
             try
             {
                 PracticeGameConfig gameConfig = GenerateGameConfig();

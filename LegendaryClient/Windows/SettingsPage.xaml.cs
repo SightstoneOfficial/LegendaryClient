@@ -89,6 +89,7 @@ namespace LegendaryClient.Windows
             StatsCheckbox.IsChecked = Properties.Settings.Default.GatherStatistics;
             ErrorCheckbox.IsChecked = Properties.Settings.Default.SendErrors;
             UseAsBackground.IsChecked = Properties.Settings.Default.UseAsBackgroundImage;
+            AutoRecordCheckbox.IsChecked = Properties.Settings.Default.AutoRecordGames;
 
             #region AboutTextbox
 
@@ -281,6 +282,13 @@ A code signing license (So you know that you are using LegendaryClient)
                     ResultTextbox.Visibility = Visibility.Visible;
                 }
             }
+        }
+
+        private void AutoRecordCheckbox_Changed(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Controls.CheckBox cb = (System.Windows.Controls.CheckBox)sender;
+            Properties.Settings.Default.AutoRecordGames = (bool)cb.IsChecked;
+            Properties.Settings.Default.Save();
         }
     }
     public class WinThemes

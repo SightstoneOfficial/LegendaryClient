@@ -32,20 +32,23 @@ namespace LegendaryClient.Controls
                 {
                     if (stats == null)
                     {
-                        PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
-                        if (summoner == null)
-                            return;
-                        ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
                         stats = new PlayerStatisticsChampSelect();
+                        PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
+                        if (summoner == null || stats == null)
+                        {
+                            stats = null;
+                            return;
+                        }
+                        ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
                         stats.PlayerName.Content = summoner.Name;
 
-                        if (TopChampions[1] != null)
+                        if (TopChampions.Length > 0)
                         {
-                            stats.MostPlayed.Source = champions.GetChampion((int)TopChampions[1].ChampionId).icon;
-                            stats.Champion1.Content = champions.GetChampion((int)TopChampions[1].ChampionId).displayName + " - Games: " + TopChampions[1].TotalGamesPlayed;
+                            stats.MostPlayed.Source = champions.GetChampion((int)TopChampions[0].ChampionId).icon;
+                            stats.Champion1.Content = champions.GetChampion((int)TopChampions[0].ChampionId).displayName + " - Games: " + TopChampions[0].TotalGamesPlayed;
                             double wins = 0.0;
                             double total = 0.0;
-                            foreach (var stat in TopChampions[1].Stats)
+                            foreach (var stat in TopChampions[0].Stats)
                             {
                                 if (stat.StatType == "TOTAL_SESSIONS_WON")
                                     wins = stat.Value;
@@ -56,12 +59,18 @@ namespace LegendaryClient.Controls
                             if ((wins / total * 100.0 != 0) && total != 0.0) stats.Champ1ProgressBar.Value = wins / total * 100.0;
                             else stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
                         }
-                        if (TopChampions[2] != null)
+                        else
                         {
-                            stats.Champion2.Content = champions.GetChampion((int)TopChampions[2].ChampionId).displayName + " - Games: " + TopChampions[2].TotalGamesPlayed;
+                            stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
+                            stats.Champion1.Visibility = Visibility.Hidden;
+                        }
+
+                        if (TopChampions.Length > 1)
+                        {
+                            stats.Champion2.Content = champions.GetChampion((int)TopChampions[1].ChampionId).displayName + " - Games: " + TopChampions[1].TotalGamesPlayed;
                             double wins = 0.0;
                             double total = 0.0;
-                            foreach (var stat in TopChampions[2].Stats)
+                            foreach (var stat in TopChampions[1].Stats)
                                 if (stat.StatType == "TOTAL_SESSIONS_WON")
                                     wins = stat.Value;
                                 else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
@@ -70,12 +79,18 @@ namespace LegendaryClient.Controls
                             if ((wins / total * 100.0 != 0) && total != 0.0) stats.Champ2ProgressBar.Value = wins / total * 100.0;
                             else stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
                         }
-                        if (TopChampions[3] != null)
+                        else
                         {
-                            stats.Champion3.Content = champions.GetChampion((int)TopChampions[3].ChampionId).displayName + " - Games: " + TopChampions[3].TotalGamesPlayed;
+                            stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
+                            stats.Champion2.Visibility = Visibility.Hidden;
+                        }
+
+                        if (TopChampions.Length > 2)
+                        {
+                            stats.Champion3.Content = champions.GetChampion((int)TopChampions[2].ChampionId).displayName + " - Games: " + TopChampions[2].TotalGamesPlayed;
                             double wins = 0.0;
                             double total = 0.0;
-                            foreach (var stat in TopChampions[3].Stats)
+                            foreach (var stat in TopChampions[2].Stats)
                                 if (stat.StatType == "TOTAL_SESSIONS_WON")
                                     wins = stat.Value;
                                 else if (stat.StatType == "TOTAL_SESSIONS_PLAYED")
@@ -83,6 +98,11 @@ namespace LegendaryClient.Controls
 
                             if ((wins / total * 100.0 != 0) && total != 0.0) stats.Champ3ProgressBar.Value = wins / total * 100.0;
                             else stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
+                        }
+                        else
+                        {
+                            stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
+                            stats.Champion3.Visibility = Visibility.Hidden;
                         }
                         Client.MainGrid.Children.Add(stats);
                     }
