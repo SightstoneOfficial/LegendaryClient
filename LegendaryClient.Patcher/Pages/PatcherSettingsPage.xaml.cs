@@ -20,7 +20,7 @@ namespace LegendaryClient.Patcher.Pages
     /// </summary>
     public partial class PatcherSettingsPage : Page
     {
-        public PatcherSettingsPage()
+        public PatcherSettingsPage(bool newsettings = false)
         {
             InitializeComponent();
         }

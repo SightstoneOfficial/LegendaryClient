@@ -109,7 +109,6 @@ namespace LegendaryClient.Controls
                 Client.Message(MessageData.From.User, MessageData.Body, ChatSubjects.PRACTICE_GAME_INVITE_ACCEPT);
                 Client.PVPNet.JoinGame(GameId);
 
-                Client.InGame = true;
                 Client.GameID = GameId;
                 Client.GameName = "Joined game";
 

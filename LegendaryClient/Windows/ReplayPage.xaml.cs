@@ -11,8 +11,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Replays;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
 using RtmpSharp.IO;
+using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
+using LegendaryClient.Logic.SQLite;
+using System.Text.RegularExpressions;
+using System.Windows.Media;
 
 namespace LegendaryClient.Windows
 {
@@ -24,57 +29,33 @@ namespace LegendaryClient.Windows
         ReplayRecorder recorder;
         SerializationContext context;
         EndOfGameStats selectedStats;
+        bool User = true;
 
         public ReplayPage()
         {
             InitializeComponent();
             Download.Visibility = Visibility.Hidden;
 
-            if (!Directory.Exists("cabinet"))
-                Directory.CreateDirectory("cabinet");
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "cabinet"));
 
             var waitAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.5));
             waitAnimation.Completed += (o, e) =>
             {
                 var showAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
-                //ReplayGrid.BeginAnimation(Grid.OpacityProperty, showAnimation);
             };
-            //ReplayGrid.BeginAnimation(Grid.OpacityProperty, waitAnimation);
 
             Command.TextChanged += Command_TextChanged;
 
             #region Register Context
             context = new SerializationContext();
 
-            //Convert replay end of game stats to parsable object
             context.Register(typeof(EndOfGameStats));
             context.Register(typeof(PlayerParticipantStatsSummary));
             context.Register(typeof(RawStatDTO));
             #endregion Register Context
 
             UpdateReplays();
-        }
-        
-        private void Username_Click(object sender, RoutedEventArgs e)
-        {
-            Commandname.Visibility = System.Windows.Visibility.Visible;
-            Username.Visibility = System.Windows.Visibility.Hidden;
-            Command.Watermark = "Enter Username Here";
-            Command.Text = "Refresh";
-            Command.Text = "Enter Username Here";
-            Command.Watermark = "Enter Username Here";
-            Download.Visibility = Visibility.Hidden;
-        }
-
-        private void Commandname_Click(object sender, RoutedEventArgs e)
-        {
-            Username.Visibility = System.Windows.Visibility.Visible;
-            Commandname.Visibility = System.Windows.Visibility.Hidden;
-            Command.Watermark = "Paste Spectator Command";
-            Command.Text = "Refresh";
-            Command.Text = "Paste Spectator Command";
-            Command.Watermark = "Paste Spectator Command";
-            Download.Visibility = Visibility.Hidden;
         }
 
         void Command_TextChanged(object sender, TextChangedEventArgs e)
@@ -86,7 +67,7 @@ namespace LegendaryClient.Windows
                 fadeButtonOutAnimation.Completed += (x, y) => Download.Visibility = Visibility.Hidden;
                 Download.BeginAnimation(Button.OpacityProperty, fadeButtonOutAnimation);
             }
-            
+
             else if (Command.Text.Length > 1)
             {
                 Download.Visibility = Visibility.Visible;
@@ -105,21 +86,21 @@ namespace LegendaryClient.Windows
         {
             GamePanel.Children.Clear();
 
-            var dir = new DirectoryInfo("cabinet");
+            var dir = new DirectoryInfo(Path.Combine(Client.ExecutingDirectory, "cabinet"));
             var directories = dir.EnumerateDirectories()
                                 .OrderBy(d => d.CreationTime);
 
-            string[] Replays = Directory.GetDirectories("cabinet");
+            string[] Replays = Directory.GetDirectories(Path.Combine(Client.ExecutingDirectory, "cabinet"));
 
             foreach (DirectoryInfo di in directories)
             {
                 string d = di.Name;
-                if (!File.Exists(Path.Combine("cabinet", d, "token")) ||
-                    !File.Exists(Path.Combine("cabinet", d, "key")) ||
-                    !File.Exists(Path.Combine("cabinet", d, "endOfGameStats")))
+                if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "token")) ||
+                    !File.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "key")) ||
+                    !File.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "endOfGameStats")))
                     continue;
 
-                byte[] Base64Stats = Convert.FromBase64String(File.ReadAllText(Path.Combine("cabinet", d, "endOfGameStats")));
+                byte[] Base64Stats = Convert.FromBase64String(File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "endOfGameStats")));
                 AmfReader statsReader = new AmfReader(new MemoryStream(Base64Stats), context);
 
                 EndOfGameStats stats = (EndOfGameStats)statsReader.ReadAmf3Item();
@@ -130,7 +111,11 @@ namespace LegendaryClient.Windows
                 stats.Difficulty = d;
 
                 item.Tag = stats;
-                item.GameId.Content = d;
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "name")))
+                    item.GameId.Text = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "name"));
+                else
+                    item.GameId.Text = d;
+                item.GameId.Tag = d;
                 item.GameType.Content = stats.GameMode.ToLower();
                 item.GameDate.Content = di.CreationTime.ToShortTimeString() + " " + di.CreationTime.ToShortDateString();
                 double seconds = stats.GameLength % 60;
@@ -144,8 +129,7 @@ namespace LegendaryClient.Windows
                     image.Width = 38;
                     image.Height = 38;
 
-                    Uri UriSource = new Uri("/LegendaryClient;component/Assets/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                    image.ChampionImage.Source = new BitmapImage(UriSource);
+                    image.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
 
                     item.TeamOnePanel.Children.Add(image);
                 }
@@ -156,13 +140,15 @@ namespace LegendaryClient.Windows
                     image.Width = 38;
                     image.Height = 38;
 
-                    Uri UriSource = new Uri("/LegendaryClient;component/Assets/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                    image.ChampionImage.Source = new BitmapImage(UriSource);
+                    image.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
 
                     item.TeamTwoPanel.Children.Add(image);
                 }
 
                 item.MouseDown += item_MouseDown;
+                item.GameId.MouseDoubleClick += GameId_MouseDoubleClick;
+                item.GameId.MouseLeave += GameId_MouseLeave;
+                item.KeyDown += item_KeyDown;
 
                 //Insert on top
                 GamePanel.Children.Insert(0, item);
@@ -190,71 +176,280 @@ namespace LegendaryClient.Windows
 
             foreach (PlayerParticipantStatsSummary summary in stats.TeamPlayerParticipantStats)
             {
+                double k = -1, d = -1, a = -1;
                 PlayerItemReplay player = new PlayerItemReplay();
                 player.PlayerNameLabel.Content = summary.SummonerName;
 
-                Uri UriSource = new Uri("/LegendaryReplays;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                player.ChampionIcon.ChampionImage.Source = new BitmapImage(UriSource);
+                foreach (RawStatDTO stat in summary.Statistics)
+                {
+                    if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
+                    {
+                        switch (stat.StatTypeName)
+                        {
+                            case "ITEM1":
+                                player.gameItem1.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM2":
+                                player.gameItem2.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM3":
+                                player.gameItem3.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM4":
+                                player.gameItem4.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM5":
+                                player.gameItem5.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM6":
+                                player.gameTrinket.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    switch (stat.StatTypeName)
+                    {
+                        case "CHAMPIONS_KILLED":
+                            k = stat.Value;
+                            break;
+                        case "NUM_DEATHS":
+                            d = stat.Value;
+                            break;
+                        case "ASSISTS":
+                            a = stat.Value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                foreach (object element in player.getChildElements())
+                {
+                    if (element is SmallChampionItem && ((SmallChampionItem)element).Name.StartsWith("game"))
+                    {
+                        ((SmallChampionItem)element).MouseMove += img_MouseMove;
+                        ((SmallChampionItem)element).MouseLeave += img_MouseLeave;
+                    }
+                }
+
+                player.ChampionIcon.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
+                player.File.Content = summary.SkinName;
+                player.KDA.Content = k + "/" + d + "/" + a;
 
                 TeamOnePanel.Children.Add(player);
             }
 
             foreach (PlayerParticipantStatsSummary summary in stats.OtherTeamPlayerParticipantStats)
             {
+                double k = -1, d = -1, a = -1;
                 PlayerItemReplay player = new PlayerItemReplay();
                 player.PlayerNameLabel.Content = summary.SummonerName;
+                foreach (RawStatDTO stat in summary.Statistics)
+                {
+                    if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
+                    {
+                        switch (stat.StatTypeName)
+                        {
+                            case "ITEM1":
+                                player.gameItem1.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM2":
+                                player.gameItem2.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM3":
+                                player.gameItem3.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM4":
+                                player.gameItem4.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM5":
+                                player.gameItem5.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            case "ITEM6":
+                                player.gameTrinket.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    switch (stat.StatTypeName)
+                    {
+                        case "CHAMPIONS_KILLED":
+                            k = stat.Value;
+                            break;
+                        case "NUM_DEATHS":
+                            d = stat.Value;
+                            break;
+                        case "ASSISTS":
+                            a = stat.Value;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                foreach (object element in player.getChildElements())
+                {
+                    if (element is SmallChampionItem && ((SmallChampionItem)element).Name.StartsWith("game"))
+                    {
+                        ((SmallChampionItem)element).MouseMove += img_MouseMove;
+                        ((SmallChampionItem)element).MouseLeave += img_MouseLeave;
+                    }
+                }
 
-                Uri UriSource = new Uri("/LegendaryReplays;component/champion/" + summary.SkinName + ".png", UriKind.RelativeOrAbsolute);
-                player.ChampionIcon.ChampionImage.Source = new BitmapImage(UriSource);
+                player.File.Content = summary.SkinName;
+                player.ChampionIcon.ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", summary.SkinName + ".png"));
+                player.KDA.Content = k + "/" + d + "/" + a;
 
                 TeamTwoPanel.Children.Add(player);
             }
         }
-        
-        private void Download_Click(object sender, RoutedEventArgs e)
+
+        private void GameId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            HintLabel.Content = "retrieving replay";
-            HintLabel.Visibility = Visibility.Visible;
-            var fadeLabelInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
-            HintLabel.BeginAnimation(Label.OpacityProperty, fadeLabelInAnimation);
-
-            string SpectatorCommand = Command.Text;
-            string[] RemoveExcessInfo = SpectatorCommand.Split(new string[1] { "spectator " }, StringSplitOptions.None);
-
-            if (RemoveExcessInfo.Length != 2)
+            TextBox item = (TextBox)sender;
+            if (item.IsReadOnly)
             {
-                HintLabel.Content = "invalid command";
-                HintLabel.Visibility = Visibility.Visible;
+                item.IsReadOnly = false;
+                System.Drawing.Color c = System.Drawing.Color.White;
+                item.Background = new SolidColorBrush(Color.FromRgb(c.R, c.B, c.G));
+            }
+        }
+
+        private void GameId_MouseLeave(object sender, MouseEventArgs e)
+        {
+            TextBox item = (TextBox)sender;
+            if (!item.IsReadOnly)
+            {
+                item.IsReadOnly = true;
+                item.Background = ((Grid)item.Parent).Background;
+                File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", (string)item.Tag, "name"), item.Text);
+            }
+        }
+
+        void item_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+                GameId_MouseLeave(((ReplayItem)sender).GameId, null);
+        }
+
+        private void img_MouseLeave(object sender, MouseEventArgs e)
+        {
+            SmallChampionItem icon = (SmallChampionItem)sender;
+            LargeChatPlayer PlayerItem = (LargeChatPlayer)icon.Tag;
+
+            if (PlayerItem != null)
+            {
+                Client.MainGrid.Children.Remove(PlayerItem);
+                icon.Tag = null;
+            }
+        }
+
+        private void img_MouseMove(object sender, MouseEventArgs e)
+        {
+            SmallChampionItem icon = (SmallChampionItem)sender;
+            BitmapImage img = (BitmapImage)icon.ChampionImage.Source;
+            if (img == null)
                 return;
+
+            LargeChatPlayer PlayerItem = (LargeChatPlayer)icon.Tag;
+            if (PlayerItem == null)
+            {
+                PlayerItem = new LargeChatPlayer();
+                string[] s = img.UriSource.Segments;
+                int id = int.Parse(s[s.Length - 1].Replace(".png", ""));
+                Client.MainGrid.Children.Add(PlayerItem);
+
+                items Item = items.GetItem(id);
+
+                PlayerItem.PlayerName.Content = Item.name;
+
+                PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                if (PlayerItem.PlayerName.DesiredSize.Width > 250) //Make title fit in item
+                    PlayerItem.Width = PlayerItem.PlayerName.DesiredSize.Width;
+                else
+                    PlayerItem.Width = 250;
+
+                PlayerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
+                PlayerItem.PlayerLeague.Content = "Item ID " + Item.id;
+                PlayerItem.LevelLabel.Content = "";
+                PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
+
+                string ParsedDescription = Item.description;
+                ParsedDescription = ParsedDescription.Replace("<br>", Environment.NewLine);
+                ParsedDescription = Regex.Replace(ParsedDescription, "<.*?>", string.Empty);
+                PlayerItem.PlayerStatus.Text = ParsedDescription;
+
+                PlayerItem.ProfileImage.Source = img;
+                PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+                PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                PlayerItem.Visibility = Visibility.Hidden;
+                icon.Tag = PlayerItem;
             }
 
-            string[] Info = RemoveExcessInfo[1].Replace("\"", "").Split(' ');
-
-            if (Info.Length != 4)
+            if (PlayerItem.ActualHeight != 0 && PlayerItem.ActualWidth != 0)
             {
-                HintLabel.Content = "invalid command";
-                HintLabel.Visibility = Visibility.Visible;
-                return;
+                double YMargin = (Client.MainGrid.ActualHeight / 2) - (PlayerItem.ActualHeight / 2);
+                double XMargin = (Client.MainGrid.ActualWidth / 2) - (PlayerItem.ActualWidth / 2);
+                PlayerItem.Margin = new Thickness(XMargin, YMargin, 0, 0);
+                if (PlayerItem.Visibility == Visibility.Hidden)
+                    PlayerItem.Visibility = Visibility.Visible;
             }
+        }
 
-            Command.Text = "";
+        private async void Download_Click(object sender, RoutedEventArgs e)
+        {
+            if (User == true)
+            {
+                PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(Command.Text);
+                if (String.IsNullOrWhiteSpace(Summoner.Name))
+                {
+                    MessageOverlay overlay = new MessageOverlay();
+                    overlay.MessageTitle.Content = "No Summoner Found";
+                    overlay.MessageTextBox.Text = "The summoner \"" + Command.Text + "\" does not exist.";
+                    Client.OverlayContainer.Content = overlay.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                    return;
+                }
+                HintLabel.Content = "retrieving replay";
+                HintLabel.Visibility = Visibility.Visible;
+                var fadeLabelInAnimationx = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
+                HintLabel.BeginAnimation(Label.OpacityProperty, fadeLabelInAnimationx);
+                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Command.Text);
+                if (n.GameName != null)
+                {
+                    int port = n.PlayerCredentials.ServerPort;
+                    string IP;
+                    if (port == 0)
+                        IP = n.PlayerCredentials.ObserverServerIp + ":8088";
+                    else
+                        IP = n.PlayerCredentials.ObserverServerIp + ":" + port;
+                    string Key = n.PlayerCredentials.ObserverEncryptionKey;
+                    int GameID = (Int32)n.PlayerCredentials.GameId;
+                    recorder = new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
+                    recorder.OnReplayRecorded += recorder_OnReplayRecorded;
+                    recorder.OnGotChunk += recorder_OnGotChunk;
 
-            int GameId = Convert.ToInt32(Info[2]);
-
-            recorder = new ReplayRecorder(Info[0], GameId, Info[3], Info[1]);
-            recorder.OnReplayRecorded += recorder_OnReplayRecorded;
-            recorder.OnGotChunk += recorder_OnGotChunk;
-
-            var fadeGridOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
-            Command.Visibility = Visibility.Hidden;
-            Download.Visibility = Visibility.Hidden;
+                    var fadeGridOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.1));
+                    Command.Visibility = Visibility.Hidden;
+                    Download.Visibility = Visibility.Hidden;
+                    HintLabel.Visibility = Visibility.Visible;
+                    HintLabel.Content = "Starting replay download";
+                    return;
+                }
+                else
+                {
+                    HintLabel.Content = "That player is not in a game";
+                    HintLabel.Visibility = Visibility.Visible;
+                    return;
+                }
+            }
         }
 
         void recorder_OnGotChunk(int ChunkId)
         {
-            HintLabel.Visibility = Visibility.Visible;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
             {
+                HintLabel.Visibility = Visibility.Visible;
                 HintLabel.Content = "retrieving replay (got chunk " + ChunkId + ")";
             }));
         }
@@ -277,15 +472,9 @@ namespace LegendaryClient.Windows
             Environment.Exit(0);
         }
 
-        private void SettingsButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //FindLolWindow window = new FindLolWindow();
-            //window.ShowDialog();
-        }
-
         private void WatchReplayButton_Click(object sender, RoutedEventArgs e)
         {
-            string Directory = Path.Combine(@"RADS/projects/lol_game_client/releases");
+            string Directory = Client.Location;
             if (String.IsNullOrEmpty(Directory))
             {
                 MessageBoxResult result = MessageBox.Show("You need to set your League of Legends installation location in settings.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -293,7 +482,8 @@ namespace LegendaryClient.Windows
             }
 
             ProcessStartInfo Replay = new ProcessStartInfo();
-            Replay.FileName = "ReplayHandler.exe";
+            Replay.FileName = Path.Combine(Client.ExecutingDirectory, "ReplayHandler.exe");
+            Replay.Verb = "runas";
             Replay.Arguments = selectedStats.Difficulty.Replace('-', ' ');
             Process.Start(Replay);
 
@@ -312,7 +502,7 @@ namespace LegendaryClient.Windows
                 latestVersion = info.Name;
             }
 
-            Directory = Path.Combine(Directory, latestVersion, "deploy");
+            Directory = Path.Combine(Client.Location);
 
             if (!File.Exists(Path.Combine(Directory, "League of Legends.exe")))
             {
@@ -320,15 +510,12 @@ namespace LegendaryClient.Windows
             }
 
             string[] details = selectedStats.Difficulty.Split('-');
-            var p = new System.Diagnostics.Process();
-            p.StartInfo.WorkingDirectory = Directory;
-            p.StartInfo.FileName = Path.Combine(Directory, "League of Legends.exe");
-            p.StartInfo.Arguments = "\"8393\" \"LoLLauncher.exe\" \"\" \"spectator "
-                + "127.0.0.1:5651" + " "
-                + File.ReadAllText(Path.Combine("cabinet", selectedStats.Difficulty, "key")) + " "
-                + details[0] + " "
-                + details[1] + "\"";
-            p.Start();
+            Client.LaunchSpectatorGame("127.0.0.1:5651", File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", selectedStats.Difficulty, "key")), Convert.ToInt32(details[0]), details[1]);
+        }
+
+        private void refresh_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateReplays();
         }
     }
 

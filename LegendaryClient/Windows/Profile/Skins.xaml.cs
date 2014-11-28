@@ -51,14 +51,14 @@ namespace LegendaryClient.Windows.Profile
                 skinList.AddRange(champion.ChampionSkins);
             }
 
-            if (!String.IsNullOrEmpty(SearchTextBox.Text))
+            if (!String.IsNullOrEmpty(SearchTextBox.Text) && !LimitedSkinCheckBox.IsChecked.Value)
             {
                 skinList = skinList.Where(x => championSkins.GetSkin(x.SkinId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
             }
 
             foreach (ChampionSkinDTO skin in skinList)
             {
-                if (skin.Owned)
+                if (LimitedSkinCheckBox.IsChecked.Value ? !skin.StillObtainable && skin.Owned : skin.Owned)
                 {
                     ProfileSkinImage skinImage = new ProfileSkinImage();
                     championSkins championSkin = championSkins.GetSkin(skin.SkinId);
@@ -71,6 +71,11 @@ namespace LegendaryClient.Windows.Profile
                     SkinSelectListView.Items.Add(skinImage);
                 }
             }
+        }
+
+        private void LimitedSkinCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            FilterSkins();
         }
     }
 }

@@ -18,7 +18,7 @@ namespace RiotPatch.RADS.projects.lol_air_client
         {
             string LatestVersion = GetLatestVersion();
             string[] ReleaseManafast = GetReleaseManafast(LatestVersion);
-            DownloadAir(ReleaseManafast, MainDownloadLocation);
+            DownloadAirFix(ReleaseManafast, MainDownloadLocation);
         }
         /// <summary>
         /// Retreives the latest lol_air_client version
@@ -42,7 +42,7 @@ namespace RiotPatch.RADS.projects.lol_air_client
             string[] FileMetaData = Package.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
             return FileMetaData;
         }
-        public static void DownloadAir(string[] FileMetaData, string DownloadOutputLocation)
+        public static void DownloadAirFix(string[] FileMetaData, string DownloadOutputLocation)
         {
             //Invalid specified output folder. Specify a valid location
             if (!Directory.Exists(DownloadOutputLocation))

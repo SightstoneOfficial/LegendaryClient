@@ -29,16 +29,9 @@ namespace LCLog
         /// <param name="type"></param>
         public static void Log(String lines, String type = "LOG")
         {
-            try
-            {
-                System.IO.StreamWriter file = new System.IO.StreamWriter(Path.Combine(ExecutingDirectory, "Logs", LogfileName), true);
+            using (System.IO.FileStream stream = File.Open(Path.Combine(ExecutingDirectory, "Logs", LogfileName), FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(stream))
                 file.WriteLine(string.Format("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(), type.ToUpper(), lines));
-                file.Close();
-            }
-            catch
-            {
-                Log("Failed to do a log", "LoggerError");
-            }
         }
 
         public static void CreateLogFile()
@@ -46,7 +39,7 @@ namespace LCLog
             //Generate A Unique file to use as a log file
             if (!Directory.Exists(Path.Combine(ExecutingDirectory, "Logs")))
                 Directory.CreateDirectory(Path.Combine(ExecutingDirectory, "Logs"));
-            LogfileName = string.Format("{0}T{1} {2}", DateTime.Now.ToShortDateString().Replace("/", "_"), DateTime.Now.ToShortTimeString().Replace(" ", "").Replace(":", "-"), "_" + LogfileName); 
+            LogfileName = string.Format("{0}T{1} {2}", DateTime.Now.ToShortDateString().Replace("/", "_"), DateTime.Now.ToShortTimeString().Replace(" ", "").Replace(":", "-"), "_" + LogfileName);
             var file = File.Create(Path.Combine(ExecutingDirectory, "Logs", LogfileName));
             file.Close();
         }

@@ -8,12 +8,12 @@
 	Title="QueuePopOverlay">
 
     <Grid Background="#B2000000">
-        <Grid   Background="#FF2B2B2B" Margin="381,135,343,119">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="#B22B2B2B" Width="550" Height="450">
             <Label Content="Queue Pop!" HorizontalAlignment="Left" Margin="17,0,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
             <Label x:Name="TimerLabel" Content="12" HorizontalAlignment="Right" Margin="0,0,334,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" RenderTransformOrigin="9.997,0.753" />
-            <ListBox x:Name="Team1ListBox" HorizontalAlignment="Left" Margin="10,50,0,0" Width="264" Height="420" VerticalAlignment="Top" />
-            <ListBox x:Name="Team2ListBox" HorizontalAlignment="Right" Margin="0,50,10,0" Width="264" Height="420" VerticalAlignment="Top" />
-            <Button x:Name="AcceptButton" Content="Accept Queue" HorizontalAlignment="Stretch" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="30" Click="AcceptButton_Click" />
+            <ListBox x:Name="Team1ListBox" HorizontalAlignment="Left" Margin="10,50,0,0" Width="264" Height="357" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
+            <ListBox x:Name="Team2ListBox" HorizontalAlignment="Right" Margin="0,50,10,0" Width="264" Height="357" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
+            <Button x:Name="AcceptButton" Content="Accept Queue" HorizontalAlignment="Stretch" Margin="10,0,10,8" VerticalAlignment="Bottom" Height="30" Click="AcceptButton_Click" />
         </Grid>
     </Grid>
 </Page>

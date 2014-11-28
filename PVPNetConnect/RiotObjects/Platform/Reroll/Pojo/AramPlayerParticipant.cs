@@ -26,7 +26,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Reroll.Pojo
             base.SetFields(this, result);
         }
 
-        public delegate void Callback(AramPlayerParticipant result);
+        public new delegate void Callback(AramPlayerParticipant result);
 
         private Callback callback;
 

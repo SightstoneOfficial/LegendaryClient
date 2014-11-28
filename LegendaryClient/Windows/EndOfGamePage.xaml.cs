@@ -7,12 +7,12 @@ using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -24,6 +24,7 @@ namespace LegendaryClient.Windows
     public partial class EndOfGamePage : Page
     {
         private Room newRoom;
+
         public EndOfGamePage(EndOfGameStats Statistics)
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace LegendaryClient.Windows
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatText.ScrollToEnd();
             }));
         }
 
@@ -61,8 +63,12 @@ namespace LegendaryClient.Windows
                     tr.Text = msg.From.Resource + ": ";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    if (Client.Filter)
+                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() + Environment.NewLine;
+                    else
+                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    ChatText.ScrollToEnd();
                 }
             }));
         }
@@ -73,10 +79,16 @@ namespace LegendaryClient.Windows
             tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-            tr.Text = ChatTextBox.Text + Environment.NewLine;
+            if (Client.Filter)
+                tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
+            else
+                tr.Text = ChatTextBox.Text + Environment.NewLine;
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+            if (String.IsNullOrEmpty(ChatTextBox.Text))
+                return;
             newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
+            ChatText.ScrollToEnd();
         }
 
         private void RenderStats(EndOfGameStats Statistics)
@@ -85,6 +97,11 @@ namespace LegendaryClient.Windows
             TimeLabel.Content = string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
             ModeLabel.Content = Statistics.GameMode;
             TypeLabel.Content = Statistics.GameType;
+
+            GainedIP.Content = "+" + Statistics.IpEarned + " IP";
+            TotalIP.Content = Statistics.IpTotal.ToString().Replace(".0", "") + " IP Total";
+            string game = " XP";
+                    
 
             List<PlayerParticipantStatsSummary> AllParticipants = new List<PlayerParticipantStatsSummary>(Statistics.TeamPlayerParticipantStats.ToArray());
             AllParticipants.AddRange(Statistics.OtherTeamPlayerParticipantStats);
@@ -105,6 +122,27 @@ namespace LegendaryClient.Windows
                 double Assists = 0;
                 double Deaths = 0;
 
+                bool victory = false;
+                foreach (RawStatDTO stat in summary.Statistics)
+                {
+                    if (stat.StatTypeName.ToLower() == "win")
+                    {
+                        victory = true;
+                    }
+                }
+
+                if (Statistics.Ranked)
+                {
+                    game = " LP";
+
+                    GainedXP.Content = (victory ? "+" : "-") + Statistics.ExperienceEarned + game;
+                    TotalXP.Content = Statistics.ExperienceTotal + game;
+                }
+                else
+                {
+                    GainedXP.Content = "+" + Statistics.ExperienceEarned + game;
+                    TotalXP.Content = Statistics.ExperienceTotal + game;
+                }    
                 foreach (RawStatDTO stat in summary.Statistics)
                 {
                     if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
@@ -159,8 +197,11 @@ namespace LegendaryClient.Windows
             championSkins Skin = championSkins.GetSkin(Statistics.SkinIndex);
             try
             {
-                var skinSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
-                SkinImage.Source = new BitmapImage(skinSource);
+                if (Skin != null)
+                {
+                    var skinSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Skin.splashPath), UriKind.Absolute);
+                    SkinImage.Source = new BitmapImage(skinSource);
+                }
             }
             catch
             {

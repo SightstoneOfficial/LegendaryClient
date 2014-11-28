@@ -13,6 +13,10 @@ using System.Windows.Controls;
 using log4net;
 using log4net.Config;
 using System.Security.Permissions;
+using System.Net;
+using System.Diagnostics;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace LegendaryClient
 {
@@ -21,42 +25,41 @@ namespace LegendaryClient
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-        private Accent Steel = null;
+        private Accent myAccent = null;
         Warning Warn = new Warning();
         private static readonly ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
         public MainWindow()
         {
             InitializeComponent();
-
-            SwitchPage.Visibility = Visibility.Hidden;
+            ReturnToPage.Visibility = Visibility.Hidden;
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            var ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase);
-            Client.ExecutingDirectory = ExecutingDirectory.Replace("file:\\", "");
+            //Keep this this way that way the auto updator knows what to update
+            var ExecutingDirectory = System.IO.Directory.GetParent(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+            
+            Client.ExecutingDirectory = ExecutingDirectory.ToString().Replace("file:\\", "");
             LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
-#if !DEBUG
-
-#endif
 
             Client.InfoLabel = InfoLabel;
-            Client.StartHeartbeat();
             Client.PVPNet = new PVPNetConnection();
             Client.PVPNet.KeepDelegatesOnLogout = false;
             Client.PVPNet.OnError += Client.PVPNet_OnError;
-
-            Steel = new Accent("Steel", new Uri("pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml"));
-            if (Properties.Settings.Default.DarkTheme)
-            {
-                ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
-            }
+            if (String.IsNullOrEmpty(Properties.Settings.Default.Theme))
+               Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
+            myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
+            ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
 
             Client.ChatClient = new JabberClient();
-            ChatContainer.Content = new ChatPage().Content;
-            StatusContainer.Content = new StatusPage().Content;
+            Client.chatPage = new ChatPage();
+            ChatContainer.Content = Client.chatPage.Content;
+            Client.notificationPage = new NotificationPage();
+            NotificationContainer.Content = Client.notificationPage.Content;
+            Client.statusPage = new StatusPage();
+            StatusContainer.Content = Client.statusPage.Content;
             NotificationOverlayContainer.Content = new FakePage().Content;
 
             Grid NotificationTempGrid = null;
@@ -71,53 +74,51 @@ namespace LegendaryClient
             Client.PlayButton = PlayButton;
             Client.Pages = new List<Page>();
             Client.MainGrid = MainGrid;
+            Client.BackgroundImage = BackImage;
             Client.NotificationGrid = NotificationTempGrid;
             Client.MainWin = this;
             Client.Container = Container;
             Client.OverlayContainer = OverlayContainer;
+            Client.NotificationContainer = NotificationContainer;
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;
-            Client.LobbyButton = SwitchPage;
+            Client.ReturnButton = ReturnToPage;
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
             Client.SwitchPage(new PatcherPage());
-            //Client.SwitchPage(new LoginPage());
 
-            this.Closing += new System.ComponentModel.CancelEventHandler(this.MainWindow_Closing);
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
+            {
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
+                    Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
+            }
         }
 
-        private void ThemeButton_Click(object sender, RoutedEventArgs e)
+        public void ChangeTheme()
         {
-            if (ThemeManager.ThemeIsDark)
-            {
-                ThemeManager.ChangeTheme(this, Steel, Theme.Light);
-                Properties.Settings.Default.DarkTheme = false;
-                Properties.Settings.Default.Save();
-            }
-            else
-            {
-                ThemeManager.ChangeTheme(this, Steel, Theme.Dark);
-                Properties.Settings.Default.DarkTheme = true;
-                Properties.Settings.Default.Save();
-            }
+            Accent myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
+            ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
+            Client.CurrentAccent = myAccent;
         }
 
         private void SwichToTeamQueue_Click(object Sender, RoutedEventArgs e)
         {
-            Client.SwitchPage(new TeamQueuePage(null, null, true));
+            Client.SwitchPage(Client.CurrentPage);
         }
+
         internal bool SwitchTeamPage = true;
+
         public new void Hide()
         {
             if (SwitchTeamPage == true)
             {
-                SwitchPage.Visibility = Visibility.Visible;
+                ReturnToPage.Visibility = Visibility.Visible;
                 SwitchTeamPage = false;
             }
             else if (SwitchTeamPage == false)
             {
-                SwitchPage.Visibility = Visibility.Hidden;
+                ReturnToPage.Visibility = Visibility.Hidden;
                 SwitchTeamPage = true;
             }
         }
@@ -153,7 +154,7 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
-                SettingsPage SettingsPage = new SettingsPage();
+                SettingsPage SettingsPage = new SettingsPage(this);
                 Client.SwitchPage(SettingsPage);
             }
         }
@@ -164,6 +165,7 @@ namespace LegendaryClient
             {
                 MainPage MainPage = new MainPage();
                 Client.SwitchPage(MainPage);
+                Client.ClearPage(typeof(SettingsPage));
             }
         }
 
@@ -182,6 +184,7 @@ namespace LegendaryClient
             Properties.Settings.Default.AutoLogin = false;
             if (Client.IsLoggedIn)
             {
+                Client.ReturnButton.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
                 Client.PVPNet.QuitGame();
@@ -199,9 +202,9 @@ namespace LegendaryClient
         
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            Client.PVPNet.PurgeFromQueues();
             Client.PVPNet.Leave();
-            Environment.Exit(0);
+            Client.PVPNet.PurgeFromQueues();
+            Client.PVPNet.Disconnect();
 
             if (QuitMe == true)
             {

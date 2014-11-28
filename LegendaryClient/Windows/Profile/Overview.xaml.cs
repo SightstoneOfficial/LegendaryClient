@@ -93,6 +93,7 @@ namespace LegendaryClient.Windows.Profile
                         StatsComboBox.Items.Add(SummaryString);
                     }
                 }
+                StatsComboBox.SelectedItem = "Ranked Solo5v5";
             }));
         }
 

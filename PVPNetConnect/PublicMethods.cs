@@ -100,13 +100,13 @@ namespace PVPNetConnect
         }
 
         /// 3.)
-        public void GetSumonerActiveBoosts(SummonerActiveBoostsDTO.Callback callback)
+        public void GetSummonerActiveBoosts(SummonerActiveBoostsDTO.Callback callback)
         {
             SummonerActiveBoostsDTO cb = new SummonerActiveBoostsDTO(callback);
             InvokeWithCallback("inventoryService", "getSumonerActiveBoosts", new object[] { }, cb);
         }
 
-        public async Task<SummonerActiveBoostsDTO> GetSumonerActiveBoosts()
+        public async Task<SummonerActiveBoostsDTO> GetSummonerActiveBoosts()
         {
             int Id = Invoke("inventoryService", "getSumonerActiveBoosts", new object[] { });
             while (!results.ContainsKey(Id))
@@ -1353,7 +1353,14 @@ namespace PVPNetConnect
             results.Remove(Id);
             return null;
         }
-
+        public async Task<object> revokeInvite(double Summoner_ID)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "revokeInvitePrivileges", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
         public async Task<object> MakeOwner(double Summoner_ID)
         {
             int Id = Invoke("lcdsGameInvitationService", "transferOwnership", new object[] { Summoner_ID });
@@ -1419,6 +1426,7 @@ namespace PVPNetConnect
             InvokeWithCallback("matchmakerService", "attachTeamToQueue",
                 new object[] { matchMakerParams.GetBaseTypedObject() }, cb);
         }
+
         public void AttachTeamToQueue(MatchMakerParams matchMakerParams, SearchingForMatchNotification.Callback callback)
         {
             SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
@@ -1447,10 +1455,17 @@ namespace PVPNetConnect
             results.Remove(Id);
             return null;
         }
-
         public async Task<object> Invite(double Summoner_ID)
         {
             int Id = Invoke("lcdsGameInvitationService", "invite", new object[] { Summoner_ID });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+        public async Task<object> InviteFriendOfFriend(double summonerID, double commonFriendId)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "invite", new object[] { summonerID, "FRIEND_OF_FRIEND", "{\"commonFriendId\":" + commonFriendId + "}" });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);

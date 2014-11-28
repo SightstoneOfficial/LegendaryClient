@@ -24,5 +24,20 @@ namespace LegendaryClient.Controls
         {
             InitializeComponent();
         }
+        public List<object> getChildElements()
+        { 
+            List<object> elements = new List<object>();
+            elements.Add(ChampionIcon);
+            elements.Add(PlayerNameLabel);
+            elements.Add(File);
+            elements.Add(gameItem1);
+            elements.Add(gameItem2);
+            elements.Add(gameItem3);
+            elements.Add(gameItem4);
+            elements.Add(gameItem5);
+            elements.Add(gameTrinket);
+            elements.Add(KDA);
+            return elements;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace PVPNetConnect.RiotObjects.Platform.Game
 {
-    public class BotParticipant : Participant
+    public class BotParticipant : GameParticipant
     {
         public override string TypeName
         {
@@ -26,7 +26,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
             base.SetFields(this, result);
         }
 
-        public delegate void Callback(BotParticipant result);
+        public new delegate void Callback(BotParticipant result);
 
         private Callback callback;
 
@@ -48,31 +48,8 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         [InternalName("teamId")]
         public String TeamId { get; set; }
 
-        [InternalName("isGameOwner")]
-        public Boolean IsGameOwner { get; set; }
-
-        [InternalName("pickMode")]
-        public Int32 PickMode { get; set; }
-
-        [InternalName("team")]
-        public Int32 Team { get; set; }
-
-        [InternalName("summonerInternalName")]
-        public String SummonerInternalName { get; set; }
-
-        [InternalName("pickTurn")]
-        public Int32 PickTurn { get; set; }
-
-        [InternalName("badges")]
-        public Int32 Badges { get; set; }
-
-        [InternalName("isMe")]
-        public Boolean IsMe { get; set; }
-
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public new String SummonerName { get; set; }
 
-        [InternalName("teamName")]
-        public object TeamName { get; set; }
     }
 }

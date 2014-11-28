@@ -19,16 +19,27 @@ namespace LegendaryClient.Logic.Patcher
             string dragonJSON = "";
             using (WebClient client = new WebClient())
             {
-                dragonJSON = client.DownloadString("http://ddragon.leagueoflegends.com/realms/na.js");
+                try
+                {
+                    dragonJSON = client.DownloadString("http://ddragon.leagueoflegends.com/realms/na.js");
+                }
+                catch
+                {
+                    
+                }
             }
             dragonJSON = dragonJSON.Replace("Riot.DDragon.m=", "").Replace(";", "");
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(dragonJSON);
-            string Version = (string)deserializedJSON["v"];
-            string CDN = (string)deserializedJSON["cdn"];
-            string s = CDN + "/dragontail-" + Version + ".tgz";
-            DDragonVersion = Version;
-            return s;
+            if (!String.IsNullOrEmpty(dragonJSON))
+            {
+                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(dragonJSON);
+                string Version = (string)deserializedJSON["v"];
+                string CDN = (string)deserializedJSON["cdn"];
+                string s = CDN + "/dragontail-" + Version + ".tgz";
+                DDragonVersion = Version;
+                return s;
+            }
+            else return String.Empty;
         }
 
         public string GetLatestAir()
@@ -72,14 +83,14 @@ namespace LegendaryClient.Logic.Patcher
             {
                 File.Copy(Path.Combine(AirLocation, "lib", "ClientLibCommon.dat"), Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
             }
-            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
+            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite")))
             {
-                File.Copy(Path.Combine(AirLocation, "assets", "data", "gameStats", "gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                File.Copy(Path.Combine(AirLocation, "assets", "data", "gameStats", "gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"), true);
             }
             else
             {
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-                File.Copy(Path.Combine(AirLocation, "assets", "data", "gameStats", "gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
+                File.Copy(Path.Combine(AirLocation, "assets", "data", "gameStats", "gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"), true);
             }
 
             Copy(Path.Combine(AirLocation, "assets", "images", "abilities"), Path.Combine(Client.ExecutingDirectory, "Assets", "abilities"));

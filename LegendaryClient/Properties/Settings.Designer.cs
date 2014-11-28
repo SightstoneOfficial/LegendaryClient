@@ -58,19 +58,28 @@ namespace LegendaryClient.Properties {
                 this["Region"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string LoginPageImage
-        {
-            get
-            {
+        public string LoginPageImage {
+            get {
                 return ((string)(this["LoginPageImage"]));
             }
-            set
-            {
+            set {
                 this["LoginPageImage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisableLoginMusic {
+            get {
+                return ((bool)(this["DisableLoginMusic"]));
+            }
+            set {
+                this["DisableLoginMusic"] = value;
             }
         }
         
@@ -202,6 +211,48 @@ namespace LegendaryClient.Properties {
             }
             set {
                 this["FavouriteChamps"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Theme {
+            get {
+                return ((string)(this["Theme"]));
+            }
+            set {
+                this["Theme"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseAsBackgroundImage
+        {
+            get
+            {
+                return ((bool)(this["UseAsBackgroundImage"]));
+            }
+            set
+            {
+                this["UseAsBackgroundImage"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AutoRecordGames
+        {
+            get
+            {
+                return ((bool)(this["AutoRecordGames"]));
+            }
+            set
+            {
+                this["AutoRecordGames"] = value;
             }
         }
     }

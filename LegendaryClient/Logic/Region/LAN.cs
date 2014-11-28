@@ -1,18 +1,32 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LegendaryClient.Logic.Region
 {
-    public sealed class LA1 : BaseRegion
+    public sealed class LAN : BaseRegion
     {
         public override string RegionName
         {
             get { return "LA1"; }
         }
 
+        public override bool Garena
+        {
+            get { return false; }
+        }
+
         public override string InternalName
         {
             get { return "LA1"; }
+        }
+
+        public override string Locale
+        {
+            get { return "es_MX"; }
         }
 
         public override string ChatName
@@ -22,7 +36,6 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri NewsAddress
         {
-            //Unknown
             get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/la1/es_MX.js"); }
         }
 
@@ -37,8 +50,7 @@ namespace LegendaryClient.Logic.Region
             {
                 return new IPAddress[]
                 {
-                    IPAddress.Parse("66.151.33.33"),
-
+                    //No known IP address
                 };
             }
         }
@@ -50,8 +62,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string SpectatorIpAddress
         {
-            //Unknown
-            get { return ""; }
+            get { return "110.45.191.11:80"; }
         }
     }
 }

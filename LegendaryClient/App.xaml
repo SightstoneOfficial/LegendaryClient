@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
+        
         <Style x:Key="ChatStatusStyle" TargetType="ComboBox">
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
@@ -111,6 +111,23 @@
             <sys:String>LAS</sys:String>
             <sys:String>LAN</sys:String>
             <sys:String>TR</sys:String>
+            
+            <sys:String>MY</sys:String>
+            <sys:String>PH</sys:String>
+            <sys:String>SG</sys:String>
+            <sys:String>SGMY</sys:String>
+            <sys:String>TH</sys:String>
+            <sys:String>TW</sys:String>
+            <sys:String>VN</sys:String>
+
+            <!--Garena Regions-->
+            <!--<sys:String>MY</sys:String>
+            <sys:String>PH</sys:String>
+            <sys:String>SG</sys:String>
+            <sys:String>SGMY</sys:String>
+            <sys:String>TH</sys:String>
+            <sys:String>TW</sys:String>
+            <sys:String>VN</sys:String> -->
         </x:Array>
 
         <x:Array x:Key="TeamSizes" Type="sys:Int32"
@@ -143,6 +160,22 @@
             <sys:String>Captain Pick</sys:String>
             <sys:String>No Ban Draft</sys:String>
             <sys:String>Blind Draft</sys:String>-->
+        </x:Array>
+        
+        <x:Array x:Key="FactionTeamTypes" Type="sys:String"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>Bilgewater</sys:String>
+            <sys:String>Freljord</sys:String>
+            <sys:String>Ionia</sys:String>
+            <sys:String>Shadow Isles</sys:String>
+            <sys:String>Demacia</sys:String>
+            <sys:String>Noxus</sys:String>
+            <sys:String>Piltover</sys:String>
+            <sys:String>Bandle City</sys:String>
+            <sys:String>Zaun</sys:String>
+            <sys:String>Void</sys:String>
+            <sys:String>Shurima</sys:String>
+            <sys:String>Discord</sys:String>
         </x:Array>
 
         <x:Array x:Key="ChatStates" Type="sys:String"

@@ -1,0 +1,13 @@
+﻿<Controls:MetroWindow x:Class="LegendaryClientUpdater.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="LegendaryClient Updater" Height="150" Width="500" ResizeMode="NoResize" Loaded="Form_Loaded">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="BackTex.png" TileMode="FlipY" Stretch="Uniform" AlignmentY="Top" Viewport="0,0,150,150" ViewportUnits="Absolute" Opacity="0.4" />
+        </Grid.Background>
+        <ProgressBar x:Name="DownloadProgressBar" HorizontalAlignment="Left" Height="33" Margin="10,32,0,0" VerticalAlignment="Top" Width="474"/>
+        <Label x:Name="DownloadLabel" Content="Downloading Zip: [0/0]" HorizontalAlignment="Left" Margin="19,70,0,0" VerticalAlignment="Top" Foreground="#FF64635A"/>
+    </Grid>
+</Controls:MetroWindow>

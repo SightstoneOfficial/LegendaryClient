@@ -8,6 +8,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -22,7 +23,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -67,6 +67,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PubRelease|AnyCPU'">
     <OutputPath>bin\PubRelease\</OutputPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DispersiaRelease|AnyCPU'">
+    <OutputPath>bin\DispersiaRelease\Client\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Awesomium.Core, Version=1.7.4.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -81,10 +87,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\..\..\Source\Repos\LegendaryClient\LegendaryClient\bin\Debug\Client\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro">
-      <HintPath>..\..\..\..\Source\Repos\LegendaryClient\LegendaryClient\bin\Debug\Client\MahApps.Metro.dll</HintPath>
+      <HintPath>..\DLLS\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -95,13 +101,14 @@
       <HintPath>..\DLLS\RAFlibPlus.dll</HintPath>
     </Reference>
     <Reference Include="rtmp-sharp">
-      <HintPath>..\..\..\..\Source\Repos\LegendaryClient\LegendaryClient\bin\Debug\Client\rtmp-sharp.dll</HintPath>
+      <HintPath>..\..\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -146,6 +153,18 @@
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ChatItem.xaml.cs">
+      <DependentUpon>ChatItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PlayerStatisticsChampSelect.xaml.cs">
+      <DependentUpon>PlayerStatisticsChampSelect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GroupChatPlayer.xaml.cs">
+      <DependentUpon>GroupChatPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\GroupChatItem.xaml.cs">
+      <DependentUpon>GroupChatItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameInvitePopup.xaml.cs">
       <DependentUpon>GameInvitePopup.xaml</DependentUpon>
     </Compile>
@@ -155,11 +174,23 @@
     <Compile Include="Controls\GameSeperator.xaml.cs">
       <DependentUpon>GameSeperator.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InvitesNotification.xaml.cs">
+      <DependentUpon>InvitesNotification.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\LeagueItem.xaml.cs">
       <DependentUpon>LeagueItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\JoinPublicChat.xaml.cs">
+      <DependentUpon>JoinPublicChat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NotificationChatGroup.xaml.cs">
+      <DependentUpon>NotificationChatGroup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NotifyPlayerPopup.xaml.cs">
       <DependentUpon>NotifyPlayerPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SuggestedPlayerItem.xaml.cs">
+      <DependentUpon>SuggestedPlayerItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TeamBuilder\TeamBuilderChoose.xaml.cs">
       <DependentUpon>TeamBuilderChoose.xaml</DependentUpon>
@@ -174,41 +205,43 @@
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WindowExtensions.cs" />
-    <Compile Include="GameScouter.xaml.cs">
-      <DependentUpon>GameScouter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Logic\AutoReplayRecorder.cs" />
-    <Compile Include="Logic\BotLogic\Bots.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\AlistarBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\AmumuBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\AnnieBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\AsheBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\BlitzcrankBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\BrandBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\CaitlynBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\CassiopeiaBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\ChoGathBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\DariusBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\EzrealBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\FiddlesticksBot.cs" />
-    <Compile Include="Logic\BotLogic\PlayableBots\MundoBot.cs" />
+    <Compile Include="Logic\FilterChat.cs" />
+    <Compile Include="Logic\GameClientSettings\General.cs" />
+    <Compile Include="Logic\GameClientSettings\HUD.cs" />
+    <Compile Include="Logic\GameClientSettings\LOLGCSettings.cs" />
+    <Compile Include="Logic\Maps\Map11.cs" />
+    <Compile Include="Logic\InviteInfo.cs" />
     <Compile Include="Logic\JSON\Champions.cs" />
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Patcher\LegendaryClientPatcher.cs" />
     <Compile Include="Logic\Region\EUNE.cs" />
+    <Compile Include="Logic\Region\Garena\MY.cs" />
+    <Compile Include="Logic\Region\Garena\PH.cs" />
+    <Compile Include="Logic\Region\Garena\SGMY.cs" />
+    <Compile Include="Logic\Region\Garena\TH.cs" />
+    <Compile Include="Logic\Region\Garena\TW.cs" />
+    <Compile Include="Logic\Region\Garena\VN.cs" />
+    <Compile Include="Logic\Region\LAN.cs" />
     <Compile Include="Logic\Region\LAS.cs" />
+    <Compile Include="Logic\Region\Garena\SG.cs" />
     <Compile Include="Logic\Region\TR.cs" />
+    <Compile Include="Logic\Replays\EndOfGameStats.cs" />
+    <Compile Include="Logic\Replays\PlayerParticipantStatsSummary.cs" />
+    <Compile Include="Logic\Replays\RawStatDTO.cs" />
+    <Compile Include="Logic\Replays\ReplayRecorder.cs" />
+    <Compile Include="Logic\Replays\TeamId.cs" />
+    <Compile Include="Logic\Replays\TeamInfo.cs" />
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
     <Compile Include="Logic\SoundLogic\ChampSelectSound.cs" />
     <Compile Include="Logic\SoundLogic\SelectChampion.cs" />
     <Compile Include="Logic\SQLite\invitationRequest.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\UpdateData.cs" />
+    <Compile Include="Logic\TempRunes\LCRunePages.cs" />
+    <Compile Include="Logic\TempRunes\LcRunes\Rune.cs" />
+    <Compile Include="Logic\TempRunes\LcRunes\RuneStats.cs" />
     <Compile Include="ReplayElements\ChampionItem.xaml.cs">
       <DependentUpon>ChampionItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\ChatItem.xaml.cs">
-      <DependentUpon>ChatItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ChatPlayer.xaml.cs">
       <DependentUpon>ChatPlayer.xaml</DependentUpon>
@@ -277,7 +310,6 @@
     <Compile Include="Logic\Maps\Map12.cs" />
     <Compile Include="Logic\Maps\BaseMap.cs" />
     <Compile Include="Logic\Patcher\RiotPatcher.cs" />
-    <Compile Include="Logic\ReplayRecorder.cs" />
     <Compile Include="Logic\SQLite\championAbilities.cs" />
     <Compile Include="Logic\SQLite\champions.cs" />
     <Compile Include="Logic\SQLite\championSearchTags.cs" />
@@ -313,20 +345,29 @@
     <Compile Include="Windows\ChatText.xaml.cs">
       <DependentUpon>ChatText.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\FactionsGameLobbyPage.xaml.cs">
+      <DependentUpon>FactionsGameLobbyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FactionsCreateGamePage.xaml.cs">
+      <DependentUpon>FactionsCreateGamePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FactionsJoinGamePage.xaml.cs">
+      <DependentUpon>FactionsJoinGamePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\InGame.xaml.cs">
       <DependentUpon>InGame.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\InGameHomeOverlay.xaml.cs">
-      <DependentUpon>InGameHomeOverlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\InvitePlayersPage.xaml.cs">
       <DependentUpon>InvitePlayersPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\CreateSummonerNameOverlay.xaml.cs">
+      <DependentUpon>CreateSummonerNameOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\NonExistantPage.xaml.cs">
       <DependentUpon>NonExistantPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\NotificationsPage.xaml.cs">
-      <DependentUpon>NotificationsPage.xaml</DependentUpon>
+    <Compile Include="Windows\NotificationPage.xaml.cs">
+      <DependentUpon>NotificationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\Profile\AggregatedStatsOverlay.xaml.cs">
       <DependentUpon>AggregatedStatsOverlay.xaml</DependentUpon>
@@ -443,6 +484,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ChatItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\PlayerStatisticsChampSelect.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GroupChatPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\GroupChatItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\GameInvitePopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -471,13 +528,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Controls\InvitesNotification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\LeagueItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\JoinPublicChat.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\NotificationChatGroup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\NotifyPlayerPopup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SuggestedPlayerItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\TeamBuilder\TeamBuilderChoose.xaml">
       <SubType>Designer</SubType>
@@ -497,17 +570,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GameScouter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ReplayElements\ChampionItem.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\ChatItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
@@ -655,13 +718,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\InGame.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Windows\FactionsGameLobbyPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\InGameHomeOverlay.xaml">
+    <Page Include="Windows\FactionsCreateGamePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\FactionsJoinGamePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\InGame.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
@@ -671,13 +740,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\CreateSummonerNameOverlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\NonExistantPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\NotificationsPage.xaml">
+    <Page Include="Windows\NotificationPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -932,17 +1005,18 @@
   <ItemGroup>
     <Resource Include="chat.png" />
     <Resource Include="Locked.png" />
+    <Resource Include="joinchat.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="NONE.png" />
     <Resource Include="ReplayControls\noise.png" />
+    <Resource Include="noise.png" />
     <Content Include="PVPNetConnect.csproj" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="trade.png" />
-    <Resource Include="Unlocked.png" />
     <Resource Include="star.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -9,6 +9,11 @@ namespace LegendaryClient.Logic.Region
         {
             LegendaryClient.Logic.Client.sqlite = "gameStats_en_US.sqlite";
         }
+        public override bool Garena
+        {
+            get { return false; }
+        }
+
         public override string RegionName
         {
             get { return "NA"; }
@@ -21,7 +26,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string ChatName
         {
-            get { return "na1"; }
+            get { return "na2"; }
         }
 
         public override string Locale
@@ -54,7 +59,7 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.na.lol.riotgames.com/observer-mode/rest/"); }
+            get { return new Uri("http://spectator.na1.lol.riotgames.com:80/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress

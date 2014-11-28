@@ -3,7 +3,7 @@ using System;
 
 namespace PVPNetConnect.RiotObjects.Platform.Game
 {
-    public class PlayerParticipant : Participant
+    public class PlayerParticipant : GameParticipant
     {
         public override string TypeName
         {
@@ -26,7 +26,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
             base.SetFields(this, result);
         }
 
-        public delegate void Callback(PlayerParticipant result);
+        public new delegate void Callback(PlayerParticipant result);
 
         private Callback callback;
 
@@ -37,7 +37,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("timeAddedToQueue")]
-        public object TimeAddedToQueue { get; set; }
+        public new object TimeAddedToQueue { get; set; }
 
         [InternalName("index")]
         public Int32 Index { get; set; }
@@ -55,7 +55,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public Double OriginalAccountNumber { get; set; }
 
         [InternalName("summonerInternalName")]
-        public String SummonerInternalName { get; set; }
+        public new String SummonerInternalName { get; set; }
 
         [InternalName("minor")]
         public Boolean Minor { get; set; }
@@ -88,7 +88,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public Boolean ClientInSynch { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public new String SummonerName { get; set; }
 
         [InternalName("pickMode")]
         public Int32 PickMode { get; set; }

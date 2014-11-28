@@ -205,6 +205,14 @@ namespace PVPNetConnect.RiotObjects
                             {
                                 objectList.Add((string)data);
                             }
+                            else if (elementType == typeof(Int64))
+                            {
+                                objectList.Add(Convert.ToInt64(data));
+                            }
+                            else if (elementType == typeof(Int32))
+                            {
+                                objectList.Add(Convert.ToInt32(data));
+                            }
                             else if (elementType == typeof(PVPNetConnect.RiotObjects.Platform.Game.Participant))
                             {
                                 TypedObject dataAsTo = (TypedObject)data;
@@ -214,6 +222,8 @@ namespace PVPNetConnect.RiotObjects
                                     objectList.Add(new PVPNetConnect.RiotObjects.Platform.Game.ObfuscatedParticipant(dataAsTo));
                                 else if (dataAsTo.type == "com.riotgames.platform.game.PlayerParticipant")
                                     objectList.Add(new PVPNetConnect.RiotObjects.Platform.Game.PlayerParticipant(dataAsTo));
+                                else if (dataAsTo.type == "com.riotgames.platform.game.GameParticipant")
+                                    objectList.Add(new PVPNetConnect.RiotObjects.Platform.Game.GameParticipant(dataAsTo));
                                 else if (dataAsTo.type == "com.riotgames.platform.reroll.pojo.AramPlayerParticipant")
                                     objectList.Add(new PVPNetConnect.RiotObjects.Platform.Reroll.Pojo.AramPlayerParticipant(dataAsTo));
                             }

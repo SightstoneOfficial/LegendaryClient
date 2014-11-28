@@ -6,8 +6,7 @@
       xmlns:local="clr-namespace:LegendaryClient.Controls"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1280"
-	Title="MainPage">
-
+	  Title="MainPage">
     <Page.Resources>
         <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
             <Setter Property="Visibility" Value="Collapsed" />
@@ -21,14 +20,15 @@
         <local:HoverOverLabel x:Name="HoverLabel" HorizontalAlignment="Left" Margin="27,30,0,0" Height="100" Width="100" VerticalAlignment="Top" MouseDown="HoverLabel_MouseDown" MouseEnter="HoverLabel_MouseEnter" MouseLeave="HoverLabel_MouseLeave" Opacity="0" />
         <Label x:Name="SummonerNameLabel" Content="Summoner Name" HorizontalAlignment="Left" Margin="165,40,0,0" VerticalAlignment="Top" FontSize="22" />
 
-        <ProgressBar x:Name="PlayerProgressBar" Style="{x:Null}" HorizontalAlignment="Left" Height="23" Margin="170,80,0,0" VerticalAlignment="Top" Width="250" Value="75" Foreground="#FF9C9C9C" />
+        <ProgressBar x:Name="PlayerProgressBar" HorizontalAlignment="Left" Height="23" Margin="170,80,0,0" VerticalAlignment="Top" Width="250" Value="75" />
+        
         <Label x:Name="PlayerCurrentProgressLabel" Style="{x:Null}" Content="75LP" HorizontalAlignment="Left" Margin="170,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
         <Label x:Name="PlayerProgressLabel" Style="{x:Null}" Content="Silver II" HorizontalAlignment="Left" Margin="265,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
         <Label x:Name="PlayerAimProgressLabel" Style="{x:Null}" Content="100LP" HorizontalAlignment="Left" Margin="365,75,0,0" VerticalAlignment="Top" Foreground="Black" FontSize="16" />
 
         <TextBox x:Name="BroadcastMessage" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Stretch" Margin="500,52,300,0" Height="70" TextWrapping="WrapWithOverflow" Text="" VerticalAlignment="Top" Background="Transparent" BorderBrush="{x:Null}" Foreground="White" BorderThickness="0" />
 
-        <TabControl HorizontalAlignment="Stretch" Margin="30,110,10,10" VerticalAlignment="Stretch" Width="1000">
+        <TabControl HorizontalAlignment="Stretch" Margin="150,111,130,10" VerticalAlignment="Stretch" Width="1000">
             <TabItem Header="Featured Games">
                 <Grid x:Name="SpectatorRegionGrid" Background="Black">
                     <Border BorderBrush="Black" BorderThickness="1" CornerRadius="1">
@@ -75,6 +75,7 @@
                     </ListView>
                     <Button x:Name="PrevGameButton" Content="Prev" HorizontalAlignment="Left" Margin="200,0,0,10" VerticalAlignment="Bottom" Width="75" Height="40" Click="PrevGameButton_Click" IsEnabled="False" />
                     <Button x:Name="SpectateButton" Content="Spectate" HorizontalAlignment="Center" Margin="0,0,0,10" VerticalAlignment="Bottom" Width="200" Height="40" Click="SpectateButton_Click" />
+                    <Button x:Name="RecordButton" Content="Record" HorizontalAlignment="Center" Margin="395,0,395,55" VerticalAlignment="Bottom" Width="200" Height="40" Click="RecordButton_Click" />
                     <Button x:Name="NextGameButton" Content="Next" HorizontalAlignment="Right" Margin="0,0,200,10" VerticalAlignment="Bottom" Width="75" Height="40" Click="NextGameButton_Click" />
                 </Grid>
             </TabItem>

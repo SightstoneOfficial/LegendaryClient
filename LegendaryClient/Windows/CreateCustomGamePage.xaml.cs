@@ -15,11 +15,13 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class CreateCustomGamePage : Page
     {
+        private bool initFinished = false;
         public CreateCustomGamePage()
         {
             InitializeComponent();
             Client.Whitelist = new List<string>();
             NameTextBox.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + "'s game";
+            initFinished = true;
         }
 
         private void CreateGameButton_Click(object sender, RoutedEventArgs e)
@@ -91,17 +93,10 @@ namespace LegendaryClient.Windows
                     case "The Twisted Treeline":
                         gameConfig.GameMap = GameMap.TheTwistedTreeline;
                         gameConfig.GameMode = "CLASSIC";
-                        if (gameConfig.MaxNumPlayers > 6)
-                        {
-                            NameInvalidLabel.Content = "Team size must be lower or equal to 3";
-                            NameInvalidLabel.Visibility = Visibility.Visible;
-                            CreateGameButton.IsEnabled = false;
-                            return gameConfig;
-                        }
                         break;
 
                     default:
-                        gameConfig.GameMap = GameMap.SummonersRift;
+                        gameConfig.GameMap = GameMap.NewSummonersRift;
                         gameConfig.GameMode = "CLASSIC";
                         break;
                 }
@@ -140,7 +135,6 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    Client.InGame = true;
                     Client.GameID = result.Id;
                     Client.GameName = result.Name;
                     Client.GameLobbyDTO = result;
@@ -186,6 +180,8 @@ namespace LegendaryClient.Windows
 
         private void GenerateSpectatorCode()
         {
+            if (!initFinished)
+                return;
             try
             {
                 PracticeGameConfig gameConfig = GenerateGameConfig();

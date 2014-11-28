@@ -18,6 +18,8 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class JoinQueue : UserControl
     {
+        public double queueID { get; set; }
+
         public JoinQueue()
         {
             InitializeComponent();

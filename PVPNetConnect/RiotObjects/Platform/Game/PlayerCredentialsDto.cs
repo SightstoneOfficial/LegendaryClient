@@ -45,7 +45,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public Int32 LastSelectedSkinIndex { get; set; }
 
         [InternalName("dataVersion")]
-        public Int32 DataVersion { get; set; }
+        public new Int32 DataVersion { get; set; }
 
         [InternalName("serverIp")]
         public String ServerIp { get; set; }
@@ -54,7 +54,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public Boolean Observer { get; set; }
 
         [InternalName("futureData")]
-        public Boolean FutureData { get; set; }
+        public new Boolean FutureData { get; set; }
 
         [InternalName("summonerId")]
         public Double SummonerId { get; set; }

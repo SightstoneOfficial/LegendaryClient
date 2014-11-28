@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Linq;
 
 namespace LegendaryClient.Controls
 {
@@ -82,7 +83,7 @@ namespace LegendaryClient.Controls
         {
             NotificationChatPlayer tempPlayer = null;
 
-            foreach (NotificationChatPlayer x in Client.ChatListView.Items)
+            foreach (NotificationChatPlayer x in Client.ChatListView.Items.Cast<object>().Where(i => i.GetType() == typeof(NotificationChatPlayer)))
             {
                 if (x.PlayerLabelName.Content == Client.ChatItem.PlayerLabelName.Content)
                 {

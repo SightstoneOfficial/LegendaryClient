@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="LegendaryClient.Controls.InvitesNotification"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="248">
+    <ContentControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ContentControl.Resources>
+    <Grid Background="#FF8F8F8F">
+        <Button x:Name="Accept" Content="√" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Margin="188,0,0,0"/>
+        <Button Content="X" x:Name="Decline" FontSize="30" HorizontalAlignment="Left" VerticalAlignment="Top" Style="{DynamicResource MetroCircleButtonStyle}" Width="50" Height="50" Margin="188,55,0,0"/>
+        <Label x:Name="TitleLabel" Content="Notification" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox Text="eddd5641 has invited you to a game" FontSize="10" x:Name="BodyTextbox" Margin="10,26,65,10" />
+
+    </Grid>
+</UserControl>

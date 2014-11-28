@@ -25,6 +25,11 @@ namespace LegendaryClient.Logic.Region
             get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/la2/es_MX.js"); }
         }
 
+        public override bool Garena
+        {
+            get { return false; }
+        }
+
         public override PVPNetConnect.Region PVPRegion
         {
             get { return PVPNetConnect.Region.LA2; }

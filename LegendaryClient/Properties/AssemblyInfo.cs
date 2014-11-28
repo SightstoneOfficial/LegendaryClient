@@ -46,8 +46,7 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.1.1")]
-[assembly: AssemblyFileVersion("2.0.1.1")]
+[assembly: AssemblyVersion("2.1.0.2")]
+[assembly: AssemblyFileVersion("2.1.0.2")]
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile="log4net.config",Watch=true)]
-//switch this to 1.1.0.0 after replay fix

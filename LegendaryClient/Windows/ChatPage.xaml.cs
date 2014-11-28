@@ -1,9 +1,12 @@
 ﻿using jabber.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -34,6 +37,7 @@ namespace LegendaryClient.Windows
             UpdateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateChat);
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
+            Change();
         }
 
         private void PresenceChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -44,9 +48,14 @@ namespace LegendaryClient.Windows
                 {
                     case "Online":
                         Client.CurrentPresence = PresenceType.available;
+                        Client.presenceStatus = "chat";
                         break;
-
+                    case "Busy": //TODO: fix away status, for some reason its not doing anything but there is a function depending on presenceStatus being "away" or not so...
+                        Client.CurrentPresence = PresenceType.available;
+                        Client.presenceStatus = "away";
+                        break;
                     case "Invisible":
+                        Client.presenceStatus = "";
                         Client.CurrentPresence = PresenceType.invisible;
                         break;
                 }
@@ -157,18 +166,16 @@ namespace LegendaryClient.Windows
                 PlayerItem.LevelLabel.Content = playerItem.Level;
                 PlayerItem.UsingLegendary.Visibility = playerItem.UsingLegendary ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
 
-                PlayerItem.Dev.Visibility = playerItem.IsLegendaryDev ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
+                //PlayerItem.Dev.Visibility = playerItem.IsLegendaryDev ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", playerItem.ProfileIcon + ".png"), UriKind.RelativeOrAbsolute);
                 PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
                 if (playerItem.Status != null)
                 {
-                    //Client.hidelegendaryaddition = true;
-                    Client.NewStatus();
+
                 }
                 else if (playerItem.Status == null)
                 {
                     Client.hidelegendaryaddition = true;
-                    Client.NewStatus();
                 }
                 else
                 {
@@ -231,10 +238,11 @@ namespace LegendaryClient.Windows
                 ChatListView.SelectedIndex = -1;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
                 LastPlayerItem = playerItem;
-                foreach (NotificationChatPlayer x in Client.ChatListView.Items)
+                foreach (object x in Client.ChatListView.Items)
                 {
-                    if ((string)x.PlayerLabelName.Content == playerItem.Username)
-                        return;
+                    if(x.GetType() == typeof(NotificationChatPlayer))
+                        if ((string)(x as NotificationChatPlayer).PlayerLabelName.Content == playerItem.Username)
+                            return;
                 }
                 NotificationChatPlayer ChatPlayer = new NotificationChatPlayer();
                 ChatPlayer.Tag = playerItem;
@@ -249,6 +257,19 @@ namespace LegendaryClient.Windows
         {
             Client.SwitchPage(new ProfilePage(LastPlayerItem.Username));
         }
+
+#pragma warning disable 4014
+
+        public void Change()
+        {
+            var bc = new BrushConverter();
+            bool x = Properties.Settings.Default.DarkTheme;
+            if (x)
+                TheGrid.Background = (Brush)bc.ConvertFrom("#E5000000");
+            else
+                TheGrid.Background = (Brush)bc.ConvertFrom("#E5B4B4B4");
+        }
+
         private void Invite_Click(object sender, RoutedEventArgs e)
         {
             if(Client.isOwnerOfGame == true)
@@ -256,6 +277,27 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.Invite(LastPlayerItem.Id.Replace("sum", ""));
             }
             else
+            {
+
+            }
+        }
+
+        private void AddFriendButton_Click(object sender, RoutedEventArgs e)
+        {
+            //Fix Add Friend Button
+        }
+
+        private async void SpectateGame_Click(object sender, RoutedEventArgs e)
+        {
+            if (LastPlayerItem.GameStatus == "inGame")
+            {
+                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
+                if (n.GameName != null)
+                {
+                    Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress, n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId, Client.Region.InternalName);
+                }
+            }
+            else if (LastPlayerItem.GameStatus == "spectating")
             {
 
             }

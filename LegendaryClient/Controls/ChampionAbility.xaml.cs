@@ -1,20 +1,26 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 
 namespace LegendaryClient.Controls
 {
     /// <summary>
     /// Interaction logic for ChampionAbility.xaml
     /// </summary>
-    public partial class ChampionAbility : UserControl
+    public partial class ChampionAbility : UserControl, IComparable
     {
+        public int Order { get; set; }
+
         public ChampionAbility()
         {
             InitializeComponent();
         }
 
-        private void AbilityDescription_TextChanged(object sender, TextChangedEventArgs e)
+        public int CompareTo(object ability)
         {
-
+            if(ability is ChampionAbility) {
+                return this.Order.CompareTo((ability as ChampionAbility).Order);
+            }
+            throw new ArgumentException("Passed object is not of type ChampionAbility");
         }
     }
 }

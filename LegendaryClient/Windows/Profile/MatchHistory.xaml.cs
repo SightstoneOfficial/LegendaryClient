@@ -99,6 +99,7 @@ namespace LegendaryClient.Windows.Profile
                     item.GridView.Width = 250;
                     GamesListView.Items.Add(item);
                 }
+                if(GamesListView.Items.Count > 0) GamesListView.SelectedIndex = 0;
             }));
         }
 
@@ -160,14 +161,17 @@ namespace LegendaryClient.Windows.Profile
                     if (((string)item.Key).StartsWith("Item"))
                     {
                         var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"), UriKind.Absolute);
-                        img = new Image();
-                        img.Width = 58;
-                        img.Height = 58;
-                        img.Source = new BitmapImage(uriSource);
-                        img.Tag = item;
-                        img.MouseMove += img_MouseMove;
-                        img.MouseLeave += img_MouseLeave;
-                        ItemsListView.Items.Add(img);
+                        if (File.Exists(uriSource.AbsolutePath))
+                        {
+                            img = new Image();
+                            img.Width = 58;
+                            img.Height = 58;
+                            img.Source = new BitmapImage(uriSource);
+                            img.Tag = item;
+                            img.MouseMove += img_MouseMove;
+                            img.MouseLeave += img_MouseLeave;
+                            ItemsListView.Items.Add(img);
+                        }
                     }
                     else
                     {

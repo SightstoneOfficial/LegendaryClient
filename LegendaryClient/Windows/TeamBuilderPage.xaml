@@ -9,26 +9,25 @@
 
     <Grid>
         <Label Content="Team Builder Beta" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22"/>
-        <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="74" Stroke="Black" VerticalAlignment="Top" Width="395" Margin="0,58,10,0"/>
-        <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging... Please Wait" VerticalAlignment="Top" Margin="0,58,10,0" Height="74" Width="395" Foreground="White" FontSize="20" TextAlignment="Center"/>
-        <Button x:Name="Invite" IsEnabled="True" Content="Invite" HorizontalAlignment="Right" VerticalAlignment="Top" Width="395" Margin="0,371,10,0" Height="30"/>
-        <ListView x:Name="InvitedPlayers" HorizontalAlignment="Right" Background="#FF474747" Height="229" VerticalAlignment="Top" Width="395" Margin="0,137,10,0"/>
+        <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="28" Stroke="Black" VerticalAlignment="Top" Width="395" Margin="0,58,10,0"/>
+        <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging... Please Wait" VerticalAlignment="Top" Margin="0,58,10,0" Height="28" Width="395" Foreground="White" FontSize="20" TextAlignment="Center"/>
+        <Button x:Name="Invite" IsEnabled="True" Content="Invite" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="395" Margin="0,0,10,317" Height="30" Click="InviteButton_Click"/>
+        <ListView x:Name="InvitedPlayers" HorizontalAlignment="Right" Background="#FF474747" Height="229" VerticalAlignment="Stretch" Width="395" Margin="0,91,10,352"/>
         <ListView x:Name="PlayerListView" Margin="10,58,410,10">
 
         </ListView>
 
-        <RichTextBox x:Name="ChatText" Width="395" HorizontalAlignment="Right" Margin="619,0,10,40" Height="226" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" Width="395" HorizontalAlignment="Right" Margin="0,0,10,39" Height="273" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
-        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Right" Height="23" Width="305" Margin="0,0,100,17" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Button x:Name="ChatButton" Content="Send" Margin="0,0,10,16" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="85" IsDefault="True" Height="24" Click="ChatButton_Click" />
-        <Button Content="Quit" Margin="0,10,10,633" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top"/>
-        <Button Content="Start Searching" Margin="0,10,165,633" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Click="StartQueue"/>
-
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Right" Height="23" Width="305" Margin="0,0,100,11" TextWrapping="Wrap" VerticalAlignment="Bottom" />
+        <Button x:Name="ChatButton" Content="Send" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="85" IsDefault="True" Height="24" Click="ChatButton_Click" />
+        <Button Content="Quit" Margin="0,10,10,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" Click="QuitButton_Click"/>
+        <Button Content="Start Searching" Margin="0,10,165,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Click="StartQueue"/>
 
         <Grid x:Name="ChampAndSkinGrid" Background="#B2000000">
             <TabControl x:Name="ChampSkinTabControl" HorizontalAlignment="Center" Height="380" VerticalAlignment="Top" Width="880" Margin="72,50,72,0">
@@ -73,6 +72,7 @@
             <Button Content="Lock In" HorizontalAlignment="Center" VerticalAlignment="Top" Width="129" Margin="823,435,72,0" Height="30" Click="LockIn_Click"/>
 
         </Grid>
+
         <Grid x:Name="SpellsGrid" Background="#B2000000" Visibility="Hidden">
             <Grid HorizontalAlignment="Center" Width="1004" Height="400" Margin="10,136" VerticalAlignment="Center" Background="#FF2B2B2B">
                 <Label Content="Choose Your Summoner Spells" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />

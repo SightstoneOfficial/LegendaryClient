@@ -27,8 +27,8 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label Content="Purple Team" HorizontalAlignment="Left" Margin="450,40,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
-        <ListView x:Name="PurpleTeamListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="350" Margin="450,80,0,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}" Grid.ColumnSpan="2">
+        <Label Content="Purple Team" HorizontalAlignment="Left" Margin="415,41,0,0" VerticalAlignment="Top" FontWeight="SemiBold" FontSize="22" />
+        <ListView x:Name="PurpleTeamListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="350" Margin="415,80,0,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -36,55 +36,55 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label Content="Whitelist" HorizontalAlignment="Right" Margin="0,40,320,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <ListView x:Name="WhitelistListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="120" Margin="0,80,10,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <Label Content="Whitelist" HorizontalAlignment="Left" Margin="820,40,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
+        <ListView x:Name="WhitelistListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="120" Margin="820,79,10,0" VerticalAlignment="Top" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <TextBox HorizontalAlignment="Right" Height="23" Margin="0,210,160,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" />
-        <Button Content="Add" HorizontalAlignment="Right" Margin="0,211,100,0" VerticalAlignment="Top" Width="50" />
-        <Button Content="Remove" HorizontalAlignment="Right" Margin="0,211,15,0" VerticalAlignment="Top" Width="75" IsEnabled="False" />
+        <TextBox HorizontalAlignment="Stretch" Height="23" Margin="820,211,160,0" TextWrapping="Wrap" VerticalAlignment="Top" />
+        <Button Content="Add" HorizontalAlignment="Right" Margin="0,211,90,0" VerticalAlignment="Top" Width="60" />
+        <Button Content="Remove" HorizontalAlignment="Right" Margin="0,211,10,0" VerticalAlignment="Top" Width="75" IsEnabled="False" />
 
-        <Label Content="Invite" HorizontalAlignment="Right" Margin="0,240,350,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <ListView x:Name="InviteListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="170" Margin="0,280,10,0" VerticalAlignment="Top" Width="400" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <Label Content="Invite" HorizontalAlignment="Left" Margin="820,241,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
+        <ListView x:Name="InviteListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="149" Margin="820,280,10,0" VerticalAlignment="Top" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button Content="Invite Players" HorizontalAlignment="Right" Margin="0,460,15,0" VerticalAlignment="Top" Width="390" Click="Invite_Click"/>
+        <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Stretch" Margin="820,435,10,0" VerticalAlignment="Top" Click="Invite_Click"/>
 
-        <Button x:Name="SwitchTeamsButton" Content="Switch Teams" HorizontalAlignment="Left" Margin="917,10,0,0" VerticalAlignment="Top" Width="174" Click="SwitchTeamsButton_Click" />
-        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Left" Margin="738,10,0,0" VerticalAlignment="Top" Width="174" Click="StartGameButton_Click" IsEnabled="False" />
+        <Button x:Name="SwitchTeamsButton" Content="Switch Teams" HorizontalAlignment="Right" Margin="0,10,189,0" VerticalAlignment="Top" Width="174" Click="SwitchTeamsButton_Click" />
+        <Button x:Name="StartGameButton" Content="Start Game" HorizontalAlignment="Right" Margin="0,10,368,0" VerticalAlignment="Top" Width="174" Click="StartGameButton_Click" IsEnabled="False" />
 
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="10,470,0,40" Width="550" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="10,470,0,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}" Width="550">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
-        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="5,0,0,10" Width="460" TextWrapping="Wrap" VerticalAlignment="Bottom" />
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="10,0,0,10" Width="455" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Button x:Name="ChatButton" Content="Send" Margin="470,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click" />
 
-        <Label Content="Spectators" HorizontalAlignment="Left" Margin="570,0,0,190" VerticalAlignment="Bottom" FontWeight="ExtraLight" FontSize="18" />
-        <ListView x:Name="SpectatorListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="135" Margin="570,0,0,55" VerticalAlignment="Bottom" Width="280" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <Label Content="Spectators" HorizontalAlignment="Left" Margin="565,460,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="18" />
+        <ListView x:Name="SpectatorListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="570,489,0,54" VerticalAlignment="Stretch" Width="245" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button Content="Switch to Spectator" HorizontalAlignment="Left" Margin="570,0,0,10" VerticalAlignment="Bottom" Width="280" Height="35" />
+        <Button Content="Switch to Spectator" HorizontalAlignment="Left" Margin="570,0,0,10" VerticalAlignment="Bottom" Width="245" Height="35" />
         <Label x:Name="MapLabel" Content="Summoners Rift" HorizontalAlignment="Right" Margin="0,0,10,150" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="ModeLabel" Content="CLASSIC" HorizontalAlignment="Right" Margin="0,0,10,110" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="TypeLabel" Content="Blind Pick" HorizontalAlignment="Right" Margin="0,0,10,70" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="SizeLabel" Content="5v5" HorizontalAlignment="Right" Margin="0,0,10,30" FontSize="22" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
-        <Button x:Name="AddBotBlueTeam" Content="Add Bot" Style="{DynamicResource Square}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="10,430,0,0" IsEnabled="False"/>
-        <Button x:Name="AddBotPurpleTeam" Content="Add Bot" Style="{DynamicResource Square}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="450,430,0,0" IsEnabled="False"/>
+        <Button x:Name="AddBotBlueTeam" Content="Add Bot" Style="{DynamicResource Square}"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="10,430,0,0" IsEnabled="False" Click="AddBotBlueTeam_Click"/>
+        <Button x:Name="AddBotPurpleTeam" Content="Add Bot" Style="{DynamicResource Square}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="400" Margin="415,430,0,0" IsEnabled="False" Click="AddBotPurpleTeam_Click"/>
     </Grid>
 </Page>

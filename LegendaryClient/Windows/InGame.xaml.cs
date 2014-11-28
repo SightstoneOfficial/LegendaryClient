@@ -1,9 +1,12 @@
 ﻿using LegendaryClient.Logic;
-//using LegendaryClient.Logic.AutoReplays;
+using PVPNetConnect.RiotObjects.Platform;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,16 +30,34 @@ namespace LegendaryClient.Windows
         public InGame()
         {
             InitializeComponent();
+            Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
+            Client.IsInGame = true;
+            Client.CurrentPage = this;
+            Client.ReturnButton.Visibility = Visibility.Visible;
+            Client.ReturnButton.Content = "Return to Reconnect Page";
+        }
+
+        private void Update_OnMessageReceived(object sender, object message)
+        {
+            if (message.GetType() == typeof(GameDTO))
+            {
+                if (((GameDTO)message).GameState == "TERMINATED")
+                {
+                    Client.GameStatus = "outOfGame";
+                    Client.SetChatHover();
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        Client.ReturnButton.Visibility = Visibility.Hidden;
+                        Client.IsInGame = false;
+                        Client.SwitchPage(new MainPage());
+                    }));
+                }
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Client.LaunchGame();
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            Client.SwitchPage(new InGameHomeOverlay());
         }
     }
 }

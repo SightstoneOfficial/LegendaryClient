@@ -1,4 +1,4 @@
-LegendaryClient
+﻿LegendaryClient
 ===============
 
 Beautiful, fully-featured League of Legends client.
@@ -12,28 +12,37 @@ LegendaryClient Aram Game
 Working on a patcher to patch LC [Awesome splash though]
 I am aware of crashing
 
+#####LEGENDARYCLIENT IS NOW OVER 1 YEAR OLD SINCE FIRST CODE COMMENT BY SNOWL!!!
+
 #How To Install
 https://www.youtube.com/watch?v=ZWYn_vft5Kg&feature=youtu.be
 It come with a metro-like installer [no dlls needed, a stand alone program]
 
+Known Issues / TODO
+===================
+* Team Builder is not implemented / superbuggy
+* Need a HTML website (I am not good at html)
+* Logging out doesn't update friends list / crashes. (just restart the client)
+* If you login, all LC users will be unable to see your name (lol client is fine) also you won't be added to friends list if you login and one of your friends use lc (will fix this)
+* Replays are in work
+* Shop is just bad, but that's like last. (again, use official client for now if you need to purchase RP, etc.)
+* Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
+* Finish Factions
+* Can't join custom game if invited
+* Work on more rune pages (temp storage)
+
 LegacyPVP
 =========
+[THIS PUSHED AFTER COMPLETION OF LC. DO NOT ASK QUESTIONS]
 The new rework of LegendaryClient. I will leave this here to honor Snowl's work.
 https://github.com/eddy5641/LegacyPVP
 This will still be worked on, You will not see much difference between the time I put into LegendaryClient (I finished a different project)
 LegacyPVP Is Based Of LegendaryClient, Except with more winterminty features [Sorry guys no 2/3/4 queue probably]
 
-#Accounts
-I will be playing by these names
-eddy5641 [na]
-awesomeeddy [na]
-imjustpro1545 [na]
-eddy5641 [euwe]
-
 Prerequisites
 =============
 
-Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version, but it will retrieve your current data from your current installation
+Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version(todo), but it will retrieve your current data from your current installation
 
 Build it yourself
 =================
@@ -65,8 +74,8 @@ Check out these links:
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/aG5XoQ0.png)
-![News Screen](http://i.imgur.com/Y4ZJ0fk.png)
+![Login](http://i.imgur.com/RWzqFKv.png)
+![News Screen](http://i.imgur.com/cqnoYXF.png)
 ![Match History](http://i.imgur.com/03K5nmC)
 ![Store](http://i.imgur.com/1Bq26WV.png)
 
@@ -74,7 +83,7 @@ Still-in Progress Screenshots
 =============================
 
 ![Chat](http://puu.sh/5FVHS.png)
-![Queue](http://i.imgur.com/ZpZiyJ5.png)
+![Queue](http://i.imgur.com/yOea3kR.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)
 ![ChampSelect2](http://i.imgur.com/FBK2dw3.jpg)
@@ -100,6 +109,19 @@ Other Features
 **View other teams champions in ARAM**
 
 ![AramHack](http://i.imgur.com/9tPrxGy)
+
+**Customizable Client - Even use your favorite fanarts!**
+
+![Customizable](http://i.imgur.com/1aaZxDp.png)
+
+#Donations
+Donations will be used for ONLY this project/other league related projects
+Examples include:
+* Code Signing Licence [license]
+* A domain name [.gg/(.com {Snowl has this domain, currently unpaid for})/ {any recommendations}]
+* A potential server (Online game scouting, game replays, champ stats, etc.)? [Last priority]
+
+No donations accepted at this time
 
 Please Note
 ======

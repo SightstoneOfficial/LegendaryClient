@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LegendaryClient.Logic.Region.Garena;
+using System;
 using System.Net;
 
 namespace LegendaryClient.Logic.Region
@@ -6,6 +7,8 @@ namespace LegendaryClient.Logic.Region
     public abstract class BaseRegion
     {
         public abstract string RegionName { get; }
+
+        public abstract bool Garena { get; }
 
         public abstract string InternalName { get; }
 
@@ -29,8 +32,12 @@ namespace LegendaryClient.Logic.Region
             Type t = Type.GetType("LegendaryClient.Logic.Region." + RequestedRegion);
 
             if (t != null)
-            {
                 return (BaseRegion)Activator.CreateInstance(t);
+            else
+            {
+                t = Type.GetType("LegendaryClient.Logic.Region.Garena." + RequestedRegion);
+                if (t != null)
+                    return (BaseRegion)Activator.CreateInstance(t);
             }
             return null;
         }

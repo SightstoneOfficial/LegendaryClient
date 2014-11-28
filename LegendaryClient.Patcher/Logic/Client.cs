@@ -17,11 +17,6 @@ namespace LegendaryClient.Patcher.Logic
         internal static bool LoLDataIsUpToDate = false;
 
         /// <summary>
-        /// We need to know the region to get the right language local.
-        /// </summary>
-        internal static string Region;
-
-        /// <summary>
         /// The most up to date version int of League of Legends
         /// </summary>
         internal static string LatestLolDataVersion = "";
@@ -59,6 +54,7 @@ namespace LegendaryClient.Patcher.Logic
 
         internal static Type CurrentPage; //Stop changing to same page
         internal static List<Page> CachedPages = new List<Page>();
+        
         internal static void SwitchPage<T>(bool Fade = false, params object[] Arguments)
         {
             if (CurrentPage == typeof(T))

@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using LegendaryClient.Windows;
 using System.Text.RegularExpressions;
+using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 
 namespace LegendaryClient.Controls
 {
@@ -34,7 +35,7 @@ namespace LegendaryClient.Controls
         private void Polygon_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             myQueueBox.SelectedIndex = myQueueBox.Items.IndexOf(this);
-            if (!rotated)
+            if (!rotated && PlayPage.DoneLoading)
             {
                 RotateTransform transform = new RotateTransform(90, 25, 40);
                 this.Triangle.RenderTransform = transform;
@@ -49,7 +50,7 @@ namespace LegendaryClient.Controls
                     myQueueBox.Items.Add(templist[i]);
                 templist.Clear();
             }
-            else
+            else if(PlayPage.DoneLoading)
             {
                 RotateTransform transform = new RotateTransform(0, 25, 40);
                 this.Triangle.RenderTransform = transform;
@@ -71,14 +72,26 @@ namespace LegendaryClient.Controls
             return myItems;
         }
 
-        internal void UpdateLabels()
+        internal async void UpdateLabels()
         {
-            int amount = 0;
-            for (int i = 0; i < myItems.Count; i++)
+            try
             {
-                amount += int.Parse(Regex.Match(myItems[i].AmountInQueueLabel.Content as string, "\\d+").Value);
+                foreach (JoinQueue item in myItems)
+                {
+                    if (item != null && Client.IsOnPlayPage)
+                    {
+                        QueueInfo t = await Client.PVPNet.GetQueueInformation(item.queueID);
+                        item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
+                    }
+                }
+                int amount = 0;
+                for (int i = 0; i < myItems.Count; i++)
+                {
+                    amount += int.Parse(Regex.Match(myItems[i].AmountInQueueLabel.Content as string, "\\d+").Value);
+                }
+                AmountInQueueLabel.Content = "People in queue: " + amount;
             }
-            AmountInQueueLabel.Content = "People in queue: " + amount;
+            catch { Client.Log("Items collection was most likely modified."); }
         }
     }
 }

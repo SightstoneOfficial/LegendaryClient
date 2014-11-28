@@ -2,9 +2,13 @@
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -27,7 +31,7 @@ namespace LegendaryClient.Windows
         private bool HasConnectedToChat;
         private Room newRoom;
 
-        public CustomGameLobbyPage()
+        public CustomGameLobbyPage(GameDTO gameLobby = null)
         {
             InitializeComponent();
 
@@ -38,7 +42,15 @@ namespace LegendaryClient.Windows
             {
                 GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
             }
+            else
+            {
+                Client.GameLobbyDTO = gameLobby;
+                GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
+            }
             Client.InviteListView = InviteListView;
+            Client.CurrentPage = this;
+            Client.ReturnButton.Visibility = Visibility.Visible;
+            Client.ReturnButton.Content = "Return to Custom Game Lobby";
         }
 
         private void GameLobby_OnMessageReceived(object sender, object message)
@@ -93,8 +105,6 @@ namespace LegendaryClient.Windows
                             {
                                 PlayerParticipant player = playerTeam as PlayerParticipant;
                                 lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                ///BotParticipant botParticipant = playerTeam as BotParticipant;
-                                //botPlayer = RenderBot(botParticipant);
                                 IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
                                 StartGameButton.IsEnabled = IsOwner;
                                 AddBotBlueTeam.IsEnabled = IsOwner;
@@ -107,6 +117,11 @@ namespace LegendaryClient.Windows
                                         await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
                                     }
                                 }
+                            }
+                            else if (playerTeam is BotParticipant)
+                            {
+                                BotParticipant botParticipant = playerTeam as BotParticipant;
+                                botPlayer = RenderBot(botParticipant);
                             }
 
                             if (i > dto.TeamOne.Count)
@@ -131,7 +146,9 @@ namespace LegendaryClient.Windows
                         {
                             Client.ChampSelectDTO = dto;
                             Client.LastPageContent = Client.Container.Content;
-                            Client.SwitchPage(new ChampSelectPage());
+                            Client.SwitchPage(new ChampSelectPage(this));
+                            Client.GameStatus = "championSelect";
+                            Client.SetChatHover();
                             LaunchedTeamSelect = true;
                         }
                     }
@@ -165,7 +182,10 @@ namespace LegendaryClient.Windows
                     tr.Text = msg.From.Resource + ": ";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    if (Client.Filter)
+                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() + Environment.NewLine;
+                    else
+                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 }
             }));
@@ -177,7 +197,10 @@ namespace LegendaryClient.Windows
             tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-            tr.Text = ChatTextBox.Text + Environment.NewLine;
+            if (Client.Filter)
+                tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
+            else
+                tr.Text = ChatTextBox.Text + Environment.NewLine;
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
             newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
@@ -209,10 +232,8 @@ namespace LegendaryClient.Windows
         {
             BotControl botPlayer = new BotControl();
             botPlayer.PlayerName.Content = BotPlayer.SummonerName;
-
-            //var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", BotPlayer.Champion + ".png"), UriKind.RelativeOrAbsolute);
-            //botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
-
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", BotPlayer.Champion + ".png"), UriKind.RelativeOrAbsolute);
+            botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
             botPlayer.BanButton.Tag = BotPlayer;
             botPlayer.BanButton.Click += KickAndBan_Click;
             return botPlayer;
@@ -221,9 +242,9 @@ namespace LegendaryClient.Windows
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.QuitGame();
-            Client.ClearPage(new CustomGameLobbyPage()); //Clear pages
-            Client.ClearPage(new CreateCustomGamePage());
-
+            Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
+            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ReturnButton.Visibility = Visibility.Hidden;
             Client.SwitchPage(new MainPage());
         }
 
@@ -280,12 +301,21 @@ namespace LegendaryClient.Windows
                     return Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;
             }
         }
-    }
 
-    public class PlayerItem
-    {
-        public string Username { get; set; }
+        private void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                //Needs looked into
+            }));
+        }
 
-        public PlayerParticipant Participant { get; set; }
+        private void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                //Needs looked into
+            }));
+        }
     }
 }
