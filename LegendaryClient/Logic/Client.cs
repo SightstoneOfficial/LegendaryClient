@@ -447,81 +447,88 @@ namespace LegendaryClient.Logic
                 ChatPlayerItem Player = Client.AllPlayers[bare.User];
                 using (XmlReader reader = XmlReader.Create(new StringReader(Presence)))
                 {
-                    while (reader.Read())
+                    try
                     {
-                        if (reader.IsStartElement())
+                        while (reader.Read())
                         {
-                            #region Parse Presence
-
-                            switch (reader.Name)
+                            if (reader.IsStartElement())
                             {
-                                case "profileIcon":
-                                    reader.Read();
-                                    Player.ProfileIcon = Convert.ToInt32(reader.Value);
-                                    break;
+                                #region Parse Presence
 
-                                case "level":
-                                    reader.Read();
-                                    Player.Level = Convert.ToInt32(reader.Value);
-                                    break;
+                                switch (reader.Name)
+                                {
+                                    case "profileIcon":
+                                        reader.Read();
+                                        Player.ProfileIcon = Convert.ToInt32(reader.Value);
+                                        break;
 
-                                case "wins":
-                                    reader.Read();
-                                    Player.Wins = Convert.ToInt32(reader.Value);
-                                    break;
+                                    case "level":
+                                        reader.Read();
+                                        Player.Level = Convert.ToInt32(reader.Value);
+                                        break;
 
-                                case "leaves":
-                                    reader.Read();
-                                    Player.Leaves = Convert.ToInt32(reader.Value);
-                                    break;
+                                    case "wins":
+                                        reader.Read();
+                                        Player.Wins = Convert.ToInt32(reader.Value);
+                                        break;
 
-                                case "rankedWins":
-                                    reader.Read();
-                                    Player.RankedWins = Convert.ToInt32(reader.Value);
-                                    break;
+                                    case "leaves":
+                                        reader.Read();
+                                        Player.Leaves = Convert.ToInt32(reader.Value);
+                                        break;
 
-                                case "timeStamp":
-                                    reader.Read();
-                                    Player.Timestamp = Convert.ToInt64(reader.Value);
-                                    break;
+                                    case "rankedWins":
+                                        reader.Read();
+                                        Player.RankedWins = Convert.ToInt32(reader.Value);
+                                        break;
 
-                                case "statusMsg":
-                                    reader.Read();
-                                    Player.Status = reader.Value;
-                                    break;
+                                    case "timeStamp":
+                                        reader.Read();
+                                        Player.Timestamp = Convert.ToInt64(reader.Value);
+                                        break;
 
-                                case "UsingLegendaryClient":
-                                    Player.UsingLegendary = true;
-                                    break;
+                                    case "statusMsg":
+                                        reader.Read();
+                                        Player.Status = reader.Value;
+                                        break;
 
-                                case "gameStatus":
-                                    reader.Read();
-                                    Player.GameStatus = reader.Value;
-                                    break;
+                                    case "UsingLegendaryClient":
+                                        Player.UsingLegendary = true;
+                                        break;
 
-                                case "skinname":
-                                    reader.Read();
-                                    Player.Champion = reader.Value;
-                                    break;
+                                    case "gameStatus":
+                                        reader.Read();
+                                        Player.GameStatus = reader.Value;
+                                        break;
 
-                                case "rankedLeagueName":
-                                    reader.Read();
-                                    Player.LeagueName = reader.Value;
-                                    break;
+                                    case "skinname":
+                                        reader.Read();
+                                        Player.Champion = reader.Value;
+                                        break;
 
-                                case "rankedLeagueTier":
-                                    reader.Read();
-                                    Player.LeagueTier = reader.Value;
-                                    break;
+                                    case "rankedLeagueName":
+                                        reader.Read();
+                                        Player.LeagueName = reader.Value;
+                                        break;
 
-                                case "rankedLeagueDivision":
-                                    reader.Read();
-                                    Player.LeagueDivision = reader.Value;
-                                    break;
+                                    case "rankedLeagueTier":
+                                        reader.Read();
+                                        Player.LeagueTier = reader.Value;
+                                        break;
+
+                                    case "rankedLeagueDivision":
+                                        reader.Read();
+                                        Player.LeagueDivision = reader.Value;
+                                        break;
+                                }
+
+                                #endregion Parse Presence
                             }
-
-                            #endregion Parse Presence
                         }
+                    }
+                    catch (Exception e)
+                    {
+                        Client.Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
                     }
                 }
                 if (String.IsNullOrWhiteSpace(Player.Status))

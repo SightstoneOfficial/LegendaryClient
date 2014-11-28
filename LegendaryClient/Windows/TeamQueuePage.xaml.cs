@@ -643,6 +643,9 @@ namespace LegendaryClient.Windows
                                 messageOver.MessageTextBox.Text += " - You are too far apart in ranked to queue together.";
                                 messageOver.MessageTextBox.Text += " - For instance, Silvers can only queue with Bronze, Silver, or Gold players.";
                                 break;
+                            case "RANKED_RESTRICTED":
+                                messageOver.MessageTextBox.Text += " - You are not currently able to queue for ranked for: " + x.PenaltyRemainingTime + " games. If this is inaccurate please report it as an issue on the github page. Thanks!";
+                                break;
                             default:
                                 messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
                                 break;
