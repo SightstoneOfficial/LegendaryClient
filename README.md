@@ -39,17 +39,10 @@ https://github.com/eddy5641/LegacyPVP
 This will still be worked on, You will not see much difference between the time I put into LegendaryClient (I finished a different project)
 LegacyPVP Is Based Of LegendaryClient, Except with more winterminty features [Sorry guys no 2/3/4 queue probably]
 
-#Accounts
-I will be playing by these names
-eddy5641 [na]
-awesomeeddy [na]
-imjustpro1545 [na]
-eddy5641 [euwe]
-
 Prerequisites
 =============
 
-Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version, but it will retrieve your current data from your current installation
+Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version(todo), but it will retrieve your current data from your current installation
 
 Build it yourself
 =================
@@ -120,6 +113,15 @@ Other Features
 **Customizable Client - Even use your favorite fanarts!**
 
 ![Customizable](http://i.imgur.com/1aaZxDp.png)
+
+#Donations
+Donations will be used for ONLY this project/other league related projects
+Examples include:
+* Code Signing Licence [license]
+* A domain name [.gg/(.com {Snowl has this domain, currently unpaid for})/ {any recommendations}]
+* A potential server (Online game scouting, game replays, champ stats, etc.)? [Last priority]
+
+No donations accepted at this time
 
 Please Note
 ======
