@@ -254,8 +254,6 @@ namespace LegendaryClient.Windows
                             string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
                             UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
                             GetAllPngs(Package);
-                            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite")))
-                                File.Delete(Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
                             string[] x = Package.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
                             if (File.Exists(System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))

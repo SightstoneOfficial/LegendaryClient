@@ -116,7 +116,8 @@ namespace LegendaryClient.Windows.Profile
                     Mastery.id == 4253 ||
                     Mastery.id == 4314 ||
                     Mastery.id == 4344 ||
-                    Mastery.id == 4353)
+                    Mastery.id == 4353 ||
+                    Mastery.id == 4154)
                 {
                     Rectangle rect = new Rectangle();
                     rect.Width = 64;
@@ -124,10 +125,18 @@ namespace LegendaryClient.Windows.Profile
                     rect.Margin = new Thickness(2, 2, 2, 2);
                     if (IsOffense)
                         OffenseListView.Items.Add(rect);
-                    if (IsDefense)
+                    else if (IsDefense)
+                    {
                         DefenseListView.Items.Add(rect);
-                    if (IsUtility)
+                        if(Mastery.id == 4253)
+                            DefenseListView.Items.Add(new Rectangle() { Width = 64, Height = 64, Margin = new Thickness(2, 2, 2, 2) });
+                    }
+                    else if (IsUtility)
+                    {
                         UtilityListView.Items.Add(rect);
+                        if(Mastery.id == 4353)
+                            UtilityListView.Items.Add(new Rectangle() { Width = 64, Height = 64, Margin = new Thickness(2, 2, 2, 2) });
+                    }
                 }
 
                 item.Tag = Mastery;
