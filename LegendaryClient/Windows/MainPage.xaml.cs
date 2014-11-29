@@ -47,8 +47,8 @@ namespace LegendaryClient.Windows
             curentlyRecording = new List<int>();
             AppDomain current = AppDomain.CurrentDomain;
             GotPlayerData(Client.LoginPacket);
-            SpectatorComboBox.SelectedValue = Client.LoginPacket.CompetitiveRegion;
-            BaseRegion region = BaseRegion.GetRegion(Client.LoginPacket.CompetitiveRegion);
+            SpectatorComboBox.SelectedValue = Client.Region.RegionName;
+            BaseRegion region = BaseRegion.GetRegion(Convert.ToString(Client.Region.RegionName));
             ChangeSpectatorRegion(region);
             GetNews(region);
             System.Timers.Timer update = new System.Timers.Timer();

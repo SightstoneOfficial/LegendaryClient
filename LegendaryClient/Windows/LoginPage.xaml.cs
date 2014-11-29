@@ -354,7 +354,7 @@ namespace LegendaryClient.Windows
                 Client.ConfManager = new ConferenceManager();
                 Client.ConfManager.Stream = Client.ChatClient;
                 //switch
-                Client.Log("Connected and logged in as " + Client.LoginPacket.AllSummonerData.Summoner.Name);
+                Client.Log("Connected to " + Client.Region.RegionName + " and logged in as " + Client.LoginPacket.AllSummonerData.Summoner.Name);
 
                 //Gather data and convert it that way that it does not cause errors
                 PlatformGameLifecycleDTO data = Client.LoginPacket.ReconnectInfo;
