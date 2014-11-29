@@ -77,7 +77,7 @@ namespace LegendaryClient.Windows
 
             //Get client data after patcher completed
 
-            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, "Client", Client.sqlite));
+            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
                                 orderby s.name
                                 select s).ToList();
@@ -211,6 +211,8 @@ namespace LegendaryClient.Windows
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.PVPNet = null;
+            Client.PVPNet = new PVPNetConnect.PVPNetConnection();
             if (RememberPasswordCheckbox.IsChecked == true)
                 Properties.Settings.Default.SavedPassword = LoginPasswordBox.Password;
             else
