@@ -48,7 +48,7 @@ namespace LegendaryClient.Windows
             AppDomain current = AppDomain.CurrentDomain;
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.Region.RegionName;
-            BaseRegion region = BaseRegion.GetRegion(Convert.ToString(Client.Region.RegionName));
+            BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
             ChangeSpectatorRegion(region);
             GetNews(region);
             System.Timers.Timer update = new System.Timers.Timer();
