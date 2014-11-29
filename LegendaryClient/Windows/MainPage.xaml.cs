@@ -616,7 +616,7 @@ namespace LegendaryClient.Windows
 
             BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
             //region.SpectatorIpAddress, key, gameId, platformId
-            var recorder = new ReplayRecorder(region.SpectatorIpAddress + ":8088", gameId, platformId, key);
+            var recorder = new ReplayRecorder(region.SpectatorIpAddress, gameId, platformId, key);
             recorder.OnReplayRecorded += () =>
             {
                 curentlyRecording.Remove(gameId);
