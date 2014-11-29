@@ -237,5 +237,29 @@ namespace LegendaryClient.Properties {
                 this["Guid"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseAsBackgroundImage {
+            get {
+                return ((bool)(this["UseAsBackgroundImage"]));
+            }
+            set {
+                this["UseAsBackgroundImage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoRecordGames {
+            get {
+                return ((bool)(this["AutoRecordGames"]));
+            }
+            set {
+                this["AutoRecordGames"] = value;
+            }
+        }
     }
 }
