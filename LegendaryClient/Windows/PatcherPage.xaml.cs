@@ -321,7 +321,14 @@ namespace LegendaryClient.Windows
                         }
                         catch
                         {
-                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                            try
+                            {
+                                UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                            }
+                            catch
+                            {
+                                Client.Log("Unable to update gamestats file. Perhaps a different LegendaryClient is running?", "Small Error");
+                            }
                         }
                         TotalProgressLabel.Content = "100%";
                         TotalProgessBar.Value = 100;

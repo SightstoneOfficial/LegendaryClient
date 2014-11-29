@@ -356,9 +356,8 @@ namespace LegendaryClient.Logic
 
         internal static string GetPresence()
         {
-            //TODO?
-            //Look for "∟" to recognize LegendaryClient Users
-            //Look for "♒" to recongnize Devs
+            //<dev>true</dev> == lc dev
+            //<dev>false</dev> == lc user
 
             //Queue types
             //NONE,NORMAL,NORMAL_3x3,ODIN_UNRANKED,ARAM_UNRANKED_5x5,BOT,BOT_3x3,RANKED_SOLO_5x5,RANKED_TEAM_3x3,RANKED_TEAM_5x5,
@@ -387,7 +386,12 @@ namespace LegendaryClient.Logic
             sb.Append(LoginPacket.AllSummonerData.Summoner.ProfileIconId);
             sb.Append("</profileIcon><level>");
             sb.Append(LoginPacket.AllSummonerData.SummonerLevel.Level);
-            sb.Append("</level><wins>");
+            sb.Append("</level><dev>");
+            if (Dev)
+                sb.Append("true");
+            else
+                sb.Append("false");
+            sb.Append("</dev><wins>");
             sb.Append(AmountOfWins);
             sb.Append("</wins><leaves>0</leaves><odinWins>0</odinWins><odinLeaves>0</odinLeaves>"); // TODO
             sb.Append("<queueType />");
@@ -492,8 +496,11 @@ namespace LegendaryClient.Logic
                                         Player.Status = reader.Value;
                                         break;
 
-                                    case "UsingLegendaryClient":
+                                    case "dev":
+                                        reader.Read();
                                         Player.UsingLegendary = true;
+                                        if (reader.Value == "true")
+                                            Player.IsLegendaryDev = true;
                                         break;
 
                                     case "gameStatus":
