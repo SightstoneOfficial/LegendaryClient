@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web.Script.Serialization;
@@ -40,7 +41,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Version.TextChanged += WaterTextbox_TextChanged;
             if (Client.Version == "4.18.1" || Client.Version == "0.0.0")	
-                Client.Version = "4.19.1";
+                Client.Version = "4.20.1";
             bool x = Properties.Settings.Default.DarkTheme;
             if (!x)
             {
@@ -133,7 +134,7 @@ namespace LegendaryClient.Windows
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword))
             {
                 RememberPasswordCheckbox.IsChecked = true;
-                LoginPasswordBox.Password = Properties.Settings.Default.SavedPassword;
+                LoginPasswordBox.Password = Properties.Settings.Default.SavedPassword.DecryptStringAES(SHA1CryptoServiceProvider.Create(Properties.Settings.Default.Guid).ToString());
             }
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Region))
             {
@@ -213,8 +214,11 @@ namespace LegendaryClient.Windows
         {
             Client.PVPNet = null;
             Client.PVPNet = new PVPNetConnect.PVPNetConnection();
+            if (string.IsNullOrEmpty(Properties.Settings.Default.Guid))
+                Properties.Settings.Default.Guid = Guid.NewGuid().ToString();
+            Properties.Settings.Default.Save();
             if (RememberPasswordCheckbox.IsChecked == true)
-                Properties.Settings.Default.SavedPassword = LoginPasswordBox.Password;
+                Properties.Settings.Default.SavedPassword = LoginPasswordBox.Password.EncryptStringAES(SHA1CryptoServiceProvider.Create(Properties.Settings.Default.Guid).ToString());
             else
                 Properties.Settings.Default.SavedPassword = "";
 

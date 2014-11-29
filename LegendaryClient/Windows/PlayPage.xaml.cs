@@ -311,7 +311,7 @@ namespace LegendaryClient.Windows
 
         private void GotQueuePop(object sender, object message)
         {
-            if (Client.runonce == false && message is GameDTO)
+            if (message is GameDTO)
             {
                 GameDTO Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
