@@ -17,6 +17,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Web.Script.Serialization;
@@ -40,7 +41,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Version.TextChanged += WaterTextbox_TextChanged;
             if (Client.Version == "4.18.1" || Client.Version == "0.0.0")	
-                Client.Version = "4.19.1";
+                Client.Version = "4.20.1";
             bool x = Properties.Settings.Default.DarkTheme;
             if (!x)
             {
@@ -77,7 +78,7 @@ namespace LegendaryClient.Windows
 
             //Get client data after patcher completed
 
-            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, "Client", Client.sqlite));
+            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
                                 orderby s.name
                                 select s).ToList();
@@ -132,8 +133,9 @@ namespace LegendaryClient.Windows
             }
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword))
             {
+                SHA1 sha = new SHA1CryptoServiceProvider();
                 RememberPasswordCheckbox.IsChecked = true;
-                LoginPasswordBox.Password = Properties.Settings.Default.SavedPassword;
+                LoginPasswordBox.Password = Properties.Settings.Default.SavedPassword.DecryptStringAES(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Properties.Settings.Default.Guid)).ToString());
             }
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Region))
             {
@@ -211,8 +213,14 @@ namespace LegendaryClient.Windows
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.PVPNet = null;
+            Client.PVPNet = new PVPNetConnect.PVPNetConnection();
+            if (string.IsNullOrEmpty(Properties.Settings.Default.Guid))
+                Properties.Settings.Default.Guid = Guid.NewGuid().ToString();
+            Properties.Settings.Default.Save();
+            SHA1 sha =new SHA1CryptoServiceProvider();
             if (RememberPasswordCheckbox.IsChecked == true)
-                Properties.Settings.Default.SavedPassword = LoginPasswordBox.Password;
+                Properties.Settings.Default.SavedPassword = LoginPasswordBox.Password.EncryptStringAES(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Properties.Settings.Default.Guid)).ToString());
             else
                 Properties.Settings.Default.SavedPassword = "";
 
