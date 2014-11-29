@@ -133,8 +133,9 @@ namespace LegendaryClient.Windows
             }
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword))
             {
+                SHA1 sha = new SHA1CryptoServiceProvider();
                 RememberPasswordCheckbox.IsChecked = true;
-                LoginPasswordBox.Password = Properties.Settings.Default.SavedPassword.DecryptStringAES(SHA1CryptoServiceProvider.Create(Properties.Settings.Default.Guid).ToString());
+                LoginPasswordBox.Password = Properties.Settings.Default.SavedPassword.DecryptStringAES(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Properties.Settings.Default.Guid)).ToString());
             }
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Region))
             {
@@ -217,8 +218,9 @@ namespace LegendaryClient.Windows
             if (string.IsNullOrEmpty(Properties.Settings.Default.Guid))
                 Properties.Settings.Default.Guid = Guid.NewGuid().ToString();
             Properties.Settings.Default.Save();
+            SHA1 sha =new SHA1CryptoServiceProvider();
             if (RememberPasswordCheckbox.IsChecked == true)
-                Properties.Settings.Default.SavedPassword = LoginPasswordBox.Password.EncryptStringAES(SHA1CryptoServiceProvider.Create(Properties.Settings.Default.Guid).ToString());
+                Properties.Settings.Default.SavedPassword = LoginPasswordBox.Password.EncryptStringAES(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Properties.Settings.Default.Guid)).ToString());
             else
                 Properties.Settings.Default.SavedPassword = "";
 
