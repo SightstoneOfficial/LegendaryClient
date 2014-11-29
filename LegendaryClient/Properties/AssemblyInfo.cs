@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Legendary Coding")]
 [assembly: AssemblyProduct("LegendaryClient")]
-[assembly: AssemblyCopyright("Copyright (c) 2013-2014, Eddy5641/Snowl (Eddy V - legendarycoding.weebly.com)")]
+[assembly: AssemblyCopyright("Copyright (c) 2013-2014, Eddy5641/Snowl (Eddy V)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -46,7 +46,7 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.1.0.2")]
-[assembly: AssemblyFileVersion("2.1.0.2")]
+[assembly: AssemblyVersion("2.1.0.3")]
+[assembly: AssemblyFileVersion("2.1.0.3")]
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile="log4net.config",Watch=true)]

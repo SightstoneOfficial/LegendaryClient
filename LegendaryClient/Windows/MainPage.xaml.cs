@@ -51,7 +51,12 @@ namespace LegendaryClient.Windows
             BaseRegion region = BaseRegion.GetRegion(Client.LoginPacket.CompetitiveRegion);
             ChangeSpectatorRegion(region);
             GetNews(region);
-
+            System.Timers.Timer update = new System.Timers.Timer();
+            update.Interval = 5000;
+            update.Elapsed += (o, e) =>
+                {
+                    Client.ChatClient.Presence(Client.CurrentPresence, Client.GetPresence(), Client.presenceStatus, 0);
+                };
             timer.Interval = (5000);
             //timer.Start();
 
