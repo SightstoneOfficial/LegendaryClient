@@ -672,8 +672,15 @@ namespace LegendaryClient.Windows
 
         private void SelectChamp_Click(object sender, RoutedEventArgs e)
         {
-            Client.OverlayContainer.Content = new SelectChampOverlay().Content;
+            Client.OverlayContainer.Content = new SelectChampOverlay(this).Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
+        internal void CreateText(string text, SolidColorBrush color)
+        {
+            TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+            tr.Text = text + Environment.NewLine;
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
         }
 
         private class SuggestedFriend
