@@ -7,7 +7,7 @@ namespace LegendaryClient.Logic.Region
     {
         public override string RegionName
         {
-            get { return "LA2"; }
+            get { return "LAS"; }
         }
 
         public override string InternalName

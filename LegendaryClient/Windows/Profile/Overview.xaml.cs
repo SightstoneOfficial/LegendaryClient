@@ -81,17 +81,24 @@ namespace LegendaryClient.Windows.Profile
             {
                 StatsComboBox.Items.Clear();
                 StatsListView.Items.Clear();
-                foreach (PlayerStatSummary x in stats.PlayerStatSummaries.PlayerStatSummarySet)
+                try
                 {
-                    if (x.AggregatedStats.Stats.Count > 0)
+                    foreach (PlayerStatSummary x in stats.PlayerStatSummaries.PlayerStatSummarySet)
                     {
-                        Summaries.Add(x);
-                        string SummaryString = x.PlayerStatSummaryTypeString;
-                        SummaryString = string.Concat(SummaryString.Select(e => Char.IsUpper(e) ? " " + e : e.ToString())).TrimStart(' ');
-                        SummaryString = SummaryString.Replace("Odin", "Dominion");
-                        SummaryString = SummaryString.Replace("x", "v");
-                        StatsComboBox.Items.Add(SummaryString);
+                        if (x.AggregatedStats.Stats.Count > 0)
+                        {
+                            Summaries.Add(x);
+                            string SummaryString = x.PlayerStatSummaryTypeString;
+                            SummaryString = string.Concat(SummaryString.Select(e => Char.IsUpper(e) ? " " + e : e.ToString())).TrimStart(' ');
+                            SummaryString = SummaryString.Replace("Odin", "Dominion");
+                            SummaryString = SummaryString.Replace("x", "v");
+                            StatsComboBox.Items.Add(SummaryString);
+                        }
                     }
+                }
+                catch 
+                {
+                    Client.Log("Error when loading player stats.");
                 }
                 StatsComboBox.SelectedItem = "Ranked Solo5v5";
             }));

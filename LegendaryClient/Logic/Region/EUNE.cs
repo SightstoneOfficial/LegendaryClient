@@ -46,9 +46,7 @@ namespace LegendaryClient.Logic.Region
             {
                 return new IPAddress[]
                 {
-                    IPAddress.Parse("66.150.148.1"),
-                    IPAddress.Parse("64.7.194.1"),
-                    IPAddress.Parse("95.172.65.1") //This one seems to give high ping
+                    IPAddress.Parse("95.172.65.1") 
                 };
             }
         }
