@@ -192,10 +192,13 @@ namespace LegendaryClient.Windows
             //Signal to the server we are in champion select
             await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
             //Selects Champion
+            //New method makes it easier to instapick a champ + works in draft
+            /*
             if (previousPage is TeamQueuePage && (previousPage as TeamQueuePage).SelectChampBox.Text != "Auto Select Champ")
             {
                 await Client.PVPNet.SelectChampion(ChampList.FirstOrDefault(x => champions.GetChampion(x.ChampionId).displayName.ToLower() == (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower()).ChampionId);
             }
+            //*/
             //Retrieve the latest GameDTO
             GameDTO latestDTO = await Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState, Client.ChampSelectDTO.PickTurn);
             //Find the game config for timers
@@ -294,7 +297,18 @@ namespace LegendaryClient.Windows
                             {
                                 if (play.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId)
                                 {
+
+                                    if (Client.usingInstaPick)
+                                    {
+                                        ListViewItem temp = new ListViewItem();
+                                        temp.Tag = Client.SelectChamp;
+                                        ListViewItem_PreviewMouseDown(temp, null);
+                                        //prevent a instapick spasm
+                                        Client.usingInstaPick = false;
+                                    }
+                                        
                                     ChampionSelectListView.IsHitTestVisible = true;
+
                                     ChampionSelectListView.Opacity = 1;
                                     GameStatusLabel.Content = "Your turn to pick!";
                                     break;

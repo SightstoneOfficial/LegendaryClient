@@ -417,6 +417,9 @@
     <Compile Include="Windows\ReplayPage.xaml.cs">
       <DependentUpon>ReplayPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\SelectChampOverlay.xaml.cs">
+      <DependentUpon>SelectChampOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\StatusPage.xaml.cs">
       <DependentUpon>StatusPage.xaml</DependentUpon>
     </Compile>
@@ -847,6 +850,10 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\SelectChampOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\StatusPage.xaml">
       <SubType>Designer</SubType>

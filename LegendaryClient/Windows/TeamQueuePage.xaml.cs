@@ -550,8 +550,8 @@ namespace LegendaryClient.Windows
                 tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatTextBox.Text = "";
-                if (DevMode) { CreateRankedCheckBox.Visibility = Visibility.Visible; SelectChampBox.Visibility = Visibility.Visible; }
-                else { CreateRankedCheckBox.Visibility = Visibility.Hidden; SelectChampBox.Visibility = Visibility.Hidden; }
+                if (DevMode) { CreateRankedCheckBox.Visibility = Visibility.Visible; SelectChamp.Visibility = Visibility.Visible; }
+                else { CreateRankedCheckBox.Visibility = Visibility.Hidden; SelectChamp.Visibility = Visibility.Hidden; }
             }
             else
             {
@@ -570,11 +570,6 @@ namespace LegendaryClient.Windows
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }
-        }
-
-        internal string getSelectChamp()
-        {
-            return SelectChampBox.Text;
         }
 
         internal List<Int32> QueueIds;
@@ -673,6 +668,12 @@ namespace LegendaryClient.Windows
         private void CreateRankedCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             makeRanked = !makeRanked;
+        }
+
+        private void SelectChamp_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new SelectChampOverlay().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private class SuggestedFriend

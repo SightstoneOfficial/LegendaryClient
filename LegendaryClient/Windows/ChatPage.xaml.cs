@@ -37,6 +37,7 @@ namespace LegendaryClient.Windows
             UpdateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateChat);
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
+            Client.chatlistview = this.ChatListView;
             Change();
         }
 

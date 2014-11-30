@@ -190,6 +190,9 @@ namespace LegendaryClient
                 Client.PVPNet.QuitGame();
                 Client.PVPNet.Disconnect();
                 Client.ChatClient.Close();
+                Client.ChatClient = null;
+                Client.ChatClient = new JabberClient();
+                Client.chatlistview.Items.Clear();
                 Client.IsLoggedIn = false;
                 Client.StatusContainer.Visibility = Visibility.Hidden;
                 Client.Container.Margin = new Thickness(0, 0, 0, 0);

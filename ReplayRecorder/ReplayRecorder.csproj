@@ -42,6 +42,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="rtmp-sharp">
+      <HintPath>..\LegendaryClient\bin\Debug\Client\rtmp-sharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Extensions" />
@@ -56,6 +59,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReplayRecorder.cs" />
+    <Compile Include="Replays\EndOfGameStats.cs" />
+    <Compile Include="Replays\PlayerParticipantStatsSummary.cs" />
+    <Compile Include="Replays\RawStatDTO.cs" />
+    <Compile Include="Replays\ReplayRecorder.cs" />
+    <Compile Include="Replays\TeamId.cs" />
+    <Compile Include="Replays\TeamInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

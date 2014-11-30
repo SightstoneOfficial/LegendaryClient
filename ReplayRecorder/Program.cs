@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LegendaryClient.Logic.Replays;
+using RtmpSharp.IO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +10,8 @@ namespace ReplayRecorder
 {
     public class Program
     {
+        SerializationContext context;
+        EndOfGameStats selectedStats;
         static void Main(string[] args)
         {
             if (args.Length != 5)

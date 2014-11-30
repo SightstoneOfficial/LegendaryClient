@@ -436,6 +436,8 @@ namespace LegendaryClient.Logic
             }
         }
 
+        internal static ListView chatlistview;
+
         internal static void PresManager_OnPrimarySessionChange(object sender, jabber.JID bare)
         {
             jabber.protocol.client.Presence[] s = Client.PresManager.GetAll(bare);
@@ -1331,6 +1333,9 @@ namespace LegendaryClient.Logic
 
             return buffer;
         }
+
+        internal static int SelectChamp;
+        internal static bool usingInstaPick = false;
     }
 
 

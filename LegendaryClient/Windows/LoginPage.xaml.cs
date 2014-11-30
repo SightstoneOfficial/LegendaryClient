@@ -215,6 +215,7 @@ namespace LegendaryClient.Windows
         {
             Client.PVPNet = null;
             Client.PVPNet = new PVPNetConnect.PVPNetConnection();
+            
             if (string.IsNullOrEmpty(Properties.Settings.Default.Guid))
                 Properties.Settings.Default.Guid = Guid.NewGuid().ToString();
             Properties.Settings.Default.Save();
