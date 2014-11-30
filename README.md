@@ -120,8 +120,8 @@ Examples include:
 * Code Signing Licence [license]
 * A domain name [.gg/(.com {Snowl has this domain, currently unpaid for})/ {any recommendations}]
 * A potential server (Online game scouting, game replays, champ stats, etc.)? [Last priority]
-
-No donations accepted at this time
+Donation Link:
+https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=FPLGKLH7NMNL6&lc=CA&item_name=LegendaryClient&currency_code=CAD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHosted
 
 Please Note
 ======
