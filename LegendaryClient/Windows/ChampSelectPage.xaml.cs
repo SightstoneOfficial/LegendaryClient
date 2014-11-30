@@ -297,14 +297,35 @@ namespace LegendaryClient.Windows
                             {
                                 if (play.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId)
                                 {
-
+                                    //Allows us to instapick any champ we own. 
                                     if (Client.usingInstaPick)
                                     {
-                                        ListViewItem temp = new ListViewItem();
-                                        temp.Tag = Client.SelectChamp;
-                                        ListViewItem_PreviewMouseDown(temp, null);
-                                        //prevent a instapick spasm
-                                        Client.usingInstaPick = false;
+                                        bool champbanned = false;
+                                        //disallow picking banned champs
+                                        try
+                                        {
+
+                                            foreach (var x in ChampDTO.BannedChampions)
+                                            {
+                                                if (x.ChampionId == Client.SelectChamp)
+                                                    champbanned = true;
+                                            }
+                                            //disallow picking picked champs
+                                            foreach (PlayerChampionSelectionDTO selection in ChampDTO.PlayerChampionSelections)
+                                            {
+                                                if (selection.ChampionId == Client.SelectChamp)
+                                                    champbanned = true;
+                                            }
+                                            ListViewItem temp = new ListViewItem();
+                                            temp.Tag = Client.SelectChamp;
+                                            if (!champbanned)
+                                                ListViewItem_PreviewMouseDown(temp, null);
+                                            Client.usingInstaPick = false;
+                                        }
+                                        catch
+                                        {
+                                            Client.Log("Something went weird insta-picking a champ", "Error");
+                                        }
                                     }
                                         
                                     ChampionSelectListView.IsHitTestVisible = true;
