@@ -123,6 +123,24 @@ namespace LegendaryClient.Windows
                                     case "championSelect":
                                         player.PlayerStatus.Content = "In Champion Select";
                                         break;
+                                    case "hostingRankedGame":
+                                        player.PlayerStatus.Content = "Creating Ranked Game";
+                                        break;
+                                    case "teamSelect":
+                                        player.PlayerStatus.Content = "In Team Select";
+                                        break;
+                                    case "hostingNormalGame":
+                                        player.PlayerStatus.Content = "Creating Normal Game";
+                                        break;
+                                    case "hostingCoopVsAIGame":
+                                        player.PlayerStatus.Content = "Creating Co-op vs. AI Game";
+                                        break;
+                                    case "inTeamBuilder":
+                                        player.PlayerStatus.Content = "In Team Builder";
+                                        break;
+                                    case "tutorial":
+                                        player.PlayerStatus.Content = "In Tutorial";
+                                        break;                           
                                 }
                                 brush = (Brush)bc.ConvertFrom("#FFFFFF99");
                                 player.PlayerStatus.Foreground = brush;
