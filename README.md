@@ -13,6 +13,7 @@ Working on a patcher to patch LC [Awesome splash though]
 I am aware of crashing
 
 #####LEGENDARYCLIENT IS NOW OVER 1 YEAR OLD SINCE FIRST CODE COMMENT BY SNOWL!!!
+Want to donate? Scroll down to the bottom
 
 #How To Install
 https://www.youtube.com/watch?v=ZWYn_vft5Kg&feature=youtu.be
