@@ -100,6 +100,12 @@ namespace LegendaryClient.Windows.Profile
                         case "RANKED_TEAM_5x5":
                             item.ScoreLabel.Content += "(Ranked Team 5v5)";
                             break;
+                        case "RANKED_TEAM_3x3":
+                            item.ScoreLabel.Content += "(Ranked Team 3v3)";
+                            break;
+                        case "CAP_5x5":
+                            item.ScoreLabel.Content += "(Team Builder)";
+                            break;
                         default:
                             Client.Log(stats.Game.QueueType);
                             item.ScoreLabel.Content += "Please upload this log to github.";
