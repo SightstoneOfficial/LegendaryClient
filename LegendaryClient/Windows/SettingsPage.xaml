@@ -15,6 +15,7 @@
                     <CheckBox x:Name="StatsCheckbox" Content="Gather Statistics to enhance LegendaryClient" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Checked="StatsCheckbox_Checked" IsEnabled="False"/>
                     <CheckBox x:Name="ErrorCheckbox" Content="Send Errors to LegendaryClient's developers to help fix bugs" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,30,0,0" Checked="ErrorCheckbox_Checked" IsEnabled="False"/>
                     <TextBox x:Name="AboutTextBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="200" TextWrapping="Wrap"  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" />
+                    <Button Content="Donate to help LegendaryClient's work" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Width="994" Margin="10,0,10,205" Click="Button_Click_1"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Video">

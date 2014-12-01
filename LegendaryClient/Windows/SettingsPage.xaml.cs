@@ -2,6 +2,7 @@
 using MahApps.Metro;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -289,6 +290,11 @@ A code signing license (So you know that you are using LegendaryClient)
             System.Windows.Controls.CheckBox cb = (System.Windows.Controls.CheckBox)sender;
             Properties.Settings.Default.AutoRecordGames = (bool)cb.IsChecked;
             Properties.Settings.Default.Save();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Process.Start("https://pledgie.com/campaigns/27549");
         }
     }
     public class WinThemes

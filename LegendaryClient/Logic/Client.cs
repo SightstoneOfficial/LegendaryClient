@@ -53,6 +53,8 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static Dictionary<String, LoginDataPacket> accountslist = new Dictionary<String, LoginDataPacket>();
 
+        internal static List<Group> Groups = new List<Group>();
+
         internal static Dictionary<String, PVPNetConnection> pvpnetlist = new Dictionary<String, PVPNetConnection>();
 
         internal async static Task<LoginDataPacket> AddAccount()
@@ -1378,5 +1380,15 @@ namespace LegendaryClient.Logic
 
         public List<string> Messages = new List<string>();
     }
+    public class Group
+    {
+        public Group(string s)
+        {
+            GroupName = s;
+        }
 
+        public string GroupName { get; set; }
+
+        public bool IsOpen { get; set; }
+    }
 }

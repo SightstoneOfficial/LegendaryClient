@@ -101,7 +101,7 @@
       <HintPath>..\DLLS\RAFlibPlus.dll</HintPath>
     </Reference>
     <Reference Include="rtmp-sharp">
-      <HintPath>..\..\rtmp-sharp.dll</HintPath>
+      <HintPath>bin\Release\Client\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -152,6 +152,9 @@
     </Compile>
     <Compile Include="Controls\ChampionImage.xaml.cs">
       <DependentUpon>ChampionImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ChatGroup.xaml.cs">
+      <DependentUpon>ChatGroup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ChatItem.xaml.cs">
       <DependentUpon>ChatItem.xaml</DependentUpon>
@@ -484,6 +487,10 @@
       <DependentUpon>WebsiteOverlayPage.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\ChampionDetailAbility.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ChatGroup.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
