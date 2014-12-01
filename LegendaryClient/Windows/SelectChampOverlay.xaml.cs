@@ -26,13 +26,18 @@ namespace LegendaryClient.Windows
     public partial class SelectChampOverlay : Page
     {
         private List<ChampionDTO> ChampList;
-        public SelectChampOverlay()
+        private TeamQueuePage tqp;
+
+        public SelectChampOverlay(TeamQueuePage tqp)
         {
             InitializeComponent();
+            this.tqp = tqp;
             ChampionSelectListView.Items.Clear();
             if (true)
             {
                 ChampList = new List<ChampionDTO>(Client.PlayerChampions);
+                ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+
                 foreach (ChampionDTO champ in ChampList)
                 {
                     champions getChamp = champions.GetChampion(champ.ChampionId);
@@ -53,28 +58,48 @@ namespace LegendaryClient.Windows
                 }
             }
         }
-        private async void SkinSelectListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
-        { 
-        
-        }
 
         private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             Client.SelectChamp = ((int)item.Tag);
             Client.usingInstaPick = true;
-            Button_Click(null, null);
-        }
 
-        public void GetSelectedChamp()
-        {
+            tqp.CreateText("You will attempt to auto select: " + champions.GetChampion((int)item.Tag).displayName, Brushes.Yellow);
 
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             this.Visibility = Visibility.Hidden;
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ChampionSelectListView.Items.Clear();
+
+            List<ChampionDTO> tempList = ChampList.ToList();
+
+            if (SearchTextBox.Text != "Search" && !String.IsNullOrEmpty(SearchTextBox.Text))
+            {
+                tempList = tempList.Where(x => champions.GetChampion(x.ChampionId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+            }
+
+            foreach (ChampionDTO champ in tempList)
+            {
+                champions getChamp = champions.GetChampion(champ.ChampionId);
+                if ((champ.Owned || champ.FreeToPlay))
+                {
+                    //Add to ListView
+                    ListViewItem item = new ListViewItem();
+                    ChampionImage championImage = new ChampionImage();
+                    championImage.ChampImage.Source = champions.GetChampion(champ.ChampionId).icon;
+                    if (champ.FreeToPlay)
+                        championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
+                    championImage.Width = 64;
+                    championImage.Height = 64;
+                    item.Tag = champ.ChampionId;
+                    item.Content = championImage.Content;
+                    ChampionSelectListView.Items.Add(item);
+                }
+            }
         }
     }
 }

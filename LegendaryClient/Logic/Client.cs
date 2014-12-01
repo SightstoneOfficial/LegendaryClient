@@ -459,7 +459,7 @@ namespace LegendaryClient.Logic
                     {
                         while (reader.Read())
                         {
-                            if (reader.IsStartElement())
+                            if (reader.IsStartElement() && !reader.IsEmptyElement)
                             {
                                 #region Parse Presence
 

@@ -123,6 +123,24 @@ namespace LegendaryClient.Windows
                                     case "championSelect":
                                         player.PlayerStatus.Content = "In Champion Select";
                                         break;
+                                    case "hostingRankedGame":
+                                        player.PlayerStatus.Content = "Creating Ranked Game";
+                                        break;
+                                    case "teamSelect":
+                                        player.PlayerStatus.Content = "In Team Select";
+                                        break;
+                                    case "hostingNormalGame":
+                                        player.PlayerStatus.Content = "Creating Normal Game";
+                                        break;
+                                    case "hostingCoopVsAIGame":
+                                        player.PlayerStatus.Content = "Creating Co-op vs. AI Game";
+                                        break;
+                                    case "inTeamBuilder":
+                                        player.PlayerStatus.Content = "In Team Builder";
+                                        break;
+                                    case "tutorial":
+                                        player.PlayerStatus.Content = "In Tutorial";
+                                        break;                           
                                 }
                                 brush = (Brush)bc.ConvertFrom("#FFFFFF99");
                                 player.PlayerStatus.Foreground = brush;
@@ -215,6 +233,24 @@ namespace LegendaryClient.Windows
                             PlayerItem.InGameStatus.Text = "In Champion Select" + Environment.NewLine +
                                                            "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds);
                             break;
+                        case "hostingRankedGame":
+                            PlayerItem.InGameStatus.Text = "Creating Ranked Game";
+                            break;
+                        case "teamSelect":
+                            PlayerItem.InGameStatus.Text = "In Team Select";
+                            break;
+                        case "hostingNormalGame":
+                            PlayerItem.InGameStatus.Text = "Creating Normal Game";
+                            break;
+                        case "hostingCoopVsAIGame":
+                            PlayerItem.InGameStatus.Text = "Creating Co-op vs. AI Game";
+                            break;
+                        case "inTeamBuilder":
+                            PlayerItem.InGameStatus.Text = "In Team Builder";
+                            break;
+                        case "tutorial":
+                            PlayerItem.InGameStatus.Text = "In Tutorial";
+                            break;                           
                     }
                     PlayerItem.InGameStatus.Visibility = System.Windows.Visibility.Visible;
                 }

@@ -13,6 +13,7 @@ Working on a patcher to patch LC [Awesome splash though]
 I am aware of crashing
 
 #####LEGENDARYCLIENT IS NOW OVER 1 YEAR OLD SINCE FIRST CODE COMMENT BY SNOWL!!!
+Want to donate? Scroll down to the bottom
 
 #How To Install
 https://www.youtube.com/watch?v=ZWYn_vft5Kg&feature=youtu.be
@@ -120,8 +121,8 @@ Examples include:
 * Code Signing Licence [license]
 * A domain name [.gg/(.com {Snowl has this domain, currently unpaid for})/ {any recommendations}]
 * A potential server (Online game scouting, game replays, champ stats, etc.)? [Last priority]
-
-No donations accepted at this time
+Donation Link:
+<a href='https://pledgie.com/campaigns/27549'><img alt='Click here to lend your support to: LegendaryClient and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27549.png?skin_name=chrome' border='0' ></a>
 
 Please Note
 ======

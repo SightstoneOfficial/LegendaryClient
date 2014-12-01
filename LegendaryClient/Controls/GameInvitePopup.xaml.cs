@@ -154,6 +154,9 @@ namespace LegendaryClient.Controls
                 case 10:
                     MapName = "The Twisted Treeline";
                     break;
+                case 11:
+                    MapName = "New Summoners Rift";
+                    break;
                 case 12:
                     MapName = "Howling Abyss";
                     break;
