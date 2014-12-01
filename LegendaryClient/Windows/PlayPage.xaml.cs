@@ -80,15 +80,15 @@ namespace LegendaryClient.Windows
                         switch (b)
                         {
                             case 0:
-                                seperators[b].QueueLabel.Content = Client.InternalQueueToPretty("Bot Queues");
+                                seperators[b].QueueLabel.Content = "Bot Queues";
                                 seperators[b].Tag = "Bot";
                                 break;
                             case 1:
-                                seperators[b].QueueLabel.Content = Client.InternalQueueToPretty("Normal Queues");
+                                seperators[b].QueueLabel.Content = "Normal Queues";
                                 seperators[b].Tag = "Normal";
                                 break;
                             case 2:
-                                seperators[b].QueueLabel.Content = Client.InternalQueueToPretty("Ranked Queues");
+                                seperators[b].QueueLabel.Content = "Ranked Queues";
                                 seperators[b].Tag = "Ranked";
                                 break;
                         }
