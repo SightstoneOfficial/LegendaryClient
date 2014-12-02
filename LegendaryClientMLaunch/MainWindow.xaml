@@ -6,11 +6,11 @@
         <ListView x:Name="Options" HorizontalAlignment="Left" Height="350" VerticalAlignment="Top" Width="220">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <GridViewColumn />
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid HorizontalAlignment="Right" Height="350" VerticalAlignment="Top" Width="300"/>
+        <Grid HorizontalAlignment="Right" Height="350" VerticalAlignment="Top" Width="300" />
 
     </Grid>
 </Window>
