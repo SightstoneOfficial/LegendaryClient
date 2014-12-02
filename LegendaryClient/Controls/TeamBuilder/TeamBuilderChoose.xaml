@@ -17,6 +17,8 @@
         <ComboBox x:Name="MasteryPage" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,115,0,0"/>
         <Button x:Name="EditRunes" Visibility="Hidden" Content="Edit Runes" Margin="471,88,10,40"/>
         <Button x:Name="EditMasteries" Visibility="Hidden" Content="Edit Masteries" Margin="471,115,10,13"/>
+        <Label x:Name="PlayerName" Visibility="Hidden" Content="MyEpicNickname" Margin="115,59,0,62" Foreground="White" FontWeight="ExtraLight" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="129" />
+        <Label x:Name="PlayerReadyStatus" Visibility="Hidden" Content="Ready" Margin="501,59,0,62" Foreground="White" FontWeight="ExtraLight" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="89" />
 
         <Button x:Name="SummonerSpell1" Visibility="Hidden" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="10,100,0,0">
             <StackPanel>

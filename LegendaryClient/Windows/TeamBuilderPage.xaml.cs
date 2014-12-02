@@ -82,6 +82,11 @@ namespace LegendaryClient.Windows
         private long inQueueTimer;
 
         //TeamBuilder is just a little insane. This code is very messy too. :P
+        /* 
+         Note by horato: This code is not messy, its ugly as fuck. If you don't want to suffer from serious brain damage and moral panic
+         do not attempt to study it. But hey, it works (kind of). 
+         I also suck at GUI and xaml, if you want to fix my shit then be my guest ;)
+        */
         public TeamBuilderPage(bool iscreater, LobbyStatus myLobby)
         {
             InitializeComponent();
@@ -147,8 +152,7 @@ namespace LegendaryClient.Windows
             string roleUp = string.Format(role.ToUpper());
             string posUp = string.Format(position.ToUpper());
             string Json = string.Format("\"skinId\":{0},\"position\":\"{1}\",\"role\":\"{2}\",\"championId\":{3},\"spell2Id\":{4},\"queueId\":61,\"spell1Id\":{5}", skinId, posUp, roleUp, ChampionId, spell2, spell1);
-            string JsonWithBrackets = "{" + Json + "}";
-            CallWithArgs(Guid.NewGuid().ToString(), "cap", "createSoloQueryV4", JsonWithBrackets);
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "createSoloQueryV4", "{" + Json + "}");
         }
 
         private System.Timers.Timer CountdownTimer;
@@ -157,7 +161,6 @@ namespace LegendaryClient.Windows
 
         private void HandleProxyResponse(LcdsServiceProxyResponse Response)
         {
-            System.Diagnostics.Debug.WriteLine(Response.MethodName);
             if (Response.MethodName == "infoRetrievedV1")
             {
                 /*
@@ -235,7 +238,61 @@ namespace LegendaryClient.Windows
             else if (Response.MethodName == "groupUpdatedV3")
             {
                 // pre-match queue team lobby, welcome to the hell of LCDS calls ^^
-                // send pickSkinV2
+                // This SHOULD be called only once per matchmade group, but in case its not...
+                System.Diagnostics.Debug.WriteLine("groupUpdatedV3 was called");
+
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "pickSkinV2", "{\"skinId\":" + skinId + ",\"isNewlyPurchasedSkin\":false}");
+                GroupUpdate response = JsonConvert.DeserializeObject<GroupUpdate>(Response.Payload);
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    updateGroup(response);
+                }));
+            }
+            else if (Response.MethodName == "slotPopulatedV1")
+            {
+                // New player joined lobby, this is fired AFTER both sides accept the invitation
+                // => TODO: show players trying to join lobby (candidateFoundV2)
+
+                // PlayerSlot will do, but this call does NOT use advertisedRole and status properties!
+                PlayerSlot response = JsonConvert.DeserializeObject<PlayerSlot>(Response.Payload);
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    populateSlot(response);
+                }));
+            }
+            else if (Response.MethodName == "soloSearchedForAnotherGroupV2")
+            {
+                // Someone left matchmade lobby
+                SoloSearchedForAnotherGroupResponse response = JsonConvert.DeserializeObject<SoloSearchedForAnotherGroupResponse>(Response.Payload);
+                if (response.slotId == teambuilderSlotId)
+                {
+                    //we left the team
+                    // TODO: get back to queue
+                    System.Diagnostics.Debug.WriteLine("we left/got kicked from team.");
+                }
+                else
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        PlayerListView.Items.RemoveAt(response.slotId);
+                    }));
+                }
+                // for now, need2know what reasons are there
+                if (response.reason != "SOLO_INITIATED")
+                    System.Diagnostics.Debug.WriteLine("soloSearchedForAnotherGroupV2 - reason was not SOLO_INITIATED! : " + response.reason);
+            }
+            else if (Response.MethodName == "readinessIndicatedV1")
+            {
+                ReadinesIndicator response = JsonConvert.DeserializeObject<ReadinesIndicator>(Response.Payload);
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    //this should always be TeamBuilderChoose no?
+                    TeamBuilderChoose tbc = PlayerListView.Items.GetItemAt(response.slotId) as TeamBuilderChoose;
+                    if (response.ready)
+                        tbc.PlayerReadyStatus.Visibility = Visibility.Visible;
+                    else
+                        tbc.PlayerReadyStatus.Visibility = Visibility.Hidden;
+                }));
             }
             else if (Response.MethodName == "removedFromServiceV1")
             {
@@ -251,6 +308,62 @@ namespace LegendaryClient.Windows
                 System.Diagnostics.Debug.WriteLine("TeamBuilder error: " + Response.Status);
                 System.Diagnostics.Debug.WriteLine("TeamBuilder payload: " + Response.Payload);
             }
+        }
+
+        private void populateSlot(PlayerSlot slot)
+        {
+            //TODO: move PlayerName label to some not so retarded place
+            TeamBuilderChoose tbc = new TeamBuilderChoose();
+            tbc.PlayerName.Content = slot.summonerName;
+            tbc.PlayerName.Visibility = Visibility.Visible;
+            string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
+            tbc.Champion.Source = Client.GetImage(uriSource);
+            tbc.Role.Items.Add(new Item(slot.role));
+            tbc.Role.SelectedIndex = 0;
+            tbc.Role.IsEditable = false;
+            tbc.Position.Items.Add(new Item(slot.position));
+            tbc.Position.SelectedIndex = 0;
+            tbc.Position.IsEditable = false;
+            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell1Id));
+            tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
+            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell2Id));
+            tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
+
+            if (slot.slotId == teambuilderSlotId)
+            {
+                tbc.EditMasteries.Click += EditMasteriesButton_Click;
+                tbc.EditRunes.Click += EditRunesButton_Click;
+                tbc.SummonerSpell1.Click += SummonerSpell_Click;
+                tbc.SummonerSpell2.Click += SummonerSpell_Click;
+            }
+            PlayerListView.Items.Insert(slot.slotId, tbc);
+            //just for now, need2know what other statuses are there
+            if (!String.IsNullOrEmpty(slot.status) && !String.IsNullOrWhiteSpace(slot.status) && slot.status != "POPULATED" && slot.status != "CANDIDATE_FOUND")
+                System.Diagnostics.Debug.WriteLine("groupUpdatedV3 - new status found! : " + slot.status);
+        }
+
+        private void ReadyButton_Click(object sender, RoutedEventArgs e)
+        {
+            //TODO: how the story continued? The prince made backup of his files and went sniffing packets from official client. But did he dieded? Nobody knows...
+        }
+
+        private void updateGroup(GroupUpdate response)
+        {
+            PlayerListView.Items.Clear();
+            //lets just pretend this never happend mkay?
+            Invite.Visibility = Visibility.Hidden;
+            InvitedPlayers.Visibility = Visibility.Hidden;
+            QueueButton.Visibility = Visibility.Hidden;
+            ReadyButton.Visibility = Visibility.Visible;
+            teambuilderSlotId = response.slotId;
+            teambuilderGroupId = response.groupId;
+            //TODO: find how matched team lobby chatroom name is generated
+            //if(connectedToChat)
+            //  LeaveChat();
+            //ConnectToChat();
+
+            foreach (PlayerSlot slot in response.slots)
+                populateSlot(slot);
         }
 
         private void QueueElapsed(object sender, ElapsedEventArgs e)
@@ -528,12 +641,10 @@ namespace LegendaryClient.Windows
             //We only want this to be called when selected champs and role and position have a set value
             if (role != null && position != null && ChampionId != 0)
             {
-                //Lazyist way to do this, but is probably is the shortest
                 string roleUp = string.Format(role.ToUpper());
                 string posUp = string.Format(position.ToUpper());
                 string Json = string.Format("\"championId\":{0},\"position\":\"{1}\",\"role\":\"{2}\",\"queueId\":61", ChampionId, posUp, roleUp);
-                string JsonWithBrackets = "{" + Json + "}";
-                CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveEstimatedWaitTimeV2", JsonWithBrackets);
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveEstimatedWaitTimeV2", "{" + Json + "}");
             }
         }
 
@@ -613,7 +724,6 @@ namespace LegendaryClient.Windows
             var item = sender as ListViewItem;
             SelectChamp((int)item.Tag);
 
-            //TODO: Fix stupid animation glitch on left hand side
             DoubleAnimation fadingAnimation = new DoubleAnimation();
             fadingAnimation.From = 1;
             fadingAnimation.To = 0;
@@ -763,6 +873,44 @@ namespace LegendaryClient.Windows
         }
 
         #region response classes
+        private class ReadinesIndicator
+        {
+            public int slotId { get; set; }
+            public bool ready { get; set; }
+        }
+
+        private class SoloSearchedForAnotherGroupResponse
+        {
+            public int slotId { get; set; }
+            public string reason { get; set; }
+            public int penaltyInSeconds { get; set; }
+        }
+
+        private class GroupUpdate
+        {
+            public string groupId { get; set; }
+            public PlayerSlot[] slots { get; set; }
+            public int slotId { get; set; }
+            public int groupTtlSecs { get; set; }
+        }
+
+        private class PlayerSlot
+        {
+            public int slotId { get; set; }
+            public string summonerName { get; set; }
+            public int summonerIconId { get; set; }
+            public int championId { get; set; }
+            public string role { get; set; }
+            public string advertisedRole { get; set; }
+            public string position { get; set; }
+            public int spell1Id { get; set; }
+            public int spell2Id { get; set; }
+            /// <summary>
+            /// POPULATED, CANDIDATE_FOUND, more TBA
+            /// </summary>
+            public string status { get; set; }
+        }
+
         private class InfoRetrieved
         {
             public int[] championIds { get; set; }
@@ -778,7 +926,9 @@ namespace LegendaryClient.Windows
         private class DemandInfo
         {
             public bool areCaptainsStarved { get; set; }
-            //"role": "SUPPORT", "position": "BOTTOM", "boost": 0
+            /// <summary>
+            /// "role": "SUPPORT", "position": "BOTTOM", "boost": 0
+            /// </summary>
             public Dictionary<String, Object>[] solosInDemand { get; set; }
         }
         private class ReceivedGroupId
