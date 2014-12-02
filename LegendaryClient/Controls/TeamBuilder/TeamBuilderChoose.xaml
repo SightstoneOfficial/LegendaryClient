@@ -18,12 +18,12 @@
         <Button x:Name="EditRunes" Visibility="Hidden" Content="Edit Runes" Margin="471,88,10,40"/>
         <Button x:Name="EditMasteries" Visibility="Hidden" Content="Edit Masteries" Margin="471,115,10,13"/>
 
-        <Button x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="10,100,0,0">
+        <Button x:Name="SummonerSpell1" Visibility="Hidden" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="10,100,0,0">
             <StackPanel>
                 <Image x:Name="SummonerSpell1Image" Height="32" Width="32" />
             </StackPanel>
         </Button>
-        <Button x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="55,100,0,0">
+        <Button x:Name="SummonerSpell2" Visibility="Hidden" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="55,100,0,0">
             <StackPanel>
                 <Image x:Name="SummonerSpell2Image" Height="32" Width="32" />
             </StackPanel>

@@ -64,6 +64,7 @@ namespace LegendaryClient.Windows
 
         internal bool connectedToChat = false;
 
+        internal List<int> availableSpells = new List<int>();
         internal int spell1 = 0;
         internal int spell2 = 0;
 
@@ -77,6 +78,8 @@ namespace LegendaryClient.Windows
         internal int teambuilderCandidateAutoQuitTimeout;
 
         private LobbyStatus CurrentLobby;
+        private System.Timers.Timer timer;
+        private long inQueueTimer;
 
         //TeamBuilder is just a little insane. This code is very messy too. :P
         public TeamBuilderPage(bool iscreater, LobbyStatus myLobby)
@@ -87,16 +90,17 @@ namespace LegendaryClient.Windows
                 Invite.IsEnabled = false;
             }
             CurrentLobby = myLobby;
-            //Start teambuilder
-            CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveFeatureToggles", "{}");
+
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
-            //StartTeambuilder();
             LoadStats();
 
             Client.InviteListView = InvitedPlayers;
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             AddPlayer();
+
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveFeatureToggles", "{}");
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveInfoV1", "{\"queueId\":61}");
         }
 
         /// <summary>
@@ -153,25 +157,32 @@ namespace LegendaryClient.Windows
 
         private void HandleProxyResponse(LcdsServiceProxyResponse Response)
         {
-            //Received an acceptance for a teambuilder group. Daymn I'm so smart to not include V2 or whatever it is [so this will work later on]
-            if (Response.MethodName == "acceptedByGroupV2")
+            System.Diagnostics.Debug.WriteLine(Response.MethodName);
+            if (Response.MethodName == "infoRetrievedV1")
             {
-                TimeLeft = 10;
-                ReceivedGroupId m = JsonConvert.DeserializeObject<ReceivedGroupId>(Response.Payload);
-                teambuilderCandidateAutoQuitTimeout = m.candidateAutoQuitTimeout;
-                teambuilderGroupId = m.groupId;
-                teambuilderSlotId = m.slotId;
-                MatchFoundGrid.Visibility = Visibility.Visible;
+                /*
+                  TODO: there is alot of info yet to be processed like available champs, skins,
+                  demand info (roles/positions) and something called cpr adjustment (no fucking idea)
+                  but it can wait.
+                */
+                InfoRetrieved response = JsonConvert.DeserializeObject<InfoRetrieved>(Response.Payload);
+                if (response.initialSpellIds.Length > 0)
+                {
+                    spell1 = response.initialSpellIds[0];
+                    if (response.initialSpellIds.Length > 1)
+                        spell2 = response.initialSpellIds[1];
 
-                TimeLeft = teambuilderCandidateAutoQuitTimeout;
-
-                CountdownTimer = new System.Timers.Timer(1000);
-                CountdownTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
-                CountdownTimer.Enabled = true;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        RenderLegenadryClientPlayerSumSpellIcons();
+                    }));
+                }
+                if (response.spellIds.Length > 0)
+                    availableSpells = response.spellIds.ToList<int>();
             }
             else if (Response.MethodName == "estimatedWaitTimeRetrievedV1")
             {
-                //TODO: make use of response.estimatedWaitTime
+                //TODO: make use of response.estimatedWaitTime if there is any
                 //ReceivedWaitTime response = JsonConvert.DeserializeObject<ReceivedWaitTime>(Response.Payload);
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -180,17 +191,65 @@ namespace LegendaryClient.Windows
             }
             else if (Response.MethodName == "soloQueryCreatedV1")
             {
-                //queue join success
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    QueueButton.IsEnabled = false;
+                    QueueButton.Content = "Searching for team";
+                }));
+                inQueueTimer = 0;
+
+                timer = new System.Timers.Timer(1000);
+                timer.Elapsed += new ElapsedEventHandler((object sender, ElapsedEventArgs e) =>
+                {
+                    inQueueTimer++;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
+                        QueueButton.Content = String.Format("Searching for team {0}:{1}", ts.Minutes, ts.Seconds);
+                    }));
+                });
+                timer.AutoReset = true;
+                timer.Start();
+
+            }
+            else if (Response.MethodName == "acceptedByGroupV2")
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    timer.Stop();
+                    TimeLeft = 10;
+                    ReceivedGroupId m = JsonConvert.DeserializeObject<ReceivedGroupId>(Response.Payload);
+                    teambuilderCandidateAutoQuitTimeout = m.candidateAutoQuitTimeout;
+                    teambuilderGroupId = m.groupId;
+                    teambuilderSlotId = m.slotId;
+                    MatchFoundGrid.Visibility = Visibility.Visible;
+
+                    TimeLeft = teambuilderCandidateAutoQuitTimeout;
+
+                    CountdownTimer = new System.Timers.Timer(1000);
+                    CountdownTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
+                    CountdownTimer.AutoReset = true;
+                    CountdownTimer.Start();
+                }));
+            }
+            else if (Response.MethodName == "groupUpdatedV3")
+            {
+                // pre-match queue team lobby, welcome to the hell of LCDS calls ^^
+                // send pickSkinV2
             }
             else if (Response.MethodName == "removedFromServiceV1")
             {
+                // TODO: how about we don't quit teambuilder page each time this thing is called?
+                // QuitReason response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);
+                // if (response.reason == "CANDIDATE_DECLINED_GROUP") else if (response.reason == "QUIT")
+                System.Diagnostics.Debug.WriteLine("removed from service; no longer listening to calls");
                 Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                 Client.PVPNet.Leave();
             }
             else if (Response.MethodName.StartsWith("callFailed"))
             {
-                System.Diagnostics.Debug.WriteLine(Response.Status);
-                System.Diagnostics.Debug.WriteLine(Response.Payload);
+                System.Diagnostics.Debug.WriteLine("TeamBuilder error: " + Response.Status);
+                System.Diagnostics.Debug.WriteLine("TeamBuilder payload: " + Response.Payload);
             }
         }
 
@@ -198,8 +257,21 @@ namespace LegendaryClient.Windows
         {
             if (TimeLeft > 0)
             {
-
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    Timer10.Text = "" + TimeLeft;
+                    TimeLeft--;
+                }));
+                return;
             }
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                CountdownTimer.Stop();
+                MatchFoundGrid.Visibility = Visibility.Hidden;
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
+                Client.ClearPage(typeof(TeamBuilderPage));
+                Client.SwitchPage(new MainPage());
+            }));
         }
 
         //This is something you don't know exists
@@ -277,11 +349,6 @@ namespace LegendaryClient.Windows
             }
 
             PlayerListView.Items.Add(TeamPlayer);
-
-            if (ChampionId != 0)
-            {
-                StartTeambuilder();
-            }
         }
 
 
@@ -295,7 +362,6 @@ namespace LegendaryClient.Windows
         {
             string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(ChampionId).iconPath);
             TeamPlayer.Champion.Source = Client.GetImage(uriSource);
-            StartTeambuilder();
             ChampAndSkinGrid.Visibility = Visibility.Hidden;
         }
 
@@ -340,10 +406,21 @@ namespace LegendaryClient.Windows
 
         private void AcceptGame_Click(object sender, RoutedEventArgs e)
         {
+            CountdownTimer.Stop();
             //Super Op Code
-            string LastArg = string.Format("{\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"}", true, teambuilderSlotId, teambuilderGroupId);
-            CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", LastArg);
+            string LastArg = string.Format("\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"", true, teambuilderSlotId, teambuilderGroupId);
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", "{" + LastArg + "}");
             MatchFoundGrid.Visibility = Visibility.Hidden;
+        }
+
+        private void DeclineGame_Click(object sender, RoutedEventArgs e)
+        {
+            CountdownTimer.Stop();
+            //Super Op Code
+            string LastArg = string.Format("\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"", false, teambuilderSlotId, teambuilderGroupId);
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", "{" + LastArg + "}");
+            Client.ClearPage(typeof(TeamBuilderPage));
+            Client.SwitchPage(new MainPage());
         }
 
         private void TeamPosition_SelectionChanged(object sender, EventArgs e)
@@ -352,6 +429,9 @@ namespace LegendaryClient.Windows
             position = itm.ComboRole;
             TeamPlayer.RunePage.Visibility = Visibility.Visible;
             TeamPlayer.MasteryPage.Visibility = Visibility.Visible;
+            TeamPlayer.SummonerSpell1.Visibility = Visibility.Visible;
+            TeamPlayer.SummonerSpell2.Visibility = Visibility.Visible;
+
             SelectedAllChamps();
         }
 
@@ -455,13 +535,6 @@ namespace LegendaryClient.Windows
                 string JsonWithBrackets = "{" + Json + "}";
                 CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveEstimatedWaitTimeV2", JsonWithBrackets);
             }
-        }
-
-        private void StartTeambuilder()
-        {
-            //Retrieve masteries and runes
-            MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
-            MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
         }
 
         private void LoadStats()
@@ -629,7 +702,7 @@ namespace LegendaryClient.Windows
             SummonerSpellListView.Items.Clear();
             foreach (NameToImage Spell in values)
             {
-                if (!SummonerSpell.CanUseSpell((int)Spell, Client.LoginPacket.AllSummonerData.SummonerLevel.Level, GameMode))
+                if (!availableSpells.Contains((int)Spell))
                     continue;
                 Image champImage = new Image();
                 champImage.Height = 64;
@@ -688,6 +761,26 @@ namespace LegendaryClient.Windows
                 return ComboRole;
             }
         }
+
+        #region response classes
+        private class InfoRetrieved
+        {
+            public int[] championIds { get; set; }
+            public int[] skinIds { get; set; }
+            public int[] spellIds { get; set; }
+            public int[] initialSpellIds { get; set; }
+            public bool cprAdjustmentEnabled { get; set; }
+            public int[] adjustedChampionIds { get; set; }
+            public string[] adjustedRoles { get; set; }
+            public string[] adjustedPositions { get; set; }
+            public DemandInfo demandInfo { get; set; }
+        }
+        private class DemandInfo
+        {
+            public bool areCaptainsStarved { get; set; }
+            //"role": "SUPPORT", "position": "BOTTOM", "boost": 0
+            public Dictionary<String, Object>[] solosInDemand { get; set; }
+        }
         private class ReceivedGroupId
         {
             public string groupId { get; set; }
@@ -701,6 +794,12 @@ namespace LegendaryClient.Windows
             public string position { get; set; }
             public int estimatedWaitTime { get; set; }
         }
+
+        private class QuitReason
+        {
+            public string reason { get; set; }
+        }
+        #endregion
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
