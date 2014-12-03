@@ -37,6 +37,7 @@ using log4net;
 using MahApps.Metro;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Windows.Media;
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
 namespace LegendaryClient.Logic
@@ -54,6 +55,23 @@ namespace LegendaryClient.Logic
         internal static Dictionary<String, LoginDataPacket> accountslist = new Dictionary<String, LoginDataPacket>();
 
         internal static List<Group> Groups = new List<Group>();
+
+        public Brush Change()
+        {
+            bool x = Properties.Settings.Default.DarkTheme;
+            string y = Properties.Settings.Default.Theme;
+            var bc = new BrushConverter();
+            if (y.Contains("Steel"))
+                return (Brush)bc.ConvertFrom("#FF141414");
+            else if (y.Contains("Blue"))
+                return (Brush)bc.ConvertFrom("#FF1585B5");
+            else if (y.Contains("Red"))
+                return (Brush)bc.ConvertFrom("#FFA01414");
+            else if (y.Contains("Green"))
+                return (Brush)bc.ConvertFrom("#FF2DA014");
+            else if (y.Contains("Purple"))
+                return (Brush)bc.ConvertFrom("#FF5A14A0");
+        }
 
         internal static Dictionary<String, PVPNetConnection> pvpnetlist = new Dictionary<String, PVPNetConnection>();
 
@@ -77,7 +95,7 @@ namespace LegendaryClient.Logic
             credentials.AuthToken = "";
             credentials.Password = Password;
             credentials.IpAddress = "";
-            //pvp.Login()
+            //pvp.Login();
             return new LoginDataPacket();
         }
 
