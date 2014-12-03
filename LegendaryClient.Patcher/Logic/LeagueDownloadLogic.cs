@@ -1,64 +1,67 @@
-﻿using ComponentAce.Compression.Libs.zlib;
+﻿#region
+
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using ComponentAce.Compression.Libs.zlib;
+
+#endregion
 
 namespace LegendaryClient.Patcher.Logic
 {
-    class LeagueDownloadLogic
+    internal class LeagueDownloadLogic
     {
-        public LeagueDownloadLogic()
-        {
+        public static string ReleaseListing = "";
+        public static string SolutionManifest = "";
 
-        }
 
-        public static string releaselisting = "";
-        public static string solutionmanifest = "";
-
-        
         /// <summary>
-        /// Gets the Latest LeagueOfLegends lol_game_client_sln version
+        ///     Gets the Latest LeagueOfLegends lol_game_client_sln version
         /// </summary>
-        public string[] GetLolClientSlnVersion()
+        public string[] GetLolClientSLNVersion()
         {
             //Get the GameClientSln version
-            using (WebClient client = new WebClient())
+            using (new WebClient())
             {
-                releaselisting = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_NA");                            
+                ReleaseListing =
+                    new WebClient().DownloadString(
+                        "http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_NA");
             }
 
-            return releaselisting.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
+            return ReleaseListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
         }
 
         /// <summary>
-        /// Gets the SolutionManifest
+        ///     Gets the SolutionManifest
         /// </summary>
         /// <returns>
-        /// The SolutionManifest file from riot
+        ///     The SolutionManifest file from riot
         /// </returns>
-        public string CreateConfigurationmanifest()
+        public string CreateConfigurationManifest()
         {
-            string LatestSlnVersion = Convert.ToString(GetLolClientSlnVersion());
+            string LatestSLNVersion = Convert.ToString(GetLolClientSLNVersion());
             //Get GameClient Language files
-            using (WebClient client = new WebClient())
+            using (new WebClient())
             {
-                solutionmanifest = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/" + LatestSlnVersion + "/solutionmanifest");                
+                SolutionManifest =
+                    new WebClient().DownloadString(
+                        "http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/" +
+                        LatestSLNVersion + "/solutionmanifest");
             }
-            return solutionmanifest;
+            return SolutionManifest;
         }
-        public static void uncompressFile(string inFile, string outFile)
+
+        public static void DecompressFile(string inFile, string outFile)
         {
-            int data = 0;
-            int stopByte = -1;
-            System.IO.FileStream outFileStream = new System.IO.FileStream(outFile, System.IO.FileMode.Create);
-            ZInputStream inZStream = new ZInputStream(System.IO.File.Open(inFile, System.IO.FileMode.Open, System.IO.FileAccess.Read));
+            int data;
+            const int stopByte = -1;
+            var outFileStream = new FileStream(outFile, FileMode.Create);
+            var inZStream = new ZInputStream(File.Open(inFile, FileMode.Open, FileAccess.Read));
             while (stopByte != (data = inZStream.Read()))
             {
-                byte _dataByte = (byte)data;
-                outFileStream.WriteByte(_dataByte);
+                var dataByte = (byte) data;
+                outFileStream.WriteByte(dataByte);
             }
 
             inZStream.Close();

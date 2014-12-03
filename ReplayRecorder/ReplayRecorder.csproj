@@ -43,7 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="rtmp-sharp">
-      <HintPath>..\LegendaryClient\bin\Debug\Client\rtmp-sharp.dll</HintPath>
+      <HintPath>..\DLLS\rtmp-sharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
