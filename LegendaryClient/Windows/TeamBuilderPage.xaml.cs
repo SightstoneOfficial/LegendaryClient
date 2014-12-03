@@ -30,6 +30,8 @@ using System.Timers;
 using LegendaryClient.Controls;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using System.Globalization;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using LegendaryClient.Logic.Replays;
 
 namespace LegendaryClient.Windows
 {
@@ -80,6 +82,7 @@ namespace LegendaryClient.Windows
         private LobbyStatus CurrentLobby;
         private System.Timers.Timer timer;
         private long inQueueTimer;
+        private bool HasLaunchedGame = false;
 
         //TeamBuilder is just a little insane. This code is very messy too. :P
         /* 
@@ -102,6 +105,8 @@ namespace LegendaryClient.Windows
 
             Client.InviteListView = InvitedPlayers;
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.GameStatus = "inTeamBuilder";
+            Client.SetChatHover();
             AddPlayer();
 
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveFeatureToggles", "{}");
@@ -137,6 +142,51 @@ namespace LegendaryClient.Windows
             {
                 LcdsServiceProxyResponse ProxyResponse = message as LcdsServiceProxyResponse;
                 HandleProxyResponse(ProxyResponse);
+            }
+            if (message.GetType() == typeof(GameDTO))
+            {
+                GameDTO ChampDTO = message as GameDTO;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
+                {
+                    if (ChampDTO.GameState == "START_REQUESTED")
+                    {
+                        // TODO: add fancy notification of game starting
+                        QuitButton.IsEnabled = false;
+                    }
+                }));
+            }
+            else if (message.GetType() == typeof(PlayerCredentialsDto))
+            {
+                #region Launching Game
+
+                PlayerCredentialsDto dto = message as PlayerCredentialsDto;
+                Client.CurrentGame = dto;
+
+                if (!HasLaunchedGame)
+                {
+                    HasLaunchedGame = true;
+                    if (Properties.Settings.Default.AutoRecordGames)
+                    {
+                        Dispatcher.InvokeAsync(async () =>
+                        {
+                            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Client.LoginPacket.AllSummonerData.Summoner.Name);
+                            if (n.GameName != null)
+                            {
+                                string IP = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
+                                string Key = n.PlayerCredentials.ObserverEncryptionKey;
+                                int GameID = (Int32)n.PlayerCredentials.GameId;
+                                new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
+                            }
+                        });
+                    }
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        Client.LaunchGame();
+                        InGame();
+                    }));
+                }
+
+                #endregion Launching Game
             }
         }
 
@@ -208,7 +258,7 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
-                        QueueButton.Content = String.Format("Searching for team {0}:{1}", ts.Minutes, ts.Seconds);
+                        QueueButton.Content = String.Format("Searching for team {0}:{1}", ts.Minutes, ts.Seconds < 10 ? "0" + ts.Seconds : "" + ts.Seconds);
                     }));
                 });
                 timer.AutoReset = true;
@@ -294,6 +344,32 @@ namespace LegendaryClient.Windows
                         tbc.PlayerReadyStatus.Visibility = Visibility.Hidden;
                 }));
             }
+            else if (Response.MethodName == "matchmakingPhaseStartedV1")
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    ReadyButton.IsEnabled = false;
+                    ReadyButton.Content = "Searching for match";
+                }));
+                inQueueTimer = 0;
+
+                timer = new System.Timers.Timer(1000);
+                timer.Elapsed += new ElapsedEventHandler((object sender, ElapsedEventArgs e) =>
+                {
+                    inQueueTimer++;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
+                        ReadyButton.Content = String.Format("Searching for match {0}:{1}", ts.Minutes, ts.Seconds < 10 ? "0" + ts.Seconds : ""+ts.Seconds);
+                    }));
+                });
+                timer.AutoReset = true;
+                timer.Start();
+            }
+            else if (Response.MethodName == "matchMadeV1")
+            {
+                timer.Stop();
+            }
             else if (Response.MethodName == "removedFromServiceV1")
             {
                 // TODO: how about we don't quit teambuilder page each time this thing is called?
@@ -301,7 +377,14 @@ namespace LegendaryClient.Windows
                 // if (response.reason == "CANDIDATE_DECLINED_GROUP") else if (response.reason == "QUIT")
                 System.Diagnostics.Debug.WriteLine("removed from service; no longer listening to calls");
                 Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                Client.GameStatus = "outOfGame";
+                Client.SetChatHover();
                 Client.PVPNet.Leave();
+
+                //temp, what other reasons are there?
+                QuitReason response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);
+                if (response.reason != "CANDIDATE_DECLINED_GROUP" && response.reason != "QUIT")
+                    System.Diagnostics.Debug.WriteLine("removedFromServiceV1 - new reason! : " + response.reason);
             }
             else if (Response.MethodName.StartsWith("callFailed"))
             {
@@ -324,17 +407,23 @@ namespace LegendaryClient.Windows
             tbc.Position.Items.Add(new Item(slot.position));
             tbc.Position.SelectedIndex = 0;
             tbc.Position.IsEditable = false;
+            tbc.Position.Visibility = Visibility.Visible;
             uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell1Id));
             tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
+            tbc.SummonerSpell1Image.Visibility = Visibility.Visible;
             uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell2Id));
             tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
+            tbc.SummonerSpell2Image.Visibility = Visibility.Visible;
 
             if (slot.slotId == teambuilderSlotId)
             {
+                tbc.MasteryPage.Visibility = Visibility.Visible;
+                tbc.RunePage.Visibility = Visibility.Visible;
                 tbc.EditMasteries.Click += EditMasteriesButton_Click;
                 tbc.EditRunes.Click += EditRunesButton_Click;
                 tbc.SummonerSpell1.Click += SummonerSpell_Click;
                 tbc.SummonerSpell2.Click += SummonerSpell_Click;
+                TeamPlayer = tbc;
             }
             PlayerListView.Items.Insert(slot.slotId, tbc);
             //just for now, need2know what other statuses are there
@@ -344,7 +433,29 @@ namespace LegendaryClient.Windows
 
         private void ReadyButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO: how the story continued? The prince made backup of his files and went sniffing packets from official client. But did he dieded? Nobody knows...
+            Button readyButton = sender as Button;
+            if (readyButton.Content == "Ready")
+            {
+                TeamPlayer.EditMasteries.IsEnabled = false;
+                TeamPlayer.EditRunes.IsEnabled = false;
+                TeamPlayer.SummonerSpell1.IsEnabled = false;
+                TeamPlayer.SummonerSpell2.IsEnabled = false;
+                TeamPlayer.MasteryPage.IsEnabled = false;
+                TeamPlayer.RunePage.IsEnabled = false;
+                readyButton.Content = "Not Ready";
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateReadinessV1", "{\"ready\":true}");
+            }
+            else
+            {
+                TeamPlayer.EditMasteries.IsEnabled = true;
+                TeamPlayer.EditRunes.IsEnabled = true;
+                TeamPlayer.SummonerSpell1.IsEnabled = true;
+                TeamPlayer.SummonerSpell2.IsEnabled = true;
+                TeamPlayer.MasteryPage.IsEnabled = true;
+                TeamPlayer.RunePage.IsEnabled = true;
+                readyButton.Content = "Ready";
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateReadinessV1", "{\"ready\":false}");
+            }
         }
 
         private void updateGroup(GroupUpdate response)
@@ -859,6 +970,19 @@ namespace LegendaryClient.Windows
             spell1 = Spell1;
             spell2 = Spell2;
         }
+
+        private async void InGame()
+        {
+            await Client.PVPNet.Leave();
+            Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+            Client.ClearPage(typeof(TeamBuilderPage));
+            Client.GameStatus = "inGame";
+            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.SetChatHover();
+
+            Client.SwitchPage(new InGame());
+        }
+
         private class Item
         {
             public string ComboRole { get; set; }

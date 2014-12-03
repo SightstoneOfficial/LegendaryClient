@@ -26,7 +26,7 @@
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Right" Height="23" Width="305" Margin="0,0,100,11" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Button x:Name="ChatButton" Content="Send" Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="85" IsDefault="True" Height="24" Click="ChatButton_Click" />
-        <Button Content="Quit" Margin="0,10,10,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" Click="QuitButton_Click"/>
+        <Button x:Name="QuitButton" Content="Quit" Margin="0,10,10,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" Click="QuitButton_Click"/>
         <Button x:Name="QueueButton" Content="Start Searching" IsEnabled="False" Margin="0,10,165,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Click="StartQueue"/>
         <Button x:Name="ReadyButton" Content="Ready" Visibility="Hidden" Margin="0,10,165,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Click="ReadyButton_Click"/>
         
