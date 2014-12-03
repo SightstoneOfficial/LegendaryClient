@@ -33,7 +33,6 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
-using log4net;
 using MahApps.Metro;
 using System.Threading.Tasks;
 using System.Linq;
@@ -55,6 +54,38 @@ namespace LegendaryClient.Logic
         internal static Dictionary<String, LoginDataPacket> accountslist = new Dictionary<String, LoginDataPacket>();
 
         internal static List<Group> Groups = new List<Group>();
+
+        /// <summary>
+        /// Gets the value of the league of Legends Settings
+        /// </summary>
+        /// <returns>All of the League Of Legends Settings</returns>
+        public static Dictionary<String, String> LeagueSettingsReader(this string FileLocation)
+        {
+            Dictionary<String, String> settings = new Dictionary<String, String>();
+            var file = File.ReadAllLines(FileLocation);
+            foreach (var x in file)
+            {
+                //Makes it so that it does not try to add a blank string
+                if (!String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x))
+                {
+                    //Makes it so that lines like [General] do not crash this
+                    if (!x.Contains("[") && !x.Contains("]"))
+                    {
+                        try
+                        {
+                            //Spit the one value into 2 values
+                            string[] value = x.Split('=');
+                            settings.Add(value[0], value[1]);
+                        }
+                        catch
+                        {
+                            
+                        }
+                    }
+                }
+            }
+            return settings;
+        }
 
         public Brush Change()
         {
@@ -111,7 +142,6 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static MediaElement AmbientSoundPlayer;
 
-        private static readonly ILog log = LogManager.GetLogger(typeof(Client));
 
         /// <summary>
         /// Timer used so replays won't start right away
