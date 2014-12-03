@@ -629,12 +629,7 @@ namespace LegendaryClient.Windows
                             PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Client.LoginPacket.AllSummonerData.Summoner.Name);
                             if (n.GameName != null)
                             {
-                                int port = n.PlayerCredentials.ServerPort;
-                                string IP;
-                                if (port == 0)
-                                    IP = n.PlayerCredentials.ObserverServerIp + ":8088";
-                                else
-                                    IP = n.PlayerCredentials.ObserverServerIp + ":" + port;
+                                string IP = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
                                 string Key = n.PlayerCredentials.ObserverEncryptionKey;
                                 int GameID = (Int32)n.PlayerCredentials.GameId;
                                 new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
