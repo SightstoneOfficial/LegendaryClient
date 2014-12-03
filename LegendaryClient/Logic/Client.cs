@@ -61,9 +61,7 @@ namespace LegendaryClient.Logic
             bool x = Properties.Settings.Default.DarkTheme;
             string y = Properties.Settings.Default.Theme;
             var bc = new BrushConverter();
-            if (y.Contains("Steel"))
-                return (Brush)bc.ConvertFrom("#FF141414");
-            else if (y.Contains("Blue"))
+            if (y.Contains("Blue"))
                 return (Brush)bc.ConvertFrom("#FF1585B5");
             else if (y.Contains("Red"))
                 return (Brush)bc.ConvertFrom("#FFA01414");
@@ -71,6 +69,8 @@ namespace LegendaryClient.Logic
                 return (Brush)bc.ConvertFrom("#FF2DA014");
             else if (y.Contains("Purple"))
                 return (Brush)bc.ConvertFrom("#FF5A14A0");
+            else 
+                return (Brush)bc.ConvertFrom("#FF141414"); //Steel
         }
 
         internal static Dictionary<String, PVPNetConnection> pvpnetlist = new Dictionary<String, PVPNetConnection>();
