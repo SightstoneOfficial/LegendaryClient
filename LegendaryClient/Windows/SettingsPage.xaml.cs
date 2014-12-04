@@ -228,7 +228,7 @@ A code signing license (So you know that you are using LegendaryClient)
             
             mainWindow.ChangeTheme();
             Client.statusPage.Change();
-            Client.chatPage.Change();
+            Client.FriendList.Change();
             Client.notificationPage.Change();
         }
 
