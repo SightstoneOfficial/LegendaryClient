@@ -30,6 +30,8 @@ using System.Timers;
 using LegendaryClient.Controls;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using System.Globalization;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using LegendaryClient.Logic.Replays;
 
 namespace LegendaryClient.Windows
 {
@@ -58,27 +60,36 @@ namespace LegendaryClient.Windows
         /// BOTTOM
         /// JUNGLE
         /// </summary>
-        internal string position;       
-        
+        internal string position;
+
         internal int skinId;
 
         internal bool connectedToChat = false;
 
-        internal int spell1;
-        internal int spell2;
+        internal List<int> availableSpells = new List<int>();
+        internal int spell1 = 0;
+        internal int spell2 = 0;
 
         private List<ChampionDTO> ChampList;
         private MasteryBookDTO MyMasteries;
-        private SpellBookDTO MyRunes;    
-        
+        private SpellBookDTO MyRunes;
+
 
         internal string teambuilderGroupId;
         internal int teambuilderSlotId;
         internal int teambuilderCandidateAutoQuitTimeout;
 
         private LobbyStatus CurrentLobby;
+        private System.Timers.Timer timer;
+        private long inQueueTimer;
+        private bool HasLaunchedGame = false;
 
         //TeamBuilder is just a little insane. This code is very messy too. :P
+        /* 
+         Note by horato: This code is not messy, its ugly as fuck. If you don't want to suffer from serious brain damage and moral panic
+         do not attempt to study it. But hey, it works (kind of). 
+         I also suck at GUI and xaml, if you want to fix my shit then be my guest ;)
+        */
         public TeamBuilderPage(bool iscreater, LobbyStatus myLobby)
         {
             InitializeComponent();
@@ -87,15 +98,23 @@ namespace LegendaryClient.Windows
                 Invite.IsEnabled = false;
             }
             CurrentLobby = myLobby;
-            //Start teambuilder
-            CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveFeatureToggles", "{}");
+
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
             MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
-            //StartTeambuilder();
             LoadStats();
-            
+
+            Client.InviteListView = InvitedPlayers;
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.LastPageContent = this.Content;
+            Client.CurrentPage = this;
+            Client.ReturnButton.Visibility = Visibility.Visible;
+            Client.ReturnButton.Content = "Return to team builder";
+            Client.GameStatus = "inTeamBuilder";
+            Client.SetChatHover();
             AddPlayer();
+
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveFeatureToggles", "{}");
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveInfoV1", "{\"queueId\":61}");
         }
 
         /// <summary>
@@ -120,13 +139,58 @@ namespace LegendaryClient.Windows
             newRoom.OnRoomMessage -= newRoom_OnRoomMessage;
             newRoom.OnParticipantJoin -= newRoom_OnParticipantJoin;
         }
-        
+
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
-            if(message.GetType() == typeof(LcdsServiceProxyResponse))
+            if (message.GetType() == typeof(LcdsServiceProxyResponse))
             {
                 LcdsServiceProxyResponse ProxyResponse = message as LcdsServiceProxyResponse;
                 HandleProxyResponse(ProxyResponse);
+            }
+            if (message.GetType() == typeof(GameDTO))
+            {
+                GameDTO ChampDTO = message as GameDTO;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
+                {
+                    if (ChampDTO.GameState == "START_REQUESTED")
+                    {
+                        // TODO: add fancy notification of game starting
+                        QuitButton.IsEnabled = false;
+                    }
+                }));
+            }
+            else if (message.GetType() == typeof(PlayerCredentialsDto))
+            {
+                #region Launching Game
+
+                PlayerCredentialsDto dto = message as PlayerCredentialsDto;
+                Client.CurrentGame = dto;
+
+                if (!HasLaunchedGame)
+                {
+                    HasLaunchedGame = true;
+                    if (Properties.Settings.Default.AutoRecordGames)
+                    {
+                        Dispatcher.InvokeAsync(async () =>
+                        {
+                            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Client.LoginPacket.AllSummonerData.Summoner.Name);
+                            if (n.GameName != null)
+                            {
+                                string IP = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
+                                string Key = n.PlayerCredentials.ObserverEncryptionKey;
+                                int GameID = (Int32)n.PlayerCredentials.GameId;
+                                new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
+                            }
+                        });
+                    }
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        Client.LaunchGame();
+                        InGame();
+                    }));
+                }
+
+                #endregion Launching Game
             }
         }
 
@@ -137,11 +201,12 @@ namespace LegendaryClient.Windows
         /// <param name="e"></param>
         private void StartQueue(object sender, RoutedEventArgs e)
         {
+            if (spell1 == 0 || spell2 == 0)
+                return;
             string roleUp = string.Format(role.ToUpper());
             string posUp = string.Format(position.ToUpper());
             string Json = string.Format("\"skinId\":{0},\"position\":\"{1}\",\"role\":\"{2}\",\"championId\":{3},\"spell2Id\":{4},\"queueId\":61,\"spell1Id\":{5}", skinId, posUp, roleUp, ChampionId, spell2, spell1);
-            string JsonWithBrackets = "{" + Json + "}";
-            CallWithArgs(Guid.NewGuid().ToString(), "cap", "createSoloQueryV4", JsonWithBrackets);
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "createSoloQueryV4", "{" + Json + "}");
         }
 
         private System.Timers.Timer CountdownTimer;
@@ -150,30 +215,340 @@ namespace LegendaryClient.Windows
 
         private void HandleProxyResponse(LcdsServiceProxyResponse Response)
         {
-            //Received an acceptance for a teambuilder group. Daymn I'm so smart to not include V2 or whatever it is [so this will work later on]
-            if(Response.MethodName == "acceptedByGroupV2")
+            System.Diagnostics.Debug.WriteLine(Response.MethodName);
+            if (Response.MethodName == "infoRetrievedV1")
             {
-                TimeLeft = 10;
-                ReceivedGroupId m = JsonConvert.DeserializeObject<ReceivedGroupId>(Response.Payload);
-                teambuilderCandidateAutoQuitTimeout = m.candidateAutoQuitTimeout;
-                teambuilderGroupId = m.groupId;
-                teambuilderSlotId = m.slotId;
-                MatchFoundGrid.Visibility = Visibility.Visible;
+                /*
+                  TODO: there is alot of info yet to be processed like available champs, skins,
+                  demand info (roles/positions) and something called cpr adjustment (no fucking idea)
+                  but it can wait.
+                */
+                InfoRetrieved response = JsonConvert.DeserializeObject<InfoRetrieved>(Response.Payload);
+                if (response.initialSpellIds.Length > 0)
+                {
+                    spell1 = response.initialSpellIds[0];
+                    if (response.initialSpellIds.Length > 1)
+                        spell2 = response.initialSpellIds[1];
 
-                TimeLeft = teambuilderCandidateAutoQuitTimeout;
-                
-                CountdownTimer = new System.Timers.Timer(1000);
-                CountdownTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
-                CountdownTimer.Enabled = true;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        RenderLegenadryClientPlayerSumSpellIcons();
+                    }));
+                }
+                if (response.spellIds.Length > 0)
+                    availableSpells = response.spellIds.ToList<int>();
             }
+            else if (Response.MethodName == "estimatedWaitTimeRetrievedV1")
+            {
+                //TODO: make use of response.estimatedWaitTime if there is any
+                //ReceivedWaitTime response = JsonConvert.DeserializeObject<ReceivedWaitTime>(Response.Payload);
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    QueueButton.IsEnabled = true;
+                }));
+            }
+            else if (Response.MethodName == "soloQueryCreatedV1")
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    QueueButton.IsEnabled = false;
+                    QueueButton.Content = "Searching for team";
+                    TeamPlayer.Role.IsEnabled = false;
+                    TeamPlayer.Position.IsEnabled = false;
+                    TeamPlayer.SummonerSpell1.IsEnabled = false;
+                    TeamPlayer.SummonerSpell2.IsEnabled = false;
+                    TeamPlayer.MasteryPage.IsEnabled = false;
+                    TeamPlayer.RunePage.IsEnabled = false;
+                    TeamPlayer.SelectChampion.IsEnabled = false;
+                }));
+                inQueueTimer = 0;
+
+                timer = new System.Timers.Timer(1000);
+                timer.Elapsed += new ElapsedEventHandler((object sender, ElapsedEventArgs e) =>
+                {
+                    inQueueTimer++;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
+                        QueueButton.Content = String.Format("Searching for team {0}:{1}", ts.Minutes, ts.Seconds < 10 ? "0" + ts.Seconds : "" + ts.Seconds);
+                    }));
+                });
+                timer.AutoReset = true;
+                timer.Start();
+
+            }
+            else if (Response.MethodName == "acceptedByGroupV2")
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    timer.Stop();
+                    TimeLeft = 10;
+                    ReceivedGroupId m = JsonConvert.DeserializeObject<ReceivedGroupId>(Response.Payload);
+                    teambuilderCandidateAutoQuitTimeout = m.candidateAutoQuitTimeout;
+                    teambuilderGroupId = m.groupId;
+                    teambuilderSlotId = m.slotId;
+                    MatchFoundGrid.Visibility = Visibility.Visible;
+
+                    TimeLeft = teambuilderCandidateAutoQuitTimeout;
+
+                    CountdownTimer = new System.Timers.Timer(1000);
+                    CountdownTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
+                    CountdownTimer.AutoReset = true;
+                    CountdownTimer.Start();
+                    Client.FocusClient();
+                }));
+            }
+            else if (Response.MethodName == "groupUpdatedV3")
+            {
+                // pre-match queue team lobby, welcome to the hell of LCDS calls ^^
+                // This SHOULD be called only once per matchmade group, but in case its not...
+                System.Diagnostics.Debug.WriteLine("groupUpdatedV3 was called");
+
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "pickSkinV2", "{\"skinId\":" + skinId + ",\"isNewlyPurchasedSkin\":false}");
+                GroupUpdate response = JsonConvert.DeserializeObject<GroupUpdate>(Response.Payload);
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    updateGroup(response);
+                }));
+            }
+            else if (Response.MethodName == "slotPopulatedV1")
+            {
+                // New player joined lobby, this is fired AFTER both sides accept the invitation
+                // => TODO: show players trying to join lobby (candidateFoundV2)
+
+                // PlayerSlot will do, but this call does NOT use advertisedRole and status properties!
+                PlayerSlot response = JsonConvert.DeserializeObject<PlayerSlot>(Response.Payload);
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    populateSlot(response);
+                }));
+            }
+            else if (Response.MethodName == "soloSearchedForAnotherGroupV2")
+            {
+                // Someone left matchmade lobby
+                SoloSearchedForAnotherGroupResponse response = JsonConvert.DeserializeObject<SoloSearchedForAnotherGroupResponse>(Response.Payload);
+                if (response.slotId == teambuilderSlotId)
+                {
+                    //we left the team
+                    // TODO: get back to queue
+                    System.Diagnostics.Debug.WriteLine("we left/got kicked from team.");
+                }
+                else
+                {
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        PlayerListView.Items.RemoveAt(response.slotId);
+                    }));
+                }
+                // for now, need2know what reasons are there
+                if (response.reason != "SOLO_INITIATED" && response.reason != "GROUP_DISBANDED")
+                    System.Diagnostics.Debug.WriteLine("soloSearchedForAnotherGroupV2 - reason was not SOLO_INITIATED! : " + response.reason);
+            }
+            else if (Response.MethodName == "readinessIndicatedV1")
+            {
+                ReadinesIndicator response = JsonConvert.DeserializeObject<ReadinesIndicator>(Response.Payload);
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    //this should always be TeamBuilderChoose no?
+                    TeamBuilderChoose tbc = PlayerListView.Items.GetItemAt(response.slotId) as TeamBuilderChoose;
+                    if (response.ready)
+                        tbc.PlayerReadyStatus.Visibility = Visibility.Visible;
+                    else
+                        tbc.PlayerReadyStatus.Visibility = Visibility.Hidden;
+                }));
+            }
+            else if (Response.MethodName == "matchmakingPhaseStartedV1")
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    ReadyButton.IsEnabled = false;
+                    ReadyButton.Content = "Searching for match";
+                }));
+                inQueueTimer = 0;
+
+                timer = new System.Timers.Timer(1000);
+                timer.Elapsed += new ElapsedEventHandler((object sender, ElapsedEventArgs e) =>
+                {
+                    inQueueTimer++;
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
+                        ReadyButton.Content = String.Format("Searching for match {0}:{1}", ts.Minutes, ts.Seconds < 10 ? "0" + ts.Seconds : "" + ts.Seconds);
+                    }));
+                });
+                timer.AutoReset = true;
+                timer.Start();
+            }
+            else if (Response.MethodName == "matchMadeV1")
+            {
+                timer.Stop();
+            }
+            else if (Response.MethodName == "removedFromServiceV1")
+            {
+                // TODO: how about we don't quit teambuilder page each time this thing is called?
+                // QuitReason response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);
+                // if (response.reason == "CANDIDATE_DECLINED_GROUP") else if (response.reason == "QUIT")
+                System.Diagnostics.Debug.WriteLine("removed from service; no longer listening to calls");
+
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    if (Client.LastPageContent == this.Content) Client.LastPageContent = null;
+                    if (Client.CurrentPage == this) { Client.CurrentPage = null; Client.ReturnButton.Visibility = Visibility.Hidden; }
+                }));
+
+                Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                Client.GameStatus = "outOfGame";
+                Client.SetChatHover();
+                Client.PVPNet.Leave();
+
+                //temp, what other reasons are there?
+                QuitReason response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);
+                if (response.reason != "CANDIDATE_DECLINED_GROUP" && response.reason != "QUIT")
+                    System.Diagnostics.Debug.WriteLine("removedFromServiceV1 - new reason! : " + response.reason);
+            }
+            else if (Response.MethodName.StartsWith("callFailed"))
+            {
+                System.Diagnostics.Debug.WriteLine("TeamBuilder error: " + Response.Status);
+                System.Diagnostics.Debug.WriteLine("TeamBuilder payload: " + Response.Payload);
+            }
+        }
+
+        private void populateSlot(PlayerSlot slot)
+        {
+            if (slot.championId == 0)
+                return;
+            //TODO: move PlayerName label to some not so retarded place
+            TeamBuilderChoose tbc = new TeamBuilderChoose();
+            //tbc.Height = 120;
+            tbc.PlayerName.Content = slot.summonerName;
+            tbc.PlayerName.Visibility = Visibility.Visible;
+            string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
+            tbc.Champion.Source = Client.GetImage(uriSource);
+            tbc.Role.Items.Add(new Item(slot.role));
+            tbc.Role.SelectedIndex = 0;
+            tbc.Role.IsEnabled = false;
+            tbc.Position.Items.Add(new Item(slot.position));
+            tbc.Position.SelectedIndex = 0;
+            tbc.Position.IsEnabled = false;
+            tbc.Position.Visibility = Visibility.Visible;
+            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell1Id));
+            tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
+            tbc.SummonerSpell1.Visibility = Visibility.Visible;
+            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell2Id));
+            tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
+            tbc.SummonerSpell2.Visibility = Visibility.Visible;
+            if (slot.slotId == teambuilderSlotId)
+            {
+                tbc.MasteryPage.Visibility = Visibility.Visible;
+                tbc.MasteryPage.SelectionChanged += MasteryPage_SelectionChanged;
+                tbc.RunePage.Visibility = Visibility.Visible;
+                tbc.RunePage.SelectionChanged += RunePage_SelectionChanged;
+                tbc.EditMasteries.Click += EditMasteriesButton_Click;
+                tbc.EditRunes.Click += EditRunesButton_Click;
+                tbc.SummonerSpell1.Click += SummonerSpell_Click;
+                tbc.SummonerSpell2.Click += SummonerSpell_Click;
+
+                int i = 0;
+                foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
+                {
+                    string MasteryPageName = MasteryPage.Name;
+                    //Stop garbage mastery names
+                    if (MasteryPageName.StartsWith("@@"))
+                    {
+                        MasteryPageName = "Mastery Page " + ++i;
+                    }
+                    tbc.MasteryPage.Items.Add(MasteryPageName);
+                    if (MasteryPage.Current)
+                        tbc.MasteryPage.SelectedValue = MasteryPageName;
+                }
+                i = 0;
+                foreach (SpellBookPageDTO RunePage in MyRunes.BookPages)
+                {
+                    string RunePageName = RunePage.Name;
+                    //Stop garbage rune names
+                    if (RunePageName.StartsWith("@@"))
+                    {
+                        RunePageName = "Rune Page " + ++i;
+                    }
+                    tbc.RunePage.Items.Add(RunePageName);
+                    if (RunePage.Current)
+                        tbc.RunePage.SelectedValue = RunePageName;
+                }
+                TeamPlayer = tbc;
+            }
+            PlayerListView.Items.Insert(slot.slotId, tbc);
+            //just for now, need2know what other statuses are there
+            if (!String.IsNullOrEmpty(slot.status) && !String.IsNullOrWhiteSpace(slot.status) && slot.status != "POPULATED" && slot.status != "CANDIDATE_FOUND")
+                System.Diagnostics.Debug.WriteLine("groupUpdatedV3 - new status found! : " + slot.status);
+        }
+
+        private void ReadyButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button readyButton = sender as Button;
+            if (readyButton.Content == "Ready")
+            {
+                TeamPlayer.EditMasteries.IsEnabled = false;
+                TeamPlayer.EditRunes.IsEnabled = false;
+                TeamPlayer.SummonerSpell1.IsEnabled = false;
+                TeamPlayer.SummonerSpell2.IsEnabled = false;
+                TeamPlayer.MasteryPage.IsEnabled = false;
+                TeamPlayer.RunePage.IsEnabled = false;
+                TeamPlayer.PlayerReadyStatus.Visibility = Visibility.Visible;
+                readyButton.Content = "Not Ready";
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateReadinessV1", "{\"ready\":true}");
+            }
+            else
+            {
+                TeamPlayer.EditMasteries.IsEnabled = true;
+                TeamPlayer.EditRunes.IsEnabled = true;
+                TeamPlayer.SummonerSpell1.IsEnabled = true;
+                TeamPlayer.SummonerSpell2.IsEnabled = true;
+                TeamPlayer.MasteryPage.IsEnabled = true;
+                TeamPlayer.RunePage.IsEnabled = true;
+                TeamPlayer.PlayerReadyStatus.Visibility = Visibility.Hidden;
+                readyButton.Content = "Ready";
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateReadinessV1", "{\"ready\":false}");
+            }
+        }
+
+        private void updateGroup(GroupUpdate response)
+        {
+            PlayerListView.Items.Clear();
+            //lets just pretend this never happend mkay?
+            Invite.Visibility = Visibility.Hidden;
+            InvitedPlayers.Visibility = Visibility.Hidden;
+            QueueButton.Visibility = Visibility.Hidden;
+            ReadyButton.Visibility = Visibility.Visible;
+            teambuilderSlotId = response.slotId;
+            teambuilderGroupId = response.groupId;
+            //TODO: find how matched team lobby chatroom name is generated
+            //if(connectedToChat)
+            //  LeaveChat();
+            //ConnectToChat();
+
+            foreach (PlayerSlot slot in response.slots)
+                populateSlot(slot);
         }
 
         private void QueueElapsed(object sender, ElapsedEventArgs e)
         {
             if (TimeLeft > 0)
             {
-
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    Timer10.Text = "" + TimeLeft;
+                    TimeLeft--;
+                }));
+                return;
             }
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                CountdownTimer.Stop();
+                MatchFoundGrid.Visibility = Visibility.Hidden;
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
+                Client.ClearPage(typeof(TeamBuilderPage));
+                Client.SwitchPage(new MainPage());
+            }));
         }
 
         //This is something you don't know exists
@@ -189,23 +564,23 @@ namespace LegendaryClient.Windows
             TeamPlayer.SummonerSpell2Image.Source = Client.GetImage(uriSource);
         }
 
-        
+
         TeamBuilderChoose TeamPlayer = new TeamBuilderChoose();
         private void AddPlayer(bool inNotInTeam = true)
         {
             ///WHY ARE THERE SO MANY ROLES NOW
 
-            TeamPlayer.Position.Items.Add(new Item("Mage"));
-            TeamPlayer.Position.Items.Add(new Item("Support"));
-            TeamPlayer.Position.Items.Add(new Item("Assassin"));
-            TeamPlayer.Position.Items.Add(new Item("Marksman"));
-            TeamPlayer.Position.Items.Add(new Item("Fighter"));
-            TeamPlayer.Position.Items.Add(new Item("Tank"));
+            TeamPlayer.Role.Items.Add(new Item("Mage"));
+            TeamPlayer.Role.Items.Add(new Item("Support"));
+            TeamPlayer.Role.Items.Add(new Item("Assassin"));
+            TeamPlayer.Role.Items.Add(new Item("Marksman"));
+            TeamPlayer.Role.Items.Add(new Item("Fighter"));
+            TeamPlayer.Role.Items.Add(new Item("Tank"));
 
-            TeamPlayer.Role.Items.Add(new Item("Top"));
-            TeamPlayer.Role.Items.Add(new Item("Middle"));
-            TeamPlayer.Role.Items.Add(new Item("Bottom"));
-            TeamPlayer.Role.Items.Add(new Item("Jungle"));
+            TeamPlayer.Position.Items.Add(new Item("Top"));
+            TeamPlayer.Position.Items.Add(new Item("Middle"));
+            TeamPlayer.Position.Items.Add(new Item("Bottom"));
+            TeamPlayer.Position.Items.Add(new Item("Jungle"));
 
 
             //So many calls. We have to use this instead of putting the control right in because we need to put the player into the correct possition
@@ -215,15 +590,13 @@ namespace LegendaryClient.Windows
             TeamPlayer.SummonerSpell1.Click += SummonerSpell_Click;
             TeamPlayer.SummonerSpell2.Click += SummonerSpell_Click;
 
-            TeamPlayer.Position.SelectionChanged += TeamPlayer_SelectionChanged;
             TeamPlayer.Role.SelectionChanged += TeamRole_SelectionChanged;
+            TeamPlayer.Position.SelectionChanged += TeamPosition_SelectionChanged;
             TeamPlayer.RunePage.SelectionChanged += RunePage_SelectionChanged;
             TeamPlayer.MasteryPage.SelectionChanged += MasteryPage_SelectionChanged;
 
             TeamPlayer.SelectChampion.MouseDown += Champion_MouseDown;
 
-
-            
 
             int i = 0;
             foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
@@ -253,22 +626,19 @@ namespace LegendaryClient.Windows
             }
 
             PlayerListView.Items.Add(TeamPlayer);
-
-            if(ChampionId != 0)
-            {
-                StartTeambuilder();
-            }
         }
 
 
         private void Champion_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            ChampionsTab.IsSelected = true;
             ChampAndSkinGrid.Visibility = Visibility.Visible;
         }
 
         private void LockIn_Click(object sender, RoutedEventArgs e)
         {
-            StartTeambuilder();
+            string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(ChampionId).iconPath);
+            TeamPlayer.Champion.Source = Client.GetImage(uriSource);
             ChampAndSkinGrid.Visibility = Visibility.Hidden;
         }
 
@@ -276,7 +646,7 @@ namespace LegendaryClient.Windows
         {
             skinId = skin;
         }
-        private async void SkinSelectListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void SkinSelectListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             if (item != null)
@@ -288,7 +658,7 @@ namespace LegendaryClient.Windows
                         string[] splitItem = ((string)item.Tag).Split(':');
                         int championId = Convert.ToInt32(splitItem[1]);
                         champions Champion = champions.GetChampion(championId);
-                        await Client.PVPNet.SelectChampionSkin(championId, 0);
+                        SelectSkin(0);
                         TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                         tr.Text = "Selected Default " + Champion.name + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
@@ -296,8 +666,7 @@ namespace LegendaryClient.Windows
                     else
                     {
                         championSkins skin = championSkins.GetSkin((int)item.Tag);
-                        //await Client.PVPNet.SelectChampionSkin(skin.championId, skin.id);
-                        skinId = skin.id;
+                        SelectSkin(skin.id);
                         TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                         tr.Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
@@ -314,16 +683,32 @@ namespace LegendaryClient.Windows
 
         private void AcceptGame_Click(object sender, RoutedEventArgs e)
         {
+            CountdownTimer.Stop();
             //Super Op Code
-            string LastArg = string.Format("{\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"}", true, teambuilderSlotId, teambuilderGroupId);
-            CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", LastArg);
+            string LastArg = string.Format("\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"", true, teambuilderSlotId, teambuilderGroupId);
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", "{" + LastArg + "}");
             MatchFoundGrid.Visibility = Visibility.Hidden;
         }
-        
-        private void TeamPlayer_SelectionChanged(object sender, EventArgs e)
-        {            
+
+        private void DeclineGame_Click(object sender, RoutedEventArgs e)
+        {
+            CountdownTimer.Stop();
+            //Super Op Code
+            string LastArg = string.Format("\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"", false, teambuilderSlotId, teambuilderGroupId);
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", "{" + LastArg + "}");
+            Client.ClearPage(typeof(TeamBuilderPage));
+            Client.SwitchPage(new MainPage());
+        }
+
+        private void TeamPosition_SelectionChanged(object sender, EventArgs e)
+        {
             Item itm = (Item)TeamPlayer.Position.SelectedItem;
             position = itm.ComboRole;
+            TeamPlayer.RunePage.Visibility = Visibility.Visible;
+            TeamPlayer.MasteryPage.Visibility = Visibility.Visible;
+            TeamPlayer.SummonerSpell1.Visibility = Visibility.Visible;
+            TeamPlayer.SummonerSpell2.Visibility = Visibility.Visible;
+
             SelectedAllChamps();
         }
 
@@ -412,68 +797,18 @@ namespace LegendaryClient.Windows
         {
             Item itm = (Item)TeamPlayer.Role.SelectedItem;
             role = itm.ComboRole;
-            SelectedAllChamps();
+            TeamPlayer.Position.Visibility = Visibility.Visible;
         }
 
         private void SelectedAllChamps()
         {
-            /*
             //We only want this to be called when selected champs and role and position have a set value
-            if(role != null && position != null && ChampionId != 0)
+            if (role != null && position != null && ChampionId != 0)
             {
-                //Lazyist way to do this, but is probably is the shortest
                 string roleUp = string.Format(role.ToUpper());
                 string posUp = string.Format(position.ToUpper());
-                string Json = string.Format("{\"role\":\"{0}\",\"position\":\"{1}\",\"queueId\":61,\"championId\":{2}", roleUp, posUp, ChampionId);
-                CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveEstimatedWaitTimeV2", Json);
-            }//*/
-        }
-
-        private void StartTeambuilder()
-        {            
-            ListViewItem item = new ListViewItem();
-            Image skinImage = new Image();
-            ChampList = new List<ChampionDTO>(Client.PlayerChampions);
-            champions Champion = champions.GetChampion(ChampionId);
-
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
-
-            //Retrieve masteries and runes
-            MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
-            MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
-
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                //Allow all champions to be selected (reset our modifications)
-                ListViewItem[] ChampionArray = new ListViewItem[ChampionSelectListView.Items.Count];
-                ChampionSelectListView.Items.CopyTo(ChampionArray, 0);
-                foreach (ListViewItem y in ChampionArray)
-                {
-                    y.IsHitTestVisible = true;
-                    y.Opacity = 1;
-                }
-            }));
-
-            foreach (ChampionDTO champ in ChampList)
-            {
-                if (champ.ChampionId == ChampionId)
-                {
-                    foreach (ChampionSkinDTO skin in champ.ChampionSkins)
-                    {
-                        if (skin.Owned)
-                        {
-                            item = new ListViewItem();
-                            skinImage = new Image();
-                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath);
-                            skinImage.Source = Client.GetImage(uriSource);
-                            skinImage.Width = 191;
-                            skinImage.Stretch = Stretch.UniformToFill;
-                            item.Tag = skin.SkinId;
-                            item.Content = skinImage;
-                            SkinSelectListView.Items.Add(item);
-                        }
-                    }
-                }
+                string Json = string.Format("\"championId\":{0},\"position\":\"{1}\",\"role\":\"{2}\",\"queueId\":61", ChampionId, posUp, roleUp);
+                CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveEstimatedWaitTimeV2", "{" + Json + "}");
             }
         }
 
@@ -507,27 +842,68 @@ namespace LegendaryClient.Windows
         private void SelectChamp(int Championid)
         {
             ChampionId = Championid;
-        }        
+
+            SkinSelectListView.Items.Clear();
+            ListViewItem item = new ListViewItem();
+            Image skinImage = new Image();
+            ChampList = new List<ChampionDTO>(Client.PlayerChampions);
+            champions Champion = champions.GetChampion(ChampionId);
+
+            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
+
+            skinImage.Source = Client.GetImage(uriSource);
+            skinImage.Width = 191;
+            skinImage.Stretch = Stretch.UniformToFill;
+            item.Tag = "0:" + Champion.id;
+            item.Content = skinImage;
+            SkinSelectListView.Items.Add(item);
+
+            foreach (ChampionDTO champ in ChampList)
+            {
+                if (champ.ChampionId == ChampionId)
+                {
+                    foreach (ChampionSkinDTO skin in champ.ChampionSkins)
+                    {
+                        if (skin.Owned)
+                        {
+                            item = new ListViewItem();
+                            skinImage = new Image();
+                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath);
+                            skinImage.Source = Client.GetImage(uriSource);
+                            skinImage.Width = 191;
+                            skinImage.Stretch = Stretch.UniformToFill;
+                            item.Tag = skin.SkinId;
+                            item.Content = skinImage;
+                            SkinSelectListView.Items.Add(item);
+                        }
+                    }
+                }
+            }
+            if (!LockInButton.IsEnabled)
+                LockInButton.IsEnabled = true;
+        }
 
         private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
             SelectChamp((int)item.Tag);
 
-            //TODO: Fix stupid animation glitch on left hand side
             DoubleAnimation fadingAnimation = new DoubleAnimation();
-            fadingAnimation.From = 0.4;
+            fadingAnimation.From = 1;
             fadingAnimation.To = 0;
             fadingAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.2));
             fadingAnimation.Completed += (eSender, eArgs) =>
             {
                 string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion((int)item.Tag).splashPath);
-                //BackgroundSplash.Source = Client.GetImage(uriSource);
+                ChampAndSkinBackgroundImage.Source = Client.GetImage(uriSource);
                 fadingAnimation = new DoubleAnimation();
                 fadingAnimation.From = 0;
-                fadingAnimation.To = 0.4;
+                fadingAnimation.To = 1;
                 fadingAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.5));
+
+                ChampAndSkinBackgroundImage.BeginAnimation(Image.OpacityProperty, fadingAnimation);
             };
+            ChampAndSkinBackgroundImage.BeginAnimation(Image.OpacityProperty, fadingAnimation);
         }
 
         public async void CallWithArgs(String UUID, String GameMode, String ProcedureCall, String Parameters)
@@ -565,7 +941,7 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        
+
         /// <summary>
         /// Chat
         /// </summary>
@@ -573,7 +949,7 @@ namespace LegendaryClient.Windows
         /// <param name="e"></param>
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
-            if(connectedToChat == true)
+            if (connectedToChat == true)
             {
                 TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
@@ -596,11 +972,11 @@ namespace LegendaryClient.Windows
 
         public void SelectSummonerSpells(string GameMode = "CLASSIC")
         {
-            InitializeComponent();
             var values = Enum.GetValues(typeof(NameToImage));
+            SummonerSpellListView.Items.Clear();
             foreach (NameToImage Spell in values)
             {
-                if (!SummonerSpell.CanUseSpell((int)Spell, Client.LoginPacket.AllSummonerData.SummonerLevel.Level, GameMode))
+                if (!availableSpells.Contains((int)Spell))
                     continue;
                 Image champImage = new Image();
                 champImage.Height = 64;
@@ -635,17 +1011,31 @@ namespace LegendaryClient.Windows
                 {
                     SummonerSpell2.Source = new BitmapImage(uriSource);
                     SelectSpells(SelectedSpell1, spellId);
+                    SelectedSpell1 = 0;
                     SpellsGrid.Visibility = Visibility.Hidden;
                 }
                 RenderLegenadryClientPlayerSumSpellIcons();
             }
         }
-        
+
         private void SelectSpells(int Spell1, int Spell2)
         {
             spell1 = Spell1;
             spell2 = Spell2;
         }
+
+        private async void InGame()
+        {
+            await Client.PVPNet.Leave();
+            Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+            Client.ClearPage(typeof(TeamBuilderPage));
+            Client.GameStatus = "inGame";
+            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.SetChatHover();
+
+            Client.SwitchPage(new InGame());
+        }
+
         private class Item
         {
             public string ComboRole { get; set; }
@@ -653,10 +1043,70 @@ namespace LegendaryClient.Windows
             {
                 this.ComboRole = Strings;
             }
-            public override string ToString() 
+            public override string ToString()
             {
                 return ComboRole;
             }
+        }
+
+        #region response classes
+        private class ReadinesIndicator
+        {
+            public int slotId { get; set; }
+            public bool ready { get; set; }
+        }
+
+        private class SoloSearchedForAnotherGroupResponse
+        {
+            public int slotId { get; set; }
+            public string reason { get; set; }
+            public int penaltyInSeconds { get; set; }
+        }
+
+        private class GroupUpdate
+        {
+            public string groupId { get; set; }
+            public PlayerSlot[] slots { get; set; }
+            public int slotId { get; set; }
+            public int groupTtlSecs { get; set; }
+        }
+
+        private class PlayerSlot
+        {
+            public int slotId { get; set; }
+            public string summonerName { get; set; }
+            public int summonerIconId { get; set; }
+            public int championId { get; set; }
+            public string role { get; set; }
+            public string advertisedRole { get; set; }
+            public string position { get; set; }
+            public int spell1Id { get; set; }
+            public int spell2Id { get; set; }
+            /// <summary>
+            /// POPULATED, CANDIDATE_FOUND, more TBA
+            /// </summary>
+            public string status { get; set; }
+        }
+
+        private class InfoRetrieved
+        {
+            public int[] championIds { get; set; }
+            public int[] skinIds { get; set; }
+            public int[] spellIds { get; set; }
+            public int[] initialSpellIds { get; set; }
+            public bool cprAdjustmentEnabled { get; set; }
+            public int[] adjustedChampionIds { get; set; }
+            public string[] adjustedRoles { get; set; }
+            public string[] adjustedPositions { get; set; }
+            public DemandInfo demandInfo { get; set; }
+        }
+        private class DemandInfo
+        {
+            public bool areCaptainsStarved { get; set; }
+            /// <summary>
+            /// "role": "SUPPORT", "position": "BOTTOM", "boost": 0
+            /// </summary>
+            public Dictionary<String, Object>[] solosInDemand { get; set; }
         }
         private class ReceivedGroupId
         {
@@ -664,9 +1114,23 @@ namespace LegendaryClient.Windows
             public int slotId { get; set; }
             public int candidateAutoQuitTimeout { get; set; }
         }
+        private class ReceivedWaitTime
+        {
+            public int championId { get; set; }
+            public string role { get; set; }
+            public string position { get; set; }
+            public int estimatedWaitTime { get; set; }
+        }
+
+        private class QuitReason
+        {
+            public string reason { get; set; }
+        }
+        #endregion
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
             Client.ClearPage(typeof(TeamBuilderPage));
             Client.SwitchPage(new MainPage());
         }

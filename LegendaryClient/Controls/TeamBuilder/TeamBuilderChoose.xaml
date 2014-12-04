@@ -11,19 +11,21 @@
             <Image x:Name="Champion" HorizontalAlignment="Left" VerticalAlignment="Top" Height="85" Width="85"/>
         </Grid>
 
-        <ComboBox x:Name="Position" HorizontalAlignment="Left" VerticalAlignment="Top" Width="475" Margin="115,10,0,0"/>
-        <ComboBox x:Name="Role" HorizontalAlignment="Left" VerticalAlignment="Top" Width="475" Margin="115,37,0,0"/>
-        <ComboBox x:Name="RunePage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,88,0,0"/>
-        <ComboBox x:Name="MasteryPage" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,115,0,0"/>
-        <Button x:Name="EditRunes" Content="Edit Runes" Margin="471,88,10,40"/>
-        <Button x:Name="EditMasteries" Content="Edit Masteries" Margin="471,115,10,13"/>
+        <ComboBox x:Name="Role" HorizontalAlignment="Left" VerticalAlignment="Top" Width="475" Margin="115,10,0,0"/>
+        <ComboBox x:Name="Position" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="475" Margin="115,37,0,0"/>
+        <ComboBox x:Name="RunePage" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,88,0,0"/>
+        <ComboBox x:Name="MasteryPage" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Width="351" Margin="115,115,0,0"/>
+        <Button x:Name="EditRunes" Visibility="Hidden" Content="Edit Runes" Margin="471,88,10,40"/>
+        <Button x:Name="EditMasteries" Visibility="Hidden" Content="Edit Masteries" Margin="471,115,10,13"/>
+        <Label x:Name="PlayerName" Visibility="Hidden" Content="MyEpicNickname" Margin="115,59,0,62" Foreground="White" FontWeight="ExtraLight" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="129" />
+        <Label x:Name="PlayerReadyStatus" Visibility="Hidden" Content="Ready" Margin="501,59,0,62" Foreground="White" FontWeight="ExtraLight" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" Width="89" />
 
-        <Button x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="10,100,0,0">
+        <Button x:Name="SummonerSpell1" Visibility="Hidden" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="10,100,0,0">
             <StackPanel>
                 <Image x:Name="SummonerSpell1Image" Height="32" Width="32" />
             </StackPanel>
         </Button>
-        <Button x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="55,100,0,0">
+        <Button x:Name="SummonerSpell2" Visibility="Hidden" HorizontalAlignment="Left" Height="40" VerticalAlignment="Top" Width="40" Margin="55,100,0,0">
             <StackPanel>
                 <Image x:Name="SummonerSpell2Image" Height="32" Width="32" />
             </StackPanel>
