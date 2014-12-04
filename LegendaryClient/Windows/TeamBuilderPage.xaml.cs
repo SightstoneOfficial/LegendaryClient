@@ -105,6 +105,10 @@ namespace LegendaryClient.Windows
 
             Client.InviteListView = InvitedPlayers;
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.LastPageContent = this.Content;
+            Client.CurrentPage = this;
+            Client.ReturnButton.Visibility = Visibility.Visible;
+            Client.ReturnButton.Content = "Return to team builder";
             Client.GameStatus = "inTeamBuilder";
             Client.SetChatHover();
             AddPlayer();
@@ -211,6 +215,7 @@ namespace LegendaryClient.Windows
 
         private void HandleProxyResponse(LcdsServiceProxyResponse Response)
         {
+            System.Diagnostics.Debug.WriteLine(Response.MethodName);
             if (Response.MethodName == "infoRetrievedV1")
             {
                 /*
@@ -248,6 +253,13 @@ namespace LegendaryClient.Windows
                 {
                     QueueButton.IsEnabled = false;
                     QueueButton.Content = "Searching for team";
+                    TeamPlayer.Role.IsEnabled = false;
+                    TeamPlayer.Position.IsEnabled = false;
+                    TeamPlayer.SummonerSpell1.IsEnabled = false;
+                    TeamPlayer.SummonerSpell2.IsEnabled = false;
+                    TeamPlayer.MasteryPage.IsEnabled = false;
+                    TeamPlayer.RunePage.IsEnabled = false;
+                    TeamPlayer.SelectChampion.IsEnabled = false;
                 }));
                 inQueueTimer = 0;
 
@@ -283,6 +295,7 @@ namespace LegendaryClient.Windows
                     CountdownTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
                     CountdownTimer.AutoReset = true;
                     CountdownTimer.Start();
+                    Client.FocusClient();
                 }));
             }
             else if (Response.MethodName == "groupUpdatedV3")
@@ -328,7 +341,7 @@ namespace LegendaryClient.Windows
                     }));
                 }
                 // for now, need2know what reasons are there
-                if (response.reason != "SOLO_INITIATED")
+                if (response.reason != "SOLO_INITIATED" && response.reason != "GROUP_DISBANDED")
                     System.Diagnostics.Debug.WriteLine("soloSearchedForAnotherGroupV2 - reason was not SOLO_INITIATED! : " + response.reason);
             }
             else if (Response.MethodName == "readinessIndicatedV1")
@@ -360,7 +373,7 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
-                        ReadyButton.Content = String.Format("Searching for match {0}:{1}", ts.Minutes, ts.Seconds < 10 ? "0" + ts.Seconds : ""+ts.Seconds);
+                        ReadyButton.Content = String.Format("Searching for match {0}:{1}", ts.Minutes, ts.Seconds < 10 ? "0" + ts.Seconds : "" + ts.Seconds);
                     }));
                 });
                 timer.AutoReset = true;
@@ -376,6 +389,13 @@ namespace LegendaryClient.Windows
                 // QuitReason response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);
                 // if (response.reason == "CANDIDATE_DECLINED_GROUP") else if (response.reason == "QUIT")
                 System.Diagnostics.Debug.WriteLine("removed from service; no longer listening to calls");
+
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    if (Client.LastPageContent == this.Content) Client.LastPageContent = null;
+                    if (Client.CurrentPage == this) { Client.CurrentPage = null; Client.ReturnButton.Visibility = Visibility.Hidden; }
+                }));
+
                 Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
@@ -395,34 +415,65 @@ namespace LegendaryClient.Windows
 
         private void populateSlot(PlayerSlot slot)
         {
+            if (slot.championId == 0)
+                return;
             //TODO: move PlayerName label to some not so retarded place
             TeamBuilderChoose tbc = new TeamBuilderChoose();
+            //tbc.Height = 120;
             tbc.PlayerName.Content = slot.summonerName;
             tbc.PlayerName.Visibility = Visibility.Visible;
             string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
             tbc.Champion.Source = Client.GetImage(uriSource);
             tbc.Role.Items.Add(new Item(slot.role));
             tbc.Role.SelectedIndex = 0;
-            tbc.Role.IsEditable = false;
+            tbc.Role.IsEnabled = false;
             tbc.Position.Items.Add(new Item(slot.position));
             tbc.Position.SelectedIndex = 0;
-            tbc.Position.IsEditable = false;
+            tbc.Position.IsEnabled = false;
             tbc.Position.Visibility = Visibility.Visible;
             uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell1Id));
             tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
-            tbc.SummonerSpell1Image.Visibility = Visibility.Visible;
+            tbc.SummonerSpell1.Visibility = Visibility.Visible;
             uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell2Id));
             tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
-            tbc.SummonerSpell2Image.Visibility = Visibility.Visible;
-
+            tbc.SummonerSpell2.Visibility = Visibility.Visible;
             if (slot.slotId == teambuilderSlotId)
             {
                 tbc.MasteryPage.Visibility = Visibility.Visible;
+                tbc.MasteryPage.SelectionChanged += MasteryPage_SelectionChanged;
                 tbc.RunePage.Visibility = Visibility.Visible;
+                tbc.RunePage.SelectionChanged += RunePage_SelectionChanged;
                 tbc.EditMasteries.Click += EditMasteriesButton_Click;
                 tbc.EditRunes.Click += EditRunesButton_Click;
                 tbc.SummonerSpell1.Click += SummonerSpell_Click;
                 tbc.SummonerSpell2.Click += SummonerSpell_Click;
+
+                int i = 0;
+                foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
+                {
+                    string MasteryPageName = MasteryPage.Name;
+                    //Stop garbage mastery names
+                    if (MasteryPageName.StartsWith("@@"))
+                    {
+                        MasteryPageName = "Mastery Page " + ++i;
+                    }
+                    tbc.MasteryPage.Items.Add(MasteryPageName);
+                    if (MasteryPage.Current)
+                        tbc.MasteryPage.SelectedValue = MasteryPageName;
+                }
+                i = 0;
+                foreach (SpellBookPageDTO RunePage in MyRunes.BookPages)
+                {
+                    string RunePageName = RunePage.Name;
+                    //Stop garbage rune names
+                    if (RunePageName.StartsWith("@@"))
+                    {
+                        RunePageName = "Rune Page " + ++i;
+                    }
+                    tbc.RunePage.Items.Add(RunePageName);
+                    if (RunePage.Current)
+                        tbc.RunePage.SelectedValue = RunePageName;
+                }
                 TeamPlayer = tbc;
             }
             PlayerListView.Items.Insert(slot.slotId, tbc);
@@ -442,6 +493,7 @@ namespace LegendaryClient.Windows
                 TeamPlayer.SummonerSpell2.IsEnabled = false;
                 TeamPlayer.MasteryPage.IsEnabled = false;
                 TeamPlayer.RunePage.IsEnabled = false;
+                TeamPlayer.PlayerReadyStatus.Visibility = Visibility.Visible;
                 readyButton.Content = "Not Ready";
                 CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateReadinessV1", "{\"ready\":true}");
             }
@@ -453,6 +505,7 @@ namespace LegendaryClient.Windows
                 TeamPlayer.SummonerSpell2.IsEnabled = true;
                 TeamPlayer.MasteryPage.IsEnabled = true;
                 TeamPlayer.RunePage.IsEnabled = true;
+                TeamPlayer.PlayerReadyStatus.Visibility = Visibility.Hidden;
                 readyButton.Content = "Ready";
                 CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateReadinessV1", "{\"ready\":false}");
             }
