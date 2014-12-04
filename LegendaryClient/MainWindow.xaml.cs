@@ -37,8 +37,8 @@ namespace LegendaryClient
             //Keep this this way that way the auto updator knows what to update
             var ExecutingDirectory = System.IO.Directory.GetParent(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
             
-            Client.ExecutingDirectory = ExecutingDirectory.ToString().Replace("file:\\", "");
-            LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
+            Client.ExecutingDirectory = ExecutingDirectory.ToString();
+            LCLog.WriteToLog.ExecutingDirectory = "C:/Users/Krzysztof/Source/Repos/LegendaryClient/LegendaryClient/bin/Debug";
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
@@ -54,8 +54,8 @@ namespace LegendaryClient
             ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
 
             Client.ChatClient = new JabberClient();
-            Client.chatPage = new ChatPage();
-            ChatContainer.Content = Client.chatPage.Content;
+            Client.FriendList = new FriendList();
+            ChatContainer.Content = Client.FriendList.Content;
             Client.notificationPage = new NotificationPage();
             NotificationContainer.Content = Client.notificationPage.Content;
             Client.statusPage = new StatusPage();
@@ -125,11 +125,8 @@ namespace LegendaryClient
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
-            {
-                ProfilePage ProfilePage = new ProfilePage();
-                Client.SwitchPage(ProfilePage);
-            }
+            uiLogic.UpdateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)

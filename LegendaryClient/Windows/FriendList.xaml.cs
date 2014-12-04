@@ -22,13 +22,13 @@ namespace LegendaryClient.Windows
     /// <summary>
     /// Interaction logic for ChatPage.xaml
     /// </summary>
-    public partial class ChatPage : Page
+    public partial class FriendList : Page
     {
         private static System.Timers.Timer UpdateTimer;
         private LargeChatPlayer PlayerItem;
         private ChatPlayerItem LastPlayerItem;
 
-        public ChatPage()
+        public FriendList()
         {
             InitializeComponent();
             if (Properties.Settings.Default.StatusMsg != "Set your status message")
@@ -290,9 +290,9 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void ProfileItem_Click(object sender, RoutedEventArgs e)
+        public void ProfileItem_Click(object sender, RoutedEventArgs e)
         {
-            Client.SwitchPage(new ProfilePage(LastPlayerItem.Username));
+            uiLogic.UpdateProfile(LastPlayerItem.Username);
         }
 
 #pragma warning disable 4014
