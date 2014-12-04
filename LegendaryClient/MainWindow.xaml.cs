@@ -36,9 +36,9 @@ namespace LegendaryClient
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             //Keep this this way that way the auto updator knows what to update
             var ExecutingDirectory = System.IO.Directory.GetParent(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
-            
-            Client.ExecutingDirectory = ExecutingDirectory.ToString();
-            LCLog.WriteToLog.ExecutingDirectory = "C:/Users/Krzysztof/Source/Repos/LegendaryClient/LegendaryClient/bin/Debug";
+
+            Client.ExecutingDirectory = ExecutingDirectory.ToString().Replace("file:\\", "");
+            LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
