@@ -128,7 +128,8 @@ namespace LegendaryClient.Windows
         {
             LastSender = (Button)sender;
             Member stats = (Member)LastSender.Tag;
-            Client.SwitchPage(new ProfilePage(stats.SummonerName));
+            uiLogic.UpdateProfile(stats.SummonerName);
+            Client.SwitchPage(uiLogic.Profile);
         }
         private async void Kick_Click(object sender, RoutedEventArgs e)
         {

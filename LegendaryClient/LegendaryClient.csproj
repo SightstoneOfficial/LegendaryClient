@@ -208,6 +208,7 @@
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WindowExtensions.cs" />
+    <Compile Include="Logic\uiLogic.cs" />
     <Compile Include="Logic\FilterChat.cs" />
     <Compile Include="Logic\GameClientSettings\General.cs" />
     <Compile Include="Logic\GameClientSettings\HUD.cs" />
@@ -381,8 +382,8 @@
     <Compile Include="Controls\ChampSelectPlayer.xaml.cs">
       <DependentUpon>ChampSelectPlayer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ChatPage.xaml.cs">
-      <DependentUpon>ChatPage.xaml</DependentUpon>
+    <Compile Include="Windows\FriendList.xaml.cs">
+      <DependentUpon>FriendList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ChooseProfilePicturePage.xaml.cs">
       <DependentUpon>ChooseProfilePicturePage.xaml</DependentUpon>
@@ -782,7 +783,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\ChatPage.xaml">
+    <Page Include="Windows\FriendList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
