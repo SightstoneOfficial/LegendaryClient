@@ -1,73 +1,81 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Web.Script.Serialization;
+
+#endregion
 
 namespace ReplayHandler
 {
     public class ReplayServer
     {
-        HttpListener Listener;
-        DateTime TimeLastChunkServed;
-        int LatestChunk;
-        int NextChunk;
-        int LatestKeyframe;
-        int LastChunk;
-        int endStartupChunkId;
-        int startGameChunkId;
+        private readonly int _endStartupChunkId;
+        private readonly string _gameFolder;
+        private readonly int _lastChunk;
+        private readonly HttpListener _listener;
+        private readonly int _startGameChunkId;
+        private int _latestChunk;
+        private int _latestKeyframe;
+        private int _nextChunk;
+        private DateTime _timeLastChunkServed;
 
-        string GameFolder;
-
-        public ReplayServer(string GameId, string Region)
+        public ReplayServer(string gameId, string region)
         {
-            var dir = (System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location)).ToString().Replace("file:\\", "");
-            if (!Directory.Exists(Path.Combine(dir, "cabinet", GameId + "-" + Region)))
+            string directoryName = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            if (directoryName != null)
             {
-                Console.WriteLine("Cannot find replay in: " + dir + " " + GameId + " " + Region);
-                Console.ReadLine();
-                return;
+                string dir = directoryName.Replace("file:\\", "");
+                if (!Directory.Exists(Path.Combine(dir, "cabinet", gameId + "-" + region)))
+                {
+                    Console.WriteLine("Cannot find replay in: " + dir + " " + gameId + " " + region);
+                    Console.ReadLine();
+                    return;
+                }
+
+                _latestChunk = 1;
+                _nextChunk = 2;
+                _latestKeyframe = 1;
+                _gameFolder = Path.Combine(dir, "cabinet", gameId + "-" + region);
             }
 
-            LatestChunk = 1;
-            NextChunk = 2;
-            LatestKeyframe = 1;
-            GameFolder = Path.Combine(dir, "cabinet", GameId + "-" + Region);
-
-            DirectoryInfo di = new DirectoryInfo(GameFolder);
+            var di = new DirectoryInfo(_gameFolder);
             FileInfo[] files = di.GetFiles("chunk-*");
-            
-            foreach (FileInfo f in files)
-            {
-                int ChunkId = Convert.ToInt32(f.Name.Replace("chunk-", ""));
-                if (ChunkId > LastChunk)
-                    LastChunk = ChunkId;
-            }
+
+            foreach (
+                int chunkId in
+                    files.Select(f => Convert.ToInt32(f.Name.Replace("chunk-", "")))
+                        .Where(chunkId => chunkId > _lastChunk))
+                _lastChunk = chunkId;
 
             files = di.GetFiles("key-*");
 
-            foreach (FileInfo f in files)
-            {
-                int KeyId = Convert.ToInt32(f.Name.Replace("key-", ""));
-                if (KeyId < LatestKeyframe)
-                    LatestKeyframe = KeyId;
-            }
+            foreach (
+                int keyId in
+                    files.Select(f => Convert.ToInt32(f.Name.Replace("key-", "")))
+                        .Where(keyId => keyId < _latestKeyframe))
+                _latestKeyframe = keyId;
 
-            String token = File.ReadAllText(Path.Combine(GameFolder, "token"));
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(token);
-            endStartupChunkId = Convert.ToInt32(deserializedJSON["endStartupChunkId"]);
-            startGameChunkId = Convert.ToInt32(deserializedJSON["startGameChunkId"]);
+            String token = File.ReadAllText(Path.Combine(_gameFolder, "token"));
+            var serializer = new JavaScriptSerializer();
+            var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(token);
+            _endStartupChunkId = Convert.ToInt32(deserializedJson["endStartupChunkId"]);
+            _startGameChunkId = Convert.ToInt32(deserializedJson["startGameChunkId"]);
 
 
             Console.WriteLine("Starting replay server... Close this window after your replay has finished");
-            Listener = new HttpListener();
-            Listener.Prefixes.Add("http://127.0.0.1:5651/observer-mode/rest/consumer/");
-            Listener.Start();
+            _listener = new HttpListener();
+            _listener.Prefixes.Add("http://127.0.0.1:5651/observer-mode/rest/consumer/");
+            _listener.Start();
 
             Console.WriteLine("Listening...");
-            TimeLastChunkServed = DateTime.Now;
+            _timeLastChunkServed = DateTime.Now;
 
             while (true)
             {
@@ -77,101 +85,99 @@ namespace ReplayHandler
 
         public void HandleQuery()
         {
-            HttpListenerContext context = Listener.GetContext();
+            HttpListenerContext context = _listener.GetContext();
             HttpListenerRequest request = context.Request;
             HttpListenerResponse response = context.Response;
 
-            string RequestedURL = request.RawUrl.Replace("/observer-mode/rest/consumer/", "");
-            Console.WriteLine("Requested: " + RequestedURL);
+            string requestedUrl = request.RawUrl.Replace("/observer-mode/rest/consumer/", "");
+            Console.WriteLine("Requested: " + requestedUrl);
 
-            bool ShutdownAfterQuery = false;
-            byte[] buffer = new byte[0];
+            bool shutdownAfterQuery = false;
+            var buffer = new byte[0];
 
-            if (RequestedURL == "version")
+            if (requestedUrl == "version")
             {
-                buffer = File.ReadAllBytes(Path.Combine(GameFolder, "version"));
+                buffer = File.ReadAllBytes(Path.Combine(_gameFolder, "version"));
             }
-            else if (RequestedURL == "end")
+            else if (requestedUrl == "end")
             {
                 buffer = Encoding.UTF8.GetBytes("done");
-                ShutdownAfterQuery = true;
+                shutdownAfterQuery = true;
             }
 
-            string[] Params = RequestedURL.Split('/');
+            string[] Params = requestedUrl.Split('/');
             if (Params.Length > 0)
             {
                 if (Params[0] == "getGameMetaData")
                 {
-                    buffer = File.ReadAllBytes(Path.Combine(GameFolder, "token"));
+                    buffer = File.ReadAllBytes(Path.Combine(_gameFolder, "token"));
                 }
                 else if (Params[0] == "getLastChunkInfo")
                 {
-                    int TotalSecondsToChunk = (int)(-((DateTime.Now - TimeLastChunkServed.AddSeconds(30)).TotalMilliseconds));
-                    if (TotalSecondsToChunk < 0)
-                        TotalSecondsToChunk = 0;
+                    var totalSecondsToChunk =
+                        (int) (-((DateTime.Now - _timeLastChunkServed.AddSeconds(30)).TotalMilliseconds));
+                    if (totalSecondsToChunk < 0)
+                        totalSecondsToChunk = 0;
 
                     //Quicker loading
-                    if (LatestChunk < LastChunk / 2)
-                        TotalSecondsToChunk = 1;
+                    if (_latestChunk < _lastChunk/2)
+                        totalSecondsToChunk = 1;
 
-                    string ChunkInfo = "{\"chunkId\":" + LatestChunk +
-                        ",\"availableSince\":" + (int)(DateTime.Now - TimeLastChunkServed).TotalMilliseconds +
-                        ",\"nextAvailableChunk\":" + TotalSecondsToChunk +
-                        ",\"keyFrameId\":" + LatestKeyframe +
-                        ",\"nextChunkId\":" + NextChunk + 
-                        ",\"endStartupChunkId\":" + endStartupChunkId +
-                        ",\"startGameChunkId\":" + startGameChunkId + 
-                        ",\"endGameChunkId\":" + (LastChunk - 1) +
-                        ",\"duration\":30000}";
+                    string chunkInfo = "{\"chunkId\":" + _latestChunk +
+                                       ",\"availableSince\":" +
+                                       (int) (DateTime.Now - _timeLastChunkServed).TotalMilliseconds +
+                                       ",\"nextAvailableChunk\":" + totalSecondsToChunk +
+                                       ",\"keyFrameId\":" + _latestKeyframe +
+                                       ",\"nextChunkId\":" + _nextChunk +
+                                       ",\"endStartupChunkId\":" + _endStartupChunkId +
+                                       ",\"startGameChunkId\":" + _startGameChunkId +
+                                       ",\"endGameChunkId\":" + (_lastChunk - 1) +
+                                       ",\"duration\":30000}";
 
-                    buffer = Encoding.UTF8.GetBytes(ChunkInfo);
+                    buffer = Encoding.UTF8.GetBytes(chunkInfo);
                 }
                 else if (Params[0] == "getGameDataChunk")
                 {
-                    if (Convert.ToInt32(Params[3]) == (LastChunk - 1))
-                        Params[3] = LastChunk.ToString();
+                    if (Convert.ToInt32(Params[3]) == (_lastChunk - 1))
+                        Params[3] = _lastChunk.ToString(CultureInfo.InvariantCulture);
 
-                    String file = Path.Combine(GameFolder, "chunk-" + Params[3]);
-                    if (File.Exists(file))
-                        buffer = File.ReadAllBytes(file);
-                    else
-                        buffer = new byte[0];
+                    String file = Path.Combine(_gameFolder, "chunk-" + Params[3]);
 
-                    if (Convert.ToInt32(Params[3]) >= LatestChunk)
+                    buffer = File.Exists(file) ? File.ReadAllBytes(file) : new byte[0];
+
+                    if (Convert.ToInt32(Params[3]) >= _latestChunk)
                     {
-                        LatestChunk += 1;
-                        NextChunk += 1;
+                        _latestChunk += 1;
+                        _nextChunk += 1;
 
-                        if (LatestChunk >= 7)
+                        if (_latestChunk >= 7)
                         {
-                            if (LatestChunk % 2 == 0)
-                                LatestKeyframe += 1;
+                            if (_latestChunk%2 == 0)
+                                _latestKeyframe += 1;
                         }
                     }
 
-                    TimeLastChunkServed = DateTime.Now;
+                    _timeLastChunkServed = DateTime.Now;
                 }
                 else if (Params[0] == "getKeyFrame")
                 {
-                    String file = Path.Combine(GameFolder, "key-" + Params[3]);
-                    if (File.Exists(file))
-                        buffer = File.ReadAllBytes(file);
-                    else
-                        buffer = new byte[0];
+                    String file = Path.Combine(_gameFolder, "key-" + Params[3]);
+
+                    buffer = File.Exists(file) ? File.ReadAllBytes(file) : new byte[0];
                 }
             }
 
             response.ContentLength64 = buffer.Length;
-            System.IO.Stream output = response.OutputStream;
+            Stream output = response.OutputStream;
             output.Write(buffer, 0, buffer.Length);
 
             output.Close();
 
-            if (ShutdownAfterQuery)
-            {
-                Listener.Stop();
-                Environment.Exit(0);
-            }
+            if (!shutdownAfterQuery)
+                return;
+
+            _listener.Stop();
+            Environment.Exit(0);
         }
     }
 }
