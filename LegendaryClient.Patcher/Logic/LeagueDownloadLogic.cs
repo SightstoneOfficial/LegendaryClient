@@ -19,7 +19,7 @@ namespace LegendaryClient.Patcher.Logic
         /// <summary>
         ///     Gets the Latest LeagueOfLegends lol_game_client_sln version
         /// </summary>
-        public string[] GetLolClientSLNVersion()
+        public string[] GetLolClientSlnVersion()
         {
             //Get the GameClientSln version
             using (new WebClient())
@@ -40,14 +40,14 @@ namespace LegendaryClient.Patcher.Logic
         /// </returns>
         public string CreateConfigurationManifest()
         {
-            string LatestSLNVersion = Convert.ToString(GetLolClientSLNVersion());
+            string latestSlnVersion = Convert.ToString(GetLolClientSlnVersion());
             //Get GameClient Language files
             using (new WebClient())
             {
                 SolutionManifest =
                     new WebClient().DownloadString(
                         "http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/" +
-                        LatestSLNVersion + "/solutionmanifest");
+                        latestSlnVersion + "/solutionmanifest");
             }
             return SolutionManifest;
         }

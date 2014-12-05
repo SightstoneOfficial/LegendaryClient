@@ -57,27 +57,27 @@ namespace LegendaryClient.Patcher.Logic
         internal static Type CurrentPage; //Stop changing to same page
         internal static List<Page> CachedPages = new List<Page>();
 
-        internal static void SwitchPage<T>(bool Fade = false, params object[] Arguments)
+        internal static void SwitchPage<T>(bool fade = false, params object[] args)
         {
             if (CurrentPage == typeof (T))
                 return;
 
-            var instance = (Page) Activator.CreateInstance(typeof (T), Arguments);
+            var instance = (Page) Activator.CreateInstance(typeof (T), args);
             CurrentPage = typeof (T);
 
             {
-                bool FoundPage = false;
+                bool foundPage = false;
                 foreach (Page p in CachedPages.Where(p => p.GetType() == typeof (T)))
                 {
                     instance = p;
-                    FoundPage = true;
+                    foundPage = true;
                 }
 
-                if (!FoundPage)
+                if (!foundPage)
                     CachedPages.Add(instance);
             }
 
-            if (Fade)
+            if (fade)
             {
                 var fadeOutAnimation = new DoubleAnimation(0, TimeSpan.FromSeconds(0.25));
                 fadeOutAnimation.Completed += (x, y) =>

@@ -7,7 +7,6 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using LegendaryClient.Patcher.Logic;
 using LegendaryClient.Patcher.Pages;
-using MahApps.Metro.Controls;
 
 #endregion
 
@@ -16,7 +15,7 @@ namespace LegendaryClient.Patcher
     /// <summary>
     ///     Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow
     {
         public MainWindow()
         {
@@ -40,7 +39,9 @@ namespace LegendaryClient.Patcher
         //Contains a progress for the future
         public void SlideGrid(object sender, RoutedEventArgs e)
         {
-            OverlayGrid.Visibility = OverlayGrid.Visibility == Visibility.Hidden ? Visibility.Visible : Visibility.Hidden;
+            OverlayGrid.Visibility = OverlayGrid.Visibility == Visibility.Hidden
+                ? Visibility.Visible
+                : Visibility.Hidden;
         }
     }
 }
