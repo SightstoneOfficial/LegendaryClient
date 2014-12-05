@@ -156,7 +156,7 @@ namespace LegendaryClient.Windows
                         {
                             case "Teambuilder 5v5 Beta (In Dev. Do Not Play)":
                                 item.QueueButton.IsEnabled = false;
-                                item.TeamQueueButton.IsEnabled = false;
+                                //item.TeamQueueButton.IsEnabled = false;
                                 break;
                             case "Ranked Team 5v5":
                                 item.QueueButton.IsEnabled = false;

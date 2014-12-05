@@ -1,16 +1,16 @@
 ﻿namespace ReplayHandler
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length != 2)
                 return;
 
-            string GameId = args[0];
-            string Region = args[1];
+            string gameId = args[0];
+            string region = args[1];
 
-            ReplayServer server = new ReplayServer(GameId, Region);
+            var server = new ReplayServer(gameId, region);
         }
     }
 }

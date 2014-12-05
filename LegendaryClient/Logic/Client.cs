@@ -79,7 +79,7 @@ namespace LegendaryClient.Logic
                         }
                         catch
                         {
-                            
+
                         }
                     }
                 }
@@ -87,7 +87,7 @@ namespace LegendaryClient.Logic
             return settings;
         }
 
-        public static Brush GetBrush()
+        public static Brush Change()
         {
             bool x = Properties.Settings.Default.DarkTheme;
             string y = Properties.Settings.Default.Theme;
@@ -100,7 +100,7 @@ namespace LegendaryClient.Logic
                 return (Brush)bc.ConvertFrom("#FF2DA014");
             else if (y.Contains("Purple"))
                 return (Brush)bc.ConvertFrom("#FF5A14A0");
-            else 
+            else
                 return (Brush)bc.ConvertFrom("#FF141414"); //Steel
         }
 
@@ -417,7 +417,7 @@ namespace LegendaryClient.Logic
             //"teamSelect","hostingNormalGame","hostingPracticeGame","hostingRankedGame","hostingCoopVsAIGame","inQueue"
             //"spectating","outOfGame","championSelect","inGame","inTeamBuilder","tutorial"
 
-           if (GameStatus != "busy")
+            if (GameStatus != "busy")
             {
                 switch (GameStatus)
                 {
@@ -1097,16 +1097,16 @@ namespace LegendaryClient.Logic
                 System.Timers.Timer timer = new System.Timers.Timer();
                 timer.Interval = 5000;
                 timer.Elapsed += (o, e) =>
-                    {
+                {
 
-                        var x = new System.Diagnostics.Process();
-                        x.StartInfo.WorkingDirectory = ExecutingDirectory;
-                        x.StartInfo.FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe");
-                        x.StartInfo.Arguments = "\"" + ExecutingDirectory + "\" \"" + GameId + "\" \"" + ObserverEncryptionKey + "\" \"" +
-                            InternalName + "\" \"" + ObserverServerIp + "\"";
-                        x.Start();
-                        timer.Stop();
-                    };
+                    var x = new System.Diagnostics.Process();
+                    x.StartInfo.WorkingDirectory = ExecutingDirectory;
+                    x.StartInfo.FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe");
+                    x.StartInfo.Arguments = "\"" + ExecutingDirectory + "\" \"" + GameId + "\" \"" + ObserverEncryptionKey + "\" \"" +
+                        InternalName + "\" \"" + ObserverServerIp + "\"";
+                    x.Start();
+                    timer.Stop();
+                };
                 timer.Start();
             }
         }
@@ -1184,7 +1184,7 @@ namespace LegendaryClient.Logic
 
         #endregion League Of Legends Logic
         internal static StatusPage statusPage;
-        internal static ChatPage chatPage;
+        internal static FriendList FriendList;
         internal static NotificationPage notificationPage;
         internal static MainWindow MainWin;
         internal static bool GroupIsShown;
