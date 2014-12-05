@@ -1,85 +1,88 @@
-﻿﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
 using System.Web.Script.Serialization;
-using LegendaryClient.Logic;
 using ReplayRecorder;
+
+#endregion
 
 namespace LegendaryClient.Logic.Replays
 {
     public class ReplayRecorder
     {
-        public int GameId;
-        
-        
-        public int LastChunkNumber = 0;
-        public string Region;
-        
-        public string Server;
-        public bool Recording = true;
+        public delegate void OnGotChunkHandler(int chunkId);
 
         public delegate void OnReplayRecordedHandler();
-        public event OnReplayRecordedHandler OnReplayRecorded;
 
-        public delegate void OnGotChunkHandler(int ChunkId);
-        public event OnGotChunkHandler OnGotChunk;
+        public int GameId;
 
-        
-        public ReplayRecorder(string Server, int GameId, string Region, string Key)
+
+        public int LastChunkNumber = 0;
+        public bool Recording = true;
+        public string Region;
+
+        public string Server;
+
+        public ReplayRecorder(string server, int gameId, string region, string key)
         {
             try
             {
-                this.GameId = GameId;
-                this.Region = Region;
-                this.Server = "http://" + Server;
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region));
+                GameId = gameId;
+                Region = region;
+                Server = "http://" + server;
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "cabinet", gameId + "-" + region));
 
-                File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "key"), Key);
+                File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", gameId + "-" + region, "key"), key);
 
-                int ChunkTimeInterval;
-                int LastChunk = 0;
-                using (WebClient client = new WebClient())
+                int lastChunk;
+                using (var client = new WebClient())
                 {
                     client.DownloadFile(
-                        String.Format("{0}/consumer/version", this.Server + "/observer-mode/rest"),
-                    Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "version"));
+                        String.Format("{0}/consumer/version", Server + "/observer-mode/rest"),
+                        Path.Combine(Client.ExecutingDirectory, "cabinet", gameId + "-" + region, "version"));
 
                     string token = client.DownloadString(
                         String.Format("{0}/consumer/{1}/{2}/{3}/token",
-                        this.Server + "/observer-mode/rest",
-                        "getGameMetaData",
-                        Region,
-                        GameId));
+                            Server + "/observer-mode/rest",
+                            "getGameMetaData",
+                            region,
+                            gameId));
 
-                    using (StreamWriter outfile = new StreamWriter(Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "token")))
+                    using (
+                        var outfile =
+                            new StreamWriter(Path.Combine(Client.ExecutingDirectory, "cabinet", gameId + "-" + region,
+                                "token")))
                     {
                         outfile.Write(token);
                     }
 
-                    JavaScriptSerializer serializer = new JavaScriptSerializer();
-                    Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(token);
+                    var serializer = new JavaScriptSerializer();
+                    var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(token);
 
-                    ChunkTimeInterval = Convert.ToInt32(deserializedJSON["chunkTimeInterval"]);
-                    LastChunk = Convert.ToInt32(deserializedJSON["endStartupChunkId"]);
+                    lastChunk = Convert.ToInt32(deserializedJson["endStartupChunkId"]);
                 }
 
                 ThreadPool.QueueUserWorkItem(delegate
                 {
-                    if (LastChunk != 0)
+                    if (lastChunk != 0)
                     {
-                        using (WebClient client = new WebClient())
+                        using (var client = new WebClient())
                         {
-                            for (int i = 1; i < LastChunk + 1; i++)
+                            for (int i = 1; i < lastChunk + 1; i++)
                             {
                                 client.DownloadFile(
-                                    String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", this.Server + "/observer-mode/rest",
-                                    "getGameDataChunk",
-                                    Region,
-                                    GameId,
-                                    i),
-                                    Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + i));
+                                    String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token",
+                                        Server + "/observer-mode/rest",
+                                        "getGameDataChunk",
+                                        region,
+                                        gameId,
+                                        i),
+                                    Path.Combine(Client.ExecutingDirectory, "cabinet", gameId + "-" + region,
+                                        "chunk-" + i));
 
                                 if (OnGotChunk != null)
                                     OnGotChunk(i);
@@ -94,37 +97,41 @@ namespace LegendaryClient.Logic.Replays
                     }
                 });
             }
-            catch (WebException e)
+            catch (WebException)
             {
-
             }
         }
 
-        void GetChunk()
+        public event OnReplayRecordedHandler OnReplayRecorded;
+
+        public event OnGotChunkHandler OnGotChunk;
+
+
+        private void GetChunk()
         {
-            using (WebClient client = new WebClient())
+            using (var client = new WebClient())
             {
                 string token = client.DownloadString(
                     String.Format("{0}/consumer/{1}/{2}/{3}/0/token", Server + "/observer-mode/rest",
-                    "getLastChunkInfo",
-                    Region,
-                    GameId));
+                        "getLastChunkInfo",
+                        Region,
+                        GameId));
 
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(token);
+                var serializer = new JavaScriptSerializer();
+                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(token);
 
-                int ChunkId = (Int32)deserializedJSON["chunkId"];
-                if (ChunkId == 0)
+                var chunkId = (Int32) deserializedJson["chunkId"];
+                if (chunkId == 0)
                 {
                     //Try get chunk once avaliable
                     return;
                 }
 
-                if (LastChunkNumber == ChunkId)
+                if (LastChunkNumber == chunkId)
                 {
                     //Sometimes chunk 1 isn't retrieved so get it again... it's like 7 kb so np
                     client.DownloadFile(
-                            String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
+                        String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
                             "getGameDataChunk",
                             Region,
                             GameId,
@@ -133,10 +140,10 @@ namespace LegendaryClient.Logic.Replays
 
                     client.DownloadFile(
                         String.Format("{0}/consumer/{1}/{2}/{3}/token", Server + "/observer-mode/rest",
-                        "endOfGameStats",
-                        Region,
-                        GameId),
-                    Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "endOfGameStats"));
+                            "endOfGameStats",
+                            Region,
+                            GameId),
+                        Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "endOfGameStats"));
 
                     if (OnReplayRecorded != null)
                         OnReplayRecorded();
@@ -146,35 +153,36 @@ namespace LegendaryClient.Logic.Replays
                 }
 
                 //Get keyframe
-                if (ChunkId % 2 == 0)
+                if (chunkId%2 == 0)
                 {
-                    int KeyFrameId = Convert.ToInt32(deserializedJSON["keyFrameId"]);
-                    if (KeyFrameId != 0)
+                    int keyFrameId = Convert.ToInt32(deserializedJson["keyFrameId"]);
+                    if (keyFrameId != 0)
                     {
                         client.DownloadFile(
                             String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
-                            "getKeyFrame",
-                            Region,
-                            GameId,
-                            KeyFrameId),
-                        Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "key-" + KeyFrameId));
+                                "getKeyFrame",
+                                Region,
+                                GameId,
+                                keyFrameId),
+                            Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region,
+                                "key-" + keyFrameId));
                     }
                 }
 
                 client.DownloadFile(
-                        String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
+                    String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
                         "getGameDataChunk",
                         Region,
                         GameId,
-                        ChunkId),
-                    Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + ChunkId));
+                        chunkId),
+                    Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + chunkId));
 
                 if (OnGotChunk != null)
-                    OnGotChunk(ChunkId);
+                    OnGotChunk(chunkId);
 
-                LastChunkNumber = ChunkId;
+                LastChunkNumber = chunkId;
 
-                Thread.Sleep(Convert.ToInt32(deserializedJSON["nextAvailableChunk"]));
+                Thread.Sleep(Convert.ToInt32(deserializedJson["nextAvailableChunk"]));
             }
         }
     }
