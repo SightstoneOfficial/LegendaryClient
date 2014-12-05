@@ -87,7 +87,7 @@ namespace LegendaryClient.Logic
             return settings;
         }
 
-        public Brush Change()
+        public static Brush GetBrush()
         {
             bool x = Properties.Settings.Default.DarkTheme;
             string y = Properties.Settings.Default.Theme;

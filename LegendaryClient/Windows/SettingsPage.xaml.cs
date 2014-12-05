@@ -145,6 +145,26 @@ A code signing license (So you know that you are using LegendaryClient)
             Addtheme("Light Green", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Green.xaml");
             Addtheme("Dark Purple", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Purple.xaml");
             Addtheme("Light Purple", "pack://application:,,,/MahApps.Metro;component/Styles/Accents/Purple.xaml");
+
+            UpdateStats();
+        }
+        
+        /// <summary>
+        /// Gets the current league stats
+        /// </summary>
+        private void UpdateStats()
+        {
+            Dictionary<String, String> val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
+            try
+            {
+                MusicVolumeSlider.Value = (Convert.ToInt32(val["MusicVolume"]) * 100);
+                VoiceVolumeSlider.Value = (Convert.ToInt32(val["VoiceVolume"]) * 100);
+                AnnouncerVolumeSlider.Value = (Convert.ToInt32(val["AnnouncerVolume"]) * 100);
+            }
+            catch (Exception e)
+            {
+                Client.Log("Unable to read game config files. Error message: " + e.Message , "ConfigError");
+            }
         }
 
         public void Addtheme(string Text, string Value)
