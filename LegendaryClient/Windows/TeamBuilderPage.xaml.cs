@@ -349,12 +349,22 @@ namespace LegendaryClient.Windows
                 ReadinesIndicator response = JsonConvert.DeserializeObject<ReadinesIndicator>(Response.Payload);
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    //this should always be TeamBuilderChoose no?
-                    TeamBuilderChoose tbc = PlayerListView.Items.GetItemAt(response.slotId) as TeamBuilderChoose;
-                    if (response.ready)
-                        tbc.PlayerReadyStatus.Visibility = Visibility.Visible;
-                    else
-                        tbc.PlayerReadyStatus.Visibility = Visibility.Hidden;
+                    if (PlayerListView.Items.GetItemAt(response.slotId) is TeamBuilderChoose)
+                    {
+                        TeamBuilderChoose tbc = PlayerListView.Items.GetItemAt(response.slotId) as TeamBuilderChoose;
+                        if (response.ready)
+                            tbc.PlayerReadyStatus.Visibility = Visibility.Visible;
+                        else
+                            tbc.PlayerReadyStatus.Visibility = Visibility.Hidden;
+                    }
+                    else if (PlayerListView.Items.GetItemAt(response.slotId) is TeamBuilderPlayer)
+                    {
+                        TeamBuilderPlayer tbc = PlayerListView.Items.GetItemAt(response.slotId) as TeamBuilderPlayer;
+                        if (response.ready)
+                            tbc.PlayerReadyStatus.Visibility = Visibility.Visible;
+                        else
+                            tbc.PlayerReadyStatus.Visibility = Visibility.Hidden;
+                    }
                 }));
             }
             else if (Response.MethodName == "matchmakingPhaseStartedV1")
@@ -418,65 +428,86 @@ namespace LegendaryClient.Windows
             if (slot.championId == 0)
                 return;
             //TODO: move PlayerName label to some not so retarded place
-            TeamBuilderChoose tbc = new TeamBuilderChoose();
-            //tbc.Height = 120;
-            tbc.PlayerName.Content = slot.summonerName;
-            tbc.PlayerName.Visibility = Visibility.Visible;
-            string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
-            tbc.Champion.Source = Client.GetImage(uriSource);
-            tbc.Role.Items.Add(new Item(slot.role));
-            tbc.Role.SelectedIndex = 0;
-            tbc.Role.IsEnabled = false;
-            tbc.Position.Items.Add(new Item(slot.position));
-            tbc.Position.SelectedIndex = 0;
-            tbc.Position.IsEnabled = false;
-            tbc.Position.Visibility = Visibility.Visible;
-            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell1Id));
-            tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
-            tbc.SummonerSpell1.Visibility = Visibility.Visible;
-            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell2Id));
-            tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
-            tbc.SummonerSpell2.Visibility = Visibility.Visible;
-            if (slot.slotId == teambuilderSlotId)
+            if (slot.summonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
             {
-                tbc.MasteryPage.Visibility = Visibility.Visible;
-                tbc.MasteryPage.SelectionChanged += MasteryPage_SelectionChanged;
-                tbc.RunePage.Visibility = Visibility.Visible;
-                tbc.RunePage.SelectionChanged += RunePage_SelectionChanged;
-                tbc.EditMasteries.Click += EditMasteriesButton_Click;
-                tbc.EditRunes.Click += EditRunesButton_Click;
-                tbc.SummonerSpell1.Click += SummonerSpell_Click;
-                tbc.SummonerSpell2.Click += SummonerSpell_Click;
+                TeamBuilderChoose tbc = new TeamBuilderChoose();
+                tbc.PlayerName.Content = slot.summonerName;
+                tbc.PlayerName.Visibility = Visibility.Visible;
+                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
+                tbc.Champion.Source = Client.GetImage(uriSource);
+                tbc.Role.Items.Add(new Item(slot.role));
+                tbc.Role.SelectedIndex = 0;
+                tbc.Role.IsEnabled = false;
+                tbc.Position.Items.Add(new Item(slot.position));
+                tbc.Position.SelectedIndex = 0;
+                tbc.Position.IsEnabled = false;
+                tbc.Position.Visibility = Visibility.Visible;
+                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell1Id));
+                tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
+                tbc.SummonerSpell1.Visibility = Visibility.Visible;
+                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell2Id));
+                tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
+                tbc.SummonerSpell2.Visibility = Visibility.Visible;
+                if (slot.slotId == teambuilderSlotId)
+                {
+                    tbc.MasteryPage.Visibility = Visibility.Visible;
+                    tbc.MasteryPage.SelectionChanged += MasteryPage_SelectionChanged;
+                    tbc.RunePage.Visibility = Visibility.Visible;
+                    tbc.RunePage.SelectionChanged += RunePage_SelectionChanged;
+                    tbc.EditMasteries.Click += EditMasteriesButton_Click;
+                    tbc.EditRunes.Click += EditRunesButton_Click;
+                    tbc.SummonerSpell1.Click += SummonerSpell_Click;
+                    tbc.SummonerSpell2.Click += SummonerSpell_Click;
 
-                int i = 0;
-                foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
-                {
-                    string MasteryPageName = MasteryPage.Name;
-                    //Stop garbage mastery names
-                    if (MasteryPageName.StartsWith("@@"))
+                    int i = 0;
+                    foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
                     {
-                        MasteryPageName = "Mastery Page " + ++i;
+                        string MasteryPageName = MasteryPage.Name;
+                        //Stop garbage mastery names
+                        if (MasteryPageName.StartsWith("@@"))
+                        {
+                            MasteryPageName = "Mastery Page " + ++i;
+                        }
+                        tbc.MasteryPage.Items.Add(MasteryPageName);
+                        if (MasteryPage.Current)
+                            tbc.MasteryPage.SelectedValue = MasteryPageName;
                     }
-                    tbc.MasteryPage.Items.Add(MasteryPageName);
-                    if (MasteryPage.Current)
-                        tbc.MasteryPage.SelectedValue = MasteryPageName;
-                }
-                i = 0;
-                foreach (SpellBookPageDTO RunePage in MyRunes.BookPages)
-                {
-                    string RunePageName = RunePage.Name;
-                    //Stop garbage rune names
-                    if (RunePageName.StartsWith("@@"))
+                    i = 0;
+                    foreach (SpellBookPageDTO RunePage in MyRunes.BookPages)
                     {
-                        RunePageName = "Rune Page " + ++i;
+                        string RunePageName = RunePage.Name;
+                        //Stop garbage rune names
+                        if (RunePageName.StartsWith("@@"))
+                        {
+                            RunePageName = "Rune Page " + ++i;
+                        }
+                        tbc.RunePage.Items.Add(RunePageName);
+                        if (RunePage.Current)
+                            tbc.RunePage.SelectedValue = RunePageName;
                     }
-                    tbc.RunePage.Items.Add(RunePageName);
-                    if (RunePage.Current)
-                        tbc.RunePage.SelectedValue = RunePageName;
+                    TeamPlayer = tbc;
                 }
-                TeamPlayer = tbc;
+                PlayerListView.Items.Insert(slot.slotId, tbc);
             }
-            PlayerListView.Items.Insert(slot.slotId, tbc);
+            else
+            {
+                TeamBuilderPlayer tbc = new TeamBuilderPlayer();
+                tbc.PlayerName.Content = slot.summonerName;
+                tbc.PlayerName.Visibility = Visibility.Visible;
+                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
+                tbc.Champion.Source = Client.GetImage(uriSource);
+                tbc.Role.Content = slot.role;
+                tbc.Position.Content = slot.position;
+                tbc.Position.Visibility = Visibility.Visible;
+                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell1Id));
+                tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
+                tbc.SummonerSpell1.Visibility = Visibility.Visible;
+                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell2Id));
+                tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
+                tbc.SummonerSpell2.Visibility = Visibility.Visible;
+                
+                PlayerListView.Items.Insert(slot.slotId, tbc);
+            }
             //just for now, need2know what other statuses are there
             if (!String.IsNullOrEmpty(slot.status) && !String.IsNullOrWhiteSpace(slot.status) && slot.status != "POPULATED" && slot.status != "CANDIDATE_FOUND")
                 System.Diagnostics.Debug.WriteLine("groupUpdatedV3 - new status found! : " + slot.status);
@@ -569,7 +600,7 @@ namespace LegendaryClient.Windows
         private void AddPlayer(bool inNotInTeam = true)
         {
             ///WHY ARE THERE SO MANY ROLES NOW
-
+            TeamPlayer.PlayerName.Content = Client.LoginPacket.AllSummonerData.Summoner.Name;
             TeamPlayer.Role.Items.Add(new Item("Mage"));
             TeamPlayer.Role.Items.Add(new Item("Support"));
             TeamPlayer.Role.Items.Add(new Item("Assassin"));
