@@ -317,11 +317,11 @@ namespace LegendaryClient.Logic
                 MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     ChatSubjects subject = (ChatSubjects)Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
-                    //NotificationPopup pop = new NotificationPopup(subject, msg);
-                    //pop.Height = 230;
-                    //pop.HorizontalAlignment = HorizontalAlignment.Right;
-                    //pop.VerticalAlignment = VerticalAlignment.Bottom;
-                    //Client.NotificationGrid.Children.Add(pop);
+                    NotificationPopup pop = new NotificationPopup(subject, msg);
+                    pop.Height = 230;
+                    pop.HorizontalAlignment = HorizontalAlignment.Right;
+                    pop.VerticalAlignment = VerticalAlignment.Bottom;
+                    Client.NotificationGrid.Children.Add(pop);
                 }));
 
                 return;
@@ -880,19 +880,21 @@ namespace LegendaryClient.Logic
                             var x = Client.InviteData[stats.InvitationId];
                             if (x.Inviter != null)
                                 return;
+                            if (x != null)
+                                throw new ArgumentNullException(x.Inviter);
                         }
                         catch
                         {
-
+                            MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            {
+                                MainWin.FlashWindow();
+                                GameInvitePopup pop = new GameInvitePopup(stats);
+                                pop.HorizontalAlignment = HorizontalAlignment.Right;
+                                pop.VerticalAlignment = VerticalAlignment.Bottom;
+                                pop.Height = 230;
+                                Client.NotificationGrid.Children.Add(pop);
+                            }));
                         }
-                        MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            GameInvitePopup pop = new GameInvitePopup(stats);
-                            pop.HorizontalAlignment = HorizontalAlignment.Right;
-                            pop.VerticalAlignment = VerticalAlignment.Bottom;
-                            pop.Height = 230;
-                            Client.NotificationGrid.Children.Add(pop);
-                        }));
                     }
                 }
             }));
@@ -1068,7 +1070,6 @@ namespace LegendaryClient.Logic
                 timer.Interval = 5000;
                 timer.Elapsed += (o, e) =>
                     {
-
                         var x = new System.Diagnostics.Process();
                         x.StartInfo.WorkingDirectory = ExecutingDirectory;
                         x.StartInfo.FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe");
@@ -1193,6 +1194,11 @@ namespace LegendaryClient.Logic
                 words[i] = firstChar + rest;
             }
             return String.Join(" ", words);
+        }
+
+        public static string ToTitleCase(this String s)
+        {
+            return TitleCaseString(s);
         }
 
         public static BitmapSource ToWpfBitmap(System.Drawing.Bitmap bitmap)

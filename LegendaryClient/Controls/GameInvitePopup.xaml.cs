@@ -90,7 +90,7 @@ namespace LegendaryClient.Controls
                                 this.Unlock();
                                 break;
                             default:
-                                this.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, Client.TitleCaseString(stats.InvitationState));
+                                this.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, stats.InvitationState.ToTitleCase());
                                 Lockup();
                                 break;
                         }

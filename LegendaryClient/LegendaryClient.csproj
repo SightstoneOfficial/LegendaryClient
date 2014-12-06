@@ -217,6 +217,7 @@
     <Compile Include="Logic\JSON\Champions.cs" />
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Patcher\LegendaryClientPatcher.cs" />
+    <Compile Include="Logic\Region\CS.cs" />
     <Compile Include="Logic\Region\EUNE.cs" />
     <Compile Include="Logic\Region\Garena\MY.cs" />
     <Compile Include="Logic\Region\Garena\PH.cs" />

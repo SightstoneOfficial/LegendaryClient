@@ -319,8 +319,30 @@ namespace LegendaryClient.Windows
                         Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
                         Client.OverlayContainer.Visibility = Visibility.Visible;
                     }));
+                Client.PVPNet.OnMessageReceived += GetDodgerReset;
                 Client.PVPNet.OnMessageReceived -= GotQueuePop;
             }
+        }
+
+        private void GetDodgerReset(object sender, object message)
+        {
+            GameDTO QueueDTO = message as GameDTO;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if (QueueDTO.GameState == "TERMINATED")
+                {
+                    Client.OverlayContainer.Visibility = Visibility.Hidden;
+                    Client.OverlayContainer.Content = null;
+                    if (QueueDTO.QueuePosition == 0)
+                    {
+                        Client.PVPNet.PurgeFromQueues();
+                    }
+                    else
+                    {
+                        Client.PVPNet.OnMessageReceived += GotQueuePop;
+                    }
+                }
+            }));
         }
 
         public void readdHandler()
