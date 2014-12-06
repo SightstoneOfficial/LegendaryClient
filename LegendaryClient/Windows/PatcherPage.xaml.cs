@@ -300,7 +300,7 @@ namespace LegendaryClient.Windows
                     if (Directory.Exists(Path.Combine(GameLocation, GameClientSln)))
                     {
                         LogTextBox("League of Legends is Up-To-Date");
-                        Client.LOLCLIENTVERSION = LolVersion2;
+                        Client.LoLClientVersion = LolVersion2;
                         Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln", "releases", GameClientSln, "deploy");
                         Client.LoLLauncherLocation = Path.Combine(lolRootPath, "RADS", "projects", "lol_air_client", "releases", LauncherVersion, "deploy");
                         Client.RootLocation = lolRootPath;

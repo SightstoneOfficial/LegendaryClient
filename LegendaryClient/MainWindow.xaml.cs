@@ -45,9 +45,9 @@ namespace LegendaryClient
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
 
             Client.InfoLabel = InfoLabel;
-            Client.PVPNet = new PVPNetConnection();
-            Client.PVPNet.KeepDelegatesOnLogout = false;
-            Client.PVPNet.OnError += Client.PVPNet_OnError;
+            Client.PvpNet = new PVPNetConnection();
+            Client.PvpNet.KeepDelegatesOnLogout = false;
+            Client.PvpNet.OnError += Client.PVPNet_OnError;
             if (String.IsNullOrEmpty(Properties.Settings.Default.Theme))
                Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
             myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
@@ -56,10 +56,10 @@ namespace LegendaryClient
             Client.ChatClient = new JabberClient();
             Client.FriendList = new FriendList();
             ChatContainer.Content = Client.FriendList.Content;
-            Client.notificationPage = new NotificationPage();
-            NotificationContainer.Content = Client.notificationPage.Content;
-            Client.statusPage = new StatusPage();
-            StatusContainer.Content = Client.statusPage.Content;
+            Client.NotificationPage = new NotificationPage();
+            NotificationContainer.Content = Client.NotificationPage.Content;
+            Client.StatusPage = new StatusPage();
+            StatusContainer.Content = Client.StatusPage.Content;
             NotificationOverlayContainer.Content = new FakePage().Content;
 
             Grid NotificationTempGrid = null;
@@ -184,12 +184,12 @@ namespace LegendaryClient
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
-                Client.PVPNet.QuitGame();
-                Client.PVPNet.Disconnect();
+                Client.PvpNet.QuitGame();
+                Client.PvpNet.Disconnect();
                 Client.ChatClient.Close();
                 Client.ChatClient = null;
                 Client.ChatClient = new JabberClient();
-                Client.chatlistview.Items.Clear();
+                Client.Chatlistview.Items.Clear();
                 Client.IsLoggedIn = false;
                 Client.StatusContainer.Visibility = Visibility.Hidden;
                 Client.Container.Margin = new Thickness(0, 0, 0, 0);
@@ -202,9 +202,9 @@ namespace LegendaryClient
         
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            Client.PVPNet.Leave();
-            Client.PVPNet.PurgeFromQueues();
-            Client.PVPNet.Disconnect();
+            Client.PvpNet.Leave();
+            Client.PvpNet.PurgeFromQueues();
+            Client.PvpNet.Disconnect();
 
             if (QuitMe == true)
             {
@@ -226,8 +226,8 @@ namespace LegendaryClient
         }
         private void Quit(object sender, RoutedEventArgs e)
         {
-            Client.PVPNet.PurgeFromQueues();
-            Client.PVPNet.Leave();
+            Client.PvpNet.PurgeFromQueues();
+            Client.PvpNet.Leave();
             Environment.Exit(0);
         }
         private void HideWarning(object sender, RoutedEventArgs e)

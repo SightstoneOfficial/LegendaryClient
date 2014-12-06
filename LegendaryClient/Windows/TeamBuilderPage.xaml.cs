@@ -104,7 +104,7 @@ namespace LegendaryClient.Windows
             LoadStats();
 
             Client.InviteListView = InvitedPlayers;
-            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.PvpNet.OnMessageReceived += PVPNet_OnMessageReceived;
             Client.LastPageContent = this.Content;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
@@ -124,7 +124,7 @@ namespace LegendaryClient.Windows
         /// <param name="Pass"></param>
         private void ConnectToChat(string ChatJID, string Pass)
         {
-            string JID = Client.GetChatroomJID(ChatJID, Pass, false);
+            string JID = Client.GetChatroomJid(ChatJID, Pass, false);
             newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
             newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
             newRoom.OnRoomMessage += newRoom_OnRoomMessage;
@@ -173,7 +173,7 @@ namespace LegendaryClient.Windows
                     {
                         Dispatcher.InvokeAsync(async () =>
                         {
-                            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Client.LoginPacket.AllSummonerData.Summoner.Name);
+                            PlatformGameLifecycleDTO n = await Client.PvpNet.RetrieveInProgressSpectatorGameInfo(Client.LoginPacket.AllSummonerData.Summoner.Name);
                             if (n.GameName != null)
                             {
                                 string IP = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
@@ -406,10 +406,10 @@ namespace LegendaryClient.Windows
                     if (Client.CurrentPage == this) { Client.CurrentPage = null; Client.ReturnButton.Visibility = Visibility.Hidden; }
                 }));
 
-                Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                Client.PvpNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
-                Client.PVPNet.Leave();
+                Client.PvpNet.Leave();
 
                 //temp, what other reasons are there?
                 QuitReason response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);
@@ -776,7 +776,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await Client.PVPNet.SaveMasteryBook(bookDTO);
+                await Client.PvpNet.SaveMasteryBook(bookDTO);
             }
         }
 
@@ -820,7 +820,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await Client.PVPNet.SelectDefaultSpellBookPage(SelectedRunePage);
+                await Client.PvpNet.SelectDefaultSpellBookPage(SelectedRunePage);
             }
         }
 
@@ -939,7 +939,7 @@ namespace LegendaryClient.Windows
 
         public async void CallWithArgs(String UUID, String GameMode, String ProcedureCall, String Parameters)
         {
-            await Client.PVPNet.Call(UUID, GameMode, ProcedureCall, Parameters);
+            await Client.PvpNet.Call(UUID, GameMode, ProcedureCall, Parameters);
         }
 
         private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
@@ -1057,11 +1057,11 @@ namespace LegendaryClient.Windows
 
         private async void InGame()
         {
-            await Client.PVPNet.Leave();
-            Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+            await Client.PvpNet.Leave();
+            Client.PvpNet.OnMessageReceived -= PVPNet_OnMessageReceived;
             Client.ClearPage(typeof(TeamBuilderPage));
             Client.GameStatus = "inGame";
-            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.TimeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
 
             Client.SwitchPage(new InGame());

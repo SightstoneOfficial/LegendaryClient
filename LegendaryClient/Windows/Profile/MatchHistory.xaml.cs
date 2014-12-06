@@ -35,7 +35,7 @@ namespace LegendaryClient.Windows.Profile
 
         public void Update(double AccountId)
         {
-            Client.PVPNet.GetRecentGames(AccountId, GotRecentGames);
+            Client.PvpNet.GetRecentGames(AccountId, GotRecentGames);
         }
 
         public void GotRecentGames(RecentGames result)

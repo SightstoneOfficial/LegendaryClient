@@ -46,7 +46,7 @@ namespace LegendaryClient.Controls
         public GameInvitePopup(PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest stats)
         {
             InitializeComponent();
-            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.PvpNet.OnMessageReceived += PVPNet_OnMessageReceived;
             try
             {
                 InviteInfo info = Client.InviteData[stats.InvitationId];
@@ -162,7 +162,7 @@ namespace LegendaryClient.Controls
             _gameMode = m.GameMode;
             _gameType = m.GameType;
 
-            Client.PVPNet.getLobbyStatusInviteId = _invitationId;
+            Client.PvpNet.getLobbyStatusInviteId = _invitationId;
             switch (_mapId)
             {
                 case 1:
@@ -223,7 +223,7 @@ namespace LegendaryClient.Controls
             }
             else if (_gameType == "NORMAL_GAME" && _queueId == 61)
             {
-                LobbyStatus newLobby = Client.PVPNet.InviteLobby;
+                LobbyStatus newLobby = Client.PvpNet.InviteLobby;
                 Client.SwitchPage(new TeamBuilderPage(false, newLobby));
             }
             else if (_gameType == "RANKED_GAME")
@@ -237,7 +237,7 @@ namespace LegendaryClient.Controls
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { Visibility = Visibility.Hidden; }));
-            Client.PVPNet.Decline(_invitationId);
+            Client.PvpNet.Decline(_invitationId);
             Client.InviteData.Remove(_invitationId);
         }
 

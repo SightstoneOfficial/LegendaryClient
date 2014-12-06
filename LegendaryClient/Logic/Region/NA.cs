@@ -69,7 +69,7 @@ namespace LegendaryClient.Logic.Region
 
         public void NASqlite()
         {
-            Client.sqlite = "gameStats_en_US.sqlite";
+            Client.Sqlite = "gameStats_en_US.sqlite";
         }
     }
 }

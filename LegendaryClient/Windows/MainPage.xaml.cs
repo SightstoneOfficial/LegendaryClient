@@ -56,7 +56,7 @@ namespace LegendaryClient.Windows
             update.Interval = 5000;
             update.Elapsed += (o, e) =>
                 {
-                    Client.ChatClient.Presence(Client.CurrentPresence, Client.GetPresence(), Client.presenceStatus, 0);
+                    Client.ChatClient.Presence(Client.CurrentPresence, Client.GetPresence(), Client.PresenceStatus, 0);
                 };
             timer.Interval = (5000);
             //timer.Start();
@@ -65,7 +65,7 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    string JID = Client.GetChatroomJID(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public), string.Empty, true);
+                    string JID = Client.GetChatroomJid(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public), string.Empty, true);
 
                     GroupChatItem item = Join(JID, "LegendaryClient");
                     NotificationChatGroup ChatGroup = new NotificationChatGroup();
@@ -92,7 +92,7 @@ namespace LegendaryClient.Windows
 
         private void GotPlayerData(LoginDataPacket packet)
         {
-            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.PvpNet.OnMessageReceived += PVPNet_OnMessageReceived;
             AllSummonerData PlayerData = packet.AllSummonerData;
             SummonerNameLabel.Content = PlayerData.Summoner.Name;
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
@@ -104,7 +104,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                Client.PVPNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
+                Client.PvpNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
             }
 
             if (packet.BroadcastNotification.BroadcastMessages != null)
@@ -680,7 +680,7 @@ namespace LegendaryClient.Windows
 
         private void fakeend_Click(object sender, RoutedEventArgs e)
         {
-            Client.PVPNet.SimulateEndOfGame();
+            Client.PvpNet.SimulateEndOfGame();
         }
     }
 }

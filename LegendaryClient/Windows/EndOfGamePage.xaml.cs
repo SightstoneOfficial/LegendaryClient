@@ -37,10 +37,10 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             RenderStats(statistics);
             Client.SwitchPage(new MainPage());
-            Client.runonce = false;
+            Client.RunOnce = false;
 
             //string obfuscatedName = Client.GetObfuscatedChatroomName(statistics.RoomName, ChatPrefixes.Post_Game);
-            string jid = Client.GetChatroomJID(statistics.RoomName, statistics.RoomPassword, false);
+            string jid = Client.GetChatroomJid(statistics.RoomName, statistics.RoomPassword, false);
             _newRoom = Client.ConfManager.GetRoom(new JID(jid));
             _newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
             _newRoom.OnRoomMessage += newRoom_OnRoomMessage;
@@ -228,6 +228,7 @@ namespace LegendaryClient.Windows
             }
             catch (Exception)
             {
+
             }
         }
 

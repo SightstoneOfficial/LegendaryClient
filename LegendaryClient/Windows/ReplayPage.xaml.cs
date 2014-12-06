@@ -400,7 +400,7 @@ namespace LegendaryClient.Windows
         {
             if (User == true)
             {
-                PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(Command.Text);
+                PublicSummoner Summoner = await Client.PvpNet.GetSummonerByName(Command.Text);
                 if (String.IsNullOrWhiteSpace(Summoner.Name))
                 {
                     MessageOverlay overlay = new MessageOverlay();
@@ -414,7 +414,7 @@ namespace LegendaryClient.Windows
                 HintLabel.Visibility = Visibility.Visible;
                 var fadeLabelInAnimationx = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
                 HintLabel.BeginAnimation(Label.OpacityProperty, fadeLabelInAnimationx);
-                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Command.Text);
+                PlatformGameLifecycleDTO n = await Client.PvpNet.RetrieveInProgressSpectatorGameInfo(Command.Text);
                 if (n.GameName != null)
                 {
                     string IP = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;

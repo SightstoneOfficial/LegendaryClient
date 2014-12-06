@@ -143,8 +143,8 @@ namespace LegendaryClient.Windows.Profile
             {
                 var item = (LeagueItem) LeaguesListView.SelectedItem;
                 PlayerLabel.Content = item.PlayerLabel.Content;
-                PublicSummoner x = await Client.PVPNet.GetSummonerByName((string) item.PlayerLabel.Content);
-                Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", GotStats);
+                PublicSummoner x = await Client.PvpNet.GetSummonerByName((string) item.PlayerLabel.Content);
+                Client.PvpNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", GotStats);
             }
         }
 

@@ -36,16 +36,16 @@ namespace LegendaryClient.Windows
             InitializeComponent();
 
             GameName.Content = Client.GameName;
-            Client.PVPNet.OnMessageReceived += GameLobby_OnMessageReceived;
+            Client.PvpNet.OnMessageReceived += GameLobby_OnMessageReceived;
             //If client has created game use initial DTO
-            if (Client.GameLobbyDTO != null)
+            if (Client.GameLobbyDto != null)
             {
-                GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
+                GameLobby_OnMessageReceived(null, Client.GameLobbyDto);
             }
             else
             {
-                Client.GameLobbyDTO = gameLobby;
-                GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
+                Client.GameLobbyDto = gameLobby;
+                GameLobby_OnMessageReceived(null, Client.GameLobbyDto);
             }
             Client.InviteListView = InviteListView;
             Client.CurrentPage = this;
@@ -74,7 +74,7 @@ namespace LegendaryClient.Windows
                         try
                         {
                             string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.ArrangingPractice);
-                            string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);
+                            string JID = Client.GetChatroomJid(ObfuscatedName, dto.RoomPassword, false);
                             newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
                             newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
                             newRoom.OnRoomMessage += newRoom_OnRoomMessage;
@@ -114,7 +114,7 @@ namespace LegendaryClient.Windows
                                 {
                                     if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
                                     {
-                                        await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                        await Client.PvpNet.BanUserFromGame(Client.GameId, player.AccountId);
                                     }
                                 }
                             }
@@ -144,7 +144,7 @@ namespace LegendaryClient.Windows
                     {
                         if (!LaunchedTeamSelect)
                         {
-                            Client.ChampSelectDTO = dto;
+                            Client.ChampSelectDto = dto;
                             Client.LastPageContent = Client.Container.Content;
                             Client.SwitchPage(new ChampSelectPage(this));
                             Client.GameStatus = "championSelect";
@@ -241,7 +241,7 @@ namespace LegendaryClient.Windows
 
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.QuitGame();
+            await Client.PvpNet.QuitGame();
             Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.ReturnButton.Visibility = Visibility.Hidden;
@@ -250,19 +250,19 @@ namespace LegendaryClient.Windows
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.SwitchTeams(Client.GameID);
+            await Client.PvpNet.SwitchTeams(Client.GameId);
         }
 
         private async void KickAndBan_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             PlayerParticipant BanPlayer = (PlayerParticipant)button.Tag;
-            await Client.PVPNet.BanUserFromGame(Client.GameID, BanPlayer.AccountId);
+            await Client.PvpNet.BanUserFromGame(Client.GameId, BanPlayer.AccountId);
         }
 
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.StartChampionSelection(Client.GameID, OptomisticLock);
+            await Client.PvpNet.StartChampionSelection(Client.GameId, OptomisticLock);
         }
 
         public static string GetGameMode(int i)

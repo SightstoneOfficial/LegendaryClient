@@ -28,7 +28,7 @@ namespace LegendaryClient.Windows
         {
             NameInvalidLabel.Visibility = Visibility.Hidden;
             PracticeGameConfig gameConfig = GenerateGameConfig();
-            Client.PVPNet.CreatePracticeGame(gameConfig, new GameDTO.Callback(CreatedGame));
+            Client.PvpNet.CreatePracticeGame(gameConfig, new GameDTO.Callback(CreatedGame));
         }
 
         private PracticeGameConfig GenerateGameConfig()
@@ -135,9 +135,9 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    Client.GameID = result.Id;
+                    Client.GameId = result.Id;
                     Client.GameName = result.Name;
-                    Client.GameLobbyDTO = result;
+                    Client.GameLobbyDto = result;
                     Client.SwitchPage(new CustomGameLobbyPage());
                 }
             }));

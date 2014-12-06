@@ -21,7 +21,7 @@ namespace LegendaryClient.Controls
         private void JoinButton_Click(object sender, RoutedEventArgs e)
         {
             string jid =
-                Client.GetChatroomJID(
+                Client.GetChatroomJid(
                     Client.GetObfuscatedChatroomName(ChatNameTextBox.Text.ToLower(), ChatPrefixes.Public), string.Empty,
                     true);
             var item = new GroupChatItem(jid, ChatNameTextBox.Text);

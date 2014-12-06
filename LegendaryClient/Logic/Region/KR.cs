@@ -68,7 +68,7 @@ namespace LegendaryClient.Logic.Region
 
         public void KRSqlite()
         {
-            Client.sqlite = "gameStats_ko_KR.sqlite";
+            Client.Sqlite = "gameStats_ko_KR.sqlite";
         }
     }
 }

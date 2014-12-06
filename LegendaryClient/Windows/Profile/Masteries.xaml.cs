@@ -341,7 +341,7 @@ namespace LegendaryClient.Windows.Profile
                     MasteryPage.Name = MasteryTextBox.Text;
                 }
             }
-            await Client.PVPNet.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
+            await Client.PvpNet.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
         }
 
         private void MasteryPageListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

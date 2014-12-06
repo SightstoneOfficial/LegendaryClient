@@ -128,7 +128,7 @@ namespace LegendaryClient.Windows
                     }
 
                     //Queues
-                    GameQueueConfig[] OpenQueues = await Client.PVPNet.GetAvailableQueues();
+                    GameQueueConfig[] OpenQueues = await Client.PvpNet.GetAvailableQueues();
                     Array.Sort(OpenQueues,
                         delegate(GameQueueConfig config, GameQueueConfig config2)
                         {
@@ -146,7 +146,7 @@ namespace LegendaryClient.Windows
                         item.TeamQueueButton.Click += TeamQueueButton_Click;
                         item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
                         item.QueueId = config.Id;
-                        QueueInfo t = await Client.PVPNet.GetQueueInformation(config.Id);
+                        QueueInfo t = await Client.PvpNet.GetQueueInformation(config.Id);
                         item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                         TimeSpan time = TimeSpan.FromMilliseconds(t.WaitTime);
                         string answer = string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds);
@@ -207,7 +207,7 @@ namespace LegendaryClient.Windows
                 var parameters = new MatchMakerParams();
                 parameters.QueueIds = new[] {Convert.ToInt32(config.Id)};
                 Client.GameQueue = Convert.ToInt32(config.Id);
-                LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+                LobbyStatus Lobby = await Client.PvpNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
 
                 Client.ClearPage(typeof (TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(Lobby.InvitationID, Lobby));
@@ -217,7 +217,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+                LobbyStatus Lobby = await Client.PvpNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                 Client.SwitchPage(new TeamBuilderPage(true, Lobby));
             }
         }
@@ -241,11 +241,11 @@ namespace LegendaryClient.Windows
                     var parameters = new MatchMakerParams();
                     parameters.QueueIds = new[] {Convert.ToInt32(config.Id)};
                     Client.QueueId = config.Id;
-                    Client.PVPNet.AttachToQueue(parameters, EnteredQueue);
+                    Client.PvpNet.AttachToQueue(parameters, EnteredQueue);
                 }
                 else if (config.Id == 61)
                 {
-                    LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+                    LobbyStatus Lobby = await Client.PvpNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                     Client.ClearPage(typeof (TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false, Lobby));
                 }
@@ -307,10 +307,10 @@ namespace LegendaryClient.Windows
             }));
             InQueue = true;
             Client.GameStatus = "inQueue";
-            Client.timeStampSince =
+            Client.TimeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
-            Client.PVPNet.OnMessageReceived += GotQueuePop;
+            Client.PvpNet.OnMessageReceived += GotQueuePop;
         }
 
         private void GotQueuePop(object sender, object message)
@@ -323,13 +323,13 @@ namespace LegendaryClient.Windows
                     Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                Client.PVPNet.OnMessageReceived -= GotQueuePop;
+                Client.PvpNet.OnMessageReceived -= GotQueuePop;
             }
         }
 
         public void readdHandler()
         {
-            Client.PVPNet.OnMessageReceived += GotQueuePop;
+            Client.PvpNet.OnMessageReceived += GotQueuePop;
         }
 
         internal double HighestPingTime(IPAddress[] Addresses)
@@ -410,9 +410,9 @@ namespace LegendaryClient.Windows
         private async Task<bool> LeaveAllQueues()
         {
             InQueue = false;
-            await Client.PVPNet.PurgeFromQueues();
-            await Client.PVPNet.QuitGame();
-            await Client.PVPNet.Leave();
+            await Client.PvpNet.PurgeFromQueues();
+            await Client.PvpNet.QuitGame();
+            await Client.PvpNet.Leave();
             Client.ClearPage(typeof (CustomGameLobbyPage));
             Client.ClearPage(typeof (CreateCustomGamePage));
             Client.ClearPage(typeof (FactionsCreateGamePage));

@@ -18,12 +18,12 @@ namespace LegendaryClient.Windows
 
         public async void RefreshBrowser()
         {
-            ShopBrowser.Source = new Uri(await Client.PVPNet.GetStoreUrl());
+            ShopBrowser.Source = new Uri(await Client.PvpNet.GetStoreUrl());
         }
 
         private async void RefreshButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            ShopBrowser.Source = new Uri(await Client.PVPNet.GetStoreUrl());
+            ShopBrowser.Source = new Uri(await Client.PvpNet.GetStoreUrl());
         }
 
         private void Grid_Loaded(object sender, System.Windows.RoutedEventArgs e)

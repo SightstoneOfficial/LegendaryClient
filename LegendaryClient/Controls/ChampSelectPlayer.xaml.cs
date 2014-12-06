@@ -36,14 +36,14 @@ namespace LegendaryClient.Controls
                 if (_stats == null)
                 {
                     _stats = new PlayerStatisticsChampSelect();
-                    PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
+                    PublicSummoner summoner = await Client.PvpNet.GetSummonerByName(PlayerName.Content.ToString());
                     if (summoner == null || _stats == null)
                     {
                         _stats = null;
                         return;
                     }
                     ChampionStatInfo[] topChampions =
-                        await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
+                        await Client.PvpNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
                     _stats.PlayerName.Content = summoner.Name;
 
                     if (topChampions.Length > 0)

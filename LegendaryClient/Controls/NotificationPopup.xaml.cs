@@ -117,8 +117,8 @@ namespace LegendaryClient.Controls
             {
                 case ChatSubjects.PRACTICE_GAME_INVITE:
                     Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.PRACTICE_GAME_INVITE_ACCEPT);
-                    Client.PVPNet.JoinGame(_gameId);
-                    Client.GameID = _gameId;
+                    Client.PvpNet.JoinGame(_gameId);
+                    Client.GameId = _gameId;
                     Client.GameName = "Joined game";
                     Client.SwitchPage(new CustomGameLobbyPage());
                     Visibility = Visibility.Hidden;

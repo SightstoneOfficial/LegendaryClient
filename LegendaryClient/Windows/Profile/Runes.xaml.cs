@@ -138,7 +138,7 @@ namespace LegendaryClient.Windows.Profile
         private async void GetAvailableRunes()
         {
             PVPNetConnect.RiotObjects.Platform.Summoner.Runes.SummonerRuneInventory runeInven =
-                await Client.PVPNet.GetSummonerRuneInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+                await Client.PvpNet.GetSummonerRuneInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
             runes = runeInven.SummonerRunes;
             runes.Sort((x, y) => x.Rune.Name.CompareTo(y.Rune.Name));
             RuneFilterComboBox.SelectedIndex = 0;
@@ -395,7 +395,7 @@ namespace LegendaryClient.Windows.Profile
                     RunePage.Name = RuneTextBox.Text;
                 }
             }
-            await Client.PVPNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
+            await Client.PvpNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
         }
 
         private void ClearRunes_Click(object sender, RoutedEventArgs e)

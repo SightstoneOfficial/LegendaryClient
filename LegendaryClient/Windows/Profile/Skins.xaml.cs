@@ -25,7 +25,7 @@ namespace LegendaryClient.Windows.Profile
 
         public async void Update()
         {
-            ChampionDTO[] champList = await Client.PVPNet.GetAvailableChampions();
+            ChampionDTO[] champList = await Client.PvpNet.GetAvailableChampions();
 
             ChampionList = new List<ChampionDTO>(champList);
 

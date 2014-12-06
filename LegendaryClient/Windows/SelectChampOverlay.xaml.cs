@@ -63,7 +63,7 @@ namespace LegendaryClient.Windows
         {
             var item = sender as ListViewItem;
             Client.SelectChamp = ((int)item.Tag);
-            Client.usingInstaPick = true;
+            Client.UsingInstaPick = true;
 
             tqp.CreateText("You will attempt to auto select: " + Champions.GetChampion((int)item.Tag).DisplayName, Brushes.Yellow);
 

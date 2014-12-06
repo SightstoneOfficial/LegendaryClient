@@ -28,11 +28,11 @@ namespace LegendaryClient.Windows.Profile
         public async void Update(double SummonerId, double AccountId)
         {
             AccId = AccountId;
-            LcdsResponseString TotalKudos = await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + SummonerId + "}");
+            LcdsResponseString TotalKudos = await Client.PvpNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + SummonerId + "}");
             RenderKudos(TotalKudos);
-            ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(AccountId, "CLASSIC");
+            ChampionStatInfo[] TopChampions = await Client.PvpNet.RetrieveTopPlayedChampions(AccountId, "CLASSIC");
             RenderTopPlayedChampions(TopChampions);
-            Client.PVPNet.RetrievePlayerStatsByAccountId(AccountId, "3", new PlayerLifetimeStats.Callback(GotPlayerStats));
+            Client.PvpNet.RetrievePlayerStatsByAccountId(AccountId, "3", new PlayerLifetimeStats.Callback(GotPlayerStats));
         }
 
         public void RenderKudos(LcdsResponseString TotalKudos)
@@ -139,7 +139,7 @@ namespace LegendaryClient.Windows.Profile
 
         private async void ViewAggregatedStatsButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            AggregatedStats x = await Client.PVPNet.GetAggregatedStats(AccId, "CLASSIC", "3");
+            AggregatedStats x = await Client.PvpNet.GetAggregatedStats(AccId, "CLASSIC", "3");
             Client.OverlayContainer.Content = new AggregatedStatsOverlay(x, AccId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = System.Windows.Visibility.Visible;
         }

@@ -37,7 +37,7 @@ namespace LegendaryClient.Windows
             UpdateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateChat);
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
-            Client.chatlistview = this.ChatListView;
+            Client.Chatlistview = this.ChatListView;
             Change();
         }
 
@@ -49,14 +49,14 @@ namespace LegendaryClient.Windows
                 {
                     case "Online":
                         Client.CurrentPresence = PresenceType.available;
-                        Client.presenceStatus = "chat";
+                        Client.PresenceStatus = "chat";
                         break;
                     case "Busy": //TODO: fix away status, for some reason its not doing anything but there is a function depending on presenceStatus being "away" or not so...
                         Client.CurrentPresence = PresenceType.available;
-                        Client.presenceStatus = "away";
+                        Client.PresenceStatus = "away";
                         break;
                     case "Invisible":
-                        Client.presenceStatus = "";
+                        Client.PresenceStatus = "";
                         Client.CurrentPresence = PresenceType.invisible;
                         break;
                 }
@@ -194,7 +194,7 @@ namespace LegendaryClient.Windows
                 }
                 else if (playerItem.Status == null)
                 {
-                    Client.hidelegendaryaddition = true;
+                    Client.HideLegendaryAddition = true;
                 }
                 else
                 {
@@ -309,9 +309,9 @@ namespace LegendaryClient.Windows
 
         private void Invite_Click(object sender, RoutedEventArgs e)
         {
-            if(Client.isOwnerOfGame == true)
+            if(Client.IsOwnerOfGame == true)
             {
-                Client.PVPNet.Invite(LastPlayerItem.Id.Replace("sum", ""));
+                Client.PvpNet.Invite(LastPlayerItem.Id.Replace("sum", ""));
             }
             else
             {
@@ -328,7 +328,7 @@ namespace LegendaryClient.Windows
         {
             if (LastPlayerItem.GameStatus == "inGame")
             {
-                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
+                PlatformGameLifecycleDTO n = await Client.PvpNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
                 if (n.GameName != null)
                 {
                     Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress, n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId, Client.Region.InternalName);
