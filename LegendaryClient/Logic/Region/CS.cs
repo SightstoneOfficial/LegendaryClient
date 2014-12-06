@@ -1,35 +1,20 @@
-﻿using Microsoft.Win32;
+﻿#region
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Win32;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
     /// <summary>
-    /// Allow users to specify custom servers (When servers change, this can also be used)
+    ///     Allow users to specify custom servers (When servers change, this can also be used)
     /// </summary>
-    class CS : BaseRegion
+    internal class CS : BaseRegion
     {
-        private static Dictionary<String, String> vals = getSettings();
-
-        private static Dictionary<String, String> getSettings()
-        {
-            Dictionary<String, String> result = new Dictionary<String, String>();
-            OpenFileDialog file = new OpenFileDialog();
-            file.Title = "Find League Of Legends";
-            file.Multiselect = false;
-
-            if ((bool)file.ShowDialog())
-            {
-                file.FileName = "";
-                    
-            }
-
-            return result;
-        }
+        //private static Dictionary<String, String> _vals = getSettings();
 
         public override string RegionName
         {
@@ -53,7 +38,8 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //This returns english (not spanish) characters
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); }
+            //This returns english (not spanish) characters
         }
 
         public override string Locale
@@ -85,6 +71,22 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "66.151.33.19:80"; }
+        }
+
+        private static Dictionary<String, String> GetSettings()
+        {
+            var result = new Dictionary<String, String>();
+            var file = new OpenFileDialog
+            {
+                Title = "Find League Of Legends",
+                Multiselect = false
+            };
+
+            bool? showDialog = file.ShowDialog();
+            if (showDialog != null && (bool) showDialog)
+                file.FileName = "";
+
+            return result;
         }
     }
 }

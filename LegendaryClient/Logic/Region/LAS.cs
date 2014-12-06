@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
