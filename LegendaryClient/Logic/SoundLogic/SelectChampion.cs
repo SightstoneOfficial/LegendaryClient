@@ -1,22 +1,24 @@
-﻿using LegendaryClient.Logic.SQLite;
+﻿#region
+
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LegendaryClient.Logic.SQLite;
+
+#endregion
 
 namespace LegendaryClient.Logic.SoundLogic
 {
     public class SelectChampion
-    {       
-
-        public static int SelectChamp(Int32 Champ)
+    {
+        public static int SelectChamp(Int32 champ)
         {
-            Client.SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Champions", champions.GetChampion(Champ).name + ".mp3"));
+            Client.SoundPlayer.Source =
+                new Uri(Path.Combine(Client.ExecutingDirectory, "Champions", champions.GetChampion(champ).name + ".mp3"));
             Client.SoundPlayer.Play();
-            int Hi = Champ;
-            return Hi;
+
+            int hi = champ;
+
+            return hi;
         }
     }
 }
