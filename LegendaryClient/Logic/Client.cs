@@ -33,7 +33,6 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
-using log4net;
 using MahApps.Metro;
 using System.Threading.Tasks;
 using System.Linq;
@@ -56,7 +55,39 @@ namespace LegendaryClient.Logic
 
         internal static List<Group> Groups = new List<Group>();
 
-        public Brush Change()
+        /// <summary>
+        /// Gets the value of the league of Legends Settings
+        /// </summary>
+        /// <returns>All of the League Of Legends Settings</returns>
+        public static Dictionary<String, String> LeagueSettingsReader(this string FileLocation)
+        {
+            Dictionary<String, String> settings = new Dictionary<String, String>();
+            var file = File.ReadAllLines(FileLocation);
+            foreach (var x in file)
+            {
+                //Makes it so that it does not try to add a blank string
+                if (!String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x))
+                {
+                    //Makes it so that lines like [General] do not crash this
+                    if (!x.Contains("[") && !x.Contains("]"))
+                    {
+                        try
+                        {
+                            //Spit the one value into 2 values
+                            string[] value = x.Split('=');
+                            settings.Add(value[0], value[1]);
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                }
+            }
+            return settings;
+        }
+
+        public static Brush Change()
         {
             bool x = Properties.Settings.Default.DarkTheme;
             string y = Properties.Settings.Default.Theme;
@@ -69,7 +100,7 @@ namespace LegendaryClient.Logic
                 return (Brush)bc.ConvertFrom("#FF2DA014");
             else if (y.Contains("Purple"))
                 return (Brush)bc.ConvertFrom("#FF5A14A0");
-            else 
+            else
                 return (Brush)bc.ConvertFrom("#FF141414"); //Steel
         }
 
@@ -111,7 +142,6 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static MediaElement AmbientSoundPlayer;
 
-        private static readonly ILog log = LogManager.GetLogger(typeof(Client));
 
         /// <summary>
         /// Timer used so replays won't start right away
@@ -317,11 +347,11 @@ namespace LegendaryClient.Logic
                 MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     ChatSubjects subject = (ChatSubjects)Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
-                    NotificationPopup pop = new NotificationPopup(subject, msg);
-                    pop.Height = 230;
-                    pop.HorizontalAlignment = HorizontalAlignment.Right;
-                    pop.VerticalAlignment = VerticalAlignment.Bottom;
-                    Client.NotificationGrid.Children.Add(pop);
+                    //NotificationPopup pop = new NotificationPopup(subject, msg);
+                    //pop.Height = 230;
+                    //pop.HorizontalAlignment = HorizontalAlignment.Right;
+                    //pop.VerticalAlignment = VerticalAlignment.Bottom;
+                    //Client.NotificationGrid.Children.Add(pop);
                 }));
 
                 return;
@@ -387,7 +417,7 @@ namespace LegendaryClient.Logic
             //"teamSelect","hostingNormalGame","hostingPracticeGame","hostingRankedGame","hostingCoopVsAIGame","inQueue"
             //"spectating","outOfGame","championSelect","inGame","inTeamBuilder","tutorial"
 
-           if (GameStatus != "busy")
+            if (GameStatus != "busy")
             {
                 switch (GameStatus)
                 {
@@ -880,21 +910,19 @@ namespace LegendaryClient.Logic
                             var x = Client.InviteData[stats.InvitationId];
                             if (x.Inviter != null)
                                 return;
-                            if (x != null)
-                                throw new ArgumentNullException(x.Inviter);
                         }
                         catch
                         {
-                            MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                            {
-                                MainWin.FlashWindow();
-                                GameInvitePopup pop = new GameInvitePopup(stats);
-                                pop.HorizontalAlignment = HorizontalAlignment.Right;
-                                pop.VerticalAlignment = VerticalAlignment.Bottom;
-                                pop.Height = 230;
-                                Client.NotificationGrid.Children.Add(pop);
-                            }));
+
                         }
+                        MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        {
+                            GameInvitePopup pop = new GameInvitePopup(stats);
+                            pop.HorizontalAlignment = HorizontalAlignment.Right;
+                            pop.VerticalAlignment = VerticalAlignment.Bottom;
+                            pop.Height = 230;
+                            Client.NotificationGrid.Children.Add(pop);
+                        }));
                     }
                 }
             }));
@@ -1069,15 +1097,16 @@ namespace LegendaryClient.Logic
                 System.Timers.Timer timer = new System.Timers.Timer();
                 timer.Interval = 5000;
                 timer.Elapsed += (o, e) =>
-                    {
-                        var x = new System.Diagnostics.Process();
-                        x.StartInfo.WorkingDirectory = ExecutingDirectory;
-                        x.StartInfo.FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe");
-                        x.StartInfo.Arguments = "\"" + ExecutingDirectory + "\" \"" + GameId + "\" \"" + ObserverEncryptionKey + "\" \"" +
-                            InternalName + "\" \"" + ObserverServerIp + "\"";
-                        x.Start();
-                        timer.Stop();
-                    };
+                {
+
+                    var x = new System.Diagnostics.Process();
+                    x.StartInfo.WorkingDirectory = ExecutingDirectory;
+                    x.StartInfo.FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe");
+                    x.StartInfo.Arguments = "\"" + ExecutingDirectory + "\" \"" + GameId + "\" \"" + ObserverEncryptionKey + "\" \"" +
+                        InternalName + "\" \"" + ObserverServerIp + "\"";
+                    x.Start();
+                    timer.Stop();
+                };
                 timer.Start();
             }
         }
@@ -1155,7 +1184,7 @@ namespace LegendaryClient.Logic
 
         #endregion League Of Legends Logic
         internal static StatusPage statusPage;
-        internal static ChatPage chatPage;
+        internal static FriendList FriendList;
         internal static NotificationPage notificationPage;
         internal static MainWindow MainWin;
         internal static bool GroupIsShown;
@@ -1194,11 +1223,6 @@ namespace LegendaryClient.Logic
                 words[i] = firstChar + rest;
             }
             return String.Join(" ", words);
-        }
-
-        public static string ToTitleCase(this String s)
-        {
-            return TitleCaseString(s);
         }
 
         public static BitmapSource ToWpfBitmap(System.Drawing.Bitmap bitmap)

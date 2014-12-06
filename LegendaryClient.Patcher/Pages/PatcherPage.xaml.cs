@@ -4,9 +4,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using System.Web.Script.Serialization;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -19,59 +17,57 @@ namespace LegendaryClient.Patcher.Pages
     ///     Future patcher that will make it so users will no longer need League of Legends on their PCs
     ///     Updates SplashUpdate as well just incase it is needed
     /// </summary>
-    public partial class PatcherPage : Page
+    public partial class PatcherPage
     {
-        private readonly String ExecutingDirectory;
-        private Boolean IsLogVisible;
+        private readonly String _executingDirectory;
+        private Boolean _isLogVisible;
 
         public PatcherPage()
         {
             InitializeComponent();
 
-            IsLogVisible = false;
+            _isLogVisible = false;
             //Finds where the patcher was started
-            if (!File.Exists(Path.Combine(ExecutingDirectory, "Patcher.settings")))
+            if (!File.Exists(Path.Combine(_executingDirectory, "Patcher.settings")))
             {
-                FileStream x = File.Create(Path.Combine(ExecutingDirectory, "Patcher.settings"));
+                FileStream x = File.Create(Path.Combine(_executingDirectory, "Patcher.settings"));
                 //Client.OverlayGrid.Content
                 x.Close();
             }
             else
-            {
-                File.ReadAllText(Path.Combine(ExecutingDirectory, "Patcher.settings"));
-                var json = new JavaScriptSerializer();
-            }
+                File.ReadAllText(Path.Combine(_executingDirectory, "Patcher.settings"));
 
 
-            ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            _executingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
-            if (ExecutingDirectory != null && File.Exists(Path.Combine(ExecutingDirectory, "LegendaryClientPatcher.log")))
+            if (_executingDirectory != null &&
+                File.Exists(Path.Combine(_executingDirectory, "LegendaryClientPatcher.log")))
             {
-                File.Delete(Path.Combine(ExecutingDirectory, "LegendaryClientPatcher.log"));
+                File.Delete(Path.Combine(_executingDirectory, "LegendaryClientPatcher.log"));
             }
             //LogTextBox(CreateConfigurationmanifest());
         }
 
-      /*/// <summary>
+        /// <summary>
         ///     Swiches the command
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Switch_Click(object sender, RoutedEventArgs e)
         {
-            if (IsLogVisible)
+            if (_isLogVisible)
             {
-                IsLogVisible = false;
+                _isLogVisible = false;
                 NewsGrid.Visibility = Visibility.Visible;
                 LogGrid.Visibility = Visibility.Hidden;
             }
-            else if (IsLogVisible == false)
+            else if (_isLogVisible == false)
             {
-                IsLogVisible = true;
+                _isLogVisible = true;
                 NewsGrid.Visibility = Visibility.Hidden;
                 LogGrid.Visibility = Visibility.Visible;
             }
-        }*/
+        }
 
         /// <summary>
         ///     Starts LegendaryClient
@@ -146,7 +142,7 @@ namespace LegendaryClient.Patcher.Pages
         /// <param name="type"></param>
         public void Log(String lines, String type = "LOG")
         {
-            var file = new StreamWriter(Path.Combine(ExecutingDirectory, "LegendaryClientPatcher.log"), true);
+            var file = new StreamWriter(Path.Combine(_executingDirectory, "LegendaryClientPatcher.log"), true);
             file.WriteLine("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),
                 type, lines);
             file.Close();

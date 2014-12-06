@@ -1,30 +1,33 @@
-﻿using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+﻿using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
 using System.Linq;
-using PVPNetConnect;
+using System.Reflection;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
 using LegendaryClient.Controls;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
-using System;
-using System.Windows.Threading;
-using System.Threading;
 using log4net;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Leagues.Pojo;
+using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
 
 namespace LegendaryClient.Windows.Profile
 {
     /// <summary>
-    /// Interaction logic for Leagues.xaml
+    ///     Interaction logic for Leagues.xaml
     /// </summary>
-    public partial class Leagues : Page
+    public partial class Leagues
     {
-        SummonerLeaguesDTO MyLeagues;
-        string SelectedRank;
-        string Queue;
-        AggregatedStats SelectedAggregatedStats;
-        private static readonly ILog log = LogManager.GetLogger(typeof(Leagues));
+        private static readonly ILog log = LogManager.GetLogger(typeof (Leagues));
+        private SummonerLeaguesDTO MyLeagues;
+        private string Queue;
+        private AggregatedStats SelectedAggregatedStats;
+        private string SelectedRank;
 
         public Leagues()
         {
@@ -70,13 +73,14 @@ namespace LegendaryClient.Windows.Profile
 
                     CurrentLeagueLabel.Content = leagues.Tier + " " + SelectedRank;
                     CurrentLeagueNameLabel.Content = leagues.Name;
-                    List<LeagueItemDTO> players = leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == SelectedRank).ToList();
+                    List<LeagueItemDTO> players =
+                        leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == SelectedRank).ToList();
                     players.Reverse();
                     int i = 0;
                     foreach (LeagueItemDTO player in players)
                     {
                         i++;
-                        LeagueItem item = new LeagueItem();
+                        var item = new LeagueItem();
                         item.PlayerRankLabel.Content = i;
                         if (i - player.PreviousDayLeaguePosition != 0)
                         {
@@ -85,19 +89,19 @@ namespace LegendaryClient.Windows.Profile
 
                         item.PlayerLabel.Content = player.PlayerOrTeamName;
                         if (player.FreshBlood)
-                            item.RecruitLabel.Visibility = System.Windows.Visibility.Visible;
+                            item.RecruitLabel.Visibility = Visibility.Visible;
                         if (player.Veteran)
-                            item.VeteranLabel.Visibility = System.Windows.Visibility.Visible;
+                            item.VeteranLabel.Visibility = Visibility.Visible;
                         if (player.HotStreak)
-                            item.HotStreakLabel.Visibility = System.Windows.Visibility.Visible;
+                            item.HotStreakLabel.Visibility = Visibility.Visible;
 
                         item.WinsLabel.Content = player.Wins;
-                        item.LPLabel.Content = player.LeaguePoints;
+                        item.LpLabel.Content = player.LeaguePoints;
 
-                        TypedObject miniSeries = player.MiniSeries as TypedObject;
+                        var miniSeries = player.MiniSeries as TypedObject;
                         if (miniSeries != null)
                         {
-                            item.LPLabel.Content = ((string)miniSeries["progress"]).Replace('N', '-');
+                            item.LpLabel.Content = ((string) miniSeries["progress"]).Replace('N', '-');
                         }
 
                         LeaguesListView.Items.Add(item);
@@ -107,7 +111,7 @@ namespace LegendaryClient.Windows.Profile
             LeaguesListView.SelectedIndex = 0;
         }
 
-        private void DownTierButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void DownTierButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedRank == "I")
                 SelectedRank = "II";
@@ -120,7 +124,7 @@ namespace LegendaryClient.Windows.Profile
             RenderLeague();
         }
 
-        private void UpTierButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void UpTierButton_Click(object sender, RoutedEventArgs e)
         {
             if (SelectedRank == "V")
                 SelectedRank = "IV";
@@ -137,10 +141,10 @@ namespace LegendaryClient.Windows.Profile
         {
             if (LeaguesListView.SelectedItem != null)
             {
-                LeagueItem item = (LeagueItem)LeaguesListView.SelectedItem;
+                var item = (LeagueItem) LeaguesListView.SelectedItem;
                 PlayerLabel.Content = item.PlayerLabel.Content;
-                var x = await Client.PVPNet.GetSummonerByName((string)item.PlayerLabel.Content);
-                Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", new AggregatedStats.Callback(GotStats));
+                PublicSummoner x = await Client.PVPNet.GetSummonerByName((string) item.PlayerLabel.Content);
+                Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", GotStats);
             }
         }
 
@@ -152,7 +156,7 @@ namespace LegendaryClient.Windows.Profile
 
                 ViewAggregatedStatsButton.IsEnabled = false;
                 TopChampionsListView.Items.Clear();
-                List<AggregatedChampion> ChampionStats = new List<AggregatedChampion>();
+                var ChampionStats = new List<AggregatedChampion>();
                 int i = 0;
 
                 if (SelectedAggregatedStats.LifetimeStatistics != null)
@@ -170,9 +174,9 @@ namespace LegendaryClient.Windows.Profile
                                 ChampionStats.Add(Champion);
                             }
 
-                            var type = typeof(AggregatedChampion);
+                            Type type = typeof (AggregatedChampion);
                             string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
-                            var f = type.GetField(fieldName);
+                            FieldInfo f = type.GetField(fieldName);
                             f.SetValue(Champion, stat.Value);
                         }
 
@@ -185,9 +189,9 @@ namespace LegendaryClient.Windows.Profile
                             ViewAggregatedStatsButton.IsEnabled = true;
                             if (info.ChampionId != 0.0)
                             {
-                                ChatPlayer player = new ChatPlayer();
+                                var player = new ChatPlayer();
                                 champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
-                                player.LevelLabel.Visibility = System.Windows.Visibility.Hidden;
+                                player.LevelLabel.Visibility = Visibility.Hidden;
                                 player.PlayerName.Content = Champion.displayName;
                                 player.PlayerStatus.Content = info.TotalSessionsPlayed + " games played";
                                 player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;

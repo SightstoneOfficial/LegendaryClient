@@ -1,34 +1,33 @@
-﻿using RiotPatch.RADS.projects.lol_air_client;
-using System;
-using System.Collections.Generic;
+﻿#region
+
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RiotPatch.RADS.projects.lol_air_client;
+
+#endregion
 
 namespace RiotPatch
 {
     public class DownloadEverything
     {
-        public static void DownloadEverythingFix(string MainLocation)
+        public static void DownloadEverythingFix(string mainLocation)
         {
             //Create needed folders because they do not exist
-            if (!Directory.Exists(Path.Combine(MainLocation, "RADS")))
+            if (!Directory.Exists(Path.Combine(mainLocation, "RADS")))
             {
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS"));
 
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "projects"));
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "projects", "lol_air_client"));
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "projects", "lol_game_client"));
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "projects", "lol_launcher"));
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "projects", "lol_patcher"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS", "projects"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS", "projects", "lol_air_client"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS", "projects", "lol_game_client"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS", "projects", "lol_launcher"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS", "projects", "lol_patcher"));
 
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "solutions"));
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "solutions", "lol_game_client_sln"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS", "solutions"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS", "solutions", "lol_game_client_sln"));
 
-                Directory.CreateDirectory(Path.Combine(MainLocation, "RADS", "system"));
+                Directory.CreateDirectory(Path.Combine(mainLocation, "RADS", "system"));
             }
-            DownloadAir.EasyDownloader(Path.Combine(MainLocation, "RADS"));
+            DownloadAir.EasyDownloader(Path.Combine(mainLocation, "RADS"));
         }
     }
 }

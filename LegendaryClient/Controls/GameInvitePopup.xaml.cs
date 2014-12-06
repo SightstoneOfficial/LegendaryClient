@@ -1,27 +1,46 @@
-using LegendaryClient.Logic;
-using LegendaryClient.Windows;
-using PVPNetConnect.RiotObjects.Gameinvite.Contract;
-using LegendaryClient.Logic.SQLite;
-using System.Windows;
-using System.Windows.Controls;
+#region
+
 using System;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using Newtonsoft.Json;
-using System.Globalization;
 using System.Threading;
+using System.Windows;
 using System.Windows.Threading;
-using System.Collections.Generic;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Windows;
+using Newtonsoft.Json;
+using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+
+#endregion
 
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for AcceptGameInvite.xaml
+    ///     Interaction logic for AcceptGameInvite.xaml
     /// </summary>
-    public partial class GameInvitePopup : UserControl
+    public partial class GameInvitePopup
     {
-        string GameMetaData, InvitationStateAsString, InvitationState, InvitationId, Inviter, rankedTeamName, gameMode, gameType, MapName, mode, type;
-        int queueId, mapId, gameTypeConfigId;
-        bool isRanked;
+        private string _gameMetaData;
+
+        private string _gameMode,
+            _gameType;
+
+        private int _gameTypeConfigId;
+
+        private string _invitationId;
+
+        private string _invitationState;
+        private string _invitationStateAsString;
+
+        private string _inviter;
+
+        private bool _isRanked;
+        private int _mapId;
+        private string _mapName;
+        private string _mode;
+        private int _queueId;
+        private string _rankedTeamName;
+        private string _type;
 
         public GameInvitePopup(InvitationRequest stats)
         {
@@ -33,11 +52,10 @@ namespace LegendaryClient.Controls
                 Client.Log("Tried to find a popup that existed but should have been blocked. ", "Error");
                 if (info == null)
                     throw new NullReferenceException("Tried to find a nonexistant popup");
-                else
-                    PVPNet_OnMessageReceived(this, stats);
+                PVPNet_OnMessageReceived(this, stats);
 
                 //This should be hidden
-                this.Visibility = Visibility.Hidden;
+                Visibility = Visibility.Hidden;
             }
             catch
             {
@@ -46,69 +64,70 @@ namespace LegendaryClient.Controls
             }
         }
 
-        void PVPNet_OnMessageReceived(object sender, object message)
+        private void PVPNet_OnMessageReceived(object sender, object message)
         {
-            if (message is InvitationRequest)
-            {
-                InvitationRequest stats = (InvitationRequest)message;
-                try
-                {
-                    InviteInfo info = Client.InviteData[stats.InvitationId];
-                    //Data about this popup has changed. We want to set this
-                    if (info.popup == this)
-                    {
-                        switch (stats.InvitationState)
-                        {
-                            case "ON_HOLD":
-                                this.NotificationTextBox.Text = string.Format("The invite from {0} is now on hold", info.Inviter);
-                                this.Lockup();
-                                this.Visibility = Visibility.Hidden;
-                                break;
-                            case "TERMINATED":
-                                this.NotificationTextBox.Text = string.Format("The invite from {0} has been terminated", info.Inviter);
-                                this.Lockup();
-                                this.Visibility = Visibility.Hidden;
-                                break;
-                            case "REVOKED":
-                                this.NotificationTextBox.Text = string.Format("The invite from {0} has timed out");
-                                this.Lockup();
-                                this.Visibility = Visibility.Hidden;
-                                break;
-                            case "ACTIVE":
-                                this.NotificationTextBox.Text = "";
-                                if (stats.Inviter == null)
-                                    LoadGamePopupData(info.stats);
-                                else
-                                    LoadGamePopupData(stats);
-                                this.Visibility = Visibility.Hidden;
+            if (!(message is InvitationRequest))
+                return;
 
-                                RenderNotificationTextBox(this.Inviter + " has invited you to a game");
-                                RenderNotificationTextBox("");
-                                RenderNotificationTextBox("Mode: " + this.mode);
-                                RenderNotificationTextBox("Map: " + this.MapName);
-                                RenderNotificationTextBox("Type: " + this.type);
-                                this.Unlock();
-                                break;
-                            default:
-                                this.NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter, stats.InvitationState.ToTitleCase());
-                                Lockup();
-                                break;
-                        }
-                    }
-                }
-                catch
-                {
-                    //We do not need this popup. it is a new one. Let it launch
+            var stats = (InvitationRequest) message;
+            try
+            {
+                InviteInfo info = Client.InviteData[stats.InvitationId];
+                //Data about this popup has changed. We want to set this
+                if (!Equals(info.popup, this))
                     return;
+
+                switch (stats.InvitationState)
+                {
+                    case "ON_HOLD":
+                        NotificationTextBox.Text = string.Format("The invite from {0} is now on hold",
+                            info.Inviter);
+                        Lockup();
+                        Visibility = Visibility.Hidden;
+                        break;
+                    case "TERMINATED":
+                        NotificationTextBox.Text = string.Format("The invite from {0} has been terminated",
+                            info.Inviter);
+                        Lockup();
+                        Visibility = Visibility.Hidden;
+                        break;
+                    case "REVOKED":
+                        NotificationTextBox.Text = string.Format("The invite from {0} has timed out", info.Inviter);
+                        Lockup();
+                        Visibility = Visibility.Hidden;
+                        break;
+                    case "ACTIVE":
+                        NotificationTextBox.Text = "";
+                        LoadGamePopupData(stats.Inviter == null ? info.stats : stats);
+                        Visibility = Visibility.Hidden;
+
+                        RenderNotificationTextBox(_inviter + " has invited you to a game");
+                        RenderNotificationTextBox("");
+                        RenderNotificationTextBox("Mode: " + _mode);
+                        RenderNotificationTextBox("Map: " + _mapName);
+                        RenderNotificationTextBox("Type: " + _type);
+                        Unlock();
+                        break;
+                    default:
+                        NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter,
+                            Client.TitleCaseString(stats.InvitationState));
+                        Lockup();
+                        break;
                 }
             }
+            catch (Exception)
+            {
+                //We do not need this popup. it is a new one. Let it launch
+            }
         }
+
         private void Lockup()
         {
             AcceptButton.Visibility = Visibility.Hidden;
             DeclineButton.Visibility = Visibility.Hidden;
             OkayButton.Visibility = Visibility.Visible;
         }
+
         private void Unlock()
         {
             AcceptButton.Visibility = Visibility.Visible;
@@ -123,108 +142,108 @@ namespace LegendaryClient.Controls
 
         private void LoadGamePopupData(InvitationRequest stats)
         {
-            InvitationStateAsString = stats.InvitationStateAsString;
-            GameMetaData = stats.GameMetaData;
-            InvitationState = stats.InvitationState;
-            Inviter = stats.Inviter.SummonerName;
-            InvitationId = stats.InvitationId;
+            _invitationStateAsString = stats.InvitationStateAsString;
+            _gameMetaData = stats.GameMetaData;
+            _invitationState = stats.InvitationState;
+            _inviter = stats.Inviter.SummonerName;
+            _invitationId = stats.InvitationId;
 
-            if (InvitationId != null)
+            if (_invitationId != null)
             {
                 NoGame.Visibility = Visibility.Hidden;
             }
-            invitationRequest m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
-            queueId = m.queueId;
-            isRanked = m.isRanked;
-            rankedTeamName = m.rankedTeamName;
-            mapId = m.mapId;
-            gameTypeConfigId = m.gameTypeConfigId;
-            gameMode = m.gameMode;
-            gameType = m.gameType;
+            var m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
+            _queueId = m.queueId;
+            _isRanked = m.isRanked;
+            _rankedTeamName = m.rankedTeamName;
+            _mapId = m.mapId;
+            _gameTypeConfigId = m.gameTypeConfigId;
+            _gameMode = m.gameMode;
+            _gameType = m.gameType;
 
-            Client.PVPNet.getLobbyStatusInviteId = InvitationId;
-            switch(mapId)
+            Client.PVPNet.getLobbyStatusInviteId = _invitationId;
+            switch (_mapId)
             {
                 case 1:
-                    MapName = "Summoners Rift";
+                    _mapName = "Summoners Rift";
                     break;
                 case 8:
-                    MapName = "The Crystal Scar";
+                    _mapName = "The Crystal Scar";
                     break;
                 case 10:
-                    MapName = "The Twisted Treeline";
+                    _mapName = "The Twisted Treeline";
                     break;
                 case 11:
-                    MapName = "New Summoners Rift";
+                    _mapName = "New Summoners Rift";
                     break;
                 case 12:
-                    MapName = "Howling Abyss";
+                    _mapName = "Howling Abyss";
                     break;
                 default:
-                    MapName = "Unknown Map";
+                    _mapName = "Unknown Map";
                     break;
             }
-            var gameModeLower = Client.TitleCaseString(string.Format(gameMode.ToLower()));
-            var gameTypeLower = Client.TitleCaseString(string.Format(gameType.ToLower()));
-            var gameTypeRemove = gameTypeLower.Replace("_game", "");
-            var removeAllUnder = gameTypeRemove.Replace("_", " ");
+            string gameModeLower = Client.TitleCaseString(string.Format(_gameMode.ToLower()));
+            string gameTypeLower = Client.TitleCaseString(string.Format(_gameType.ToLower()));
+            string gameTypeRemove = gameTypeLower.Replace("_game", "");
+            string removeAllUnder = gameTypeRemove.Replace("_", " ");
 
-            if (String.IsNullOrEmpty(Inviter))
-                Inviter = "An unknown player";
+            if (String.IsNullOrEmpty(_inviter))
+                _inviter = "An unknown player";
 
-            mode = gameModeLower;
-            type = removeAllUnder;
-            RenderNotificationTextBox(Inviter + " has invited you to a game");
+            _mode = gameModeLower;
+            _type = removeAllUnder;
+            RenderNotificationTextBox(_inviter + " has invited you to a game");
             RenderNotificationTextBox("");
             RenderNotificationTextBox("Mode: " + gameModeLower);
-            RenderNotificationTextBox("Map: " + MapName);
+            RenderNotificationTextBox("Map: " + _mapName);
             RenderNotificationTextBox("Type: " + removeAllUnder);
 
-            InviteInfo y = new InviteInfo();
-            y.stats = stats;
-            y.popup = this;
-            y.Inviter = Inviter;
+            var y = new InviteInfo
+            {
+                stats = stats,
+                popup = this,
+                Inviter = _inviter
+            };
 
             Client.InviteData.Add(stats.InvitationId, y);
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            if (gameType == "PRACTICE_GAME")
+            if (_gameType == "PRACTICE_GAME")
             {
                 Client.SwitchPage(new CustomGameLobbyPage());
             }
-            //goddammit teambuilder
-            else if (gameType == "NORMAL_GAME" && queueId != 61)
+                //goddammit teambuilder
+            else if (_gameType == "NORMAL_GAME" && _queueId != 61)
             {
-                Client.SwitchPage(new TeamQueuePage(InvitationId));
+                Client.SwitchPage(new TeamQueuePage(_invitationId));
             }
-            else if (gameType == "NORMAL_GAME" && queueId == 61)
+            else if (_gameType == "NORMAL_GAME" && _queueId == 61)
             {
-                LobbyStatus NewLobby = Client.PVPNet.InviteLobby;
-                Client.SwitchPage(new TeamBuilderPage(false, NewLobby));
+                LobbyStatus newLobby = Client.PVPNet.InviteLobby;
+                Client.SwitchPage(new TeamBuilderPage(false, newLobby));
             }
-            else if (gameType == "RANKED_GAME")
+            else if (_gameType == "RANKED_GAME")
             {
-                Client.SwitchPage(new TeamQueuePage(InvitationId));
+                Client.SwitchPage(new TeamQueuePage(_invitationId));
             }
-            this.Visibility = Visibility.Hidden;
-            Client.InviteData.Remove(InvitationId);
+            Visibility = Visibility.Hidden;
+            Client.InviteData.Remove(_invitationId);
         }
 
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                this.Visibility = Visibility.Hidden;
-            }));
-            Client.PVPNet.Decline(InvitationId);
-            Client.InviteData.Remove(InvitationId);
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { Visibility = Visibility.Hidden; }));
+            Client.PVPNet.Decline(_invitationId);
+            Client.InviteData.Remove(_invitationId);
         }
+
         private void Hide_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = Visibility.Hidden;
-            InviteInfo x = Client.InviteData[InvitationId];
+            Visibility = Visibility.Hidden;
+            InviteInfo x = Client.InviteData[_invitationId];
             x.PopupVisible = false;
         }
     }

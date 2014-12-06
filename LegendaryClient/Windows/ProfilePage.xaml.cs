@@ -19,9 +19,12 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ProfilePage : Page
     {
-        public ProfilePage(string Name = "")
+        public ProfilePage()
         {
             InitializeComponent();
+        }
+        public void ProfileCreate(string Name)
+        {
             InGameContainer.Content = new Ingame();
             OverviewContainer.Content = new Overview();
             LeaguesContainer.Content = new Leagues();

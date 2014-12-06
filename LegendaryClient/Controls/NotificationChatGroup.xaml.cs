@@ -1,16 +1,17 @@
-﻿using LegendaryClient.Logic;
-using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿#region
+
 using System.Linq;
-using System.Windows.Media.Animation;
+using System.Windows;
+using LegendaryClient.Logic;
+
+#endregion
 
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for NotificationChatGroup.xaml
+    ///     Interaction logic for NotificationChatGroup.xaml
     /// </summary>
-    public partial class NotificationChatGroup : UserControl
+    public partial class NotificationChatGroup
     {
         public string GroupTitle;
 

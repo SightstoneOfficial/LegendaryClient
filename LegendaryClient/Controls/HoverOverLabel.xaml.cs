@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for HoverOverLabel.xaml
+    ///     Interaction logic for HoverOverLabel.xaml
     /// </summary>
-    public partial class HoverOverLabel : UserControl
+    public partial class HoverOverLabel
     {
         public HoverOverLabel()
         {

@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       mc:Ignorable="d" 
-      d:DesignHeight="672" d:DesignWidth="1024"
+      d:DesignHeight="694" d:DesignWidth="1024"
 	Title="TeamBuilderPage">
 
     <Grid>
@@ -12,12 +12,12 @@
         <Rectangle x:Name="PingRectangle" Fill="Red" HorizontalAlignment="Right" Height="28" Stroke="Black" VerticalAlignment="Top" Width="395" Margin="0,58,10,0"/>
         <TextBlock x:Name="PingLabel" HorizontalAlignment="Right" TextWrapping="Wrap" Text="Pinging... Please Wait" VerticalAlignment="Top" Margin="0,58,10,0" Height="28" Width="395" Foreground="White" FontSize="20" TextAlignment="Center"/>
         <Button x:Name="Invite" IsEnabled="True" Content="Invite" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="395" Margin="0,0,10,317" Height="30" Click="InviteButton_Click"/>
-        <ListView x:Name="InvitedPlayers" HorizontalAlignment="Right" Background="#FF474747" Height="229" VerticalAlignment="Stretch" Width="395" Margin="0,91,10,352"/>
-        <ListView x:Name="PlayerListView" Margin="10,58,410,10">
+        <ListView x:Name="InvitedPlayers" HorizontalAlignment="Right" Background="#99474747" VerticalAlignment="Stretch" Width="395" Margin="0,91,10,352"/>
+        <ListView x:Name="PlayerListView" Margin="10,58,410,10" Background="#99474747">
 
         </ListView>
 
-        <RichTextBox x:Name="ChatText" Width="395" HorizontalAlignment="Right" Margin="0,0,10,39" Height="273" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" Width="395" HorizontalAlignment="Right" Margin="0,0,10,39" Height="273" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#99505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
@@ -29,9 +29,9 @@
         <Button x:Name="QuitButton" Content="Quit" Margin="0,10,10,0" HorizontalAlignment="Right" Width="150" VerticalAlignment="Top" Click="QuitButton_Click"/>
         <Button x:Name="QueueButton" Content="Start Searching" IsEnabled="False" Margin="0,10,165,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Click="StartQueue"/>
         <Button x:Name="ReadyButton" Content="Ready" Visibility="Hidden" Margin="0,10,165,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="150" Click="ReadyButton_Click"/>
-        
-        <Grid x:Name="ChampAndSkinGrid" Background="#B2000000">
-            <TabControl x:Name="ChampSkinTabControl" HorizontalAlignment="Center" Height="380" VerticalAlignment="Top" Width="880" Margin="72,50,72,0">
+
+        <Grid x:Name="ChampAndSkinGrid" Background="#B2000000" Visibility="Visible">
+            <TabControl x:Name="ChampSkinTabControl" HorizontalAlignment="Center" Height="380" VerticalAlignment="Top" Width="880" Margin="72,50,72,0" >
                 <TabItem x:Name="ChampionsTab" Header="Champions">
                     <Grid Background="#FFE5E5E5">
                         <Grid.ColumnDefinitions>

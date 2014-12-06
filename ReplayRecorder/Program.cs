@@ -1,18 +1,14 @@
-﻿using LegendaryClient.Logic.Replays;
-using RtmpSharp.IO;
+﻿#region
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace ReplayRecorder
 {
     public class Program
     {
-        SerializationContext context;
-        EndOfGameStats selectedStats;
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             if (args.Length != 5)
             {
@@ -27,10 +23,14 @@ namespace ReplayRecorder
                 Client.Region = args[3];
                 Client.Server = args[4];
 
-                ReplayRecorder recorder = new ReplayRecorder(Client.Server, Client.GameId, Client.Region, Client.Key);
-                recorder.OnGotChunk += (o) => { Console.WriteLine("Received chunk: " + o); };
-                recorder.OnReplayRecorded += () => { Console.WriteLine("Replay recorded!"); Console.ReadLine(); };
-           }
+                var recorder = new ReplayRecorder(Client.Server, Client.GameId, Client.Region, Client.Key);
+                recorder.OnGotChunk += o => Console.WriteLine("Received chunk: " + o);
+                recorder.OnReplayRecorded += () =>
+                {
+                    Console.WriteLine("Replay recorded!");
+                    Console.ReadLine();
+                };
+            }
         }
     }
 }

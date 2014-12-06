@@ -1,9 +1,4 @@
-﻿using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.NetworkInformation;
@@ -14,23 +9,36 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for PlayPage.xaml
+    ///     Interaction logic for PlayPage.xaml
     /// </summary>
-    public partial class PlayPage : Page
+    public partial class PlayPage
     {
-        private int i = 0;
         private static Timer PingTimer;
-        private Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
-        private GameSeperator[] seperators = new GameSeperator[3];
-        private List<double> Queues = new List<double>();
-        private bool InQueue = false;
         public static bool DoneLoading = false;
-        private int currentAmount = 0;
+        private readonly Dictionary<Button, int> ButtonTimers = new Dictionary<Button, int>();
+        private readonly List<double> Queues = new List<double>();
+        private readonly GameSeperator[] seperators = new GameSeperator[3];
+        private bool InQueue;
+
+        /// <summary>
+        ///     Queue bool
+        /// </summary>
+        private Button LastSender;
+
+        private bool RunOnce;
+
+        private int currentAmount;
+        private int i;
         //JoinQueue item = new JoinQueue();
 
         public PlayPage()
@@ -39,12 +47,10 @@ namespace LegendaryClient.Windows
             Client.IsOnPlayPage = true;
             i = 10;
             PingTimer = new Timer(1000);
-            PingTimer.Elapsed += new ElapsedEventHandler(PingElapsed);
+            PingTimer.Elapsed += PingElapsed;
             PingTimer.Enabled = true;
             PingElapsed(1, null);
         }
-
-        private bool RunOnce = false;
 
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
@@ -57,7 +63,7 @@ namespace LegendaryClient.Windows
                 {
                     ButtonTimers[pair]++;
                     TimeSpan time = TimeSpan.FromSeconds(ButtonTimers[pair]);
-                    Button realButton = (Button)pair.Tag;
+                    var realButton = (Button) pair.Tag;
                     realButton.Content = string.Format("{0:D2}:{1:D2} Re-Click To Leave", time.Minutes, time.Seconds);
                 }
             }));
@@ -93,10 +99,9 @@ namespace LegendaryClient.Windows
                                 break;
                         }
                         QueueListView.Items.Add(seperators[b]);
-
                     }
                     //Ping
-                    PingLabel.Content = Math.Round(PingAverage).ToString() + "ms";
+                    PingLabel.Content = Math.Round(PingAverage) + "ms";
                     if (PingAverage == 0)
                     {
                         PingLabel.Content = "Timeout";
@@ -105,18 +110,18 @@ namespace LegendaryClient.Windows
                     {
                         PingLabel.Content = "Ping not enabled for this region";
                     }
-                    BrushConverter bc = new BrushConverter();
-                    Brush brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                    var bc = new BrushConverter();
+                    var brush = (Brush) bc.ConvertFrom("#FFFF6767");
                     if (PingAverage > 999 || PingAverage < 1)
                     {
                         PingRectangle.Fill = brush;
                     }
-                    brush = (Brush)bc.ConvertFrom("#FFFFD667");
+                    brush = (Brush) bc.ConvertFrom("#FFFFD667");
                     if (PingAverage > 110 && PingAverage < 999)
                     {
                         PingRectangle.Fill = brush;
                     }
-                    brush = (Brush)bc.ConvertFrom("#FF67FF67");
+                    brush = (Brush) bc.ConvertFrom("#FF67FF67");
                     if (PingAverage < 110 && PingAverage > 1)
                     {
                         PingRectangle.Fill = brush;
@@ -124,13 +129,14 @@ namespace LegendaryClient.Windows
 
                     //Queues
                     GameQueueConfig[] OpenQueues = await Client.PVPNet.GetAvailableQueues();
-                    Array.Sort(OpenQueues, delegate(GameQueueConfig config, GameQueueConfig config2)
-                    {
-                        return config.CacheName.CompareTo(config2.CacheName);
-                    });
+                    Array.Sort(OpenQueues,
+                        delegate(GameQueueConfig config, GameQueueConfig config2)
+                        {
+                            return config.CacheName.CompareTo(config2.CacheName);
+                        });
                     foreach (GameQueueConfig config in OpenQueues)
                     {
-                        JoinQueue item = new JoinQueue();
+                        var item = new JoinQueue();
                         item.Height = 80;
                         item.QueueButton.Tag = config;
                         item.QueueButton.Click += QueueButton_Click;
@@ -139,7 +145,7 @@ namespace LegendaryClient.Windows
                         item.TeamQueueButton.Tag = config;
                         item.TeamQueueButton.Click += TeamQueueButton_Click;
                         item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
-                        item.queueID = config.Id;
+                        item.QueueId = config.Id;
                         QueueInfo t = await Client.PVPNet.GetQueueInformation(config.Id);
                         item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                         TimeSpan time = TimeSpan.FromMilliseconds(t.WaitTime);
@@ -156,7 +162,7 @@ namespace LegendaryClient.Windows
                         {
                             case "Teambuilder 5v5 Beta (In Dev. Do Not Play)":
                                 item.QueueButton.IsEnabled = false;
-                                item.TeamQueueButton.IsEnabled = false;
+                                //item.TeamQueueButton.IsEnabled = false;
                                 break;
                             case "Ranked Team 5v5":
                                 item.QueueButton.IsEnabled = false;
@@ -174,7 +180,6 @@ namespace LegendaryClient.Windows
                             DoneLoading = true;
                         }
                     }
-
                 }
                 else if (seperators[seperators.Length - 1] != null)
                     foreach (GameSeperator seperator in seperators)
@@ -183,19 +188,14 @@ namespace LegendaryClient.Windows
         }
 
 
-        /// <summary>
-        /// Queue bool
-        /// </summary>
-        private Button LastSender;
-
         private async void TeamQueueButton_Click(object sender, RoutedEventArgs e)
         {
             if (isInGame()) return;
             //To leave all other queues
             await LeaveAllQueues();
             InQueue = false;
-            LastSender = (Button)sender;
-            GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
+            LastSender = (Button) sender;
+            var config = (GameQueueConfig) LastSender.Tag;
             //Make Teambuilder work for duo
             if (config.Id != 61 && config.TypeString != "BOT")
             {
@@ -204,24 +204,22 @@ namespace LegendaryClient.Windows
                     return;
                 }
                 Queues.Add(config.Id);
-                MatchMakerParams parameters = new MatchMakerParams();
-                parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
+                var parameters = new MatchMakerParams();
+                parameters.QueueIds = new[] {Convert.ToInt32(config.Id)};
                 Client.GameQueue = Convert.ToInt32(config.Id);
                 LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
 
-                Client.ClearPage(typeof(TeamQueuePage));
+                Client.ClearPage(typeof (TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(Lobby.InvitationID, Lobby));
             }
             else if (config.TypeString == "BOT")
             {
-
             }
             else
             {
                 LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
                 Client.SwitchPage(new TeamBuilderPage(true, Lobby));
             }
-
         }
 
         private async void QueueButton_Click(object sender, RoutedEventArgs e)
@@ -230,8 +228,8 @@ namespace LegendaryClient.Windows
             //to queue
             if (InQueue == false)
             {
-                LastSender = (Button)sender;
-                GameQueueConfig config = (GameQueueConfig)LastSender.Tag;
+                LastSender = (Button) sender;
+                var config = (GameQueueConfig) LastSender.Tag;
                 //Make TeamBuilder Work for solo
                 if (config.Id != 61)
                 {
@@ -240,20 +238,19 @@ namespace LegendaryClient.Windows
                         return;
                     }
                     Queues.Add(config.Id);
-                    MatchMakerParams parameters = new MatchMakerParams();
-                    parameters.QueueIds = new Int32[] { Convert.ToInt32(config.Id) };
+                    var parameters = new MatchMakerParams();
+                    parameters.QueueIds = new[] {Convert.ToInt32(config.Id)};
                     Client.QueueId = config.Id;
-                    Client.PVPNet.AttachToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
+                    Client.PVPNet.AttachToQueue(parameters, EnteredQueue);
                 }
                 else if (config.Id == 61)
                 {
                     LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
-                    Client.ClearPage(typeof(TeamBuilderPage));
+                    Client.ClearPage(typeof (TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false, Lobby));
                 }
-                return;
             }
-            else if (InQueue == true)
+            if (InQueue)
             {
                 InQueue = false;
                 Client.GameStatus = "outOfGame";
@@ -269,24 +266,30 @@ namespace LegendaryClient.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     Button item = LastSender;
-                    GameQueueConfig config = (GameQueueConfig)item.Tag;
+                    var config = (GameQueueConfig) item.Tag;
                     Queues.Remove(config.Id);
-                    MessageOverlay message = new MessageOverlay();
+                    var message = new MessageOverlay();
                     message.MessageTitle.Content = "Failed to join queue";
                     message.MessageTextBox.Text = result.PlayerJoinFailures[0].ReasonFailed;
                     if (result.PlayerJoinFailures[0].ReasonFailed == "QUEUE_DODGER")
                     {
-                        message.MessageTextBox.Text = "Unable to join the queue due to you recently dodging a game." + Environment.NewLine;
+                        message.MessageTextBox.Text = "Unable to join the queue due to you recently dodging a game." +
+                                                      Environment.NewLine;
                         TimeSpan time = TimeSpan.FromMilliseconds(result.PlayerJoinFailures[0].PenaltyRemainingTime);
-                        message.MessageTextBox.Text = "You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
+                        message.MessageTextBox.Text = "You have " +
+                                                      string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) +
+                                                      " remaining until you may queue again";
                     }
                     else if (result.PlayerJoinFailures[0].ReasonFailed == "RANKED_MIN_LEVEL")
                     {
-                        message.MessageTextBox.Text = "You do not meet the requirements for this queue." + Environment.NewLine;
+                        message.MessageTextBox.Text = "You do not meet the requirements for this queue." +
+                                                      Environment.NewLine;
                     }
                     else if (result.PlayerJoinFailures[0].ReasonFailed == "QUEUE_PARTICIPANTS")
                     {
-                        message.MessageTextBox.Text = "This queue is in dev. Please use this queue on the real league of legends client." + Environment.NewLine;
+                        message.MessageTextBox.Text =
+                            "This queue is in dev. Please use this queue on the real league of legends client." +
+                            Environment.NewLine;
                     }
                     Client.OverlayContainer.Content = message.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -297,14 +300,15 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 Button item = LastSender;
-                Button fakeButton = new Button(); //We require a unique button to add to the dictionary
+                var fakeButton = new Button(); //We require a unique button to add to the dictionary
                 fakeButton.Tag = item;
                 item.Content = "00:00";
                 ButtonTimers.Add(fakeButton, 0);
             }));
             InQueue = true;
             Client.GameStatus = "inQueue";
-            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.timeStampSince =
+                (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
             Client.PVPNet.OnMessageReceived += GotQueuePop;
         }
@@ -313,36 +317,14 @@ namespace LegendaryClient.Windows
         {
             if (message is GameDTO)
             {
-                GameDTO Queue = message as GameDTO;
+                var Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
-                        Client.OverlayContainer.Visibility = Visibility.Visible;
-                    }));
-                Client.PVPNet.OnMessageReceived += GetDodgerReset;
+                {
+                    Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                }));
                 Client.PVPNet.OnMessageReceived -= GotQueuePop;
             }
-        }
-
-        private void GetDodgerReset(object sender, object message)
-        {
-            GameDTO QueueDTO = message as GameDTO;
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                if (QueueDTO.GameState == "TERMINATED")
-                {
-                    Client.OverlayContainer.Visibility = Visibility.Hidden;
-                    Client.OverlayContainer.Content = null;
-                    if (QueueDTO.QueuePosition == 0)
-                    {
-                        Client.PVPNet.PurgeFromQueues();
-                    }
-                    else
-                    {
-                        Client.PVPNet.OnMessageReceived += GotQueuePop;
-                    }
-                }
-            }));
         }
 
         public void readdHandler()
@@ -360,7 +342,7 @@ namespace LegendaryClient.Windows
             foreach (IPAddress Address in Addresses)
             {
                 int timeout = 120;
-                Ping pingSender = new Ping();
+                var pingSender = new Ping();
                 PingReply reply = pingSender.Send(Address.ToString(), timeout);
                 if (reply.Status == IPStatus.Success)
                 {
@@ -376,14 +358,15 @@ namespace LegendaryClient.Windows
         private void CreateCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
             if (isInGame()) return;
-            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ClearPage(typeof (CreateCustomGamePage));
             Client.SwitchPage(new CreateCustomGamePage());
         }
+
         private void JoinFactionGameButton_Click(object sender, object e)
         {
-            if (isInGame()) 
+            if (isInGame())
                 return;
-            Client.ClearPage(typeof(FactionsJoinGamePage));
+            Client.ClearPage(typeof (FactionsJoinGamePage));
             Client.SwitchPage(new FactionsJoinGamePage());
         }
 
@@ -393,9 +376,10 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    MessageOverlay message = new MessageOverlay();
+                    var message = new MessageOverlay();
                     message.MessageTitle.Content = "Failed to join queue";
-                    message.MessageTextBox.Text = "You are currently in a game, if you need to reconnect please return to the reconnect page above!";
+                    message.MessageTextBox.Text =
+                        "You are currently in a game, if you need to reconnect please return to the reconnect page above!";
                     Client.OverlayContainer.Content = message.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
@@ -407,13 +391,15 @@ namespace LegendaryClient.Windows
         private void JoinCustomGameButton_Click(object sender, RoutedEventArgs e)
         {
             if (isInGame()) return;
-            Client.ClearPage(typeof(CustomGameListingPage));
+            Client.ClearPage(typeof (CustomGameListingPage));
             Client.SwitchPage(new CustomGameListingPage());
         }
 
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
+            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue)
+                ? AutoAcceptCheckBox.IsChecked.Value
+                : false;
         }
 
         private async void LeaveQueuesButton_Click(object sender, RoutedEventArgs e)
@@ -427,15 +413,15 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.PurgeFromQueues();
             await Client.PVPNet.QuitGame();
             await Client.PVPNet.Leave();
-            Client.ClearPage(typeof(CustomGameLobbyPage));
-            Client.ClearPage(typeof(CreateCustomGamePage));
-            Client.ClearPage(typeof(FactionsCreateGamePage));
-            Client.ClearPage(typeof(FactionsGameLobbyPage));
-            Client.ClearPage(typeof(ChampSelectPage));
+            Client.ClearPage(typeof (CustomGameLobbyPage));
+            Client.ClearPage(typeof (CreateCustomGamePage));
+            Client.ClearPage(typeof (FactionsCreateGamePage));
+            Client.ClearPage(typeof (FactionsGameLobbyPage));
+            Client.ClearPage(typeof (ChampSelectPage));
 
             foreach (Button btn in ButtonTimers.Keys)
             {
-                Button realButton = (Button)btn.Tag;
+                var realButton = (Button) btn.Tag;
                 realButton.Content = "Queue";
             }
             ButtonTimers.Clear();
@@ -447,7 +433,7 @@ namespace LegendaryClient.Windows
         private void CreateFactionGameButton_Click(object sender, RoutedEventArgs e)
         {
             if (isInGame()) return;
-            Client.ClearPage(typeof(FactionsCreateGamePage));
+            Client.ClearPage(typeof (FactionsCreateGamePage));
             Client.SwitchPage(new FactionsCreateGamePage());
         }
     }
