@@ -51,8 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client.cs" />
+    <Compile Include="EndOfGameStats.cs" />
+    <Compile Include="PlayerParticipantStatsSummary.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RawStatDTO.cs" />
     <Compile Include="ReplayRecorder.cs" />
   </ItemGroup>
   <ItemGroup>
