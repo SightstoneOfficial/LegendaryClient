@@ -102,6 +102,9 @@
     <Reference Include="rtmp-sharp">
       <HintPath>..\DLLS\rtmp-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="SharpCompress">
+      <HintPath>..\packages\p3-sharpcompress.0.10.5.2\lib\net40\SharpCompress.dll</HintPath>
+    </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
