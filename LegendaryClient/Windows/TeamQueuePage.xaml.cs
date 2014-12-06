@@ -254,14 +254,14 @@ namespace LegendaryClient.Windows
                         StartGameButton.IsEnabled = false;
                         Client.isOwnerOfGame = false;
                     }
-                    var m = JsonConvert.DeserializeObject<invitationRequest>(CurrentLobby.GameData);
-                    queueId = m.queueId;
-                    isRanked = m.isRanked;
-                    rankedTeamName = m.rankedTeamName;
-                    mapId = m.mapId;
-                    gameTypeConfigId = m.gameTypeConfigId;
-                    gameMode = m.gameMode;
-                    gameType = m.gameType;
+                    var m = JsonConvert.DeserializeObject<InvitationRequest>(CurrentLobby.GameData);
+                    queueId = m.QueueId;
+                    isRanked = m.IsRanked;
+                    rankedTeamName = m.RankedTeamName;
+                    mapId = m.MapId;
+                    gameTypeConfigId = m.GameTypeConfigId;
+                    gameMode = m.GameMode;
+                    gameType = m.GameType;
 
                     foreach (Member stats in CurrentLobby.Members)
                     {

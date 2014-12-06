@@ -190,11 +190,11 @@ namespace LegendaryClient.Windows.Profile
                             if (info.ChampionId != 0.0)
                             {
                                 var player = new ChatPlayer();
-                                champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
+                                Logic.SQLite.Champions Champion = Logic.SQLite.Champions.GetChampion(Convert.ToInt32(info.ChampionId));
                                 player.LevelLabel.Visibility = Visibility.Hidden;
-                                player.PlayerName.Content = Champion.displayName;
+                                player.PlayerName.Content = Champion.DisplayName;
                                 player.PlayerStatus.Content = info.TotalSessionsPlayed + " games played";
-                                player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
+                                player.ProfileImage.Source = Logic.SQLite.Champions.GetChampion(Champion.Id).Icon;
                                 TopChampionsListView.Items.Add(player);
                             }
                         }

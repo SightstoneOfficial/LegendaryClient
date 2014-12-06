@@ -382,7 +382,7 @@ namespace LegendaryClient.Windows
                                     }
                                 }
                                 ChampSelectPlayer control = new ChampSelectPlayer();
-                                control.ChampionImage.Source = champions.GetChampion(championId).icon;
+                                control.ChampionImage.Source = Champions.GetChampion(championId).Icon;
                                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
                                 control.SummonerSpell1.Source = new BitmapImage(uriSource);
                                 uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
@@ -398,7 +398,7 @@ namespace LegendaryClient.Windows
                                 m.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
                                 m.Margin = new System.Windows.Thickness(i++ * 100, 0, 0, 0);
                                 System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(new System.Drawing.Point(100, 0), new System.Drawing.Size(100, 560));
-                                System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championId).portraitPath)) as System.Drawing.Bitmap;
+                                System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(championId).PortraitPath)) as System.Drawing.Bitmap;
                                 System.Drawing.Bitmap target = new System.Drawing.Bitmap(cropRect.Width, cropRect.Height);
 
                                 using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(target))
@@ -477,7 +477,7 @@ namespace LegendaryClient.Windows
                                 //temp
                                 try
                                 {
-                                    champImage.Source = champions.GetChampion(cid).icon;
+                                    champImage.Source = Champions.GetChampion(cid).Icon;
                                 }
                                 catch { }
 

@@ -1,25 +1,30 @@
-﻿using System.Collections;
+﻿#region
+
+using System.Collections;
 using System.Windows.Media.Imaging;
+
+#endregion
+
 namespace LegendaryClient.Logic.SQLite
 {
-    public class masteries
+    public class Masteries
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public int prereq { get; set; }
+        public int Prereq { get; set; }
 
-        public int ranks { get; set; }
+        public int Ranks { get; set; }
 
-        public int selectedRank { get; set; }
+        public int SelectedRank { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string tree { get; set; }
+        public string Tree { get; set; }
 
-        public int treeRow { get; set; }
+        public int TreeRow { get; set; }
 
-        public ArrayList description { get; set; }
+        public ArrayList Description { get; set; }
 
-        public BitmapImage icon { get; set; }
+        public BitmapImage Icon { get; set; }
     }
 }

@@ -17,7 +17,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ChampionDetailsPage : Page
     {
-        internal champions TheChamp;
+        internal Champions TheChamp;
 
         private Point CurrentLocation;
 
@@ -32,44 +32,44 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             RenderChampions(ChampionId);
-            championSkins skin = championSkins.GetSkin(SkinID);
-            SkinName.Content = skin.displayName;
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath);
+            ChampionSkins skin = ChampionSkins.GetSkin(SkinID);
+            SkinName.Content = skin.DisplayName;
+            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.SplashPath);
             ChampionImage.Source = Client.GetImage(uriSource);
         }
 
         public void RenderChampions(int ChampionId)
         {
-            champions Champ = champions.GetChampion(ChampionId);
+            Champions Champ = Champions.GetChampion(ChampionId);
             TheChamp = Champ;
             if (TheChamp.IsFavourite)
                 FavouriteLabel.Content = "Unfavourite";
             else
                 FavouriteLabel.Content = "Favourite";
-            ChampionName.Content = Champ.displayName;
-            ChampionTitle.Content = Champ.title;
-            ChampionProfileImage.Source = Champ.icon;
-            AttackProgressBar.Value = Champ.ratingAttack;
-            DefenseProgressBar.Value = Champ.ratingDefense;
-            AbilityProgressBar.Value = Champ.ratingMagic;
-            DifficultyProgressBar.Value = Champ.ratingDifficulty;
+            ChampionName.Content = Champ.DisplayName;
+            ChampionTitle.Content = Champ.Title;
+            ChampionProfileImage.Source = Champ.Icon;
+            AttackProgressBar.Value = Champ.RatingAttack;
+            DefenseProgressBar.Value = Champ.RatingDefense;
+            AbilityProgressBar.Value = Champ.RatingMagic;
+            DifficultyProgressBar.Value = Champ.RatingDifficulty;
 
-            HPLabel.Content = string.Format("HP: {0} (+{1} per level)", Champ.healthBase, Champ.healthLevel);
-            ResourceLabel.Content = string.Format("{0}: {1} (+{2} per level)", Champ.ResourceType, Champ.manaBase, Champ.manaLevel);
-            HPRegenLabel.Content = string.Format("HP/5: {0} (+{1} per level)", Champ.healthRegenBase, Champ.healthRegenLevel);
-            ResourceRegenLabel.Content = string.Format("{0}/5: {1} (+{2} per level)", Champ.ResourceType, Champ.manaRegenBase, Champ.manaRegenLevel);
-            MagicResistLabel.Content = string.Format("MR: {0} (+{1} per level)", Champ.magicResistBase, Champ.magicResistLevel);
-            ArmorLabel.Content = string.Format("Armor: {0} (+{1} per level)", Champ.armorBase, Champ.armorLevel);
-            AttackDamageLabel.Content = string.Format("AD: {0} (+{1} per level)", Champ.attackBase, Champ.attackLevel);
-            RangeLabel.Content = string.Format("Range: {0}", Champ.range);
-            MovementSpeedLabel.Content = string.Format("Speed: {0}", Champ.moveSpeed);
+            HPLabel.Content = string.Format("HP: {0} (+{1} per level)", Champ.HealthBase, Champ.HealthLevel);
+            ResourceLabel.Content = string.Format("{0}: {1} (+{2} per level)", Champ.ResourceType, Champ.ManaBase, Champ.ManaLevel);
+            HPRegenLabel.Content = string.Format("HP/5: {0} (+{1} per level)", Champ.HealthRegenBase, Champ.HealthRegenLevel);
+            ResourceRegenLabel.Content = string.Format("{0}/5: {1} (+{2} per level)", Champ.ResourceType, Champ.ManaRegenBase, Champ.ManaRegenLevel);
+            MagicResistLabel.Content = string.Format("MR: {0} (+{1} per level)", Champ.MagicResistBase, Champ.MagicResistLevel);
+            ArmorLabel.Content = string.Format("Armor: {0} (+{1} per level)", Champ.ArmorBase, Champ.ArmorLevel);
+            AttackDamageLabel.Content = string.Format("AD: {0} (+{1} per level)", Champ.AttackBase, Champ.AttackLevel);
+            RangeLabel.Content = string.Format("Range: {0}", Champ.Range);
+            MovementSpeedLabel.Content = string.Format("Speed: {0}", Champ.MoveSpeed);
 
             foreach (Dictionary<string, object> Skins in Champ.Skins)
             {
                 int Skin = Convert.ToInt32(Skins["id"]);
                 ListViewItem item = new ListViewItem();
                 Image skinImage = new Image();
-                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(Skin).portraitPath);
+                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", ChampionSkins.GetSkin(Skin).PortraitPath);
                 skinImage.Source = Client.GetImage(uriSource);
                 skinImage.Width = 96.25;
                 skinImage.Height = 175;
@@ -88,10 +88,10 @@ namespace LegendaryClient.Windows
                 AbilityListView.Items.Add(detailAbility);
             }
 
-            ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champ.splashPath));
+            ChampionImage.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champ.SplashPath));
 
             LoreText.Text = Champ.Lore.Replace("<br>", Environment.NewLine);
-            TipsText.Text = string.Format("Tips while playing {0}:{1}{2}{2}{2}Tips while playing aginst {0}:{3}", Champ.displayName, Champ.tips.Replace("*", Environment.NewLine + "*"), Environment.NewLine, Champ.opponentTips.Replace("*", Environment.NewLine + "*"));
+            TipsText.Text = string.Format("Tips while playing {0}:{1}{2}{2}{2}Tips while playing aginst {0}:{3}", Champ.DisplayName, Champ.Tips.Replace("*", Environment.NewLine + "*"), Environment.NewLine, Champ.OpponentTips.Replace("*", Environment.NewLine + "*"));
         }
 
         private void SkinSelectListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -101,15 +101,15 @@ namespace LegendaryClient.Windows
             {
                 if (item.Tag != null)
                 {
-                    championSkins skin = championSkins.GetSkin((int)item.Tag);
-                    SkinName.Content = skin.displayName;
+                    ChampionSkins skin = ChampionSkins.GetSkin((int)item.Tag);
+                    SkinName.Content = skin.DisplayName;
                     DoubleAnimation fadingAnimation = new DoubleAnimation();
                     fadingAnimation.From = 1;
                     fadingAnimation.To = 0;
                     fadingAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.2));
                     fadingAnimation.Completed += (eSender, eArgs) =>
                     {
-                        string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath);
+                        string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.SplashPath);
                         ChampionImage.Source = Client.GetImage(uriSource);
                         fadingAnimation = new DoubleAnimation();
                         fadingAnimation.From = 0;
@@ -141,10 +141,10 @@ namespace LegendaryClient.Windows
             }
 
             List<Int32> TempList = new List<int>(Properties.Settings.Default.FavouriteChamps);
-            if (TempList.Contains(TheChamp.id))
-                TempList.Remove(TheChamp.id);
+            if (TempList.Contains(TheChamp.Id))
+                TempList.Remove(TheChamp.Id);
             else
-                TempList.Add(TheChamp.id);
+                TempList.Add(TheChamp.Id);
 
             Properties.Settings.Default.FavouriteChamps = TempList.ToArray();
             Properties.Settings.Default.Save();

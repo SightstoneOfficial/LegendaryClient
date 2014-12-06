@@ -12,9 +12,9 @@ namespace LegendaryClient.Logic.JSON
 {
     public static class Items
     {
-        public static List<items> PopulateItems()
+        public static List<SQLite.Items> PopulateItems()
         {
-            var itemList = new List<items>();
+            var itemList = new List<SQLite.Items>();
 
             string itemJson =
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "item.json"));
@@ -27,18 +27,18 @@ namespace LegendaryClient.Logic.JSON
 
             foreach (var item in itemData)
             {
-                var newItem = new items();
+                var newItem = new SQLite.Items();
                 var singularItemData = item.Value as Dictionary<string, object>;
-                newItem.id = Convert.ToInt32(item.Key);
-                newItem.name = singularItemData["name"] as string;
-                newItem.description = singularItemData["description"] as string;
+                newItem.Id = Convert.ToInt32(item.Key);
+                newItem.Name = singularItemData["name"] as string;
+                newItem.Description = singularItemData["description"] as string;
 
                 var goldData = singularItemData["gold"] as Dictionary<string, object>;
-                newItem.price = Convert.ToInt32(goldData["total"]);
-                newItem.sellprice = Convert.ToInt32(goldData["sell"]);
+                newItem.Price = Convert.ToInt32(goldData["total"]);
+                newItem.SellPrice = Convert.ToInt32(goldData["sell"]);
 
                 var imageData = singularItemData["image"] as Dictionary<string, object>;
-                newItem.iconPath = imageData["full"] as string;
+                newItem.IconPath = imageData["full"] as string;
 
                 itemList.Add(newItem);
             }

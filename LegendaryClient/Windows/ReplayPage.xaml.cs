@@ -359,9 +359,9 @@ namespace LegendaryClient.Windows
                 int id = int.Parse(s[s.Length - 1].Replace(".png", ""));
                 Client.MainGrid.Children.Add(PlayerItem);
 
-                items Item = items.GetItem(id);
+                Items Item = Items.GetItem(id);
 
-                PlayerItem.PlayerName.Content = Item.name;
+                PlayerItem.PlayerName.Content = Item.Name;
 
                 PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 if (PlayerItem.PlayerName.DesiredSize.Width > 250) //Make title fit in item
@@ -369,12 +369,12 @@ namespace LegendaryClient.Windows
                 else
                     PlayerItem.Width = 250;
 
-                PlayerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
-                PlayerItem.PlayerLeague.Content = "Item ID " + Item.id;
+                PlayerItem.PlayerWins.Content = Item.Price + " gold (" + Item.SellPrice + " sell)";
+                PlayerItem.PlayerLeague.Content = "Item ID " + Item.Id;
                 PlayerItem.LevelLabel.Content = "";
                 PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
 
-                string ParsedDescription = Item.description;
+                string ParsedDescription = Item.Description;
                 ParsedDescription = ParsedDescription.Replace("<br>", Environment.NewLine);
                 ParsedDescription = Regex.Replace(ParsedDescription, "<.*?>", string.Empty);
                 PlayerItem.PlayerStatus.Text = ParsedDescription;

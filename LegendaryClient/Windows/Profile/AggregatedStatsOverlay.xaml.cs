@@ -115,9 +115,9 @@ namespace LegendaryClient.Windows
                 {
                     ListViewItem item = new ListViewItem();
                     ProfileChampionImage championImage = new ProfileChampionImage();
-                    champions champ = champions.GetChampion((int)ChampionStat.ChampionId);
-                    championImage.ChampImage.Source = champ.icon;
-                    championImage.ChampName.Content = champ.displayName;
+                    Champions champ = Champions.GetChampion((int)ChampionStat.ChampionId);
+                    championImage.ChampImage.Source = champ.Icon;
+                    championImage.ChampName.Content = champ.DisplayName;
                     championImage.Width = 96;
                     championImage.Height = 84;
                     item.Tag = ChampionStat;

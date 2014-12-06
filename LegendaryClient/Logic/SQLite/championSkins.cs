@@ -1,31 +1,32 @@
-﻿namespace LegendaryClient.Logic.SQLite
+﻿#region
+
+using System.Linq;
+
+#endregion
+
+namespace LegendaryClient.Logic.SQLite
 {
-    public class championSkins
+    public class ChampionSkins
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public int isBase { get; set; }
+        public int IsBase { get; set; }
 
-        public int rank { get; set; }
+        public int Rank { get; set; }
 
-        public int championId { get; set; }
+        public int ChampionId { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string displayName { get; set; }
+        public string DisplayName { get; set; }
 
-        public string portraitPath { get; set; }
+        public string PortraitPath { get; set; }
 
-        public string splashPath { get; set; }
+        public string SplashPath { get; set; }
 
-        public static championSkins GetSkin(int id)
+        public static ChampionSkins GetSkin(int id)
         {
-            foreach (championSkins c in Client.ChampionSkins)
-            {
-                if (c.id == id)
-                    return c;
-            }
-            return null;
+            return Client.ChampionSkins.FirstOrDefault(c => c.Id == id);
         }
     }
 }

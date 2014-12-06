@@ -1,13 +1,13 @@
 ﻿namespace LegendaryClient.Logic.SQLite
 {
-    public class keybindingEvents
+    public class KeybindingEvents
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string internalName { get; set; }
+        public string InternalName { get; set; }
 
-        public string displayName { get; set; }
+        public string DisplayName { get; set; }
 
-        public string bindings { get; set; }
+        public string Bindings { get; set; }
     }
 }

@@ -433,7 +433,7 @@ namespace LegendaryClient.Windows
                 TeamBuilderChoose tbc = new TeamBuilderChoose();
                 tbc.PlayerName.Content = slot.summonerName;
                 tbc.PlayerName.Visibility = Visibility.Visible;
-                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
+                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(slot.championId).IconPath);
                 tbc.Champion.Source = Client.GetImage(uriSource);
                 tbc.Role.Items.Add(new Item(slot.role));
                 tbc.Role.SelectedIndex = 0;
@@ -494,7 +494,7 @@ namespace LegendaryClient.Windows
                 TeamBuilderPlayer tbc = new TeamBuilderPlayer();
                 tbc.PlayerName.Content = slot.summonerName;
                 tbc.PlayerName.Visibility = Visibility.Visible;
-                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
+                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(slot.championId).IconPath);
                 tbc.Champion.Source = Client.GetImage(uriSource);
                 tbc.Role.Content = slot.role;
                 tbc.Position.Content = slot.position;
@@ -587,7 +587,7 @@ namespace LegendaryClient.Windows
         {
             if (ChampionId != 0)
             {
-                TeamPlayer.Champion.Source = champions.GetChampion(ChampionId).icon;
+                TeamPlayer.Champion.Source = Champions.GetChampion(ChampionId).Icon;
             }
             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)spell1));
             TeamPlayer.SummonerSpell1Image.Source = Client.GetImage(uriSource);
@@ -668,7 +668,7 @@ namespace LegendaryClient.Windows
 
         private void LockIn_Click(object sender, RoutedEventArgs e)
         {
-            string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(ChampionId).iconPath);
+            string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(ChampionId).IconPath);
             TeamPlayer.Champion.Source = Client.GetImage(uriSource);
             ChampAndSkinGrid.Visibility = Visibility.Hidden;
         }
@@ -688,18 +688,18 @@ namespace LegendaryClient.Windows
                     {
                         string[] splitItem = ((string)item.Tag).Split(':');
                         int championId = Convert.ToInt32(splitItem[1]);
-                        champions Champion = champions.GetChampion(championId);
+                        Champions Champion = Champions.GetChampion(championId);
                         SelectSkin(0);
                         TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "Selected Default " + Champion.name + " as skin" + Environment.NewLine;
+                        tr.Text = "Selected Default " + Champion.Name + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     }
                     else
                     {
-                        championSkins skin = championSkins.GetSkin((int)item.Tag);
-                        SelectSkin(skin.id);
+                        ChampionSkins skin = ChampionSkins.GetSkin((int)item.Tag);
+                        SelectSkin(skin.Id);
                         TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine;
+                        tr.Text = "Selected " + skin.DisplayName + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     }
                 }
@@ -851,13 +851,13 @@ namespace LegendaryClient.Windows
                 ChampList = new List<ChampionDTO>(Client.PlayerChampions);
                 foreach (ChampionDTO champ in ChampList)
                 {
-                    champions getChamp = champions.GetChampion(champ.ChampionId);
+                    Champions getChamp = Champions.GetChampion(champ.ChampionId);
                     if ((champ.Owned || champ.FreeToPlay))
                     {
                         //Add to ListView
                         ListViewItem item = new ListViewItem();
                         ChampionImage championImage = new ChampionImage();
-                        championImage.ChampImage.Source = champions.GetChampion(champ.ChampionId).icon;
+                        championImage.ChampImage.Source = Champions.GetChampion(champ.ChampionId).Icon;
                         if (champ.FreeToPlay)
                             championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
                         championImage.Width = 64;
@@ -878,14 +878,14 @@ namespace LegendaryClient.Windows
             ListViewItem item = new ListViewItem();
             Image skinImage = new Image();
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
-            champions Champion = champions.GetChampion(ChampionId);
+            Champions Champion = Champions.GetChampion(ChampionId);
 
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
+            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.PortraitPath);
 
             skinImage.Source = Client.GetImage(uriSource);
             skinImage.Width = 191;
             skinImage.Stretch = Stretch.UniformToFill;
-            item.Tag = "0:" + Champion.id;
+            item.Tag = "0:" + Champion.Id;
             item.Content = skinImage;
             SkinSelectListView.Items.Add(item);
 
@@ -899,7 +899,7 @@ namespace LegendaryClient.Windows
                         {
                             item = new ListViewItem();
                             skinImage = new Image();
-                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath);
+                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", ChampionSkins.GetSkin(skin.SkinId).PortraitPath);
                             skinImage.Source = Client.GetImage(uriSource);
                             skinImage.Width = 191;
                             skinImage.Stretch = Stretch.UniformToFill;
@@ -925,7 +925,7 @@ namespace LegendaryClient.Windows
             fadingAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.2));
             fadingAnimation.Completed += (eSender, eArgs) =>
             {
-                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion((int)item.Tag).splashPath);
+                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion((int)item.Tag).SplashPath);
                 ChampAndSkinBackgroundImage.Source = Client.GetImage(uriSource);
                 fadingAnimation = new DoubleAnimation();
                 fadingAnimation.From = 0;

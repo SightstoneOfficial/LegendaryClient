@@ -28,6 +28,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Champions = LegendaryClient.Logic.SQLite.Champions;
+using Items = LegendaryClient.Logic.JSON.Items;
+using Masteries = LegendaryClient.Logic.JSON.Masteries;
+using Runes = LegendaryClient.Logic.JSON.Runes;
 
 namespace LegendaryClient.Windows
 {
@@ -79,29 +83,29 @@ namespace LegendaryClient.Windows
             //Get client data after patcher completed
 
             Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
-            Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
-                                orderby s.name
+            Client.Champions = (from s in Client.SQLiteDatabase.Table<Champions>()
+                                orderby s.Name
                                 select s).ToList();
             
-            foreach (champions c in Client.Champions)
+            foreach (Champions c in Client.Champions)
             {
-                var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath), UriKind.Absolute);
-                c.icon = new BitmapImage(Source);
-                Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
+                var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.IconPath), UriKind.Absolute);
+                c.Icon = new BitmapImage(Source);
+                Debugger.Log(0, "Log", "Requesting :" + c.Name + " champ");
                 
-                Champions.InsertExtraChampData(c);
+                Logic.JSON.Champions.InsertExtraChampData(c);
             }
-            Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
-                                    orderby s.name
+            Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<ChampionSkins>()
+                                    orderby s.Name
                                     select s).ToList();
-            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>() //Needs Fixed
-                                        orderby s.name
+            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<ChampionAbilities>() //Needs Fixed
+                                        orderby s.Name
                                         select s).ToList();
-            Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
-                                 orderby s.id
+            Client.SearchTags = (from s in Client.SQLiteDatabase.Table<ChampionSearchTags>()
+                                 orderby s.Id
                                  select s).ToList();
-            Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
-                               orderby s.id
+            Client.Keybinds = (from s in Client.SQLiteDatabase.Table<KeybindingEvents>()
+                               orderby s.Id
                                select s).ToList();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
@@ -142,7 +146,7 @@ namespace LegendaryClient.Windows
                 RegionComboBox.SelectedValue = Properties.Settings.Default.Region;
             }
 
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(Client.LatestChamp).SplashPath), UriKind.Absolute);
             //LoginImage.Source = new BitmapImage(uriSource);//*/
             
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&

@@ -1,11 +1,11 @@
 ﻿namespace LegendaryClient.Logic.SQLite
 {
-    public class championSearchTags
+    public class ChampionSearchTags
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public int championId { get; set; }
+        public int ChampionId { get; set; }
 
-        public int searchTagId { get; set; }
+        public int SearchTagId { get; set; }
     }
 }

@@ -37,6 +37,8 @@ using MahApps.Metro;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Windows.Media;
+using InvitationRequest = LegendaryClient.Logic.SQLite.InvitationRequest;
+
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
 namespace LegendaryClient.Logic
@@ -155,7 +157,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// The database of all runes
         /// </summary>
-        internal static List<runes> Runes;
+        internal static List<Runes> Runes;
 
         /// <summary>
         /// Retreives UpdateDate For LegendaryClient
@@ -231,32 +233,32 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// The database of all the champions
         /// </summary>
-        internal static List<champions> Champions;
+        internal static List<Champions> Champions;
 
         /// <summary>
         /// The database of all the champion abilities
         /// </summary>
-        internal static List<championAbilities> ChampionAbilities;
+        internal static List<ChampionAbilities> ChampionAbilities;
 
         /// <summary>
         /// The database of all the champion skins
         /// </summary>
-        internal static List<championSkins> ChampionSkins;
+        internal static List<ChampionSkins> ChampionSkins;
 
         /// <summary>
         /// The database of all the items
         /// </summary>
-        internal static List<items> Items;
+        internal static List<Items> Items;
 
         /// <summary>
         /// The database of all masteries
         /// </summary>
-        internal static List<masteries> Masteries;
+        internal static List<Masteries> Masteries;
 
         /// <summary>
         /// The Invite Data
         /// </summary>
-        internal static List<invitationRequest> InviteJsonRequest = new List<invitationRequest>();
+        internal static List<InvitationRequest> InviteJsonRequest = new List<InvitationRequest>();
 
         /// <summary>
         /// All of players who have been invited
@@ -266,12 +268,12 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// The database of all the search tags
         /// </summary>
-        internal static List<championSearchTags> SearchTags;
+        internal static List<ChampionSearchTags> SearchTags;
 
         /// <summary>
         /// The database of all the keybinding defaults & proper names
         /// </summary>
-        internal static List<keybindingEvents> Keybinds;
+        internal static List<KeybindingEvents> Keybinds;
 
         internal static ChampionDTO[] PlayerChampions;
 
@@ -898,9 +900,9 @@ namespace LegendaryClient.Logic
                     Inviter stats = message as Inviter;
                     //CurrentInviter = stats;
                 }
-                else if (message is InvitationRequest)
+                else if (message is PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest)
                 {
-                    InvitationRequest stats = message as InvitationRequest;
+                    PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest stats = message as PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest;
                     //TypedObject body = (TypedObject)to["body"];
                     if (stats.Inviter != null)
                     {

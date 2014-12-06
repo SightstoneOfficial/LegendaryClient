@@ -31,7 +31,7 @@ namespace LegendaryClient.Windows.Profile
 
             ChampionList = new List<ChampionDTO>(champList);
 
-            ChampionList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+            ChampionList.Sort((x, y) => Logic.SQLite.Champions.GetChampion(x.ChampionId).DisplayName.CompareTo(Logic.SQLite.Champions.GetChampion(y.ChampionId).DisplayName));
 
             FilterChampions();
         }
@@ -59,7 +59,7 @@ namespace LegendaryClient.Windows.Profile
 
             if (!String.IsNullOrEmpty(SearchTextBox.Text))
             {
-                tempList = tempList.Where(x => champions.GetChampion(x.ChampionId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+                tempList = tempList.Where(x => Logic.SQLite.Champions.GetChampion(x.ChampionId).DisplayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
             }
 
             bool AllChampions = false;
@@ -94,11 +94,11 @@ namespace LegendaryClient.Windows.Profile
                     (NotOwnedChampions && !champ.Owned))
                 {
                     ProfileChampionImage championImage = new ProfileChampionImage();
-                    champions champion = champions.GetChampion(champ.ChampionId);
-                    championImage.ChampImage.Source = champion.icon;
+                    Logic.SQLite.Champions champion = Logic.SQLite.Champions.GetChampion(champ.ChampionId);
+                    championImage.ChampImage.Source = champion.Icon;
                     if (champ.FreeToPlay)
                         championImage.FreeToPlayLabel.Visibility = System.Windows.Visibility.Visible;
-                    championImage.ChampName.Content = champion.displayName;
+                    championImage.ChampName.Content = champion.DisplayName;
                     if (!champ.Owned && !champ.FreeToPlay)
                     {
                         championImage.ChampImage.Opacity = 0.5;

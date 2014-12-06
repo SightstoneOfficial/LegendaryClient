@@ -55,7 +55,7 @@ namespace LegendaryClient.Windows.Profile
                     {
                         if (championSelect.SummonerInternalName == participant.SummonerInternalName)
                         {
-                            control.ChampionImage.Source = champions.GetChampion(championSelect.ChampionId).icon;
+                            control.ChampionImage.Source = Logic.SQLite.Champions.GetChampion(championSelect.ChampionId).Icon;
                             var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
                             control.SummonerSpell1.Source = new BitmapImage(uriSource);
                             uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
@@ -72,7 +72,7 @@ namespace LegendaryClient.Windows.Profile
                             m.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
                             m.Margin = new System.Windows.Thickness(y++ * 100, 0, 0, 0);
                             System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(new System.Drawing.Point(100, 0), new System.Drawing.Size(100, 560));
-                            System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championSelect.ChampionId).portraitPath)) as System.Drawing.Bitmap;
+                            System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Logic.SQLite.Champions.GetChampion(championSelect.ChampionId).PortraitPath)) as System.Drawing.Bitmap;
                             System.Drawing.Bitmap target = new System.Drawing.Bitmap(cropRect.Width, cropRect.Height);
 
                             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(target))
@@ -131,7 +131,7 @@ namespace LegendaryClient.Windows.Profile
                 Image champImage = new Image();
                 champImage.Height = 58;
                 champImage.Width = 58;
-                champImage.Source = champions.GetChampion(x.ChampionId).icon;
+                champImage.Source = Logic.SQLite.Champions.GetChampion(x.ChampionId).Icon;
                 if (x.TeamId == 100)
                 {
                     BlueBanListView.Items.Add(champImage);

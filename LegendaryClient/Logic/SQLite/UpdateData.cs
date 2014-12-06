@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LegendaryClient.Logic.SQLite
+﻿namespace LegendaryClient.Logic.SQLite
 {
     public class UpdateData
     {
-        public string version { get; set; }
-        public bool? active { get; set; }
-        public bool? isPreRelease { get; set; }
-        public string downloadLink { get; set; }
-        public string fileName { get; set; }
+        public string Version { get; set; }
+        public bool? Active { get; set; }
+        public bool? IsPreRelease { get; set; }
+        public string DownloadLink { get; set; }
+        public string FileName { get; set; }
     }
 }

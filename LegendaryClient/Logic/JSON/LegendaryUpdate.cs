@@ -30,10 +30,10 @@ namespace LegendaryClient.Logic.JSON
                 if (singularUpdateData == null)
                     continue;
 
-                newItem.version = singularUpdateData["version"] as string;
-                newItem.active = singularUpdateData["active"] as bool?;
-                newItem.isPreRelease = singularUpdateData["isPreRelease"] as bool?;
-                newItem.downloadLink = singularUpdateData["downloadLink"] as string;
+                newItem.Version = singularUpdateData["version"] as string;
+                newItem.Active = singularUpdateData["active"] as bool?;
+                newItem.IsPreRelease = singularUpdateData["isPreRelease"] as bool?;
+                newItem.DownloadLink = singularUpdateData["downloadLink"] as string;
             }
 
             return itemList;

@@ -10,6 +10,7 @@ using LegendaryClient.Windows;
 using Newtonsoft.Json;
 using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using InvitationRequest = LegendaryClient.Logic.SQLite.InvitationRequest;
 
 #endregion
 
@@ -42,7 +43,7 @@ namespace LegendaryClient.Controls
         private string _rankedTeamName;
         private string _type;
 
-        public GameInvitePopup(InvitationRequest stats)
+        public GameInvitePopup(PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest stats)
         {
             InitializeComponent();
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
@@ -66,10 +67,10 @@ namespace LegendaryClient.Controls
 
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
-            if (!(message is InvitationRequest))
+            if (!(message is PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest))
                 return;
 
-            var stats = (InvitationRequest) message;
+            var stats = (PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest) message;
             try
             {
                 InviteInfo info = Client.InviteData[stats.InvitationId];
@@ -140,7 +141,7 @@ namespace LegendaryClient.Controls
             NotificationTextBox.Text += s + Environment.NewLine;
         }
 
-        private void LoadGamePopupData(InvitationRequest stats)
+        private void LoadGamePopupData(PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest stats)
         {
             _invitationStateAsString = stats.InvitationStateAsString;
             _gameMetaData = stats.GameMetaData;
@@ -152,14 +153,14 @@ namespace LegendaryClient.Controls
             {
                 NoGame.Visibility = Visibility.Hidden;
             }
-            var m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
-            _queueId = m.queueId;
-            _isRanked = m.isRanked;
-            _rankedTeamName = m.rankedTeamName;
-            _mapId = m.mapId;
-            _gameTypeConfigId = m.gameTypeConfigId;
-            _gameMode = m.gameMode;
-            _gameType = m.gameType;
+            var m = JsonConvert.DeserializeObject<InvitationRequest>(stats.GameMetaData);
+            _queueId = m.QueueId;
+            _isRanked = m.IsRanked;
+            _rankedTeamName = m.RankedTeamName;
+            _mapId = m.MapId;
+            _gameTypeConfigId = m.GameTypeConfigId;
+            _gameMode = m.GameMode;
+            _gameType = m.GameType;
 
             Client.PVPNet.getLobbyStatusInviteId = _invitationId;
             switch (_mapId)

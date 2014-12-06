@@ -1,42 +1,41 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
+using System.Linq;
+
+#endregion
 
 namespace LegendaryClient.Logic.SQLite
 {
-    public class championAbilities
+    public class ChampionAbilities
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public int rank { get; set; }
+        public int Rank { get; set; }
 
-        public int championId { get; set; }
+        public int ChampionId { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
-        public string cost { get; set; }
+        public string Cost { get; set; }
 
-        public string cooldown { get; set; }
+        public string Cooldown { get; set; }
 
-        public string iconPath { get; set; }
+        public string IconPath { get; set; }
 
-        public string videoPath { get; set; }
+        public string VideoPath { get; set; }
 
-        public double range { get; set; }
+        public double Range { get; set; }
 
-        public string effect { get; set; }
+        public string Effect { get; set; }
 
-        public string description { get; set; }
+        public string Description { get; set; }
 
-        public string hotkey { get; set; }
+        public string Hotkey { get; set; }
 
-        public static List<championAbilities> GetAbilities(int champId)
+        public static List<ChampionAbilities> GetAbilities(int champId)
         {
-            List<championAbilities> abilitylist = new List<championAbilities>();
-            foreach (championAbilities c in Client.ChampionAbilities)
-            {
-                if (c.championId == champId)
-                    abilitylist.Add(c);
-            }
-            return abilitylist;
+            return Client.ChampionAbilities.Where(c => c.ChampionId == champId).ToList();
         }
     }
 }

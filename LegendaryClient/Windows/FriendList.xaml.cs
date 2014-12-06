@@ -105,9 +105,9 @@ namespace LegendaryClient.Windows
                                 switch (ChatPlayerPair.Value.GameStatus)
                                 {
                                     case "inGame":
-                                        champions InGameChamp = champions.GetChampion(ChatPlayerPair.Value.Champion);
+                                        Champions InGameChamp = Champions.GetChampion(ChatPlayerPair.Value.Champion);
                                         if (InGameChamp != null)
-                                            player.PlayerStatus.Content = "In Game as " + InGameChamp.displayName;
+                                            player.PlayerStatus.Content = "In Game as " + InGameChamp.DisplayName;
                                         else
                                             player.PlayerStatus.Content = "In Game";
                                         break;
@@ -211,10 +211,10 @@ namespace LegendaryClient.Windows
                     switch (playerItem.GameStatus)
                     {
                         case "inGame":
-                            champions InGameChamp = champions.GetChampion(playerItem.Champion);
+                            Champions InGameChamp = Champions.GetChampion(playerItem.Champion);
                             if (InGameChamp != null)
                                 PlayerItem.InGameStatus.Text = "In Game" + Environment.NewLine +
-                                                               "Playing as " + InGameChamp.displayName + Environment.NewLine +
+                                                               "Playing as " + InGameChamp.DisplayName + Environment.NewLine +
                                                                "For " + string.Format("{0} Minutes and {1} Seconds", elapsed.Minutes, elapsed.Seconds) ;
                             else
                                 PlayerItem.InGameStatus.Text = "In Game";

@@ -70,26 +70,26 @@ namespace LegendaryClient.Windows
                     notification.TitleLabel.Content = "Game Invite";
                     notification.BodyTextbox.Text = data.stats.Inviter + " has invited you to a game";
 
-                    invitationRequest m = JsonConvert.DeserializeObject<invitationRequest>(data.stats.GameMetaData);
+                    InvitationRequest m = JsonConvert.DeserializeObject<InvitationRequest>(data.stats.GameMetaData);
 
                     string MapName;
 
                     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
                     TextInfo textInfo = cultureInfo.TextInfo;
-                    var gameModeLower = textInfo.ToTitleCase(string.Format(m.gameMode.ToLower()));
-                    var gameTypeLower = textInfo.ToTitleCase(string.Format(m.gameType.ToLower()));
+                    var gameModeLower = textInfo.ToTitleCase(string.Format(m.GameMode.ToLower()));
+                    var gameTypeLower = textInfo.ToTitleCase(string.Format(m.GameType.ToLower()));
                     //Why do I have to do this Riot?
                     var gameTypeRemove = gameTypeLower.Replace("_game", "");
                     var removeAllUnder = gameTypeRemove.Replace("_", " ");
 
                     notification.BodyTextbox.Text += "Mode: " + gameModeLower;
-                    if (m.mapId == 1)
+                    if (m.MapId == 1)
                         MapName = "Summoners Rift";
-                    else if (m.mapId == 10)
+                    else if (m.MapId == 10)
                         MapName = "The Twisted Treeline";
-                    else if (m.mapId == 12)
+                    else if (m.MapId == 12)
                         MapName = "Howling Abyss";
-                    else if (m.mapId == 8)
+                    else if (m.MapId == 8)
                         MapName = "The Crystal Scar";
                     else
                         MapName = "Unknown Map";

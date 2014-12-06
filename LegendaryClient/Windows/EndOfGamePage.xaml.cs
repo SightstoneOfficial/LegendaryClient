@@ -128,9 +128,9 @@ namespace LegendaryClient.Windows
             foreach (PlayerParticipantStatsSummary summary in allParticipants)
             {
                 var playerStats = new EndOfGamePlayer();
-                champions champ = champions.GetChampion(summary.SkinName); //Misleading variable name
-                playerStats.ChampImage.Source = champ.icon;
-                playerStats.ChampLabel.Content = champ.name;
+                Champions champ = Champions.GetChampion(summary.SkinName); //Misleading variable name
+                playerStats.ChampImage.Source = champ.Icon;
+                playerStats.ChampLabel.Content = champ.Name;
                 playerStats.PlayerLabel.Content = summary.SummonerName;
                 var uriSource =
                     new Uri(
@@ -214,14 +214,14 @@ namespace LegendaryClient.Windows
 
             PlayersListView.Items.Insert(allParticipants.Count/2, new Separator());
 
-            championSkins skin = championSkins.GetSkin(statistics.SkinIndex);
+            ChampionSkins skin = ChampionSkins.GetSkin(statistics.SkinIndex);
             try
             {
                 if (skin == null)
                     return;
 
                 var skinSource =
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath),
+                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.SplashPath),
                         UriKind.Absolute);
 
                 SkinImage.Source = new BitmapImage(skinSource);
