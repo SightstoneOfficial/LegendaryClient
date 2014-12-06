@@ -1,8 +1,4 @@
-﻿using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,23 +7,26 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
 using log4net;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 
 namespace LegendaryClient.Windows.Profile
 {
     /// <summary>
-    /// Interaction logic for MatchHistory.xaml
+    ///     Interaction logic for MatchHistory.xaml
     /// </summary>
-    public partial class MatchHistory : Page
+    public partial class MatchHistory
     {
-        private List<MatchStats> GameStats = new List<MatchStats>();
+        private static readonly ILog log = LogManager.GetLogger(typeof (MatchHistory));
+        private readonly List<MatchStats> GameStats = new List<MatchStats>();
         private LargeChatPlayer PlayerItem;
-        private static readonly ILog log = LogManager.GetLogger(typeof(MatchHistory));
 
         public MatchHistory()
         {
@@ -36,7 +35,7 @@ namespace LegendaryClient.Windows.Profile
 
         public void Update(double AccountId)
         {
-            Client.PVPNet.GetRecentGames(AccountId, new RecentGames.Callback(GotRecentGames));
+            Client.PVPNet.GetRecentGames(AccountId, GotRecentGames);
         }
 
         public void GotRecentGames(RecentGames result)
@@ -46,13 +45,13 @@ namespace LegendaryClient.Windows.Profile
             foreach (PlayerGameStats Game in result.GameStatistics)
             {
                 Game.GameType = Client.TitleCaseString(Game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
-                MatchStats Match = new MatchStats();
-                
+                var Match = new MatchStats();
+
                 foreach (RawStat Stat in Game.Statistics)
                 {
-                    var type = typeof(MatchStats);
+                    Type type = typeof (MatchStats);
                     string fieldName = Client.TitleCaseString(Stat.StatType.Replace('_', ' ')).Replace(" ", "");
-                    var f = type.GetField(fieldName);
+                    FieldInfo f = type.GetField(fieldName);
                     f.SetValue(Match, Stat.Value);
                 }
 
@@ -70,15 +69,15 @@ namespace LegendaryClient.Windows.Profile
                 GameStatsListView.Items.Clear();
                 foreach (MatchStats stats in GameStats)
                 {
-                    RecentGameOverview item = new RecentGameOverview();
-                    champions GameChamp = champions.GetChampion((int)Math.Round(stats.Game.ChampionId));
+                    var item = new RecentGameOverview();
+                    champions GameChamp = champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
                     item.ChampionImage.Source = GameChamp.icon;
                     item.ChampionNameLabel.Content = GameChamp.displayName;
-                    item.ScoreLabel.Content = 
+                    item.ScoreLabel.Content =
                         string.Format("{0}/{1}/{2} ",
-                        stats.ChampionsKilled,
-                        stats.NumDeaths,
-                        stats.Assists);
+                            stats.ChampionsKilled,
+                            stats.NumDeaths,
+                            stats.Assists);
 
                     switch (stats.Game.QueueType)
                     {
@@ -114,23 +113,23 @@ namespace LegendaryClient.Windows.Profile
 
                     item.CreepScoreLabel.Content = stats.MinionsKilled + " minions";
                     item.DateLabel.Content = stats.Game.CreateDate;
-                    item.IPEarnedLabel.Content = "+" + stats.Game.IpEarned + " IP";
+                    item.IpEarnedLabel.Content = "+" + stats.Game.IpEarned + " IP";
                     item.PingLabel.Content = stats.Game.UserServerPing + "ms";
 
-                    BrushConverter bc = new BrushConverter();
-                    Brush brush = (Brush)bc.ConvertFrom("#FF609E74");
+                    var bc = new BrushConverter();
+                    var brush = (Brush) bc.ConvertFrom("#FF609E74");
 
                     if (stats.Lose == 1)
-                        brush = (Brush)bc.ConvertFrom("#FF9E6060");
+                        brush = (Brush) bc.ConvertFrom("#FF9E6060");
 
                     else if (stats.Game.IpEarned == 0)
-                        brush = (Brush)bc.ConvertFrom("#FFE27100");
+                        brush = (Brush) bc.ConvertFrom("#FFE27100");
 
                     item.GridView.Background = brush;
                     item.GridView.Width = 250;
                     GamesListView.Items.Add(item);
                 }
-                if(GamesListView.Items.Count > 0) GamesListView.SelectedIndex = 0;
+                if (GamesListView.Items.Count > 0) GamesListView.SelectedIndex = 0;
             }));
         }
 
@@ -146,10 +145,10 @@ namespace LegendaryClient.Windows.Profile
                 ItemsListView.Items.Clear();
 
                 //Add self to game players
-                Image img = new Image();
+                var img = new Image();
                 img.Width = 58;
                 img.Height = 58;
-                img.Source = champions.GetChampion((int)Math.Round(stats.Game.ChampionId)).icon;
+                img.Source = champions.GetChampion((int) Math.Round(stats.Game.ChampionId)).icon;
                 BlueListView.Items.Add(img);
 
                 foreach (FellowPlayerInfo info in stats.Game.FellowPlayers)
@@ -157,7 +156,7 @@ namespace LegendaryClient.Windows.Profile
                     img = new Image();
                     img.Width = 58;
                     img.Height = 58;
-                    img.Source = champions.GetChampion((int)Math.Round(info.ChampionId)).icon;
+                    img.Source = champions.GetChampion((int) Math.Round(info.ChampionId)).icon;
                     if (info.TeamId == stats.Game.TeamId)
                     {
                         BlueListView.Items.Add(img);
@@ -168,12 +167,12 @@ namespace LegendaryClient.Windows.Profile
                     }
                 }
 
-                Type classType = typeof(MatchStats);
+                Type classType = typeof (MatchStats);
                 foreach (FieldInfo field in classType.GetFields(BindingFlags.Public | BindingFlags.Instance))
                 {
                     if (field.GetValue(stats) is double)
                     {
-                        if ((double)field.GetValue(stats) == 0)
+                        if ((double) field.GetValue(stats) == 0)
                         {
                             continue;
                         }
@@ -183,15 +182,20 @@ namespace LegendaryClient.Windows.Profile
                         continue;
                     }
 
-                    ProfilePage.KeyValueItem item = new ProfilePage.KeyValueItem
+                    var item = new ProfilePage.KeyValueItem
                     {
-                        Key = Client.TitleCaseString(string.Concat(field.Name.Select(fe => Char.IsUpper(fe) ? " " + fe : fe.ToString())).TrimStart(' ')),
+                        Key =
+                            Client.TitleCaseString(
+                                string.Concat(field.Name.Select(fe => Char.IsUpper(fe) ? " " + fe : fe.ToString()))
+                                    .TrimStart(' ')),
                         Value = field.GetValue(stats)
                     };
 
-                    if (((string)item.Key).StartsWith("Item"))
+                    if (((string) item.Key).StartsWith("Item"))
                     {
-                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"), UriKind.Absolute);
+                        var uriSource =
+                            new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"),
+                                UriKind.Absolute);
                         if (File.Exists(uriSource.AbsolutePath))
                         {
                             img = new Image();
@@ -230,8 +234,8 @@ namespace LegendaryClient.Windows.Profile
 
         private void img_MouseMove(object sender, MouseEventArgs e)
         {
-            Image item = (Image)sender;
-            ProfilePage.KeyValueItem playerItem = (ProfilePage.KeyValueItem)item.Tag;
+            var item = (Image) sender;
+            var playerItem = (ProfilePage.KeyValueItem) item.Tag;
             if (PlayerItem == null)
             {
                 PlayerItem = new LargeChatPlayer();
@@ -250,18 +254,19 @@ namespace LegendaryClient.Windows.Profile
                 PlayerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
                 PlayerItem.PlayerLeague.Content = "Item ID " + Item.id;
                 PlayerItem.LevelLabel.Content = "";
-                PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
+                PlayerItem.UsingLegendary.Visibility = Visibility.Hidden;
 
                 string ParsedDescription = Item.description;
                 ParsedDescription = ParsedDescription.Replace("<br>", Environment.NewLine);
                 ParsedDescription = Regex.Replace(ParsedDescription, "<.*?>", string.Empty);
                 PlayerItem.PlayerStatus.Text = ParsedDescription;
 
-                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"), UriKind.RelativeOrAbsolute);
+                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"),
+                    UriKind.RelativeOrAbsolute);
                 PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
 
-                PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                PlayerItem.HorizontalAlignment = HorizontalAlignment.Left;
+                PlayerItem.VerticalAlignment = VerticalAlignment.Top;
             }
 
             Point MouseLocation = e.GetPosition(Client.MainGrid);
@@ -278,12 +283,12 @@ namespace LegendaryClient.Windows.Profile
 
     public class MatchStats
     {
-        public double Lose = 0;
-        public double Win = 0;
-        public double NumDeaths = 0;
-        public double ChampionsKilled = 0;
         public double Assists = 0;
-        public double MinionsKilled = 0;
+        public double BarracksKilled = 0;
+        public double ChampionsKilled = 0;
+        public double CombatPlayerScore = 0;
+        public PlayerGameStats Game = null;
+        public double GoldEarned = 0;
         public double Item0 = 0;
         public double Item1 = 0;
         public double Item2 = 0;
@@ -291,45 +296,45 @@ namespace LegendaryClient.Windows.Profile
         public double Item4 = 0;
         public double Item5 = 0;
         public double Item6 = 0;
-        public double VisionWardsBoughtInGame = 0;
-        public double SightWardsBoughtInGame = 0;
-        public double TotalTimeCrowdControlDealt = 0;
-        public double TotalDamageDealt = 0;
-        public double TotalDamageTaken = 0;
-        public double WardKilled = 0;
-        public double BarracksKilled = 0;
-        public double Level = 0;
-        public double TotalDamageDealtToChampions = 0;
-        public double TurretsKilled = 0;
-        public double GoldEarned = 0;
-        public double PhysicalDamageDealtToChampions = 0;
-        public double WardPlaced = 0;
-        public double NeutralMinionsKilled = 0;
-        public double MagicDamageDealtPlayer = 0;
-        public double PhysicalDamageTaken = 0;
-        public double PhysicalDamageDealtPlayer = 0;
-        public double LargestMultiKill = 0;
-        public double TrueDamageDealtPlayer = 0;
-        public double TotalTimeSpentDead = 0;
-        public double MagicDamageTaken = 0;
-        public double LargestKillingSpree = 0;
-        public double TrueDamageTaken = 0;
-        public double MagicDamageDealtToChampions = 0;
         public double LargestCriticalStrike = 0;
-        public double TrueDamageDealtToChampions = 0;
-        public double TotalHeal = 0;
-        public double NeutralMinionsKilledYourJungle = 0;
+        public double LargestKillingSpree = 0;
+        public double LargestMultiKill = 0;
+        public double Level = 0;
+        public double Lose = 0;
+        public double MagicDamageDealtPlayer = 0;
+        public double MagicDamageDealtToChampions = 0;
+        public double MagicDamageTaken = 0;
+        public double MinionsKilled = 0;
+        public double NeutralMinionsKilled = 0;
         public double NeutralMinionsKilledEnemyJungle = 0;
-        public double NodeNeutralize = 0;
-        public double CombatPlayerScore = 0;
-        public double NodeNeutralizeAssist = 0;
-        public double TotalScoreRank = 0;
-        public double TeamObjective = 0;
+        public double NeutralMinionsKilledYourJungle = 0;
         public double NodeCapture = 0;
-        public double TotalPlayerScore = 0;
         public double NodeCaptureAssist = 0;
-        public double VictoryPointTotal = 0;
+        public double NodeNeutralize = 0;
+        public double NodeNeutralizeAssist = 0;
+        public double NumDeaths = 0;
         public double ObjectivePlayerScore = 0;
-        public PlayerGameStats Game = null;
+        public double PhysicalDamageDealtPlayer = 0;
+        public double PhysicalDamageDealtToChampions = 0;
+        public double PhysicalDamageTaken = 0;
+        public double SightWardsBoughtInGame = 0;
+        public double TeamObjective = 0;
+        public double TotalDamageDealt = 0;
+        public double TotalDamageDealtToChampions = 0;
+        public double TotalDamageTaken = 0;
+        public double TotalHeal = 0;
+        public double TotalPlayerScore = 0;
+        public double TotalScoreRank = 0;
+        public double TotalTimeCrowdControlDealt = 0;
+        public double TotalTimeSpentDead = 0;
+        public double TrueDamageDealtPlayer = 0;
+        public double TrueDamageDealtToChampions = 0;
+        public double TrueDamageTaken = 0;
+        public double TurretsKilled = 0;
+        public double VictoryPointTotal = 0;
+        public double VisionWardsBoughtInGame = 0;
+        public double WardKilled = 0;
+        public double WardPlaced = 0;
+        public double Win = 0;
     }
 }

@@ -1,4 +1,4 @@
-﻿ <UserControl x:Class="LegendaryClient.Controls.TradeControl"
+﻿<UserControl x:Class="LegendaryClient.Controls.TradeControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,13 +11,22 @@
                 <DropShadowEffect ShadowDepth="3" />
             </Rectangle.Effect>
         </Rectangle>
-        <Label x:Name="RequestLabel" Content="Eddy5641 wants to trade!" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="White" VerticalAlignment="Top"/>
-        <Image x:Name="MyChampImage" HorizontalAlignment="Left" Height="64" Margin="40,50,0,0" VerticalAlignment="Top" Width="64" Source="/LegendaryClient;component/NONE.png"/>
-        <Image x:Name="TheirChampImage" HorizontalAlignment="Right" Height="64" Margin="0,50,40,0" VerticalAlignment="Top" Width="64" Source="/LegendaryClient;component/NONE.png"/>
-        <Label Content="è" FontSize="30" FontWeight="ExtraLight" HorizontalAlignment="Center" Margin="0,70,0,0" Foreground="White" VerticalAlignment="Top" FontFamily="Wingdings"/>
-        <Label x:Name="MyChampLabel" Content="Yasuo" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Center" Margin="0,115,160,0" Foreground="White" VerticalAlignment="Top"/>
-        <Label x:Name="TheirChampLabel" Content="Ahri" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Center" Margin="160,115,0,0" Foreground="White" VerticalAlignment="Top"/>
-        <Button Style="{x:Null}" x:Name="AcceptButton" Foreground="Black" Content="Accept" HorizontalAlignment="Left" Margin="20,150,0,0" Height="40" VerticalAlignment="Top" Width="125" Click="AcceptButton_Click"/>
-        <Button Style="{x:Null}" x:Name="DeclineButton" Foreground="Black" Content="Decline" HorizontalAlignment="Right" Margin="0,150,20,0" Height="40" VerticalAlignment="Top" Width="125" Click="DeclineButton_Click"/>
+        <Label x:Name="RequestLabel" Content="Eddy5641 wants to trade!" FontSize="18" FontWeight="ExtraLight"
+               HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="White" VerticalAlignment="Top" />
+        <Image x:Name="MyChampImage" HorizontalAlignment="Left" Height="64" Margin="40,50,0,0" VerticalAlignment="Top"
+               Width="64" Source="/LegendaryClient;component/NONE.png" />
+        <Image x:Name="TheirChampImage" HorizontalAlignment="Right" Height="64" Margin="0,50,40,0"
+               VerticalAlignment="Top" Width="64" Source="/LegendaryClient;component/NONE.png" />
+        <Label Content="è" FontSize="30" FontWeight="ExtraLight" HorizontalAlignment="Center" Margin="0,70,0,0"
+               Foreground="White" VerticalAlignment="Top" FontFamily="Wingdings" />
+        <Label x:Name="MyChampLabel" Content="Yasuo" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Center"
+               Margin="0,115,160,0" Foreground="White" VerticalAlignment="Top" />
+        <Label x:Name="TheirChampLabel" Content="Ahri" FontSize="16" FontWeight="ExtraLight"
+               HorizontalAlignment="Center" Margin="160,115,0,0" Foreground="White" VerticalAlignment="Top" />
+        <Button Style="{x:Null}" x:Name="AcceptButton" Foreground="Black" Content="Accept" HorizontalAlignment="Left"
+                Margin="20,150,0,0" Height="40" VerticalAlignment="Top" Width="125" Click="AcceptButton_Click" />
+        <Button Style="{x:Null}" x:Name="DeclineButton" Foreground="Black" Content="Decline"
+                HorizontalAlignment="Right" Margin="0,150,20,0" Height="40" VerticalAlignment="Top" Width="125"
+                Click="DeclineButton_Click" />
     </Grid>
 </UserControl>

@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for CustomLobbyPlayer.xaml
+    ///     Interaction logic for CustomLobbyPlayer.xaml
     /// </summary>
-    public partial class CustomLobbyPlayer : UserControl
+    public partial class CustomLobbyPlayer
     {
         public CustomLobbyPlayer()
         {

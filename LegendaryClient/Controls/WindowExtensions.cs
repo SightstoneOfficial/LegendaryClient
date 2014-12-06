@@ -1,11 +1,16 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Threading;
 
+#endregion
+
 //http://www.jarloo.com/flashing-a-wpf-window/
+
 namespace LegendaryClient.Controls
 {
     public static class WindowExtensions
@@ -19,6 +24,10 @@ namespace LegendaryClient.Controls
         private const UInt32 FLASHW_TIMER = 4; //Flash continuously, until the FLASHW_STOP flag is set.
         private const UInt32 FLASHW_TIMERNOFG = 12; //Flash continuously until the window comes to the foreground.
 
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+
         [StructLayout(LayoutKind.Sequential)]
         private struct FLASHWINFO
         {
@@ -26,12 +35,10 @@ namespace LegendaryClient.Controls
             public IntPtr hwnd; //A Handle to the Window to be Flashed. The window can be either opened or minimized.
             public UInt32 dwFlags; //The Flash Status.
             public UInt32 uCount; // number of times to flash the window
-            public UInt32 dwTimeout; //The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.
-        }
 
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+            public UInt32 dwTimeout;
+            //The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.
+        }
 
         #endregion Window Flashing API Stuff
 
@@ -39,9 +46,9 @@ namespace LegendaryClient.Controls
         {
             win.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                WindowInteropHelper h = new WindowInteropHelper(win);
+                var h = new WindowInteropHelper(win);
 
-                FLASHWINFO info = new FLASHWINFO
+                var info = new FLASHWINFO
                 {
                     hwnd = h.Handle,
                     dwFlags = FLASHW_ALL | FLASHW_TIMERNOFG,

@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for ChampionImage.xaml
+    ///     Interaction logic for ChampionImage.xaml
     /// </summary>
-    public partial class ChampionImage : UserControl
+    public partial class ChampionImage
     {
         public ChampionImage()
         {

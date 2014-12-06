@@ -6,13 +6,16 @@
              mc:Ignorable="d"
              Height="28" MinWidth="150">
     <Grid>
-        <Rectangle x:Name="BlinkRectangle" Fill="#FFFFD100" HorizontalAlignment="Stretch" Height="3" Margin="0,0,0,0" Panel.ZIndex="1" VerticalAlignment="Top" Visibility="Hidden"/>
+        <Rectangle x:Name="BlinkRectangle" Fill="#FFFFD100" HorizontalAlignment="Stretch" Height="3" Margin="0,0,0,0"
+                   Panel.ZIndex="1" VerticalAlignment="Top" Visibility="Hidden" />
         <Rectangle Fill="#99C3C3C3" Stroke="#FF646464">
             <Rectangle.Effect>
                 <DropShadowEffect ShadowDepth="3" />
             </Rectangle.Effect>
         </Rectangle>
-        <Label x:Name="PlayerLabelName" Content="Snowl" Margin="0,0,30,0" Foreground="White" FontWeight="ExtraLight" FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" />
-        <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center" Width="25" Click="CloseButton_Click" />
+        <Label x:Name="PlayerLabelName" Content="Snowl" Margin="0,0,30,0" Foreground="White" FontWeight="ExtraLight"
+               FontSize="14" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right"
+                Margin="0,0,5,0" VerticalAlignment="Center" Width="25" Click="CloseButton_Click" />
     </Grid>
 </UserControl>
