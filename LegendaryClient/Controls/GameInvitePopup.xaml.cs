@@ -75,7 +75,7 @@ namespace LegendaryClient.Controls
             {
                 InviteInfo info = Client.InviteData[stats.InvitationId];
                 //Data about this popup has changed. We want to set this
-                if (!Equals(info.popup, this))
+                if (!Equals(info.Popup, this))
                     return;
 
                 switch (stats.InvitationState)
@@ -99,7 +99,7 @@ namespace LegendaryClient.Controls
                         break;
                     case "ACTIVE":
                         NotificationTextBox.Text = "";
-                        LoadGamePopupData(stats.Inviter == null ? info.stats : stats);
+                        LoadGamePopupData(stats.Inviter == null ? info.Stats : stats);
                         Visibility = Visibility.Hidden;
 
                         RenderNotificationTextBox(_inviter + " has invited you to a game");
@@ -202,8 +202,8 @@ namespace LegendaryClient.Controls
 
             var y = new InviteInfo
             {
-                stats = stats,
-                popup = this,
+                Stats = stats,
+                Popup = this,
                 Inviter = _inviter
             };
 

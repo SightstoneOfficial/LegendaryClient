@@ -3,7 +3,7 @@
     public enum ChatSubjects
     {
         /// <summary>
-        /// Hack, doesn't use the enum value
+        ///     Hack, doesn't use the enum value
         /// </summary>
         PRACTICE_GAME_OWNER_CHANGE,
         GAME_INVITE_REJECT,

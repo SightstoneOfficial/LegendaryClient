@@ -125,7 +125,7 @@ namespace LegendaryClient
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            uiLogic.UpdateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+            UiLogic.UpdateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
 
         }
 

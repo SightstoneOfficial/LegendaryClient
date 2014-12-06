@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
+
+#endregion
 
 namespace LegendaryClient.Logic.SWF.SWFTypes
 {
     internal class RecordHeader
     {
-        private ushort tagCode;
-        private uint tagLength;
-        private bool longTag;
+        private bool _longTag;
+        private ushort _tagCode;
+        private uint _tagLength;
 
         public RecordHeader()
         {
@@ -15,68 +19,61 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
 
         public RecordHeader(int tag, int length)
         {
-            tagCode = System.Convert.ToUInt16(tag);
-            tagLength = System.Convert.ToUInt32(length);
-            if (tagLength > 0x3e)
-                longTag = true;
-            else
-                longTag = false;
+            _tagCode = Convert.ToUInt16(tag);
+            _tagLength = Convert.ToUInt32(length);
+            _longTag = _tagLength > 0x3e;
         }
 
         public RecordHeader(bool longTag)
         {
-            this.longTag = longTag;
+            _longTag = longTag;
         }
 
         public RecordHeader(int tag, int length, bool longTag)
         {
-            tagCode = System.Convert.ToUInt16(tag);
-            tagLength = System.Convert.ToUInt32(length);
-            this.longTag = longTag;
+            _tagCode = Convert.ToUInt16(tag);
+            _tagLength = Convert.ToUInt32(length);
+            _longTag = longTag;
         }
 
         public RecordHeader(int tag, uint length)
         {
-            tagCode = System.Convert.ToUInt16(tag);
-            tagLength = length;
-            if (tagLength > 0x3e)
-                longTag = true;
-            else
-                longTag = false;
+            _tagCode = Convert.ToUInt16(tag);
+            _tagLength = length;
+            _longTag = _tagLength > 0x3e;
         }
 
         public int TagCode
         {
-            get { return this.tagCode; }
-            set { this.tagCode = (ushort)value; }
+            get { return _tagCode; }
+            set { _tagCode = (ushort) value; }
         }
 
         public uint TagLength
         {
-            get { return this.tagLength; }
-            set { this.tagLength = value; }
+            get { return _tagLength; }
+            set { _tagLength = value; }
         }
 
         public void ReadData(BinaryReader binaryReader)
         {
-            ushort tagCL = binaryReader.ReadUInt16();
-            tagCode = Convert.ToUInt16(tagCL >> 6);
-            tagLength = System.Convert.ToUInt32(tagCL - (tagCode << 6));
+            ushort tagCl = binaryReader.ReadUInt16();
+            _tagCode = Convert.ToUInt16(tagCl >> 6);
+            _tagLength = Convert.ToUInt32(tagCl - (_tagCode << 6));
 
-            bool longTag;
 
-            if (tagLength == 0x3F)
+            if (_tagLength == 0x3F)
             {
                 uint len = binaryReader.ReadUInt32();
-                tagLength = len;
-                longTag = (tagLength <= 127);
+                _tagLength = len;
+                _longTag = (_tagLength <= 127);
             }
             else
             {
-                longTag = false;
+                _longTag = false;
             }
 
-            if (tagLength > binaryReader.BaseStream.Length)
+            if (_tagLength > binaryReader.BaseStream.Length)
             {
                 throw new Exception("Invalid Tag Length");
             }

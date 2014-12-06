@@ -1,17 +1,17 @@
-﻿using LegendaryClient.Controls;
-using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+﻿#region
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LegendaryClient.Controls;
+using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+
+#endregion
 
 namespace LegendaryClient.Logic
 {
     public class InviteInfo
     {
-        internal InvitationRequest stats { get; set; }
-        internal GameInvitePopup popup { get; set; }
+        internal InvitationRequest Stats { get; set; }
+        internal GameInvitePopup Popup { get; set; }
         internal Boolean PopupVisible { get; set; }
         internal String Inviter { get; set; }
     }

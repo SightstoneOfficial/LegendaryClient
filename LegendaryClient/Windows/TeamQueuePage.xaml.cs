@@ -98,7 +98,7 @@ namespace LegendaryClient.Windows
             {
                 string ObfuscatedName =
                     Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"),
-                        ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
+                        ChatPrefixes.ArrangingGame); //Why do you need to replace INVID with invid Riot?
                 string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
                 newRoom = Client.ConfManager.GetRoom(new JID(JID));
                 newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
@@ -122,8 +122,8 @@ namespace LegendaryClient.Windows
         {
             LastSender = (Button) sender;
             var stats = (Member) LastSender.Tag;
-            uiLogic.UpdateProfile(stats.SummonerName);
-            Client.SwitchPage(uiLogic.Profile);
+            UiLogic.UpdateProfile(stats.SummonerName);
+            Client.SwitchPage(UiLogic.Profile);
         }
 
         private async void Kick_Click(object sender, RoutedEventArgs e)

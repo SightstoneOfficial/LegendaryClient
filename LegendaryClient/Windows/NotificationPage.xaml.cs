@@ -65,12 +65,12 @@ namespace LegendaryClient.Windows
                 {
                     ChatListView.Items.Clear();
                     InvitesNotification notification = new InvitesNotification();
-                    notification.Accept.Click += (s, e) => { Client.PVPNet.Accept(data.stats.InvitationId); Client.InviteData.Remove(data.stats.InvitationId); Client.SwitchPage(new TeamQueuePage(data.stats.InvitationId)); };
-                    notification.Decline.Click += (s, e) => { Client.PVPNet.Decline(data.stats.InvitationId); Client.InviteData.Remove(data.stats.InvitationId); };
+                    notification.Accept.Click += (s, e) => { Client.PVPNet.Accept(data.Stats.InvitationId); Client.InviteData.Remove(data.Stats.InvitationId); Client.SwitchPage(new TeamQueuePage(data.Stats.InvitationId)); };
+                    notification.Decline.Click += (s, e) => { Client.PVPNet.Decline(data.Stats.InvitationId); Client.InviteData.Remove(data.Stats.InvitationId); };
                     notification.TitleLabel.Content = "Game Invite";
-                    notification.BodyTextbox.Text = data.stats.Inviter + " has invited you to a game";
+                    notification.BodyTextbox.Text = data.Stats.Inviter + " has invited you to a game";
 
-                    InvitationRequest m = JsonConvert.DeserializeObject<InvitationRequest>(data.stats.GameMetaData);
+                    InvitationRequest m = JsonConvert.DeserializeObject<InvitationRequest>(data.Stats.GameMetaData);
 
                     string MapName;
 

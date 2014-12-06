@@ -292,7 +292,7 @@ namespace LegendaryClient.Windows
 
         public void ProfileItem_Click(object sender, RoutedEventArgs e)
         {
-            uiLogic.UpdateProfile(LastPlayerItem.Username);
+            UiLogic.UpdateProfile(LastPlayerItem.Username);
         }
 
 #pragma warning disable 4014

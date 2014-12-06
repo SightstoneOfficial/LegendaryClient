@@ -73,7 +73,7 @@ namespace LegendaryClient.Windows
                         HasConnectedToChat = true;
                         try
                         {
-                            string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
+                            string ObfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.ArrangingPractice);
                             string JID = Client.GetChatroomJID(ObfuscatedName, dto.RoomPassword, false);
                             newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
                             newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
