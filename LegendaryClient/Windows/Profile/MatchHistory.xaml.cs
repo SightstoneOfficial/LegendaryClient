@@ -35,7 +35,7 @@ namespace LegendaryClient.Windows.Profile
 
         public void Update(double AccountId)
         {
-            Client.PvpNet.GetRecentGames(AccountId, GotRecentGames);
+            Client.PVPNet.GetRecentGames(AccountId, GotRecentGames);
         }
 
         public void GotRecentGames(RecentGames result)
@@ -70,9 +70,9 @@ namespace LegendaryClient.Windows.Profile
                 foreach (MatchStats stats in GameStats)
                 {
                     var item = new RecentGameOverview();
-                    Logic.SQLite.Champions GameChamp = Logic.SQLite.Champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
-                    item.ChampionImage.Source = GameChamp.Icon;
-                    item.ChampionNameLabel.Content = GameChamp.DisplayName;
+                    champions GameChamp = champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
+                    item.ChampionImage.Source = GameChamp.icon;
+                    item.ChampionNameLabel.Content = GameChamp.displayName;
                     item.ScoreLabel.Content =
                         string.Format("{0}/{1}/{2} ",
                             stats.ChampionsKilled,
@@ -148,7 +148,7 @@ namespace LegendaryClient.Windows.Profile
                 var img = new Image();
                 img.Width = 58;
                 img.Height = 58;
-                img.Source = Logic.SQLite.Champions.GetChampion((int) Math.Round(stats.Game.ChampionId)).Icon;
+                img.Source = champions.GetChampion((int) Math.Round(stats.Game.ChampionId)).icon;
                 BlueListView.Items.Add(img);
 
                 foreach (FellowPlayerInfo info in stats.Game.FellowPlayers)
@@ -156,7 +156,7 @@ namespace LegendaryClient.Windows.Profile
                     img = new Image();
                     img.Width = 58;
                     img.Height = 58;
-                    img.Source = Logic.SQLite.Champions.GetChampion((int) Math.Round(info.ChampionId)).Icon;
+                    img.Source = champions.GetChampion((int) Math.Round(info.ChampionId)).icon;
                     if (info.TeamId == stats.Game.TeamId)
                     {
                         BlueListView.Items.Add(img);
@@ -241,9 +241,9 @@ namespace LegendaryClient.Windows.Profile
                 PlayerItem = new LargeChatPlayer();
                 Client.MainGrid.Children.Add(PlayerItem);
 
-                Items Item = Items.GetItem(Convert.ToInt32(playerItem.Value));
+                items Item = items.GetItem(Convert.ToInt32(playerItem.Value));
 
-                PlayerItem.PlayerName.Content = Item.Name;
+                PlayerItem.PlayerName.Content = Item.name;
 
                 PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 if (PlayerItem.PlayerName.DesiredSize.Width > 250) //Make title fit in item
@@ -251,17 +251,17 @@ namespace LegendaryClient.Windows.Profile
                 else
                     PlayerItem.Width = 250;
 
-                PlayerItem.PlayerWins.Content = Item.Price + " gold (" + Item.SellPrice + " sell)";
-                PlayerItem.PlayerLeague.Content = "Item ID " + Item.Id;
+                PlayerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
+                PlayerItem.PlayerLeague.Content = "Item ID " + Item.id;
                 PlayerItem.LevelLabel.Content = "";
                 PlayerItem.UsingLegendary.Visibility = Visibility.Hidden;
 
-                string ParsedDescription = Item.Description;
+                string ParsedDescription = Item.description;
                 ParsedDescription = ParsedDescription.Replace("<br>", Environment.NewLine);
                 ParsedDescription = Regex.Replace(ParsedDescription, "<.*?>", string.Empty);
                 PlayerItem.PlayerStatus.Text = ParsedDescription;
 
-                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.Id + ".png"),
+                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"),
                     UriKind.RelativeOrAbsolute);
                 PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
 

@@ -49,14 +49,14 @@ namespace LegendaryClient.Windows
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.Region.RegionName;
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
-            UiLogic.CreateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+            uiLogic.CreateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
             ChangeSpectatorRegion(region);
             GetNews(region);
             System.Timers.Timer update = new System.Timers.Timer();
             update.Interval = 5000;
             update.Elapsed += (o, e) =>
                 {
-                    Client.ChatClient.Presence(Client.CurrentPresence, Client.GetPresence(), Client.PresenceStatus, 0);
+                    Client.ChatClient.Presence(Client.CurrentPresence, Client.GetPresence(), Client.presenceStatus, 0);
                 };
             timer.Interval = (5000);
             //timer.Start();
@@ -65,7 +65,7 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    string JID = Client.GetChatroomJid(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public), string.Empty, true);
+                    string JID = Client.GetChatroomJID(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public), string.Empty, true);
 
                     GroupChatItem item = Join(JID, "LegendaryClient");
                     NotificationChatGroup ChatGroup = new NotificationChatGroup();
@@ -92,7 +92,7 @@ namespace LegendaryClient.Windows
 
         private void GotPlayerData(LoginDataPacket packet)
         {
-            Client.PvpNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             AllSummonerData PlayerData = packet.AllSummonerData;
             SummonerNameLabel.Content = PlayerData.Summoner.Name;
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
@@ -104,7 +104,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                Client.PvpNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
+                Client.PVPNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
             }
 
             if (packet.BroadcastNotification.BroadcastMessages != null)
@@ -382,7 +382,7 @@ namespace LegendaryClient.Windows
                                     }
                                 }
                                 ChampSelectPlayer control = new ChampSelectPlayer();
-                                control.ChampionImage.Source = Champions.GetChampion(championId).Icon;
+                                control.ChampionImage.Source = champions.GetChampion(championId).icon;
                                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
                                 control.SummonerSpell1.Source = new BitmapImage(uriSource);
                                 uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
@@ -398,7 +398,7 @@ namespace LegendaryClient.Windows
                                 m.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
                                 m.Margin = new System.Windows.Thickness(i++ * 100, 0, 0, 0);
                                 System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(new System.Drawing.Point(100, 0), new System.Drawing.Size(100, 560));
-                                System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(championId).PortraitPath)) as System.Drawing.Bitmap;
+                                System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championId).portraitPath)) as System.Drawing.Bitmap;
                                 System.Drawing.Bitmap target = new System.Drawing.Bitmap(cropRect.Width, cropRect.Height);
 
                                 using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(target))
@@ -477,7 +477,7 @@ namespace LegendaryClient.Windows
                                 //temp
                                 try
                                 {
-                                    champImage.Source = Champions.GetChampion(cid).Icon;
+                                    champImage.Source = champions.GetChampion(cid).icon;
                                 }
                                 catch { }
 
@@ -680,7 +680,7 @@ namespace LegendaryClient.Windows
 
         private void fakeend_Click(object sender, RoutedEventArgs e)
         {
-            Client.PvpNet.SimulateEndOfGame();
+            Client.PVPNet.SimulateEndOfGame();
         }
     }
 }

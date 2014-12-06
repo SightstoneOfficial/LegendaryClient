@@ -249,9 +249,9 @@ A code signing license (So you know that you are using LegendaryClient)
             Properties.Settings.Default.Theme = (string)(ThemeBox.SelectedItem as WinThemes).Value;
             
             mainWindow.ChangeTheme();
-            Client.StatusPage.Change();
+            Client.statusPage.Change();
             Client.FriendList.Change();
-            Client.NotificationPage.Change();
+            Client.notificationPage.Change();
         }
 
         private void UseAsBackground_Changed(object sender, RoutedEventArgs e)

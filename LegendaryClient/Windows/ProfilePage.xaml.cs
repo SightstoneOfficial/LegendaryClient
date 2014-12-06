@@ -52,7 +52,7 @@ namespace LegendaryClient.Windows
 
         public async void GetSummonerProfile(string s)
         {
-            PublicSummoner Summoner = await Client.PvpNet.GetSummonerByName(String.IsNullOrWhiteSpace(s) ? Client.LoginPacket.AllSummonerData.Summoner.Name : s);
+            PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(String.IsNullOrWhiteSpace(s) ? Client.LoginPacket.AllSummonerData.Summoner.Name : s);
             if (String.IsNullOrWhiteSpace(Summoner.Name))
             {
                 MessageOverlay overlay = new MessageOverlay();
@@ -71,14 +71,14 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                Client.PvpNet.GetAllLeaguesForPlayer(Summoner.SummonerId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
+                Client.PVPNet.GetAllLeaguesForPlayer(Summoner.SummonerId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
             }
 
             int ProfileIconID = Summoner.ProfileIconId;
             var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png");
             ProfileImage.Source = Client.GetImage(uriSource);
 
-            PlatformGameLifecycleDTO n = await Client.PvpNet.RetrieveInProgressSpectatorGameInfo(s);
+            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(s);
             if (n.GameName != null)
             {
                 InGameHeader.Visibility = Visibility.Visible;

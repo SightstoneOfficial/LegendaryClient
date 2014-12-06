@@ -104,7 +104,7 @@ namespace LegendaryClient.Windows
             LoadStats();
 
             Client.InviteListView = InvitedPlayers;
-            Client.PvpNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             Client.LastPageContent = this.Content;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
@@ -124,7 +124,7 @@ namespace LegendaryClient.Windows
         /// <param name="Pass"></param>
         private void ConnectToChat(string ChatJID, string Pass)
         {
-            string JID = Client.GetChatroomJid(ChatJID, Pass, false);
+            string JID = Client.GetChatroomJID(ChatJID, Pass, false);
             newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
             newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
             newRoom.OnRoomMessage += newRoom_OnRoomMessage;
@@ -173,7 +173,7 @@ namespace LegendaryClient.Windows
                     {
                         Dispatcher.InvokeAsync(async () =>
                         {
-                            PlatformGameLifecycleDTO n = await Client.PvpNet.RetrieveInProgressSpectatorGameInfo(Client.LoginPacket.AllSummonerData.Summoner.Name);
+                            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Client.LoginPacket.AllSummonerData.Summoner.Name);
                             if (n.GameName != null)
                             {
                                 string IP = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
@@ -406,10 +406,10 @@ namespace LegendaryClient.Windows
                     if (Client.CurrentPage == this) { Client.CurrentPage = null; Client.ReturnButton.Visibility = Visibility.Hidden; }
                 }));
 
-                Client.PvpNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
-                Client.PvpNet.Leave();
+                Client.PVPNet.Leave();
 
                 //temp, what other reasons are there?
                 QuitReason response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);
@@ -433,7 +433,7 @@ namespace LegendaryClient.Windows
                 TeamBuilderChoose tbc = new TeamBuilderChoose();
                 tbc.PlayerName.Content = slot.summonerName;
                 tbc.PlayerName.Visibility = Visibility.Visible;
-                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(slot.championId).IconPath);
+                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
                 tbc.Champion.Source = Client.GetImage(uriSource);
                 tbc.Role.Items.Add(new Item(slot.role));
                 tbc.Role.SelectedIndex = 0;
@@ -494,7 +494,7 @@ namespace LegendaryClient.Windows
                 TeamBuilderPlayer tbc = new TeamBuilderPlayer();
                 tbc.PlayerName.Content = slot.summonerName;
                 tbc.PlayerName.Visibility = Visibility.Visible;
-                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(slot.championId).IconPath);
+                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
                 tbc.Champion.Source = Client.GetImage(uriSource);
                 tbc.Role.Content = slot.role;
                 tbc.Position.Content = slot.position;
@@ -587,7 +587,7 @@ namespace LegendaryClient.Windows
         {
             if (ChampionId != 0)
             {
-                TeamPlayer.Champion.Source = Champions.GetChampion(ChampionId).Icon;
+                TeamPlayer.Champion.Source = champions.GetChampion(ChampionId).icon;
             }
             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)spell1));
             TeamPlayer.SummonerSpell1Image.Source = Client.GetImage(uriSource);
@@ -668,7 +668,7 @@ namespace LegendaryClient.Windows
 
         private void LockIn_Click(object sender, RoutedEventArgs e)
         {
-            string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(ChampionId).IconPath);
+            string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(ChampionId).iconPath);
             TeamPlayer.Champion.Source = Client.GetImage(uriSource);
             ChampAndSkinGrid.Visibility = Visibility.Hidden;
         }
@@ -688,18 +688,18 @@ namespace LegendaryClient.Windows
                     {
                         string[] splitItem = ((string)item.Tag).Split(':');
                         int championId = Convert.ToInt32(splitItem[1]);
-                        Champions Champion = Champions.GetChampion(championId);
+                        champions Champion = champions.GetChampion(championId);
                         SelectSkin(0);
                         TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "Selected Default " + Champion.Name + " as skin" + Environment.NewLine;
+                        tr.Text = "Selected Default " + Champion.name + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     }
                     else
                     {
-                        ChampionSkins skin = ChampionSkins.GetSkin((int)item.Tag);
-                        SelectSkin(skin.Id);
+                        championSkins skin = championSkins.GetSkin((int)item.Tag);
+                        SelectSkin(skin.id);
                         TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "Selected " + skin.DisplayName + " as skin" + Environment.NewLine;
+                        tr.Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     }
                 }
@@ -776,7 +776,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await Client.PvpNet.SaveMasteryBook(bookDTO);
+                await Client.PVPNet.SaveMasteryBook(bookDTO);
             }
         }
 
@@ -820,7 +820,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await Client.PvpNet.SelectDefaultSpellBookPage(SelectedRunePage);
+                await Client.PVPNet.SelectDefaultSpellBookPage(SelectedRunePage);
             }
         }
 
@@ -851,13 +851,13 @@ namespace LegendaryClient.Windows
                 ChampList = new List<ChampionDTO>(Client.PlayerChampions);
                 foreach (ChampionDTO champ in ChampList)
                 {
-                    Champions getChamp = Champions.GetChampion(champ.ChampionId);
+                    champions getChamp = champions.GetChampion(champ.ChampionId);
                     if ((champ.Owned || champ.FreeToPlay))
                     {
                         //Add to ListView
                         ListViewItem item = new ListViewItem();
                         ChampionImage championImage = new ChampionImage();
-                        championImage.ChampImage.Source = Champions.GetChampion(champ.ChampionId).Icon;
+                        championImage.ChampImage.Source = champions.GetChampion(champ.ChampionId).icon;
                         if (champ.FreeToPlay)
                             championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
                         championImage.Width = 64;
@@ -878,14 +878,14 @@ namespace LegendaryClient.Windows
             ListViewItem item = new ListViewItem();
             Image skinImage = new Image();
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
-            Champions Champion = Champions.GetChampion(ChampionId);
+            champions Champion = champions.GetChampion(ChampionId);
 
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.PortraitPath);
+            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
 
             skinImage.Source = Client.GetImage(uriSource);
             skinImage.Width = 191;
             skinImage.Stretch = Stretch.UniformToFill;
-            item.Tag = "0:" + Champion.Id;
+            item.Tag = "0:" + Champion.id;
             item.Content = skinImage;
             SkinSelectListView.Items.Add(item);
 
@@ -899,7 +899,7 @@ namespace LegendaryClient.Windows
                         {
                             item = new ListViewItem();
                             skinImage = new Image();
-                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", ChampionSkins.GetSkin(skin.SkinId).PortraitPath);
+                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath);
                             skinImage.Source = Client.GetImage(uriSource);
                             skinImage.Width = 191;
                             skinImage.Stretch = Stretch.UniformToFill;
@@ -925,7 +925,7 @@ namespace LegendaryClient.Windows
             fadingAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.2));
             fadingAnimation.Completed += (eSender, eArgs) =>
             {
-                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion((int)item.Tag).SplashPath);
+                string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion((int)item.Tag).splashPath);
                 ChampAndSkinBackgroundImage.Source = Client.GetImage(uriSource);
                 fadingAnimation = new DoubleAnimation();
                 fadingAnimation.From = 0;
@@ -939,7 +939,7 @@ namespace LegendaryClient.Windows
 
         public async void CallWithArgs(String UUID, String GameMode, String ProcedureCall, String Parameters)
         {
-            await Client.PvpNet.Call(UUID, GameMode, ProcedureCall, Parameters);
+            await Client.PVPNet.Call(UUID, GameMode, ProcedureCall, Parameters);
         }
 
         private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
@@ -1057,11 +1057,11 @@ namespace LegendaryClient.Windows
 
         private async void InGame()
         {
-            await Client.PvpNet.Leave();
-            Client.PvpNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+            await Client.PVPNet.Leave();
+            Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
             Client.ClearPage(typeof(TeamBuilderPage));
             Client.GameStatus = "inGame";
-            Client.TimeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
 
             Client.SwitchPage(new InGame());

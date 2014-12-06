@@ -65,31 +65,31 @@ namespace LegendaryClient.Windows
                 {
                     ChatListView.Items.Clear();
                     InvitesNotification notification = new InvitesNotification();
-                    notification.Accept.Click += (s, e) => { Client.PvpNet.Accept(data.Stats.InvitationId); Client.InviteData.Remove(data.Stats.InvitationId); Client.SwitchPage(new TeamQueuePage(data.Stats.InvitationId)); };
-                    notification.Decline.Click += (s, e) => { Client.PvpNet.Decline(data.Stats.InvitationId); Client.InviteData.Remove(data.Stats.InvitationId); };
+                    notification.Accept.Click += (s, e) => { Client.PVPNet.Accept(data.stats.InvitationId); Client.InviteData.Remove(data.stats.InvitationId); Client.SwitchPage(new TeamQueuePage(data.stats.InvitationId)); };
+                    notification.Decline.Click += (s, e) => { Client.PVPNet.Decline(data.stats.InvitationId); Client.InviteData.Remove(data.stats.InvitationId); };
                     notification.TitleLabel.Content = "Game Invite";
-                    notification.BodyTextbox.Text = data.Stats.Inviter + " has invited you to a game";
+                    notification.BodyTextbox.Text = data.stats.Inviter + " has invited you to a game";
 
-                    InvitationRequest m = JsonConvert.DeserializeObject<InvitationRequest>(data.Stats.GameMetaData);
+                    invitationRequest m = JsonConvert.DeserializeObject<invitationRequest>(data.stats.GameMetaData);
 
                     string MapName;
 
                     CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
                     TextInfo textInfo = cultureInfo.TextInfo;
-                    var gameModeLower = textInfo.ToTitleCase(string.Format(m.GameMode.ToLower()));
-                    var gameTypeLower = textInfo.ToTitleCase(string.Format(m.GameType.ToLower()));
+                    var gameModeLower = textInfo.ToTitleCase(string.Format(m.gameMode.ToLower()));
+                    var gameTypeLower = textInfo.ToTitleCase(string.Format(m.gameType.ToLower()));
                     //Why do I have to do this Riot?
                     var gameTypeRemove = gameTypeLower.Replace("_game", "");
                     var removeAllUnder = gameTypeRemove.Replace("_", " ");
 
                     notification.BodyTextbox.Text += "Mode: " + gameModeLower;
-                    if (m.MapId == 1)
+                    if (m.mapId == 1)
                         MapName = "Summoners Rift";
-                    else if (m.MapId == 10)
+                    else if (m.mapId == 10)
                         MapName = "The Twisted Treeline";
-                    else if (m.MapId == 12)
+                    else if (m.mapId == 12)
                         MapName = "Howling Abyss";
-                    else if (m.MapId == 8)
+                    else if (m.mapId == 8)
                         MapName = "The Crystal Scar";
                     else
                         MapName = "Unknown Map";

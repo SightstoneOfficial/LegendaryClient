@@ -143,7 +143,7 @@ namespace LegendaryClient.Windows
             string Sound = AmbientChampSelect.CurrentQueueToSoundFile(Client.QueueId);
             AmbientChampSelect.PlayAmbientChampSelectSound(Sound);
             Client.LastPageContent = Content;
-            Client.RunOnce = true;
+            Client.runonce = true;
 
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
@@ -217,8 +217,8 @@ namespace LegendaryClient.Windows
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort(
                 (x, y) =>
-                    Champions.GetChampion(x.ChampionId)
-                        .DisplayName.CompareTo(Champions.GetChampion(y.ChampionId).DisplayName));
+                    champions.GetChampion(x.ChampionId)
+                        .displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
             //Retrieve masteries and runes
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
@@ -255,7 +255,7 @@ namespace LegendaryClient.Windows
             QuickLoad = true;
 
             //Signal to the server we are in champion select
-            await Client.PvpNet.SetClientReceivedGameMessage(Client.GameId, "CHAMP_SELECT_CLIENT");
+            await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
             //Selects Champion
             //New method makes it easier to instapick a champ + works in draft
             /*
@@ -267,8 +267,8 @@ namespace LegendaryClient.Windows
             //Retrieve the latest GameDTO
             GameDTO latestDTO =
                 await
-                    Client.PvpNet.GetLatestGameTimerState(Client.GameId, Client.ChampSelectDto.GameState,
-                        Client.ChampSelectDto.PickTurn);
+                    Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
+                        Client.ChampSelectDTO.PickTurn);
             //Find the game config for timers
             configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDTO.GameTypeConfigId);
             if (configType == null) //Invalid config... abort!
@@ -293,15 +293,15 @@ namespace LegendaryClient.Windows
 
                 LatestDto = latestDTO;
                 //Get the champions for the other team to ban & sort alpabetically
-                ChampionBanInfoDTO[] ChampsForBan = await Client.PvpNet.GetChampionsForBan();
+                ChampionBanInfoDTO[] ChampsForBan = await Client.PVPNet.GetChampionsForBan();
                 ChampionsForBan = new List<ChampionBanInfoDTO>(ChampsForBan);
                 ChampionsForBan.Sort(
                     (x, y) =>
-                        Champions.GetChampion(x.ChampionId)
-                            .DisplayName.CompareTo(Champions.GetChampion(y.ChampionId).DisplayName));
+                        champions.GetChampion(x.ChampionId)
+                            .displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
                 //Join champion select chatroom
-                string JID = Client.GetChatroomJid(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
+                string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
                 Chatroom = Client.ConfManager.GetRoom(new JID(JID));
                 Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
                 Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
@@ -314,7 +314,7 @@ namespace LegendaryClient.Windows
                 //Start recieving champ select
                 ChampSelect_OnMessageReceived(this, latestDTO);
                 Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
-                Client.PvpNet.OnMessageReceived += ChampSelect_OnMessageReceived;
+                Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
             }
         }
 
@@ -371,7 +371,7 @@ namespace LegendaryClient.Windows
                                 if (play.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId)
                                 {
                                     //Allows us to instapick any champ we own. 
-                                    if (Client.UsingInstaPick)
+                                    if (Client.usingInstaPick)
                                     {
                                         bool champbanned = false;
                                         //disallow picking banned champs
@@ -394,7 +394,7 @@ namespace LegendaryClient.Windows
                                             temp.Tag = Client.SelectChamp;
                                             if (!champbanned)
                                                 ListViewItem_PreviewMouseDown(temp, null);
-                                            Client.UsingInstaPick = false;
+                                            Client.usingInstaPick = false;
                                         }
                                         catch
                                         {
@@ -459,7 +459,7 @@ namespace LegendaryClient.Windows
                             var champImage = new Image();
                             champImage.Height = 58;
                             champImage.Width = 58;
-                            champImage.Source = Champions.GetChampion(x.ChampionId).Icon;
+                            champImage.Source = champions.GetChampion(x.ChampionId).icon;
                             if (x.TeamId == 100)
                             {
                                 BlueBanListView.Items.Add(champImage);
@@ -507,7 +507,7 @@ namespace LegendaryClient.Windows
                     else if (ChampDTO.GameState == "POST_CHAMP_SELECT")
                     {
                         //Post game has started. Allow trading
-                        CanTradeWith = await Client.PvpNet.GetPotentialTraders();
+                        CanTradeWith = await Client.PVPNet.GetPotentialTraders();
                         HasLockedIn = true;
                         GameStatusLabel.Content = "All players have picked!";
                         if (configType != null)
@@ -527,7 +527,7 @@ namespace LegendaryClient.Windows
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
                         Client.NotificationGrid.Children.Add(pop);
-                        Client.PvpNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+                        Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                         Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
                         Client.GameStatus = "inQueue";
                         Client.SetChatHover();
@@ -568,7 +568,7 @@ namespace LegendaryClient.Windows
                             else
                             {
                                 AllPublicSummonerDataDTO Summoner =
-                                    await Client.PvpNet.GetAllPublicSummonerDataByAccount(player.SummonerId);
+                                    await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.SummonerId);
                                 if (Summoner.Summoner != null && !String.IsNullOrEmpty(Summoner.Summoner.Name))
                                     control.PlayerName.Content = Summoner.Summoner.Name;
                                 else
@@ -636,11 +636,11 @@ namespace LegendaryClient.Windows
                         {
                             var bot = tempParticipant as BotParticipant;
                             string botChamp = bot.SummonerName.Split(' ')[0]; //Why is this internal name rito?
-                            Champions botSelectedChamp = Champions.GetChampion(botChamp);
+                            champions botSelectedChamp = champions.GetChampion(botChamp);
                             var part = new PlayerParticipant();
                             var selection = new PlayerChampionSelectionDTO();
-                            selection.ChampionId = botSelectedChamp.Id;
-                            part.SummonerName = botSelectedChamp.DisplayName + " bot";
+                            selection.ChampionId = botSelectedChamp.id;
+                            part.SummonerName = botSelectedChamp.displayName + " bot";
                             control = RenderPlayer(selection, part);
                         }
                         else
@@ -715,7 +715,7 @@ namespace LegendaryClient.Windows
                         {
                             PlatformGameLifecycleDTO n =
                                 await
-                                    Client.PvpNet.RetrieveInProgressSpectatorGameInfo(
+                                    Client.PVPNet.RetrieveInProgressSpectatorGameInfo(
                                         Client.LoginPacket.AllSummonerData.Summoner.Name);
                             if (n.GameName != null)
                             {
@@ -753,12 +753,12 @@ namespace LegendaryClient.Windows
                         PlayerTradeControl.AcceptButton.Visibility = Visibility.Visible;
                         PlayerTradeControl.DeclineButton.Content = "Decline";
 
-                        Champions MyChampion = Champions.GetChampion((int) TradeDTO.ResponderChampionId);
-                        PlayerTradeControl.MyChampImage.Source = MyChampion.Icon;
-                        PlayerTradeControl.MyChampLabel.Content = MyChampion.DisplayName;
-                        Champions TheirChampion = Champions.GetChampion((int) TradeDTO.RequesterChampionId);
-                        PlayerTradeControl.TheirChampImage.Source = TheirChampion.Icon;
-                        PlayerTradeControl.TheirChampLabel.Content = TheirChampion.DisplayName;
+                        champions MyChampion = champions.GetChampion((int) TradeDTO.ResponderChampionId);
+                        PlayerTradeControl.MyChampImage.Source = MyChampion.icon;
+                        PlayerTradeControl.MyChampLabel.Content = MyChampion.displayName;
+                        champions TheirChampion = champions.GetChampion((int) TradeDTO.RequesterChampionId);
+                        PlayerTradeControl.TheirChampImage.Source = TheirChampion.icon;
+                        PlayerTradeControl.TheirChampLabel.Content = TheirChampion.displayName;
                         PlayerTradeControl.RequestLabel.Content = string.Format("{0} wants to trade!",
                             TradeDTO.RequesterInternalSummonerName);
                     }
@@ -804,7 +804,7 @@ namespace LegendaryClient.Windows
 
         internal void ChangeSelectedChampionSkins(int selectedChampionID)
         {
-            Champions Champion = Champions.GetChampion(selectedChampionID);
+            champions Champion = champions.GetChampion(selectedChampionID);
 
             if (Champion == null)
                 return;
@@ -815,28 +815,28 @@ namespace LegendaryClient.Windows
             //Render default skin
             var item = new ListViewItem();
             var skinImage = new Image();
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.PortraitPath)))
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath)))
             {
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.PortraitPath);
+                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
                 skinImage.Source = Client.GetImage(uriSource);
                 skinImage.Width = 191;
                 skinImage.Stretch = Stretch.UniformToFill;
-                item.Tag = "0:" + Champion.Id; //Hack
+                item.Tag = "0:" + Champion.id; //Hack
                 item.Content = skinImage;
                 SkinSelectListView.Items.Add(item);
                 //Render abilities
-                List<ChampionAbilities> Abilities = ChampionAbilities.GetAbilities(selectedChampionID);
+                List<championAbilities> Abilities = championAbilities.GetAbilities(selectedChampionID);
                 var abilities = new List<ChampionAbility>();
-                foreach (ChampionAbilities ability in Abilities)
+                foreach (championAbilities ability in Abilities)
                 {
                     var championAbility = new ChampionAbility();
-                    if (ability.IconPath.ToLower().Contains("passive"))
-                        uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "passive", ability.IconPath);
+                    if (ability.iconPath.ToLower().Contains("passive"))
+                        uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "passive", ability.iconPath);
                     else
-                        uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", ability.IconPath);
+                        uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", ability.iconPath);
                     championAbility.AbilityImage.Source = Client.GetImage(uriSource);
-                    if (!String.IsNullOrEmpty(ability.Hotkey)) championAbility.AbilityHotKey.Content = ability.Hotkey;
-                    switch (ability.Hotkey)
+                    if (!String.IsNullOrEmpty(ability.hotkey)) championAbility.AbilityHotKey.Content = ability.hotkey;
+                    switch (ability.hotkey)
                     {
                         case "":
                             championAbility.Order = 0;
@@ -854,8 +854,8 @@ namespace LegendaryClient.Windows
                             championAbility.Order = 4;
                             break;
                     }
-                    championAbility.AbilityName.Content = ability.Name;
-                    championAbility.AbilityDescription.Text = ability.Description;
+                    championAbility.AbilityName.Content = ability.name;
+                    championAbility.AbilityDescription.Text = ability.description;
                     championAbility.Width = 375;
                     championAbility.Height = 75;
                     abilities.Add(championAbility);
@@ -876,7 +876,7 @@ namespace LegendaryClient.Windows
                                 item = new ListViewItem();
                                 skinImage = new Image();
                                 uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                                    ChampionSkins.GetSkin(skin.SkinId).PortraitPath);
+                                    championSkins.GetSkin(skin.SkinId).portraitPath);
                                 skinImage.Source = Client.GetImage(uriSource);
                                 skinImage.Width = 191;
                                 skinImage.Stretch = Stretch.UniformToFill;
@@ -905,7 +905,7 @@ namespace LegendaryClient.Windows
             {
                 foreach (ChampionDTO champ in ChampList)
                 {
-                    Champions getChamp = Champions.GetChampion(champ.ChampionId);
+                    champions getChamp = champions.GetChampion(champ.ChampionId);
                     if (previousPage.GetType() == typeof (FactionsGameLobbyPage))
                     {
                         var page = previousPage as FactionsGameLobbyPage;
@@ -915,50 +915,50 @@ namespace LegendaryClient.Windows
                         switch (myTeam)
                         {
                             case "Ionia":
-                                if (!ioniaChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!ioniaChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Bilgewater":
-                                if (!bilgewaterChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!bilgewaterChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Freljord":
-                                if (!freljordChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!freljordChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Shadow Isles":
-                                if (!shadowIslesChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!shadowIslesChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Demacia":
-                                if (!demaciaChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!demaciaChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Noxus":
-                                if (!noxusChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!noxusChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Piltover":
-                                if (!piltoverChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!piltoverChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Bandle City":
-                                if (!bandleCityChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!bandleCityChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Zaun":
-                                if (!zaunChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!zaunChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Void":
-                                if (!voidChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!voidChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Shurima":
-                                if (!shurimaChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!shurimaChampions.Contains(getChamp.displayName)) continue;
                                 break;
                             case "Discord":
-                                if (!discordChampions.Contains(getChamp.DisplayName)) continue;
+                                if (!discordChampions.Contains(getChamp.displayName)) continue;
                                 break;
                         }
                     }
                     if ((champ.Owned || champ.FreeToPlay) &&
-                        getChamp.DisplayName.ToLower().Contains(SearchTextBox.Text.ToLower()))
+                        getChamp.displayName.ToLower().Contains(SearchTextBox.Text.ToLower()))
                     {
                         //Add to ListView
                         var item = new ListViewItem();
                         var championImage = new ChampionImage();
-                        championImage.ChampImage.Source = Champions.GetChampion(champ.ChampionId).Icon;
+                        championImage.ChampImage.Source = champions.GetChampion(champ.ChampionId).icon;
                         if (champ.FreeToPlay)
                             championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
                         championImage.Width = 64;
@@ -973,13 +973,13 @@ namespace LegendaryClient.Windows
             {
                 foreach (ChampionBanInfoDTO champ in ChampionsForBan)
                 {
-                    Champions getChamp = Champions.GetChampion(champ.ChampionId);
-                    if (champ.EnemyOwned && getChamp.DisplayName.ToLower().Contains(SearchTextBox.Text.ToLower()))
+                    champions getChamp = champions.GetChampion(champ.ChampionId);
+                    if (champ.EnemyOwned && getChamp.displayName.ToLower().Contains(SearchTextBox.Text.ToLower()))
                     {
                         //Add to ListView
                         var item = new ListViewItem();
                         var championImage = new ChampionImage();
-                        championImage.ChampImage.Source = Champions.GetChampion(champ.ChampionId).Icon;
+                        championImage.ChampImage.Source = champions.GetChampion(champ.ChampionId).icon;
                         championImage.Width = 64;
                         championImage.Height = 64;
                         item.Tag = champ.ChampionId;
@@ -1002,7 +1002,7 @@ namespace LegendaryClient.Windows
             //Render champion
             if (selection.ChampionId != 0)
             {
-                control.ChampionImage.Source = Champions.GetChampion(selection.ChampionId).Icon;
+                control.ChampionImage.Source = champions.GetChampion(selection.ChampionId).icon;
             }
             //Render summoner spells
             if (selection.Spell1Id != 0)
@@ -1075,15 +1075,15 @@ namespace LegendaryClient.Windows
         private async void TradeButton_Click(object sender, RoutedEventArgs e)
         {
             var p = (KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>) ((Button) sender).Tag;
-            await Client.PvpNet.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
+            await Client.PVPNet.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
 
             PlayerTradeControl.Visibility = Visibility.Visible;
-            Champions MyChampion = Champions.GetChampion((int) MyChampId);
-            PlayerTradeControl.MyChampImage.Source = MyChampion.Icon;
-            PlayerTradeControl.MyChampLabel.Content = MyChampion.DisplayName;
-            Champions TheirChampion = Champions.GetChampion(p.Key.ChampionId);
-            PlayerTradeControl.TheirChampImage.Source = TheirChampion.Icon;
-            PlayerTradeControl.TheirChampLabel.Content = TheirChampion.DisplayName;
+            champions MyChampion = champions.GetChampion((int) MyChampId);
+            PlayerTradeControl.MyChampImage.Source = MyChampion.icon;
+            PlayerTradeControl.MyChampLabel.Content = MyChampion.displayName;
+            champions TheirChampion = champions.GetChampion(p.Key.ChampionId);
+            PlayerTradeControl.TheirChampImage.Source = TheirChampion.icon;
+            PlayerTradeControl.TheirChampLabel.Content = TheirChampion.displayName;
             PlayerTradeControl.RequestLabel.Content = "Sent trade request...";
             PlayerTradeControl.AcceptButton.Visibility = Visibility.Hidden;
             PlayerTradeControl.DeclineButton.Content = "Cancel";
@@ -1099,7 +1099,7 @@ namespace LegendaryClient.Windows
                     if (item.Tag != null)
                     {
                         //SelectChampion.SelectChampion(selection.ChampionId)
-                        await Client.PvpNet.SelectChampion(SelectChampion.SelectChamp((int) item.Tag));
+                        await Client.PVPNet.SelectChampion(SelectChampion.SelectChamp((int) item.Tag));
 
                         //TODO: Fix stupid animation glitch on left hand side
                         var fadingAnimation = new DoubleAnimation();
@@ -1109,7 +1109,7 @@ namespace LegendaryClient.Windows
                         fadingAnimation.Completed += (eSender, eArgs) =>
                         {
                             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                                Champions.GetChampion((int) item.Tag).SplashPath);
+                                champions.GetChampion((int) item.Tag).splashPath);
                             BackgroundSplash.Source = Client.GetImage(uriSource);
                             fadingAnimation = new DoubleAnimation();
                             fadingAnimation.From = 0;
@@ -1127,7 +1127,7 @@ namespace LegendaryClient.Windows
                 {
                     if (item.Tag != null)
                     {
-                        await Client.PvpNet.BanChampion((int) item.Tag);
+                        await Client.PVPNet.BanChampion((int) item.Tag);
                     }
                 }
             }
@@ -1144,18 +1144,18 @@ namespace LegendaryClient.Windows
                     {
                         string[] splitItem = ((string) item.Tag).Split(':');
                         int championId = Convert.ToInt32(splitItem[1]);
-                        Champions Champion = Champions.GetChampion(championId);
-                        await Client.PvpNet.SelectChampionSkin(championId, 0);
+                        champions Champion = champions.GetChampion(championId);
+                        await Client.PVPNet.SelectChampionSkin(championId, 0);
                         var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "Selected Default " + Champion.Name + " as skin" + Environment.NewLine;
+                        tr.Text = "Selected Default " + Champion.name + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     }
                     else
                     {
-                        ChampionSkins skin = ChampionSkins.GetSkin((int) item.Tag);
-                        await Client.PvpNet.SelectChampionSkin(skin.ChampionId, skin.Id);
+                        championSkins skin = championSkins.GetSkin((int) item.Tag);
+                        await Client.PVPNet.SelectChampionSkin(skin.championId, skin.id);
                         var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "Selected " + skin.DisplayName + " as skin" + Environment.NewLine;
+                        tr.Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     }
                     ChatText.ScrollToEnd();
@@ -1175,8 +1175,8 @@ namespace LegendaryClient.Windows
 
         private async void QuitCurrentGame()
         {
-            await Client.PvpNet.QuitGame();
-            Client.PvpNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            await Client.PVPNet.QuitGame();
+            Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof (CustomGameLobbyPage));
             Client.ClearPage(typeof (CreateCustomGamePage));
             Client.ClearPage(typeof (ChampSelectPage));
@@ -1187,14 +1187,14 @@ namespace LegendaryClient.Windows
 
         private async void InGame()
         {
-            await Client.PvpNet.QuitGame();
-            Client.PvpNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            await Client.PVPNet.QuitGame();
+            Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof (CustomGameLobbyPage));
             Client.ClearPage(typeof (CreateCustomGamePage));
             Client.ClearPage(typeof (ChampSelectPage));
             Client.ClearPage(typeof (FactionsCreateGamePage));
             Client.GameStatus = "inGame";
-            Client.TimeStampSince =
+            Client.timeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
 
@@ -1207,13 +1207,13 @@ namespace LegendaryClient.Windows
             {
                 if (ChampionSelectListView.SelectedItems.Count > 0)
                 {
-                    await Client.PvpNet.ChampionSelectCompleted();
+                    await Client.PVPNet.ChampionSelectCompleted();
                     HasLockedIn = true;
                 }
             }
             else
             {
-                await Client.PvpNet.Roll();
+                await Client.PVPNet.Roll();
                 HasLockedIn = true;
             }
         }
@@ -1273,7 +1273,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await Client.PvpNet.SaveMasteryBook(bookDTO);
+                await Client.PVPNet.SaveMasteryBook(bookDTO);
             }
         }
 
@@ -1306,7 +1306,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await Client.PvpNet.SelectDefaultSpellBookPage(SelectedRunePage);
+                await Client.PVPNet.SelectDefaultSpellBookPage(SelectedRunePage);
             }
         }
 

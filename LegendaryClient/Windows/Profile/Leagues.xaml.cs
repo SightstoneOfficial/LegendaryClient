@@ -143,8 +143,8 @@ namespace LegendaryClient.Windows.Profile
             {
                 var item = (LeagueItem) LeaguesListView.SelectedItem;
                 PlayerLabel.Content = item.PlayerLabel.Content;
-                PublicSummoner x = await Client.PvpNet.GetSummonerByName((string) item.PlayerLabel.Content);
-                Client.PvpNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", GotStats);
+                PublicSummoner x = await Client.PVPNet.GetSummonerByName((string) item.PlayerLabel.Content);
+                Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", GotStats);
             }
         }
 
@@ -190,11 +190,11 @@ namespace LegendaryClient.Windows.Profile
                             if (info.ChampionId != 0.0)
                             {
                                 var player = new ChatPlayer();
-                                Logic.SQLite.Champions Champion = Logic.SQLite.Champions.GetChampion(Convert.ToInt32(info.ChampionId));
+                                champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
                                 player.LevelLabel.Visibility = Visibility.Hidden;
-                                player.PlayerName.Content = Champion.DisplayName;
+                                player.PlayerName.Content = Champion.displayName;
                                 player.PlayerStatus.Content = info.TotalSessionsPlayed + " games played";
-                                player.ProfileImage.Source = Logic.SQLite.Champions.GetChampion(Champion.Id).Icon;
+                                player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
                                 TopChampionsListView.Items.Add(player);
                             }
                         }

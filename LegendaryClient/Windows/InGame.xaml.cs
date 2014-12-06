@@ -30,7 +30,7 @@ namespace LegendaryClient.Windows
         public InGame()
         {
             InitializeComponent();
-            Client.PvpNet.OnMessageReceived += Update_OnMessageReceived;
+            Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
             Client.IsInGame = true;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
@@ -49,7 +49,7 @@ namespace LegendaryClient.Windows
                     {
                         Client.ReturnButton.Visibility = Visibility.Hidden;
                         Client.IsInGame = false;
-                        Client.PvpNet.OnMessageReceived -= Update_OnMessageReceived;
+                        Client.PVPNet.OnMessageReceived -= Update_OnMessageReceived;
                         Client.ClearPage(typeof(InGame));
                         Client.SwitchPage(new MainPage());
                     }));

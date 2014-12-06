@@ -17,11 +17,11 @@ namespace LegendaryClient.Windows
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            if (await Client.PvpNet.IsNameValidAndAvailable(UsernameTextBox.Text))
+            if (await Client.PVPNet.IsNameValidAndAvailable(UsernameTextBox.Text))
             {
-                await Client.PvpNet.CreateDefaultSummoner(UsernameTextBox.Text);
+                await Client.PVPNet.CreateDefaultSummoner(UsernameTextBox.Text);
                 Client.OverlayContainer.Visibility = Visibility.Hidden;
-                Client.Done = true;
+                Client.done = true;
             }
             else
             {

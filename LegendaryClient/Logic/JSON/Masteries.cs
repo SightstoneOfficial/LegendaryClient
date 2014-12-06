@@ -14,9 +14,9 @@ namespace LegendaryClient.Logic.JSON
 {
     public static class Masteries
     {
-        public static List<SQLite.Masteries> PopulateMasteries()
+        public static List<masteries> PopulateMasteries()
         {
-            var masteryList = new List<SQLite.Masteries>();
+            var masteryList = new List<masteries>();
 
             string masteryJson =
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "mastery.json"));
@@ -28,18 +28,18 @@ namespace LegendaryClient.Logic.JSON
             if (masteryData != null)
                 foreach (var mastery in masteryData)
                 {
-                    var newMastery = new SQLite.Masteries();
+                    var newMastery = new masteries();
                     var singularMasteryData = mastery.Value as Dictionary<string, object>;
-                    newMastery.Id = Convert.ToInt32(mastery.Key);
-                    newMastery.Name = singularMasteryData["name"] as string;
-                    newMastery.Description = singularMasteryData["description"] as ArrayList;
-                    newMastery.Ranks = (int) singularMasteryData["ranks"];
-                    newMastery.Prereq = Convert.ToInt32(singularMasteryData["prereq"]);
+                    newMastery.id = Convert.ToInt32(mastery.Key);
+                    newMastery.name = singularMasteryData["name"] as string;
+                    newMastery.description = singularMasteryData["description"] as ArrayList;
+                    newMastery.ranks = (int) singularMasteryData["ranks"];
+                    newMastery.prereq = Convert.ToInt32(singularMasteryData["prereq"]);
 
                     var imageData = singularMasteryData["image"] as Dictionary<string, object>;
                     string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "mastery",
                         (string) imageData["full"]);
-                    newMastery.Icon = Client.GetImage(uriSource);
+                    newMastery.icon = Client.GetImage(uriSource);
 
                     masteryList.Add(newMastery);
                 }
@@ -53,14 +53,14 @@ namespace LegendaryClient.Logic.JSON
                 int i;
                 for (i = 0; i < list.Count; i++)
                 {
-                    foreach (SQLite.Masteries tempMastery in from Dictionary<string, object> x in (ArrayList) list[i]
+                    foreach (masteries tempMastery in from Dictionary<string, object> x in (ArrayList) list[i]
                         where x != null
                         select Convert.ToInt32(x["masteryId"])
                         into masteryId
-                        select masteryList.Find(y => y.Id == masteryId))
+                        select masteryList.Find(y => y.id == masteryId))
                     {
-                        tempMastery.TreeRow = i;
-                        tempMastery.Tree = tree.Key;
+                        tempMastery.treeRow = i;
+                        tempMastery.tree = tree.Key;
                     }
                 }
             }

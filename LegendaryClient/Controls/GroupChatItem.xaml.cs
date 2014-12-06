@@ -60,7 +60,7 @@ namespace LegendaryClient.Controls
             foreach (RoomParticipant par in _newRoom.Participants)
             {
                 var player = new GroupChatPlayer {SName = {Content = par.Nick}};
-                PublicSummoner summoner = await Client.PvpNet.GetSummonerByName(par.Nick);
+                PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(par.Nick);
                 string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                     summoner.ProfileIconId + ".png");
                 player.SIcon.Source = Client.GetImage(uriSource);
@@ -106,7 +106,7 @@ namespace LegendaryClient.Controls
 
                 ChatText.ScrollToEnd();
                 var x = new GroupChatPlayer {SName = {Content = participant.Nick}};
-                PublicSummoner summoner = await Client.PvpNet.GetSummonerByName(participant.Nick);
+                PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(participant.Nick);
                 string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                     summoner.ProfileIconId + ".png");
                 x.SIcon.Source = Client.GetImage(uriSource);

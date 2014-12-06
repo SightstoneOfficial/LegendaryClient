@@ -10,7 +10,6 @@ using LegendaryClient.Windows;
 using Newtonsoft.Json;
 using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using InvitationRequest = LegendaryClient.Logic.SQLite.InvitationRequest;
 
 #endregion
 
@@ -43,10 +42,10 @@ namespace LegendaryClient.Controls
         private string _rankedTeamName;
         private string _type;
 
-        public GameInvitePopup(PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest stats)
+        public GameInvitePopup(InvitationRequest stats)
         {
             InitializeComponent();
-            Client.PvpNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             try
             {
                 InviteInfo info = Client.InviteData[stats.InvitationId];
@@ -67,15 +66,15 @@ namespace LegendaryClient.Controls
 
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
-            if (!(message is PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest))
+            if (!(message is InvitationRequest))
                 return;
 
-            var stats = (PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest) message;
+            var stats = (InvitationRequest) message;
             try
             {
                 InviteInfo info = Client.InviteData[stats.InvitationId];
                 //Data about this popup has changed. We want to set this
-                if (!Equals(info.Popup, this))
+                if (!Equals(info.popup, this))
                     return;
 
                 switch (stats.InvitationState)
@@ -99,7 +98,7 @@ namespace LegendaryClient.Controls
                         break;
                     case "ACTIVE":
                         NotificationTextBox.Text = "";
-                        LoadGamePopupData(stats.Inviter == null ? info.Stats : stats);
+                        LoadGamePopupData(stats.Inviter == null ? info.stats : stats);
                         Visibility = Visibility.Hidden;
 
                         RenderNotificationTextBox(_inviter + " has invited you to a game");
@@ -141,7 +140,7 @@ namespace LegendaryClient.Controls
             NotificationTextBox.Text += s + Environment.NewLine;
         }
 
-        private void LoadGamePopupData(PVPNetConnect.RiotObjects.Gameinvite.Contract.InvitationRequest stats)
+        private void LoadGamePopupData(InvitationRequest stats)
         {
             _invitationStateAsString = stats.InvitationStateAsString;
             _gameMetaData = stats.GameMetaData;
@@ -153,16 +152,16 @@ namespace LegendaryClient.Controls
             {
                 NoGame.Visibility = Visibility.Hidden;
             }
-            var m = JsonConvert.DeserializeObject<InvitationRequest>(stats.GameMetaData);
-            _queueId = m.QueueId;
-            _isRanked = m.IsRanked;
-            _rankedTeamName = m.RankedTeamName;
-            _mapId = m.MapId;
-            _gameTypeConfigId = m.GameTypeConfigId;
-            _gameMode = m.GameMode;
-            _gameType = m.GameType;
+            var m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
+            _queueId = m.queueId;
+            _isRanked = m.isRanked;
+            _rankedTeamName = m.rankedTeamName;
+            _mapId = m.mapId;
+            _gameTypeConfigId = m.gameTypeConfigId;
+            _gameMode = m.gameMode;
+            _gameType = m.gameType;
 
-            Client.PvpNet.getLobbyStatusInviteId = _invitationId;
+            Client.PVPNet.getLobbyStatusInviteId = _invitationId;
             switch (_mapId)
             {
                 case 1:
@@ -202,8 +201,8 @@ namespace LegendaryClient.Controls
 
             var y = new InviteInfo
             {
-                Stats = stats,
-                Popup = this,
+                stats = stats,
+                popup = this,
                 Inviter = _inviter
             };
 
@@ -223,7 +222,7 @@ namespace LegendaryClient.Controls
             }
             else if (_gameType == "NORMAL_GAME" && _queueId == 61)
             {
-                LobbyStatus newLobby = Client.PvpNet.InviteLobby;
+                LobbyStatus newLobby = Client.PVPNet.InviteLobby;
                 Client.SwitchPage(new TeamBuilderPage(false, newLobby));
             }
             else if (_gameType == "RANKED_GAME")
@@ -237,7 +236,7 @@ namespace LegendaryClient.Controls
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { Visibility = Visibility.Hidden; }));
-            Client.PvpNet.Decline(_invitationId);
+            Client.PVPNet.Decline(_invitationId);
             Client.InviteData.Remove(_invitationId);
         }
 

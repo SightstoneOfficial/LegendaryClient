@@ -22,7 +22,7 @@ namespace LegendaryClient.Windows
 
         private async void GetIcons()
         {
-            SummonerIconInventoryDTO PlayerIcons = await Client.PvpNet.GetSummonerIconInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+            SummonerIconInventoryDTO PlayerIcons = await Client.PVPNet.GetSummonerIconInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
             foreach (Icon ic in PlayerIcons.SummonerIcons)
             {
                 Image champImage = new Image();
@@ -58,14 +58,14 @@ namespace LegendaryClient.Windows
             {
                 Image m = (Image)SummonerIconListView.SelectedItem;
                 int SummonerIcon = Convert.ToInt32(m.Tag);
-                await Client.PvpNet.UpdateProfileIconId(SummonerIcon);
+                await Client.PVPNet.UpdateProfileIconId(SummonerIcon);
                 Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId = SummonerIcon;
                 Client.SetChatHover();
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", SummonerIcon + ".png"), UriKind.RelativeOrAbsolute);
                 Client.MainPageProfileImage.Source = new BitmapImage(uriSource);
             }
             Client.OverlayContainer.Visibility = Visibility.Hidden;
-            Client.Done = true;
+            Client.done = true;
         }
     }
 }

@@ -23,12 +23,12 @@ namespace LegendaryClient.Controls
             var tradeDTO = Tag as TradeContractDTO;
             if (tradeDTO != null)
                 await
-                    Client.PvpNet.AcceptTrade(tradeDTO.RequesterInternalSummonerName, (int) tradeDTO.RequesterChampionId);
+                    Client.PVPNet.AcceptTrade(tradeDTO.RequesterInternalSummonerName, (int) tradeDTO.RequesterChampionId);
         }
 
         private async void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PvpNet.DeclineTrade();
+            await Client.PVPNet.DeclineTrade();
             Visibility = Visibility.Hidden;
         }
     }

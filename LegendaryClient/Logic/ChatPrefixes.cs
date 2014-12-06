@@ -2,18 +2,18 @@
 {
     public static class ChatPrefixes
     {
-        public const string ArrangingPractice = "ap";
-        public const string RankedTeam = "tm";
-        public const string ChampionSelect1 = "c1";
-        public const string ChampionSelect2 = "c2";
+        public const string Arranging_Practice = "ap";
+        public const string Ranked_Team = "tm";
+        public const string Champion_Select1 = "c1";
+        public const string Champion_Select2 = "c2";
         public const string Private = "pr";
-        public const string ArrangingGame = "ag";
+        public const string Arranging_Game = "ag";
         public const string Global = "gl";
         public const string Public = "pu";
         public const string Cap = "cp";
         public const string Queued = "aq";
-        public const string Cta = "cta";
-        public const string PostGame = "pg";
-        public const string TeamBuilderLobby = "cp";
+        public const string CTA = "cta";
+        public const string Post_Game = "pg";
+        public const string TeamBuilder_Lobby = "cp";
     }
 }

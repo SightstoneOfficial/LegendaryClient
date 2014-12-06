@@ -13,9 +13,9 @@ namespace LegendaryClient.Logic.JSON
 {
     public static class Runes
     {
-        public static List<SQLite.Runes> PopulateRunes()
+        public static List<runes> PopulateRunes()
         {
-            var runeList = new List<SQLite.Runes>();
+            var runeList = new List<runes>();
 
             string runeJson =
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "rune.json"));
@@ -28,18 +28,18 @@ namespace LegendaryClient.Logic.JSON
 
             foreach (var rune in runeData)
             {
-                var newRune = new SQLite.Runes();
+                var newRune = new runes();
                 var singularRuneData = rune.Value as Dictionary<string, object>;
-                newRune.Id = Convert.ToInt32(rune.Key);
-                newRune.Name = singularRuneData["name"] as string;
-                newRune.Description = singularRuneData["description"] as string;
-                newRune.Description = newRune.Description.Replace("(", "\n");
-                newRune.Description = newRune.Description.Replace(")", "");
-                newRune.Stats = singularRuneData["stats"] as Dictionary<string, object>;
-                newRune.Tags = singularRuneData["tags"] as ArrayList;
+                newRune.id = Convert.ToInt32(rune.Key);
+                newRune.name = singularRuneData["name"] as string;
+                newRune.description = singularRuneData["description"] as string;
+                newRune.description = newRune.description.Replace("(", "\n");
+                newRune.description = newRune.description.Replace(")", "");
+                newRune.stats = singularRuneData["stats"] as Dictionary<string, object>;
+                newRune.tags = singularRuneData["tags"] as ArrayList;
                 var imageData = singularRuneData["image"] as Dictionary<string, object>;
                 string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune", (string) imageData["full"]);
-                newRune.Icon = Client.GetImage(uriSource);
+                newRune.icon = Client.GetImage(uriSource);
 
                 runeList.Add(newRune);
             }

@@ -1,82 +1,85 @@
-﻿using System.Linq;
-
-namespace LegendaryClient.Logic.SQLite
+﻿namespace LegendaryClient.Logic.SQLite
 {
-    public class Items
+    public class items
     {
-        public int Id { get; set; }
+        public int id { get; set; }
 
-        public string Name { get; set; }
+        public string name { get; set; }
 
-        public string Description { get; set; }
+        public string description { get; set; }
 
-        public string IconPath { get; set; }
+        public string iconPath { get; set; }
 
-        public int Price { get; set; }
+        public int price { get; set; }
 
-        public int SellPrice { get; set; }
+        public int sellprice { get; set; }
 
-        public double FlatHpPoolMod { get; set; }
+        public double flatHPPoolMod { get; set; }
 
-        public double FlatMpPoolMod { get; set; }
+        public double flatMPPoolMod { get; set; }
 
-        public double PercentHpPoolMod { get; set; }
+        public double percentHPPoolMod { get; set; }
 
-        public double PercentMpPoolMod { get; set; }
+        public double percentMPPoolMod { get; set; }
 
-        public double FlatHpRegenMod { get; set; }
+        public double flatHPRegenMod { get; set; }
 
-        public double PercentHpRegenMod { get; set; }
+        public double percentHPRegenMod { get; set; }
 
-        public double FlatMpRegenMod { get; set; }
+        public double flatMPRegenMod { get; set; }
 
-        public double PercentMpRegenMod { get; set; }
+        public double percentMPRegenMod { get; set; }
 
-        public double FlatArmorMod { get; set; }
+        public double flatArmorMod { get; set; }
 
-        public double PercentArmorMod { get; set; }
+        public double percentArmorMod { get; set; }
 
-        public double FlatAttackDamageMod { get; set; }
+        public double flatAttackDamageMod { get; set; }
 
-        public double PercentAttackDamageMod { get; set; }
+        public double percentAttackDamageMod { get; set; }
 
-        public double FlatAbilityPowerMod { get; set; }
+        public double flatAbilityPowerMod { get; set; }
 
-        public double PercentAbilityPowerMod { get; set; }
+        public double percentAbilityPowerMod { get; set; }
 
-        public double FlatMovementSpeedMod { get; set; }
+        public double flatMovementSpeedMod { get; set; }
 
-        public double PercentMovementSpeedMod { get; set; }
+        public double percentMovementSpeedMod { get; set; }
 
-        public double FlatAttackSpeedMod { get; set; }
+        public double flatAttackSpeedMod { get; set; }
 
-        public double PercentAttackSpeedMod { get; set; }
+        public double percentAttackSpeedMod { get; set; }
 
-        public double FlatDodgeMod { get; set; }
+        public double flatDodgeMod { get; set; }
 
-        public double PercentDodgeMod { get; set; }
+        public double percentDodgeMod { get; set; }
 
-        public double FlatCritChanceMod { get; set; }
+        public double flatCritChanceMod { get; set; }
 
-        public double PercentCritChanceMod { get; set; }
+        public double percentCritChanceMod { get; set; }
 
-        public double FlatCritDamageMod { get; set; }
+        public double flatCritDamageMod { get; set; }
 
-        public double PercentCritDamageMod { get; set; }
+        public double percentCritDamageMod { get; set; }
 
-        public double FlatMagicResistMod { get; set; }
+        public double flatMagicResistMod { get; set; }
 
-        public double PercentMagicResistMod { get; set; }
+        public double percentMagicResistMod { get; set; }
 
-        public double FlatExpBonus { get; set; }
+        public double flatEXPBonus { get; set; }
 
-        public double PercentExpBonus { get; set; }
+        public double percentEXPBonus { get; set; }
 
-        public double Epicness { get; set; }
+        public double epicness { get; set; }
 
-        public static Items GetItem(int id)
+        public static items GetItem(int id)
         {
-            return Client.Items.FirstOrDefault(c => c.Id == id);
+            foreach (items c in Client.Items)
+            {
+                if (c.id == id)
+                    return c;
+            }
+            return null;
         }
     }
 }

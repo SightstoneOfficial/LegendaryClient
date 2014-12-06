@@ -15,16 +15,16 @@ namespace LegendaryClient.Logic.JSON
 {
     public static class Champions
     {
-        public static void InsertExtraChampData(SQLite.Champions Champ)
+        public static void InsertExtraChampData(champions Champ)
         {
             string champJSON =
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "champion",
-                    Champ.Name + ".json"));
+                    Champ.name + ".json"));
             var serializer = new JavaScriptSerializer();
             var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(champJSON);
             //Dictionary<string, object> deserializedJSON = JsonConvert.DeserializeObject<Dictionary<string, object>>(champJSON);
             var temp = deserializedJson["data"] as Dictionary<string, object>;
-            var champData = temp[Champ.Name] as Dictionary<string, object>;
+            var champData = temp[Champ.name] as Dictionary<string, object>;
             //Dictionary<string, object> champData = serializer.Deserialize<Dictionary<string, object>>(temp2);
 
             Champ.Lore = champData["lore"] as string;
@@ -37,7 +37,7 @@ namespace LegendaryClient.Logic.JSON
             {
                 var newSpell = new Spell
                 {
-                    Id = champSpells["id"] as string,
+                    ID = champSpells["id"] as string,
                     Name = champSpells["name"] as string,
                     Description = champSpells["description"] as string,
                     Tooltip = champSpells["tooltip"] as string,

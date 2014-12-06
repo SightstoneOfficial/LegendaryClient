@@ -37,10 +37,10 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             RenderStats(statistics);
             Client.SwitchPage(new MainPage());
-            Client.RunOnce = false;
+            Client.runonce = false;
 
             //string obfuscatedName = Client.GetObfuscatedChatroomName(statistics.RoomName, ChatPrefixes.Post_Game);
-            string jid = Client.GetChatroomJid(statistics.RoomName, statistics.RoomPassword, false);
+            string jid = Client.GetChatroomJID(statistics.RoomName, statistics.RoomPassword, false);
             _newRoom = Client.ConfManager.GetRoom(new JID(jid));
             _newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
             _newRoom.OnRoomMessage += newRoom_OnRoomMessage;
@@ -128,9 +128,9 @@ namespace LegendaryClient.Windows
             foreach (PlayerParticipantStatsSummary summary in allParticipants)
             {
                 var playerStats = new EndOfGamePlayer();
-                Champions champ = Champions.GetChampion(summary.SkinName); //Misleading variable name
-                playerStats.ChampImage.Source = champ.Icon;
-                playerStats.ChampLabel.Content = champ.Name;
+                champions champ = champions.GetChampion(summary.SkinName); //Misleading variable name
+                playerStats.ChampImage.Source = champ.icon;
+                playerStats.ChampLabel.Content = champ.name;
                 playerStats.PlayerLabel.Content = summary.SummonerName;
                 var uriSource =
                     new Uri(
@@ -214,21 +214,20 @@ namespace LegendaryClient.Windows
 
             PlayersListView.Items.Insert(allParticipants.Count/2, new Separator());
 
-            ChampionSkins skin = ChampionSkins.GetSkin(statistics.SkinIndex);
+            championSkins skin = championSkins.GetSkin(statistics.SkinIndex);
             try
             {
                 if (skin == null)
                     return;
 
                 var skinSource =
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.SplashPath),
+                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath),
                         UriKind.Absolute);
 
                 SkinImage.Source = new BitmapImage(skinSource);
             }
             catch (Exception)
             {
-
             }
         }
 

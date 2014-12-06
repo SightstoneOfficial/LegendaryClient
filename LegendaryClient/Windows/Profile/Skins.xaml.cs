@@ -25,11 +25,11 @@ namespace LegendaryClient.Windows.Profile
 
         public async void Update()
         {
-            ChampionDTO[] champList = await Client.PvpNet.GetAvailableChampions();
+            ChampionDTO[] champList = await Client.PVPNet.GetAvailableChampions();
 
             ChampionList = new List<ChampionDTO>(champList);
 
-            ChampionList.Sort((x, y) => Logic.SQLite.Champions.GetChampion(x.ChampionId).DisplayName.CompareTo(Logic.SQLite.Champions.GetChampion(y.ChampionId).DisplayName));
+            ChampionList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
             FilterSkins();
         }
@@ -53,7 +53,7 @@ namespace LegendaryClient.Windows.Profile
 
             if (!String.IsNullOrEmpty(SearchTextBox.Text) && !LimitedSkinCheckBox.IsChecked.Value)
             {
-                skinList = skinList.Where(x => ChampionSkins.GetSkin(x.SkinId).DisplayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+                skinList = skinList.Where(x => championSkins.GetSkin(x.SkinId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
             }
 
             foreach (ChampionSkinDTO skin in skinList)
@@ -61,12 +61,12 @@ namespace LegendaryClient.Windows.Profile
                 if (LimitedSkinCheckBox.IsChecked.Value ? !skin.StillObtainable && skin.Owned : skin.Owned)
                 {
                     ProfileSkinImage skinImage = new ProfileSkinImage();
-                    ChampionSkins championSkin = ChampionSkins.GetSkin(skin.SkinId);
-                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", ChampionSkins.GetSkin(skin.SkinId).PortraitPath), UriKind.Absolute);
+                    championSkins championSkin = championSkins.GetSkin(skin.SkinId);
+                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", championSkins.GetSkin(skin.SkinId).portraitPath), UriKind.Absolute);
                     skinImage.SkinImage.Source = new BitmapImage(uriSource);
                     if (!skin.StillObtainable)
                         skinImage.LimitedLabel.Visibility = System.Windows.Visibility.Visible;
-                    skinImage.SkinName.Content = championSkin.DisplayName;
+                    skinImage.SkinName.Content = championSkin.displayName;
                     skinImage.Margin = new System.Windows.Thickness(5, 0, 5, 0);
                     SkinSelectListView.Items.Add(skinImage);
                 }

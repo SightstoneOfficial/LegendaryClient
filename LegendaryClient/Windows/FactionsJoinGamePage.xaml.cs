@@ -45,7 +45,7 @@ namespace LegendaryClient.Windows
         {
             CustomGameListView.Items.Clear();
             allItems.Clear();
-            PracticeGameSearchResult[] Games = await Client.PvpNet.ListAllPracticeGames();
+            PracticeGameSearchResult[] Games = await Client.PVPNet.ListAllPracticeGames();
             foreach (PracticeGameSearchResult game in Games)
             {
                 GameItem item = new GameItem
@@ -108,11 +108,11 @@ namespace LegendaryClient.Windows
                 GameName = item.GameName;
             }
             if (!String.IsNullOrEmpty("factions"))
-                Client.PvpNet.JoinGame(GameID, "factions");
+                Client.PVPNet.JoinGame(GameID, "factions");
             else
-                Client.PvpNet.JoinGame(GameID);
+                Client.PVPNet.JoinGame(GameID);
 
-            Client.GameId = GameID;
+            Client.GameID = GameID;
             Client.GameName = GameName;
 
             Client.SwitchPage(new FactionsGameLobbyPage());

@@ -119,7 +119,7 @@ namespace LegendaryClient.Windows
             foreach (string Player in invitedPlayers)
             {
                 //This invites the player
-                Client.PvpNet.Invite(Player.Replace("sum",""));
+                Client.PVPNet.Invite(Player.Replace("sum",""));
 
                 ChatPlayerItem PlayerInfo = Client.AllPlayers[Player];
 

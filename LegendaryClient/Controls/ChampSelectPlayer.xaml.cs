@@ -36,21 +36,21 @@ namespace LegendaryClient.Controls
                 if (_stats == null)
                 {
                     _stats = new PlayerStatisticsChampSelect();
-                    PublicSummoner summoner = await Client.PvpNet.GetSummonerByName(PlayerName.Content.ToString());
+                    PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
                     if (summoner == null || _stats == null)
                     {
                         _stats = null;
                         return;
                     }
                     ChampionStatInfo[] topChampions =
-                        await Client.PvpNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
+                        await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
                     _stats.PlayerName.Content = summoner.Name;
 
                     if (topChampions.Length > 0)
                     {
-                        _stats.MostPlayed.Source = Champions.GetChampion((int) topChampions[0].ChampionId).Icon;
+                        _stats.MostPlayed.Source = champions.GetChampion((int) topChampions[0].ChampionId).icon;
                         _stats.Champion1.Content =
-                            Champions.GetChampion((int) topChampions[0].ChampionId).DisplayName + " - Games: " +
+                            champions.GetChampion((int) topChampions[0].ChampionId).displayName + " - Games: " +
                             topChampions[0].TotalGamesPlayed;
                         double wins = 0.0;
                         double total = 0.0;
@@ -80,7 +80,7 @@ namespace LegendaryClient.Controls
                     if (topChampions.Length > 1)
                     {
                         _stats.Champion2.Content =
-                            Champions.GetChampion((int) topChampions[1].ChampionId).DisplayName + " - Games: " +
+                            champions.GetChampion((int) topChampions[1].ChampionId).displayName + " - Games: " +
                             topChampions[1].TotalGamesPlayed;
                         double wins = 0.0;
                         double total = 0.0;
@@ -103,7 +103,7 @@ namespace LegendaryClient.Controls
                     if (topChampions.Length > 2)
                     {
                         _stats.Champion3.Content =
-                            Champions.GetChampion((int) topChampions[2].ChampionId).DisplayName + " - Games: " +
+                            champions.GetChampion((int) topChampions[2].ChampionId).displayName + " - Games: " +
                             topChampions[2].TotalGamesPlayed;
                         double wins = 0.0;
                         double total = 0.0;

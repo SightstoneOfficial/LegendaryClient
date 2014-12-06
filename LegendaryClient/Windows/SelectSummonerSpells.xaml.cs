@@ -51,7 +51,7 @@ namespace LegendaryClient.Windows
                 else
                 {
                     SummonerSpell2.Source = new BitmapImage(uriSource);
-                    await Client.PvpNet.SelectSpells(SelectedSpell1, spellId);
+                    await Client.PVPNet.SelectSpells(SelectedSpell1, spellId);
                     Client.OverlayContainer.Visibility = Visibility.Hidden;
                 }
             }

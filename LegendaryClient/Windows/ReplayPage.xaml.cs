@@ -359,9 +359,9 @@ namespace LegendaryClient.Windows
                 int id = int.Parse(s[s.Length - 1].Replace(".png", ""));
                 Client.MainGrid.Children.Add(PlayerItem);
 
-                Items Item = Items.GetItem(id);
+                items Item = items.GetItem(id);
 
-                PlayerItem.PlayerName.Content = Item.Name;
+                PlayerItem.PlayerName.Content = Item.name;
 
                 PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 if (PlayerItem.PlayerName.DesiredSize.Width > 250) //Make title fit in item
@@ -369,12 +369,12 @@ namespace LegendaryClient.Windows
                 else
                     PlayerItem.Width = 250;
 
-                PlayerItem.PlayerWins.Content = Item.Price + " gold (" + Item.SellPrice + " sell)";
-                PlayerItem.PlayerLeague.Content = "Item ID " + Item.Id;
+                PlayerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
+                PlayerItem.PlayerLeague.Content = "Item ID " + Item.id;
                 PlayerItem.LevelLabel.Content = "";
                 PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
 
-                string ParsedDescription = Item.Description;
+                string ParsedDescription = Item.description;
                 ParsedDescription = ParsedDescription.Replace("<br>", Environment.NewLine);
                 ParsedDescription = Regex.Replace(ParsedDescription, "<.*?>", string.Empty);
                 PlayerItem.PlayerStatus.Text = ParsedDescription;
@@ -400,7 +400,7 @@ namespace LegendaryClient.Windows
         {
             if (User == true)
             {
-                PublicSummoner Summoner = await Client.PvpNet.GetSummonerByName(Command.Text);
+                PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(Command.Text);
                 if (String.IsNullOrWhiteSpace(Summoner.Name))
                 {
                     MessageOverlay overlay = new MessageOverlay();
@@ -414,7 +414,7 @@ namespace LegendaryClient.Windows
                 HintLabel.Visibility = Visibility.Visible;
                 var fadeLabelInAnimationx = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
                 HintLabel.BeginAnimation(Label.OpacityProperty, fadeLabelInAnimationx);
-                PlatformGameLifecycleDTO n = await Client.PvpNet.RetrieveInProgressSpectatorGameInfo(Command.Text);
+                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Command.Text);
                 if (n.GameName != null)
                 {
                     string IP = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;

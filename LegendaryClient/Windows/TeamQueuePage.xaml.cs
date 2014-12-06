@@ -59,7 +59,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Client.InviteListView = InviteListView;
-            Client.PvpNet.OnMessageReceived += Update_OnMessageReceived;
+            Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
 
             //MainWindow Window = new MainWindow();
             //Window.Hide();
@@ -92,14 +92,14 @@ namespace LegendaryClient.Windows
             if (CurrentLobby == null)
             {
                 //Yay fixed lobby. Riot hates me still though. They broke this earlier, except I have fixed it
-                CurrentLobby = await Client.PvpNet.getLobbyStatus();
+                CurrentLobby = await Client.PVPNet.getLobbyStatus();
             }
             if (CurrentLobby.InvitationID != null)
             {
                 string ObfuscatedName =
                     Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"),
-                        ChatPrefixes.ArrangingGame); //Why do you need to replace INVID with invid Riot?
-                string JID = Client.GetChatroomJid(ObfuscatedName, CurrentLobby.ChatKey, false);
+                        ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
+                string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
                 newRoom = Client.ConfManager.GetRoom(new JID(JID));
                 newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
                 newRoom.OnRoomMessage += newRoom_OnRoomMessage;
@@ -122,22 +122,22 @@ namespace LegendaryClient.Windows
         {
             LastSender = (Button) sender;
             var stats = (Member) LastSender.Tag;
-            UiLogic.UpdateProfile(stats.SummonerName);
-            Client.SwitchPage(UiLogic.Profile);
+            uiLogic.UpdateProfile(stats.SummonerName);
+            Client.SwitchPage(uiLogic.Profile);
         }
 
         private async void Kick_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button) sender;
             var stats = (Member) LastSender.Tag;
-            await Client.PvpNet.Kick(stats.SummonerId);
+            await Client.PVPNet.Kick(stats.SummonerId);
         }
 
         private async void Owner_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button) sender;
             var stats = (Member) LastSender.Tag;
-            await Client.PvpNet.MakeOwner(stats.SummonerId);
+            await Client.PVPNet.MakeOwner(stats.SummonerId);
         }
 
         private double startTime;
@@ -246,22 +246,22 @@ namespace LegendaryClient.Windows
                     {
                         InviteButton.IsEnabled = true;
                         StartGameButton.IsEnabled = true;
-                        Client.IsOwnerOfGame = true;
+                        Client.isOwnerOfGame = true;
                     }
                     else if (IsOwner == false)
                     {
                         InviteButton.IsEnabled = false;
                         StartGameButton.IsEnabled = false;
-                        Client.IsOwnerOfGame = false;
+                        Client.isOwnerOfGame = false;
                     }
-                    var m = JsonConvert.DeserializeObject<InvitationRequest>(CurrentLobby.GameData);
-                    queueId = m.QueueId;
-                    isRanked = m.IsRanked;
-                    rankedTeamName = m.RankedTeamName;
-                    mapId = m.MapId;
-                    gameTypeConfigId = m.GameTypeConfigId;
-                    gameMode = m.GameMode;
-                    gameType = m.GameType;
+                    var m = JsonConvert.DeserializeObject<invitationRequest>(CurrentLobby.GameData);
+                    queueId = m.queueId;
+                    isRanked = m.isRanked;
+                    rankedTeamName = m.rankedTeamName;
+                    mapId = m.mapId;
+                    gameTypeConfigId = m.gameTypeConfigId;
+                    gameMode = m.gameMode;
+                    gameType = m.gameType;
 
                     foreach (Member stats in CurrentLobby.Members)
                     {
@@ -283,7 +283,7 @@ namespace LegendaryClient.Windows
                         {
                             LastSender = (Button) sender;
                             var s = (Member) LastSender.Tag;
-                            await Client.PvpNet.GrantInvite(s.SummonerId);
+                            await Client.PVPNet.GrantInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Hidden;
@@ -294,7 +294,7 @@ namespace LegendaryClient.Windows
                         {
                             LastSender = (Button) sender;
                             var s = (Member) LastSender.Tag;
-                            await Client.PvpNet.revokeInvite(s.SummonerId);
+                            await Client.PVPNet.revokeInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Visible;
@@ -305,7 +305,7 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Owner.Click += Owner_Click;
                         Players++;
 
-                        PublicSummoner Summoner = await Client.PvpNet.GetSummonerByName(stats.SummonerName);
+                        PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(stats.SummonerName);
 
                         //Populate the ProfileIcon
                         int ProfileIconID = Summoner.ProfileIconId;
@@ -350,7 +350,7 @@ namespace LegendaryClient.Windows
                     }
                     if (IsOwner)
                     {
-                        Client.PvpNet.Call(Guid.NewGuid().ToString(), "suggestedPlayers",
+                        Client.PVPNet.Call(Guid.NewGuid().ToString(), "suggestedPlayers",
                             "retrieveOnlineFriendsOfFriends", "{\"queueId\":" + queueId + "}");
                     }
                 }));
@@ -381,11 +381,11 @@ namespace LegendaryClient.Windows
                         {
                             setStartButtonText("Start Game");
                             inQueue = false;
-                            Client.PvpNet.PurgeFromQueues();
+                            Client.PVPNet.PurgeFromQueues();
                         }
                         else
                         {
-                            Client.PvpNet.OnMessageReceived += GotQueuePop;
+                            Client.PVPNet.OnMessageReceived += GotQueuePop;
                         }
                     }
                 }));
@@ -444,7 +444,7 @@ namespace LegendaryClient.Windows
                         invitePlayer.PlayerLabel.Content = s.summonerName;
                         invitePlayer.InviteButton.Click += (object obj, RoutedEventArgs e) =>
                         {
-                            Client.PvpNet.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
+                            Client.PVPNet.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
                             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
@@ -483,8 +483,8 @@ namespace LegendaryClient.Windows
 
         private async void Leave_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PvpNet.Leave();
-            await Client.PvpNet.PurgeFromQueues();
+            await Client.PVPNet.Leave();
+            await Client.PVPNet.PurgeFromQueues();
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             Client.ClearPage(typeof (TeamQueuePage));
@@ -526,7 +526,7 @@ namespace LegendaryClient.Windows
 
         private void GotQueuePop(object sender, object message)
         {
-            if (Client.RunOnce == false && message is GameDTO &&
+            if (Client.runonce == false && message is GameDTO &&
                 (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
             {
                 var Queue = message as GameDTO;
@@ -535,7 +535,7 @@ namespace LegendaryClient.Windows
                     Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                Client.PvpNet.OnMessageReceived -= GotQueuePop;
+                Client.PVPNet.OnMessageReceived -= GotQueuePop;
             }
         }
 
@@ -605,11 +605,11 @@ namespace LegendaryClient.Windows
                     InviteList.Add(GameInvitePlayerList);
                 }
                 parameters.Team = InviteList;
-                Client.PvpNet.AttachTeamToQueue(parameters, EnteredQueue);
+                Client.PVPNet.AttachTeamToQueue(parameters, EnteredQueue);
             }
             else
             {
-                Client.PvpNet.PurgeFromQueues();
+                Client.PVPNet.PurgeFromQueues();
                 setStartButtonText("Start Game");
                 inQueue = false;
                 Client.GameStatus = "outOfGame";
@@ -671,12 +671,12 @@ namespace LegendaryClient.Windows
                 }));
                 return;
             }
-            Client.PvpNet.OnMessageReceived += GotQueuePop;
+            Client.PVPNet.OnMessageReceived += GotQueuePop;
             setStartButtonText("Joining Queue");
             startTime = 1;
             inQueue = true;
             Client.GameStatus = "inQueue";
-            Client.TimeStampSince =
+            Client.timeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
         }

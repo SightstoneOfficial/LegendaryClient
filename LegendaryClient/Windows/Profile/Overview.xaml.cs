@@ -28,11 +28,11 @@ namespace LegendaryClient.Windows.Profile
         public async void Update(double SummonerId, double AccountId)
         {
             AccId = AccountId;
-            LcdsResponseString TotalKudos = await Client.PvpNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + SummonerId + "}");
+            LcdsResponseString TotalKudos = await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + SummonerId + "}");
             RenderKudos(TotalKudos);
-            ChampionStatInfo[] TopChampions = await Client.PvpNet.RetrieveTopPlayedChampions(AccountId, "CLASSIC");
+            ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(AccountId, "CLASSIC");
             RenderTopPlayedChampions(TopChampions);
-            Client.PvpNet.RetrievePlayerStatsByAccountId(AccountId, "3", new PlayerLifetimeStats.Callback(GotPlayerStats));
+            Client.PVPNet.RetrievePlayerStatsByAccountId(AccountId, "3", new PlayerLifetimeStats.Callback(GotPlayerStats));
         }
 
         public void RenderKudos(LcdsResponseString TotalKudos)
@@ -63,11 +63,11 @@ namespace LegendaryClient.Windows.Profile
                     if (info.ChampionId != 0.0)
                     {
                         ChatPlayer player = new ChatPlayer();
-                        Logic.SQLite.Champions Champion = Logic.SQLite.Champions.GetChampion(Convert.ToInt32(info.ChampionId));
+                        champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
                         player.LevelLabel.Visibility = System.Windows.Visibility.Hidden;
-                        player.PlayerName.Content = Champion.DisplayName;
+                        player.PlayerName.Content = Champion.displayName;
                         player.PlayerStatus.Content = info.TotalGamesPlayed + " games played";
-                        player.ProfileImage.Source = Logic.SQLite.Champions.GetChampion(Champion.Id).Icon;
+                        player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
                         TopChampionsListView.Items.Add(player);
                     }
                 }
@@ -139,7 +139,7 @@ namespace LegendaryClient.Windows.Profile
 
         private async void ViewAggregatedStatsButton_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            AggregatedStats x = await Client.PvpNet.GetAggregatedStats(AccId, "CLASSIC", "3");
+            AggregatedStats x = await Client.PVPNet.GetAggregatedStats(AccId, "CLASSIC", "3");
             Client.OverlayContainer.Content = new AggregatedStatsOverlay(x, AccId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = System.Windows.Visibility.Visible;
         }

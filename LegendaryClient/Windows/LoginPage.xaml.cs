@@ -28,10 +28,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Champions = LegendaryClient.Logic.SQLite.Champions;
-using Items = LegendaryClient.Logic.JSON.Items;
-using Masteries = LegendaryClient.Logic.JSON.Masteries;
-using Runes = LegendaryClient.Logic.JSON.Runes;
 
 namespace LegendaryClient.Windows
 {
@@ -82,30 +78,30 @@ namespace LegendaryClient.Windows
 
             //Get client data after patcher completed
 
-            Client.SqliteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.Sqlite));
-            Client.Champions = (from s in Client.SqliteDatabase.Table<Champions>()
-                                orderby s.Name
+            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
+            Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
+                                orderby s.name
                                 select s).ToList();
             
-            foreach (Champions c in Client.Champions)
+            foreach (champions c in Client.Champions)
             {
-                var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.IconPath), UriKind.Absolute);
-                c.Icon = new BitmapImage(Source);
-                Debugger.Log(0, "Log", "Requesting :" + c.Name + " champ");
+                var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath), UriKind.Absolute);
+                c.icon = new BitmapImage(Source);
+                Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
                 
-                Logic.JSON.Champions.InsertExtraChampData(c);
+                Champions.InsertExtraChampData(c);
             }
-            Client.ChampionSkins = (from s in Client.SqliteDatabase.Table<ChampionSkins>()
-                                    orderby s.Name
+            Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
+                                    orderby s.name
                                     select s).ToList();
-            Client.ChampionAbilities = (from s in Client.SqliteDatabase.Table<ChampionAbilities>() //Needs Fixed
-                                        orderby s.Name
+            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>() //Needs Fixed
+                                        orderby s.name
                                         select s).ToList();
-            Client.SearchTags = (from s in Client.SqliteDatabase.Table<ChampionSearchTags>()
-                                 orderby s.Id
+            Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
+                                 orderby s.id
                                  select s).ToList();
-            Client.Keybinds = (from s in Client.SqliteDatabase.Table<KeybindingEvents>()
-                               orderby s.Id
+            Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
+                               orderby s.id
                                select s).ToList();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
@@ -146,7 +142,7 @@ namespace LegendaryClient.Windows
                 RegionComboBox.SelectedValue = Properties.Settings.Default.Region;
             }
 
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champions.GetChampion(Client.LatestChamp).SplashPath), UriKind.Absolute);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
             //LoginImage.Source = new BitmapImage(uriSource);//*/
             
             if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&
@@ -217,8 +213,8 @@ namespace LegendaryClient.Windows
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.PvpNet = null;
-            Client.PvpNet = new PVPNetConnect.PVPNetConnection();
+            Client.PVPNet = null;
+            Client.PVPNet = new PVPNetConnect.PVPNetConnection();
             
             if (string.IsNullOrEmpty(Properties.Settings.Default.Guid))
                 Properties.Settings.Default.Guid = Guid.NewGuid().ToString();
@@ -242,19 +238,19 @@ namespace LegendaryClient.Windows
             ErrorTextBox.Visibility = Visibility.Hidden;
             LoggingInLabel.Visibility = Visibility.Visible;
             LoggingInProgressRing.Visibility = Visibility.Visible;
-            Client.PvpNet.OnError += PVPNet_OnError;
-            Client.PvpNet.OnLogin += PVPNet_OnLogin;
-            Client.PvpNet.OnMessageReceived += Client.OnMessageReceived;
+            Client.PVPNet.OnError += PVPNet_OnError;
+            Client.PVPNet.OnLogin += PVPNet_OnLogin;
+            Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
             BaseRegion SelectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
             Client.Region = SelectedRegion;
             //Client.Version = "4.18.14";
-            Client.PvpNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
+            Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
         }
 
         private void PVPNet_OnLogin(object sender, string username, string ipAddress)
         {
-            Client.PvpNet.GetLoginDataPacketForUser(new LoginDataPacket.Callback(GotLoginPacket));
+            Client.PVPNet.GetLoginDataPacketForUser(new LoginDataPacket.Callback(GotLoginPacket));
         }
 
         private void PVPNet_OnError(object sender, PVPNetConnect.Error error)
@@ -268,9 +264,9 @@ namespace LegendaryClient.Windows
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 ErrorTextBox.Text = error.Message;
             }));
-            Client.PvpNet.OnMessageReceived -= Client.OnMessageReceived;	
-            Client.PvpNet.OnError -= PVPNet_OnError;			
-            Client.PvpNet.OnLogin -= PVPNet_OnLogin;
+            Client.PVPNet.OnMessageReceived -= Client.OnMessageReceived;	
+            Client.PVPNet.OnError -= PVPNet_OnError;			
+            Client.PVPNet.OnLogin -= PVPNet_OnLogin;
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
@@ -281,36 +277,36 @@ namespace LegendaryClient.Windows
             if (packet.AllSummonerData == null)
             {
                 //Just Created Account, need to put logic here.
-                Client.Done = false;
+                Client.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     CreateSummonerNameOverlay createSummoner = new CreateSummonerNameOverlay();
                     Client.OverlayContainer.Content = createSummoner.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                while (!Client.Done) ;
-                Client.PvpNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
+                while (!Client.done) ;
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
                 return;
             }
             Client.LoginPacket = packet;
             if (packet.AllSummonerData.Summoner.ProfileIconId == -1)
             {
-                Client.Done = false;
+                Client.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     Client.OverlayContainer.Content = new ChooseProfilePicturePage().Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                while (!Client.Done) ;
-                Client.PvpNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
+                while (!Client.done) ;
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
                 return;
             }
-            Client.PlayerChampions = await Client.PvpNet.GetAvailableChampions();
-            Client.PvpNet.OnError -= PVPNet_OnError;
+            Client.PlayerChampions = await Client.PVPNet.GetAvailableChampions();
+            Client.PVPNet.OnError -= PVPNet_OnError;
             Client.GameConfigs = packet.GameTypeConfigs;
-            Client.PvpNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
-            Client.PvpNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
-            Client.PvpNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
+            Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
+            Client.PVPNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
+            Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
             Client.IsLoggedIn = true;
 
 
@@ -328,7 +324,7 @@ namespace LegendaryClient.Windows
                 newCredentials.Locale = Client.Region.Locale;
                 newCredentials.Domain = "lolclient.lol.riotgames.com";
 
-                Session login = await Client.PvpNet.Login(newCredentials);
+                Session login = await Client.PVPNet.Login(newCredentials);
                 Client.PlayerSession = login;
 
                 //Setup chat

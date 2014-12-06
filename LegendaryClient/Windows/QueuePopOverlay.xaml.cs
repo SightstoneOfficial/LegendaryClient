@@ -36,7 +36,7 @@ namespace LegendaryClient.Windows
                 InitializePop(InitialDTO);
                 this.previousPage = previousPage;
                 TimeLeft = InitialDTO.JoinTimerDuration;
-                Client.PvpNet.OnMessageReceived += PVPNet_OnMessageReceived;
+                Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
                 QueueTimer = new System.Timers.Timer(1000);
                 QueueTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
                 QueueTimer.Enabled = true;
@@ -64,16 +64,16 @@ namespace LegendaryClient.Windows
                     if (QueueDTO.GameState == "TERMINATED")
                     {
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.PvpNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                        Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         return;
                     }
                     else if (QueueDTO.GameState == "PRE_CHAMP_SELECT" || QueueDTO.GameState == "CHAMP_SELECT")
                     {
-                        Client.PvpNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                        Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         string s = QueueDTO.GameState;
-                        Client.ChampSelectDto = QueueDTO;
-                        Client.GameId = QueueDTO.Id;
-                        Client.ChampSelectDto = QueueDTO;
+                        Client.ChampSelectDTO = QueueDTO;
+                        Client.GameID = QueueDTO.Id;
+                        Client.ChampSelectDTO = QueueDTO;
                         Client.LastPageContent = Client.Container.Content;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.GameStatus = "championSelect";
@@ -137,7 +137,7 @@ namespace LegendaryClient.Windows
 
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            var playerLeagues = Task<SummonerLeaguesDTO>.Factory.StartNew(() => Client.PvpNet.GetAllLeaguesForPlayer(playerPart.SummonerId).Result).Result;
+                            var playerLeagues = Task<SummonerLeaguesDTO>.Factory.StartNew(() => Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId).Result).Result;
                             foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
                             {
                                 if (x.Queue == "RANKED_SOLO_5x5")
@@ -171,13 +171,13 @@ namespace LegendaryClient.Windows
             
             if (Client.AutoAcceptQueue)
             {
-                await Client.PvpNet.AcceptPoppedGame(true);
+                await Client.PVPNet.AcceptPoppedGame(true);
             }
         }
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PvpNet.AcceptPoppedGame(true);
+            await Client.PVPNet.AcceptPoppedGame(true);
         }
     }
 }

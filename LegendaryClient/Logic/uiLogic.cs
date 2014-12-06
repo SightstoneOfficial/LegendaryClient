@@ -1,12 +1,14 @@
-﻿#region
-
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using LegendaryClient.Windows;
 
-#endregion
 
 namespace LegendaryClient.Logic
 {
-    internal class UiLogic
+    class uiLogic
     {
         public static ProfilePage Profile = new ProfilePage();
 
@@ -14,7 +16,6 @@ namespace LegendaryClient.Logic
         {
             Profile.ProfileCreate(name);
         }
-
         internal static void UpdateProfile(string name)
         {
             Profile.GetSummonerProfile(name);

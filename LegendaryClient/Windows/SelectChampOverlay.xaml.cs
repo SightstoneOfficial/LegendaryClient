@@ -36,17 +36,17 @@ namespace LegendaryClient.Windows
             if (true)
             {
                 ChampList = new List<ChampionDTO>(Client.PlayerChampions);
-                ChampList.Sort((x, y) => Champions.GetChampion(x.ChampionId).DisplayName.CompareTo(Champions.GetChampion(y.ChampionId).DisplayName));
+                ChampList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
                 foreach (ChampionDTO champ in ChampList)
                 {
-                    Champions getChamp = Champions.GetChampion(champ.ChampionId);
+                    champions getChamp = champions.GetChampion(champ.ChampionId);
                     if ((champ.Owned || champ.FreeToPlay))
                     {
                         //Add to ListView
                         ListViewItem item = new ListViewItem();
                         ChampionImage championImage = new ChampionImage();
-                        championImage.ChampImage.Source = Champions.GetChampion(champ.ChampionId).Icon;
+                        championImage.ChampImage.Source = champions.GetChampion(champ.ChampionId).icon;
                         if (champ.FreeToPlay)
                             championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
                         championImage.Width = 64;
@@ -63,9 +63,9 @@ namespace LegendaryClient.Windows
         {
             var item = sender as ListViewItem;
             Client.SelectChamp = ((int)item.Tag);
-            Client.UsingInstaPick = true;
+            Client.usingInstaPick = true;
 
-            tqp.CreateText("You will attempt to auto select: " + Champions.GetChampion((int)item.Tag).DisplayName, Brushes.Yellow);
+            tqp.CreateText("You will attempt to auto select: " + champions.GetChampion((int)item.Tag).displayName, Brushes.Yellow);
 
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             this.Visibility = Visibility.Hidden;
@@ -79,18 +79,18 @@ namespace LegendaryClient.Windows
 
             if (SearchTextBox.Text != "Search" && !String.IsNullOrEmpty(SearchTextBox.Text))
             {
-                tempList = tempList.Where(x => Champions.GetChampion(x.ChampionId).DisplayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+                tempList = tempList.Where(x => champions.GetChampion(x.ChampionId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
             }
 
             foreach (ChampionDTO champ in tempList)
             {
-                Champions getChamp = Champions.GetChampion(champ.ChampionId);
+                champions getChamp = champions.GetChampion(champ.ChampionId);
                 if ((champ.Owned || champ.FreeToPlay))
                 {
                     //Add to ListView
                     ListViewItem item = new ListViewItem();
                     ChampionImage championImage = new ChampionImage();
-                    championImage.ChampImage.Source = Champions.GetChampion(champ.ChampionId).Icon;
+                    championImage.ChampImage.Source = champions.GetChampion(champ.ChampionId).icon;
                     if (champ.FreeToPlay)
                         championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
                     championImage.Width = 64;

@@ -1,48 +1,13 @@
-﻿#region
-
+﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using LegendaryClient.Logic.SWF.SWFTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using LegendaryClient.Logic.SWF.SWFTypes;
-
-#endregion
 
 namespace LegendaryClient.Logic.SWF
 {
     public class SWFReader
     {
-        private BinaryReader SWFBinary;
-
-        public SWFReader(string swfFile)
-        {
-            Tags = new List<Tag>();
-            using (var b = new BinaryReader(File.Open(swfFile, FileMode.Open)))
-            {
-                if (b.PeekChar() == 'C') //Zlib Compressed
-                {
-                    Uncompress(b);
-                }
-            }
-            if (SWFBinary == null)
-                SWFBinary = new BinaryReader(File.Open(swfFile, FileMode.Open));
-
-            ReadSWFHeader();
-
-            bool readEndTag = false;
-            while (SWFBinary.BaseStream.Position < SWFBinary.BaseStream.Length && !readEndTag)
-            {
-                Tag b = ReadTag();
-
-                if (b == null)
-                    continue;
-
-                if (b is End)
-                    readEndTag = true;
-                Tags.Add(b);
-            }
-        }
-
         public SWFCompression SWFCompressionType { get; private set; }
 
         public byte SWFVersion { get; private set; }
@@ -55,28 +20,52 @@ namespace LegendaryClient.Logic.SWF
 
         public List<Tag> Tags { get; set; }
 
+        private BinaryReader SWFBinary;
+
+        public SWFReader(string SWFFile)
+        {
+            Tags = new List<Tag>();
+            using (BinaryReader b = new BinaryReader(File.Open(SWFFile, FileMode.Open)))
+            {
+                if (b.PeekChar() == 'C') //Zlib Compressed
+                {
+                    Uncompress(b);
+                }
+            }
+            if (SWFBinary == null)
+                SWFBinary = new BinaryReader(File.Open(SWFFile, FileMode.Open));
+
+            ReadSWFHeader();
+
+            bool readEndTag = false;
+            while (SWFBinary.BaseStream.Position < SWFBinary.BaseStream.Length && !readEndTag)
+            {
+                Tag b = ReadTag();
+                if (b != null)
+                {
+                    if (b is End)
+                        readEndTag = true;
+                    Tags.Add(b);
+                }
+            }
+        }
+
         internal Tag ReadTag()
         {
             long posBefore = SWFBinary.BaseStream.Position;
-            var rh = new RecordHeader();
+            RecordHeader rh = new RecordHeader();
             rh.ReadData(SWFBinary);
 
-            var offset = (int) (SWFBinary.BaseStream.Position - posBefore);
+            int offset = (int)(SWFBinary.BaseStream.Position - posBefore);
             SWFBinary.BaseStream.Position = posBefore;
 
-            Tag resTag;
+            Tag resTag = null;
 
             switch (rh.TagCode)
             {
-                case (int) TagCodes.DoABC:
-                    resTag = new DoABC();
-                    break;
-                case (int) TagCodes.End:
-                    resTag = new End();
-                    break;
-                default:
-                    resTag = new Tag(SWFBinary.ReadBytes(Convert.ToInt32(rh.TagLength + offset)));
-                    break;
+                case (int)TagCodes.DoABC: resTag = new DoABC(); break;
+                case (int)TagCodes.End: resTag = new End(); break;
+                default: resTag = new Tag(SWFBinary.ReadBytes(System.Convert.ToInt32(rh.TagLength + offset))); break;
             }
 
             resTag.ReadData(SWFVersion, SWFBinary);
@@ -84,28 +73,28 @@ namespace LegendaryClient.Logic.SWF
             return resTag;
         }
 
-        private void Uncompress(BinaryReader swfBinary)
+        private void Uncompress(BinaryReader SWFBinary)
         {
-            swfBinary.BaseStream.Position = 4;
-            int size = Convert.ToInt32(swfBinary.ReadUInt32());
+            SWFBinary.BaseStream.Position = 4;
+            int size = Convert.ToInt32(SWFBinary.ReadUInt32());
 
-            var uncompressedData = new byte[size];
-            swfBinary.BaseStream.Position = 0;
-            swfBinary.Read(uncompressedData, 0, 8);
+            byte[] UncompressedData = new byte[size];
+            SWFBinary.BaseStream.Position = 0;
+            SWFBinary.Read(UncompressedData, 0, 8);
 
-            byte[] compressedData = swfBinary.ReadBytes(size);
-            var zipInflator = new Inflater();
-            zipInflator.SetInput(compressedData);
-            zipInflator.Inflate(uncompressedData, 8, size - 8);
+            byte[] CompressedData = SWFBinary.ReadBytes(size);
+            Inflater zipInflator = new Inflater();
+            zipInflator.SetInput(CompressedData);
+            zipInflator.Inflate(UncompressedData, 8, size - 8);
 
-            var m = new MemoryStream(uncompressedData);
-            SWFBinary = new BinaryReader(m);
+            MemoryStream m = new MemoryStream(UncompressedData);
+            this.SWFBinary = new BinaryReader(m);
         }
 
         private void ReadSWFHeader()
         {
-            char compressionType = SWFBinary.ReadChar();
-            switch (compressionType)
+            char CompressionType = SWFBinary.ReadChar();
+            switch (CompressionType)
             {
                 case 'C':
                     SWFCompressionType = SWFCompression.Zlib;
@@ -131,8 +120,7 @@ namespace LegendaryClient.Logic.SWF
             if (FileSize != SWFBinary.BaseStream.Length)
                 throw new Exception("Corrupt ClientLibCommon.dat");
 
-            Rect.ReadRect(SWFBinary);
-
+            Rect FrameSize = Rect.ReadRect(SWFBinary);
             FrameRate = SWFBinary.ReadUInt16();
             FrameCount = SWFBinary.ReadUInt16();
         }
@@ -147,12 +135,12 @@ namespace LegendaryClient.Logic.SWF
 
             while (true)
             {
-                var s = (int) (bits - bitPos);
+                int s = (int)(bits - bitPos);
 
                 if (s > 0)
                 {
                     v |= bitBuf << s;
-                    bits -= (uint) bitPos;
+                    bits -= (uint)bitPos;
 
                     bitBuf = b.ReadByte();
                     bitPos = 8;
@@ -161,8 +149,8 @@ namespace LegendaryClient.Logic.SWF
                 {
                     v |= bitBuf >> -s;
 
-                    bitPos -= (int) bits;
-                    bitBuf &= (uint) (0xff >> (8 - bitPos));
+                    bitPos -= (int)bits;
+                    bitBuf &= (uint)(0xff >> (8 - bitPos));
 
                     return v;
                 }
@@ -171,11 +159,11 @@ namespace LegendaryClient.Logic.SWF
 
         internal static int ReadSignedBits(BinaryReader b, uint bits)
         {
-            var v = (int) (ReadUnsignedBits(b, bits));
+            int v = (int)(ReadUnsignedBits(b, bits));
 
-            if ((v & (1L << (int) (bits - 1))) > 0)
+            if ((v & (1L << (int)(bits - 1))) > 0)
             {
-                v |= -1 << (int) bits;
+                v |= -1 << (int)bits;
             }
 
             return v;

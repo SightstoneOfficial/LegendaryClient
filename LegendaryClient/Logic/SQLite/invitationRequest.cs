@@ -1,13 +1,19 @@
-﻿namespace LegendaryClient.Logic.SQLite
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LegendaryClient.Logic.SQLite
 {
-    public class InvitationRequest
+    public class invitationRequest
     {
-        public int QueueId { get; set; }
-        public bool IsRanked { get; set; }
-        public string RankedTeamName { get; set; }
-        public int MapId { get; set; }
-        public int GameTypeConfigId { get; set; }
-        public string GameMode { get; set; }
-        public string GameType { get; set; }
+        public int queueId { get; set; }
+        public bool isRanked { get; set; }
+        public string rankedTeamName { get; set; }
+        public int mapId { get; set; }
+        public int gameTypeConfigId { get; set; }
+        public string gameMode { get; set; }
+        public string gameType { get; set; }
     }
 }

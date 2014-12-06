@@ -83,7 +83,7 @@ namespace LegendaryClient.Controls
             {
                 foreach (JoinQueue item in _myItems.Where(item => item != null && Client.IsOnPlayPage))
                 {
-                    QueueInfo t = await Client.PvpNet.GetQueueInformation(item.QueueId);
+                    QueueInfo t = await Client.PVPNet.GetQueueInformation(item.QueueId);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                 }
 

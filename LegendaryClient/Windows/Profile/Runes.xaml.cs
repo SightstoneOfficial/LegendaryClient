@@ -61,7 +61,7 @@ namespace LegendaryClient.Windows.Profile
             }
             foreach (RuneItem rune in runeCollection)
             {
-                foreach (KeyValuePair<string, object> stat in ((Logic.SQLite.Runes)rune.Tag).Stats)
+                foreach (KeyValuePair<string, object> stat in ((runes)rune.Tag).stats)
                 {
                     if (statList.ContainsKey(stat.Key))
                     {
@@ -100,14 +100,14 @@ namespace LegendaryClient.Windows.Profile
         private void RefreshAvailableRunes()
         {
             AvailableRuneList.Items.Clear();
-            foreach (Logic.SQLite.Runes Rune in Client.Runes)
+            foreach (runes Rune in Client.Runes)
             {
                 bool filteredRune = true;
                 if (RuneFilterComboBox.SelectedIndex == 0)
                     filteredRune = false;
                 else
                 {
-                    foreach (string filter in Rune.Tags)
+                    foreach (string filter in Rune.tags)
                     {
                         if (filter.ToLower().Contains(((Label)RuneFilterComboBox.SelectedItem).Content.ToString().ToLower()))
                         {
@@ -119,10 +119,10 @@ namespace LegendaryClient.Windows.Profile
                 {
                     foreach (PVPNetConnect.RiotObjects.Platform.Summoner.Runes.SummonerRune rune in runes)
                     {
-                        if (Rune.Id == rune.RuneId)
+                        if (Rune.id == rune.RuneId)
                         {
                             RuneItem item = new RuneItem();
-                            item.RuneImage.Source = Rune.Icon;
+                            item.RuneImage.Source = Rune.icon;
                             item.Margin = new Thickness(2, 2, 2, 2);
                             item.Tag = Rune;
                             item.Owned = rune.Quantity;
@@ -138,7 +138,7 @@ namespace LegendaryClient.Windows.Profile
         private async void GetAvailableRunes()
         {
             PVPNetConnect.RiotObjects.Platform.Summoner.Runes.SummonerRuneInventory runeInven =
-                await Client.PvpNet.GetSummonerRuneInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+                await Client.PVPNet.GetSummonerRuneInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
             runes = runeInven.SummonerRunes;
             runes.Sort((x, y) => x.Rune.Name.CompareTo(y.Rune.Name));
             RuneFilterComboBox.SelectedIndex = 0;
@@ -160,7 +160,7 @@ namespace LegendaryClient.Windows.Profile
                     {
                         try
                         {
-                            if (((Logic.SQLite.Runes)((RuneItem)obj).Tag).Id == RuneSlot.RuneId)
+                            if (((runes)((RuneItem)obj).Tag).id == RuneSlot.RuneId)
                             {
                                 ((RuneItem)obj).Used--;
                             }
@@ -171,32 +171,32 @@ namespace LegendaryClient.Windows.Profile
                     }
                     AvailableRuneList.Items.Refresh();
                     UpdateStatList();
-                    foreach (Logic.SQLite.Runes Rune in Client.Runes)
+                    foreach (runes Rune in Client.Runes)
                     {
-                        if (RuneSlot.RuneId == Rune.Id)
+                        if (RuneSlot.RuneId == Rune.id)
                         {
                             RuneItem item = new RuneItem();
-                            item.RuneImage.Source = Rune.Icon;
-                            item.RuneName.Content = Rune.Name;
-                            item.RuneEffect.Content = Rune.Description;
+                            item.RuneImage.Source = Rune.icon;
+                            item.RuneName.Content = Rune.name;
+                            item.RuneEffect.Content = Rune.description;
                             item.Margin = new Thickness(2, 2, 2, 2);
                             item.Tag = Rune;
                             item.MouseRightButtonDown += item_MouseRightButtonDown;
                             item.MouseMove += item_MouseMove;
                             item.MouseLeave += item_MouseLeave;
-                            if (Rune.Name.Contains("Mark"))
+                            if (Rune.name.Contains("Mark"))
                             {
                                 RedListBox.Items.Add(item);
                             }
-                            else if (Rune.Name.Contains("Seal"))
+                            else if (Rune.name.Contains("Seal"))
                             {
                                 YellowListBox.Items.Add(item);
                             }
-                            else if (Rune.Name.Contains("Glyph"))
+                            else if (Rune.name.Contains("Glyph"))
                             {
                                 BlueListBox.Items.Add(item);
                             }
-                            else if (Rune.Name.Contains("Quint"))
+                            else if (Rune.name.Contains("Quint"))
                             {
                                 BlackListBox.Items.Add(item);
                             }
@@ -215,7 +215,7 @@ namespace LegendaryClient.Windows.Profile
             {
                 try
                 {
-                    if (((Logic.SQLite.Runes)((RuneItem)obj).Tag).Id == ((Logic.SQLite.Runes)((RuneItem)sender).Tag).Id)
+                    if (((runes)((RuneItem)obj).Tag).id == ((runes)((RuneItem)sender).Tag).id)
                     {
                         ((RuneItem)obj).Used++;
                     }
@@ -239,7 +239,7 @@ namespace LegendaryClient.Windows.Profile
 
         private void item_MouseMove(object sender, MouseEventArgs e)
         {
-            Logic.SQLite.Runes playerItem = (Logic.SQLite.Runes)((RuneItem)sender).Tag;
+            runes playerItem = (runes)((RuneItem)sender).Tag;
             if (PlayerItem == null)
             {
                 PlayerItem = new LargeChatPlayer();
@@ -248,18 +248,18 @@ namespace LegendaryClient.Windows.Profile
                 Panel.SetZIndex(PlayerItem, 4);
 
                 //Only load once
-                PlayerItem.ProfileImage.Source = playerItem.Icon;
-                PlayerItem.PlayerName.Content = playerItem.Name;
+                PlayerItem.ProfileImage.Source = playerItem.icon;
+                PlayerItem.PlayerName.Content = playerItem.name;
 
                 PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
                 if (PlayerItem.PlayerName.DesiredSize.Width > 250) //Make title fit in item
                     PlayerItem.Width = PlayerItem.PlayerName.DesiredSize.Width;
                 else
                     PlayerItem.Width = 250;
-                PlayerItem.PlayerLeague.Content = playerItem.Id;
+                PlayerItem.PlayerLeague.Content = playerItem.id;
                 PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
 
-                PlayerItem.PlayerWins.Content = ((string)playerItem.Description.Replace("<br>", Environment.NewLine));
+                PlayerItem.PlayerWins.Content = ((string)playerItem.description.Replace("<br>", Environment.NewLine));
                 PlayerItem.PlayerStatus.Text = "";
                 PlayerItem.LevelLabel.Content = "";
                 PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
@@ -299,34 +299,34 @@ namespace LegendaryClient.Windows.Profile
             {
                 if (((RuneItem)((ListBox)sender).SelectedItem).Used <= 0)
                     return;
-                Logic.SQLite.Runes Rune = ((Logic.SQLite.Runes)((RuneItem)((ListBox)sender).SelectedItem).Tag);
+                runes Rune = ((runes)((RuneItem)((ListBox)sender).SelectedItem).Tag);
                 RuneItem item = new RuneItem();
-                item.RuneImage.Source = Rune.Icon;
+                item.RuneImage.Source = Rune.icon;
                 item.Margin = new Thickness(2, 2, 2, 2);
                 item.Tag = Rune;
-                item.RuneName.Content = Rune.Name;
-                item.RuneEffect.Content = Rune.Description;
+                item.RuneName.Content = Rune.name;
+                item.RuneEffect.Content = Rune.description;
                 item.MouseRightButtonDown += item_MouseRightButtonDown;
                 item.MouseMove += item_MouseMove;
                 item.MouseLeave += item_MouseLeave;
                 ListBox tempRuneListBox = new ListBox();
                 double tempAvailCount = 0;
-                if (Rune.Name.Contains("Mark"))
+                if (Rune.name.Contains("Mark"))
                 {
                     tempAvailCount = RedRunesAvail;
                     tempRuneListBox = RedListBox;
                 }
-                if (Rune.Name.Contains("Seal"))
+                if (Rune.name.Contains("Seal"))
                 {
                     tempAvailCount = YellowRunesAvail;
                     tempRuneListBox = YellowListBox;
                 }
-                if (Rune.Name.Contains("Glyph"))
+                if (Rune.name.Contains("Glyph"))
                 {
                     tempAvailCount = BlueRunesAvail;
                     tempRuneListBox = BlueListBox;
                 }
-                if (Rune.Name.Contains("Quint"))
+                if (Rune.name.Contains("Quint"))
                 {
                     tempAvailCount = BlackRunesAvail;
                     tempRuneListBox = BlackListBox;
@@ -354,7 +354,7 @@ namespace LegendaryClient.Windows.Profile
             foreach (RuneItem rune in RedListBox.Items)
             {
                 SlotEntry slotEntry = new SlotEntry();
-                slotEntry.RuneId = ((Logic.SQLite.Runes)rune.Tag).Id;
+                slotEntry.RuneId = ((runes)rune.Tag).id;
                 slotEntry.RuneSlotId = count++;
                 slotEntries.Add(slotEntry);
             }
@@ -362,7 +362,7 @@ namespace LegendaryClient.Windows.Profile
             foreach (RuneItem rune in YellowListBox.Items)
             {
                 SlotEntry slotEntry = new SlotEntry();
-                slotEntry.RuneId = ((Logic.SQLite.Runes)rune.Tag).Id;
+                slotEntry.RuneId = ((runes)rune.Tag).id;
                 slotEntry.RuneSlotId = count++;
                 slotEntries.Add(slotEntry);
             }
@@ -370,7 +370,7 @@ namespace LegendaryClient.Windows.Profile
             foreach (RuneItem rune in BlueListBox.Items)
             {
                 SlotEntry slotEntry = new SlotEntry();
-                slotEntry.RuneId = ((Logic.SQLite.Runes)rune.Tag).Id;
+                slotEntry.RuneId = ((runes)rune.Tag).id;
                 slotEntry.RuneSlotId = count++;
                 slotEntries.Add(slotEntry);
             }
@@ -378,7 +378,7 @@ namespace LegendaryClient.Windows.Profile
             foreach (RuneItem rune in BlackListBox.Items)
             {
                 SlotEntry slotEntry = new SlotEntry();
-                slotEntry.RuneId = ((Logic.SQLite.Runes)rune.Tag).Id;
+                slotEntry.RuneId = ((runes)rune.Tag).id;
                 slotEntry.RuneSlotId = count++;
                 slotEntries.Add(slotEntry);
             }
@@ -395,7 +395,7 @@ namespace LegendaryClient.Windows.Profile
                     RunePage.Name = RuneTextBox.Text;
                 }
             }
-            await Client.PvpNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
+            await Client.PVPNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
         }
 
         private void ClearRunes_Click(object sender, RoutedEventArgs e)
