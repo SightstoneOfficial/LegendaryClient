@@ -105,6 +105,9 @@ namespace LegendaryClient.Windows.Profile
                         case "CAP_5x5":
                             item.ScoreLabel.Content += "(Team Builder)";
                             break;
+                        case "BOT":
+                            item.ScoreLabel.Content += "(Bots)";
+                            break;
                         default:
                             Client.Log(stats.Game.QueueType);
                             item.ScoreLabel.Content += "Please upload this log to github.";
