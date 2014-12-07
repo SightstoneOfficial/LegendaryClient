@@ -1,35 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region
+
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
+#endregion
 
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for NotifyPlayerPopup.xaml
+    ///     Interaction logic for NotifyPlayerPopup.xaml
     /// </summary>
-    public partial class NotifyPlayerPopup : UserControl
+    public partial class NotifyPlayerPopup
     {
-        public NotifyPlayerPopup(string title, string Content)
+        public NotifyPlayerPopup(string title, string content)
         {
             InitializeComponent();
             NotificationTypeLabel.Content = title;
-            NotificationTextBox.Text = Content;
+            NotificationTextBox.Text = content;
         }
 
         private void OkayButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = System.Windows.Visibility.Hidden;
+            Visibility = Visibility.Hidden;
         }
     }
 }

@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for ChatPlayer.xaml
+    ///     Interaction logic for ChatPlayer.xaml
     /// </summary>
-    public partial class ChatPlayer : UserControl
+    public partial class ChatPlayer
     {
         public ChatPlayer()
         {

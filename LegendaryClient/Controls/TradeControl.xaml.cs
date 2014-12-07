@@ -1,14 +1,17 @@
-﻿﻿using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Trade;
+﻿#region
+
 using System.Windows;
-using System.Windows.Controls;
+using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Trade;
+
+#endregion
 
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for TradeControl.xaml
+    ///     Interaction logic for TradeControl.xaml
     /// </summary>
-    public partial class TradeControl : UserControl
+    public partial class TradeControl
     {
         public TradeControl()
         {
@@ -17,15 +20,16 @@ namespace LegendaryClient.Controls
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            TradeContractDTO TradeDTO = this.Tag as TradeContractDTO;
-            await Client.PVPNet.AcceptTrade(TradeDTO.RequesterInternalSummonerName, (int)TradeDTO.RequesterChampionId);
+            var tradeDTO = Tag as TradeContractDTO;
+            if (tradeDTO != null)
+                await
+                    Client.PVPNet.AcceptTrade(tradeDTO.RequesterInternalSummonerName, (int) tradeDTO.RequesterChampionId);
         }
 
         private async void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.DeclineTrade();
-            this.Visibility = System.Windows.Visibility.Hidden;
+            Visibility = Visibility.Hidden;
         }
     }
 }
-

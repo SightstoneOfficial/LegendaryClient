@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
@@ -8,6 +12,11 @@ namespace LegendaryClient.Logic.Region
         public override string RegionName
         {
             get { return "LAS"; }
+        }
+
+        public override string Location
+        {
+            get { return null; }
         }
 
         public override string InternalName
@@ -59,6 +68,7 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "66.151.33.19:80"; }
+            set { }
         }
     }
 }

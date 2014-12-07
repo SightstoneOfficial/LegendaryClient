@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for NewsItem.xaml
+    ///     Interaction logic for NewsItem.xaml
     /// </summary>
-    public partial class NewsItem : UserControl
+    public partial class NewsItem
     {
         public NewsItem()
         {

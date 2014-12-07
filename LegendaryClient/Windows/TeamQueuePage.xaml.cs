@@ -1,69 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using jabber.protocol.client;
-using LegendaryClient.Logic;
-using System.Windows.Threading;
-using System.Threading;
-using LegendaryClient.Controls;
-using System.Xml;
+using System.Globalization;
 using System.IO;
-using jabber.connection;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
-using System.Collections;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using System.Timers;
 using System.Net;
 using System.Net.NetworkInformation;
-using Timer = System.Timers.Timer;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Member;
-using Newtonsoft.Json;
+using System.Threading;
+using System.Timers;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Threading;
+using jabber;
+using jabber.connection;
+using jabber.protocol.client;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using System.Globalization;
+using Newtonsoft.Json;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Member;
+using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
+using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for TeamQueuePage.xaml
+    ///     Interaction logic for TeamQueuePage.xaml
     /// </summary>
-    public partial class TeamQueuePage : Page
+    public partial class TeamQueuePage
     {
         //long InviteId = 0;
         private Room newRoom;
-        bool IsOwner = false;
+        private bool IsOwner;
         private Button LastSender;
-        private int i = 0;
+        private int i;
         private static Timer PingTimer;
 
         //gamemetadata
-        int queueId, mapId, gameTypeConfigId;
-        bool isRanked;
-        string rankedTeamName, gameMode, gameType;
+        private int queueId, mapId, gameTypeConfigId;
+        private bool isRanked;
+        private string rankedTeamName, gameMode, gameType;
 
-        string Invite;
+        private string Invite;
 
         internal static LobbyStatus CurrentLobby;
 
         /// <summary>
-        /// When invited to a team
+        ///     When invited to a team
         /// </summary>
         /// <param name="Message"></param>
-        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, bool isranked = false)
+        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false,
+            bool isranked = false)
         {
             InitializeComponent();
             Client.InviteListView = InviteListView;
@@ -91,7 +83,7 @@ namespace LegendaryClient.Windows
         {
             i = 10;
             PingTimer = new Timer(1000);
-            PingTimer.Elapsed += new ElapsedEventHandler(PingElapsed);
+            PingTimer.Elapsed += PingElapsed;
             PingTimer.Enabled = true;
             PingElapsed(1, null);
             InviteButton.IsEnabled = false;
@@ -104,9 +96,11 @@ namespace LegendaryClient.Windows
             }
             if (CurrentLobby.InvitationID != null)
             {
-                string ObfuscatedName = Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"), ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
+                string ObfuscatedName =
+                    Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"),
+                        ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
                 string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
-                newRoom = Client.ConfManager.GetRoom(new jabber.JID(JID));
+                newRoom = Client.ConfManager.GetRoom(new JID(JID));
                 newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
                 newRoom.OnRoomMessage += newRoom_OnRoomMessage;
                 newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
@@ -118,7 +112,7 @@ namespace LegendaryClient.Windows
             {
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
-                Client.ClearPage(typeof(TeamQueuePage));
+                Client.ClearPage(typeof (TeamQueuePage));
                 Client.SwitchPage(new MainPage());
                 Client.Log("Failed to join room.");
             }
@@ -126,25 +120,27 @@ namespace LegendaryClient.Windows
 
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
-            LastSender = (Button)sender;
-            Member stats = (Member)LastSender.Tag;
+            LastSender = (Button) sender;
+            var stats = (Member) LastSender.Tag;
             uiLogic.UpdateProfile(stats.SummonerName);
             Client.SwitchPage(uiLogic.Profile);
         }
+
         private async void Kick_Click(object sender, RoutedEventArgs e)
         {
-            LastSender = (Button)sender;
-            Member stats = (Member)LastSender.Tag;
+            LastSender = (Button) sender;
+            var stats = (Member) LastSender.Tag;
             await Client.PVPNet.Kick(stats.SummonerId);
         }
+
         private async void Owner_Click(object sender, RoutedEventArgs e)
         {
-            LastSender = (Button)sender;
-            Member stats = (Member)LastSender.Tag;
+            LastSender = (Button) sender;
+            var stats = (Member) LastSender.Tag;
             await Client.PVPNet.MakeOwner(stats.SummonerId);
         }
 
-        double startTime = 0;
+        private double startTime;
 
         internal void PingElapsed(object sender, ElapsedEventArgs e)
         {
@@ -163,7 +159,7 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Ping
-                PingLabel.Text = Math.Round(PingAverage).ToString() + "ms";
+                PingLabel.Text = Math.Round(PingAverage) + "ms";
                 if (PingAverage == 0)
                 {
                     PingLabel.Text = "Timeout";
@@ -172,24 +168,25 @@ namespace LegendaryClient.Windows
                 {
                     PingLabel.Text = "Ping not enabled for this region";
                 }
-                BrushConverter bc = new BrushConverter();
-                Brush brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                var bc = new BrushConverter();
+                var brush = (Brush) bc.ConvertFrom("#FFFF6767");
                 if (PingAverage > 999 || PingAverage < 1)
                 {
                     PingRectangle.Fill = brush;
                 }
-                brush = (Brush)bc.ConvertFrom("#FFFFD667");
+                brush = (Brush) bc.ConvertFrom("#FFFFD667");
                 if (PingAverage > 110 && PingAverage < 999)
                 {
                     PingRectangle.Fill = brush;
                 }
-                brush = (Brush)bc.ConvertFrom("#FF67FF67");
+                brush = (Brush) bc.ConvertFrom("#FF67FF67");
                 if (PingAverage < 110 && PingAverage > 1)
                 {
                     PingRectangle.Fill = brush;
                 }
             }));
         }
+
         internal double HighestPingTime(IPAddress[] Addresses)
         {
             double HighestPing = -1;
@@ -200,7 +197,7 @@ namespace LegendaryClient.Windows
             foreach (IPAddress Address in Addresses)
             {
                 int timeout = 120;
-                Ping pingSender = new Ping();
+                var pingSender = new Ping();
                 PingReply reply = pingSender.Send(Address.ToString(), timeout);
                 if (reply.Status == IPStatus.Success)
                 {
@@ -229,22 +226,23 @@ namespace LegendaryClient.Windows
                     TeamListView.Items.Clear();
                     IsOwner = false;
 
-                    if (CurrentLobby.Owner != null && CurrentLobby.Owner.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                    if (CurrentLobby.Owner != null &&
+                        CurrentLobby.Owner.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
                     {
                         IsOwner = true;
                     }
 
                     foreach (Invitee statsx in CurrentLobby.Invitees)
                     {
-                        var InviteeState = string.Format(statsx.inviteeState.ToLower());
-                        var InviteeStateTitleCase = textInfo.ToTitleCase(InviteeState);
-                        InvitePlayer invitePlayer = new InvitePlayer();
+                        string InviteeState = string.Format(statsx.inviteeState.ToLower());
+                        string InviteeStateTitleCase = textInfo.ToTitleCase(InviteeState);
+                        var invitePlayer = new InvitePlayer();
                         invitePlayer.StatusLabel.Content = InviteeStateTitleCase;
                         invitePlayer.PlayerLabel.Content = statsx.SummonerName;
                         Client.InviteListView.Items.Add(invitePlayer);
                     }
 
-                    if (IsOwner == true)
+                    if (IsOwner)
                     {
                         InviteButton.IsEnabled = true;
                         StartGameButton.IsEnabled = true;
@@ -256,7 +254,7 @@ namespace LegendaryClient.Windows
                         StartGameButton.IsEnabled = false;
                         Client.isOwnerOfGame = false;
                     }
-                    invitationRequest m = JsonConvert.DeserializeObject<invitationRequest>(CurrentLobby.GameData);
+                    var m = JsonConvert.DeserializeObject<invitationRequest>(CurrentLobby.GameData);
                     queueId = m.queueId;
                     isRanked = m.isRanked;
                     rankedTeamName = m.rankedTeamName;
@@ -268,13 +266,13 @@ namespace LegendaryClient.Windows
                     foreach (Member stats in CurrentLobby.Members)
                     {
                         //Your kidding me right
-                        TeamControl TeamPlayer = new TeamControl();
+                        var TeamPlayer = new TeamControl();
                         TeamPlayerStats = TeamPlayer;
                         TeamPlayer.Name.Content = stats.SummonerName;
-                        TeamPlayer.SumID.Content = stats.SummonerName;
+                        TeamPlayer.SumId.Content = stats.SummonerName;
                         TeamPlayer.Kick.Tag = stats;
                         TeamPlayer.Inviter.Tag = stats;
-                        TeamPlayer.unInviter.Tag = stats;
+                        TeamPlayer.UnInviter.Tag = stats;
                         TeamPlayer.Profile.Tag = stats;
                         TeamPlayer.Owner.Tag = stats;
                         TeamPlayer.Width = 1500;
@@ -283,24 +281,24 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Kick.Click += Kick_Click;
                         TeamPlayer.Inviter.Click += async (object sender, RoutedEventArgs e) =>
                         {
-                            LastSender = (Button)sender;
-                            Member s = (Member)LastSender.Tag;
+                            LastSender = (Button) sender;
+                            var s = (Member) LastSender.Tag;
                             await Client.PVPNet.GrantInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Hidden;
-                                TeamPlayer.unInviter.Visibility = Visibility.Visible;
+                                TeamPlayer.UnInviter.Visibility = Visibility.Visible;
                             }));
                         };
-                        TeamPlayer.unInviter.Click += async (object sender, RoutedEventArgs e) =>
+                        TeamPlayer.UnInviter.Click += async (object sender, RoutedEventArgs e) =>
                         {
-                            LastSender = (Button)sender;
-                            Member s = (Member)LastSender.Tag;
+                            LastSender = (Button) sender;
+                            var s = (Member) LastSender.Tag;
                             await Client.PVPNet.revokeInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Visible;
-                                TeamPlayer.unInviter.Visibility = Visibility.Hidden;
+                                TeamPlayer.UnInviter.Visibility = Visibility.Hidden;
                             }));
                         };
                         TeamPlayer.Profile.Click += Profile_Click;
@@ -311,7 +309,8 @@ namespace LegendaryClient.Windows
 
                         //Populate the ProfileIcon
                         int ProfileIconID = Summoner.ProfileIconId;
-                        var uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png");
+                        string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                            ProfileIconID + ".png");
 
                         TeamPlayer.ProfileIcon.Source = Client.GetImage(uriSource);
 
@@ -320,10 +319,10 @@ namespace LegendaryClient.Windows
                         {
                             TeamPlayer.Kick.Visibility = Visibility.Hidden;
                             TeamPlayer.Inviter.Visibility = Visibility.Hidden;
-                            TeamPlayer.unInviter.Visibility = Visibility.Hidden;
+                            TeamPlayer.UnInviter.Visibility = Visibility.Hidden;
                             TeamPlayer.Profile.Visibility = Visibility.Hidden;
                             TeamPlayer.Owner.Visibility = Visibility.Hidden;
-                            if (stats.hasDelegatedInvitePower == true && IsOwner == false)
+                            if (stats.hasDelegatedInvitePower && IsOwner == false)
                             {
                                 InviteButton.IsEnabled = true;
                             }
@@ -337,7 +336,7 @@ namespace LegendaryClient.Windows
                             //So you don't crash trying to kick someone when you can't
                             TeamPlayer.Kick.Visibility = Visibility.Hidden;
                             TeamPlayer.Inviter.Visibility = Visibility.Hidden;
-                            TeamPlayer.unInviter.Visibility = Visibility.Hidden;
+                            TeamPlayer.UnInviter.Visibility = Visibility.Hidden;
                             TeamPlayer.Owner.Visibility = Visibility.Hidden;
                         }
                         TeamListView.Items.Add(TeamPlayer);
@@ -351,26 +350,27 @@ namespace LegendaryClient.Windows
                     }
                     if (IsOwner)
                     {
-                        Client.PVPNet.Call(Guid.NewGuid().ToString(), "suggestedPlayers", "retrieveOnlineFriendsOfFriends", "{\"queueId\":" + queueId + "}");
+                        Client.PVPNet.Call(Guid.NewGuid().ToString(), "suggestedPlayers",
+                            "retrieveOnlineFriendsOfFriends", "{\"queueId\":" + queueId + "}");
                     }
-
                 }));
             }
-            catch { }
-
+            catch
+            {
+            }
         }
 
         private void Update_OnMessageReceived(object sender, object message)
         {
-            if (message.GetType() == typeof(LobbyStatus))
+            if (message.GetType() == typeof (LobbyStatus))
             {
-                LobbyStatus Lobby = message as LobbyStatus;
+                var Lobby = message as LobbyStatus;
                 CurrentLobby = Lobby;
                 RenderLobbyData();
             }
             else if (message is GameDTO)
             {
-                GameDTO QueueDTO = message as GameDTO;
+                var QueueDTO = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     if (QueueDTO.GameState == "TERMINATED")
@@ -400,26 +400,24 @@ namespace LegendaryClient.Windows
             }
             else if (message is SearchingForMatchNotification)
             {
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                {
-                    EnteredQueue(message as SearchingForMatchNotification);
-                }));
+                Dispatcher.BeginInvoke(DispatcherPriority.Input,
+                    new ThreadStart(() => { EnteredQueue(message as SearchingForMatchNotification); }));
             }
             else if (message is InvitePrivileges)
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    InvitePrivileges priv = message as InvitePrivileges;
+                    var priv = message as InvitePrivileges;
                     if (priv.canInvite)
                     {
-                        TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                         tr.Text = "You may invite players to this game." + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                         InviteButton.IsEnabled = true;
                     }
                     else
                     {
-                        TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                         tr.Text = "You may no longer invite players to this game." + Environment.NewLine;
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                         InviteButton.IsEnabled = false;
@@ -439,35 +437,34 @@ namespace LegendaryClient.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     FriendsOfFriendsView.Items.Clear();
-                    SuggestedFriend[] suggestedFriends = JsonConvert.DeserializeObject<SuggestedFriend[]>(ProxyResponse.Payload);
+                    var suggestedFriends = JsonConvert.DeserializeObject<SuggestedFriend[]>(ProxyResponse.Payload);
                     foreach (SuggestedFriend s in suggestedFriends)
                     {
-                        SuggestedPlayerItem invitePlayer = new SuggestedPlayerItem();
+                        var invitePlayer = new SuggestedPlayerItem();
                         invitePlayer.PlayerLabel.Content = s.summonerName;
-                        invitePlayer.inviteButton.Click += (object obj, RoutedEventArgs e) =>
+                        invitePlayer.InviteButton.Click += (object obj, RoutedEventArgs e) =>
                         {
                             Client.PVPNet.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
                             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
                                 {
-                                    if ((string)item.PlayerLabel.Content == s.summonerName)
+                                    if ((string) item.PlayerLabel.Content == s.summonerName)
                                     {
-                                        item.inviteButton.IsEnabled = false;
-                                        item.inviteButton.Content = "Invited";
-                                        Timer t = new Timer();
+                                        item.InviteButton.IsEnabled = false;
+                                        item.InviteButton.Content = "Invited";
+                                        var t = new Timer();
                                         t.AutoReset = false;
                                         t.Elapsed += (object source, ElapsedEventArgs args) =>
                                         {
                                             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                                             {
-                                                item.inviteButton.IsEnabled = true;
-                                                item.inviteButton.Content = "Invite";
+                                                item.InviteButton.IsEnabled = true;
+                                                item.InviteButton.Content = "Invite";
                                             }));
                                         };
                                         t.Interval = 5000;
                                         t.Start();
-
                                     }
                                 }
                             }));
@@ -490,7 +487,7 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.PurgeFromQueues();
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
-            Client.ClearPage(typeof(TeamQueuePage));
+            Client.ClearPage(typeof (TeamQueuePage));
             Client.SwitchPage(new MainPage());
             Client.ReturnButton.Visibility = Visibility.Hidden;
         }
@@ -499,7 +496,7 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatText.ScrollToEnd();
@@ -512,12 +509,13 @@ namespace LegendaryClient.Windows
             {
                 if (msg.Body != "This room is not anonymous")
                 {
-                    TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = msg.From.Resource + ": ";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (Client.Filter)
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() + Environment.NewLine;
+                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                                  Environment.NewLine;
                     else
                         tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
@@ -528,9 +526,10 @@ namespace LegendaryClient.Windows
 
         private void GotQueuePop(object sender, object message)
         {
-            if (Client.runonce == false && message is GameDTO && (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
+            if (Client.runonce == false && message is GameDTO &&
+                (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
             {
-                GameDTO Queue = message as GameDTO;
+                var Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
@@ -540,23 +539,31 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private bool DevMode = false, makeRanked = false;
+        private bool DevMode, makeRanked;
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
             if (ChatTextBox.Text == "!~dev")
             {
                 DevMode = !DevMode;
-                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatTextBox.Text = "";
-                if (DevMode) { CreateRankedCheckBox.Visibility = Visibility.Visible; SelectChamp.Visibility = Visibility.Visible; }
-                else { CreateRankedCheckBox.Visibility = Visibility.Hidden; SelectChamp.Visibility = Visibility.Hidden; }
+                if (DevMode)
+                {
+                    CreateRankedCheckBox.Visibility = Visibility.Visible;
+                    SelectChamp.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    CreateRankedCheckBox.Visibility = Visibility.Hidden;
+                    SelectChamp.Visibility = Visibility.Hidden;
+                }
             }
             else
             {
-                TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
@@ -575,7 +582,7 @@ namespace LegendaryClient.Windows
 
         internal List<Int32> QueueIds;
 
-        bool inQueue = false;
+        private bool inQueue;
 
 #pragma warning disable 4014
 
@@ -583,22 +590,22 @@ namespace LegendaryClient.Windows
         {
             if (!inQueue)
             {
-                MatchMakerParams parameters = new MatchMakerParams();
+                var parameters = new MatchMakerParams();
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = (makeRanked ? new int[] { 4 } : QueueIds.ToArray());
+                parameters.QueueIds = (makeRanked ? new[] {4} : QueueIds.ToArray());
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
-                List<int> InviteList = new List<int>();
+                var InviteList = new List<int>();
                 foreach (Member stats in CurrentLobby.Members)
                 {
                     int GameInvitePlayerList = Convert.ToInt32(stats.SummonerId);
                     InviteList.Add(GameInvitePlayerList);
                 }
                 parameters.Team = InviteList;
-                Client.PVPNet.AttachTeamToQueue(parameters, new SearchingForMatchNotification.Callback(EnteredQueue));
+                Client.PVPNet.AttachTeamToQueue(parameters, EnteredQueue);
             }
             else
             {
@@ -612,7 +619,7 @@ namespace LegendaryClient.Windows
 
         private void setStartButtonText(string text)
         {
-            Dispatcher.Invoke(new Action(() => { StartGameButton.Content = text; }));
+            Dispatcher.Invoke(() => { StartGameButton.Content = text; });
         }
 
         private void EnteredQueue(SearchingForMatchNotification result)
@@ -621,7 +628,7 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    MessageOverlay messageOver = new MessageOverlay();
+                    var messageOver = new MessageOverlay();
                     messageOver.MessageTitle.Content = "Could not join the queue";
                     foreach (QueueDodger x in result.PlayerJoinFailures)
                     {
@@ -629,21 +636,33 @@ namespace LegendaryClient.Windows
                         switch (x.ReasonFailed)
                         {
                             case "LEAVER_BUSTER_TAINT_WARNING":
-                                messageOver.MessageTextBox.Text += " - You have left a game in progress. Please use the official client to remove the warning for now."; //Need to implement their new warning for leaving.
+                                messageOver.MessageTextBox.Text +=
+                                    " - You have left a game in progress. Please use the official client to remove the warning for now.";
+                                //Need to implement their new warning for leaving.
                                 break;
                             case "QUEUE_DODGER":
-                                messageOver.MessageTextBox.Text += " - " + x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
-                                messageOver.MessageTextBox.Text += " - You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
+                                messageOver.MessageTextBox.Text += " - " + x.Summoner.Name +
+                                                                   " is unable to join the queue as they recently dodged a game." +
+                                                                   Environment.NewLine;
+                                messageOver.MessageTextBox.Text += " - You have " +
+                                                                   string.Format("{0:D2}m:{1:D2}s", time.Minutes,
+                                                                       time.Seconds) +
+                                                                   " remaining until you may queue again";
                                 break;
                             case "QUEUE_RESTRICTED":
-                                messageOver.MessageTextBox.Text += " - You are too far apart in ranked to queue together.";
-                                messageOver.MessageTextBox.Text += " - For instance, Silvers can only queue with Bronze, Silver, or Gold players.";
+                                messageOver.MessageTextBox.Text +=
+                                    " - You are too far apart in ranked to queue together.";
+                                messageOver.MessageTextBox.Text +=
+                                    " - For instance, Silvers can only queue with Bronze, Silver, or Gold players.";
                                 break;
                             case "RANKED_RESTRICTED":
-                                messageOver.MessageTextBox.Text += " - You are not currently able to queue for ranked for: " + x.PenaltyRemainingTime + " games. If this is inaccurate please report it as an issue on the github page. Thanks!";
+                                messageOver.MessageTextBox.Text +=
+                                    " - You are not currently able to queue for ranked for: " + x.PenaltyRemainingTime +
+                                    " games. If this is inaccurate please report it as an issue on the github page. Thanks!";
                                 break;
                             default:
-                                messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
+                                messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed +
+                                                                   " - as an Issue on github explaining what it meant. Thanks!";
                                 break;
                         }
                     }
@@ -657,13 +676,16 @@ namespace LegendaryClient.Windows
             startTime = 1;
             inQueue = true;
             Client.GameStatus = "inQueue";
-            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.timeStampSince =
+                (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
         }
 
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
+            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue)
+                ? AutoAcceptCheckBox.IsChecked.Value
+                : false;
         }
 
         private void CreateRankedCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -679,7 +701,7 @@ namespace LegendaryClient.Windows
 
         internal void CreateText(string text, SolidColorBrush color)
         {
-            TextRange tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
             tr.Text = text + Environment.NewLine;
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
         }

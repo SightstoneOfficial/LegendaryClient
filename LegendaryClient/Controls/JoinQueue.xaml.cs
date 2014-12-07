@@ -1,29 +1,15 @@
-﻿using LegendaryClient.Logic;
-using System.Windows;
-using System.Windows.Controls;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Threading;
-using System.Timers;
-using System.Windows.Media;
-using System.Windows.Threading;
-using LegendaryClient.Windows;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for JoinQueue.xaml
+    ///     Interaction logic for JoinQueue.xaml
     /// </summary>
-    public partial class JoinQueue : UserControl
+    public partial class JoinQueue
     {
-        public double queueID { get; set; }
-
         public JoinQueue()
         {
             InitializeComponent();
         }
-        
+
+        public double QueueId { get; set; }
     }
 }

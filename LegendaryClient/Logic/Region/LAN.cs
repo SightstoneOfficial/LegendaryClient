@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
@@ -12,6 +12,11 @@ namespace LegendaryClient.Logic.Region
         public override string RegionName
         {
             get { return "LAN"; }
+        }
+
+        public override string Location
+        {
+            get { return null; }
         }
 
         public override bool Garena
@@ -63,6 +68,7 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "110.45.191.11:80"; }
+            set { }
         }
     }
 }

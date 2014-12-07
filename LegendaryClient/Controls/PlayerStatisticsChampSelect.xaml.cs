@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for PlayerStatisticsChampSelect.xaml
+    ///     Interaction logic for PlayerStatisticsChampSelect.xaml
     /// </summary>
-    public partial class PlayerStatisticsChampSelect : UserControl
+    public partial class PlayerStatisticsChampSelect
     {
         public PlayerStatisticsChampSelect()
         {

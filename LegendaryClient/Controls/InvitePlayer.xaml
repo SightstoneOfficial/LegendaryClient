@@ -6,7 +6,9 @@
              mc:Ignorable="d"
              MinHeight="20" Width="400">
     <Grid Background="#66505050">
-        <Label x:Name="PlayerLabel" Content="Eddy5641" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="5,0,0,0" VerticalAlignment="Center" Foreground="White" />
-        <Label x:Name="StatusLabel" Content="Pending" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Right" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White" />
+        <Label x:Name="PlayerLabel" Content="Eddy5641" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Left"
+               Margin="5,0,0,0" VerticalAlignment="Center" Foreground="White" />
+        <Label x:Name="StatusLabel" Content="Pending" FontSize="18" FontWeight="ExtraLight" HorizontalAlignment="Right"
+               Margin="0,0,10,0" VerticalAlignment="Center" Foreground="White" />
     </Grid>
 </UserControl>

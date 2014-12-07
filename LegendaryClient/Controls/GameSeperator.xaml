@@ -10,15 +10,17 @@
             x:Name="Triangle"
             HorizontalAlignment="Left"
             Points="35,40 15,25 15,55 35,40"
-            Stroke="DarkGray" 
+            Stroke="DarkGray"
             StrokeThickness="2"
             MouseDown="Polygon_MouseDown">
             <Polygon.Fill>
-                <SolidColorBrush Color="Black" Opacity="0.4"/>
+                <SolidColorBrush Color="Black" Opacity="0.4" />
             </Polygon.Fill>
         </Polygon>
-        <Label x:Name="QueueLabel" Content="Normal Queues" HorizontalAlignment="Left" Margin="50,6,0,0" FontSize="28" FontWeight="SemiBold" VerticalAlignment="Top" />
-        <Label x:Name="AmountInQueueLabel" Content="People in queue: 0" HorizontalAlignment="Left" Margin="50,0,0,10" FontSize="18" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
+        <Label x:Name="QueueLabel" Content="Normal Queues" HorizontalAlignment="Left" Margin="50,6,0,0" FontSize="28"
+               FontWeight="SemiBold" VerticalAlignment="Top" />
+        <Label x:Name="AmountInQueueLabel" Content="People in queue: 0" HorizontalAlignment="Left" Margin="50,0,0,10"
+               FontSize="18" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
 
     </Grid>
 </UserControl>

@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for RecentGameOverview.xaml
+    ///     Interaction logic for RecentGameOverview.xaml
     /// </summary>
-    public partial class RecentGameOverview : UserControl
+    public partial class RecentGameOverview
     {
         public RecentGameOverview()
         {

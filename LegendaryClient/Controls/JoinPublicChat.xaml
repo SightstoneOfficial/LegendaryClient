@@ -1,9 +1,9 @@
 ﻿<UserControl x:Class="LegendaryClient.Controls.JoinPublicChat"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
              Height="110" Width="300">
     <Grid Margin="0,0,0,-10">
         <Rectangle Fill="#99505050" Stroke="#FF646464">
@@ -11,12 +11,19 @@
                 <DropShadowEffect ShadowDepth="3" />
             </Rectangle.Effect>
         </Rectangle>
-        <Label x:Name="NotificationTypeLabel" Content="Join Public Room" Margin="10,8,0,0" Foreground="White" FontWeight="ExtraLight" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" />
-        <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right" Margin="0,14,10,0" VerticalAlignment="Top" Width="25" Click="CloseButton_Click"/>
+        <Label x:Name="NotificationTypeLabel" Content="Join Public Room" Margin="10,8,0,0" Foreground="White"
+               FontWeight="ExtraLight" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        <Button x:Name="CloseButton" Style="{x:Null}" Foreground="Black" Content="X" HorizontalAlignment="Right"
+                Margin="0,14,10,0" VerticalAlignment="Top" Width="25" Click="CloseButton_Click" />
 
-        <TextBox x:Name="NotificationTextBox" Text="Enter Channel Name to Join" HorizontalAlignment="Left" Height="28" Margin="10,44,0,0" TextWrapping="Wrap" FontWeight="ExtraLight" FontSize="14" Foreground="White" VerticalAlignment="Top" Width="280" Background="#E5505050" BorderBrush="{x:Null}"/>
+        <TextBox x:Name="NotificationTextBox" Text="Enter Channel Name to Join" HorizontalAlignment="Left" Height="28"
+                 Margin="10,44,0,0" TextWrapping="Wrap" FontWeight="ExtraLight" FontSize="14" Foreground="White"
+                 VerticalAlignment="Top" Width="280" Background="#E5505050" BorderBrush="{x:Null}" />
 
-        <Button x:Name="OkayButton" Style="{x:Null}" Content="Join" HorizontalAlignment="Left" Margin="238,80,0,0" Foreground="Black" VerticalAlignment="Top" IsDefault="True" Width="50" Height="25" Click="JoinButton_Click"/>
-        <TextBox x:Name="ChatNameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,80,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="223"/>
+        <Button x:Name="OkayButton" Style="{x:Null}" Content="Join" HorizontalAlignment="Left" Margin="238,80,0,0"
+                Foreground="Black" VerticalAlignment="Top" IsDefault="True" Width="50" Height="25"
+                Click="JoinButton_Click" />
+        <TextBox x:Name="ChatNameTextBox" HorizontalAlignment="Left" Height="23" Margin="10,80,0,0" TextWrapping="Wrap"
+                 Text="" VerticalAlignment="Top" Width="223" />
     </Grid>
 </UserControl>

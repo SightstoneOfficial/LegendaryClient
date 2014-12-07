@@ -1,18 +1,16 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for KudosItem.xaml
+    ///     Interaction logic for KudosItem.xaml
     /// </summary>
-    public partial class KudosItem : UserControl
+    public partial class KudosItem
     {
-        public KudosItem(string Type, string Amount)
+        public KudosItem(string type, string amount)
         {
             InitializeComponent();
 
-            TypeLabel.Content = Type;
-            AmountLabel.Content = Amount;
+            TypeLabel.Content = type;
+            AmountLabel.Content = amount;
         }
     }
 }

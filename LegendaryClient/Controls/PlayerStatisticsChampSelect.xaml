@@ -6,13 +6,21 @@
              mc:Ignorable="d"
              Height="120" Width="250">
     <Grid Background="#D8000000">
-        <Image x:Name="MostPlayed" HorizontalAlignment="Left" Height="40" Margin="4,26,0,0" VerticalAlignment="Top" Width="40" Source="/LegendaryClient;component/Icon.ico" />
-        <Label x:Name="PlayerName" Content="" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
-        <Label x:Name="Champion1" Content="" HorizontalAlignment="Left" Margin="44,21,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
-        <Label x:Name="Champion2" Content="" HorizontalAlignment="Left" Margin="44,46,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
-        <Label x:Name="Champion3" Content="" HorizontalAlignment="Left" Margin="44,71,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
-        <ProgressBar x:Name="Champ1ProgressBar" HorizontalAlignment="Left" Height="8" VerticalAlignment="Top" Width="180" Margin="50,42,0,0" Background="Red"/>
-        <ProgressBar x:Name="Champ2ProgressBar" HorizontalAlignment="Left" Height="8" VerticalAlignment="Top" Width="180" Margin="50,67,0,0" Background="Red"/>
-        <ProgressBar x:Name="Champ3ProgressBar" HorizontalAlignment="Left" Height="8" VerticalAlignment="Top" Width="180" Margin="50,91,0,0" Background="Red"/>
+        <Image x:Name="MostPlayed" HorizontalAlignment="Left" Height="40" Margin="4,26,0,0" VerticalAlignment="Top"
+               Width="40" Source="/LegendaryClient;component/Icon.ico" />
+        <Label x:Name="PlayerName" Content="" HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Top"
+               FontWeight="Bold" Foreground="White" />
+        <Label x:Name="Champion1" Content="" HorizontalAlignment="Left" Margin="44,21,0,0" VerticalAlignment="Top"
+               FontWeight="Bold" Foreground="White" />
+        <Label x:Name="Champion2" Content="" HorizontalAlignment="Left" Margin="44,46,0,0" VerticalAlignment="Top"
+               FontWeight="Bold" Foreground="White" />
+        <Label x:Name="Champion3" Content="" HorizontalAlignment="Left" Margin="44,71,0,0" VerticalAlignment="Top"
+               FontWeight="Bold" Foreground="White" />
+        <ProgressBar x:Name="Champ1ProgressBar" HorizontalAlignment="Left" Height="8" VerticalAlignment="Top"
+                     Width="180" Margin="50,42,0,0" Background="Red" />
+        <ProgressBar x:Name="Champ2ProgressBar" HorizontalAlignment="Left" Height="8" VerticalAlignment="Top"
+                     Width="180" Margin="50,67,0,0" Background="Red" />
+        <ProgressBar x:Name="Champ3ProgressBar" HorizontalAlignment="Left" Height="8" VerticalAlignment="Top"
+                     Width="180" Margin="50,91,0,0" Background="Red" />
     </Grid>
 </UserControl>

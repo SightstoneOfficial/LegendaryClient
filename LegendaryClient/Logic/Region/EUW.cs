@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
@@ -13,6 +17,11 @@ namespace LegendaryClient.Logic.Region
         public override bool Garena
         {
             get { return false; }
+        }
+
+        public override string Location
+        {
+            get { return null; }
         }
 
         public override string InternalName
@@ -44,7 +53,7 @@ namespace LegendaryClient.Logic.Region
         {
             get
             {
-                return new IPAddress[]
+                return new[]
                 {
                     IPAddress.Parse("64.7.194.1"),
                     IPAddress.Parse("95.172.65.1") //This one seems to give high ping
@@ -60,6 +69,7 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "95.172.65.26:8088"; }
+            set { }
         }
     }
 }

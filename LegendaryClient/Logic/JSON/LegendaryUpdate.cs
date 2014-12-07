@@ -1,37 +1,42 @@
-﻿using LegendaryClient.Logic.SQLite;
-using System;
+﻿#region
+
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using LegendaryClient.Logic.SQLite;
+
+#endregion
 
 namespace LegendaryClient.Logic.JSON
 {
-    class LegendaryUpdate
+    internal class LegendaryUpdate
     {
-
         public static List<UpdateData> PopulateItems()
         {
-            var Json = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/updateData");
-            List<UpdateData> ItemList = new List<UpdateData>();
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(Json);
-            Dictionary<string, object> updateData = deserializedJSON["updateData"] as Dictionary<string, object>;
+            string json = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/updateData");
+            var itemList = new List<UpdateData>();
+            var serializer = new JavaScriptSerializer();
+            var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(json);
+            var updateData = deserializedJson["updateData"] as Dictionary<string, object>;
 
-            foreach (KeyValuePair<string, object> LegendaryClientUpdateData in updateData)
+            if (updateData == null)
+                return itemList;
+
+            foreach (var legendaryClientUpdateData in updateData)
             {
-                UpdateData newItem = new UpdateData();
-                Dictionary<string, object> singularUpdateData = LegendaryClientUpdateData.Value as Dictionary<string, object>;
+                var newItem = new UpdateData();
+                var singularUpdateData = legendaryClientUpdateData.Value as Dictionary<string, object>;
+
+                if (singularUpdateData == null)
+                    continue;
+
                 newItem.version = singularUpdateData["version"] as string;
                 newItem.active = singularUpdateData["active"] as bool?;
                 newItem.isPreRelease = singularUpdateData["isPreRelease"] as bool?;
                 newItem.downloadLink = singularUpdateData["downloadLink"] as string;
             }
 
-            return ItemList;
+            return itemList;
         }
     }
 }

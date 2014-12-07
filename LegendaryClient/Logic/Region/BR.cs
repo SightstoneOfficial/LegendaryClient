@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
@@ -8,6 +12,11 @@ namespace LegendaryClient.Logic.Region
         public override string RegionName
         {
             get { return "BR"; }
+        }
+
+        public override string Location
+        {
+            get { return null; }
         }
 
         public override bool Garena
@@ -27,7 +36,8 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //This returns english (not spanish) characters
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); }
+            //This returns english (not spanish) characters
         }
 
         public override string Locale
@@ -59,6 +69,7 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "66.151.33.19:80"; }
+            set { }
         }
     }
 }

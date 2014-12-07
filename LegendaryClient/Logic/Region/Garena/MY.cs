@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region.Garena
 {
     public sealed class MY : BaseRegion
     {
+        public override string Location
+        {
+            get { return null; }
+        }
+
         public override string RegionName
         {
             get { return "prod.lol.garenanow.com"; }
@@ -31,7 +36,8 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/na/en_US.js"); } //http://lol.garena.com/landing.php?[garneaUser]
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/na/en_US.js"); }
+            //http://lol.garena.com/landing.php?[garneaUser]
         }
 
         public override string Locale
@@ -63,6 +69,7 @@ namespace LegendaryClient.Logic.Region.Garena
         public override string SpectatorIpAddress
         {
             get { return ""; }
+            set { }
         }
     }
 }
