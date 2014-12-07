@@ -245,8 +245,6 @@ namespace LegendaryClient.Windows
 
             Client.Region = SelectedRegion;
             //Client.Version = "4.18.14";
-            Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version, false);
-            /*
             if (SelectedRegion.PVPRegion != PVPNetConnect.Region.CS)
                 Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
             else
@@ -254,7 +252,6 @@ namespace LegendaryClient.Windows
                 Dictionary<String, String> settings = SelectedRegion.Location.LeagueSettingsReader();
                 Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version, true, settings["host"], settings["lq_uri"], SelectedRegion.Locale);
             }
-            //*/
         }
 
         private void PVPNet_OnLogin(object sender, string username, string ipAddress)
@@ -332,6 +329,17 @@ namespace LegendaryClient.Windows
                 newCredentials.IpAddress = GetNewIpAddress();
                 newCredentials.Locale = Client.Region.Locale;
                 newCredentials.Domain = "lolclient.lol.riotgames.com";
+                //Almost like the lol client now
+                string os = Environment.OSVersion.ToString();
+                string[] ossplit = os.Split('.');
+                if (ossplit[0] == "Windows 8")
+                {
+                    if (ossplit[1] == "1")
+                        os = "Windows 8.1";
+                }
+                else
+                    os = ossplit[0];
+                newCredentials.OperatingSystem = os;
 
                 Session login = await Client.PVPNet.Login(newCredentials);
                 Client.PlayerSession = login;
