@@ -1,20 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region
+
+using System;
+
+#endregion
 
 namespace LegendaryClient.Logic.GameClientSettings
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-    class HUD : Attribute
+    [AttributeUsage(
+        AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Field | AttributeTargets.Property,
+        AllowMultiple = true)]
+    internal class HUD : Attribute
     {
-        public string name { get; set; }
-        public bool isHUD { get; set; }
         public HUD(string name)
         {
-            this.name = name;
-            this.isHUD = true;
+            Name = name;
+            IsHUD = true;
         }
+
+        public string Name { get; set; }
+        public bool IsHUD { get; set; }
     }
 }

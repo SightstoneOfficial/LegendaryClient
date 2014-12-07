@@ -1,14 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
     public sealed class NA : BaseRegion
     {
-        public void NASqlite()
-        {
-            LegendaryClient.Logic.Client.sqlite = "gameStats_en_US.sqlite";
-        }
         public override bool Garena
         {
             get { return false; }
@@ -48,7 +48,7 @@ namespace LegendaryClient.Logic.Region
         {
             get
             {
-                return new IPAddress[]
+                return new[]
                 {
                     IPAddress.Parse("216.52.241.254"),
                     IPAddress.Parse("64.7.194.1"),
@@ -70,6 +70,11 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "216.133.234.17"; }
+        }
+
+        public void NASqlite()
+        {
+            Client.sqlite = "gameStats_en_US.sqlite";
         }
     }
 }

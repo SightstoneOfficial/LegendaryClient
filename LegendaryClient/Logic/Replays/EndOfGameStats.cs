@@ -1,9 +1,10 @@
-﻿using RtmpSharp.IO;
+﻿#region
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RtmpSharp.IO;
+
+#endregion
 
 namespace LegendaryClient.Logic.Replays
 {

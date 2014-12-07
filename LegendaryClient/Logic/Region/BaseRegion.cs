@@ -1,6 +1,9 @@
-﻿using LegendaryClient.Logic.Region.Garena;
+﻿#region
+
 using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
@@ -29,19 +32,18 @@ namespace LegendaryClient.Logic.Region
 
         public abstract string Location { get; }
 
-        public static BaseRegion GetRegion(String RequestedRegion)
+        public static BaseRegion GetRegion(String requestedRegion)
         {
-            RequestedRegion = RequestedRegion.ToUpper();
-            Type t = Type.GetType("LegendaryClient.Logic.Region." + RequestedRegion);
+            requestedRegion = requestedRegion.ToUpper();
+            Type t = Type.GetType("LegendaryClient.Logic.Region." + requestedRegion);
 
             if (t != null)
-                return (BaseRegion)Activator.CreateInstance(t);
-            else
-            {
-                t = Type.GetType("LegendaryClient.Logic.Region.Garena." + RequestedRegion);
-                if (t != null)
-                    return (BaseRegion)Activator.CreateInstance(t);
-            }
+                return (BaseRegion) Activator.CreateInstance(t);
+            t = Type.GetType("LegendaryClient.Logic.Region.Garena." + requestedRegion);
+
+            if (t != null)
+                return (BaseRegion) Activator.CreateInstance(t);
+
             return null;
         }
     }

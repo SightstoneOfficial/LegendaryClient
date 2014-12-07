@@ -1,60 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
+﻿#region
+
+using System;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+#endregion
 
 namespace LegendaryClient.Logic.SoundLogic
 {
     public class AmbientChampSelect
     {
-        public static string currentQueueToSoundFile(double QueueId )
+        public static string CurrentQueueToSoundFile(double queueId)
         {
-            string SoundFileName = "";
-            if (QueueId == 2)
+            string soundFileName;
+            if (queueId == 2)
             {
-                SoundFileName = "ChmpSlct_BlindPick";
+                soundFileName = "ChmpSlct_BlindPick";
             }
-            else if (QueueId == 4)
+            else if (queueId == 4)
             {
-                SoundFileName = "ChmpSlct_DraftMode";
+                soundFileName = "ChmpSlct_DraftMode";
             }
-            else if (QueueId == 61)
+            else if (queueId == 61)
             {
-                SoundFileName = "ChmpSlct_DraftMode";
+                soundFileName = "ChmpSlct_DraftMode";
             }
-            else if (QueueId == 31)
+            else if (queueId == 31)
             {
-                SoundFileName = "ChmpSlct_BlindPick";
+                soundFileName = "ChmpSlct_BlindPick";
             }
-            else if (QueueId == 32)
+            else if (queueId == 32)
             {
-                SoundFileName = "ChmpSlct_BlindPick";
+                soundFileName = "ChmpSlct_BlindPick";
             }
-            else if (QueueId == 42)
+            else if (queueId == 42)
             {
-                SoundFileName = "ChmpSlct_DraftMode";
+                soundFileName = "ChmpSlct_DraftMode";
             }
-            else if (QueueId == 65)
+            else if (queueId == 65)
             {
-                SoundFileName = "howlingabyss_champselect";
+                soundFileName = "howlingabyss_champselect";
             }
-            else if (QueueId == 32)
+            else if (queueId == 32)
             {
-                SoundFileName = "ChmpSlct_BlindPick";
+                soundFileName = "ChmpSlct_BlindPick";
             }
-            else 
+            else
             {
-                SoundFileName = "ChmpSlct_Odin_BlindPick";
+                soundFileName = "ChmpSlct_Odin_BlindPick";
             }
 
-            return SoundFileName;
+            return soundFileName;
         }
 
-        public static void PlayAmbientChampSelectSound(string SelectedSound)
+        public static void PlayAmbientChampSelectSound(string selectedSound)
         {
-            Client.AmbientSoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "ambient", SelectedSound + ".mp3"));
+            Client.AmbientSoundPlayer.Source =
+                new Uri(Path.Combine(Client.ExecutingDirectory, "ambient", selectedSound + ".mp3"));
         }
     }
 }

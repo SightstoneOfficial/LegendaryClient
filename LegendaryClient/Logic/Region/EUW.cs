@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
@@ -49,7 +53,7 @@ namespace LegendaryClient.Logic.Region
         {
             get
             {
-                return new IPAddress[]
+                return new[]
                 {
                     IPAddress.Parse("64.7.194.1"),
                     IPAddress.Parse("95.172.65.1") //This one seems to give high ping

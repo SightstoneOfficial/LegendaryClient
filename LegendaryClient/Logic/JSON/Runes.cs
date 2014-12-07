@@ -1,10 +1,13 @@
-﻿using LegendaryClient.Logic.SQLite;
+﻿#region
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Script.Serialization;
-using System.Windows.Media.Imaging;
+using LegendaryClient.Logic.SQLite;
+
+#endregion
 
 namespace LegendaryClient.Logic.JSON
 {
@@ -12,17 +15,21 @@ namespace LegendaryClient.Logic.JSON
     {
         public static List<runes> PopulateRunes()
         {
-            List<runes> RuneList = new List<runes>();
+            var runeList = new List<runes>();
 
-            string runeJSON = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "rune.json"));
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(runeJSON);
-            Dictionary<string, object> runeData = deserializedJSON["data"] as Dictionary<string, object>;
+            string runeJson =
+                File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "rune.json"));
+            var serializer = new JavaScriptSerializer();
+            var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(runeJson);
+            var runeData = deserializedJson["data"] as Dictionary<string, object>;
 
-            foreach (KeyValuePair<string, object> rune in runeData)
+            if (runeData == null)
+                return runeList;
+
+            foreach (var rune in runeData)
             {
-                runes newRune = new runes();
-                Dictionary<string, object> singularRuneData = rune.Value as Dictionary<string, object>;
+                var newRune = new runes();
+                var singularRuneData = rune.Value as Dictionary<string, object>;
                 newRune.id = Convert.ToInt32(rune.Key);
                 newRune.name = singularRuneData["name"] as string;
                 newRune.description = singularRuneData["description"] as string;
@@ -30,13 +37,13 @@ namespace LegendaryClient.Logic.JSON
                 newRune.description = newRune.description.Replace(")", "");
                 newRune.stats = singularRuneData["stats"] as Dictionary<string, object>;
                 newRune.tags = singularRuneData["tags"] as ArrayList;
-                Dictionary<string, object> imageData = singularRuneData["image"] as Dictionary<string, object>;
-                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune", (string)imageData["full"]);
+                var imageData = singularRuneData["image"] as Dictionary<string, object>;
+                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune", (string) imageData["full"]);
                 newRune.icon = Client.GetImage(uriSource);
 
-                RuneList.Add(newRune);
+                runeList.Add(newRune);
             }
-            return RuneList;
+            return runeList;
         }
     }
 }

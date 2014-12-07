@@ -1,77 +1,79 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
+
+#endregion
 
 namespace LegendaryClient.Logic.PlayerSpell
 {
     public static class SummonerSpell
     {
-        public static string GetSpellName(int spellID)
+        public static string GetSpellName(int spellId)
         {
-            SummonerSpells spell = (SummonerSpells)spellID;
-            return Enum.GetName(typeof(SummonerSpells), spell);
+            var spell = (SummonerSpells) spellId;
+            return Enum.GetName(typeof (SummonerSpells), spell);
         }
 
-        public static string GetSpellImageName(int spellID)
+        public static string GetSpellImageName(int spellId)
         {
-            NameToImage spell = (NameToImage)spellID;
-            return "Summoner" + Enum.GetName(typeof(NameToImage), spell) + ".png";
+            var spell = (NameToImage) spellId;
+            return "Summoner" + Enum.GetName(typeof (NameToImage), spell) + ".png";
         }
 
         public static SummonerSpells GetSpell(string spellName)
         {
-            return (SummonerSpells)Enum.Parse(typeof(SummonerSpells), spellName, true);
+            return (SummonerSpells) Enum.Parse(typeof (SummonerSpells), spellName, true);
         }
 
-        public static bool CanUseSpell(int SpellId, double Level, string GameMode)
+        public static bool CanUseSpell(int spellId, double level, string gameMode)
         {
-            if (Client.LoginPacket.ClientSystemStates.InactiveSpellIdList.Contains(SpellId))
+            if (Client.LoginPacket.ClientSystemStates.InactiveSpellIdList.Contains(spellId))
                 return false;
-            switch (GameMode)
+
+            switch (gameMode)
             {
                 case "CLASSIC":
-                    if (Client.LoginPacket.ClientSystemStates.InactiveClassicSpellIdList.Contains(SpellId))
+                    if (Client.LoginPacket.ClientSystemStates.InactiveClassicSpellIdList.Contains(spellId))
                         return false;
                     break;
 
                 case "ARAM":
-                    if (Client.LoginPacket.ClientSystemStates.InactiveAramSpellIdList.Contains(SpellId))
+                    if (Client.LoginPacket.ClientSystemStates.InactiveAramSpellIdList.Contains(spellId))
                         return false;
                     break;
 
                 case "ODIN":
-                    if (Client.LoginPacket.ClientSystemStates.InactiveOdinSpellIdList.Contains(SpellId))
+                    if (Client.LoginPacket.ClientSystemStates.InactiveOdinSpellIdList.Contains(spellId))
                         return false;
-                    break;
-
-                default:
                     break;
             }
 
-            switch (SpellId)
+            switch (spellId)
             {
                 case 1:
-                    return Level >= 2;
+                    return level >= 2;
 
                 case 2:
-                    return Level >= 10;
+                    return level >= 10;
 
                 case 3:
-                    return Level >= 8;
+                    return level >= 8;
 
                 case 4:
-                    return Level >= 12;
+                    return level >= 12;
 
                 case 11:
-                    return Level >= 3;
+                    return level >= 3;
 
                 case 12:
-                    return Level >= 2;
+                    return level >= 2;
 
                 case 14:
-                    return Level >= 8;
+                    return level >= 8;
 
                 case 21:
-                    return Level >= 6;
+                    return level >= 6;
 
                 default:
                     return true;
@@ -97,7 +99,7 @@ namespace LegendaryClient.Logic.PlayerSpell
 
     public enum SummonerSpells
     {
-        NONE = 0,
+        None = 0,
         Cleanse = 1,
         Clairvoyance = 2,
         Exhaust = 3,
