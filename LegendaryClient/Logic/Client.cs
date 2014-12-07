@@ -1357,6 +1357,10 @@ namespace LegendaryClient.Logic
                     }
                 }
             }
+            catch
+            {
+                Client.Log("Error decrypting password", "ERROR");
+            }
             finally
             {
                 // Clear the RijndaelManaged object.
