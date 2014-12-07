@@ -1,52 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LegendaryClient.Logic.GameClientSettings
+﻿namespace LegendaryClient.Logic.GameClientSettings
 {
     /// <summary>
-    /// All of League of Legends Settings for use with Phraser 
+    ///     All of League of Legends Settings for use with Phraser
     /// </summary>
     public class LOLGCSettings
     {
         #region GeneralSettings
+
         [General("UserSetResolution")]
-        public int userSetResolution { get; set; }
+        public int UserSetResolution { get; set; }
+
         [General("bindSysKeys")]
-        public int bindSysKeys { get; set; }
+        public int BindSysKeys { get; set; }
+
         [General("SnapCameraOnRespawn")]
-        public int snapCameraOnRespawn { get; set; }
+        public int SnapCameraOnRespawn { get; set; }
+
         [General("OSXMouseAcceleration")]
         public int OSXMouseAcceleration { get; set; }
+
         [General("AutoAcquireTarget")]
-        public int autoAcquireTarget { get; set; }
+        public int AutoAcquireTarget { get; set; }
+
         [General("EnableLightFx")]
-        public int enableLightFx { get; set; }
+        public int EnableLightFx { get; set; }
+
         [General("WindowMode")]
-        public int windowMode { get; set; }
+        public int WindowMode { get; set; }
+
         [General("ShowTurretRangeIndicators")]
-        public int showTurrentRangeIndicators { get; set; }
+        public int ShowTurrentRangeIndicators { get; set; }
+
         [General("PredictMovement")]
-        public int predictMovement { get; set; }
+        public int PredictMovement { get; set; }
+
         [General("WaitForVerticalSync")]
-        public int waitForVerticalSync { get; set; }
+        public int WaitForVerticalSync { get; set; }
+
         [General("Colors")]
-        public int colors { get; set; }
+        public int Colors { get; set; }
+
         [General("Height")]
-        public int height { get; set; }
+        public int Height { get; set; }
+
         [General("Width")]
-        public int width { get; set; }
+        public int Width { get; set; }
+
         [General("SystemMouseSpeed")]
-        public int systemMouseSpeed { get; set; }
+        public int SystemMouseSpeed { get; set; }
+
         [General("CfgVersion")]
-        public string cfgVersion { get; set; }
+        public string CfgVersion { get; set; }
+
         #endregion
 
         #region HUD
+
         [HUD("ShowTimestamps")]
-        public int showTimestamps { get; set; }
+        public int ShowTimestamps { get; set; }
+
         [HUD("ChatScale")]
         [HUD("NewAggroIndicator")]
         [HUD("NameTagDisplay")]
@@ -76,6 +88,7 @@ namespace LegendaryClient.Logic.GameClientSettings
         [HUD("ItemShopItemDisplayMode")]
         [HUD("ItemShopStartPane")]
         public string ItemShopStartPane { get; set; }
+
         #endregion
     }
 }

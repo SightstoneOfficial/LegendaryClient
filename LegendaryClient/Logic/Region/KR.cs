@@ -1,14 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
     public sealed class KR : BaseRegion
     {
-        public void NASqlite()
-        {
-            LegendaryClient.Logic.Client.sqlite = "gameStats_ko_KR.sqlite";
-        }
         public override string RegionName
         {
             get { return "KR"; }
@@ -64,6 +64,11 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "110.45.191.11:80"; }
+        }
+
+        public void KRSqlite()
+        {
+            Client.sqlite = "gameStats_ko_KR.sqlite";
         }
     }
 }

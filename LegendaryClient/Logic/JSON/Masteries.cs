@@ -1,10 +1,14 @@
-﻿using LegendaryClient.Logic.SQLite;
+﻿#region
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web.Script.Serialization;
-using System.Windows.Media.Imaging;
+using LegendaryClient.Logic.SQLite;
+
+#endregion
 
 namespace LegendaryClient.Logic.JSON
 {
@@ -12,51 +16,56 @@ namespace LegendaryClient.Logic.JSON
     {
         public static List<masteries> PopulateMasteries()
         {
-            List<masteries> MasteryList = new List<masteries>();
+            var masteryList = new List<masteries>();
 
-            string masteryJSON = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "mastery.json"));
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(masteryJSON);
-            Dictionary<string, object> masteryData = deserializedJSON["data"] as Dictionary<string, object>;
-            Dictionary<string, object> treeData = deserializedJSON["tree"] as Dictionary<string, object>;
+            string masteryJson =
+                File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "mastery.json"));
+            var serializer = new JavaScriptSerializer();
+            var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(masteryJson);
+            var masteryData = deserializedJson["data"] as Dictionary<string, object>;
+            var treeData = deserializedJson["tree"] as Dictionary<string, object>;
 
-            foreach (KeyValuePair<string, object> mastery in masteryData)
+            if (masteryData != null)
+                foreach (var mastery in masteryData)
+                {
+                    var newMastery = new masteries();
+                    var singularMasteryData = mastery.Value as Dictionary<string, object>;
+                    newMastery.id = Convert.ToInt32(mastery.Key);
+                    newMastery.name = singularMasteryData["name"] as string;
+                    newMastery.description = singularMasteryData["description"] as ArrayList;
+                    newMastery.ranks = (int) singularMasteryData["ranks"];
+                    newMastery.prereq = Convert.ToInt32(singularMasteryData["prereq"]);
+
+                    var imageData = singularMasteryData["image"] as Dictionary<string, object>;
+                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "mastery",
+                        (string) imageData["full"]);
+                    newMastery.icon = Client.GetImage(uriSource);
+
+                    masteryList.Add(newMastery);
+                }
+
+            if (treeData == null)
+                return masteryList;
+
+            foreach (var tree in treeData)
             {
-                masteries newMastery = new masteries();
-                Dictionary<string, object> singularMasteryData = mastery.Value as Dictionary<string, object>;
-                newMastery.id = Convert.ToInt32(mastery.Key);
-                newMastery.name = singularMasteryData["name"] as string;
-                newMastery.description = singularMasteryData["description"] as ArrayList;
-                newMastery.ranks = (int)singularMasteryData["ranks"];
-                newMastery.prereq = Convert.ToInt32(singularMasteryData["prereq"]);
-
-                Dictionary<string, object> imageData = singularMasteryData["image"] as Dictionary<string, object>;
-                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "mastery", (string)imageData["full"]);
-                newMastery.icon = Client.GetImage(uriSource);
-
-                MasteryList.Add(newMastery);
-            }
-
-            int i = 0;
-            foreach (KeyValuePair<string, object> tree in treeData)
-            {
-                ArrayList list = (ArrayList)tree.Value;
+                var list = (ArrayList) tree.Value;
+                int i;
                 for (i = 0; i < list.Count; i++)
                 {
-                    foreach (Dictionary<string, object> x in (ArrayList)list[i])
+                    foreach (masteries tempMastery in from Dictionary<string, object> x in (ArrayList) list[i]
+                        where x != null
+                        select Convert.ToInt32(x["masteryId"])
+                        into masteryId
+                        select masteryList.Find(y => y.id == masteryId))
                     {
-                        if (x != null)
-                        {
-                            int MasteryId = Convert.ToInt32(x["masteryId"]);
-                            masteries tempMastery = MasteryList.Find(y => y.id == MasteryId);
-                            tempMastery.treeRow = i;
-                            tempMastery.tree = tree.Key;
-                        }
+                        tempMastery.treeRow = i;
+                        tempMastery.tree = tree.Key;
                     }
                 }
             }
 
-            return MasteryList;
+            return masteryList;
         }
     }
 }

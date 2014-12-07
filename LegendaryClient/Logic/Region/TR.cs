@@ -1,5 +1,9 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Net;
+
+#endregion
 
 namespace LegendaryClient.Logic.Region
 {
@@ -32,7 +36,8 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //This returns english (not spanish) characters
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); }
+            //This returns english (not spanish) characters
         }
 
         public override PVPNetConnect.Region PVPRegion

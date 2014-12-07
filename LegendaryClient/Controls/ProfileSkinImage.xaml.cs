@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for ProfileSkinImage.xaml
+    ///     Interaction logic for ProfileSkinImage.xaml
     /// </summary>
-    public partial class ProfileSkinImage : UserControl
+    public partial class ProfileSkinImage
     {
         public ProfileSkinImage()
         {

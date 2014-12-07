@@ -1,5 +1,7 @@
 ﻿using LegendaryClient.Logic;
 using MahApps.Metro;
+using SharpCompress.Common;
+using SharpCompress.Reader;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -272,9 +274,20 @@ A code signing license (So you know that you are using LegendaryClient)
             }
         }
 
+        /// <summary>
+        /// Easy hud beta. Add a hud to you league of legends via easyhud powered by leaguecraft.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            //If you have any other hud websites, send them to me, I will try to support that website
             string x = HudLink.Text;
+            if (!x.Contains("http://leaguecraft.com/uimods/"))
+            {
+                ResultTextbox.Content = "Invalid Uri. Please try a different Uri. Be sure that the Uri is from LeagueCraft.com (Easy hud only works with Leaguecraft currently)";
+                ResultTextbox.Visibility = Visibility.Visible;
+            }
             x = x.Replace("http://leaguecraft.com/uimods/", "");
             string y = x.Split('-')[0];
             using (WebClient client = new WebClient())
@@ -290,11 +303,18 @@ A code signing license (So you know that you are using LegendaryClient)
                         string[] files = Directory.GetFiles(final);
                         foreach (string file in files)
                         {
-                            if (file.EndsWith(".tga"))
+                            //All settings in this folder end with .ini so delete all other files that do not end it .ini
+                            if (!file.EndsWith(".ini"))
                                 File.Delete(Path.Combine(final, file));
                         }
                         ZipFile.ExtractToDirectory(Path.Combine(Client.ExecutingDirectory, "LCHudFile.zip"), final);
-                        
+
+                        //Not to sure about this but is will make it so that no rar/zip files are in the dir
+                        if (DoAsyncExtractLoop(final))
+                        {
+                            ResultTextbox.Content = "Hud installed. Please try a custom game before you play an actual game.";
+                            ResultTextbox.Visibility = Visibility.Visible;
+                        }
                     };
                 }
                 catch
@@ -302,6 +322,55 @@ A code signing license (So you know that you are using LegendaryClient)
                     ResultTextbox.Content = "Unable to install hud. Please check the link or try running LegendaryClient as admin.";
                     ResultTextbox.Visibility = Visibility.Visible;
                 }
+            }
+        }
+
+        private bool DoAsyncExtractLoop(string dir)
+        {
+            try
+            {
+
+                foreach (string filesindir in Directory.GetFiles(dir))
+                {
+                    if (!filesindir.EndsWith(".ini"))
+                    {
+                        //Try to extract the file
+                        if (filesindir.EndsWith(".zip"))
+                        {
+                            ZipFile.ExtractToDirectory(Path.Combine(dir, filesindir), dir);
+                            File.Delete(Path.Combine(dir, filesindir));
+                        }
+                        //Use SharpCompres to read .rar files
+                        else if (filesindir.EndsWith(".rar"))
+                        {
+                            using (Stream stream = File.OpenRead(Path.Combine(dir, filesindir)))
+                            {
+                                var reader = ReaderFactory.Open(stream);
+                                while (reader.MoveToNextEntry())
+                                {
+                                    if (!reader.Entry.IsDirectory)
+                                    {
+                                        reader.WriteEntryToDirectory(dir, ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                                    }
+                                }
+                            }
+                            File.Delete(Path.Combine(dir, filesindir));
+                        }
+                        //File has been extracted. No point of trying to extract it anymore
+                        else if (filesindir.EndsWith(".dds"))
+                        {
+                            return true;
+                        }
+                    }
+                }
+                if (DoAsyncExtractLoop(dir))
+                    return true;
+                else { return false; }
+            }
+            catch
+            {
+                //I expect that this will cause errors because the way it is made
+                return false;
             }
         }
 

@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for QueuePopPlayer.xaml
+    ///     Interaction logic for QueuePopPlayer.xaml
     /// </summary>
-    public partial class QueuePopPlayer : UserControl
+    public partial class QueuePopPlayer
     {
         public QueuePopPlayer()
         {

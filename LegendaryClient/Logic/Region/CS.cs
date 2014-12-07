@@ -1,14 +1,21 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Net;
+using Microsoft.Win32;
 
 #endregion
 
 namespace LegendaryClient.Logic.Region
 {
-    public sealed class BR : BaseRegion
+    /// <summary>
+    ///     Allow users to specify custom servers (When servers change, this can also be used)
+    /// </summary>
+    internal class CS : BaseRegion
     {
+        //private static Dictionary<String, String> _vals = getSettings();
+
         public override string RegionName
         {
             get { return "BR"; }
@@ -64,6 +71,22 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "66.151.33.19:80"; }
+        }
+
+        private static Dictionary<String, String> GetSettings()
+        {
+            var result = new Dictionary<String, String>();
+            var file = new OpenFileDialog
+            {
+                Title = "Find League Of Legends",
+                Multiselect = false
+            };
+
+            bool? showDialog = file.ShowDialog();
+            if (showDialog != null && (bool) showDialog)
+                file.FileName = "";
+
+            return result;
         }
     }
 }

@@ -102,6 +102,9 @@
     <Reference Include="rtmp-sharp">
       <HintPath>..\DLLS\rtmp-sharp.dll</HintPath>
     </Reference>
+    <Reference Include="SharpCompress">
+      <HintPath>..\packages\sharpcompress.0.10.3\lib\net40\SharpCompress.dll</HintPath>
+    </Reference>
     <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
@@ -217,6 +220,7 @@
     <Compile Include="Logic\JSON\Champions.cs" />
     <Compile Include="Logic\JSON\LegendaryUpdate.cs" />
     <Compile Include="Logic\Patcher\LegendaryClientPatcher.cs" />
+    <Compile Include="Logic\Region\CS.cs" />
     <Compile Include="Logic\Region\EUNE.cs" />
     <Compile Include="Logic\Region\Garena\MY.cs" />
     <Compile Include="Logic\Region\Garena\PH.cs" />

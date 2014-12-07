@@ -6,23 +6,30 @@
              mc:Ignorable="d"
              d:DesignWidth="300">
     <Grid Background="#E5000000">
-        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="60" Margin="5,5,0,0" VerticalAlignment="Top" Width="60" Source="/LegendaryClient;component/Icon.ico" />
-        <Image x:Name="UsingLegendary" HorizontalAlignment="Right" Height="20" Margin="5,5,0,0" VerticalAlignment="Top" Width="20" Visibility="Visible" Source="/LegendaryClient;component/Icon.ico" />
-        <Label x:Name="LevelLabel" Content="30" HorizontalAlignment="Left" Margin="4,40,0,0" VerticalAlignment="Top" Background="#4C0C0C0C" Foreground="White" FontWeight="SemiBold">
+        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="60" Margin="5,5,0,0" VerticalAlignment="Top"
+               Width="60" Source="/LegendaryClient;component/Icon.ico" />
+        <Image x:Name="UsingLegendary" HorizontalAlignment="Right" Height="20" Margin="5,5,0,0" VerticalAlignment="Top"
+               Width="20" Visibility="Visible" Source="/LegendaryClient;component/Icon.ico" />
+        <Label x:Name="LevelLabel" Content="30" HorizontalAlignment="Left" Margin="4,40,0,0" VerticalAlignment="Top"
+               Background="#4C0C0C0C" Foreground="White" FontWeight="SemiBold">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="1" />
             </Label.Effect>
         </Label>
 
-        <Label x:Name="PlayerName" Content="Eddy" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Top" Foreground="White" FontSize="24" FontWeight="ExtraLight" />
-        <Label x:Name="PlayerLeague" Content="SILVER III" HorizontalAlignment="Left" Margin="65,35,0,0" VerticalAlignment="Top" Foreground="White" FontSize="16" FontWeight="ExtraLight" />
-        <Label x:Name="PlayerWins" Content="1000 Normal Wins" HorizontalAlignment="Left" Margin="0,65,0,0" VerticalAlignment="Top" Foreground="#FFB3FF96" FontSize="15" FontWeight="SemiBold" />
+        <Label x:Name="PlayerName" Content="Eddy" HorizontalAlignment="Left" Margin="65,0,0,0" VerticalAlignment="Top"
+               Foreground="White" FontSize="24" FontWeight="ExtraLight" />
+        <Label x:Name="PlayerLeague" Content="SILVER III" HorizontalAlignment="Left" Margin="65,35,0,0"
+               VerticalAlignment="Top" Foreground="White" FontSize="16" FontWeight="ExtraLight" />
+        <Label x:Name="PlayerWins" Content="1000 Normal Wins" HorizontalAlignment="Left" Margin="0,65,0,0"
+               VerticalAlignment="Top" Foreground="#FFB3FF96" FontSize="15" FontWeight="SemiBold" />
         <Label HorizontalAlignment="Stretch" Margin="0,85,0,10" VerticalAlignment="Top" Foreground="White">
             <TextBlock x:Name="PlayerStatus" Text="So Op" TextWrapping="WrapWithOverflow" />
         </Label>
 
         <Label HorizontalAlignment="Stretch" Margin="0,100,0,0" VerticalAlignment="Bottom" Foreground="White">
-            <TextBlock x:Name="InGameStatus" Text="In game as Shyvana" TextWrapping="WrapWithOverflow" Foreground="#FFFFFF99" Visibility="Collapsed"/>
+            <TextBlock x:Name="InGameStatus" Text="In game as Shyvana" TextWrapping="WrapWithOverflow"
+                       Foreground="#FFFFFF99" Visibility="Collapsed" />
         </Label>
     </Grid>
 </UserControl>

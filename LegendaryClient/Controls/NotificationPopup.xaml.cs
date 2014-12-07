@@ -1,126 +1,132 @@
-﻿using jabber.protocol.client;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Maps;
-using LegendaryClient.Windows;
+﻿#region
+
 using System;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using System.Xml;
+using jabber.protocol.client;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
+using LegendaryClient.Windows;
+
+#endregion
 
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for NotificationPopup.xaml
+    ///     Interaction logic for NotificationPopup.xaml
     /// </summary>
-    public partial class NotificationPopup : UserControl
+    public partial class NotificationPopup
     {
-        ChatSubjects Subject;
-        Message MessageData;
-        int InviteId = 0;
-        int ProfileIconId = 0;
-        int MapId = 0;
-        int QueueId = 0;
-        int GameId = 0;
-        string GameType;
+        private readonly int _gameId;
+        private readonly string _gameType;
+        private readonly int _mapId;
+        private readonly Message _messageData;
+        private readonly int _profileIconId;
+        private readonly ChatSubjects _subject;
+        private int _inviteId;
+        private int _queueId;
 
-        public NotificationPopup(ChatSubjects subject, Message Message)
+        public NotificationPopup(ChatSubjects subject, Message message)
         {
             InitializeComponent();
-            Subject = subject;
-            MessageData = Message;
-            NotificationTypeLabel.Content = Client.TitleCaseString(Enum.GetName(typeof(ChatSubjects), subject).Replace("_", " "));
+            _subject = subject;
+            _messageData = message;
+            string name = Enum.GetName(typeof (ChatSubjects), subject);
+            if (name != null)
+                NotificationTypeLabel.Content =
+                    Client.TitleCaseString(name.Replace("_", " "));
 
             //TODO: Get name from id
-            ChatPlayerItem Player = Client.AllPlayers[Message.From.User];
-            using (XmlReader reader = XmlReader.Create(new StringReader(Message.Body)))
+            ChatPlayerItem player = Client.AllPlayers[message.From.User];
+            using (XmlReader reader = XmlReader.Create(new StringReader(message.Body)))
             {
                 while (reader.Read())
                 {
-                    if (reader.IsStartElement())
+                    if (!reader.IsStartElement())
+                        continue;
+
+                    #region Parse Popup
+
+                    switch (reader.Name)
                     {
-                        #region Parse Popup
-
-                        switch (reader.Name)
-                        {
-                            case "inviteId":
-                                reader.Read();
-                                InviteId = Convert.ToInt32(reader.Value);
-                                break;
-                            case "profileIconId":
-                                reader.Read();
-                                ProfileIconId = Convert.ToInt32(reader.Value);
-                                break;
-                            case "gameType":
-                                reader.Read();
-                                GameType = reader.Value;
-                                break;
-                            case "mapId":
-                                reader.Read();
-                                MapId = Convert.ToInt32(reader.Value);
-                                break;
-                            case "queueId":
-                                reader.Read();
-                                QueueId = Convert.ToInt32(reader.Value);
-                                break;
-                            case "gameId":
-                                reader.Read();
-                                GameId = Convert.ToInt32(reader.Value);
-                                break;
-                        }
-
-                        #endregion Parse Popup
+                        case "inviteId":
+                            reader.Read();
+                            _inviteId = Convert.ToInt32(reader.Value);
+                            break;
+                        case "profileIconId":
+                            reader.Read();
+                            _profileIconId = Convert.ToInt32(reader.Value);
+                            break;
+                        case "gameType":
+                            reader.Read();
+                            _gameType = reader.Value;
+                            break;
+                        case "mapId":
+                            reader.Read();
+                            _mapId = Convert.ToInt32(reader.Value);
+                            break;
+                        case "queueId":
+                            reader.Read();
+                            _queueId = Convert.ToInt32(reader.Value);
+                            break;
+                        case "gameId":
+                            reader.Read();
+                            _gameId = Convert.ToInt32(reader.Value);
+                            break;
                     }
+
+                    #endregion Parse Popup
                 }
             }
 
-            var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconId + ".png");
+            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", _profileIconId + ".png");
             ProfileImage.Source = Client.GetImage(uriSource);
 
-            NotificationTextBox.Text = Player.Username + " has invited you to a game" + Environment.NewLine
-                                     + "Hosted on " + BaseMap.GetMap(MapId).DisplayName + Environment.NewLine
-                                     + "Game Type: " + Client.TitleCaseString(GameType).Replace("_", " ") + Environment.NewLine;
+            NotificationTextBox.Text = player.Username + " has invited you to a game" + Environment.NewLine
+                                       + "Hosted on " + BaseMap.GetMap(_mapId).DisplayName + Environment.NewLine
+                                       + "Game Type: " + Client.TitleCaseString(_gameType).Replace("_", " ") +
+                                       Environment.NewLine;
         }
 
-        public NotificationPopup(ChatSubjects subject, string Message)
+        public NotificationPopup(ChatSubjects subject, string message)
         {
             InitializeComponent();
-            Subject = subject;
-            NotificationTypeLabel.Content = Client.TitleCaseString(Enum.GetName(typeof(ChatSubjects), subject).Replace("_", " "));
-            NotificationTextBox.Text = Message;
+            _subject = subject;
+            string name = Enum.GetName(typeof (ChatSubjects), subject);
+            if (name != null)
+                NotificationTypeLabel.Content =
+                    Client.TitleCaseString(name.Replace("_", " "));
+            NotificationTextBox.Text = message;
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Visibility = System.Windows.Visibility.Hidden;
+            Visibility = Visibility.Hidden;
         }
 
         private void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.Message(MessageData.From.User, MessageData.Body, ChatSubjects.GAME_INVITE_REJECT);
-            this.Visibility = System.Windows.Visibility.Hidden;
+            Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_REJECT);
+            Visibility = Visibility.Hidden;
         }
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Subject == ChatSubjects.PRACTICE_GAME_INVITE)
+            switch (_subject)
             {
-                Client.Message(MessageData.From.User, MessageData.Body, ChatSubjects.PRACTICE_GAME_INVITE_ACCEPT);
-                Client.PVPNet.JoinGame(GameId);
-
-                Client.GameID = GameId;
-                Client.GameName = "Joined game";
-
-                Client.SwitchPage(new CustomGameLobbyPage());
-                this.Visibility = System.Windows.Visibility.Hidden;
-            }
-            else if (Subject == ChatSubjects.GAME_INVITE)
-            {
-                Client.Message(MessageData.From.User, MessageData.Body, ChatSubjects.GAME_INVITE_ACCEPT);
-
-                //Client.SwitchPage(new TeamQueuePage(false));
-                this.Visibility = System.Windows.Visibility.Hidden;
+                case ChatSubjects.PRACTICE_GAME_INVITE:
+                    Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.PRACTICE_GAME_INVITE_ACCEPT);
+                    Client.PVPNet.JoinGame(_gameId);
+                    Client.GameID = _gameId;
+                    Client.GameName = "Joined game";
+                    Client.SwitchPage(new CustomGameLobbyPage());
+                    Visibility = Visibility.Hidden;
+                    break;
+                case ChatSubjects.GAME_INVITE:
+                    Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_ACCEPT);
+                    Visibility = Visibility.Hidden;
+                    break;
             }
         }
     }

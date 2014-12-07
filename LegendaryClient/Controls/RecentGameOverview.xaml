@@ -7,12 +7,19 @@
              mc:Ignorable="d"
              d:DesignHeight="70" d:DesignWidth="300">
     <Grid x:Name="GridView">
-        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="64" Margin="2.5,2.5,0,0" VerticalAlignment="Top" Width="64" Stretch="UniformToFill" />
-        <Label x:Name="ChampionNameLabel" Content="ChampionName" HorizontalAlignment="Left" Margin="65,2.5,0,0" VerticalAlignment="Top" Foreground="White" />
-        <Label x:Name="ScoreLabel" Content="Label" HorizontalAlignment="Right" Margin="0,2.5,5,0" VerticalAlignment="Top" Foreground="White" />
-        <Label x:Name="IPEarnedLabel" Content="Label" HorizontalAlignment="Left" Margin="65,20,0,0" VerticalAlignment="Top" Foreground="#FF17FF00" Background="{x:Null}" />
-        <Label x:Name="CreepScoreLabel" Content="Label" HorizontalAlignment="Right" Margin="0,20,5,0" VerticalAlignment="Top" Foreground="White" />
-        <Label x:Name="DateLabel" Content="Label" HorizontalAlignment="Left" Margin="65,0,0,2.5" VerticalAlignment="Bottom" Foreground="White" />
-        <Label x:Name="PingLabel" Content="Label" HorizontalAlignment="Right" Margin="0,38.5,5,0" VerticalAlignment="Top" Foreground="White" />
+        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="64" Margin="2.5,2.5,0,0"
+               VerticalAlignment="Top" Width="64" Stretch="UniformToFill" />
+        <Label x:Name="ChampionNameLabel" Content="ChampionName" HorizontalAlignment="Left" Margin="65,2.5,0,0"
+               VerticalAlignment="Top" Foreground="White" />
+        <Label x:Name="ScoreLabel" Content="Label" HorizontalAlignment="Right" Margin="0,2.5,5,0"
+               VerticalAlignment="Top" Foreground="White" />
+        <Label x:Name="IpEarnedLabel" Content="Label" HorizontalAlignment="Left" Margin="65,20,0,0"
+               VerticalAlignment="Top" Foreground="#FF17FF00" Background="{x:Null}" />
+        <Label x:Name="CreepScoreLabel" Content="Label" HorizontalAlignment="Right" Margin="0,20,5,0"
+               VerticalAlignment="Top" Foreground="White" />
+        <Label x:Name="DateLabel" Content="Label" HorizontalAlignment="Left" Margin="65,0,0,2.5"
+               VerticalAlignment="Bottom" Foreground="White" />
+        <Label x:Name="PingLabel" Content="Label" HorizontalAlignment="Right" Margin="0,38.5,5,0"
+               VerticalAlignment="Top" Foreground="White" />
     </Grid>
 </UserControl>

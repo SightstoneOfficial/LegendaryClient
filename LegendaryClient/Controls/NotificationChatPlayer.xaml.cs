@@ -1,17 +1,21 @@
-﻿using LegendaryClient.Logic;
+﻿#region
+
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using LegendaryClient.Logic;
+
+#endregion
 
 namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for NotificationChatPlayer.xaml
+    ///     Interaction logic for NotificationChatPlayer.xaml
     /// </summary>
-    public partial class NotificationChatPlayer : UserControl
+    public partial class NotificationChatPlayer
     {
         public string PlayerName;
+
         public NotificationChatPlayer()
         {
             InitializeComponent();
@@ -20,20 +24,25 @@ namespace LegendaryClient.Controls
 
         public void Blink()
         {
-            DoubleAnimation fadingAnimation = new DoubleAnimation();
-            fadingAnimation.From = 0.6;
-            fadingAnimation.To = 0;
-            fadingAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
-            fadingAnimation.RepeatBehavior = RepeatBehavior.Forever;
-            fadingAnimation.Completed += (eSender, eArgs) =>
+            var fadingAnimation = new DoubleAnimation
             {
-                fadingAnimation = new DoubleAnimation();
-                fadingAnimation.From = 0;
-                fadingAnimation.To = 0.6;
-                fadingAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
+                From = 0.6,
+                To = 0,
+                Duration = new Duration(TimeSpan.FromSeconds(1)),
+                RepeatBehavior = RepeatBehavior.Forever
             };
 
-            BlinkRectangle.BeginAnimation(Image.OpacityProperty, fadingAnimation);
+            fadingAnimation.Completed += (eSender, eArgs) =>
+            {
+                fadingAnimation = new DoubleAnimation
+                {
+                    From = 0,
+                    To = 0.6,
+                    Duration = new Duration(TimeSpan.FromSeconds(1))
+                };
+            };
+
+            BlinkRectangle.BeginAnimation(OpacityProperty, fadingAnimation);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
