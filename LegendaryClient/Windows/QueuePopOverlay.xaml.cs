@@ -73,7 +73,6 @@ namespace LegendaryClient.Windows
                         string s = QueueDTO.GameState;
                         Client.ChampSelectDTO = QueueDTO;
                         Client.GameID = QueueDTO.Id;
-                        Client.ChampSelectDTO = QueueDTO;
                         Client.LastPageContent = Client.Container.Content;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.GameStatus = "championSelect";
@@ -135,9 +134,10 @@ namespace LegendaryClient.Windows
                         player.PlayerLabel.Content = playerPart.SummonerName;
                         player.RankLabel.Content = "";
 
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                         {
-                            var playerLeagues = Task<SummonerLeaguesDTO>.Factory.StartNew(() => Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId).Result).Result;
+                            var playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
+                            
                             foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
                             {
                                 if (x.Queue == "RANKED_SOLO_5x5")
