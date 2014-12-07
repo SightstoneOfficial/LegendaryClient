@@ -128,7 +128,7 @@ namespace PVPNetConnect
                     this.locale = RegionInfo.GetLocaleValue(region);
                     this.useGarena = RegionInfo.GetUseGarenaValue(region);
 
-                    if (cs)
+                    if (cs == true)
                     {
                         this.server = server;
                         this.loginQueue = loginqueue;

@@ -1,0 +1,36 @@
+[LegendaryClient Language File]
+[Langfile.Type = English]
+
+#--------------------------------------------------------LangFile--------------------------------------------------------#
+#------------------------------------------------------------------------------------------------------------------------#
+#-------------Warning! Modifying this file can cause your client to become unusable. Modify at your own risk-------------#
+#----------------This LangFile is for use with LegendaryClient Using with other programs may cause errors----------------#
+#--------------------------------------If you are editing this file, Use Notepad++ --------------------------------------#
+#------------------------------------------------LangFile  Type = English------------------------------------------------#
+#------------------------------------------------------------------------------------------------------------------------#
+#--------------------------------------------------------LangFile--------------------------------------------------------#
+
+
+[LoginPage]
+WelcomeLogin=Login to League of Legends
+Username=Username
+Password=Password
+RememberUsername=Remember Username
+RememberPassword=Remember Password
+LoginAnimations=Disable Menu Animations
+LoginSound=Disable Login Music
+AutoLogin=Auto-Login
+Login=Login
+Version=Client Version Override
+
+[MainPage]
+Games=Featured Games
+News=News
+TimeRunning=Time Running
+BBans=Blue Bans
+PBans=Purple Bans
+Record=Record
+Spectate=Spectate
+Prev=Prev
+Next=Next
+

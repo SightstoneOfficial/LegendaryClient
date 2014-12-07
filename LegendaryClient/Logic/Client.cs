@@ -71,15 +71,18 @@ namespace LegendaryClient.Logic
                     //Makes it so that lines like [General] do not crash this
                     if (!x.Contains("[") && !x.Contains("]"))
                     {
-                        try
+                        if (!x.StartsWith("#") && x.Contains("="))
                         {
-                            //Spit the one value into 2 values
-                            string[] value = x.Split('=');
-                            settings.Add(value[0], value[1]);
-                        }
-                        catch
-                        {
-
+                            try
+                            {
+                                //Spit the one value into 2 values
+                                string[] value = x.Split('=');
+                                settings.Add(value[0], value[1]);
+                            }
+                            catch
+                            {
+                                Client.Log("Error reading a setting value: " + x, "ReaderError");
+                            }
                         }
                     }
                 }
