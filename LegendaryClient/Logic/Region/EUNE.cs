@@ -51,6 +51,11 @@ namespace LegendaryClient.Logic.Region
             }
         }
 
+        public override string Location
+        {
+            get { return null; }
+        }
+
         public override Uri SpectatorLink
         {
             get { return new Uri("http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest/"); }

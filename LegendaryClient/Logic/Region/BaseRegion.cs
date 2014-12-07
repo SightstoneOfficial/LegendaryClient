@@ -24,7 +24,10 @@ namespace LegendaryClient.Logic.Region
 
         public abstract Uri SpectatorLink { get; }
 
-        public abstract string SpectatorIpAddress { get; }
+        //ONLY SET FOR CS SERVER
+        public abstract string SpectatorIpAddress { get; set; }
+
+        public abstract string Location { get; }
 
         public static BaseRegion GetRegion(String RequestedRegion)
         {

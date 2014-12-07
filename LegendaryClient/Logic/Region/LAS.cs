@@ -10,6 +10,11 @@ namespace LegendaryClient.Logic.Region
             get { return "LAS"; }
         }
 
+        public override string Location
+        {
+            get { return null; }
+        }
+
         public override string InternalName
         {
             get { return "LA2"; }

@@ -10,6 +10,11 @@ namespace LegendaryClient.Logic.Region
             get { return "OCE"; }
         }
 
+        public override string Location
+        {
+            get { return null; }
+        }
+
         public override bool Garena
         {
             get { return false; }

@@ -14,6 +14,11 @@ namespace LegendaryClient.Logic.Region
             get { return "prod.lol.garenanow.com"; }
         }
 
+        public override string Location
+        {
+            get { return null; }
+        }
+
         public override bool Garena
         {
             get { return true; }

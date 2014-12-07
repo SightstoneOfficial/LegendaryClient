@@ -15,6 +15,11 @@ namespace LegendaryClient.Logic.Region
             get { return false; }
         }
 
+        public override string Location
+        {
+            get { return null; }
+        }
+
         public override string InternalName
         {
             get { return "EUW1"; }

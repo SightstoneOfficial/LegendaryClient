@@ -113,7 +113,7 @@ namespace PVPNetConnect
 
         #region Connect, Login, and Heartbeat Methods
 
-        public void Connect(string user, string password, Region region, string clientVersion)
+        public void Connect(string user, string password, Region region, string clientVersion, bool cs = false, string server = null, string loginqueue = null, string locales = null)
         {
             if (!isConnected)
             {
@@ -127,6 +127,14 @@ namespace PVPNetConnect
                     this.loginQueue = RegionInfo.GetLoginQueueValue(region);
                     this.locale = RegionInfo.GetLocaleValue(region);
                     this.useGarena = RegionInfo.GetUseGarenaValue(region);
+
+                    if (cs)
+                    {
+                        this.server = server;
+                        this.loginQueue = loginqueue;
+                        this.locale = locales;
+                        this.useGarena = false;
+                    }
 
                     //Sets up our sslStream to riots servers
                     try

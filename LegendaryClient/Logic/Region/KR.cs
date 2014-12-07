@@ -9,6 +9,11 @@ namespace LegendaryClient.Logic.Region
         {
             LegendaryClient.Logic.Client.sqlite = "gameStats_ko_KR.sqlite";
         }
+        public override string Location
+        {
+            get { return null; }
+        }
+
         public override string RegionName
         {
             get { return "KR"; }

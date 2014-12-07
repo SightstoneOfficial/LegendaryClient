@@ -111,7 +111,13 @@ namespace PVPNetConnect
         [LoginQueueValue("https://lq.oc1.lol.riotgames.com/")]
         [LocaleValue("en_US")]
         [UseGarenaValue(false)]
-        OCE
+        OCE,
+
+        [ServerValue("prod.cs.lol.riotgames.com")]
+        [LoginQueueValue("https://lq.cs.lol.riotgames.com/")]
+        [LocaleValue("en_US")]
+        [UseGarenaValue(false)]
+        CS,
     }
 
     public static class RegionInfo

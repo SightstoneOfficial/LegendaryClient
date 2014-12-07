@@ -9,6 +9,11 @@ namespace LegendaryClient.Logic.Region.Garena
 {
     public sealed class MY : BaseRegion
     {
+        public override string Location
+        {
+            get { return null; }
+        }
+
         public override string RegionName
         {
             get { return "prod.lol.garenanow.com"; }

@@ -14,7 +14,7 @@ namespace LegendaryClient.Logic.Region
     class CS : BaseRegion
     {
         private static Dictionary<String, String> vals = getSettings();
-
+        private static string location;
         private static Dictionary<String, String> getSettings()
         {
             Dictionary<String, String> result = new Dictionary<String, String>();
@@ -24,16 +24,26 @@ namespace LegendaryClient.Logic.Region
 
             if ((bool)file.ShowDialog())
             {
-                file.FileName = "";
-                    
+                result = file.FileName.LeagueSettingsReader();
             }
-
+            location = file.FileName;
             return result;
+        }
+
+        public override string Location
+        {
+            get
+            {
+                return Location;
+            }
         }
 
         public override string RegionName
         {
-            get { return "BR"; }
+            get 
+            {
+                return vals["regionTag"];
+            }
         }
 
         public override bool Garena
@@ -43,27 +53,33 @@ namespace LegendaryClient.Logic.Region
 
         public override string InternalName
         {
-            get { return "BR1"; }
+            get 
+            {
+                return vals["platformId"];
+            }
         }
 
         public override string ChatName
         {
-            get { return "br"; }
+            get
+            {
+                return vals["host"].Split('.')[1];
+            }
         }
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //This returns english (not spanish) characters
+            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //Guess
         }
 
         public override string Locale
         {
-            get { return "en_US"; }
+            get { return "en_US"; } //Guess
         }
 
         public override PVPNetConnect.Region PVPRegion
         {
-            get { return PVPNetConnect.Region.BR; }
+            get { return PVPNetConnect.Region.CS; } //use the cs (Custom Server) function
         }
 
         public override IPAddress[] PingAddresses
@@ -79,12 +95,12 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.br.lol.riotgames.com:80/observer-mode/rest/"); }
+            get { return new Uri(vals["featuredGamesURL"].Replace("featured", "")); }
         }
 
         public override string SpectatorIpAddress
         {
-            get { return "66.151.33.19:80"; }
+            get { return "nil"; } //Unknown, Get from the server
         }
     }
 }

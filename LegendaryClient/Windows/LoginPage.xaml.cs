@@ -245,7 +245,13 @@ namespace LegendaryClient.Windows
 
             Client.Region = SelectedRegion;
             //Client.Version = "4.18.14";
-            Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
+            if (SelectedRegion.PVPRegion != PVPNetConnect.Region.CS)
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
+            else
+            {
+                Dictionary<String, String> settings = SelectedRegion.Location.LeagueSettingsReader();
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version, true, settings["host"], settings["lq_uri"], SelectedRegion.Locale);
+            }
         }
 
         private void PVPNet_OnLogin(object sender, string username, string ipAddress)
