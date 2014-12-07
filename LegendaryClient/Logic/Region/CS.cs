@@ -101,6 +101,7 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "nil"; } //Unknown, Get from the server
+            set {  }
         }
     }
 }

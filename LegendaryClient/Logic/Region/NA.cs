@@ -70,6 +70,7 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "216.133.234.17"; }
+            set { }
         }
 
         public void NASqlite()

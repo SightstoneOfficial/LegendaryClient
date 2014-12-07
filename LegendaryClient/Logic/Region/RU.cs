@@ -68,6 +68,7 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "95.172.65.242"; }
+            set { }
         }
     }
 }
