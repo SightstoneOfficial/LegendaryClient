@@ -84,7 +84,7 @@ namespace LegendaryClient.Windows
                     Client.UpdatePlayers = false;
 
                     ChatListView.Items.Clear();
-                    foreach (KeyValuePair<string, ChatPlayerItem> ChatPlayerPair in Client.AllPlayers.ToArray())
+                    foreach (KeyValuePair<string, ChatPlayerItem> ChatPlayerPair in Client.AllPlayers.ToArray().OrderBy(u => u.Value.Username))
                     {
                         if (ChatPlayerPair.Value.Level != 0)
                         {
