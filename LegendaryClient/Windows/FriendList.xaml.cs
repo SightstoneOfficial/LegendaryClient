@@ -27,6 +27,7 @@ namespace LegendaryClient.Windows
         private static System.Timers.Timer UpdateTimer;
         private LargeChatPlayer PlayerItem;
         private ChatPlayerItem LastPlayerItem;
+        private SelectionChangedEventArgs selection;
 
         public FriendList()
         {
@@ -93,6 +94,7 @@ namespace LegendaryClient.Windows
                         PlayersListView.Foreground = Brushes.White;
                         PlayersListView.Background = null;
                         PlayersListView.BorderBrush = null;
+                        PlayersListView.MouseDoubleClick += PlayersListView_MouseDoubleClick;
                         PlayersListView.SelectionChanged += ChatListView_SelectionChanged;
                         PlayersListView.PreviewMouseWheel += PlayersListView_PreviewMouseWheel;
 
@@ -197,6 +199,28 @@ namespace LegendaryClient.Windows
                     }
                 }
             }));
+        }
+
+        void PlayersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (selection.AddedItems.Count > 0)
+            {
+                ChatPlayer player = (ChatPlayer)selection.AddedItems[0];
+                ((ListView)e.Source).SelectedIndex = -1;
+                ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
+                LastPlayerItem = playerItem;
+                foreach (NotificationChatPlayer x in Client.ChatListView.Items)
+                {
+                    if ((string)x.PlayerLabelName.Content == playerItem.Username)
+                        return;
+                }
+                NotificationChatPlayer ChatPlayer = new NotificationChatPlayer();
+                ChatPlayer.Tag = playerItem;
+                ChatPlayer.PlayerName = playerItem.Username;
+                ChatPlayer.Margin = new Thickness(1, 0, 1, 0);
+                ChatPlayer.PlayerLabelName.Content = playerItem.Username;
+                Client.ChatListView.Items.Add(ChatPlayer);
+            }
         }
 
         void PlayersListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
@@ -325,24 +349,7 @@ namespace LegendaryClient.Windows
 
         private void ChatListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (e.AddedItems.Count > 0)
-            {
-                ChatPlayer player = (ChatPlayer)e.AddedItems[0];
-                ((ListView)e.Source).SelectedIndex = -1;
-                ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
-                LastPlayerItem = playerItem;
-                foreach (NotificationChatPlayer x in Client.ChatListView.Items)
-                {
-                    if ((string)x.PlayerLabelName.Content == playerItem.Username)
-                        return;
-                }
-                NotificationChatPlayer ChatPlayer = new NotificationChatPlayer();
-                ChatPlayer.Tag = playerItem;
-                ChatPlayer.PlayerName = playerItem.Username;
-                ChatPlayer.Margin = new Thickness(1, 0, 1, 0);
-                ChatPlayer.PlayerLabelName.Content = playerItem.Username;
-                Client.ChatListView.Items.Add(ChatPlayer);
-            }
+            selection = e;
         }
 
         public void ProfileItem_Click(object sender, RoutedEventArgs e)

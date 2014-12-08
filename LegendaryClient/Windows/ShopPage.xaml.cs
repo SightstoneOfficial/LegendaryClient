@@ -34,6 +34,10 @@ namespace LegendaryClient.Windows
         private void ShopBrowser_NativeViewInitialized(object sender, WebViewEventArgs e)
         {
             JSObject JSHook = ShopBrowser.CreateGlobalJavascriptObject("parentSandboxBridge");
+            foreach (String x in JSHook.GetMethodNames())
+            {
+                Client.Log(x, "JSHook");
+            }
             JSHook.Bind("openInventoryBrowser", false, new JavascriptMethodEventHandler(OnItemClick));
             JSHook.Bind("getBuddyList", true, new JavascriptMethodEventHandler(OnRequestBuddies));
         }

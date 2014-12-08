@@ -103,5 +103,11 @@ namespace LegendaryClient.Windows
         {
             UpdateData();
         }
+
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            Client.InviteData.Clear();
+            ChatListView.Items.Clear();
+        }
     }
 }

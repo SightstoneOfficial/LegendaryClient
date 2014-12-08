@@ -18,7 +18,7 @@
     </Page.Resources>
 
     <Grid x:Name="TheGrid" Background="#E5000000">
-        <Button Content="Clear all Notifications" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top" />
+        <Button x:Name="Clear" Click="Clear_Click" Content="Clear all Notifications" HorizontalAlignment="Stretch" Margin="10,10,10,0" VerticalAlignment="Top" />
         <ListView Style="{StaticResource NoFocus}" x:Name="ChatListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" Margin="0,45,0,0" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
