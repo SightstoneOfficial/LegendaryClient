@@ -375,6 +375,38 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClientConnect(object sender)
         {
+            Groups.Add(new Group("Online"));
+
+            //Get all groups
+            RosterManager manager = sender as RosterManager;
+            string ParseString = manager.ToString();
+            List<string> StringHackOne = new List<string>(ParseString.Split(new string[] { "@pvp.net=" }, StringSplitOptions.None));
+            StringHackOne.RemoveAt(0);
+            foreach (string StringHack in StringHackOne)
+            {
+                string[] StringHackTwo = StringHack.Split(',');
+                string Parse = StringHackTwo[0];
+                using (XmlReader reader = XmlReader.Create(new StringReader(Parse)))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.IsStartElement())
+                        {
+                            switch (reader.Name)
+                            {
+                                case "group":
+                                    reader.Read();
+                                    string Group = reader.Value;
+                                    if (Group != "**Default" && Groups.Find(e => e.GroupName == Group) == null)
+                                        Groups.Add(new Group(Group));
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            Groups.Add(new Group("Offline"));
             SetChatHover();
         }
 
@@ -479,31 +511,54 @@ namespace LegendaryClient.Logic
         internal static void RostManager_OnRosterItem(object sender, jabber.protocol.iq.Item ri)
         {
             UpdatePlayers = true;
+
             if (!AllPlayers.ContainsKey(ri.JID.User))
             {
                 ChatPlayerItem player = new ChatPlayerItem();
                 player.Id = ri.JID.User;
+                player.Group = "Online";
+                using (XmlReader reader = XmlReader.Create(new StringReader(ri.OuterXml)))
+                {
+                    while (reader.Read())
+                    {
+                        if (reader.IsStartElement())
+                        {
+                            switch (reader.Name)
+                            {
+                                case "group":
+                                    reader.Read();
+                                    string TempGroup = reader.Value;
+                                    if (TempGroup != "**Default")
+                                        player.Group = TempGroup;
+                                    break;
+                            }
+                        }
+                    }
+                }
                 player.Username = ri.Nickname;
                 bool PlayerPresence = PresManager.IsAvailable(ri.JID);
                 AllPlayers.Add(ri.JID.User, player);
             }
         }
 
-        internal static ListView chatlistview;
+
+        internal static StackPanel chatlistview;
 
         internal static void PresManager_OnPrimarySessionChange(object sender, jabber.JID bare)
         {
-            jabber.protocol.client.Presence[] s = Client.PresManager.GetAll(bare);
-            if (s.Length == 0)
-                return;
-            string Presence = s[0].Status;
-            if (Presence == null)
-                return;
-            Debug.WriteLine(Presence);
-            if (Client.AllPlayers.ContainsKey(bare.User))
+            if (AllPlayers.ContainsKey(bare.User))
             {
+                ChatPlayerItem Player = AllPlayers[bare.User];
+                Player.IsOnline = false;
                 UpdatePlayers = true;
-                ChatPlayerItem Player = Client.AllPlayers[bare.User];
+                jabber.protocol.client.Presence[] s = PresManager.GetAll(bare);
+                if (s.Length == 0)
+                    return;
+                string Presence = s[0].Status;
+                if (Presence == null)
+                    return;
+                Player.RawPresence = Presence; //For debugging
+                Player.IsOnline = true;
                 using (XmlReader reader = XmlReader.Create(new StringReader(Presence)))
                 {
                     try
@@ -1399,6 +1454,10 @@ namespace LegendaryClient.Logic
 
     public class ChatPlayerItem
     {
+        public string Group { get; set; }
+
+        public bool IsOnline { get; set; }
+
         public string Id { get; set; }
 
         public string Username { get; set; }
@@ -1430,6 +1489,8 @@ namespace LegendaryClient.Logic
         public string Status { get; set; }
 
         public bool UsingLegendary { get; set; }
+
+        public string RawPresence { get; set; }
 
         public bool IsLegendaryDev { get; set; }
 

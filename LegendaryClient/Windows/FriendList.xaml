@@ -28,13 +28,10 @@
     <Grid x:Name="TheGrid" Background="#E5000000">
         <ComboBox x:Name="PresenceChanger" HorizontalAlignment="Stretch" Margin="5,5,5,0" VerticalAlignment="Top" ItemsSource="{DynamicResource ChatStates}" SelectedIndex="0" SelectionChanged="PresenceChanger_SelectionChanged" />
         <local:TextBoxWatermarked x:Name="StatusBox" HorizontalAlignment="Stretch" Height="23" Margin="5,35,5,0" TextWrapping="NoWrap" VerticalAlignment="Top" Watermark="Set your status message" MaxLength="25"/>
-        <ListView Style="{StaticResource NoFocus}" x:Name="ChatListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" Margin="0,65,0,37" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="ChatListView_SelectionChanged">
-            <ListView.View>
-                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                    <GridViewColumn Width="250" />
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <ScrollViewer Margin="0,65,0,37" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel x:Name="ChatListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            </StackPanel>
+        </ScrollViewer>
         <local:TextBoxWatermarked x:Name="FriendAddBox" HorizontalAlignment="Stretch" Height="23" Margin="10,0,69,9" TextWrapping="NoWrap" VerticalAlignment="Bottom" Watermark="Enter friend name to add" MaxLength="25"/>
         <Button x:Name="AddFriendButton" Content="Add" HorizontalAlignment="Left" Margin="186,0,0,9" VerticalAlignment="Bottom" Width="54" Click="AddFriendButton_Click"/>
     </Grid>
