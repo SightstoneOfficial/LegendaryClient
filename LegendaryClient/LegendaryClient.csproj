@@ -349,9 +349,6 @@
     <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
       <DependentUpon>ChampionDetailsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\ChatText.xaml.cs">
-      <DependentUpon>ChatText.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\FactionsGameLobbyPage.xaml.cs">
       <DependentUpon>FactionsGameLobbyPage.xaml</DependentUpon>
     </Compile>
@@ -725,10 +722,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\ChampionDetailsPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Windows\ChatText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

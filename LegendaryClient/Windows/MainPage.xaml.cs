@@ -228,8 +228,7 @@ namespace LegendaryClient.Windows
 
         private void ChatTest_Click(object sender, RoutedEventArgs e)
         {
-            Client.OverlayContainer.Content = new ChatText().Content;
-            Client.OverlayContainer.Visibility = Visibility.Visible;
+
         }
 
         private void ParseNews()

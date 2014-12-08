@@ -25,13 +25,21 @@ namespace LegendaryClient.Windows.Profile
 
         public async void Update()
         {
-            ChampionDTO[] champList = await Client.PVPNet.GetAvailableChampions();
+            try
+            {
 
-            ChampionList = new List<ChampionDTO>(champList);
+                ChampionDTO[] champList = await Client.PVPNet.GetAvailableChampions();
 
-            ChampionList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+                ChampionList = new List<ChampionDTO>(champList);
 
-            FilterSkins();
+                ChampionList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+
+                FilterSkins();
+            }
+            catch (Exception e)
+            {
+                Client.Log("Error with skins: " + e.Message, "Error");
+            }
         }
 
         private void SearchTextBox_TextChanged(object sender, TextChangedEventArgs e)
