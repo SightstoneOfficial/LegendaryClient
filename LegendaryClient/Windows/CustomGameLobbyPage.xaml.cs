@@ -302,6 +302,16 @@ namespace LegendaryClient.Windows
             }
         }
 
+        private static List<int> bots = new List<int>()
+        {
+            12, 32, 1, 22, 53, 63, 51, 69, 31, 42,
+            122, 36, 81, 9, 3, 86, 104, 39, 59, 24,
+            30, 10, 96, 89, 236, 99, 54, 90, 11, 21,
+            62, 25, 75, 20, 33, 58, 13, 98, 102, 15,
+            16, 50, 44, 18, 48, 77, 45, 8, 19, 5,
+            115, 26, 143
+        };
+
         private void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>

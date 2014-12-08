@@ -1448,6 +1448,15 @@ namespace LegendaryClient.Logic
 
         internal static int SelectChamp;
         internal static bool usingInstaPick = false;
+
+        internal static KeyValuePair<String, String> userpass;
+
+        internal static void ChatClient_OnDisconnect(object sender)
+        {
+            ChatClient.User = userpass.Key;
+            ChatClient.Password = userpass.Value;
+            ChatClient.Login();
+        }
     }
 
 

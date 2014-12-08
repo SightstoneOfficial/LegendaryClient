@@ -8,12 +8,6 @@
     d:DesignHeight="672" d:DesignWidth="1024"
     Title="ProfilePage">
 
-    <Page.Resources>
-        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility" Value="Collapsed" />
-        </Style>
-    </Page.Resources>
-
     <Grid>
         <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top"
                Width="64">

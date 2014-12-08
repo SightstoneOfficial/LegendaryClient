@@ -353,9 +353,11 @@ namespace LegendaryClient.Windows
                 Client.ChatClient.SSL = true;
                 Client.ChatClient.User = LoginUsernameBox.Text;
                 Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
+                Client.userpass = new KeyValuePair<String, String>(LoginUsernameBox.Text, "AIR_" + LoginPasswordBox.Password);
                 Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                 Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                 Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
+                Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
                 Client.ChatClient.Connect();
 
                 Client.RostManager = new RosterManager();

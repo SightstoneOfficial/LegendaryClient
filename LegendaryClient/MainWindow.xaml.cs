@@ -186,6 +186,7 @@ namespace LegendaryClient
                 Client.Pages.Clear();
                 Client.PVPNet.QuitGame();
                 Client.PVPNet.Disconnect();
+                Client.ChatClient.OnDisconnect -= Client.ChatClient_OnDisconnect;
                 Client.ChatClient.Close();
                 Client.ChatClient = null;
                 Client.ChatClient = new JabberClient();
