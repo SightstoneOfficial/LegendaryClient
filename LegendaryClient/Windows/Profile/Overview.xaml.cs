@@ -1,24 +1,26 @@
-﻿using LegendaryClient.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Harassment;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Windows.Controls;
-using System.Windows.Threading;
 
 namespace LegendaryClient.Windows.Profile
 {
     /// <summary>
-    /// Interaction logic for Overview.xaml
+    ///     Interaction logic for Overview.xaml
     /// </summary>
-    public partial class Overview : Page
+    public partial class Overview
     {
-        private List<PlayerStatSummary> Summaries = new List<PlayerStatSummary>();
         private double AccId;
+        private List<PlayerStatSummary> Summaries = new List<PlayerStatSummary>();
 
         public Overview()
         {
@@ -28,11 +30,12 @@ namespace LegendaryClient.Windows.Profile
         public async void Update(double SummonerId, double AccountId)
         {
             AccId = AccountId;
-            LcdsResponseString TotalKudos = await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + SummonerId + "}");
+            LcdsResponseString TotalKudos =
+                await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + SummonerId + "}");
             RenderKudos(TotalKudos);
             ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(AccountId, "CLASSIC");
             RenderTopPlayedChampions(TopChampions);
-            Client.PVPNet.RetrievePlayerStatsByAccountId(AccountId, "3", new PlayerLifetimeStats.Callback(GotPlayerStats));
+            Client.PVPNet.RetrievePlayerStatsByAccountId(AccountId, "3", GotPlayerStats);
         }
 
         public void RenderKudos(LcdsResponseString TotalKudos)
@@ -40,7 +43,7 @@ namespace LegendaryClient.Windows.Profile
             KudosListView.Items.Clear();
             TotalKudos.Value = TotalKudos.Value.Replace("{\"totals\":[0,", "").Replace("]}", "");
             string[] Kudos = TotalKudos.Value.Split(',');
-            KudosItem item = new KudosItem("Friendly", Kudos[0]);
+            var item = new KudosItem("Friendly", Kudos[0]);
             KudosListView.Items.Add(item);
             item = new KudosItem("Helpful", Kudos[1]);
             KudosListView.Items.Add(item);
@@ -54,23 +57,23 @@ namespace LegendaryClient.Windows.Profile
         {
             ViewAggregatedStatsButton.IsEnabled = false;
             TopChampionsListView.Items.Clear();
-            if (TopChampions.Count() > 0)
+            if (!TopChampions.Any())
+                return;
+
+            TopChampionsLabel.Content = "Top Champions (" + TopChampions[0].TotalGamesPlayed + " Ranked Games)";
+            foreach (ChampionStatInfo info in TopChampions)
             {
-                TopChampionsLabel.Content = "Top Champions (" + TopChampions[0].TotalGamesPlayed + " Ranked Games)";
-                foreach (ChampionStatInfo info in TopChampions)
-                {
-                    ViewAggregatedStatsButton.IsEnabled = true;
-                    if (info.ChampionId != 0.0)
-                    {
-                        ChatPlayer player = new ChatPlayer();
-                        champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
-                        player.LevelLabel.Visibility = System.Windows.Visibility.Hidden;
-                        player.PlayerName.Content = Champion.displayName;
-                        player.PlayerStatus.Content = info.TotalGamesPlayed + " games played";
-                        player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
-                        TopChampionsListView.Items.Add(player);
-                    }
-                }
+                ViewAggregatedStatsButton.IsEnabled = true;
+                if (!(Math.Abs(info.ChampionId) > 0))
+                    continue;
+
+                var player = new ChatPlayer();
+                champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
+                player.LevelLabel.Visibility = Visibility.Hidden;
+                player.PlayerName.Content = Champion.displayName;
+                player.PlayerStatus.Content = info.TotalGamesPlayed + " games played";
+                player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
+                TopChampionsListView.Items.Add(player);
             }
         }
 
@@ -83,20 +86,19 @@ namespace LegendaryClient.Windows.Profile
                 StatsListView.Items.Clear();
                 try
                 {
-                    foreach (PlayerStatSummary x in stats.PlayerStatSummaries.PlayerStatSummarySet)
+                    foreach (PlayerStatSummary x in stats.PlayerStatSummaries.PlayerStatSummarySet.Where(x => x.AggregatedStats.Stats.Count > 0))
                     {
-                        if (x.AggregatedStats.Stats.Count > 0)
-                        {
-                            Summaries.Add(x);
-                            string SummaryString = x.PlayerStatSummaryTypeString;
-                            SummaryString = string.Concat(SummaryString.Select(e => Char.IsUpper(e) ? " " + e : e.ToString())).TrimStart(' ');
-                            SummaryString = SummaryString.Replace("Odin", "Dominion");
-                            SummaryString = SummaryString.Replace("x", "v");
-                            StatsComboBox.Items.Add(SummaryString);
-                        }
+                        Summaries.Add(x);
+                        string SummaryString = x.PlayerStatSummaryTypeString;
+                        SummaryString =
+                            string.Concat(SummaryString.Select(e => Char.IsUpper(e) ? " " + e : e.ToString()))
+                                .TrimStart(' ');
+                        SummaryString = SummaryString.Replace("Odin", "Dominion");
+                        SummaryString = SummaryString.Replace("x", "v");
+                        StatsComboBox.Items.Add(SummaryString);
                     }
                 }
-                catch 
+                catch
                 {
                     Client.Log("Error when loading player stats.");
                 }
@@ -112,13 +114,12 @@ namespace LegendaryClient.Windows.Profile
                 {
                     StatsListView.Items.Clear();
                     PlayerStatSummary GameMode = Summaries[StatsComboBox.SelectedIndex];
-                    foreach (SummaryAggStat stat in GameMode.AggregatedStats.Stats)
+                    foreach (var item in GameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
                     {
-                        ProfilePage.KeyValueItem item = new ProfilePage.KeyValueItem
-                        {
-                            Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
-                            Value = stat.Value.ToString()
-                        };
+                        Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
+                        Value = stat.Value.ToString(CultureInfo.InvariantCulture)
+                    }))
+                    {
                         StatsListView.Items.Add(item);
                     }
 
@@ -137,11 +138,12 @@ namespace LegendaryClient.Windows.Profile
             }
         }
 
-        private async void ViewAggregatedStatsButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private async void ViewAggregatedStatsButton_Click(object sender, RoutedEventArgs e)
         {
             AggregatedStats x = await Client.PVPNet.GetAggregatedStats(AccId, "CLASSIC", "3");
-            Client.OverlayContainer.Content = new AggregatedStatsOverlay(x, AccId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
-            Client.OverlayContainer.Visibility = System.Windows.Visibility.Visible;
+            Client.OverlayContainer.Content =
+                new AggregatedStatsOverlay(x, AccId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
     }
 }
