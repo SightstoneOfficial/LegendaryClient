@@ -98,7 +98,7 @@ namespace LegendaryClient.Windows
 
                         int Players = 0;
 
-                        foreach (KeyValuePair<string, ChatPlayerItem> ChatPlayerPair in Client.AllPlayers.ToArray())
+                        foreach (KeyValuePair<string, ChatPlayerItem> ChatPlayerPair in Client.AllPlayers.ToArray().OrderBy(u => u.Value.Username))
                         {
                             ChatPlayer player = new ChatPlayer();
                             player.Tag = ChatPlayerPair.Value;
