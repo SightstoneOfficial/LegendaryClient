@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Threading;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
@@ -73,6 +75,8 @@ namespace LegendaryClient.Windows.Profile
                 player.PlayerName.Content = Champion.displayName;
                 player.PlayerStatus.Content = info.TotalGamesPlayed + " games played";
                 player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
+                player.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(102, 80, 80, 80));
+                player.Width = 270;
                 TopChampionsListView.Items.Add(player);
             }
         }
@@ -86,7 +90,10 @@ namespace LegendaryClient.Windows.Profile
                 StatsListView.Items.Clear();
                 try
                 {
-                    foreach (PlayerStatSummary x in stats.PlayerStatSummaries.PlayerStatSummarySet.Where(x => x.AggregatedStats.Stats.Count > 0))
+                    foreach (
+                        PlayerStatSummary x in
+                            stats.PlayerStatSummaries.PlayerStatSummarySet.Where(x => x.AggregatedStats.Stats.Count > 0)
+                        )
                     {
                         Summaries.Add(x);
                         string SummaryString = x.PlayerStatSummaryTypeString;
@@ -114,11 +121,13 @@ namespace LegendaryClient.Windows.Profile
                 {
                     StatsListView.Items.Clear();
                     PlayerStatSummary GameMode = Summaries[StatsComboBox.SelectedIndex];
-                    foreach (var item in GameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
-                    {
-                        Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
-                        Value = stat.Value.ToString(CultureInfo.InvariantCulture)
-                    }))
+                    foreach (
+                        ProfilePage.KeyValueItem item in
+                            GameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
+                            {
+                                Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
+                                Value = stat.Value.ToString(CultureInfo.InvariantCulture)
+                            }))
                     {
                         StatsListView.Items.Add(item);
                     }
