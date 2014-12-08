@@ -1,28 +1,27 @@
-﻿using LegendaryClient.Logic;
-using LegendaryClient.Windows.Profile;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic;
+using LegendaryClient.Windows.Profile;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
 
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for ProfilePage.xaml
+    ///     Interaction logic for ProfilePage.xaml
     /// </summary>
-    public partial class ProfilePage : Page
+    public partial class ProfilePage
     {
         public ProfilePage()
         {
             InitializeComponent();
         }
+
         public void ProfileCreate(string Name)
         {
             InGameContainer.Content = new Ingame();
@@ -35,14 +34,7 @@ namespace LegendaryClient.Windows
             SkinsContainer.Content = new Skins();
             LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline(Name);
 
-            if (String.IsNullOrEmpty(Name))
-            {
-                GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
-            }
-            else
-            {
-                GetSummonerProfile(Name);
-            }
+            GetSummonerProfile(String.IsNullOrEmpty(Name) ? Client.LoginPacket.AllSummonerData.Summoner.Name : Name);
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -52,12 +44,18 @@ namespace LegendaryClient.Windows
 
         public async void GetSummonerProfile(string s)
         {
-            PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(String.IsNullOrWhiteSpace(s) ? Client.LoginPacket.AllSummonerData.Summoner.Name : s);
+            PublicSummoner Summoner =
+                await
+                    Client.PVPNet.GetSummonerByName(String.IsNullOrWhiteSpace(s)
+                        ? Client.LoginPacket.AllSummonerData.Summoner.Name
+                        : s);
             if (String.IsNullOrWhiteSpace(Summoner.Name))
             {
-                MessageOverlay overlay = new MessageOverlay();
-                overlay.MessageTitle.Content = "No Summoner Found";
-                overlay.MessageTextBox.Text = "The summoner \"" + s + "\" does not exist.";
+                var overlay = new MessageOverlay
+                {
+                    MessageTitle = {Content = "No Summoner Found"},
+                    MessageTextBox = {Text = "The summoner \"" + s + "\" does not exist."}
+                };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
                 return;
@@ -67,15 +65,15 @@ namespace LegendaryClient.Windows
 
             if (Summoner.SummonerLevel < 30)
             {
-                LeagueHeader.Visibility = System.Windows.Visibility.Collapsed;
+                LeagueHeader.Visibility = Visibility.Collapsed;
             }
             else
             {
-                Client.PVPNet.GetAllLeaguesForPlayer(Summoner.SummonerId, new SummonerLeaguesDTO.Callback(GotLeaguesForPlayer));
+                Client.PVPNet.GetAllLeaguesForPlayer(Summoner.SummonerId, GotLeaguesForPlayer);
             }
 
             int ProfileIconID = Summoner.ProfileIconId;
-            var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png");
+            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png");
             ProfileImage.Source = Client.GetImage(uriSource);
 
             PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(s);
@@ -83,7 +81,7 @@ namespace LegendaryClient.Windows
             {
                 InGameHeader.Visibility = Visibility.Visible;
                 InGameHeader.IsSelected = true;
-                Ingame ingame = InGameContainer.Content as Ingame;
+                var ingame = InGameContainer.Content as Ingame;
                 ingame.Update(n);
             }
             else
@@ -94,19 +92,22 @@ namespace LegendaryClient.Windows
 
             if (Summoner.InternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName)
             {
-                ChampionsTab.Visibility = System.Windows.Visibility.Visible;
-                SkinsTab.Visibility = System.Windows.Visibility.Visible;
+                ChampionsTab.Visibility = Visibility.Visible;
+                SkinsTab.Visibility = Visibility.Visible;
+
+                MatchHistoryBetaTab.Margin = new Thickness(0, 0, 0, 0);
             }
             else
             {
-                ChampionsTab.Visibility = System.Windows.Visibility.Hidden;
-                SkinsTab.Visibility = System.Windows.Visibility.Hidden;
+                ChampionsTab.Visibility = Visibility.Hidden;
+                SkinsTab.Visibility = Visibility.Hidden;
+                MatchHistoryBetaTab.Margin = new Thickness(-211, 0, 211, 0);
             }
 
-            MatchHistory history = MatchHistoryContainer.Content as MatchHistory;
+            var history = MatchHistoryContainer.Content as MatchHistory;
             history.Update(Summoner.AcctId);
 
-            Overview overview = OverviewContainer.Content as Overview;
+            var overview = OverviewContainer.Content as Overview;
             overview.Update(Summoner.SummonerId, Summoner.AcctId);
         }
 
@@ -116,15 +117,31 @@ namespace LegendaryClient.Windows
             {
                 if (result.SummonerLeagues != null && result.SummonerLeagues.Count > 0)
                 {
-                    LeagueHeader.Visibility = System.Windows.Visibility.Visible;
-                    Leagues overview = LeaguesContainer.Content as Leagues;
+                    LeagueHeader.Visibility = Visibility.Visible;
+                    var overview = LeaguesContainer.Content as Leagues;
                     overview.Update(result);
                 }
                 else
                 {
-                    LeagueHeader.Visibility = System.Windows.Visibility.Collapsed;
+                    LeagueHeader.Visibility = Visibility.Collapsed;
                 }
             }));
+        }
+
+        private void TabContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            switch ((string) ((TabItem) TabContainer.SelectedItem).Header)
+            {
+                case "Champions":
+                    var champions = ChampionsContainer.Content as Champions;
+                    champions.Update();
+                    break;
+
+                case "Skins":
+                    var skins = SkinsContainer.Content as Skins;
+                    skins.Update();
+                    break;
+            }
         }
 
         public class KeyValueItem
@@ -132,25 +149,6 @@ namespace LegendaryClient.Windows
             public object Key { get; set; }
 
             public object Value { get; set; }
-        }
-
-        private void TabContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            switch ((string)((TabItem)TabContainer.SelectedItem).Header)
-            {
-                case "Champions":
-                    Champions champions = ChampionsContainer.Content as Champions;
-                    champions.Update();
-                    break;
-
-                case "Skins":
-                    Skins skins = SkinsContainer.Content as Skins;
-                    skins.Update();
-                    break;
-
-                default:
-                    break;
-            }
         }
     }
 }
