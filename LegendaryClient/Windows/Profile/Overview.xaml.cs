@@ -99,7 +99,9 @@ namespace LegendaryClient.Windows.Profile
                         Summaries.Add(x);
                         string SummaryString = x.PlayerStatSummaryTypeString;
                         SummaryString =
-                            string.Concat(SummaryString.Select(e => Char.IsUpper(e) ? " " + e : e.ToString()))
+                            string.Concat(
+                                SummaryString.Select(
+                                    e => Char.IsUpper(e) ? " " + e : e.ToString(CultureInfo.InvariantCulture)))
                                 .TrimStart(' ');
                         SummaryString = SummaryString.Replace("Odin", "Dominion");
                         SummaryString = SummaryString.Replace("x", "v");
@@ -123,27 +125,23 @@ namespace LegendaryClient.Windows.Profile
                     StatsListView.Items.Clear();
                     PlayerStatSummary GameMode = Summaries[StatsComboBox.SelectedIndex];
                     foreach (
-                        ProfilePage.KeyValueItem item in
-                            GameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
-                            {
-                                Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
-                                Value = stat.Value.ToString(CultureInfo.InvariantCulture)
-                            }))
+                        KudosItem Item in GameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
+                        {
+                            Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
+                            Value = stat.Value.ToString(CultureInfo.InvariantCulture)
+                        })
+                            .Select(
+                                item =>
+                                    new KudosItem(item.Key.ToString(), item.Value.ToString())
+                                    {
+                                        MinWidth = GameMode.AggregatedStats.Stats.Count < 15 ? 972 : 962,
+                                        MinHeight = 18
+                                    }))
                     {
-                        StatsListView.Items.Add(item);
+                        Item.TypeLabel.FontSize = 12;
+                        Item.AmountLabel.FontSize = 13;
+                        StatsListView.Items.Add(Item);
                     }
-
-                    //Resize columns
-                    if (double.IsNaN(KeyHeader.Width))
-                    {
-                        KeyHeader.Width = KeyHeader.ActualWidth;
-                    }
-                    if (double.IsNaN(ValueHeader.Width))
-                    {
-                        ValueHeader.Width = ValueHeader.ActualWidth;
-                    }
-                    KeyHeader.Width = double.NaN;
-                    ValueHeader.Width = double.NaN;
                 }));
             }
         }
