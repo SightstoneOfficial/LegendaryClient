@@ -302,21 +302,67 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private static List<int> bots = new List<int>()
-        {
+        private static List<int> bots = new List<int>(new Int32[] 
+        { 
             12, 32, 1, 22, 53, 63, 51, 69, 31, 42,
             122, 36, 81, 9, 3, 86, 104, 39, 59, 24,
             30, 10, 96, 89, 236, 99, 54, 90, 11, 21,
             62, 25, 75, 20, 33, 58, 13, 98, 102, 15,
             16, 50, 44, 18, 48, 77, 45, 8, 19, 5,
             115, 26, 143
-        };
+        });
 
-        private void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
+        private int getRandomChampInt()
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            Random rnd = new Random();
+            int r = rnd.Next(bots.Count);
+            return bots[r];
+        }
+
+        private async void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
+        {
+            int champint = getRandomChampInt();
+            champions champions = champions.GetChampion(champint);
+            ChampionDTO champDTO = new ChampionDTO();
+            champDTO.Active = true;
+            champDTO.Banned = false;
+            champDTO.BotEnabled = true;
+            champDTO.ChampionId = champint;
+            champDTO.DisplayName = champions.displayName;
+
+            List<ChampionSkinDTO> skinlist = new List<ChampionSkinDTO>();
+            foreach (Dictionary<string, object> Skins in champions.Skins)
             {
-                //Needs looked into
+                ChampionSkinDTO skin = new ChampionSkinDTO();
+                skin.ChampionId = champint;
+                skin.FreeToPlayReward = false;
+                int SkinInt = Convert.ToInt32(Skins["id"]);
+                skin.SkinId = SkinInt;
+                List<ChampionDTO> champs = new List<ChampionDTO>(Client.PlayerChampions);
+                foreach (ChampionDTO x in champs)
+                {
+                    foreach (ChampionSkinDTO myskin in x.ChampionSkins)
+                    {
+                        if (myskin.Owned) { }
+                    }
+                }
+                skin.Owned = true;
+                skinlist.Add(skin);
+            }
+            champDTO.ChampionSkins = skinlist;
+
+            BotParticipant par = new BotParticipant();
+            par.BotSkillLevelName = "Basic";
+            par.BotSkillLevel = 0;
+            par.Champion = champDTO;
+
+            await Client.PVPNet.SelectBotChampion(champint,  par);
+
+
+            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                
+                
             }));
         }
 
