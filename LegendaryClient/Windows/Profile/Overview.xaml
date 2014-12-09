@@ -43,7 +43,7 @@
         <ComboBox x:Name="StatsComboBox" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
                   Width="300" SelectionChanged="StatsComboBox_SelectionChanged" />
         <ListView x:Name="StatsListView" HorizontalAlignment="Stretch" Margin="10,40,300,10"
-                  VerticalAlignment="Stretch" Foreground="White" Background="#66505050">
+                  VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn x:Name="KeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}" />

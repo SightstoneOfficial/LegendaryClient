@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -69,14 +68,16 @@ namespace LegendaryClient.Windows.Profile
                 if (!(Math.Abs(info.ChampionId) > 0))
                     continue;
 
-                var player = new ChatPlayer();
                 champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
-                player.LevelLabel.Visibility = Visibility.Hidden;
-                player.PlayerName.Content = Champion.displayName;
-                player.PlayerStatus.Content = info.TotalGamesPlayed + " games played";
-                player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
-                player.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(102, 80, 80, 80));
-                player.Width = 270;
+                var player = new ChatPlayer
+                {
+                    LevelLabel = {Visibility = Visibility.Hidden},
+                    PlayerName = {Content = Champion.displayName},
+                    PlayerStatus = {Content = info.TotalGamesPlayed + " games played"},
+                    ProfileImage = {Source = champions.GetChampion(Champion.id).icon},
+                    Background = new SolidColorBrush(Color.FromArgb(102, 80, 80, 80)),
+                    Width = 270
+                };
                 TopChampionsListView.Items.Add(player);
             }
         }
