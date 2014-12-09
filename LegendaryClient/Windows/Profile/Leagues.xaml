@@ -5,32 +5,48 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       d:DesignHeight="548" d:DesignWidth="1280"
-	Title="Leagues">
+      Title="Leagues">
 
     <Grid>
-        <Label Content="Rank" HorizontalAlignment="Left" Margin="10,70,0,0" FontSize="16" Foreground="White" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-        <Label Content="Δ" HorizontalAlignment="Left" Margin="60,70,0,0" FontSize="16" Foreground="White"  FontWeight="ExtraLight" VerticalAlignment="Top"/>
-        <Label Content="Name" HorizontalAlignment="Left" Margin="110,70,0,0" FontSize="16" Foreground="White"  FontWeight="ExtraLight" VerticalAlignment="Top"/>
-        <Label Content="Emblems" HorizontalAlignment="Left" Margin="440,70,0,0" FontSize="16" Foreground="White" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-        <Label Content="Wins" HorizontalAlignment="Left" Margin="610,70,0,0" FontSize="16" Foreground="White"  FontWeight="ExtraLight" VerticalAlignment="Top"/>
-        <Label Content="LP/Series" HorizontalAlignment="Left" Margin="710,70,0,0" FontSize="16" Foreground="White" FontWeight="ExtraLight" VerticalAlignment="Top"/>
+        <Label Content="Rank" HorizontalAlignment="Left" Margin="10,70,0,0" FontSize="16" Foreground="White"
+               FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Label Content="Δ" HorizontalAlignment="Left" Margin="60,70,0,0" FontSize="16" Foreground="White"
+               FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Label Content="Name" HorizontalAlignment="Left" Margin="110,70,0,0" FontSize="16" Foreground="White"
+               FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Label Content="Emblems" HorizontalAlignment="Left" Margin="440,70,0,0" FontSize="16" Foreground="White"
+               FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Label Content="Wins" HorizontalAlignment="Left" Margin="610,70,0,0" FontSize="16" Foreground="White"
+               FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Label Content="LP/Series" HorizontalAlignment="Left" Margin="710,70,0,0" FontSize="16" Foreground="White"
+               FontWeight="ExtraLight" VerticalAlignment="Top" />
 
-        <Label x:Name="CurrentLeagueLabel" Content="Gold V" HorizontalAlignment="Right" Margin="0,10,50,0" Foreground="White" FontSize="40" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-        <Label x:Name="CurrentLeagueNameLabel" Content="Urgot's Swaggers" HorizontalAlignment="Right" Margin="0,60,50,0" Foreground="White" FontSize="20" FontWeight="ExtraLight" VerticalAlignment="Top"/>
+        <Label x:Name="CurrentLeagueLabel" Content="Gold V" HorizontalAlignment="Right" Margin="0,10,50,0"
+               Foreground="White" FontSize="40" FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Label x:Name="CurrentLeagueNameLabel" Content="Urgot's Swaggers" HorizontalAlignment="Right"
+               Margin="0,60,50,0" Foreground="White" FontSize="20" FontWeight="ExtraLight" VerticalAlignment="Top" />
 
-        <Button x:Name="UpTierButton" Style="{x:Null}" Content="é" HorizontalAlignment="Right" Margin="0,20,5,0" FontFamily="Wingdings" VerticalAlignment="Top" Width="30" Height="30" Click="UpTierButton_Click"/>
-        <Button x:Name="DownTierButton" Style="{x:Null}" Content="ê" HorizontalAlignment="Right" Margin="0,60,5,0" FontFamily="Wingdings" VerticalAlignment="Top" Width="30" Height="30" Click="DownTierButton_Click"/>
+        <Button x:Name="UpTierButton" Style="{x:Null}" Content="é" HorizontalAlignment="Right" Margin="0,20,5,0"
+                FontFamily="Wingdings" VerticalAlignment="Top" Width="30" Height="30" Click="UpTierButton_Click" />
+        <Button x:Name="DownTierButton" Style="{x:Null}" Content="ê" HorizontalAlignment="Right" Margin="0,60,5,0"
+                FontFamily="Wingdings" VerticalAlignment="Top" Width="30" Height="30" Click="DownTierButton_Click" />
 
-        <ListView x:Name="LeaguesListView" HorizontalAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,100,10,10" VerticalAlignment="Stretch" Width="800" Foreground="White" Background="#66505050" BorderBrush="{x:Null}" SelectionChanged="LeaguesListView_SelectionChanged">
+        <ListView x:Name="LeaguesListView" HorizontalAlignment="Left"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,100,10,10"
+                  VerticalAlignment="Stretch" Width="800" Foreground="White" Background="#66505050"
+                  BorderBrush="{x:Null}" SelectionChanged="LeaguesListView_SelectionChanged">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Label x:Name="PlayerLabel" Content="Eddy5641" HorizontalAlignment="Right" Margin="0,100,5,0" FontSize="30" FontWeight="ExtraLight" Foreground="White" VerticalAlignment="Top"/>
+        <Label x:Name="PlayerLabel" Content="Eddy5641" HorizontalAlignment="Right" Margin="0,100,5,0" FontSize="30"
+               FontWeight="ExtraLight" Foreground="White" VerticalAlignment="Top" />
 
-        <ListView x:Name="TopChampionsListView" HorizontalAlignment="Right" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="300" Margin="10,150,10,0" VerticalAlignment="Top" Width="280" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <ListView x:Name="TopChampionsListView" HorizontalAlignment="Right"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="300" Margin="10,150,10,0"
+                  VerticalAlignment="Top" Width="280" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -38,7 +54,8 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Button x:Name="ViewAggregatedStatsButton" Content="View Player Stats" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Height="50" Width="280" />
+        <Button x:Name="ViewAggregatedStatsButton" Content="View Player Stats" FontSize="25" FontWeight="ExtraLight"
+                HorizontalAlignment="Right" Margin="0,0,10,10" VerticalAlignment="Bottom" Height="50" Width="280" />
 
     </Grid>
 </Page>
