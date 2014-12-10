@@ -28,18 +28,23 @@ namespace LegendaryClient.Logic.JSON
             if (masteryData != null)
                 foreach (var mastery in masteryData)
                 {
-                    var newMastery = new masteries();
                     var singularMasteryData = mastery.Value as Dictionary<string, object>;
-                    newMastery.id = Convert.ToInt32(mastery.Key);
-                    newMastery.name = singularMasteryData["name"] as string;
-                    newMastery.description = singularMasteryData["description"] as ArrayList;
-                    newMastery.ranks = (int) singularMasteryData["ranks"];
-                    newMastery.prereq = Convert.ToInt32(singularMasteryData["prereq"]);
+                    var newMastery = new masteries {id = Convert.ToInt32(mastery.Key)};
+                    if (singularMasteryData != null)
+                    {
+                        newMastery.name = singularMasteryData["name"] as string;
+                        newMastery.description = singularMasteryData["description"] as ArrayList;
+                        newMastery.ranks = (int) singularMasteryData["ranks"];
+                        newMastery.prereq = Convert.ToInt32(singularMasteryData["prereq"]);
 
-                    var imageData = singularMasteryData["image"] as Dictionary<string, object>;
-                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "mastery",
-                        (string) imageData["full"]);
-                    newMastery.icon = Client.GetImage(uriSource);
+                        var imageData = singularMasteryData["image"] as Dictionary<string, object>;
+                        if (imageData != null)
+                        {
+                            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "mastery",
+                                (string) imageData["full"]);
+                            newMastery.icon = Client.GetImage(uriSource);
+                        }
+                    }
 
                     masteryList.Add(newMastery);
                 }
