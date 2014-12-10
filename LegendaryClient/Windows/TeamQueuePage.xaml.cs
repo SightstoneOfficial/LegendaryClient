@@ -552,7 +552,9 @@ namespace LegendaryClient.Windows
                 ChatTextBox.Text = "";
                 if (DevMode)
                 {
+#if DEBUG
                     CreateRankedCheckBox.Visibility = Visibility.Visible;
+#endif
                     SelectChamp.Visibility = Visibility.Visible;
                 }
                 else
@@ -594,11 +596,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-#if DEBUG
                 parameters.QueueIds = (makeRanked ? new[] {4} : QueueIds.ToArray());
-#else
-                parameters.QueueIds = QueueIds.ToArray();
-#endif
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;

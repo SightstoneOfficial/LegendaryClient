@@ -756,6 +756,14 @@ namespace LegendaryClient.Logic
             else IsOnPlayPage = false;
             if (page.GetType() == typeof(ChampSelectPage)) BackgroundImage.Visibility = Visibility.Hidden;
             else BackgroundImage.Visibility = Visibility.Visible;
+            if (page.GetType() == typeof(MainPage))
+            {
+                Page p = Pages.FirstOrDefault(x => x.GetType() == typeof(MainPage));
+                if(p != null)
+                {
+                    (p as MainPage).UpdateSummonerInformation();
+                }
+            }
 
             TrueCurrentPage = page;
 
