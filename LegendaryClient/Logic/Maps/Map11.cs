@@ -4,7 +4,7 @@ namespace LegendaryClient.Logic.Maps
     {
         public override string DisplayName
         {
-            get { return "New Summoners Rift"; }
+            get { return "Summoners Rift (Beta)"; }
         }
     }
 }
