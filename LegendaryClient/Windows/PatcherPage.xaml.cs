@@ -308,6 +308,7 @@ namespace LegendaryClient.Windows
                     else
                     {
                         LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
+                        SkipPatchButton.IsEnabled = true;
                         return;
                     }
                     #endregion lol_game_client
