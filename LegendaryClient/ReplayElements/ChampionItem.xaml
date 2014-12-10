@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-      Height="68" Width="68">
-    <Grid Width="78" Height="78" Margin="-5,-5,0,0" >
-        <Image x:Name="ChampionImage" Source="/LegendaryClient;component/Assets/champion/Twitch.png">
+             Height="68" Width="68">
+    <Grid Width="78" Height="78" Margin="-5,-5,0,0">
+        <Image x:Name="ChampionImage">
             <Image.Clip>
-                <RectangleGeometry Rect="5,5,66,66"/>
+                <RectangleGeometry Rect="5,5,66,66" />
                 <!--PUSH-->
             </Image.Clip>
         </Image>

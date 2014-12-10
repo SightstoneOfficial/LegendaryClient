@@ -15,23 +15,29 @@ namespace LegendaryClient.Logic.JSON
 {
     public static class Champions
     {
-        public static void InsertExtraChampData(champions Champ)
+        public static void InsertExtraChampData(champions champ)
         {
-            string champJSON =
+            string champJson =
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "champion",
-                    Champ.name + ".json"));
+                    champ.name + ".json"));
+
             var serializer = new JavaScriptSerializer();
-            var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(champJSON);
+            var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(champJson);
             //Dictionary<string, object> deserializedJSON = JsonConvert.DeserializeObject<Dictionary<string, object>>(champJSON);
             var temp = deserializedJson["data"] as Dictionary<string, object>;
-            var champData = temp[Champ.name] as Dictionary<string, object>;
-            //Dictionary<string, object> champData = serializer.Deserialize<Dictionary<string, object>>(temp2);
+            if (temp == null)
+                return;
 
-            Champ.Lore = champData["lore"] as string;
-            Champ.ResourceType = champData["partype"] as string;
-            Champ.Skins = champData["skins"] as ArrayList;
+            var champData = temp[champ.name] as Dictionary<string, object>;
+            //Dictionary<string, object> champData = serializer.Deserialize<Dictionary<string, object>>(temp2);
+            if (champData == null)
+                return;
+
+            champ.Lore = champData["lore"] as string;
+            champ.ResourceType = champData["partype"] as string;
+            champ.Skins = champData["skins"] as ArrayList;
             var spells = (ArrayList) champData["spells"];
-            Champ.Spells = new List<Spell>();
+            champ.Spells = new List<Spell>();
 
             foreach (Dictionary<string, object> champSpells in spells)
             {
@@ -58,15 +64,12 @@ namespace LegendaryClient.Logic.JSON
                 }
 
                 int i = 0;
-                foreach (ArrayList x in (ArrayList) champSpells["effect"])
+                foreach (string scaling in from ArrayList x in (ArrayList) champSpells["effect"]
+                    where x != null
+                    select x.Cast<object>().Aggregate("", (current, y) => current + (y + "/"))
+                    into scaling
+                    select scaling.Substring(0, scaling.Length - 1))
                 {
-                    if (x == null)
-                        continue;
-
-                    string scaling = x.Cast<object>().Aggregate("", (current, y) => current + (y + "/"));
-
-                    scaling = scaling.Substring(0, scaling.Length - 1);
-
                     i++;
                     newSpell.Tooltip = newSpell.Tooltip.Replace("{{ e" + i + " }}", scaling);
                 }
@@ -74,7 +77,7 @@ namespace LegendaryClient.Logic.JSON
                 newSpell.Tooltip = newSpell.Tooltip.Replace("<br>", Environment.NewLine);
                 newSpell.Tooltip = Regex.Replace(newSpell.Tooltip, "<.*?>", string.Empty);
 
-                Champ.Spells.Add(newSpell);
+                champ.Spells.Add(newSpell);
             }
         }
     }

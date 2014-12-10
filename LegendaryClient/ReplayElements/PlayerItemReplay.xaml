@@ -1,22 +1,32 @@
 ﻿<UserControl
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Controls.PlayerItemReplay"
-             mc:Ignorable="d"
-             d:DesignHeight="40" Width="443">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Controls.PlayerItemReplay"
+    mc:Ignorable="d"
+    d:DesignHeight="40" Width="443">
     <Grid>
-        <local:SmallChampionItem x:Name="ChampionIcon" HorizontalAlignment="Left" Margin="2,0,0,0" VerticalAlignment="Center"/>
-        <Label x:Name="PlayerNameLabel" Content="Snowl" HorizontalAlignment="Left" Margin="34,0,0,14" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Center"/>
-        <Label x:Name="File" Content="eddy.png" HorizontalAlignment="Left" Margin="34,14,0,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Center"/>
-        <local:SmallChampionItem x:Name="gameItem1" HorizontalAlignment="Left" Margin="216,4,0,4" VerticalAlignment="Center"/>
-        <local:SmallChampionItem x:Name="gameItem2" HorizontalAlignment="Left" Margin="253,4,0,4" VerticalAlignment="Center"/>
-        <local:SmallChampionItem x:Name="gameItem3" HorizontalAlignment="Left" Margin="290,4,0,4" VerticalAlignment="Center"/>
-        <local:SmallChampionItem x:Name="gameItem4" HorizontalAlignment="Left" Margin="327,4,0,4" VerticalAlignment="Center"/>
-        <local:SmallChampionItem x:Name="gameItem5" HorizontalAlignment="Left" Margin="364,4,0,4" VerticalAlignment="Center"/>
-        <local:SmallChampionItem x:Name="gameTrinket" HorizontalAlignment="Left" Margin="401,4,0,4" VerticalAlignment="Center"/>
-        <Label x:Name="KDA" Content="99/99/99" HorizontalAlignment="Left" Margin="122,4,0,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Top" Width="70"/>
+        <local:SmallChampionItem x:Name="ChampionIcon" HorizontalAlignment="Left" Margin="2,0,0,0"
+                                 VerticalAlignment="Center" />
+        <Label x:Name="PlayerNameLabel" Content="Snowl" HorizontalAlignment="Left" Margin="34,0,0,14"
+               FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Center" />
+        <Label x:Name="File" Content="eddy.png" HorizontalAlignment="Left" Margin="34,14,0,0" FontStyle="Italic"
+               Foreground="#FF838383" VerticalAlignment="Center" />
+        <local:SmallChampionItem x:Name="gameItem1" HorizontalAlignment="Left" Margin="216,4,0,4"
+                                 VerticalAlignment="Center" />
+        <local:SmallChampionItem x:Name="gameItem2" HorizontalAlignment="Left" Margin="253,4,0,4"
+                                 VerticalAlignment="Center" />
+        <local:SmallChampionItem x:Name="gameItem3" HorizontalAlignment="Left" Margin="290,4,0,4"
+                                 VerticalAlignment="Center" />
+        <local:SmallChampionItem x:Name="gameItem4" HorizontalAlignment="Left" Margin="327,4,0,4"
+                                 VerticalAlignment="Center" />
+        <local:SmallChampionItem x:Name="gameItem5" HorizontalAlignment="Left" Margin="364,4,0,4"
+                                 VerticalAlignment="Center" />
+        <local:SmallChampionItem x:Name="gameTrinket" HorizontalAlignment="Left" Margin="401,4,0,4"
+                                 VerticalAlignment="Center" />
+        <Label x:Name="KDA" Content="99/99/99" HorizontalAlignment="Left" Margin="122,4,0,0" FontStyle="Italic"
+               Foreground="#FF838383" VerticalAlignment="Top" Width="70" />
         <!--PUSH-->
     </Grid>
 </UserControl>

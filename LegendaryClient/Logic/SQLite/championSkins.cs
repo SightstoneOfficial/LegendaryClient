@@ -1,4 +1,10 @@
-﻿namespace LegendaryClient.Logic.SQLite
+﻿#region
+
+using System.Linq;
+
+#endregion
+
+namespace LegendaryClient.Logic.SQLite
 {
     public class championSkins
     {
@@ -20,12 +26,7 @@
 
         public static championSkins GetSkin(int id)
         {
-            foreach (championSkins c in Client.ChampionSkins)
-            {
-                if (c.id == id)
-                    return c;
-            }
-            return null;
+            return Client.ChampionSkins.FirstOrDefault(c => c.id == id);
         }
     }
 }

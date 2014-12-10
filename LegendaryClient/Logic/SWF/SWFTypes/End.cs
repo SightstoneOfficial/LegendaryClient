@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
+
+#endregion
 
 namespace LegendaryClient.Logic.SWF.SWFTypes
 {
@@ -6,12 +10,12 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
     {
         public End()
         {
-            this.TagCode = (int)TagCodes.End;
+            TagCode = (int) TagCodes.End;
         }
 
         public override void ReadData(byte version, BinaryReader binaryReader)
         {
-            RecordHeader rh = new RecordHeader();
+            var rh = new RecordHeader();
             rh.ReadData(binaryReader);
         }
     }
