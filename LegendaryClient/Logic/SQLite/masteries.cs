@@ -1,5 +1,10 @@
-﻿using System.Collections;
+﻿#region
+
+using System.Collections;
 using System.Windows.Media.Imaging;
+
+#endregion
+
 namespace LegendaryClient.Logic.SQLite
 {
     public class masteries
