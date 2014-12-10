@@ -594,7 +594,11 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
+#if DEBUG
                 parameters.QueueIds = (makeRanked ? new[] {4} : QueueIds.ToArray());
+#else
+                parameters.QueueIds = QueueIds.ToArray();
+#endif
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;

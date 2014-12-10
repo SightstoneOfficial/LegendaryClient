@@ -40,8 +40,8 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Version.TextChanged += WaterTextbox_TextChanged;
-            if (Client.Version == "4.18.1" || Client.Version == "0.0.0")	
-                Client.Version = "4.20.1";
+            if (Client.Version == "4.20.1" || Client.Version == "0.0.0")	
+                Client.Version = "4.21.14";
             bool x = Properties.Settings.Default.DarkTheme;
             if (!x)
             {
@@ -89,7 +89,7 @@ namespace LegendaryClient.Windows
                 c.icon = new BitmapImage(Source);
                 Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
                 
-                Champions.InsertExtraChampData(c);
+                //Champions.InsertExtraChampData(c); //why was this ever here? all of the needed info is already in the sqlite file
             }
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
                                     orderby s.name

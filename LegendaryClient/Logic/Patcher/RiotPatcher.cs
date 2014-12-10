@@ -45,24 +45,34 @@ namespace LegendaryClient.Logic.Patcher
 
         public string GetLatestAir()
         {
-            string airVersions;
+            string airVersions = "0.0.0";
             using (var client = new WebClient())
             {
-                airVersions =
-                    client.DownloadString(
-                        "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                try
+                {
+                    airVersions = client.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                }
+                catch (WebException e)
+                {
+                    Client.Log(e.Message);
+                }
             }
             return airVersions.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
         }
 
         public string GetLatestGame()
         {
-            string gameVersions;
+            string gameVersions = "0.0.0";
             using (var client = new WebClient())
             {
-                gameVersions =
-                    client.DownloadString(
-                        "http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
+                try
+                {
+                    gameVersions = client.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
+                }
+                catch (WebException e)
+                {
+                    Client.Log(e.Message);
+                }
             }
             return gameVersions.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
         }

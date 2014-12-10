@@ -302,7 +302,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private static List<int> bots = new List<int>(new Int32[] 
+        private static List<Int32> bots = new List<Int32>(new Int32[] 
         { 
             12, 32, 1, 22, 53, 63, 51, 69, 31, 42,
             122, 36, 81, 9, 3, 86, 104, 39, 59, 24,
@@ -312,16 +312,16 @@ namespace LegendaryClient.Windows
             115, 26, 143
         });
 
-        private int getRandomChampInt()
+        private Int32 getRandomChampInt()
         {
             Random rnd = new Random();
-            int r = rnd.Next(bots.Count);
+            Int32 r = rnd.Next(bots.Count);
             return bots[r];
         }
 
         private async void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
         {
-            int champint = getRandomChampInt();
+            Int32 champint = getRandomChampInt();
             champions champions = champions.GetChampion(champint);
             ChampionDTO champDTO = new ChampionDTO();
             champDTO.Active = true;
@@ -336,7 +336,7 @@ namespace LegendaryClient.Windows
                 ChampionSkinDTO skin = new ChampionSkinDTO();
                 skin.ChampionId = champint;
                 skin.FreeToPlayReward = false;
-                int SkinInt = Convert.ToInt32(Skins["id"]);
+                Int32 SkinInt = Convert.ToInt32(Skins["id"]);
                 skin.SkinId = SkinInt;
                 List<ChampionDTO> champs = new List<ChampionDTO>(Client.PlayerChampions);
                 foreach (ChampionDTO x in champs)
@@ -356,7 +356,7 @@ namespace LegendaryClient.Windows
             par.BotSkillLevel = 0;
             par.Champion = champDTO;
 
-            await Client.PVPNet.SelectBotChampion(champint,  par);
+            await Client.PVPNet.SelectBotChampion(champint, par);
 
 
             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
