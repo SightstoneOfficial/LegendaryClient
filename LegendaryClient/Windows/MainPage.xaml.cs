@@ -399,7 +399,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void ChangeSpectatorRegion(BaseRegion region)
+        public void ChangeSpectatorRegion(BaseRegion region)
         {
             try
             {

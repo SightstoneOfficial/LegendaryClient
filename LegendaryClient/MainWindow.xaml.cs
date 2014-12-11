@@ -160,10 +160,9 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
-                MainPage MainPage = new MainPage();
-                Client.SwitchPage(MainPage);
+                uiLogic.UpdateMainPage();
                 Client.ClearPage(typeof(SettingsPage));
-            }
+            }                  
         }
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)

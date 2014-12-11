@@ -6,9 +6,13 @@ using LegendaryClient.Windows;
 
 namespace LegendaryClient.Logic
 {
+    /// <summary>
+    ///     Any logic for pages that are called from multiple points
+    /// </summary>
     internal class uiLogic
     {
         public static ProfilePage Profile = new ProfilePage();
+        public static MainPage MainPage = new MainPage();
 
         public static void CreateProfile(string name)
         {
@@ -19,6 +23,12 @@ namespace LegendaryClient.Logic
         {
             Profile.GetSummonerProfile(name);
             Client.SwitchPage(Profile);
+        }
+
+        internal static void UpdateMainPage()
+        {
+            MainPage.ChangeSpectatorRegion(Client.Region);
+            Client.SwitchPage(MainPage);
         }
     }
 }
