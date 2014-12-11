@@ -776,7 +776,6 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static void SwitchPage(Page page)
         {
-<<<<<<< HEAD
             if (page.GetType() == typeof(PlayPage)) IsOnPlayPage = true;
             else IsOnPlayPage = false;
             if (page.GetType() == typeof(ChampSelectPage)) BackgroundImage.Visibility = Visibility.Hidden;
@@ -789,12 +788,6 @@ namespace LegendaryClient.Logic
                     (p as MainPage).UpdateSummonerInformation();
                 }
             }
-=======
-            IsOnPlayPage = page.GetType() == typeof (PlayPage);
-            BackgroundImage.Visibility = page.GetType() == typeof (ChampSelectPage)
-                ? Visibility.Hidden
-                : Visibility.Visible;
->>>>>>> origin/master
 
             TrueCurrentPage = page;
 

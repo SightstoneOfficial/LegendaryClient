@@ -34,5 +34,6 @@
         </Controls:TextBoxWatermarked>
         <Button x:Name="DevSkip" Content="DevSkip" HorizontalAlignment="Right" Margin="0,5,165,0" VerticalAlignment="Top" Width="150" Height="50" Click="DevSkip_Click" IsEnabled="True" Visibility="Hidden"/>
         <TextBlock x:Name="Welcome" HorizontalAlignment="Left" TextWrapping="Wrap" Text="" VerticalAlignment="Bottom" Margin="10,0,0,136" Width="1004" Height="22" FontSize="14" Visibility="Hidden" Background="#FF2E2E2E"/>
+        <Button x:Name="FindClientButton" Content="Find LoL Client" HorizontalAlignment="Right" Margin="0,10,165,0" VerticalAlignment="Top" Width="150" Height="30" Click="FindClient_Click" Visibility="Hidden" />
     </Grid>
 </Page>

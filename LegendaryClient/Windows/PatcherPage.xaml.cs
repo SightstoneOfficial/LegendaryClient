@@ -226,7 +226,7 @@ namespace LegendaryClient.Windows
                     // Try get LoL path from registry
 
                     //A string that looks like C:\Riot Games\League of Legends\
-                    string lolRootPath = GetLolRootPath();
+                    string lolRootPath = GetLolRootPath(false);
 
                     #region lol_air_client
 
@@ -309,6 +309,7 @@ namespace LegendaryClient.Windows
                     {
                         LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
                         SkipPatchButton.IsEnabled = true;
+                        FindClientButton.Visibility = Visibility.Visible;
                         return;
                     }
                     #endregion lol_game_client
@@ -354,7 +355,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private string GetLolRootPath()
+        private string GetLolRootPath(bool restart)
         {
             var possiblePaths = new List<Tuple<string, string>>  
             {
@@ -401,6 +402,7 @@ namespace LegendaryClient.Windows
             {
                 RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
                 key.SetValue("Path", FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
+                if(restart) LogTextBox("Saved value, please restart the client to login.");
                 return FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
             }
             else
@@ -791,6 +793,11 @@ namespace LegendaryClient.Windows
                 i += 1;
             }
             return true;
+        }
+
+        private void FindClient_Click(object sender, RoutedEventArgs e)
+        {
+            GetLolRootPath(true);
         }
     }
 }
