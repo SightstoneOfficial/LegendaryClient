@@ -58,7 +58,7 @@
 
     <Grid>
         <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300"
-                  VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
+                  VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" BorderBrush="{x:Null}">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn />
