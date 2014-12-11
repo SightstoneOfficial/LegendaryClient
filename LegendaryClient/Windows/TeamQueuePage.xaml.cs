@@ -113,7 +113,7 @@ namespace LegendaryClient.Windows
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
                 Client.ClearPage(typeof (TeamQueuePage));
-                Client.SwitchPage(new MainPage());
+                uiLogic.UpdateMainPage();
                 Client.Log("Failed to join room.");
             }
         }
@@ -488,7 +488,7 @@ namespace LegendaryClient.Windows
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             Client.ClearPage(typeof (TeamQueuePage));
-            Client.SwitchPage(new MainPage());
+            uiLogic.UpdateMainPage();
             Client.ReturnButton.Visibility = Visibility.Hidden;
         }
 

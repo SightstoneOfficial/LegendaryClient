@@ -1195,7 +1195,7 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof (ChampSelectPage));
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
-            Client.SwitchPage(new MainPage());
+            uiLogic.UpdateMainPage();
         }
 
         private async void InGame()

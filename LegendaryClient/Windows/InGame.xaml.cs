@@ -51,7 +51,7 @@ namespace LegendaryClient.Windows
                         Client.IsInGame = false;
                         Client.PVPNet.OnMessageReceived -= Update_OnMessageReceived;
                         Client.ClearPage(typeof(InGame));
-                        Client.SwitchPage(new MainPage());
+                        uiLogic.UpdateMainPage();
                     }));
                 }
             }

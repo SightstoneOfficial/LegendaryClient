@@ -36,7 +36,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             RenderStats(statistics);
-            Client.SwitchPage(new MainPage());
+            uiLogic.UpdateMainPage();
             Client.runonce = false;
 
             //string obfuscatedName = Client.GetObfuscatedChatroomName(statistics.RoomName, ChatPrefixes.Post_Game);

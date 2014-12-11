@@ -386,7 +386,7 @@ namespace LegendaryClient.Windows
                     Client.SwitchPage(new InGame());
                 }
                 else
-                    Client.SwitchPage(new MainPage());
+                    uiLogic.UpdateMainPage();
                 Client.ClearPage(typeof(LoginPage));
             }));
         }

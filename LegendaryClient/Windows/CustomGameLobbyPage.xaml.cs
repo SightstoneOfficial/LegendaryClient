@@ -245,7 +245,7 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.ReturnButton.Visibility = Visibility.Hidden;
-            Client.SwitchPage(new MainPage());
+            uiLogic.UpdateMainPage();
         }
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)
