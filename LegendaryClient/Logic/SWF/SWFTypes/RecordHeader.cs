@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.IO;
+
+#endregion
 
 namespace LegendaryClient.Logic.SWF.SWFTypes
 {
     internal class RecordHeader
     {
+        private bool longTag;
         private ushort tagCode;
         private uint tagLength;
-        private bool longTag;
 
         public RecordHeader()
         {
@@ -15,12 +19,10 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
 
         public RecordHeader(int tag, int length)
         {
-            tagCode = System.Convert.ToUInt16(tag);
-            tagLength = System.Convert.ToUInt32(length);
-            if (tagLength > 0x3e)
-                longTag = true;
-            else
-                longTag = false;
+            tagCode = Convert.ToUInt16(tag);
+            tagLength = Convert.ToUInt32(length);
+
+            longTag = tagLength > 0x3e;
         }
 
         public RecordHeader(bool longTag)
@@ -30,38 +32,36 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
 
         public RecordHeader(int tag, int length, bool longTag)
         {
-            tagCode = System.Convert.ToUInt16(tag);
-            tagLength = System.Convert.ToUInt32(length);
+            tagCode = Convert.ToUInt16(tag);
+            tagLength = Convert.ToUInt32(length);
             this.longTag = longTag;
         }
 
         public RecordHeader(int tag, uint length)
         {
-            tagCode = System.Convert.ToUInt16(tag);
+            tagCode = Convert.ToUInt16(tag);
             tagLength = length;
-            if (tagLength > 0x3e)
-                longTag = true;
-            else
-                longTag = false;
+
+            longTag = tagLength > 0x3e;
         }
 
         public int TagCode
         {
-            get { return this.tagCode; }
-            set { this.tagCode = (ushort)value; }
+            get { return tagCode; }
+            set { tagCode = (ushort) value; }
         }
 
         public uint TagLength
         {
-            get { return this.tagLength; }
-            set { this.tagLength = value; }
+            get { return tagLength; }
+            set { tagLength = value; }
         }
 
         public void ReadData(BinaryReader binaryReader)
         {
             ushort tagCL = binaryReader.ReadUInt16();
             tagCode = Convert.ToUInt16(tagCL >> 6);
-            tagLength = System.Convert.ToUInt32(tagCL - (tagCode << 6));
+            tagLength = Convert.ToUInt32(tagCL - (tagCode << 6));
 
             bool longTag;
 

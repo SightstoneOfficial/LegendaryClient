@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
+using System.Linq;
+
+#endregion
 
 namespace LegendaryClient.Logic.SQLite
 {
@@ -30,13 +35,7 @@ namespace LegendaryClient.Logic.SQLite
 
         public static List<championAbilities> GetAbilities(int champId)
         {
-            List<championAbilities> abilitylist = new List<championAbilities>();
-            foreach (championAbilities c in Client.ChampionAbilities)
-            {
-                if (c.championId == champId)
-                    abilitylist.Add(c);
-            }
-            return abilitylist;
+            return Client.ChampionAbilities.Where(c => c.championId == champId).ToList();
         }
     }
 }

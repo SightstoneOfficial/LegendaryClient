@@ -125,8 +125,8 @@ namespace LegendaryClient
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            uiLogic.UpdateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
-
+            if (Client.IsLoggedIn)
+                uiLogic.UpdateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -160,10 +160,9 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
-                MainPage MainPage = new MainPage();
-                Client.SwitchPage(MainPage);
+                uiLogic.UpdateMainPage();
                 Client.ClearPage(typeof(SettingsPage));
-            }
+            }                  
         }
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)

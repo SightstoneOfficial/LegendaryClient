@@ -19,6 +19,11 @@ Want to donate? Scroll down to the bottom
 https://www.youtube.com/watch?v=ZWYn_vft5Kg&feature=youtu.be
 It come with a metro-like installer [no dlls needed, a stand alone program]
 
+IRC
+===
+Most of us will be in this irc
+http://kiwiirc.com/client/irc.freenode.net/#LegendaryClient
+
 Known Issues / TODO
 ===================
 * Team Builder is not implemented / superbuggy

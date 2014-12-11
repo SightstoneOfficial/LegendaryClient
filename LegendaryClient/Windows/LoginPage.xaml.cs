@@ -386,7 +386,7 @@ namespace LegendaryClient.Windows
                     Client.SwitchPage(new InGame());
                 }
                 else
-                    Client.SwitchPage(new MainPage());
+                    uiLogic.UpdateMainPage();
                 Client.ClearPage(typeof(LoginPage));
             }));
         }
@@ -406,8 +406,30 @@ namespace LegendaryClient.Windows
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             Dictionary<string, string> deserializedJSON = serializer.Deserialize<Dictionary<string, string>>(sb.ToString());
-
-            return deserializedJSON["ip_address"];
+            try
+            {
+                foreach (var x in deserializedJSON)
+                {
+                    if (x.Key.Contains("403") || x.Value.Contains("403"))
+                        throw new HttpListenerException(403);
+                    
+                }
+                return deserializedJSON["ip_address"];
+            }
+            catch
+            {
+                IPHostEntry host;
+                string localIP = "?";
+                host = Dns.GetHostEntry(Dns.GetHostName());
+                foreach (IPAddress ip in host.AddressList)
+                {
+                    if (ip.AddressFamily.ToString() == "InterNetwork")
+                    {
+                        localIP = ip.ToString();
+                    }
+                }
+                return localIP;
+            }
         }
 
         private Vector MoveOffset;

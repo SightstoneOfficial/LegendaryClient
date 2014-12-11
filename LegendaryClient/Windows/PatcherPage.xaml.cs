@@ -226,7 +226,7 @@ namespace LegendaryClient.Windows
                     // Try get LoL path from registry
 
                     //A string that looks like C:\Riot Games\League of Legends\
-                    string lolRootPath = GetLolRootPath();
+                    string lolRootPath = GetLolRootPath(false);
 
                     #region lol_air_client
 
@@ -297,6 +297,8 @@ namespace LegendaryClient.Windows
 
                     string LolLauncherVersion = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
                     string LauncherVersion = LolLauncherVersion.Split(new string[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                    bool toExit = false;
+
                     if (Directory.Exists(Path.Combine(GameLocation, GameClientSln)))
                     {
                         LogTextBox("League of Legends is Up-To-Date");
@@ -308,45 +310,50 @@ namespace LegendaryClient.Windows
                     else
                     {
                         LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
-                        SkipPatchButton.IsEnabled = true;
-                        return;
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        {
+                            SkipPatchButton.IsEnabled = true;
+                            FindClientButton.Visibility = Visibility.Visible;
+                        }));
+                        toExit = true;
                     }
                     #endregion lol_game_client
 
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    if (!toExit)
                     {
-                        string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
-                        try
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-                        }
-                        catch
-                        {
+                            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
                             try
                             {
-                                UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                                UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
                             }
                             catch
                             {
-                                Client.Log("Unable to update gamestats file. Perhaps a different LegendaryClient is running?", "Small Error");
+                                try
+                                {
+                                    UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                                }
+                                catch
+                                {
+                                    Client.Log("Unable to update gamestats file. Perhaps a different LegendaryClient is running?", "Small Error");
+                                }
                             }
-                        }
-                        TotalProgressLabel.Content = "100%";
-                        TotalProgessBar.Value = 100;
-                        SkipPatchButton.Content = "Play";
-                        CurrentProgressLabel.Content = "Finished Patching";
-                        CurrentStatusLabel.Content = "Ready To Play";
-                        SkipPatchButton.IsEnabled = true;
-                        SkipPatchButton_Click(null, null);
-                    }));
+                            TotalProgressLabel.Content = "100%";
+                            TotalProgessBar.Value = 100;
+                            SkipPatchButton.Content = "Play";
+                            CurrentProgressLabel.Content = "Finished Patching";
+                            CurrentStatusLabel.Content = "Ready To Play";
+                            SkipPatchButton.IsEnabled = true;
+                            SkipPatchButton_Click(null, null);
+                        }));
 
-                    LogTextBox("LegendaryClient Has Finished Patching");
-
+                        LogTextBox("LegendaryClient Has Finished Patching");
+                    }
                 });
 
+                bgThead.IsBackground = true;
                 bgThead.Start();
-
-                Client.Log("LegendaryClient Has Finished Patching");
             }
             catch (Exception e)
             {
@@ -354,33 +361,36 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private string GetLolRootPath()
+        private string GetLolRootPath(bool restart)
         {
-            var possiblePaths = new List<Tuple<string, string>>  
+            if (!restart)
             {
-                new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
-                new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES", "Path"),
-                new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\RIOT GAMES", "Path"),
-                new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Wow6432Node\Riot Games", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games", "Path"),
-                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\League Of Legends", "Path"),
-                // Yes, a f*ckin whitespace after "Riot Games"..
-                new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends", "Path"),
-            };
-            foreach (var tuple in possiblePaths)
-            {
-                var path = tuple.Item1;
-                var valueName = tuple.Item2;
-                try
+                var possiblePaths = new List<Tuple<string, string>>  
                 {
-                    var value = Registry.GetValue(path, valueName, string.Empty);
-                    if (value != null && value.ToString() != string.Empty)
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES", "Path"),
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\RIOT GAMES", "Path"),
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Wow6432Node\Riot Games", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\League Of Legends", "Path"),
+                    // Yes, a f*ckin whitespace after "Riot Games"..
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends", "Path"),
+                };
+                foreach (var tuple in possiblePaths)
+                {
+                    var path = tuple.Item1;
+                    var valueName = tuple.Item2;
+                    try
                     {
-                        return value.ToString();
+                        var value = Registry.GetValue(path, valueName, string.Empty);
+                        if (value != null && value.ToString() != string.Empty)
+                        {
+                            return value.ToString();
+                        }
                     }
+                    catch { }
                 }
-                catch { }
             }
 
             OpenFileDialog FindLeagueDialog = new OpenFileDialog();
@@ -401,6 +411,7 @@ namespace LegendaryClient.Windows
             {
                 RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
                 key.SetValue("Path", FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
+                if(restart) LogTextBox("Saved value, please restart the client to login.");
                 return FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
             }
             else
@@ -791,6 +802,11 @@ namespace LegendaryClient.Windows
                 i += 1;
             }
             return true;
+        }
+
+        private void FindClient_Click(object sender, RoutedEventArgs e)
+        {
+            GetLolRootPath(true);
         }
     }
 }

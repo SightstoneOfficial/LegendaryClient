@@ -113,7 +113,7 @@ namespace LegendaryClient.Windows
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
                 Client.ClearPage(typeof (TeamQueuePage));
-                Client.SwitchPage(new MainPage());
+                uiLogic.UpdateMainPage();
                 Client.Log("Failed to join room.");
             }
         }
@@ -488,7 +488,7 @@ namespace LegendaryClient.Windows
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             Client.ClearPage(typeof (TeamQueuePage));
-            Client.SwitchPage(new MainPage());
+            uiLogic.UpdateMainPage();
             Client.ReturnButton.Visibility = Visibility.Hidden;
         }
 
@@ -552,7 +552,9 @@ namespace LegendaryClient.Windows
                 ChatTextBox.Text = "";
                 if (DevMode)
                 {
+#if DEBUG
                     CreateRankedCheckBox.Visibility = Visibility.Visible;
+#endif
                     SelectChamp.Visibility = Visibility.Visible;
                 }
                 else
@@ -594,11 +596,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-#if DEBUG
                 parameters.QueueIds = (makeRanked ? new[] {4} : QueueIds.ToArray());
-#else
-                parameters.QueueIds = QueueIds.ToArray();
-#endif
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
@@ -717,6 +715,14 @@ namespace LegendaryClient.Windows
             public string summonerName { get; set; }
             public string commonFriendName { get; set; }
             public string SuggestedPlayerType { get; set; }
+        }
+
+        private void InstaCall_Click(object sender, RoutedEventArgs e)
+        {
+            Client.InstaCall = true;
+            Client.CallString = ChatTextBox.Text;
+            CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select", Brushes.OrangeRed);
+            ChatTextBox.Text = string.Empty;
         }
     }
 }

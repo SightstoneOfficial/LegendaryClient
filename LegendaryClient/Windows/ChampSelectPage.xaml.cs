@@ -269,6 +269,7 @@ namespace LegendaryClient.Windows
                 await
                     Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
                         Client.ChampSelectDTO.PickTurn);
+            Joinchat(latestDTO);
             //Find the game config for timers
             configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDTO.GameTypeConfigId);
             if (configType == null) //Invalid config... abort!
@@ -300,13 +301,7 @@ namespace LegendaryClient.Windows
                         champions.GetChampion(x.ChampionId)
                             .displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
-                //Join champion select chatroom
-                string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
-                Chatroom = Client.ConfManager.GetRoom(new JID(JID));
-                Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-                Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
-                Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
-                Chatroom.Join(latestDTO.RoomPassword);
+                
 
                 //Render our champions
                 RenderChamps(false);
@@ -316,6 +311,20 @@ namespace LegendaryClient.Windows
                 Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
                 Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
             }
+        }
+        bool connected = false;
+        void Joinchat(GameDTO latestDTO)
+        {
+            if (connected)
+                return;
+            
+            //Join champion select chatroom
+            string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
+            Chatroom = Client.ConfManager.GetRoom(new JID(JID));
+            Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
+            Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
+            Chatroom.Join(latestDTO.RoomPassword);
         }
 
         private void CountdownTimer_Tick(object sender, EventArgs e)
@@ -341,6 +350,8 @@ namespace LegendaryClient.Windows
                 #region In Champion Select
 
                 var ChampDTO = message as GameDTO;
+                //Sometimes chat doesn't work so spam this until it does
+                Joinchat(ChampDTO);
                 LatestDto = ChampDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
@@ -699,8 +710,9 @@ namespace LegendaryClient.Windows
 
                 #endregion In Champion Select
             }
-            else if (message.GetType() == typeof (PlayerCredentialsDto))
+            else if (message.GetType() == typeof(PlayerCredentialsDto))
             {
+                Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                 #region Launching Game
 
                 var dto = message as PlayerCredentialsDto;
@@ -722,7 +734,7 @@ namespace LegendaryClient.Windows
                                 string IP = n.PlayerCredentials.ObserverServerIp + ":" +
                                             n.PlayerCredentials.ObserverServerPort;
                                 string Key = n.PlayerCredentials.ObserverEncryptionKey;
-                                var GameID = (Int32) n.PlayerCredentials.GameId;
+                                var GameID = (Int32)n.PlayerCredentials.GameId;
                                 new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
                             }
                         });
@@ -739,9 +751,10 @@ namespace LegendaryClient.Windows
                     }));
                 }
 
+
                 #endregion Launching Game
             }
-            else if (message.GetType() == typeof (TradeContractDTO))
+            else if (message.GetType() == typeof(TradeContractDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -753,10 +766,10 @@ namespace LegendaryClient.Windows
                         PlayerTradeControl.AcceptButton.Visibility = Visibility.Visible;
                         PlayerTradeControl.DeclineButton.Content = "Decline";
 
-                        champions MyChampion = champions.GetChampion((int) TradeDTO.ResponderChampionId);
+                        champions MyChampion = champions.GetChampion((int)TradeDTO.ResponderChampionId);
                         PlayerTradeControl.MyChampImage.Source = MyChampion.icon;
                         PlayerTradeControl.MyChampLabel.Content = MyChampion.displayName;
-                        champions TheirChampion = champions.GetChampion((int) TradeDTO.RequesterChampionId);
+                        champions TheirChampion = champions.GetChampion((int)TradeDTO.RequesterChampionId);
                         PlayerTradeControl.TheirChampImage.Source = TheirChampion.icon;
                         PlayerTradeControl.TheirChampLabel.Content = TheirChampion.displayName;
                         PlayerTradeControl.RequestLabel.Content = string.Format("{0} wants to trade!",
@@ -1182,7 +1195,7 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof (ChampSelectPage));
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
-            Client.SwitchPage(new MainPage());
+            uiLogic.UpdateMainPage();
         }
 
         private async void InGame()
@@ -1364,6 +1377,32 @@ namespace LegendaryClient.Windows
 
         private void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
+            connected = true;
+            if (Client.InstaCall)
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.OrangeRed);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    if (Client.Filter)
+                        tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
+                    else
+                        tr.Text = ChatTextBox.Text + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    Chatroom.PublicMessage(Client.CallString);
+                    ChatText.ScrollToEnd();
+                    Timer t = new Timer();
+                    t.Interval = 10000;
+                    t.Start();
+                    t.Tick += (o, e) =>
+                        {
+                            Client.InstaCall = false;
+                            t.Stop();
+                        };
+                }));
+            }
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);

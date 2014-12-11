@@ -32,7 +32,7 @@
             <StackPanel x:Name="ChatListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             </StackPanel>
         </ScrollViewer>
-        <local:TextBoxWatermarked x:Name="FriendAddBox" HorizontalAlignment="Stretch" Height="23" Margin="10,0,69,9" TextWrapping="NoWrap" VerticalAlignment="Bottom" Watermark="Enter friend name to add" MaxLength="25"/>
-        <Button x:Name="AddFriendButton" Content="Add" HorizontalAlignment="Left" Margin="186,0,0,9" VerticalAlignment="Bottom" Width="54" Click="AddFriendButton_Click"/>
+        <local:TextBoxWatermarked x:Name="FriendAddBox" HorizontalAlignment="Stretch" Height="23" Margin="10,0,69,9" TextWrapping="NoWrap" VerticalAlignment="Bottom" Watermark="Enter friend name to add" MaxLength="25" />
+        <Button x:Name="AddFriendButton" Content="Add" HorizontalAlignment="Left" Margin="186,0,0,9" VerticalAlignment="Bottom" Width="54" Click="AddFriendButton_Click" />
     </Grid>
 </Page>

@@ -5,33 +5,86 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1280"
-	Title="AggregatedStatsOverlay">
+      Title="AggregatedStatsOverlay">
 
     <Page.Resources>
-        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility" Value="Collapsed" />
-        </Style>
+        <ResourceDictionary>
+            <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid Background="#B2000000">
         <Grid HorizontalAlignment="Stretch" Margin="20,20,20,20" VerticalAlignment="Stretch" Background="#FF2B2B2B">
-            <Label Content="Games:" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="White" FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-            <Label x:Name="GamesLabel" Content="0" HorizontalAlignment="Left" Margin="110,10,0,0" Foreground="White" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top"/>
+            <Label Content="Games:" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="White" FontSize="30"
+                   FontWeight="ExtraLight" VerticalAlignment="Top" />
+            <Label x:Name="GamesLabel" Content="0" HorizontalAlignment="Left" Margin="110,10,0,0" Foreground="White"
+                   FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top" />
 
             <Grid x:Name="HideGrid">
-                <Label Content="Wins:" HorizontalAlignment="Left" Margin="260,10,0,0" Foreground="White" FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-                <Label x:Name="WinsLabel" Content="0" HorizontalAlignment="Left" Margin="335,10,0,0" Foreground="White" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top"/>
+                <Label Content="Wins:" HorizontalAlignment="Left" Margin="260,10,0,0" Foreground="White" FontSize="30"
+                       FontWeight="ExtraLight" VerticalAlignment="Top" />
+                <Label x:Name="WinsLabel" Content="0" HorizontalAlignment="Left" Margin="335,10,0,0" Foreground="White"
+                       FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top" />
 
-                <Label Content="Losses:" HorizontalAlignment="Left" Margin="460,10,0,0" Foreground="White" FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-                <Label x:Name="LossesLabel" Content="0" HorizontalAlignment="Left" Margin="555,10,0,0" Foreground="White" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top"/>
+                <Label Content="Losses:" HorizontalAlignment="Left" Margin="460,10,0,0" Foreground="White"
+                       FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top" />
+                <Label x:Name="LossesLabel" Content="0" HorizontalAlignment="Left" Margin="555,10,0,0"
+                       Foreground="White" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top" />
 
-                <Label Content="W/L Ratio:" HorizontalAlignment="Left" Margin="660,10,0,0" Foreground="White" FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-                <Label x:Name="RatioLabel" Content="0" HorizontalAlignment="Left" Margin="800,10,0,0" Foreground="White" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top"/>
+                <Label Content="W/L Ratio:" HorizontalAlignment="Left" Margin="660,10,0,0" Foreground="White"
+                       FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top" />
+                <Label x:Name="RatioLabel" Content="0" HorizontalAlignment="Left" Margin="800,10,0,0"
+                       Foreground="White" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top" />
             </Grid>
 
-            <Button x:Name="CloseButton" Content="X" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="30" Margin="0,5,5,0" Click="CloseButton_Click" />
+            <Button x:Name="CloseButton" Content="X" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top"
+                    Width="30" Margin="0,5,5,0" Click="CloseButton_Click" />
 
-            <ListView x:Name="StatsListView" HorizontalAlignment="Stretch" Margin="10,70,10,140" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="#FF505050">
+            <ListView x:Name="StatsListView" HorizontalAlignment="Stretch" Margin="10,70,10,140"
+                      VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="#FF505050">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                         <GridViewColumn x:Name="KeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}" />
@@ -40,14 +93,18 @@
                 </ListView.View>
             </ListView>
 
-            <ListView x:Name="ChampionsListView" HorizontalAlignment="Stretch" Height="100" Margin="100,0,100,20" VerticalAlignment="Bottom" BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050" SelectionChanged="ChampionsListView_SelectionChanged">
+            <ListView x:Name="ChampionsListView" HorizontalAlignment="Stretch" Height="100" Margin="100,0,100,20"
+                      VerticalAlignment="Bottom" BorderBrush="{x:Null}"
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050"
+                      SelectionChanged="ChampionsListView_SelectionChanged">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
-            <Button x:Name="ClearButton" Content="Clear Filter" HorizontalAlignment="Left" Margin="10,0,0,100" VerticalAlignment="Bottom" Width="75" Click="ClearButton_Click"/>
+            <Button x:Name="ClearButton" Content="Clear Filter" HorizontalAlignment="Left" Margin="10,0,0,100"
+                    VerticalAlignment="Bottom" Width="75" Click="ClearButton_Click" />
         </Grid>
     </Grid>
 </Page>

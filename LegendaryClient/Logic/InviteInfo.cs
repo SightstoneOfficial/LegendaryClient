@@ -1,10 +1,10 @@
-﻿using LegendaryClient.Controls;
-using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+﻿#region
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LegendaryClient.Controls;
+using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+
+#endregion
 
 namespace LegendaryClient.Logic
 {

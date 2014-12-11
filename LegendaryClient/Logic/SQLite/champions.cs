@@ -1,6 +1,11 @@
-﻿using System.Collections;
+﻿#region
+
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media.Imaging;
+
+#endregion
 
 namespace LegendaryClient.Logic.SQLite
 {
@@ -82,35 +87,24 @@ namespace LegendaryClient.Logic.SQLite
 
         public string selectSoundPath { get; set; }
 
-        #region DDragon Data
-
         public string Lore { get; set; }
-        public string ResourceType { get; set; }
-        public ArrayList Skins { get; set; }
-        public List<Spell> Spells { get; set; }
 
-        #endregion
+        public string ResourceType { get; set; }
+
+        public ArrayList Skins { get; set; }
+
+        public List<Spell> Spells { get; set; }
 
         public bool IsFavourite { get; set; }
 
         public static champions GetChampion(int id)
         {
-            foreach (champions c in Client.Champions)
-            {
-                if (c.id == id)
-                    return c;
-            }
-            return null;
+            return Client.Champions.FirstOrDefault(c => c.id == id);
         }
 
         public static champions GetChampion(string name)
         {
-            foreach (champions c in Client.Champions)
-            {
-                if (c.name == name)
-                    return c;
-            }
-            return null;
+            return Client.Champions.FirstOrDefault(c => c.name == name);
         }
     }
 }

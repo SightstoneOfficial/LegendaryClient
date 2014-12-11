@@ -169,6 +169,7 @@ namespace LegendaryClient.Windows
                                     player.PlayerStatus.Foreground = brush;
                                 }
 
+                                player.MouseRightButtonDown += player_MouseRightButtonDown;
                                 player.MouseMove += ChatPlayerMouseOver;
                                 player.MouseLeave += player_MouseLeave;
                                 PlayersListView.Items.Add(player);
@@ -195,10 +196,19 @@ namespace LegendaryClient.Windows
                             GroupControl.ExpandLabel.Content = "-";
                             GroupControl.GroupListView.Visibility = System.Windows.Visibility.Visible;
                         }
-                        ChatListView.Children.Add(GroupControl);
+                        if (!String.IsNullOrEmpty(g.GroupName))
+                            ChatListView.Children.Add(GroupControl);
+                        else Client.Log("Removed a group");
                     }
                 }
             }));
+        }
+
+        private void player_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ChatPlayer item = (ChatPlayer)sender;
+            ChatPlayerItem playerItem = (ChatPlayerItem)item.Tag;
+            LastPlayerItem = playerItem;
         }
 
         void PlayersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -208,7 +218,6 @@ namespace LegendaryClient.Windows
                 ChatPlayer player = (ChatPlayer)selection.AddedItems[0];
                 ((ListView)e.Source).SelectedIndex = -1;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
-                LastPlayerItem = playerItem;
                 foreach (NotificationChatPlayer x in Client.ChatListView.Items)
                 {
                     if ((string)x.PlayerLabelName.Content == playerItem.Username)
@@ -375,15 +384,14 @@ namespace LegendaryClient.Windows
             {
                 Client.PVPNet.Invite(LastPlayerItem.Id.Replace("sum", ""));
             }
-            else
-            {
-
-            }
         }
 
-        private void AddFriendButton_Click(object sender, RoutedEventArgs e)
+        private async void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
-            //Fix Add Friend Button
+            var JID = await Client.PVPNet.GetSummonerByName(FriendAddBox.Text);
+            jabber.JID jid = new jabber.JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
+            string[] groups = new List<String>(new String[] { "Online" }).ToArray();
+            Client.ChatClient.Subscribe(jid, "", groups);
         }
 
         private async void SpectateGame_Click(object sender, RoutedEventArgs e)

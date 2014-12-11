@@ -65,7 +65,7 @@ namespace LegendaryClient.Windows
             Client.SelectChamp = ((int)item.Tag);
             Client.usingInstaPick = true;
 
-            tqp.CreateText("You will attempt to auto select: " + champions.GetChampion((int)item.Tag).displayName, Brushes.Yellow);
+            tqp.CreateText("You will attempt to auto select: " + champions.GetChampion((int)item.Tag).displayName, Brushes.OrangeRed);
 
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             this.Visibility = Visibility.Hidden;

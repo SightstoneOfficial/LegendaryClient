@@ -28,18 +28,28 @@ namespace LegendaryClient.Logic.JSON
 
             foreach (var rune in runeData)
             {
-                var newRune = new runes();
                 var singularRuneData = rune.Value as Dictionary<string, object>;
-                newRune.id = Convert.ToInt32(rune.Key);
-                newRune.name = singularRuneData["name"] as string;
-                newRune.description = singularRuneData["description"] as string;
+                if (singularRuneData == null)
+                    continue;
+
+                var newRune = new runes
+                {
+                    id = Convert.ToInt32(rune.Key),
+                    name = singularRuneData["name"] as string,
+                    description = singularRuneData["description"] as string
+                };
                 newRune.description = newRune.description.Replace("(", "\n");
                 newRune.description = newRune.description.Replace(")", "");
                 newRune.stats = singularRuneData["stats"] as Dictionary<string, object>;
                 newRune.tags = singularRuneData["tags"] as ArrayList;
+
                 var imageData = singularRuneData["image"] as Dictionary<string, object>;
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune", (string) imageData["full"]);
-                newRune.icon = Client.GetImage(uriSource);
+                if (imageData != null)
+                {
+                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune",
+                        (string) imageData["full"]);
+                    newRune.icon = Client.GetImage(uriSource);
+                }
 
                 runeList.Add(newRune);
             }

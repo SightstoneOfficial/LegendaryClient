@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -12,6 +14,8 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using PVPNetConnect.RiotObjects.Platform.Harassment;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
+
+#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -76,7 +80,8 @@ namespace LegendaryClient.Windows.Profile
                     PlayerStatus = {Content = info.TotalGamesPlayed + " games played"},
                     ProfileImage = {Source = champions.GetChampion(Champion.id).icon},
                     Background = new SolidColorBrush(Color.FromArgb(102, 80, 80, 80)),
-                    Width = 270
+                    Height = 51.5,
+                    Width = 278
                 };
                 TopChampionsListView.Items.Add(player);
             }
