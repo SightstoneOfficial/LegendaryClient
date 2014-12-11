@@ -1,4 +1,4 @@
-﻿#region
+#region
 
 using System.Linq;
 using System;
@@ -776,17 +776,17 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static void SwitchPage(Page page)
         {
-            if (page.GetType() == typeof(PlayPage)) IsOnPlayPage = true;
-            else IsOnPlayPage = false;
-            if (page.GetType() == typeof(ChampSelectPage)) BackgroundImage.Visibility = Visibility.Hidden;
-            else BackgroundImage.Visibility = Visibility.Visible;
-            if (page.GetType() == typeof(MainPage))
+            IsOnPlayPage = page.GetType() == typeof (PlayPage);
+            BackgroundImage.Visibility = page.GetType() == typeof (ChampSelectPage)
+                ? Visibility.Hidden
+                : Visibility.Visible;
+            if (page.GetType() == typeof (MainPage))
             {
-                Page p = Pages.FirstOrDefault(x => x.GetType() == typeof(MainPage));
-                if(p != null)
-                {
-                    (p as MainPage).UpdateSummonerInformation();
-                }
+                Page p = Pages.FirstOrDefault(x => x.GetType() == typeof (MainPage));
+
+                var mainPage = p as MainPage;
+                if (mainPage != null)
+                    mainPage.UpdateSummonerInformation();
             }
 
             TrueCurrentPage = page;
