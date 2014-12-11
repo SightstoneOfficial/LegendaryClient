@@ -699,8 +699,9 @@ namespace LegendaryClient.Windows
 
                 #endregion In Champion Select
             }
-            else if (message.GetType() == typeof (PlayerCredentialsDto))
+            else if (message.GetType() == typeof(PlayerCredentialsDto))
             {
+                Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                 #region Launching Game
 
                 var dto = message as PlayerCredentialsDto;
@@ -722,7 +723,7 @@ namespace LegendaryClient.Windows
                                 string IP = n.PlayerCredentials.ObserverServerIp + ":" +
                                             n.PlayerCredentials.ObserverServerPort;
                                 string Key = n.PlayerCredentials.ObserverEncryptionKey;
-                                var GameID = (Int32) n.PlayerCredentials.GameId;
+                                var GameID = (Int32)n.PlayerCredentials.GameId;
                                 new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
                             }
                         });
@@ -739,9 +740,10 @@ namespace LegendaryClient.Windows
                     }));
                 }
 
+
                 #endregion Launching Game
             }
-            else if (message.GetType() == typeof (TradeContractDTO))
+            else if (message.GetType() == typeof(TradeContractDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -753,10 +755,10 @@ namespace LegendaryClient.Windows
                         PlayerTradeControl.AcceptButton.Visibility = Visibility.Visible;
                         PlayerTradeControl.DeclineButton.Content = "Decline";
 
-                        champions MyChampion = champions.GetChampion((int) TradeDTO.ResponderChampionId);
+                        champions MyChampion = champions.GetChampion((int)TradeDTO.ResponderChampionId);
                         PlayerTradeControl.MyChampImage.Source = MyChampion.icon;
                         PlayerTradeControl.MyChampLabel.Content = MyChampion.displayName;
-                        champions TheirChampion = champions.GetChampion((int) TradeDTO.RequesterChampionId);
+                        champions TheirChampion = champions.GetChampion((int)TradeDTO.RequesterChampionId);
                         PlayerTradeControl.TheirChampImage.Source = TheirChampion.icon;
                         PlayerTradeControl.TheirChampLabel.Content = TheirChampion.displayName;
                         PlayerTradeControl.RequestLabel.Content = string.Format("{0} wants to trade!",

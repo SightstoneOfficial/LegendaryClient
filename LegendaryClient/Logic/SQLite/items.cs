@@ -1,4 +1,10 @@
-﻿namespace LegendaryClient.Logic.SQLite
+﻿#region
+
+using System.Linq;
+
+#endregion
+
+namespace LegendaryClient.Logic.SQLite
 {
     public class items
     {
@@ -74,12 +80,7 @@
 
         public static items GetItem(int id)
         {
-            foreach (items c in Client.Items)
-            {
-                if (c.id == id)
-                    return c;
-            }
-            return null;
+            return Client.Items.FirstOrDefault(c => c.id == id);
         }
     }
 }

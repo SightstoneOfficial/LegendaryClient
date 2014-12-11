@@ -26,7 +26,6 @@ namespace LegendaryClient.Logic.JSON
             {
                 var newItem = new UpdateData();
                 var singularUpdateData = legendaryClientUpdateData.Value as Dictionary<string, object>;
-
                 if (singularUpdateData == null)
                     continue;
 

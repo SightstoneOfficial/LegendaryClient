@@ -1,6 +1,11 @@
-﻿using System.Collections;
-using System.Windows.Media.Imaging;
+﻿#region
+
+using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Media.Imaging;
+
+#endregion
+
 namespace LegendaryClient.Logic.SQLite
 {
     public class runes

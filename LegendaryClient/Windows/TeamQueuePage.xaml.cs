@@ -552,7 +552,9 @@ namespace LegendaryClient.Windows
                 ChatTextBox.Text = "";
                 if (DevMode)
                 {
+#if DEBUG
                     CreateRankedCheckBox.Visibility = Visibility.Visible;
+#endif
                     SelectChamp.Visibility = Visibility.Visible;
                 }
                 else

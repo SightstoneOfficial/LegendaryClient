@@ -492,20 +492,16 @@ namespace LegendaryClient.Windows
             else
             {
                 TeamBuilderPlayer tbc = new TeamBuilderPlayer();
+                tbc.Height = 50;
                 tbc.PlayerName.Content = slot.summonerName;
-                tbc.PlayerName.Visibility = Visibility.Visible;
                 string uriSource = System.IO.Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(slot.championId).iconPath);
                 tbc.Champion.Source = Client.GetImage(uriSource);
                 tbc.Role.Content = slot.role;
                 tbc.Position.Content = slot.position;
-                tbc.Position.Visibility = Visibility.Visible;
                 uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell1Id));
                 tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
-                tbc.SummonerSpell1.Visibility = Visibility.Visible;
                 uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(slot.spell2Id));
                 tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
-                tbc.SummonerSpell2.Visibility = Visibility.Visible;
-                
                 PlayerListView.Items.Insert(slot.slotId, tbc);
             }
             //just for now, need2know what other statuses are there

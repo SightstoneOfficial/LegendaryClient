@@ -102,12 +102,16 @@ namespace LegendaryClient.Windows
         private void GotPlayerData(LoginDataPacket packet)
         {
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
-            AllSummonerData PlayerData = packet.AllSummonerData;
+            UpdateSummonerInformation();
+        }
+
+        internal async void UpdateSummonerInformation()
+        {
+            AllSummonerData PlayerData = await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
             SummonerNameLabel.Content = PlayerData.Summoner.Name;
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
             {
-                PlayerProgressBar.Value = (PlayerData.SummonerLevelAndPoints.ExpPoints/
-                                           PlayerData.SummonerLevel.ExpToNextLevel)*100;
+                PlayerProgressBar.Value = (PlayerData.SummonerLevelAndPoints.ExpPoints / PlayerData.SummonerLevel.ExpToNextLevel) * 100;
                 PlayerProgressLabel.Content = String.Format("Level {0}", PlayerData.SummonerLevel.Level);
                 PlayerCurrentProgressLabel.Content = String.Format("{0}XP", PlayerData.SummonerLevelAndPoints.ExpPoints);
                 PlayerAimProgressLabel.Content = String.Format("{0}XP", PlayerData.SummonerLevel.ExpToNextLevel);
@@ -117,13 +121,13 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, GotLeaguesForPlayer);
             }
 
-            if (packet.BroadcastNotification.BroadcastMessages != null)
+            if (Client.LoginPacket.BroadcastNotification.BroadcastMessages != null)
             {
-                var Message = packet.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
+                var Message = Client.LoginPacket.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
                 BroadcastMessage.Text = Convert.ToString(Message["content"]);
             }
 
-            foreach (PlayerStatSummary x in packet.PlayerStatSummaries.PlayerStatSummarySet)
+            foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
             {
                 if (x.PlayerStatSummaryTypeString == "Unranked")
                 {

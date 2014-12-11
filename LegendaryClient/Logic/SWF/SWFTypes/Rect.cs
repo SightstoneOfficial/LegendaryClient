@@ -1,4 +1,8 @@
-﻿using System.IO;
+﻿#region
+
+using System.IO;
+
+#endregion
 
 namespace LegendaryClient.Logic.SWF.SWFTypes
 {
@@ -14,14 +18,10 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
 
         public int Ymax { get; private set; }
 
-        public Rect()
-        {
-        }
-
         public static Rect ReadRect(BinaryReader b)
         {
             uint NumberOfBits = SWFReader.ReadUnsignedBits(b, 5);
-            Rect returnRect = new Rect()
+            var returnRect = new Rect
             {
                 Nbits = NumberOfBits,
                 Xmin = SWFReader.ReadSignedBits(b, NumberOfBits),

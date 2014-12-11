@@ -169,6 +169,7 @@ namespace LegendaryClient.Windows
                                     player.PlayerStatus.Foreground = brush;
                                 }
 
+                                player.MouseRightButtonDown += player_MouseRightButtonDown;
                                 player.MouseMove += ChatPlayerMouseOver;
                                 player.MouseLeave += player_MouseLeave;
                                 PlayersListView.Items.Add(player);
@@ -201,6 +202,13 @@ namespace LegendaryClient.Windows
             }));
         }
 
+        private void player_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ChatPlayer item = (ChatPlayer)sender;
+            ChatPlayerItem playerItem = (ChatPlayerItem)item.Tag;
+            LastPlayerItem = playerItem;
+        }
+
         void PlayersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (selection.AddedItems.Count > 0)
@@ -208,7 +216,6 @@ namespace LegendaryClient.Windows
                 ChatPlayer player = (ChatPlayer)selection.AddedItems[0];
                 ((ListView)e.Source).SelectedIndex = -1;
                 ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
-                LastPlayerItem = playerItem;
                 foreach (NotificationChatPlayer x in Client.ChatListView.Items)
                 {
                     if ((string)x.PlayerLabelName.Content == playerItem.Username)
@@ -374,10 +381,6 @@ namespace LegendaryClient.Windows
             if(Client.isOwnerOfGame == true)
             {
                 Client.PVPNet.Invite(LastPlayerItem.Id.Replace("sum", ""));
-            }
-            else
-            {
-
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -69,14 +68,16 @@ namespace LegendaryClient.Windows.Profile
                 if (!(Math.Abs(info.ChampionId) > 0))
                     continue;
 
-                var player = new ChatPlayer();
                 champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
-                player.LevelLabel.Visibility = Visibility.Hidden;
-                player.PlayerName.Content = Champion.displayName;
-                player.PlayerStatus.Content = info.TotalGamesPlayed + " games played";
-                player.ProfileImage.Source = champions.GetChampion(Champion.id).icon;
-                player.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(102, 80, 80, 80));
-                player.Width = 270;
+                var player = new ChatPlayer
+                {
+                    LevelLabel = {Visibility = Visibility.Hidden},
+                    PlayerName = {Content = Champion.displayName},
+                    PlayerStatus = {Content = info.TotalGamesPlayed + " games played"},
+                    ProfileImage = {Source = champions.GetChampion(Champion.id).icon},
+                    Background = new SolidColorBrush(Color.FromArgb(102, 80, 80, 80)),
+                    Width = 270
+                };
                 TopChampionsListView.Items.Add(player);
             }
         }
@@ -98,7 +99,9 @@ namespace LegendaryClient.Windows.Profile
                         Summaries.Add(x);
                         string SummaryString = x.PlayerStatSummaryTypeString;
                         SummaryString =
-                            string.Concat(SummaryString.Select(e => Char.IsUpper(e) ? " " + e : e.ToString()))
+                            string.Concat(
+                                SummaryString.Select(
+                                    e => Char.IsUpper(e) ? " " + e : e.ToString(CultureInfo.InvariantCulture)))
                                 .TrimStart(' ');
                         SummaryString = SummaryString.Replace("Odin", "Dominion");
                         SummaryString = SummaryString.Replace("x", "v");
@@ -122,27 +125,23 @@ namespace LegendaryClient.Windows.Profile
                     StatsListView.Items.Clear();
                     PlayerStatSummary GameMode = Summaries[StatsComboBox.SelectedIndex];
                     foreach (
-                        ProfilePage.KeyValueItem item in
-                            GameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
-                            {
-                                Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
-                                Value = stat.Value.ToString(CultureInfo.InvariantCulture)
-                            }))
+                        KudosItem Item in GameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
+                        {
+                            Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
+                            Value = stat.Value.ToString(CultureInfo.InvariantCulture)
+                        })
+                            .Select(
+                                item =>
+                                    new KudosItem(item.Key.ToString(), item.Value.ToString())
+                                    {
+                                        MinWidth = GameMode.AggregatedStats.Stats.Count < 15 ? 972 : 962,
+                                        MinHeight = 18
+                                    }))
                     {
-                        StatsListView.Items.Add(item);
+                        Item.TypeLabel.FontSize = 12;
+                        Item.AmountLabel.FontSize = 13;
+                        StatsListView.Items.Add(Item);
                     }
-
-                    //Resize columns
-                    if (double.IsNaN(KeyHeader.Width))
-                    {
-                        KeyHeader.Width = KeyHeader.ActualWidth;
-                    }
-                    if (double.IsNaN(ValueHeader.Width))
-                    {
-                        ValueHeader.Width = ValueHeader.ActualWidth;
-                    }
-                    KeyHeader.Width = double.NaN;
-                    ValueHeader.Width = double.NaN;
                 }));
             }
         }

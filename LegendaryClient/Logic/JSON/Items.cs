@@ -27,18 +27,27 @@ namespace LegendaryClient.Logic.JSON
 
             foreach (var item in itemData)
             {
-                var newItem = new items();
                 var singularItemData = item.Value as Dictionary<string, object>;
-                newItem.id = Convert.ToInt32(item.Key);
-                newItem.name = singularItemData["name"] as string;
-                newItem.description = singularItemData["description"] as string;
+                if (singularItemData == null)
+                    continue;
+
+                var newItem = new items
+                {
+                    id = Convert.ToInt32(item.Key),
+                    name = singularItemData["name"] as string,
+                    description = singularItemData["description"] as string
+                };
 
                 var goldData = singularItemData["gold"] as Dictionary<string, object>;
-                newItem.price = Convert.ToInt32(goldData["total"]);
-                newItem.sellprice = Convert.ToInt32(goldData["sell"]);
+                if (goldData != null)
+                {
+                    newItem.price = Convert.ToInt32(goldData["total"]);
+                    newItem.sellprice = Convert.ToInt32(goldData["sell"]);
+                }
 
                 var imageData = singularItemData["image"] as Dictionary<string, object>;
-                newItem.iconPath = imageData["full"] as string;
+                if (imageData != null)
+                    newItem.iconPath = imageData["full"] as string;
 
                 itemList.Add(newItem);
             }

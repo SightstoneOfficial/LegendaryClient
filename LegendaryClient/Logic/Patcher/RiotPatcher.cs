@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
@@ -45,24 +46,38 @@ namespace LegendaryClient.Logic.Patcher
 
         public string GetLatestAir()
         {
-            string airVersions;
+            string airVersions = "0.0.0";
             using (var client = new WebClient())
             {
-                airVersions =
-                    client.DownloadString(
-                        "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                try
+                {
+                    airVersions =
+                        client.DownloadString(
+                            "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                }
+                catch (WebException e)
+                {
+                    Client.Log(e.Message);
+                }
             }
             return airVersions.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
         }
 
         public string GetLatestGame()
         {
-            string gameVersions;
+            string gameVersions = "0.0.0";
             using (var client = new WebClient())
             {
-                gameVersions =
-                    client.DownloadString(
-                        "http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
+                try
+                {
+                    gameVersions =
+                        client.DownloadString(
+                            "http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
+                }
+                catch (WebException e)
+                {
+                    Client.Log(e.Message);
+                }
             }
             return gameVersions.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
         }
@@ -82,9 +97,7 @@ namespace LegendaryClient.Logic.Patcher
             }
             string latestVersion = "0.0.1";
             foreach (DirectoryInfo info in subdirs)
-            {
                 latestVersion = info.Name;
-            }
 
             string airLocation = Path.Combine(location, latestVersion, "deploy");
             if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat")))
@@ -130,12 +143,10 @@ namespace LegendaryClient.Logic.Patcher
             }
             string latestVersion = "0.0.1";
             foreach (DirectoryInfo info in subdirs)
-            {
                 latestVersion = info.Name;
-            }
 
             var dInfox = new DirectoryInfo(Path.Combine(gameLocation, "solutions", "lol_game_client_sln", "releases"));
-            DirectoryInfo[] subdirsx = null;
+            DirectoryInfo[] subdirsx;
             try
             {
                 subdirsx = dInfox.GetDirectories();
@@ -177,25 +188,22 @@ namespace LegendaryClient.Logic.Patcher
                 Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client"));
 
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "RiotRadsIO.dll")))
-            {
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "RiotRadsIO.dll"));
-            }
+
             File.Copy(Path.Combine(gameLocation, "RiotRadsIO.dll"),
                 Path.Combine(Client.ExecutingDirectory, "RADS", "RiotRadsIO.dll"));
 
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL")))
-            {
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
-            }
+
             FileStream versionAir = File.Create(Path.Combine("RADS", "VERSION_LOL"));
             versionAir.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
             //VersionAIR.Write(encoding.GetBytes(GetLatestGame()), 0, encoding.GetBytes(GetLatestGame()).Length);
             versionAir.Close();
 
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSIONGC_LOL")))
-            {
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSIONGC_LOL"));
-            }
+
             FileStream versionGc = File.Create(Path.Combine("RADS", "VERSIONGC_LOL"));
             versionGc.Write(encoding.GetBytes(latestVersionx), 0, encoding.GetBytes(latestVersionx).Length);
             versionGc.Close();
@@ -208,10 +216,10 @@ namespace LegendaryClient.Logic.Patcher
         {
             Directory.CreateDirectory(targetDir);
 
-            foreach (string file in Directory.GetFiles(sourceDir))
+            foreach (string file in Directory.GetFiles(sourceDir).Where(file => file != null))
                 File.Copy(file, Path.Combine(targetDir, Path.GetFileName(file)), true);
 
-            foreach (string directory in Directory.GetDirectories(sourceDir))
+            foreach (string directory in Directory.GetDirectories(sourceDir).Where(file => file != null))
                 Copy(directory, Path.Combine(targetDir, Path.GetFileName(directory)));
         }
     }

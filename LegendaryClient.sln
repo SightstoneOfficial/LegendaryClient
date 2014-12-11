@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClient", "LegendaryClient\LegendaryClient.csproj", "{A6F20D1A-8523-42EF-BED7-90915047AB44}"
 EndProject
@@ -29,8 +29,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6F20D1A-8523-42EF-BED7-90915047AB44}.DispersiaRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{A6F20D1A-8523-42EF-BED7-90915047AB44}.DispersiaRelease|Any CPU.Build.0 = Release|Any CPU
+		{A6F20D1A-8523-42EF-BED7-90915047AB44}.DispersiaRelease|Any CPU.ActiveCfg = DispersiaRelease|Any CPU
+		{A6F20D1A-8523-42EF-BED7-90915047AB44}.DispersiaRelease|Any CPU.Build.0 = DispersiaRelease|Any CPU
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.PubRelease|Any CPU.ActiveCfg = PubRelease|Any CPU
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.PubRelease|Any CPU.Build.0 = PubRelease|Any CPU
 		{A6F20D1A-8523-42EF-BED7-90915047AB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -54,7 +54,6 @@ Global
 		{9C7F7F35-2F26-4191-A954-7770C7854D27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9C7F7F35-2F26-4191-A954-7770C7854D27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C7F7F35-2F26-4191-A954-7770C7854D27}.DispersiaRelease|Any CPU.ActiveCfg = DispersiaRelease|Any CPU
-		{9C7F7F35-2F26-4191-A954-7770C7854D27}.DispersiaRelease|Any CPU.Build.0 = DispersiaRelease|Any CPU
 		{9C7F7F35-2F26-4191-A954-7770C7854D27}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
 		{9C7F7F35-2F26-4191-A954-7770C7854D27}.PubRelease|Any CPU.Build.0 = Release|Any CPU
 		{9C7F7F35-2F26-4191-A954-7770C7854D27}.Release|Any CPU.ActiveCfg = Release|Any CPU

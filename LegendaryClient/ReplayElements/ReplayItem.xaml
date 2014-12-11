@@ -1,30 +1,34 @@
 ﻿<UserControl
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:Elements="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Controls.ReplayItem"
-             mc:Ignorable="d"
-             Height="100" Width="400">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    x:Class="LegendaryClient.Controls.ReplayItem"
+    mc:Ignorable="d"
+    Height="100" Width="400">
     <Grid>
         <Border BorderBrush="#FFC7C7C7" BorderThickness="1" />
 
         <Grid>
             <Grid.Background>
-                <ImageBrush ImageSource="/LegendaryClient;component/noise.png" Viewport="0,0,100,100" ViewportUnits="Absolute" TileMode="Tile" Stretch="None" AlignmentX="Left" AlignmentY="Top"  />
+                <ImageBrush ImageSource="/LegendaryClient;component/noise.png" Viewport="0,0,100,100"
+                            ViewportUnits="Absolute" TileMode="Tile" Stretch="None" AlignmentX="Left" AlignmentY="Top" />
             </Grid.Background>
         </Grid>
-        <TextBox x:Name="GameId" Text="0" TextAlignment="Center" IsReadOnly="True" HorizontalAlignment="Center" FontStyle="Italic" Background="Transparent" BorderThickness="0,0,0,0" BorderBrush="Transparent" Foreground="#FF838383" VerticalAlignment="Top" Margin="120,0,104,0" Width="176"/>
-        <Label x:Name="GameType" Content="classic" HorizontalAlignment="Center" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Bottom"/>
-        <Label x:Name="GameTime" Content="0:00" HorizontalAlignment="Right" Margin="0,0,5,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Top"/>
-        <Label x:Name="GameDate" Content="2:23PM 1/1/14" HorizontalAlignment="Right" Margin="0,0,5,0" FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="GameId" Text="0" TextAlignment="Center" IsReadOnly="True" HorizontalAlignment="Center"
+                 FontStyle="Italic" Background="Transparent" BorderThickness="0,0,0,0" BorderBrush="Transparent"
+                 Foreground="#FF838383" VerticalAlignment="Top" Margin="120,0,104,0" Width="176" />
+        <Label x:Name="GameType" Content="classic" HorizontalAlignment="Center" FontStyle="Italic"
+               Foreground="#FF838383" VerticalAlignment="Bottom" />
+        <Label x:Name="GameTime" Content="0:00" HorizontalAlignment="Right" Margin="0,0,5,0" FontStyle="Italic"
+               Foreground="#FF838383" VerticalAlignment="Top" />
+        <Label x:Name="GameDate" Content="2:23PM 1/1/14" HorizontalAlignment="Right" Margin="0,0,5,0"
+               FontStyle="Italic" Foreground="#FF838383" VerticalAlignment="Bottom" />
         <!--PUSH-->
 
-        <StackPanel x:Name="TeamOnePanel" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0" VerticalAlignment="Center" Width="190" Orientation="Horizontal">
-
-        </StackPanel>
-        <StackPanel x:Name="TeamTwoPanel" HorizontalAlignment="Right" Height="40" Margin="0,0,0,0" VerticalAlignment="Center" Width="190" Orientation="Horizontal">
-
-        </StackPanel>
+        <StackPanel x:Name="TeamOnePanel" HorizontalAlignment="Left" Height="40" Margin="0,0,0,0"
+                    VerticalAlignment="Center" Width="190" Orientation="Horizontal" />
+        <StackPanel x:Name="TeamTwoPanel" HorizontalAlignment="Right" Height="40" Margin="0,0,0,0"
+                    VerticalAlignment="Center" Width="190" Orientation="Horizontal" />
     </Grid>
 </UserControl>
