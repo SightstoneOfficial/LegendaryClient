@@ -412,6 +412,7 @@ namespace LegendaryClient.Windows
                 {
                     if (x.Key.Contains("403") || x.Value.Contains("403"))
                         throw new HttpListenerException(403);
+                    
                 }
                 return deserializedJSON["ip_address"];
             }
