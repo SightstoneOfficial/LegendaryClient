@@ -6,3 +6,4 @@ Please also read the TODO. It will help save time
 Please insure that you are using the latest version before posting. If you are not please download it.
 If you are using the Auto-Updater, ensure that you are using version 1.0.1.0 and replace it if you are not
 
+We will also be in this IRC if you need help: http://kiwiirc.com/client/irc.freenode.net/#LegendaryClient
