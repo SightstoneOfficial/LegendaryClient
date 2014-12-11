@@ -269,6 +269,7 @@ namespace LegendaryClient.Windows
                 await
                     Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
                         Client.ChampSelectDTO.PickTurn);
+            Joinchat(latestDTO);
             //Find the game config for timers
             configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDTO.GameTypeConfigId);
             if (configType == null) //Invalid config... abort!
@@ -300,13 +301,7 @@ namespace LegendaryClient.Windows
                         champions.GetChampion(x.ChampionId)
                             .displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
-                //Join champion select chatroom
-                string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
-                Chatroom = Client.ConfManager.GetRoom(new JID(JID));
-                Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-                Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
-                Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
-                Chatroom.Join(latestDTO.RoomPassword);
+                
 
                 //Render our champions
                 RenderChamps(false);
@@ -316,6 +311,20 @@ namespace LegendaryClient.Windows
                 Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
                 Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
             }
+        }
+        bool connected = false;
+        void Joinchat(GameDTO latestDTO)
+        {
+            if (connected)
+                return;
+            
+            //Join champion select chatroom
+            string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
+            Chatroom = Client.ConfManager.GetRoom(new JID(JID));
+            Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
+            Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
+            Chatroom.Join(latestDTO.RoomPassword);
         }
 
         private void CountdownTimer_Tick(object sender, EventArgs e)
@@ -341,6 +350,8 @@ namespace LegendaryClient.Windows
                 #region In Champion Select
 
                 var ChampDTO = message as GameDTO;
+                //Sometimes chat doesn't work so spam this until it does
+                Joinchat(ChampDTO);
                 LatestDto = ChampDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
@@ -1366,6 +1377,32 @@ namespace LegendaryClient.Windows
 
         private void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
+            connected = true;
+            if (Client.InstaCall)
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.OrangeRed);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    if (Client.Filter)
+                        tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
+                    else
+                        tr.Text = ChatTextBox.Text + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    Chatroom.PublicMessage(Client.CallString);
+                    ChatText.ScrollToEnd();
+                    Timer t = new Timer();
+                    t.Interval = 10000;
+                    t.Start();
+                    t.Tick += (o, e) =>
+                        {
+                            Client.InstaCall = false;
+                            t.Stop();
+                        };
+                }));
+            }
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);

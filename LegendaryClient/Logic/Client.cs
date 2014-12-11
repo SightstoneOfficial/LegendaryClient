@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using System.Linq;
 using System;
@@ -98,6 +98,9 @@ namespace LegendaryClient.Logic
             }
             return settings;
         }
+
+        public static bool InstaCall = false;
+        public static string CallString = "";
 
         public static Brush Change()
         {
@@ -291,6 +294,7 @@ namespace LegendaryClient.Logic
 
         internal static ReplayRecorder Autorecorder;
 
+
         internal static List<string> Whitelist = new List<string>();
 
         #region Chat
@@ -359,11 +363,11 @@ namespace LegendaryClient.Logic
                 MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     var subject = (ChatSubjects) Enum.Parse(typeof (ChatSubjects), msg.Subject, true);
-                    //NotificationPopup pop = new NotificationPopup(subject, msg);
-                    //pop.Height = 230;
-                    //pop.HorizontalAlignment = HorizontalAlignment.Right;
-                    //pop.VerticalAlignment = VerticalAlignment.Bottom;
-                    //Client.NotificationGrid.Children.Add(pop);
+                    NotificationPopup pop = new NotificationPopup(subject, msg);
+                    pop.Height = 230;
+                    pop.HorizontalAlignment = HorizontalAlignment.Right;
+                    pop.VerticalAlignment = VerticalAlignment.Bottom;
+                    Client.NotificationGrid.Children.Add(pop);
                 }));
 
                 return;

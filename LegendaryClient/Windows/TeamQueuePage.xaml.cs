@@ -716,5 +716,13 @@ namespace LegendaryClient.Windows
             public string commonFriendName { get; set; }
             public string SuggestedPlayerType { get; set; }
         }
+
+        private void InstaCall_Click(object sender, RoutedEventArgs e)
+        {
+            Client.InstaCall = true;
+            Client.CallString = ChatTextBox.Text;
+            CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select", Brushes.OrangeRed);
+            ChatTextBox.Text = string.Empty;
+        }
     }
 }

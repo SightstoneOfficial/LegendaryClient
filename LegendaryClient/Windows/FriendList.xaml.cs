@@ -196,7 +196,9 @@ namespace LegendaryClient.Windows
                             GroupControl.ExpandLabel.Content = "-";
                             GroupControl.GroupListView.Visibility = System.Windows.Visibility.Visible;
                         }
-                        ChatListView.Children.Add(GroupControl);
+                        if (!String.IsNullOrEmpty(g.GroupName))
+                            ChatListView.Children.Add(GroupControl);
+                        else Client.Log("Removed a group");
                     }
                 }
             }));
@@ -384,9 +386,12 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void AddFriendButton_Click(object sender, RoutedEventArgs e)
+        private async void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
-            //Fix Add Friend Button
+            var JID = await Client.PVPNet.GetSummonerByName(FriendAddBox.Text);
+            jabber.JID jid = new jabber.JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
+            string[] groups = new List<String>(new String[] { "Online" }).ToArray();
+            Client.ChatClient.Subscribe(jid, "", groups);
         }
 
         private async void SpectateGame_Click(object sender, RoutedEventArgs e)
