@@ -31,7 +31,7 @@
             </ListView.ItemsPanel>
         </ListView>
         <Button x:Name="InviteButton" Content="Invite Players" HorizontalAlignment="Right" Margin="0,0,15,278" VerticalAlignment="Bottom" Width="395" Click="Invite_Click"/>
-        <CheckBox x:Name="AutoAcceptCheckBox" Content="Auto Accept Queue" HorizontalAlignment="Right" Margin="0,0,820,203" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked"/>
+        <CheckBox x:Name="AutoAcceptCheckBox" Content="Auto Accept Queue" Margin="336,0,0,203" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked" HorizontalAlignment="Left" Width="124"/>
         <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" Margin="10,0,420,40" Height="155" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
