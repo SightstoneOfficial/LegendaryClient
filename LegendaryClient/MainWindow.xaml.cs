@@ -125,8 +125,8 @@ namespace LegendaryClient
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            uiLogic.UpdateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
-
+            if (Client.IsLoggedIn)
+                uiLogic.UpdateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
