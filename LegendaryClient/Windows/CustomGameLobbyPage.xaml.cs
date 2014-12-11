@@ -319,8 +319,15 @@ namespace LegendaryClient.Windows
             return bots[r];
         }
 
+        /// <summary>
+        /// Enable bots
+        /// </summary>
+        private bool Bots = false;
+
         private async void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
         {
+            if (!Bots)
+                return;
             int champint = getRandomChampInt();
             champions champions = champions.GetChampion(champint);
             ChampionDTO champDTO = new ChampionDTO();
@@ -333,21 +340,15 @@ namespace LegendaryClient.Windows
             List<ChampionSkinDTO> skinlist = new List<ChampionSkinDTO>();
             foreach (Dictionary<string, object> Skins in champions.Skins)
             {
-                ChampionSkinDTO skin = new ChampionSkinDTO();
-                skin.ChampionId = champint;
-                skin.FreeToPlayReward = false;
-                int SkinInt = Convert.ToInt32(Skins["id"]);
-                skin.SkinId = SkinInt;
+                
                 List<ChampionDTO> champs = new List<ChampionDTO>(Client.PlayerChampions);
                 foreach (ChampionDTO x in champs)
                 {
                     foreach (ChampionSkinDTO myskin in x.ChampionSkins)
                     {
-                        if (myskin.Owned) { }
+                        skinlist.Add(myskin);
                     }
                 }
-                skin.Owned = true;
-                skinlist.Add(skin);
             }
             champDTO.ChampionSkins = skinlist;
 
@@ -355,23 +356,46 @@ namespace LegendaryClient.Windows
             par.BotSkillLevelName = "Basic";
             par.BotSkillLevel = 0;
             par.Champion = champDTO;
+            par.TeamId = "100";
 
-            await Client.PVPNet.SelectBotChampion(champint,  par);
-
-
-            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                
-                
-            }));
+            Client.PVPNet.SelectBotChampion(champint,  par);
         }
 
         private void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            if (!Bots)
+                return;
+            int champint = getRandomChampInt();
+            champions champions = champions.GetChampion(champint);
+            ChampionDTO champDTO = new ChampionDTO();
+            champDTO.Active = true;
+            champDTO.Banned = false;
+            champDTO.BotEnabled = true;
+            champDTO.ChampionId = champint;
+            champDTO.DisplayName = champions.displayName;
+
+            List<ChampionSkinDTO> skinlist = new List<ChampionSkinDTO>();
+            foreach (Dictionary<string, object> Skins in champions.Skins)
             {
-                //Needs looked into
-            }));
+
+                List<ChampionDTO> champs = new List<ChampionDTO>(Client.PlayerChampions);
+                foreach (ChampionDTO x in champs)
+                {
+                    foreach (ChampionSkinDTO myskin in x.ChampionSkins)
+                    {
+                        skinlist.Add(myskin);
+                    }
+                }
+            }
+            champDTO.ChampionSkins = skinlist;
+
+            BotParticipant par = new BotParticipant();
+            par.BotSkillLevelName = "Basic";
+            par.BotSkillLevel = 0;
+            par.Champion = champDTO;
+            par.TeamId = "200";
+
+            Client.PVPNet.SelectBotChampion(champint, par);
         }
     }
 }
