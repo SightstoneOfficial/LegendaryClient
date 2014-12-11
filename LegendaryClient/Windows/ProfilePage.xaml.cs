@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.IO;
 using System.Threading;
@@ -9,6 +11,8 @@ using LegendaryClient.Windows.Profile;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
+
+#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -81,8 +85,10 @@ namespace LegendaryClient.Windows
             {
                 InGameHeader.Visibility = Visibility.Visible;
                 InGameHeader.IsSelected = true;
+
                 var ingame = InGameContainer.Content as Ingame;
-                ingame.Update(n);
+                if (ingame != null)
+                    ingame.Update(n);
             }
             else
             {
@@ -118,8 +124,10 @@ namespace LegendaryClient.Windows
                 if (result.SummonerLeagues != null && result.SummonerLeagues.Count > 0)
                 {
                     LeagueHeader.Visibility = Visibility.Visible;
+
                     var overview = LeaguesContainer.Content as Leagues;
-                    overview.Update(result);
+                    if (overview != null)
+                        overview.Update(result);
                 }
                 else
                 {
@@ -134,12 +142,14 @@ namespace LegendaryClient.Windows
             {
                 case "Champions":
                     var champions = ChampionsContainer.Content as Champions;
-                    champions.Update();
+                    if (champions != null)
+                        champions.Update();
                     break;
 
                 case "Skins":
                     var skins = SkinsContainer.Content as Skins;
-                    skins.Update();
+                    if (skins != null)
+                        skins.Update();
                     break;
             }
         }

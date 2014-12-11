@@ -5,31 +5,80 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       d:DesignHeight="548" d:DesignWidth="1280"
-	Title="MatchHistoryOnline">
+      Title="MatchHistoryOnline">
 
     <Page.Resources>
-        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility" Value="Collapsed" />
-        </Style>
+        <ResourceDictionary>
+            <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
-        <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" >
+        <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300"
+                  VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" BorderBrush="{x:Null}">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn />
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Height="350" Margin="320,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="84" Background="#66505050">
+        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Height="350" Margin="320,10,0,0"
+                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="84"
+                  Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="300,62,0,0" FontWeight="ExtraLight" FontSize="50" Foreground="White" />
-        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Height="350" Margin="300,10,10,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="84" Background="#66505050">
+        <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="300,62,0,0"
+               FontWeight="ExtraLight" FontSize="50" Foreground="White" />
+        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Height="350" Margin="300,10,10,0"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="84"
+                  Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -37,14 +86,18 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="ItemsListView" HorizontalAlignment="Center" Height="64" Margin="305,10,0,0" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="530" Background="#66505050">
+        <ListView x:Name="ItemsListView" HorizontalAlignment="Center" Height="64" Margin="305,10,0,0"
+                  VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="530" Background="#66505050"
+                  BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="320,370,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#FF505050">
+        <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="320,370,10,10"
+                  VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" BorderBrush="{x:Null}">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn x:Name="GameKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}" />
@@ -52,13 +105,15 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="This Is In Dev. It will not work" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="301,247,324,0" FontWeight="ExtraLight" FontSize="50" Foreground="White" RenderTransformOrigin="0.5,0.5" Width="655" >
+        <Label Content="This Is In Dev. It will not work" HorizontalAlignment="Center" VerticalAlignment="Top"
+               Margin="301,247,324,0" FontWeight="ExtraLight" FontSize="50" Foreground="White"
+               RenderTransformOrigin="0.5,0.5" Width="655">
             <Label.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="-21.031"/>
-                    <TranslateTransform/>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform Angle="-21.031" />
+                    <TranslateTransform />
                 </TransformGroup>
             </Label.RenderTransform>
         </Label>

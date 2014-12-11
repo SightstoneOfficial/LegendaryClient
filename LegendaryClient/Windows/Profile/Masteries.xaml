@@ -5,27 +5,84 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       d:DesignHeight="548" d:DesignWidth="1280"
-	Title="Masteries">
+      Title="Masteries">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
-        <ListView x:Name="MasteryPageListView" HorizontalAlignment="Stretch" Margin="10,10,40,0" VerticalAlignment="Top" Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#19000000" Grid.ColumnSpan="2" SelectionChanged="MasteryPageListView_SelectionChanged" Foreground="White">
+        <ListView x:Name="MasteryPageListView" HorizontalAlignment="Stretch" Margin="10,10,40,0"
+                  VerticalAlignment="Top" Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  BorderBrush="{x:Null}" Background="#19000000" Grid.ColumnSpan="2"
+                  SelectionChanged="MasteryPageListView_SelectionChanged" Foreground="White">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <TextBox x:Name="MasteryTextBox" HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200" />
+        <TextBox x:Name="MasteryTextBox" HorizontalAlignment="Left" Height="23" Margin="10,45,0,0"
+                 TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200" />
 
-        <Label x:Name="UsedLabel" Foreground="White" Content="Points Used: 0" HorizontalAlignment="Left" Margin="10,70,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
-        <Label x:Name="FreeLabel" Foreground="White" Content="Points Free: 0" HorizontalAlignment="Left" Margin="10,110,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
+        <Label x:Name="UsedLabel" Foreground="White" Content="Points Used: 0" HorizontalAlignment="Left"
+               Margin="10,70,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Label x:Name="FreeLabel" Foreground="White" Content="Points Free: 0" HorizontalAlignment="Left"
+               Margin="10,110,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top" />
 
-        <Button x:Name="SaveButton" Content="Save Masteries" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Width="200" Click="SaveButton_Click" />
-        <Button x:Name="RevertButton" Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="200" Click="RevertButton_Click" />
-        <Button x:Name="DeleteButton" Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Width="200" />
-        <Button x:Name="ReturnButton" Content="Return All Points" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Width="200" Click="ReturnButton_Click" />
+        <Button x:Name="SaveButton" Content="Save Masteries" HorizontalAlignment="Left" Margin="10,160,0,0"
+                VerticalAlignment="Top" Width="200" Click="SaveButton_Click" />
+        <Button x:Name="RevertButton" Content="Revert Masteries" HorizontalAlignment="Left" Margin="10,190,0,0"
+                VerticalAlignment="Top" Width="200" Click="RevertButton_Click" />
+        <Button x:Name="DeleteButton" Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,220,0,0"
+                VerticalAlignment="Top" Width="200" />
+        <Button x:Name="ReturnButton" Content="Return All Points" HorizontalAlignment="Left" Margin="10,250,0,0"
+                VerticalAlignment="Top" Width="200" Click="ReturnButton_Click" />
 
-        <ListView x:Name="OffenseListView" HorizontalAlignment="Left" Height="450" Margin="240,50,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="320" Background="#66505050">
+        <ListView x:Name="OffenseListView" HorizontalAlignment="Left" Height="450" Margin="240,50,0,0"
+                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="320"
+                  Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -33,7 +90,9 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="DefenseListView" HorizontalAlignment="Left" Height="450" Margin="580,50,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="320" Background="#66505050">
+        <ListView x:Name="DefenseListView" HorizontalAlignment="Left" Height="450" Margin="580,50,0,0"
+                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="320"
+                  Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -41,15 +100,20 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="UtilityListView" HorizontalAlignment="Left" Height="450" Margin="920,50,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="320" Background="#66505050">
+        <ListView x:Name="UtilityListView" HorizontalAlignment="Left" Height="450" Margin="920,50,0,0"
+                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="320"
+                  Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Label x:Name="OffenseLabel" Content="Offense: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="240,505,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="DefenseLabel" Content="Defense: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="580,505,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="UtilityLabel" Content="Utility: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="920,505,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="OffenseLabel" Content="Offense: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight"
+               HorizontalAlignment="Left" Margin="240,505,0,0" VerticalAlignment="Top" />
+        <Label x:Name="DefenseLabel" Content="Defense: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight"
+               HorizontalAlignment="Left" Margin="580,505,0,0" VerticalAlignment="Top" />
+        <Label x:Name="UtilityLabel" Content="Utility: 0" Foreground="White" FontSize="25" FontWeight="ExtraLight"
+               HorizontalAlignment="Left" Margin="920,505,0,0" VerticalAlignment="Top" />
     </Grid>
 </Page>

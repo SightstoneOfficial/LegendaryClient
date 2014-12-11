@@ -5,17 +5,21 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       d:DesignHeight="548" d:DesignWidth="1280"
-	Title="Runes">
+      Title="Runes">
 
     <Grid>
-        <ListBox x:Name="RunePageListBox" HorizontalAlignment="Stretch" Margin="10,10,40,0" VerticalAlignment="Top" Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="#19000000" Grid.ColumnSpan="2" SelectionChanged="RunePageListBox_SelectionChanged" Foreground="White">
+        <ListBox x:Name="RunePageListBox" HorizontalAlignment="Stretch" Margin="10,10,40,0" VerticalAlignment="Top"
+                 Height="28" ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}"
+                 Background="#19000000" Grid.ColumnSpan="2" SelectionChanged="RunePageListBox_SelectionChanged"
+                 Foreground="White">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
         </ListBox>
-        <TextBox x:Name="RuneTextBox" HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap" Text="" VerticalAlignment="Top" Width="200" />
+        <TextBox x:Name="RuneTextBox" HorizontalAlignment="Left" Height="23" Margin="10,45,0,0" TextWrapping="NoWrap"
+                 Text="" VerticalAlignment="Top" Width="200" />
         <!--
         <Label x:Name="UsedLabel" Foreground="White" Content="Points Used: 0" HorizontalAlignment="Left" Margin="10,70,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
         <Label x:Name="FreeLabel" Foreground="White" Content="Points Free: 0" HorizontalAlignment="Left" Margin="10,110,0,0" FontSize="25" FontWeight="ExtraLight" VerticalAlignment="Top"/>
@@ -26,34 +30,50 @@
         <Button x:Name="DeleteButton" Content="Delete Masteries" HorizontalAlignment="Left" Margin="10,220,0,0" VerticalAlignment="Top" Width="200" />
         <Button x:Name="ReturnButton" Content="Return All Points" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top" Width="200" Click="ReturnButton_Click" />
 -->
-        <ListBox x:Name="RedListBox" HorizontalAlignment="Left" Height="196" Margin="524,42,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="300" Background="#66505050" Foreground="Gray" />
-        <ListBox x:Name="YellowListBox" HorizontalAlignment="Left" Height="196" Margin="829,42,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="300" Background="#66505050" />
-        <ListBox x:Name="BlueListBox" HorizontalAlignment="Left" Height="196" Margin="524,286,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="300" Background="#66505050"  />
-        <ListBox x:Name="BlackListBox" HorizontalAlignment="Left" Height="196" Margin="829,286,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"  Width="300" Background="#66505050"  />
+        <ListBox x:Name="RedListBox" HorizontalAlignment="Left" Height="196" Margin="524,42,0,0"
+                 VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="300"
+                 Background="#66505050" Foreground="Gray" />
+        <ListBox x:Name="YellowListBox" HorizontalAlignment="Left" Height="196" Margin="829,42,0,0"
+                 VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="300"
+                 Background="#66505050" />
+        <ListBox x:Name="BlueListBox" HorizontalAlignment="Left" Height="196" Margin="524,286,0,0"
+                 VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="300"
+                 Background="#66505050" />
+        <ListBox x:Name="BlackListBox" HorizontalAlignment="Left" Height="196" Margin="829,286,0,0"
+                 VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="300"
+                 Background="#66505050" />
 
-        <Label x:Name="MarksLabel" Content="Marks" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="524,238,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="SealsLabel" Content="Seals" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="829,238,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="GlyphsLabel" Content="Glyphs" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="524,492,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="QuintsLabel" Content="Quintessences" Foreground="White" FontSize="25" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="829,492,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="RuneFilterComboBox" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="RuneFilterComboBox_SelectionChanged">
-            <Label Content="All"/>
-            <Label Content="Attack"/>
-            <Label Content="Magic"/>
-            <Label Content="Defense"/>
-            <Label Content="Utility"/>
+        <Label x:Name="MarksLabel" Content="Marks" Foreground="White" FontSize="25" FontWeight="ExtraLight"
+               HorizontalAlignment="Left" Margin="524,238,0,0" VerticalAlignment="Top" />
+        <Label x:Name="SealsLabel" Content="Seals" Foreground="White" FontSize="25" FontWeight="ExtraLight"
+               HorizontalAlignment="Left" Margin="829,238,0,0" VerticalAlignment="Top" />
+        <Label x:Name="GlyphsLabel" Content="Glyphs" Foreground="White" FontSize="25" FontWeight="ExtraLight"
+               HorizontalAlignment="Left" Margin="524,492,0,0" VerticalAlignment="Top" />
+        <Label x:Name="QuintsLabel" Content="Quintessences" Foreground="White" FontSize="25" FontWeight="ExtraLight"
+               HorizontalAlignment="Left" Margin="829,492,0,0" VerticalAlignment="Top" />
+        <ComboBox x:Name="RuneFilterComboBox" HorizontalAlignment="Left" Margin="10,73,0,0" VerticalAlignment="Top"
+                  Width="200" SelectionChanged="RuneFilterComboBox_SelectionChanged">
+            <Label Content="All" />
+            <Label Content="Attack" />
+            <Label Content="Magic" />
+            <Label Content="Defense" />
+            <Label Content="Utility" />
         </ComboBox>
-        <ListView x:Name="AvailableRuneList" HorizontalAlignment="Left" Height="435" Margin="10,100,0,0" VerticalAlignment="Top" Width="501" MouseDoubleClick="AvailableRuneList_DoubleClickOrRightClick" MouseRightButtonUp="AvailableRuneList_DoubleClickOrRightClick" Foreground="White" FontSize="16" Background="#66505050">
+        <ListView x:Name="AvailableRuneList" HorizontalAlignment="Left" Height="435" Margin="10,100,0,0"
+                  VerticalAlignment="Top" Width="501" MouseDoubleClick="AvailableRuneList_DoubleClickOrRightClick"
+                  MouseRightButtonUp="AvailableRuneList_DoubleClickOrRightClick" Foreground="White" FontSize="16"
+                  Background="#66505050">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Rune"/>
+                    <GridViewColumn Header="Rune" />
                     <GridViewColumn Header="#" Width="40">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock >
+                                <TextBlock>
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}/{1}">
-                                            <Binding Path=".Used"></Binding>
-                                            <Binding Path=".Owned"></Binding>
+                                            <Binding Path=".Used" />
+                                            <Binding Path=".Owned" />
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -63,11 +83,11 @@
                     <GridViewColumn Header="Name And Effect" Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock >
+                                <TextBlock>
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}&#x0a;{1}">
-                                            <Binding Path=".Tag.name"></Binding>
-                                            <Binding Path=".Tag.description"></Binding>
+                                            <Binding Path=".Tag.name" />
+                                            <Binding Path=".Tag.description" />
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -76,11 +96,14 @@
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
-            <Grid Height="100" Width="100"/>
+            <Grid Height="100" Width="100" />
         </ListView>
-        <Label x:Name="StatsLabel" Content="" Foreground="White" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="1134,45,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="SaveRunes" Content="Save Rune Page" HorizontalAlignment="Left" Margin="264,45,0,0" VerticalAlignment="Top" Width="200" Click="SaveRunes_Click" />
-        <Button x:Name="ClearRunes" Content="Clear Rune Page" HorizontalAlignment="Left" Margin="264,73,0,0" VerticalAlignment="Top" Width="200" Click="ClearRunes_Click" />
+        <Label x:Name="StatsLabel" Content="" Foreground="White" FontWeight="ExtraLight" HorizontalAlignment="Left"
+               Margin="1134,45,0,0" VerticalAlignment="Top" />
+        <Button x:Name="SaveRunes" Content="Save Rune Page" HorizontalAlignment="Left" Margin="264,45,0,0"
+                VerticalAlignment="Top" Width="200" Click="SaveRunes_Click" />
+        <Button x:Name="ClearRunes" Content="Clear Rune Page" HorizontalAlignment="Left" Margin="264,73,0,0"
+                VerticalAlignment="Top" Width="200" Click="ClearRunes_Click" />
 
     </Grid>
 </Page>

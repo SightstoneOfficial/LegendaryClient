@@ -5,19 +5,70 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
       d:DesignHeight="548" d:DesignWidth="1280"
-	Title="Champions">
+      Title="Champions">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
-        <Label Content="Search" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Foreground="White" />
-        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="100,20,250,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
+        <Label Content="Search" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
+               FontWeight="ExtraLight" FontSize="22" Foreground="White" />
+        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="100,20,250,0"
+                 TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
 
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="10,50,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
+        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="10,50,10,10"
+                  VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <ComboBox x:Name="FilterComboBox" HorizontalAlignment="Right" Margin="0,20,10,0" VerticalAlignment="Top" Width="230" SelectedIndex="0" ItemsSource="{DynamicResource ChampionComboBoxFilters}" SelectionChanged="FilterComboBox_SelectionChanged" />
+        <ComboBox x:Name="FilterComboBox" HorizontalAlignment="Right" Margin="0,20,10,0" VerticalAlignment="Top"
+                  Width="230" SelectedIndex="0" ItemsSource="{DynamicResource ChampionComboBoxFilters}"
+                  SelectionChanged="FilterComboBox_SelectionChanged" />
     </Grid>
 </Page>
