@@ -1208,7 +1208,7 @@ namespace LegendaryClient.Logic
                 {
                     WorkingDirectory = GameDirectory,
                     FileName = Path.Combine(GameDirectory, "League of Legends.exe"),
-                    Arguments = "\"8393\" \"LoLLauncher.exe\" \"\" \"spectator "
+                    Arguments = "\"8394\" \"LoLLauncher.exe\" \"\" \"spectator "
                                 + SpectatorServer + " "
                                 + Key + " "
                                 + GameId + " "
