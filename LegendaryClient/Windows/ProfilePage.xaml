@@ -1,12 +1,12 @@
 <Page
+    x:Class="LegendaryClient.Windows.ProfilePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    x:Class="LegendaryClient.Windows.ProfilePage"
-    mc:Ignorable="d"
-    d:DesignHeight="672" d:DesignWidth="1024"
-    Title="ProfilePage">
+    Title="ProfilePage"
+    mc:Ignorable="d" d:DesignHeight="672"
+    d:DesignWidth="1024">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -54,21 +54,21 @@
     </Page.Resources>
 
     <Grid>
-        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="64" Margin="10,10,0,0" VerticalAlignment="Top"
-               Width="64">
+        <Image x:Name="ProfileImage" Width="64" Height="64" Margin="10,10,0,0" HorizontalAlignment="Left"
+               VerticalAlignment="Top">
             <Image.Effect>
                 <DropShadowEffect />
             </Image.Effect>
         </Image>
-        <Label x:Name="SummonerNameLabel" Content="Summoner" HorizontalAlignment="Left" Margin="80,5,0,0"
-               VerticalAlignment="Top" FontSize="22" />
-        <Label x:Name="SummonerLevelLabel" Content="Level 0" HorizontalAlignment="Left" Margin="80,40,0,0"
-               VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Right" Height="23" Margin="0,30,90,0"
-                 TextWrapping="NoWrap" VerticalAlignment="Top" Width="180" />
-        <Button x:Name="SearchButton" Content="Search" HorizontalAlignment="Right" Margin="0,30,10,0" Height="24"
-                VerticalAlignment="Top" Width="75" IsDefault="True" Click="SearchButton_Click" />
-        <TabControl x:Name="TabContainer" HorizontalAlignment="Stretch" Margin="10,100,0,0" VerticalAlignment="Stretch"
+        <Label x:Name="SummonerNameLabel" Margin="80,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Summoner" FontSize="22" />
+        <Label x:Name="SummonerLevelLabel" Margin="80,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Level 0" FontWeight="ExtraLight" FontSize="22" />
+        <TextBox x:Name="SearchTextBox" Width="180" Height="23" Margin="0,30,90,0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top" TextWrapping="NoWrap" />
+        <Button x:Name="SearchButton" Width="75" Height="24" Margin="0,30,10,0" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Content="Search" IsDefault="True" Click="SearchButton_Click" />
+        <TabControl x:Name="TabContainer" Margin="10,100,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     SelectionChanged="TabContainer_SelectionChanged">
             <TabItem x:Name="InGameHeader" Header="Ingame" Visibility="Collapsed">
                 <Frame x:Name="InGameContainer" />
