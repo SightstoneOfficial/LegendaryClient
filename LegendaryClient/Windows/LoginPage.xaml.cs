@@ -200,7 +200,12 @@ namespace LegendaryClient.Windows
             {
                 Video.IsChecked = true;
                 PlayingVideo = false;
-                LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
+                try
+                {
+
+                    LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
+                }
+                catch { }
             }
             else
             {
