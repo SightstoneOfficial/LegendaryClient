@@ -24,9 +24,10 @@ namespace LegendaryClient.Windows
             ShopBrowser.Source = new Uri(await Client.PVPNet.GetStoreUrl());
         }
 
-        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            ShopBrowser.Source = new Uri(await Client.PVPNet.GetStoreUrl());
+            RefreshBrowser();
+            ShopBrowser.Reload(false);
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
