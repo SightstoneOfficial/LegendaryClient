@@ -437,25 +437,7 @@ namespace LegendaryClient.Logic
             ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
         }
 
-        internal static bool hidelegendaryaddition;
-
-        internal static string LegendaryClientAddition = "∟";
-
-        internal static void NewStatus()
-        {
-            if (Dev == false)
-            {
-                LegendaryClientAddition = CurrentStatus;
-            }
-            else if (Dev)
-            {
-                LegendaryClientAddition = CurrentStatus;
-            }
-            else if (hidelegendaryaddition)
-            {
-                LegendaryClientAddition = CurrentStatus;
-            }
-        }
+        internal static bool hidelegendaryaddition = false;
 
         internal static string GetPresence()
         {
@@ -489,9 +471,14 @@ namespace LegendaryClient.Logic
             sb.Append(LoginPacket.AllSummonerData.Summoner.ProfileIconId);
             sb.Append("</profileIcon><level>");
             sb.Append(LoginPacket.AllSummonerData.SummonerLevel.Level);
-            sb.Append("</level><dev>");
-            sb.Append(Dev ? "true" : "false");
-            sb.Append("</dev><wins>");
+            sb.Append("</level>");
+            if (!hidelegendaryaddition)
+            {
+                sb.Append("<dev>");
+                sb.Append(Dev ? "true" : "false");
+                sb.Append("</dev>");
+            }
+            sb.Append("<wins>");
             sb.Append(AmountOfWins);
             sb.Append("</wins><leaves>0</leaves><odinWins>0</odinWins><odinLeaves>0</odinLeaves>"); // TODO
             sb.Append("<queueType />");
@@ -519,6 +506,8 @@ namespace LegendaryClient.Logic
                     sb.Append("<timeStamp>" + timeStampSince + "</timeStamp>");
                     break;
                 case "inGame":
+                    sb.Append("<gameQueueType>NONE</gameQueueType><isObservable>ALL</isObservable><skinname>Random</skinname>");
+                    break;
                 case "championSelect":
                     sb.Append(
                         "<gameQueueType>NONE</gameQueueType><isObservable>ALL</isObservable><skinname>Random</skinname>");
