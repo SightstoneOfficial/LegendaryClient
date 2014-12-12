@@ -97,13 +97,22 @@ namespace LegendaryClient.Windows
 
             #region AboutTextbox
 
+            string user;
+            try
+            {
+                user = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            }
+            catch
+            {
+                user = "you the user";
+            }
             AboutTextBox.Text =
 @"Copyright (c) 2013-2014, Eddy5641 (Eddy V)
 All rights reserved.
 
 
 
-Thanks to " + Client.LoginPacket.AllSummonerData.Summoner.Name + @". Using this client means the most to me. Thank you very much!
+Thanks to " + user + @". Using this client means the most to me. Thank you very much!
 
 Big thanks to Snowl. Created the foundation of this custom client.
 Thanks to all the people at #riotcontrol, especially raler (for providing PVPNetConnect).
@@ -128,7 +137,7 @@ sqlite
 zlib
 
 Donations are accepted at:
-Not accepted yet
+Press the donate button
 
 Donations will be used in ways that support LegendaryClient. Examples are:
 Domain name (LegendaryClient.ca|LegendaryClient.gg)

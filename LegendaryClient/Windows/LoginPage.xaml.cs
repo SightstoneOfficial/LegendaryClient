@@ -39,6 +39,7 @@ namespace LegendaryClient.Windows
         public LoginPage()
         {
             InitializeComponent();
+            Client.patching = false;
             Version.TextChanged += WaterTextbox_TextChanged;
             if (Client.Version == "4.20.1" || Client.Version == "0.0.0")	
                 Client.Version = "4.21.14";

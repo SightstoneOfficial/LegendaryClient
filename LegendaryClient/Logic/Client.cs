@@ -71,6 +71,7 @@ namespace LegendaryClient.Logic
                 return Convert.ToBase64String(hash);
             }
         }
+        internal static bool patching = true;
         /// <summary>
         ///     This is all accounts that have been added to LegendaryClient
         ///     Use this for multiaccount in futuree
