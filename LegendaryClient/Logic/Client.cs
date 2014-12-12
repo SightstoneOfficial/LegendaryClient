@@ -63,6 +63,14 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
+        public static string ToSHA1(this string input)
+        {
+            using (SHA1Managed sha1 = new SHA1Managed())
+            {
+                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+                return Convert.ToBase64String(hash);
+            }
+        }
         /// <summary>
         ///     This is all accounts that have been added to LegendaryClient
         ///     Use this for multiaccount in futuree

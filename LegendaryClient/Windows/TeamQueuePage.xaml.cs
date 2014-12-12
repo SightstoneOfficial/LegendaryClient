@@ -545,6 +545,22 @@ namespace LegendaryClient.Windows
         {
             if (ChatTextBox.Text == "!~dev")
             {
+                #region Authenticate
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                dlg.DefaultExt = ".png";
+                dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
+                if ((bool)dlg.ShowDialog())
+                {
+                    string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
+                    using (WebClient client = new WebClient())
+                    {
+                        //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
+                        if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1") == filecontent)
+                            rankedQueue = (2 * 2 + 8 - 4 - 4);
+                    }
+                }
+                #endregion
+
                 DevMode = !DevMode;
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
@@ -588,6 +604,8 @@ namespace LegendaryClient.Windows
 
 #pragma warning disable 4014
 
+        int rankedQueue = 2;
+
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
             if (!inQueue)
@@ -596,7 +614,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = (makeRanked ? new[] {4} : QueueIds.ToArray());
+                parameters.QueueIds = (makeRanked ? new[] { rankedQueue } : QueueIds.ToArray());
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
