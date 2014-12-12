@@ -1,15 +1,18 @@
-﻿using Awesomium.Core;
-using LegendaryClient.Logic;
+﻿#region
+
 using System;
-using System.Windows.Controls;
 using System.Windows;
+using Awesomium.Core;
+using LegendaryClient.Logic;
+
+#endregion
 
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for ShopPage.xaml
+    ///     Interaction logic for ShopPage.xaml
     /// </summary>
-    public partial class ShopPage : Page
+    public partial class ShopPage
     {
         public ShopPage()
         {
@@ -21,12 +24,12 @@ namespace LegendaryClient.Windows
             ShopBrowser.Source = new Uri(await Client.PVPNet.GetStoreUrl());
         }
 
-        private async void RefreshButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        private async void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             ShopBrowser.Source = new Uri(await Client.PVPNet.GetStoreUrl());
         }
 
-        private void Grid_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
             RefreshBrowser();
         }
@@ -38,18 +41,18 @@ namespace LegendaryClient.Windows
             {
                 Client.Log(x, "JSHook");
             }
-            JSHook.Bind("openInventoryBrowser", false, new JavascriptMethodEventHandler(OnItemClick));
-            JSHook.Bind("getBuddyList", true, new JavascriptMethodEventHandler(OnRequestBuddies));
+            JSHook.Bind("openInventoryBrowser", false, OnItemClick);
+            JSHook.Bind("getBuddyList", true, OnRequestBuddies);
         }
 
         public void OnRequestBuddies(object sender, JavascriptMethodEventArgs e)
         {
-            JSValue[] buddyList = new JSValue[Client.AllPlayers.Count];
+            var buddyList = new JSValue[Client.AllPlayers.Count];
 
             int i = 0;
             foreach (var x in Client.AllPlayers)
             {
-                JSObject buddy = new JSObject();
+                var buddy = new JSObject();
                 buddy["name"] = new JSValue(x.Value.Username);
                 buddy["summonerId"] = new JSValue(x.Key.Replace("sum", ""));
                 buddy["isMutualFriend"] = new JSValue(true);
@@ -58,24 +61,25 @@ namespace LegendaryClient.Windows
 
             e.Result = new JSValue(buddyList);
         }
+
         public void OnItemClick(object sender, JavascriptMethodEventArgs e)
         {
-            if (e.Arguments.Length > 0)
+            if (e.Arguments.Length <= 0)
+                return;
+
+            string Champion = e.Arguments[0];
+            string Skin = e.Arguments[1];
+            int ChampionId = Convert.ToInt32(Champion.Replace("champions_", ""));
+            if (Skin != "null")
             {
-                string Champion = e.Arguments[0];
-                string Skin = e.Arguments[1];
-                int ChampionId = Convert.ToInt32(Champion.Replace("champions_", ""));
-                if (Skin != "null")
-                {
-                    int SkinID = Convert.ToInt32(Skin.Replace("championsskin_", ""));
-                    Client.OverlayContainer.Content = new ChampionDetailsPage(ChampionId, SkinID).Content;
-                }
-                else
-                {
-                    Client.OverlayContainer.Content = new ChampionDetailsPage(ChampionId).Content;
-                }
-                Client.OverlayContainer.Visibility = Visibility.Visible;
+                int SkinID = Convert.ToInt32(Skin.Replace("championsskin_", ""));
+                Client.OverlayContainer.Content = new ChampionDetailsPage(ChampionId, SkinID).Content;
             }
+            else
+            {
+                Client.OverlayContainer.Content = new ChampionDetailsPage(ChampionId).Content;
+            }
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
     }
 }
