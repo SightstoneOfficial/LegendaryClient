@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:Controls="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.SettingsPage"
+      xmlns:Controls1="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.SettingsPage"
       mc:Ignorable="d"
       d:DesignHeight="672" d:DesignWidth="1024"
 	Title="SettingsPage">
@@ -30,17 +30,17 @@
                 <Grid>
                     <CheckBox x:Name="MuteAllSoundCheckBox" Content="Mute All Sounds" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
                     <Label Content="Master Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,38,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="MasterVolumeSlider" HorizontalAlignment="Stretch" Margin="180,45,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
+                    <Slider x:Name="MasterVolumeSlider" HorizontalAlignment="Stretch" Margin="211,45,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
                     <Label Content="Music Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,98,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="MusicVolumeSlider" HorizontalAlignment="Stretch" Margin="180,105,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
+                    <Slider x:Name="MusicVolumeSlider" HorizontalAlignment="Stretch" Margin="211,105,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
                     <Label Content="FX Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,158,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="FxVolumeSlider" HorizontalAlignment="Stretch" Margin="180,165,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
+                    <Slider x:Name="FxVolumeSlider" HorizontalAlignment="Stretch" Margin="211,165,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
                     <Label Content="Voice Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,218,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="VoiceVolumeSlider" HorizontalAlignment="Stretch" Margin="180,225,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
+                    <Slider x:Name="VoiceVolumeSlider" HorizontalAlignment="Stretch" Margin="211,225,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
                     <Label Content="Announcer Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,278,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="AnnouncerVolumeSlider" HorizontalAlignment="Stretch" Margin="180,285,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
-                    <Label Content="LegendaryClient Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,345,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="LCVolumeSlider" HorizontalAlignment="Stretch" Margin="180,345,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
+                    <Slider x:Name="AnnouncerVolumeSlider" HorizontalAlignment="Stretch" Margin="211,285,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
+                    <Label Content="Champion Selected Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,345,0,0" VerticalAlignment="Top" />
+                    <Slider x:Name="ChampSelectVolumeSlider" HorizontalAlignment="Stretch" Margin="211,345,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" ValueChanged="ChampSelectVolumeSlider_ValueChanged"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Interface">
@@ -59,11 +59,16 @@
             </TabItem>
             <TabItem Header="Advanced">
                 <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24*"/>
+                        <ColumnDefinition Width="121*"/>
+                    </Grid.ColumnDefinitions>
                     <Label Content="EasyHud Beta" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16"/>
-                    <Controls:TextBoxWatermarked Text="" x:Name="HudLink" HorizontalAlignment="Stretch" TextWrapping="Wrap" Watermark="Enter your LeagueCraft HUD URL here (http://leaguecraft.com/uimods/10913-c9-hud-bamban11.xhtml) and click install HUD" VerticalAlignment="Top" Margin="10,31,5,0"/>
-                    <Button Content="Install HUD" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,58,10,0" Click="Button_Click"/>
-                    <Label x:Name="ResultTextbox" Content="Unable to install hud. Please check the link. Hud installed successfully" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="914" Margin="15,58,0,0" FontSize="9"/>
-                    <Label Content="Ever wanted a hud of LeagueCraft except you didn't know how to do it. Well now just copy the hud. Please note that not all huds work." HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="9" Margin="111,4,0,0"/>
+                    <Controls1:TextBoxWatermarked x:Name="HudLink" TextWrapping="Wrap" Watermark="hi" VerticalAlignment="Top" Margin="10,31,5,0" Grid.ColumnSpan="2"/>
+                    <Button Content="Install HUD" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,58,10,0" Click="Button_Click" Grid.Column="1"/>
+                    <Label x:Name="ResultTextbox" Content="Unable to install hud. Please check the link. Hud installed successfully" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="914" Margin="15,58,0,0" FontSize="9" Grid.ColumnSpan="2"/>
+                    <Label Content="Ever wanted a hud of LeagueCraft except you didn't know how to do it. Well now just copy the hud. Please note that not all huds work." HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="9" Margin="111,4,0,0" Grid.ColumnSpan="2"/>
+                    <Button Content="Uninstall All Huds" HorizontalAlignment="Right" VerticalAlignment="Top" Width="200" Margin="0,58,90,0" Click="Button2_Click" Grid.Column="1"/>
                 </Grid>
             </TabItem>
         </TabControl>

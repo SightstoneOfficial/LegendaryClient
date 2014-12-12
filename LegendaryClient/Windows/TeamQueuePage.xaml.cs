@@ -545,6 +545,7 @@ namespace LegendaryClient.Windows
         {
             if (ChatTextBox.Text == "!~dev")
             {
+                #region Authenticate
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
                 dlg.DefaultExt = ".png";
                 dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
@@ -555,9 +556,22 @@ namespace LegendaryClient.Windows
                     {
                         //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
                         if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1") == filecontent)
-                            rankedQueue = (2 * 2 + 8 - 4 - 4);
+                        {
+                            rankedQueue = 4;
+
+                            MessageBox.Show("Ranked Hack Enabled",
+                            "LC Notification.",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                        }
+                        else
+                            MessageBox.Show("Ranked Hack Enabled",
+                            "LC Notification",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
                     }
                 }
+                #endregion
 
                 DevMode = !DevMode;
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);

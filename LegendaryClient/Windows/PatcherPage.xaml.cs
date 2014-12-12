@@ -419,7 +419,7 @@ namespace LegendaryClient.Windows
             {
                 RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
                 key.SetValue("Path", FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
-                if(restart) LogTextBox("Saved value, please restart the client to login.");
+                if (restart) LogTextBox("Saved value, please restart the client to login.");
                 return FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
             }
             else
@@ -673,6 +673,16 @@ namespace LegendaryClient.Windows
         {
             string[] FileMetaData = PackageManifest.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
             Version currentVersion = new Version(File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")));
+
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "champions"));
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds"));
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions"));
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient"));
+
             foreach (string s in FileMetaData)
             {
                 if (String.IsNullOrEmpty(s))
@@ -686,9 +696,8 @@ namespace LegendaryClient.Windows
                 if (version > currentVersion)
                 {
                     string SavePlace = Location.Split(new string[] { "/files/" }, StringSplitOptions.None)[1];
-                    if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions")))
-                        Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "champions"));
-                    if (SavePlace.EndsWith(".jpg") || SavePlace.EndsWith(".png"))
+
+                    if (SavePlace.EndsWith(".jpg") || SavePlace.EndsWith(".png") || SavePlace.EndsWith(".mp3"))
                     {
                         if (SavePlace.Contains("assets/images/champions/"))
                         {
@@ -709,6 +718,24 @@ namespace LegendaryClient.Windows
                                     newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "passive", SaveName));
                                 else
                                     newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SaveName));
+                            }
+                        }
+                        else if (SavePlace.Contains("assets/sounds/"))
+                        {
+                            using (WebClient newClient = new WebClient())
+                            {
+                                if (SavePlace.Contains("en_US/champions/"))
+                                {
+                                    string SaveName = Location.Split(new string[] { "/champions/" }, StringSplitOptions.None)[1];
+                                    LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
+                                    newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions", SaveName));
+                                }
+                                else if (SavePlace.Contains("assets/sounds/ambient"))
+                                {
+                                    string SaveName = Location.Split(new string[] { "/ambient/" }, StringSplitOptions.None)[1];
+                                    LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
+                                    newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location, Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient", SaveName));
+                                }
                             }
                         }
                     }

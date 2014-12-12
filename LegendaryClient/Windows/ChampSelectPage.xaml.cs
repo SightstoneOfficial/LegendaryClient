@@ -1374,7 +1374,7 @@ namespace LegendaryClient.Windows
                 }
             }));
         }
-
+        string PreviousPlayer;
         private void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
             connected = true;
@@ -1387,9 +1387,9 @@ namespace LegendaryClient.Windows
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.OrangeRed);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (Client.Filter)
-                        tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
+                        tr.Text = Client.CallString.Filter() + Environment.NewLine;
                     else
-                        tr.Text = ChatTextBox.Text + Environment.NewLine;
+                        tr.Text = Client.CallString + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     Chatroom.PublicMessage(Client.CallString);
                     ChatText.ScrollToEnd();
@@ -1405,8 +1405,16 @@ namespace LegendaryClient.Windows
             }
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
+                //Solve multipile joins
+                if (PreviousPlayer == participant.Nick)
+                {
+                    Chatroom.OnRoomMessage -= Chatroom_OnRoomMessage;
+                    Chatroom.OnParticipantJoin -= Chatroom_OnParticipantJoin;
+                }
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
+
+                PreviousPlayer = participant.Nick;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatText.ScrollToEnd();
             }));

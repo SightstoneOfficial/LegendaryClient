@@ -204,10 +204,8 @@ namespace LegendaryClient.Windows
                     return;
                 }
                 Queues.Add(config.Id);
-                var parameters = new MatchMakerParams();
-                parameters.QueueIds = new[] {Convert.ToInt32(config.Id)};
-                Client.GameQueue = Convert.ToInt32(config.Id);
-                LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+                Client.QueueId = config.Id;
+                LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(config.Id);
 
                 Client.ClearPage(typeof (TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(Lobby.InvitationID, Lobby));
@@ -217,7 +215,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+                LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(config.Id);
                 Client.SwitchPage(new TeamBuilderPage(true, Lobby));
             }
         }
@@ -245,7 +243,7 @@ namespace LegendaryClient.Windows
                 }
                 else if (config.Id == 61)
                 {
-                    LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(Convert.ToInt32(config.Id));
+                    LobbyStatus Lobby = await Client.PVPNet.createArrangedTeamLobby(config.Id);
                     Client.ClearPage(typeof (TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false, Lobby));
                 }
