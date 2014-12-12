@@ -545,6 +545,7 @@ namespace LegendaryClient.Windows
         {
             if (ChatTextBox.Text == "!~dev")
             {
+                #region Authenticate
                 Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
                 dlg.DefaultExt = ".png";
                 dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
@@ -558,6 +559,7 @@ namespace LegendaryClient.Windows
                             rankedQueue = (2 * 2 + 8 - 4 - 4);
                     }
                 }
+                #endregion
 
                 DevMode = !DevMode;
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
