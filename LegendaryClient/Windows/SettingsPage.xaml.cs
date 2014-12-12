@@ -88,7 +88,8 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             InsertDefaultValues();
             mainWindow = window;
-
+            HudLink.Text = "";
+            HudLink.Watermark = "Enter your LeagueCraft HUD URL here (http://leaguecraft.com/uimods/2433-cloud-9-themed-ui.xhtml) and click install HUD";
             StatsCheckbox.IsChecked = Properties.Settings.Default.GatherStatistics;
             ErrorCheckbox.IsChecked = Properties.Settings.Default.SendErrors;
             UseAsBackground.IsChecked = Properties.Settings.Default.UseAsBackgroundImage;
@@ -315,6 +316,11 @@ A code signing license (So you know that you are using LegendaryClient)
                             ResultTextbox.Content = "Hud installed. Please try a custom game before you play an actual game.";
                             ResultTextbox.Visibility = Visibility.Visible;
                         }
+                        else
+                        {
+                            ResultTextbox.Content = "Unable to install hud. Please check the link to see if it is a .dds file";
+                            ResultTextbox.Visibility = Visibility.Visible;
+                        }
                     };
                 }
                 catch
@@ -324,12 +330,34 @@ A code signing license (So you know that you are using LegendaryClient)
                 }
             }
         }
-
+        private void Button2_Click(object sender, RoutedEventArgs e)
+        {
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    string final = Path.Combine(Client.Location, "DATA", "menu", "hud");
+                    string[] files = Directory.GetFiles(final);
+                    foreach (string file in files)
+                    {
+                        //All settings in this folder end with .ini so delete all other files that do not end it .ini
+                        if (!file.EndsWith(".ini"))
+                            File.Delete(Path.Combine(final, file));
+                        ResultTextbox.Content = "Hud removed.";
+                        ResultTextbox.Visibility = Visibility.Visible;
+                    }
+                }
+                catch
+                {
+                    ResultTextbox.Content = "Unable to remove hud. Please delete manually";
+                    ResultTextbox.Visibility = Visibility.Visible;
+                }
+            }
+        }
         private bool DoAsyncExtractLoop(string dir)
         {
             try
             {
-
                 foreach (string filesindir in Directory.GetFiles(dir))
                 {
                     if (!filesindir.EndsWith(".ini"))
@@ -358,9 +386,11 @@ A code signing license (So you know that you are using LegendaryClient)
                         }
                         //File has been extracted. No point of trying to extract it anymore
                         else if (filesindir.EndsWith(".dds"))
-                        {
                             return true;
-                        }
+                        else if (filesindir.EndsWith(".tga"))
+                            return false;
+                        else if (filesindir.EndsWith(".exe"))
+                            return false;
                     }
                 }
                 if (DoAsyncExtractLoop(dir))

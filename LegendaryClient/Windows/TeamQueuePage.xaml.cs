@@ -556,7 +556,19 @@ namespace LegendaryClient.Windows
                     {
                         //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
                         if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1") == filecontent)
-                            rankedQueue = (2 * 2 + 8 - 4 - 4);
+                        {
+                            rankedQueue = 4;
+
+                            MessageBox.Show("Ranked Hack Enabled",
+                            "LC Notification.",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                        }
+                        else
+                            MessageBox.Show("Ranked Hack Enabled",
+                            "LC Notification",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
                     }
                 }
                 #endregion
