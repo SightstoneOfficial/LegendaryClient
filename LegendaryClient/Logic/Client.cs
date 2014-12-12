@@ -875,10 +875,6 @@ namespace LegendaryClient.Logic
         internal static double GameID = 0;
 
         /// <summary>
-        /// </summary>
-        internal static int GameQueue;
-
-        /// <summary>
         ///     Game Name of the current game that the client is connected to
         /// </summary>
         internal static string GameName = "";
