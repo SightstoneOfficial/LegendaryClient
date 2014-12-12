@@ -55,7 +55,8 @@ namespace LegendaryClient.Logic.SoundLogic
         public static void PlayAmbientChampSelectSound(string selectedSound)
         {
             Client.AmbientSoundPlayer.Source =
-                new Uri(Path.Combine(Client.ExecutingDirectory, "ambient", selectedSound + ".mp3"));
+                new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient", selectedSound + ".mp3"));
+            Client.AmbientSoundPlayer.Play();
         }
     }
 }
