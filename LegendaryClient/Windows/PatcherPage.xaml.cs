@@ -90,9 +90,26 @@ namespace LegendaryClient.Windows
             Client.SwitchPage(new LoginPage());
             Client.Log("Swiched to LoginPage with DevSkip");
         }
-
+        string[] latestversion;
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
+            WebClient UpdateClient = new WebClient();
+            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[0] + "/packages/files/packagemanifest");
+            try
+            {
+                UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+            }
+            catch
+            {
+                try
+                {
+                    UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                }
+                catch
+                {
+                    Client.Log("Unable to update gamestats file. Perhaps a different LegendaryClient is running?", "Small Error");
+                }
+            }
             Client.SwitchPage(new LoginPage());
         }
 
@@ -244,7 +261,7 @@ namespace LegendaryClient.Windows
                     WebClient UpdateClient = new WebClient();
                     string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
                     string[] LatestVersion = Release.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-
+                    latestversion = LatestVersion;
                     var vers = LatestVersion[0];
                     if (AirVersion != LatestVersion[0])
                     {
@@ -331,22 +348,7 @@ namespace LegendaryClient.Windows
                     {
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
-                            try
-                            {
-                                UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-                            }
-                            catch
-                            {
-                                try
-                                {
-                                    UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-                                }
-                                catch
-                                {
-                                    Client.Log("Unable to update gamestats file. Perhaps a different LegendaryClient is running?", "Small Error");
-                                }
-                            }
+                            
                             TotalProgressLabel.Content = "100%";
                             TotalProgessBar.Value = 100;
                             SkipPatchButton.Content = "Play";

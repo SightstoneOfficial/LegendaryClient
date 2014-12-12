@@ -56,13 +56,31 @@ namespace LegendaryClient.Windows
                         ChampionSelectListView.Items.Add(item);
                     }
                 }
+                ListViewItem items = new ListViewItem();
+                ChampionImage img = new ChampionImage();
+                img.ChampImage.Source = Client.GetImage("getNone");
+                img.Width = 64;
+                img.Height = 64;
+                items.Tag = 0;
+                items.Content = img.Content;
+                ChampionSelectListView.Items.Add(items);
             }
         }
 
         private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
-            Client.SelectChamp = ((int)item.Tag);
+            
+            if ((int)item.Tag == 0)
+            {
+                Client.usingInstaPick = false;
+                tqp.CreateText("You will no longer attempt to auto select: " + champions.GetChampion(Client.SelectChamp).displayName, Brushes.OrangeRed);
+                return;
+            }
+            else
+            {
+                Client.SelectChamp = ((int)item.Tag);
+            }
             Client.usingInstaPick = true;
 
             tqp.CreateText("You will attempt to auto select: " + champions.GetChampion((int)item.Tag).displayName, Brushes.OrangeRed);

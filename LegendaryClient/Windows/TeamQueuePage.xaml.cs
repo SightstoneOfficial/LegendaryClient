@@ -554,8 +554,9 @@ namespace LegendaryClient.Windows
                     string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
                     using (WebClient client = new WebClient())
                     {
+                        
                         //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
-                        if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1") == filecontent)
+                        if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
                         {
                             rankedQueue = 4;
 
@@ -565,10 +566,12 @@ namespace LegendaryClient.Windows
                             MessageBoxImage.Information);
                         }
                         else
+                        {
                             MessageBox.Show("Ranked Hack Enabled",
                             "LC Notification",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
+                        }
                     }
                 }
                 #endregion
