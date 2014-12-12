@@ -149,7 +149,7 @@ namespace LegendaryClient
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            if (!Client.patching)
             {
                 SettingsPage SettingsPage = new SettingsPage(this);
                 Client.SwitchPage(SettingsPage);
@@ -162,7 +162,9 @@ namespace LegendaryClient
             {
                 uiLogic.UpdateMainPage();
                 Client.ClearPage(typeof(SettingsPage));
-            }                  
+            }
+            else
+                Client.SwitchPage(new LoginPage());
         }
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)

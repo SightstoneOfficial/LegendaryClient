@@ -63,6 +63,15 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
+        public static string ToSHA1(this string input)
+        {
+            using (SHA1Managed sha1 = new SHA1Managed())
+            {
+                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+                return Convert.ToBase64String(hash);
+            }
+        }
+        internal static bool patching = true;
         /// <summary>
         ///     This is all accounts that have been added to LegendaryClient
         ///     Use this for multiaccount in futuree
@@ -862,10 +871,6 @@ namespace LegendaryClient.Logic
         ///     GameID of the current game that the client is connected to
         /// </summary>
         internal static double GameID = 0;
-
-        /// <summary>
-        /// </summary>
-        internal static int GameQueue;
 
         /// <summary>
         ///     Game Name of the current game that the client is connected to

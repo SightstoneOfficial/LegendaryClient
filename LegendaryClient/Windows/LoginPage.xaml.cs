@@ -39,6 +39,7 @@ namespace LegendaryClient.Windows
         public LoginPage()
         {
             InitializeComponent();
+            Client.patching = false;
             Version.TextChanged += WaterTextbox_TextChanged;
             if (Client.Version == "4.20.1" || Client.Version == "0.0.0")	
                 Client.Version = "4.21.14";
@@ -200,7 +201,12 @@ namespace LegendaryClient.Windows
             {
                 Video.IsChecked = true;
                 PlayingVideo = false;
-                LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
+                try
+                {
+
+                    LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
+                }
+                catch { }
             }
             else
             {
