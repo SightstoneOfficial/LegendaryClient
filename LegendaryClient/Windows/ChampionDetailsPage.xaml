@@ -65,15 +65,18 @@
 
                             <Image x:Name="ChampionProfileImage" Width="64" Height="64"
                                    Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
-                            <Label x:Name="ChampionName" Margin="80,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                            <Label x:Name="ChampionName" Margin="80,10,0,0" HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
                                    Content="Yasuo" Foreground="White" FontSize="40" FontWeight="ExtraLight" />
                             <Label x:Name="ChampionTitle" Margin="80,73,0,0" HorizontalAlignment="Left"
-                                   VerticalAlignment="Top" Content="the wind is on my side" Foreground="White" FontSize="20"
+                                   VerticalAlignment="Top" Content="the wind is on my side" Foreground="White"
+                                   FontSize="20"
                                    FontWeight="ExtraLight" />
                         </Grid>
 
                         <ProgressBar x:Name="AttackProgressBar" Width="200" Height="30" Margin="100,150,0,0"
-                                     HorizontalAlignment="Left" VerticalAlignment="Top" Value="5" Style="{x:Null}" Maximum="10"
+                                     HorizontalAlignment="Left" VerticalAlignment="Top" Value="5" Style="{x:Null}"
+                                     Maximum="10"
                                      Foreground="#FF7C7C7C" BorderBrush="{x:Null}" />
                         <Label Margin="10,145,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Attack"
                                FontWeight="ExtraLight" FontSize="20">
@@ -83,7 +86,8 @@
                         </Label>
 
                         <ProgressBar x:Name="DefenseProgressBar" Width="200" Height="30"
-                                     Margin="100,190,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Value="4" Style="{x:Null}"
+                                     Margin="100,190,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Value="4"
+                                     Style="{x:Null}"
                                      Maximum="10" Foreground="#FF7C7C7C" BorderBrush="{x:Null}" />
                         <Label Margin="10,185,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Defense"
                                FontWeight="ExtraLight" FontSize="20">
@@ -94,7 +98,8 @@
 
 
                         <ProgressBar x:Name="AbilityProgressBar" Width="200" Height="30"
-                                     Margin="100,230,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Value="8" Style="{x:Null}"
+                                     Margin="100,230,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Value="8"
+                                     Style="{x:Null}"
                                      Maximum="10" Foreground="#FF7C7C7C" BorderBrush="{x:Null}" />
                         <Label Margin="10,225,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Ability"
                                FontWeight="ExtraLight" FontSize="20">
@@ -104,7 +109,8 @@
                         </Label>
 
                         <ProgressBar x:Name="DifficultyProgressBar" Width="200" Height="30"
-                                     Margin="100,270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Value="8" Style="{x:Null}"
+                                     Margin="100,270,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Value="8"
+                                     Style="{x:Null}"
                                      Maximum="10" Foreground="#FF7C7C7C" BorderBrush="{x:Null}" Background="#FFE6E6E6" />
                         <Label Margin="10,265,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                Content="Difficulty" FontWeight="ExtraLight" FontSize="20">
@@ -117,7 +123,8 @@
                                Content="" FontSize="30" FontWeight="ExtraLight" />
                         <ListView x:Name="SkinSelectListView" Height="190" Margin="20,0,20,10"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-                                  ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}">
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled" BorderBrush="{x:Null}"
+                                  Background="{x:Null}">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel />
@@ -131,29 +138,36 @@
                         </ListView>
 
                         <Grid x:Name="Grid" Height="290" Margin="0,10,10,0" HorizontalAlignment="Right"
-                              VerticalAlignment="Top" Panel.ZIndex="999" Background="#B2000000" MouseDown="Grid_MouseDown"
+                              VerticalAlignment="Top" Panel.ZIndex="999" Background="#B2000000"
+                              MouseDown="Grid_MouseDown"
                               MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp">
                             <Grid.RenderTransform>
                                 <TranslateTransform x:Name="tt" />
                             </Grid.RenderTransform>
 
                             <Label x:Name="HPLabel" Margin="10,10,0,0" HorizontalAlignment="Left"
-                                   VerticalAlignment="Top" Content="HP: 375 (+82 per level)" Foreground="White" FontSize="20"
+                                   VerticalAlignment="Top" Content="HP: 375 (+82 per level)" Foreground="White"
+                                   FontSize="20"
                                    FontWeight="ExtraLight" />
                             <Label x:Name="ResourceLabel" Margin="10,40,0,0"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Content="Mana: 243 (+37 per level)"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                                   Content="Mana: 243 (+37 per level)"
                                    Foreground="White" FontSize="20" FontWeight="ExtraLight" />
                             <Label x:Name="HPRegenLabel" Margin="10,70,0,0"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Content="HP/5: 4.5 (+0.55 per level)"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                                   Content="HP/5: 4.5 (+0.55 per level)"
                                    Foreground="White" FontSize="20" FontWeight="ExtraLight" />
                             <Label x:Name="ResourceRegenLabel" Margin="10,100,0,0"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Content="Mana/5: 6.5 (+0.55 per level)"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                                   Content="Mana/5: 6.5 (+0.55 per level)"
                                    Foreground="White" FontSize="20" FontWeight="ExtraLight" />
                             <Label x:Name="MagicResistLabel" Margin="10,130,0,0" HorizontalAlignment="Left"
-                                   VerticalAlignment="Top" Content="MR: 30 (+0 per level)" Foreground="White" FontSize="20"
+                                   VerticalAlignment="Top" Content="MR: 30 (+0 per level)" Foreground="White"
+                                   FontSize="20"
                                    FontWeight="ExtraLight" />
                             <Label x:Name="ArmorLabel" Margin="10,160,0,0"
-                                   HorizontalAlignment="Left" VerticalAlignment="Top" Content="Armor: 13.5 (+3.5 per level)"
+                                   HorizontalAlignment="Left" VerticalAlignment="Top"
+                                   Content="Armor: 13.5 (+3.5 per level)"
                                    Foreground="White" FontSize="20" FontWeight="ExtraLight" />
                             <Label x:Name="AttackDamageLabel" Margin="10,190,0,0"
                                    HorizontalAlignment="Left" VerticalAlignment="Top" Content="AD: 48.2 (+3 per level)"
@@ -166,7 +180,8 @@
                                    FontWeight="ExtraLight" />
                         </Grid>
                         <Button x:Name="FavouriteButton" Width="280"
-                                Height="50" Margin="20,310,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16"
+                                Height="50" Margin="20,310,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                                FontSize="16"
                                 FontWeight="ExtraLight" Click="FavouriteButton_Click">
                             <StackPanel>
                                 <Image Source="/LegendaryClient;component/star.png" Stretch="None" />
@@ -191,7 +206,8 @@
                 <TabItem Header="Lore">
                     <Grid>
                         <TextBox x:Name="LoreText" Margin="20,20,20,20" Padding="10,10,10,10"
-                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True"
+                                 TextWrapping="Wrap"
                                  Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Auto" FontSize="16"
                                  FontWeight="ExtraLight" Background="#E5505050" BorderBrush="{x:Null}" />
                     </Grid>
@@ -199,7 +215,8 @@
                 <TabItem Header="Tips">
                     <Grid>
                         <TextBox x:Name="TipsText" Margin="20,20,20,20" Padding="10,10,10,10"
-                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="Wrap"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True"
+                                 TextWrapping="Wrap"
                                  Foreground="White" ScrollViewer.VerticalScrollBarVisibility="Auto" FontSize="16"
                                  FontWeight="ExtraLight" Background="#E5505050" BorderBrush="{x:Null}" />
                     </Grid>
