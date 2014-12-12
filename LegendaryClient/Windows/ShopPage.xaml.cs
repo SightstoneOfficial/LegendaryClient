@@ -38,9 +38,8 @@ namespace LegendaryClient.Windows
         {
             JSObject JSHook = ShopBrowser.CreateGlobalJavascriptObject("parentSandboxBridge");
             foreach (String x in JSHook.GetMethodNames())
-            {
                 Client.Log(x, "JSHook");
-            }
+
             JSHook.Bind("openInventoryBrowser", false, OnItemClick);
             JSHook.Bind("getBuddyList", true, OnRequestBuddies);
         }
@@ -67,18 +66,17 @@ namespace LegendaryClient.Windows
             if (e.Arguments.Length <= 0)
                 return;
 
-            string Champion = e.Arguments[0];
-            string Skin = e.Arguments[1];
-            int ChampionId = Convert.ToInt32(Champion.Replace("champions_", ""));
-            if (Skin != "null")
+            string champion = e.Arguments[0];
+            string skin = e.Arguments[1];
+            int championId = Convert.ToInt32(champion.Replace("champions_", ""));
+            if (skin != "null")
             {
-                int SkinID = Convert.ToInt32(Skin.Replace("championsskin_", ""));
-                Client.OverlayContainer.Content = new ChampionDetailsPage(ChampionId, SkinID).Content;
+                int skinId = Convert.ToInt32(skin.Replace("championsskin_", ""));
+                Client.OverlayContainer.Content = new ChampionDetailsPage(championId, skinId).Content;
             }
             else
-            {
-                Client.OverlayContainer.Content = new ChampionDetailsPage(ChampionId).Content;
-            }
+                Client.OverlayContainer.Content = new ChampionDetailsPage(championId).Content;
+
             Client.OverlayContainer.Visibility = Visibility.Visible;
         }
     }
