@@ -196,6 +196,7 @@ namespace LegendaryClient
                 Client.StatusContainer.Visibility = Visibility.Hidden;
                 Client.Container.Margin = new Thickness(0, 0, 0, 0);
                 Client.SwitchPage(new LoginPage());
+                Client.ClearPage(typeof(MainPage));
             }
         }
 

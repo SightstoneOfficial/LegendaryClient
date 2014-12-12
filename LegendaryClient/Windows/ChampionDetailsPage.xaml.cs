@@ -58,7 +58,7 @@ namespace LegendaryClient.Windows
             DifficultyProgressBar.Value = champ.ratingDifficulty;
 
             HPLabel.Content = string.Format("HP: {0} (+{1} per level)", champ.healthBase, champ.healthLevel);
-            ResourceLabel.Content = string.Format("{0}: {1} (+{2} per level)", champ.ResourceType, champ.manaBase,
+            ResourceLabel.Content = string.Format("MP: {0} (+{1} per level)", champ.manaBase,
                 champ.manaLevel);
             HPRegenLabel.Content = string.Format("HP/5: {0} (+{1} per level)", champ.healthRegenBase,
                 champ.healthRegenLevel);
@@ -71,34 +71,38 @@ namespace LegendaryClient.Windows
             RangeLabel.Content = string.Format("Range: {0}", champ.range);
             MovementSpeedLabel.Content = string.Format("Speed: {0}", champ.moveSpeed);
 
-            foreach (Dictionary<string, object> skins in champ.Skins)
-            {
-                int skin = Convert.ToInt32(skins["id"]);
-                var item = new ListViewItem();
-                var skinImage = new Image();
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                    championSkins.GetSkin(skin).portraitPath);
-                skinImage.Source = Client.GetImage(uriSource);
-                skinImage.Width = 96.25;
-                skinImage.Height = 175;
-                skinImage.Stretch = Stretch.UniformToFill;
-                item.Tag = skin;
-                item.Content = skinImage;
-                SkinSelectListView.Items.Add(item);
-            }
+            if (champ.Skins != null)
+                foreach (Dictionary<string, object> skins in champ.Skins)
+                {
+                    int skin = Convert.ToInt32(skins["id"]);
+                    var item = new ListViewItem();
+                    var skinImage = new Image();
+                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                        championSkins.GetSkin(skin).portraitPath);
+                    skinImage.Source = Client.GetImage(uriSource);
+                    skinImage.Width = 96.25;
+                    skinImage.Height = 175;
+                    skinImage.Stretch = Stretch.UniformToFill;
+                    item.Tag = skin;
+                    item.Content = skinImage;
+                    SkinSelectListView.Items.Add(item);
+                }
 
-            foreach (Spell sp in champ.Spells)
-            {
-                var detailAbility = new ChampionDetailAbility {DataContext = sp};
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", sp.Image);
-                detailAbility.AbilityImage.Source = Client.GetImage(uriSource);
-                AbilityListView.Items.Add(detailAbility);
-            }
+            if (champ.Spells != null)
+                foreach (Spell sp in champ.Spells)
+                {
+                    var detailAbility = new ChampionDetailAbility {DataContext = sp};
+                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", sp.Image);
+                    detailAbility.AbilityImage.Source = Client.GetImage(uriSource);
+                    AbilityListView.Items.Add(detailAbility);
+                }
 
             ChampionImage.Source =
                 Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.splashPath));
 
-            LoreText.Text = champ.Lore.Replace("<br>", Environment.NewLine);
+            if (champ.Lore != null)
+                LoreText.Text = champ.Lore.Replace("<br>", Environment.NewLine);
+
             TipsText.Text = string.Format("Tips while playing {0}:{1}{2}{2}{2}Tips while playing aginst {0}:{3}",
                 champ.displayName, champ.tips.Replace("*", Environment.NewLine + "*"), Environment.NewLine,
                 champ.opponentTips.Replace("*", Environment.NewLine + "*"));

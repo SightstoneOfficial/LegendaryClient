@@ -41,25 +41,32 @@ namespace LegendaryClient.Windows.Profile
         public void GotRecentGames(RecentGames result)
         {
             GameStats.Clear();
-            result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
-            foreach (PlayerGameStats Game in result.GameStatistics)
+            try
             {
-                Game.GameType = Client.TitleCaseString(Game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
-                var Match = new MatchStats();
-
-                foreach (RawStat Stat in Game.Statistics)
+                result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
+                foreach (PlayerGameStats Game in result.GameStatistics)
                 {
-                    Type type = typeof (MatchStats);
-                    string fieldName = Client.TitleCaseString(Stat.StatType.Replace('_', ' ')).Replace(" ", "");
-                    FieldInfo f = type.GetField(fieldName);
-                    f.SetValue(Match, Stat.Value);
+                    Game.GameType = Client.TitleCaseString(Game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
+                    var Match = new MatchStats();
+
+                    foreach (RawStat Stat in Game.Statistics)
+                    {
+                        Type type = typeof(MatchStats);
+                        string fieldName = Client.TitleCaseString(Stat.StatType.Replace('_', ' ')).Replace(" ", "");
+                        FieldInfo f = type.GetField(fieldName);
+                        f.SetValue(Match, Stat.Value);
+                    }
+
+                    Match.Game = Game;
+
+                    GameStats.Add(Match);
+
                 }
-
-                Match.Game = Game;
-
-                GameStats.Add(Match);
             }
-
+            catch
+            {
+                Client.Log("Can't load player recent games", "ERROR");
+            }
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 GamesListView.Items.Clear();
