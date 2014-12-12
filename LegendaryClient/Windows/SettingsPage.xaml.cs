@@ -415,6 +415,11 @@ A code signing license (So you know that you are using LegendaryClient)
         {
             Process.Start("https://pledgie.com/campaigns/27549");
         }
+
+        private void ChampSelectVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Client.AmbientSoundPlayer.Volume = ChampSelectVolumeSlider.Value / 100;
+        }
     }
     public class WinThemes
     {

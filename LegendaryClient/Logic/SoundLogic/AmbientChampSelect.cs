@@ -13,41 +13,23 @@ namespace LegendaryClient.Logic.SoundLogic
         {
             string soundFileName;
             if (queueId == 2)
-            {
                 soundFileName = "ChmpSlct_BlindPick";
-            }
             else if (queueId == 4)
-            {
                 soundFileName = "ChmpSlct_DraftMode";
-            }
             else if (queueId == 61)
-            {
                 soundFileName = "ChmpSlct_DraftMode";
-            }
             else if (queueId == 31)
-            {
                 soundFileName = "ChmpSlct_BlindPick";
-            }
             else if (queueId == 32)
-            {
                 soundFileName = "ChmpSlct_BlindPick";
-            }
             else if (queueId == 42)
-            {
                 soundFileName = "ChmpSlct_DraftMode";
-            }
             else if (queueId == 65)
-            {
                 soundFileName = "howlingabyss_champselect";
-            }
             else if (queueId == 32)
-            {
                 soundFileName = "ChmpSlct_BlindPick";
-            }
             else
-            {
                 soundFileName = "ChmpSlct_Odin_BlindPick";
-            }
 
             return soundFileName;
         }
