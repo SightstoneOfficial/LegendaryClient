@@ -1,41 +1,122 @@
-﻿<Page x:Class="LegendaryClient.Windows.CreateCustomGamePage"
+<Page x:Class="LegendaryClient.Windows.CreateCustomGamePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="672" d:DesignWidth="1024"
-	Title="CreateCustomGamePage">
+      Title="CreateCustomGamePage"
+      mc:Ignorable="d" d:DesignHeight="672"
+      d:DesignWidth="1024">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
-        <Label Content="Create a Custom Game" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <Label x:Name="MapLabel" Content="Summoners Rift" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" />
-        <Label x:Name="NameInvalidLabel" Content="Name is not unique!" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Foreground="#FFFF9898" FontWeight="ExtraLight" FontSize="20" Visibility="Hidden" />
-        <Label Content="Map" HorizontalAlignment="Left" Margin="10,-300,0,0" VerticalAlignment="Center" FontSize="14" FontWeight="ExtraLight" />
-        <ListBox x:Name="MapListBox" HorizontalAlignment="Left" Height="140" Margin="10,0,0,120" VerticalAlignment="Center" Width="250" SelectedIndex="0" SelectionChanged="MapListBox_SelectionChanged">
-            <Label Content="Summoners Rift" Margin="0,0,0,0" />
-            <Label Content="The Crystal Scar" Margin="0,0,0,0" />
-            <Label Content="The Twisted Treeline" Margin="0,0,0,0" />
-            <Label Content="Howling Abyss" Margin="0,0,0,0" />
+        <Label Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Create a Custom Game"
+               FontWeight="ExtraLight" FontSize="22" />
+        <Label x:Name="MapLabel" Margin="10,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Summoners Rift" FontSize="16" FontWeight="ExtraLight" />
+        <Label x:Name="NameInvalidLabel" Margin="10,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Name is not unique!" Foreground="#FFFF9898" FontWeight="ExtraLight" FontSize="20"
+               Visibility="Hidden" />
+        <Label Margin="10,-300,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Map" FontSize="14"
+               FontWeight="ExtraLight" />
+        <ListBox x:Name="MapListBox" Width="250" Height="140" Margin="10,0,0,120" HorizontalAlignment="Left"
+                 VerticalAlignment="Center" Style="{x:Null}" SelectedIndex="0"
+                 SelectionChanged="MapListBox_SelectionChanged" Foreground="White"
+                 Background="#66505050" BorderBrush="{x:Null}">
+            <Label Margin="0,0,0,0" Content="Summoners Rift" />
+            <Label Margin="0,0,0,0" Content="The Crystal Scar" />
+            <Label Margin="0,0,0,0" Content="The Twisted Treeline" />
+            <Label Margin="0,0,0,0" Content="Howling Abyss" />
         </ListBox>
-        <Label Content="Whitelist" HorizontalAlignment="Right" Margin="0,-300,10,0" VerticalAlignment="Center" FontSize="14" FontWeight="ExtraLight" />
-        <ListBox x:Name="WhitelistListBox" HorizontalAlignment="Right" Height="140" Margin="0,0,10,120" VerticalAlignment="Center" Width="250" SelectionChanged="WhitelistListBox_SelectionChanged" />
-        <TextBox x:Name="WhiteListTextBox" HorizontalAlignment="Right" Height="23" Margin="0,60,140,0" TextWrapping="NoWrap" VerticalAlignment="Center" Width="120" />
-        <Button x:Name="WhitelistAddButton" Content="Add" HorizontalAlignment="Right" Margin="0,60,70,0" VerticalAlignment="Center" Width="50" Click="WhitelistAddButton_Click" />
-        <Button x:Name="WhitelistRemoveButton" Content="Remove" HorizontalAlignment="Right" Margin="0,60,10,0" VerticalAlignment="Center" Width="50" IsEnabled="False" Click="WhitelistRemoveButton_Click" />
+        <Label Margin="0,-300,10,0" HorizontalAlignment="Right" VerticalAlignment="Center" Content="Whitelist"
+               FontSize="14" FontWeight="ExtraLight" />
+        <ListBox x:Name="WhitelistListBox" Width="250" Height="140" Margin="0,0,10,120" HorizontalAlignment="Right"
+                 VerticalAlignment="Center" Style="{x:Null}"
+                 SelectionChanged="WhitelistListBox_SelectionChanged" Foreground="White"
+                 Background="#66505050" BorderBrush="{x:Null}" />
+        <TextBox x:Name="WhiteListTextBox" Width="120" Height="23" Margin="0,60,140,0"
+                 HorizontalAlignment="Right" VerticalAlignment="Center" TextWrapping="NoWrap" />
+        <Button x:Name="WhitelistAddButton" Width="50" Height="26" Margin="0,353,70,293"
+                HorizontalAlignment="Right" VerticalAlignment="Center" Content="Add" Click="WhitelistAddButton_Click" />
+        <Button x:Name="WhitelistRemoveButton" Width="50" Height="26" Margin="0,353,10,293"
+                HorizontalAlignment="Right" VerticalAlignment="Center" Content="Remove" IsEnabled="False"
+                Click="WhitelistRemoveButton_Click" />
 
-        <Label Content="Team Size" HorizontalAlignment="Center" Margin="0,0,200,300" VerticalAlignment="Center" FontSize="14" />
-        <ComboBox x:Name="TeamSizeComboBox" HorizontalAlignment="Center" Margin="0,0,150,250" VerticalAlignment="Center" Width="120" ItemsSource="{DynamicResource TeamSizes}" SelectedIndex="4" SelectionChanged="TeamSizeComboBox_SelectionChanged" />
-        <Label Content="Allow Spectators" HorizontalAlignment="Center" Margin="110,0,0,300" VerticalAlignment="Center" FontSize="14" />
-        <ComboBox x:Name="AllowSpectatorsComboBox" HorizontalAlignment="Center" Margin="120,0,0,250" VerticalAlignment="Center" Width="120" SelectedIndex="1" ItemsSource="{DynamicResource SpectatorStates}" SelectionChanged="AllowSpectatorsComboBox_SelectionChanged" />
-        <Label Content="Game Type" HorizontalAlignment="Center" Margin="0,0,190,200" VerticalAlignment="Center" FontSize="14" />
-        <ComboBox x:Name="GameTypeComboBox" HorizontalAlignment="Center" Margin="0,0,15,150" VerticalAlignment="Center" Width="255" ItemsSource="{DynamicResource CustomGameTypes}" SelectedIndex="0" SelectionChanged="GameTypeComboBox_SelectionChanged" />
-        <Label Content="Game Name" HorizontalAlignment="Center" Margin="0,0,185,100" VerticalAlignment="Center" FontSize="14" />
-        <TextBox x:Name="NameTextBox" TextWrapping="NoWrap" Text=""  HorizontalAlignment="Center" Margin="0,0,15,50" VerticalAlignment="Center" Width="255" TextChanged="NameTextBox_TextChanged" />
-        <Label Content="Password" HorizontalAlignment="Center" Margin="0,0,200,0" VerticalAlignment="Center" FontSize="14" />
-        <TextBox x:Name="PasswordTextBox" TextWrapping="NoWrap" Text=""  HorizontalAlignment="Center" Margin="0,50,15,0" VerticalAlignment="Center" Width="255" TextChanged="PasswordTextBox_TextChanged" />
-        <Button x:Name="CreateGameButton" Content="Create Game" HorizontalAlignment="Center" Margin="0,150,15,0" VerticalAlignment="Center" Width="255" Click="CreateGameButton_Click" />
-        <TextBox x:Name="TournamentCodeTextbox" HorizontalAlignment="Stretch" Height="23" Margin="10,0,10,10" IsReadOnly="True" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Label Content="Tournament Code Generator" HorizontalAlignment="Left" Margin="10,0,0,40" VerticalAlignment="Bottom" />
+        <Label Margin="0,0,200,300" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Team Size"
+               FontSize="14" />
+        <ComboBox x:Name="TeamSizeComboBox" Width="120" Margin="0,0,150,250"
+                  HorizontalAlignment="Center" VerticalAlignment="Center" ItemsSource="{DynamicResource TeamSizes}"
+                  SelectedIndex="4"
+                  SelectionChanged="TeamSizeComboBox_SelectionChanged" />
+        <Label Margin="110,0,0,300" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Allow Spectators"
+               FontSize="14" />
+        <ComboBox x:Name="AllowSpectatorsComboBox" Width="120" Margin="120,0,0,250"
+                  HorizontalAlignment="Center" VerticalAlignment="Center" SelectedIndex="1"
+                  ItemsSource="{DynamicResource SpectatorStates}"
+                  SelectionChanged="AllowSpectatorsComboBox_SelectionChanged" />
+        <Label Margin="0,0,190,200" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Game Type"
+               FontSize="14" />
+        <ComboBox x:Name="GameTypeComboBox" Width="255" Margin="0,0,15,150" HorizontalAlignment="Center"
+                  VerticalAlignment="Center" ItemsSource="{DynamicResource CustomGameTypes}" SelectedIndex="0"
+                  SelectionChanged="GameTypeComboBox_SelectionChanged" />
+        <Label Margin="0,0,185,100" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Game Name"
+               FontSize="14" />
+        <TextBox x:Name="NameTextBox" Width="255" Margin="0,0,15,50" HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 TextWrapping="NoWrap" Text="" TextChanged="NameTextBox_TextChanged" />
+        <Label Margin="0,0,200,0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Password"
+               FontSize="14" />
+        <TextBox x:Name="PasswordTextBox" Width="255" Margin="0,50,15,0" HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 TextWrapping="NoWrap" Text="" TextChanged="PasswordTextBox_TextChanged" />
+        <Button x:Name="CreateGameButton" Width="255" Margin="0,150,15,0" HorizontalAlignment="Center"
+                VerticalAlignment="Center" Content="Create Game" Click="CreateGameButton_Click" />
+        <TextBox x:Name="TournamentCodeTextbox" Height="23" Margin="10,0,10,10" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Bottom" IsReadOnly="True" TextWrapping="Wrap" />
+        <Label Margin="10,0,0,40" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+               Content="Tournament Code Generator" />
     </Grid>
 </Page>
