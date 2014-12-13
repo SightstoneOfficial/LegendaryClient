@@ -1,74 +1,126 @@
 ﻿<Page
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:Controls1="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.SettingsPage"
-      mc:Ignorable="d"
-      d:DesignHeight="672" d:DesignWidth="1024"
-	Title="SettingsPage">
+    x:Class="LegendaryClient.Windows.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:controls1="clr-namespace:LegendaryClient.Controls"
+    Title="SettingsPage"
+    mc:Ignorable="d" d:DesignHeight="672"
+    d:DesignWidth="1024">
 
     <Grid>
-        <TabControl HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
+        <TabControl Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="LegendaryClient">
                 <Grid>
-                    <CheckBox x:Name="StatsCheckbox" Content="Gather Statistics to enhance LegendaryClient" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Checked="StatsCheckbox_Checked" IsEnabled="False"/>
-                    <CheckBox x:Name="ErrorCheckbox" Content="Send Errors to LegendaryClient's developers to help fix bugs" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,30,0,0" Checked="ErrorCheckbox_Checked" IsEnabled="False"/>
-                    <TextBox x:Name="AboutTextBox" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Height="200" TextWrapping="Wrap"  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{x:Null}" BorderBrush="{x:Null}" />
-                    <Button Content="Donate to help LegendaryClient's work" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Width="994" Margin="10,0,10,205" Click="Button_Click_1"/>
+                    <CheckBox x:Name="StatsCheckbox" Margin="10,10,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Top" Content="Gather Statistics to enhance LegendaryClient"
+                              Checked="StatsCheckbox_Checked" IsEnabled="False" />
+                    <CheckBox x:Name="ErrorCheckbox"
+                              Margin="10,30,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Top" Content="Send Errors to LegendaryClient's developers to help fix bugs"
+                              Checked="ErrorCheckbox_Checked" IsEnabled="False" />
+                    <TextBox x:Name="AboutTextBox" Height="200"
+                             HorizontalAlignment="Stretch" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" Background="{x:Null}"
+                             BorderBrush="{x:Null}" />
+                    <Button Width="994" Margin="10,0,10,205"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="Donate to help LegendaryClient's work" Click="Button_Click_1" />
                 </Grid>
             </TabItem>
             <TabItem Header="Video">
                 <Grid>
-                    <ComboBox x:Name="ResolutionComboBox" HorizontalAlignment="Left" Margin="130,10,0,0" VerticalAlignment="Top" Width="200" />
-                    <Label Content="Resolution" HorizontalAlignment="Left" Margin="10,7,0,0" FontWeight="ExtraLight" FontSize="16" VerticalAlignment="Top" />
-                    <ComboBox x:Name="WindowModeComboBox" HorizontalAlignment="Left" Margin="130,40,0,0" VerticalAlignment="Top" Width="200" ItemsSource="{DynamicResource WindowStates}" />
-                    <Label Content="Window Mode" HorizontalAlignment="Left" Margin="10,37,0,0" FontWeight="ExtraLight" FontSize="16" VerticalAlignment="Top" />
+                    <ComboBox x:Name="ResolutionComboBox" Width="200" Margin="130,10,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Top" />
+                    <Label Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Resolution"
+                           FontWeight="ExtraLight" FontSize="16" />
+                    <ComboBox x:Name="WindowModeComboBox" Width="200" Margin="130,40,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource WindowStates}" />
+                    <Label Margin="10,37,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Window Mode"
+                           FontWeight="ExtraLight" FontSize="16" />
                 </Grid>
             </TabItem>
             <TabItem Header="Audio">
                 <Grid>
-                    <CheckBox x:Name="MuteAllSoundCheckBox" Content="Mute All Sounds" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" />
-                    <Label Content="Master Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,38,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="MasterVolumeSlider" HorizontalAlignment="Stretch" Margin="211,45,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
-                    <Label Content="Music Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,98,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="MusicVolumeSlider" HorizontalAlignment="Stretch" Margin="211,105,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
-                    <Label Content="FX Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,158,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="FxVolumeSlider" HorizontalAlignment="Stretch" Margin="211,165,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
-                    <Label Content="Voice Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,218,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="VoiceVolumeSlider" HorizontalAlignment="Stretch" Margin="211,225,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
-                    <Label Content="Announcer Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,278,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="AnnouncerVolumeSlider" HorizontalAlignment="Stretch" Margin="211,285,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" />
-                    <Label Content="Champion Selected Volume" HorizontalAlignment="Left" FontSize="16" FontWeight="ExtraLight" Margin="10,345,0,0" VerticalAlignment="Top" />
-                    <Slider x:Name="ChampSelectVolumeSlider" HorizontalAlignment="Stretch" Margin="211,345,10,0" VerticalAlignment="Top" Maximum="1" LargeChange="0.1" SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" Value="100" ValueChanged="ChampSelectVolumeSlider_ValueChanged"/>
+                    <CheckBox x:Name="MuteAllSoundCheckBox" Margin="10,10,0,0" HorizontalAlignment="Left"
+                              VerticalAlignment="Top" Content="Mute All Sounds" FontWeight="SemiBold" />
+                    <Label Margin="10,38,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Master Volume"
+                           FontSize="16" FontWeight="ExtraLight" />
+                    <Slider x:Name="MasterVolumeSlider" Margin="211,45,10,0" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top" Value="100" Maximum="1" LargeChange="0.1"
+                            SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" />
+                    <Label Margin="10,98,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Music Volume"
+                           FontSize="16" FontWeight="ExtraLight" />
+                    <Slider x:Name="MusicVolumeSlider" Margin="211,105,10,0" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top" Value="100" Maximum="1" LargeChange="0.1"
+                            SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" />
+                    <Label Margin="10,158,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="FX Volume"
+                           FontSize="16" FontWeight="ExtraLight" />
+                    <Slider x:Name="FxVolumeSlider" Margin="211,165,10,0" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top" Value="100" Maximum="1" LargeChange="0.1"
+                            SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" />
+                    <Label Margin="10,218,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Voice Volume"
+                           FontSize="16" FontWeight="ExtraLight" />
+                    <Slider x:Name="VoiceVolumeSlider" Margin="211,225,10,0" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top" Value="100" Maximum="1" LargeChange="0.1"
+                            SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" />
+                    <Label Margin="10,278,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Announcer Volume"
+                           FontSize="16" FontWeight="ExtraLight" />
+                    <Slider x:Name="AnnouncerVolumeSlider" Margin="211,285,10,0" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top" Value="100" Maximum="1" LargeChange="0.1"
+                            SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1" />
+                    <Label Margin="10,345,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                           Content="Champion Selected Volume" FontSize="16" FontWeight="ExtraLight" />
+                    <Slider x:Name="ChampSelectVolumeSlider" Margin="211,345,10,0" HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top" Value="100" Maximum="1" LargeChange="0.1"
+                            SmallChange="0.01" TickPlacement="Both" TickFrequency="0.1"
+                            ValueChanged="ChampSelectVolumeSlider_ValueChanged" />
                 </Grid>
             </TabItem>
             <TabItem Header="Interface">
                 <Grid>
-                    <CheckBox x:Name="UseAsBackground" Content="Use As Background Image" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="320,20,0,0" VerticalAlignment="Top" Checked="UseAsBackground_Changed" Unchecked="UseAsBackground_Changed"/>
-                    <Label Content="Login Image" HorizontalAlignment="Left" Margin="10,7,0,0" FontWeight="ExtraLight" FontSize="16" VerticalAlignment="Top" />
-                    <ComboBox x:Name="LoginImageBox" HorizontalAlignment="Left" Margin="108,16,0,0" VerticalAlignment="Top" Width="200" TextBoxBase.TextChanged="LoginImageBox_TextChanged" DropDownOpened="LoginImageBox_DropDownOpened" DropDownClosed="LoginImageBox_DropDownClosed" IsEditable="True" />
-                    <Label Content="Theme" HorizontalAlignment="Left" Margin="10,46,0,0" FontWeight="ExtraLight" FontSize="16" VerticalAlignment="Top" />
-                    <ComboBox x:Name="ThemeBox" HorizontalAlignment="Left" Margin="108,50,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="ThemeBox_SelectionChanged"/>
+                    <CheckBox x:Name="UseAsBackground" Margin="320,20,0,0" HorizontalAlignment="Left"
+                              VerticalAlignment="Top" Content="Use As Background Image" FontWeight="SemiBold"
+                              Checked="UseAsBackground_Changed" Unchecked="UseAsBackground_Changed" />
+                    <Label Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Login Image"
+                           FontWeight="ExtraLight" FontSize="16" />
+                    <ComboBox x:Name="LoginImageBox" Width="200" Margin="108,16,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Top" TextBoxBase.TextChanged="LoginImageBox_TextChanged"
+                              DropDownOpened="LoginImageBox_DropDownOpened"
+                              DropDownClosed="LoginImageBox_DropDownClosed" IsEditable="True" />
+                    <Label Margin="10,46,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Theme"
+                           FontWeight="ExtraLight" FontSize="16" />
+                    <ComboBox x:Name="ThemeBox" Width="200" Margin="108,50,0,0" HorizontalAlignment="Left"
+                              VerticalAlignment="Top" SelectionChanged="ThemeBox_SelectionChanged" />
                 </Grid>
             </TabItem>
             <TabItem Header="Game">
                 <Grid>
-                    <CheckBox x:Name="AutoRecordCheckbox" Content="Auto record games" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Checked="AutoRecordCheckbox_Changed" Unchecked="AutoRecordCheckbox_Changed"/>
+                    <CheckBox x:Name="AutoRecordCheckbox" Margin="10,10,0,0" HorizontalAlignment="Left"
+                              VerticalAlignment="Top" Content="Auto record games" Checked="AutoRecordCheckbox_Changed"
+                              Unchecked="AutoRecordCheckbox_Changed" />
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced">
-                <Grid >
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="24*"/>
-                        <ColumnDefinition Width="121*"/>
+                        <ColumnDefinition Width="24*" />
+                        <ColumnDefinition Width="121*" />
                     </Grid.ColumnDefinitions>
-                    <Label Content="EasyHud Beta" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="16"/>
-                    <Controls1:TextBoxWatermarked x:Name="HudLink" TextWrapping="Wrap" Watermark="hi" VerticalAlignment="Top" Margin="10,31,5,0" Grid.ColumnSpan="2"/>
-                    <Button Content="Install HUD" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,58,10,0" Click="Button_Click" Grid.Column="1"/>
-                    <Label x:Name="ResultTextbox" Content="Unable to install hud. Please check the link. Hud installed successfully" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Width="914" Margin="15,58,0,0" FontSize="9" Grid.ColumnSpan="2"/>
-                    <Label Content="Ever wanted a hud of LeagueCraft except you didn't know how to do it. Well now just copy the hud. Please note that not all huds work." HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="9" Margin="111,4,0,0" Grid.ColumnSpan="2"/>
-                    <Button Content="Uninstall All Huds" HorizontalAlignment="Right" VerticalAlignment="Top" Width="200" Margin="0,58,90,0" Click="Button2_Click" Grid.Column="1"/>
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="EasyHud Beta" FontSize="16" />
+                    <controls1:TextBoxWatermarked x:Name="HudLink" Grid.ColumnSpan="2" Margin="10,31,5,0"
+                                                  VerticalAlignment="Top" TextWrapping="Wrap" Watermark="hi" />
+                    <Button Grid.Column="1" Width="75" Margin="0,58,10,0" HorizontalAlignment="Right"
+                            VerticalAlignment="Top" Content="Install HUD" Click="Button_Click" />
+                    <Label x:Name="ResultTextbox"
+                           Grid.ColumnSpan="2"
+                           Width="914" Height="22" Margin="15,58,0,0" HorizontalAlignment="Left"
+                           VerticalAlignment="Top" Content="Unable to install hud. Please check the link. Hud installed successfully" Visibility="Hidden" FontSize="9" />
+                    <Label
+                        Grid.ColumnSpan="2"
+                        Margin="111,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Ever wanted a hud of LeagueCraft except you didn't know how to do it. Well now just copy the hud. Please note that not all huds work."
+                        FontSize="9" />
+                    <Button Grid.Column="1" Width="200" Margin="0,58,90,0"
+                            HorizontalAlignment="Right" VerticalAlignment="Top" Content="Uninstall All Huds" Click="Button2_Click" />
                 </Grid>
             </TabItem>
         </TabControl>
