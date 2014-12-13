@@ -1,28 +1,42 @@
-﻿using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+﻿#region
+
 using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
-using log4net;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+
+#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
     /// <summary>
-    /// Interaction logic for Champions.xaml
+    ///     Interaction logic for Champions.xaml
     /// </summary>
-    public partial class Champions : Page
+    public partial class Champions
     {
         private List<ChampionDTO> ChampionList;
         private bool NoFilterOnLoad;
-        private static readonly ILog log = LogManager.GetLogger(typeof(Champions));
+        //private static readonly ILog log = LogManager.GetLogger(typeof(Champions));
 
         public Champions()
         {
             InitializeComponent();
+            Change();
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void Update()
@@ -31,7 +45,10 @@ namespace LegendaryClient.Windows.Profile
 
             ChampionList = new List<ChampionDTO>(champList);
 
-            ChampionList.Sort((x, y) => champions.GetChampion(x.ChampionId).displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
+            ChampionList.Sort(
+                (x, y) =>
+                    String.Compare(champions.GetChampion(x.ChampionId)
+                        .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
             FilterChampions();
         }
@@ -59,64 +76,67 @@ namespace LegendaryClient.Windows.Profile
 
             if (!String.IsNullOrEmpty(SearchTextBox.Text))
             {
-                tempList = tempList.Where(x => champions.GetChampion(x.ChampionId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower())).ToList();
+                tempList =
+                    tempList.Where(
+                        x =>
+                            champions.GetChampion(x.ChampionId)
+                                .displayName.ToLower()
+                                .Contains(SearchTextBox.Text.ToLower())).ToList();
             }
 
-            bool AllChampions = false;
-            bool OwnedChampions = false;
-            bool NotOwnedChampions = false;
-            bool AvaliableChampions = false;
+            bool allChampions = false;
+            bool ownedChampions = false;
+            bool notOwnedChampions = false;
+            bool avaliableChampions = false;
 
-            switch ((string)FilterComboBox.SelectedValue)
+            switch ((string) FilterComboBox.SelectedValue)
             {
                 case "All":
-                    AllChampions = true;
+                    allChampions = true;
                     break;
 
                 case "Owned":
-                    OwnedChampions = true;
+                    ownedChampions = true;
                     break;
 
                 case "Not Owned":
-                    NotOwnedChampions = true;
+                    notOwnedChampions = true;
                     break;
 
                 default:
-                    AvaliableChampions = true;
+                    avaliableChampions = true;
                     break;
             }
 
             foreach (ChampionDTO champ in tempList)
             {
-                if ((AvaliableChampions && (champ.Owned || champ.FreeToPlay)) ||
-                    (AllChampions) ||
-                    (OwnedChampions && champ.Owned) ||
-                    (NotOwnedChampions && !champ.Owned))
-                {
-                    ProfileChampionImage championImage = new ProfileChampionImage();
-                    champions champion = champions.GetChampion(champ.ChampionId);
-                    championImage.ChampImage.Source = champion.icon;
-                    if (champ.FreeToPlay)
-                        championImage.FreeToPlayLabel.Visibility = System.Windows.Visibility.Visible;
-                    championImage.ChampName.Content = champion.displayName;
-                    if (!champ.Owned && !champ.FreeToPlay)
-                    {
-                        championImage.ChampImage.Opacity = 0.5;
-                    }
-                    championImage.Tag = champ.ChampionId;
-                    ChampionSelectListView.Items.Add(championImage);
-                }
+                if ((!avaliableChampions || (!champ.Owned && !champ.FreeToPlay)) && (!allChampions) &&
+                    (!ownedChampions || !champ.Owned) && (!notOwnedChampions || champ.Owned))
+                    continue;
+
+                var championImage = new ProfileChampionImage();
+                champions champion = champions.GetChampion(champ.ChampionId);
+                championImage.ChampImage.Source = champion.icon;
+                if (champ.FreeToPlay)
+                    championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
+
+                championImage.ChampName.Content = champion.displayName;
+                if (!champ.Owned && !champ.FreeToPlay)
+                    championImage.ChampImage.Opacity = 0.5;
+
+                championImage.Tag = champ.ChampionId;
+                ChampionSelectListView.Items.Add(championImage);
             }
         }
 
-        private void ChampionSelectListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        /*private void ChampionSelectListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ChampionSelectListView.SelectedIndex != -1)
-            {
-                ProfileChampionImage selectedChampion = (ProfileChampionImage)ChampionSelectListView.SelectedItem;
-                Client.OverlayContainer.Content = new ChampionDetailsPage((int)selectedChampion.Tag).Content;
-                Client.OverlayContainer.Visibility = Visibility.Visible;
-            }
-        }
+            if (ChampionSelectListView.SelectedIndex == -1)
+                return;
+
+            var selectedChampion = (ProfileChampionImage) ChampionSelectListView.SelectedItem;
+            Client.OverlayContainer.Content = new ChampionDetailsPage((int) selectedChampion.Tag).Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }*/
     }
 }

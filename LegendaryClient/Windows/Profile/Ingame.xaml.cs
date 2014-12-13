@@ -1,37 +1,59 @@
-﻿using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.PlayerSpell;
-using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Game;
+﻿#region
+
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Web.Script.Serialization;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using log4net;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.PlayerSpell;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using Brush = System.Windows.Media.Brush;
+using Color = System.Drawing.Color;
+using Image = System.Windows.Controls.Image;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
+
+#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
     /// <summary>
-    /// Interaction logic for Ingame.xaml
+    ///     Interaction logic for Ingame.xaml
     /// </summary>
-    public partial class Ingame : Page
+    public partial class Ingame
     {
-        PlatformGameLifecycleDTO Game;
-        private static readonly ILog log = LogManager.GetLogger(typeof(InGame));
+        private PlatformGameLifecycleDTO Game;
+        //private static readonly ILog log = LogManager.GetLogger(typeof(InGame));
         public Ingame()
         {
             InitializeComponent();
+            Change();
         }
 
-        public void Update(PlatformGameLifecycleDTO CurrentGame)
+        public void Change()
         {
-            Game = CurrentGame;
-            BlueBansLabel.Visibility = System.Windows.Visibility.Hidden;
-            PurpleBansLabel.Visibility = System.Windows.Visibility.Hidden;
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
+        }
+
+        public void Update(PlatformGameLifecycleDTO currentGame)
+        {
+            Game = currentGame;
+            BlueBansLabel.Visibility = Visibility.Hidden;
+            PurpleBansLabel.Visibility = Visibility.Hidden;
             PurpleBanListView.Items.Clear();
             BlueBanListView.Items.Clear();
 
@@ -40,128 +62,137 @@ namespace LegendaryClient.Windows.Profile
 
             ImageGrid.Children.Clear();
 
-            List<Participant> AllParticipants = new List<Participant>(CurrentGame.Game.TeamOne.ToArray());
-            AllParticipants.AddRange(CurrentGame.Game.TeamTwo);
+            var allParticipants = new List<Participant>(currentGame.Game.TeamOne.ToArray());
+            allParticipants.AddRange(currentGame.Game.TeamTwo);
 
             int i = 0;
             int y = 0;
-            foreach (Participant part in AllParticipants)
+            foreach (Participant part in allParticipants)
             {
-                ChampSelectPlayer control = new ChampSelectPlayer();
+                var control = new ChampSelectPlayer();
                 if (part is PlayerParticipant)
                 {
-                    PlayerParticipant participant = part as PlayerParticipant;
-                    foreach (PlayerChampionSelectionDTO championSelect in CurrentGame.Game.PlayerChampionSelections)
+                    var participant = part as PlayerParticipant;
+                    foreach (
+                        PlayerChampionSelectionDTO championSelect in
+                            currentGame.Game.PlayerChampionSelections.Where(
+                                championSelect =>
+                                    championSelect.SummonerInternalName == participant.SummonerInternalName))
                     {
-                        if (championSelect.SummonerInternalName == participant.SummonerInternalName)
-                        {
-                            control.ChampionImage.Source = champions.GetChampion(championSelect.ChampionId).icon;
-                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
-                            control.SummonerSpell1.Source = new BitmapImage(uriSource);
-                            uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
-                            control.SummonerSpell2.Source = new BitmapImage(uriSource);
+                        control.ChampionImage.Source = champions.GetChampion(championSelect.ChampionId).icon;
+                        var uriSource =
+                            new Uri(
+                                Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                                    SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))),
+                                UriKind.Absolute);
+                        control.SummonerSpell1.Source = new BitmapImage(uriSource);
+                        uriSource =
+                            new Uri(
+                                Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                                    SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))),
+                                UriKind.Absolute);
+                        control.SummonerSpell2.Source = new BitmapImage(uriSource);
 
-                            #region Generate Background
+                        #region Generate Background
 
-                            Image m = new Image();
-                            Canvas.SetZIndex(m, -2);
-                            m.Stretch = Stretch.None;
-                            m.Width = 100;
-                            m.Opacity = 0.50;
-                            m.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                            m.VerticalAlignment = System.Windows.VerticalAlignment.Stretch;
-                            m.Margin = new System.Windows.Thickness(y++ * 100, 0, 0, 0);
-                            System.Drawing.Rectangle cropRect = new System.Drawing.Rectangle(new System.Drawing.Point(100, 0), new System.Drawing.Size(100, 560));
-                            System.Drawing.Bitmap src = System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(championSelect.ChampionId).portraitPath)) as System.Drawing.Bitmap;
-                            System.Drawing.Bitmap target = new System.Drawing.Bitmap(cropRect.Width, cropRect.Height);
+                        var m = new Image();
+                        Panel.SetZIndex(m, -2);
+                        m.Stretch = Stretch.None;
+                        m.Width = 100;
+                        m.Opacity = 0.50;
+                        m.HorizontalAlignment = HorizontalAlignment.Left;
+                        m.VerticalAlignment = VerticalAlignment.Stretch;
+                        m.Margin = new Thickness(y++*100, 0, 0, 0);
+                        var cropRect = new Rectangle(new Point(100, 0), new Size(100, 560));
+                        var src =
+                            System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets",
+                                "champions", champions.GetChampion(championSelect.ChampionId).portraitPath)) as
+                                Bitmap;
+                        var target = new Bitmap(cropRect.Width, cropRect.Height);
 
-                            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(target))
-                            {
-                                g.DrawImage(src, new System.Drawing.Rectangle(0, 0, target.Width, target.Height),
-                                                cropRect,
-                                                System.Drawing.GraphicsUnit.Pixel);
-                            }
+                        using (Graphics g = Graphics.FromImage(target))
+                            if (src != null)
+                                g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                                    cropRect,
+                                    GraphicsUnit.Pixel);
 
-                            m.Source = Client.ToWpfBitmap(target);
-                            ImageGrid.Children.Add(m);
+                        m.Source = Client.ToWpfBitmap(target);
+                        ImageGrid.Children.Add(m);
 
-                            #endregion Generate Background
-                        }
+                        #endregion Generate Background
                     }
 
                     control.PlayerName.Content = participant.SummonerName;
 
                     if (participant.TeamParticipantId != null)
                     {
-                        byte[] values = BitConverter.GetBytes((double)participant.TeamParticipantId);
+                        byte[] values = BitConverter.GetBytes((double) participant.TeamParticipantId);
                         if (!BitConverter.IsLittleEndian) Array.Reverse(values);
 
                         byte r = values[2];
                         byte b = values[3];
                         byte g = values[4];
 
-                        System.Drawing.Color myColor = System.Drawing.Color.FromArgb(r, b, g);
+                        Color myColor = Color.FromArgb(r, b, g);
 
-                        var converter = new System.Windows.Media.BrushConverter();
-                        var brush = (Brush)converter.ConvertFromString("#" + myColor.Name);
+                        var converter = new BrushConverter();
+                        var brush = (Brush) converter.ConvertFromString("#" + myColor.Name);
                         control.TeamRectangle.Fill = brush;
-                        control.TeamRectangle.Visibility = System.Windows.Visibility.Visible;
+                        control.TeamRectangle.Visibility = Visibility.Visible;
                     }
                 }
 
                 i++;
                 if (i <= 5)
-                {
                     BlueListView.Items.Add(control);
-                }
                 else
-                {
                     PurpleListView.Items.Add(control);
-                }
             }
 
-            if (CurrentGame.Game.BannedChampions.Count > 0)
+            if (currentGame.Game.BannedChampions.Count > 0)
             {
-                BlueBansLabel.Visibility = System.Windows.Visibility.Visible;
-                PurpleBansLabel.Visibility = System.Windows.Visibility.Visible;
+                BlueBansLabel.Visibility = Visibility.Visible;
+                PurpleBansLabel.Visibility = Visibility.Visible;
             }
 
-            foreach (var x in CurrentGame.Game.BannedChampions)
+            foreach (BannedChampion x in currentGame.Game.BannedChampions)
             {
-                Image champImage = new Image();
-                champImage.Height = 58;
-                champImage.Width = 58;
-                champImage.Source = champions.GetChampion(x.ChampionId).icon;
+                var champImage = new Image
+                {
+                    Height = 58,
+                    Width = 58,
+                    Source = champions.GetChampion(x.ChampionId).icon
+                };
                 if (x.TeamId == 100)
-                {
                     BlueBanListView.Items.Add(champImage);
-                }
                 else
-                {
                     PurpleBanListView.Items.Add(champImage);
-                }
             }
 
             try
             {
-                string mmrJSON = "";
-                string url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName + "/" + CurrentGame.Game.Id + "/token";
-                using (WebClient client = new WebClient())
-                {
-                    mmrJSON = client.DownloadString(url);
-                }
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(mmrJSON);
-                MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
+                string mmrJson;
+                string url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName +
+                             "/" + currentGame.Game.Id + "/token";
+                using (var client = new WebClient())
+                    mmrJson = client.DownloadString(url);
+
+                var serializer = new JavaScriptSerializer();
+                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(mmrJson);
+                MMRLabel.Content = "≈" + deserializedJson["interestScore"];
             }
-            catch { MMRLabel.Content = "N/A"; }
+            catch
+            {
+                MMRLabel.Content = "N/A";
+            }
         }
-        private void SpectateButton_Click(object sender, System.Windows.RoutedEventArgs e)
-         {
-             string IP = Game.PlayerCredentials.ObserverServerIp;
-             string Key = Game.PlayerCredentials.ObserverEncryptionKey;
-             double GameID = Game.PlayerCredentials.GameId;
-             Client.LaunchSpectatorGame(IP, Key, (int)GameID, Client.Region.InternalName);
-         }
+
+        private void SpectateButton_Click(object sender, RoutedEventArgs e)
+        {
+            string ip = Game.PlayerCredentials.ObserverServerIp;
+            string key = Game.PlayerCredentials.ObserverEncryptionKey;
+            double gameId = Game.PlayerCredentials.GameId;
+            Client.LaunchSpectatorGame(ip, key, (int) gameId, Client.Region.InternalName);
+        }
     }
 }

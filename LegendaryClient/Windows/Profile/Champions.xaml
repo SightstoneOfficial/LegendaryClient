@@ -3,9 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="548" d:DesignWidth="1280"
-      Title="Champions">
+      Title="Champions"
+      mc:Ignorable="d" d:DesignHeight="548"
+      d:DesignWidth="1280">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -53,12 +53,12 @@
     </Page.Resources>
 
     <Grid>
-        <Label Content="Search" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"
+        <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Search"
                FontWeight="ExtraLight" FontSize="22" Foreground="White" />
-        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="100,20,250,0"
-                 TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
+        <TextBox x:Name="SearchTextBox" Height="23" Margin="100,20,250,0" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="SearchTextBox_TextChanged" />
 
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="10,50,10,10"
+        <ListView x:Name="ChampionSelectListView" Margin="10,50,10,10" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
@@ -67,8 +67,8 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <ComboBox x:Name="FilterComboBox" HorizontalAlignment="Right" Margin="0,20,10,0" VerticalAlignment="Top"
-                  Width="230" SelectedIndex="0" ItemsSource="{DynamicResource ChampionComboBoxFilters}"
+        <ComboBox x:Name="FilterComboBox" Width="230" Margin="0,20,10,0" HorizontalAlignment="Right"
+                  VerticalAlignment="Top" SelectedIndex="0" ItemsSource="{DynamicResource ChampionComboBoxFilters}"
                   SelectionChanged="FilterComboBox_SelectionChanged" />
     </Grid>
 </Page>
