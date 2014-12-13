@@ -25,13 +25,12 @@
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="{x:Type Button}" x:Key="Square">
+        <Style x:Key="Square" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="#FF474747" />
             <Setter Property="BorderBrush" Value="{x:Null}" />
             <Setter Property="Foreground" Value="#FFCFCFCF" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Height" Value="30" />
-            <Setter Property="BorderBrush" Value="#FF2A2A2B" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -52,13 +51,12 @@
             </Style.Triggers>
         </Style>
 
-        <Style TargetType="{x:Type Button}" x:Key="HideSquare">
+        <Style x:Key="HideSquare" TargetType="{x:Type Button}">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Foreground" Value="Transparent" />
             <Setter Property="FontSize" Value="12" />
             <Setter Property="Height" Value="1" />
-            <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -91,15 +89,15 @@
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         </Style>
 
-        <x:Array x:Key="WindowStates" Type="sys:String"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="WindowStates"
+                 Type="sys:String">
             <sys:String>Fullscreen</sys:String>
             <sys:String>Windowed</sys:String>
             <sys:String>Borderless</sys:String>
         </x:Array>
 
-        <x:Array x:Key="Regions" Type="sys:String"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="Regions"
+                 Type="sys:String">
             <sys:String>BR</sys:String>
             <sys:String>EUNE</sys:String>
             <sys:String>EUW</sys:String>
@@ -130,8 +128,8 @@
             <sys:String>VN</sys:String> -->
         </x:Array>
 
-        <x:Array x:Key="TeamSizes" Type="sys:Int32"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="TeamSizes"
+                 Type="sys:Int32">
             <sys:Int32>1</sys:Int32>
             <sys:Int32>2</sys:Int32>
             <sys:Int32>3</sys:Int32>
@@ -139,16 +137,16 @@
             <sys:Int32>5</sys:Int32>
         </x:Array>
 
-        <x:Array x:Key="SpectatorStates" Type="sys:String"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="SpectatorStates"
+                 Type="sys:String">
             <sys:String>None</sys:String>
             <sys:String>All</sys:String>
             <sys:String>Lobby Only</sys:String>
             <sys:String>Friends List Only</sys:String>
         </x:Array>
 
-        <x:Array x:Key="CustomGameTypes" Type="sys:String"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="CustomGameTypes"
+                 Type="sys:String">
             <sys:String>Blind Pick</sys:String>
             <sys:String>All Random</sys:String>
             <sys:String>Tournament Draft</sys:String>
@@ -162,8 +160,8 @@
             <sys:String>Blind Draft</sys:String>-->
         </x:Array>
 
-        <x:Array x:Key="FactionTeamTypes" Type="sys:String"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="FactionTeamTypes"
+                 Type="sys:String">
             <sys:String>Bilgewater</sys:String>
             <sys:String>Freljord</sys:String>
             <sys:String>Ionia</sys:String>
@@ -178,15 +176,15 @@
             <sys:String>Discord</sys:String>
         </x:Array>
 
-        <x:Array x:Key="ChatStates" Type="sys:String"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="ChatStates"
+                 Type="sys:String">
             <sys:String>Online</sys:String>
             <sys:String>Busy</sys:String>
             <sys:String>Invisible</sys:String>
         </x:Array>
 
-        <x:Array x:Key="ChampionComboBoxFilters" Type="sys:String"
-                 xmlns:sys="clr-namespace:System;assembly=mscorlib">
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="ChampionComboBoxFilters"
+                 Type="sys:String">
             <sys:String>All</sys:String>
             <sys:String>Available</sys:String>
             <sys:String>Owned</sys:String>
