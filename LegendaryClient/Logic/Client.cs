@@ -299,11 +299,6 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static List<keybindingEvents> Keybinds;
 
-        /// <summary>
-        ///     For allowing to give warning message
-        /// </summary>
-        internal static bool ShouldExit = false;
-
         internal static ChampionDTO[] PlayerChampions;
 
         internal static ReplayRecorder Autorecorder;
@@ -1356,16 +1351,6 @@ namespace LegendaryClient.Logic
 
             return new BitmapImage(UriSource);
         }
-
-        internal static void CancelExit()
-        {
-            Warning warn = new Warning();
-            warn.Title.Content = "Quit";
-            warn.MessageText.Content = "Are You Sure You Want To Quit?";
-            Client.OverlayContainer.Content = warn.Content;
-            Client.OverlayContainer.Visibility = Visibility.Visible;
-        }
-
         #endregion Public Helper Methods
 
         public static Accent CurrentAccent { get; set; }

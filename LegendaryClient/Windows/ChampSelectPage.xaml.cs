@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,6 +21,7 @@ using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SoundLogic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
+using Microsoft.Win32;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
@@ -55,11 +57,13 @@ namespace LegendaryClient.Windows
         private GameDTO LatestDto;
         private MasteryBookDTO MyMasteries;
         private SpellBookDTO MyRunes;
+        private List<string> PreviousPlayers;
         private bool QuickLoad; //Don't load masteries and runes on load at start
         private bool _BanningPhase;
         private int _LastPickTurn;
         private double _MyChampId;
         private GameTypeConfigDTO configType;
+        private bool connected;
         private int counter;
 
         #region champs
@@ -286,7 +290,7 @@ namespace LegendaryClient.Windows
             else
             {
                 counter = configType.MainPickTimerDuration - 5;
-                    //Seems to be a 5 second inconsistancy with riot and what they actually provide
+                //Seems to be a 5 second inconsistancy with riot and what they actually provide
                 CountdownTimer = new Timer();
                 CountdownTimer.Tick += CountdownTimer_Tick;
                 CountdownTimer.Interval = 1000; // 1 second
@@ -301,7 +305,6 @@ namespace LegendaryClient.Windows
                         champions.GetChampion(x.ChampionId)
                             .displayName.CompareTo(champions.GetChampion(y.ChampionId).displayName));
 
-                
 
                 //Render our champions
                 RenderChamps(false);
@@ -312,12 +315,12 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
             }
         }
-        bool connected = false;
-        void Joinchat(GameDTO latestDTO)
+
+        private void Joinchat(GameDTO latestDTO)
         {
             if (connected)
                 return;
-            
+
             //Join champion select chatroom
             string JID = Client.GetChatroomJID(latestDTO.RoomName.Replace("@sec", ""), latestDTO.RoomPassword, false);
             Chatroom = Client.ConfManager.GetRoom(new JID(JID));
@@ -710,9 +713,10 @@ namespace LegendaryClient.Windows
 
                 #endregion In Champion Select
             }
-            else if (message.GetType() == typeof(PlayerCredentialsDto))
+            else if (message.GetType() == typeof (PlayerCredentialsDto))
             {
                 Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+
                 #region Launching Game
 
                 var dto = message as PlayerCredentialsDto;
@@ -734,7 +738,7 @@ namespace LegendaryClient.Windows
                                 string IP = n.PlayerCredentials.ObserverServerIp + ":" +
                                             n.PlayerCredentials.ObserverServerPort;
                                 string Key = n.PlayerCredentials.ObserverEncryptionKey;
-                                var GameID = (Int32)n.PlayerCredentials.GameId;
+                                var GameID = (Int32) n.PlayerCredentials.GameId;
                                 new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
                             }
                         });
@@ -751,10 +755,9 @@ namespace LegendaryClient.Windows
                     }));
                 }
 
-
                 #endregion Launching Game
             }
-            else if (message.GetType() == typeof(TradeContractDTO))
+            else if (message.GetType() == typeof (TradeContractDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -766,10 +769,10 @@ namespace LegendaryClient.Windows
                         PlayerTradeControl.AcceptButton.Visibility = Visibility.Visible;
                         PlayerTradeControl.DeclineButton.Content = "Decline";
 
-                        champions MyChampion = champions.GetChampion((int)TradeDTO.ResponderChampionId);
+                        champions MyChampion = champions.GetChampion((int) TradeDTO.ResponderChampionId);
                         PlayerTradeControl.MyChampImage.Source = MyChampion.icon;
                         PlayerTradeControl.MyChampLabel.Content = MyChampion.displayName;
-                        champions TheirChampion = champions.GetChampion((int)TradeDTO.RequesterChampionId);
+                        champions TheirChampion = champions.GetChampion((int) TradeDTO.RequesterChampionId);
                         PlayerTradeControl.TheirChampImage.Source = TheirChampion.icon;
                         PlayerTradeControl.TheirChampLabel.Content = TheirChampion.displayName;
                         PlayerTradeControl.RequestLabel.Content = string.Format("{0} wants to trade!",
@@ -1328,47 +1331,56 @@ namespace LegendaryClient.Windows
             //Enable dev mode if !~dev is typed in chat
             if (ChatTextBox.Text == "!~dev")
             {
-                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-                dlg.DefaultExt = ".png";
-                dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
-                if ((bool)dlg.ShowDialog())
+                var dlg = new OpenFileDialog
                 {
-                    string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
-                    using (WebClient client = new WebClient())
+                    DefaultExt = ".png",
+                    Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key"
+                };
+                bool? showDialog = dlg.ShowDialog();
+                if (showDialog == null || !(bool) showDialog)
+                    return;
+                string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
+                using (var client = new WebClient())
+                {
+                    //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
+                    if (
+                        client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1")
+                            .Split(new[] {"\r\n", "\n"}, StringSplitOptions.None)[0] == filecontent)
                     {
-                        
-                        //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
-                        if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
+                        DevMode = !DevMode;
+                        ChampionSelectListView.IsHitTestVisible = true;
+                        ChampionSelectListView.Opacity = 1;
+                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                         {
-                            DevMode = !DevMode;
-                            ChampionSelectListView.IsHitTestVisible = true;
-                            ChampionSelectListView.Opacity = 1;
-                            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                            tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
-                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-                            ChatTextBox.Text = "";
-                        }
-                        else
+                            Text = "DEV MODE: " + DevMode + Environment.NewLine
+                        };
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        ChatTextBox.Text = "";
+                    }
+                    else
+                    {
+                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                         {
-                            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                            tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
-                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-                            ChatTextBox.Text = "";
-                        }
+                            Text = "DEV MODE: " + DevMode + Environment.NewLine
+                        };
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        ChatTextBox.Text = "";
                     }
                 }
-                
             }
             else
             {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
+                };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (Client.Filter)
                     tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
+
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 Chatroom.PublicMessage(ChatTextBox.Text);
                 ChatTextBox.Text = "";
@@ -1397,7 +1409,7 @@ namespace LegendaryClient.Windows
                 }
             }));
         }
-        List<string> PreviousPlayers;
+
         private void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
             connected = true;
@@ -1416,14 +1428,14 @@ namespace LegendaryClient.Windows
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     Chatroom.PublicMessage(Client.CallString);
                     ChatText.ScrollToEnd();
-                    Timer t = new Timer();
+                    var t = new Timer();
                     t.Interval = 10000;
                     t.Start();
                     t.Tick += (o, e) =>
-                        {
-                            Client.InstaCall = false;
-                            t.Stop();
-                        };
+                    {
+                        Client.InstaCall = false;
+                        t.Stop();
+                    };
                 }));
             }
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
