@@ -29,7 +29,7 @@
         <Label Content="Allow Spectators" HorizontalAlignment="Center" Margin="110,0,0,300" VerticalAlignment="Center" FontSize="14" />
         <ComboBox x:Name="AllowSpectatorsComboBox" HorizontalAlignment="Center" Margin="120,0,0,250" VerticalAlignment="Center" Width="120" SelectedIndex="1" ItemsSource="{DynamicResource SpectatorStates}" SelectionChanged="AllowSpectatorsComboBox_SelectionChanged" />
         <Label Content="Game Type" HorizontalAlignment="Center" Margin="0,0,190,200" VerticalAlignment="Center" FontSize="14" />
-        <ComboBox x:Name="GameTypeComboBox" HorizontalAlignment="Center" Margin="377,251,392,399" VerticalAlignment="Center" Width="255" ItemsSource="{DynamicResource CustomGameTypes}" SelectedIndex="0" SelectionChanged="GameTypeComboBox_SelectionChanged" />
+        <ComboBox x:Name="GameTypeComboBox" HorizontalAlignment="Center" Margin="0,0,15,150" VerticalAlignment="Center" Width="255" ItemsSource="{DynamicResource CustomGameTypes}" SelectedIndex="0" SelectionChanged="GameTypeComboBox_SelectionChanged" />
         <Label Content="Game Name" HorizontalAlignment="Center" Margin="0,0,185,100" VerticalAlignment="Center" FontSize="14" />
         <TextBox x:Name="NameTextBox" TextWrapping="NoWrap" Text=""  HorizontalAlignment="Center" Margin="0,0,15,50" VerticalAlignment="Center" Width="255" TextChanged="NameTextBox_TextChanged" />
         <Label Content="Password" HorizontalAlignment="Center" Margin="0,0,200,0" VerticalAlignment="Center" FontSize="14" />
