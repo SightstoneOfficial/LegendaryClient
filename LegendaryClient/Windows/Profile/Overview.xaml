@@ -55,7 +55,8 @@
     <Grid>
         <ListView x:Name="KudosListView" Width="280"
                   Height="220" Margin="10,40,10,0" HorizontalAlignment="Right"
-                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
+                  Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -67,7 +68,8 @@
                Foreground="White" />
         <ListView x:Name="TopChampionsListView" Width="280"
                   Height="170" Margin="10,300,10,0" HorizontalAlignment="Right"
-                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
+                  Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -76,14 +78,16 @@
         </ListView>
 
         <Button x:Name="ViewAggregatedStatsButton" Width="280" Height="50" Margin="0,480,10,0"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Content="View Champion Stats" FontSize="25" FontWeight="ExtraLight"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Content="View Champion Stats" FontSize="25"
+                FontWeight="ExtraLight"
                 Click="ViewAggregatedStatsButton_Click" />
 
         <ComboBox x:Name="StatsComboBox" Width="300" Margin="10,10,0,0" HorizontalAlignment="Left"
                   VerticalAlignment="Top" SelectionChanged="StatsComboBox_SelectionChanged" />
         <ListView x:Name="StatsListView" Margin="10,40,300,10"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White" Background="#66505050"
+                  VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Foreground="White" Background="#66505050"
                   BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Auto" />
     </Grid>
 </Page>

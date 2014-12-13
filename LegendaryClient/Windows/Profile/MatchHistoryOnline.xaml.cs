@@ -1,38 +1,41 @@
-﻿
-using LegendaryClient.Logic;
+﻿#region
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using LegendaryClient.Logic;
+using LegendaryClient.Properties;
+
+#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
     /// <summary>
-    /// Interaction logic for MatchHistoryOnline.xaml
+    ///     Interaction logic for MatchHistoryOnline.xaml
     /// </summary>
-    public partial class MatchHistoryOnline : Page
+    public partial class MatchHistoryOnline
     {
-        string SumName;
-        public MatchHistoryOnline(String Name = "")
+        private string SumName;
+
+        public MatchHistoryOnline(String name = "")
         {
             InitializeComponent();
+            Change();
+
             //Started work on
-            if (String.IsNullOrEmpty(Name))
-            {
-                Name = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            }
-            SumName = Name;
+            if (String.IsNullOrEmpty(name))
+                name = Client.LoginPacket.AllSummonerData.Summoner.Name;
+
+            SumName = name;
             GetData();
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public void GetData()
@@ -40,7 +43,7 @@ namespace LegendaryClient.Windows.Profile
             //PlayerMatchHistory history = new PlayerMatchHistory();
             //HistoryAccount acc = await history.GetPlayerAsync(Client.Region.InternalName, SumName);
             //PlayerListGames games = await history.GetGamesAsync(acc);
-            
+
             //This is the first game
             //Game game = await history.GetFullGameDataAsync(games.games.games[0]);
 

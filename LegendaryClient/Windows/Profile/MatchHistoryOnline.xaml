@@ -3,9 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="548" d:DesignWidth="1280"
-      Title="MatchHistoryOnline">
+      Title="MatchHistoryOnline"
+      mc:Ignorable="d" d:DesignHeight="548"
+      d:DesignWidth="1280">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -57,7 +57,7 @@
     </Page.Resources>
 
     <Grid>
-        <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300"
+        <ListView x:Name="GamesListView" Width="300" Margin="10,10,0,10" HorizontalAlignment="Left"
                   VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" BorderBrush="{x:Null}">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
@@ -65,8 +65,8 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Height="350" Margin="320,10,0,0"
-                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="84"
+        <ListView x:Name="BlueListView" Width="84" Height="350" Margin="320,10,0,0"
+                  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -74,10 +74,10 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="300,62,0,0"
+        <Label Margin="300,62,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="VS."
                FontWeight="ExtraLight" FontSize="50" Foreground="White" />
-        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Height="350" Margin="300,10,10,0"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="84"
+        <ListView x:Name="PurpleListView" Width="84" Height="350" Margin="300,10,10,0"
+                  HorizontalAlignment="Right" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -86,9 +86,9 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="ItemsListView" HorizontalAlignment="Center" Height="64" Margin="305,10,0,0"
-                  VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="530" Background="#66505050"
+        <ListView x:Name="ItemsListView" Width="530" Height="64" Margin="305,10,0,0"
+                  HorizontalAlignment="Center" VerticalAlignment="Top"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050"
                   BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -96,7 +96,7 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="320,370,10,10"
+        <ListView x:Name="GameStatsListView" Margin="320,370,10,10" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" BorderBrush="{x:Null}">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
@@ -105,9 +105,9 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Label Content="This Is In Dev. It will not work" HorizontalAlignment="Center" VerticalAlignment="Top"
-               Margin="301,247,324,0" FontWeight="ExtraLight" FontSize="50" Foreground="White"
-               RenderTransformOrigin="0.5,0.5" Width="655">
+        <Label Width="655" Margin="301,247,324,0" HorizontalAlignment="Center"
+               VerticalAlignment="Top" Content="This Is In Dev. It will not work" FontWeight="ExtraLight" FontSize="50"
+               Foreground="White" RenderTransformOrigin="0.5,0.5">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />

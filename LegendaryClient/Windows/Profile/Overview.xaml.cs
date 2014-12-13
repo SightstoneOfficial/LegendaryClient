@@ -12,6 +12,7 @@ using System.Windows.Threading;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Harassment;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 
@@ -30,55 +31,65 @@ namespace LegendaryClient.Windows.Profile
         public Overview()
         {
             InitializeComponent();
+            Change();
         }
 
-        public async void Update(double SummonerId, double AccountId)
+        public void Change()
         {
-            AccId = AccountId;
-            LcdsResponseString TotalKudos =
-                await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + SummonerId + "}");
-            RenderKudos(TotalKudos);
-            ChampionStatInfo[] TopChampions = await Client.PVPNet.RetrieveTopPlayedChampions(AccountId, "CLASSIC");
-            RenderTopPlayedChampions(TopChampions);
-            Client.PVPNet.RetrievePlayerStatsByAccountId(AccountId, "3", GotPlayerStats);
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
+        }
+
+        public async void Update(double summonerId, double accountId)
+        {
+            AccId = accountId;
+            LcdsResponseString totalKudos =
+                await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + summonerId + "}");
+            RenderKudos(totalKudos);
+            ChampionStatInfo[] topChampions = await Client.PVPNet.RetrieveTopPlayedChampions(accountId, "CLASSIC");
+            RenderTopPlayedChampions(topChampions);
+            Client.PVPNet.RetrievePlayerStatsByAccountId(accountId, "3", GotPlayerStats);
         }
 
         public void RenderKudos(LcdsResponseString TotalKudos)
         {
             KudosListView.Items.Clear();
             TotalKudos.Value = TotalKudos.Value.Replace("{\"totals\":[0,", "").Replace("]}", "");
-            string[] Kudos = TotalKudos.Value.Split(',');
-            var item = new KudosItem("Friendly", Kudos[0]);
+            string[] kudos = TotalKudos.Value.Split(',');
+            var item = new KudosItem("Friendly", kudos[0]);
             KudosListView.Items.Add(item);
-            item = new KudosItem("Helpful", Kudos[1]);
+            item = new KudosItem("Helpful", kudos[1]);
             KudosListView.Items.Add(item);
-            item = new KudosItem("Teamwork", Kudos[2]);
+            item = new KudosItem("Teamwork", kudos[2]);
             KudosListView.Items.Add(item);
-            item = new KudosItem("Honorable Opponent", Kudos[3]);
+            item = new KudosItem("Honorable Opponent", kudos[3]);
             KudosListView.Items.Add(item);
         }
 
-        public void RenderTopPlayedChampions(ChampionStatInfo[] TopChampions)
+        public void RenderTopPlayedChampions(ChampionStatInfo[] topChampions)
         {
             ViewAggregatedStatsButton.IsEnabled = false;
             TopChampionsListView.Items.Clear();
-            if (!TopChampions.Any())
+            if (!topChampions.Any())
                 return;
 
-            TopChampionsLabel.Content = "Top Champions (" + TopChampions[0].TotalGamesPlayed + " Ranked Games)";
-            foreach (ChampionStatInfo info in TopChampions)
+            TopChampionsLabel.Content = "Top Champions (" + topChampions[0].TotalGamesPlayed + " Ranked Games)";
+            foreach (ChampionStatInfo info in topChampions)
             {
                 ViewAggregatedStatsButton.IsEnabled = true;
                 if (!(Math.Abs(info.ChampionId) > 0))
                     continue;
 
-                champions Champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
+                champions champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
                 var player = new ChatPlayer
                 {
                     LevelLabel = {Visibility = Visibility.Hidden},
-                    PlayerName = {Content = Champion.displayName},
+                    PlayerName = {Content = champion.displayName},
                     PlayerStatus = {Content = info.TotalGamesPlayed + " games played"},
-                    ProfileImage = {Source = champions.GetChampion(Champion.id).icon},
+                    ProfileImage = {Source = champions.GetChampion(champion.id).icon},
                     Background = new SolidColorBrush(Color.FromArgb(102, 80, 80, 80)),
                     Height = 51.5,
                     Width = 278
@@ -102,15 +113,15 @@ namespace LegendaryClient.Windows.Profile
                         )
                     {
                         Summaries.Add(x);
-                        string SummaryString = x.PlayerStatSummaryTypeString;
-                        SummaryString =
+                        string summaryString = x.PlayerStatSummaryTypeString;
+                        summaryString =
                             string.Concat(
-                                SummaryString.Select(
+                                summaryString.Select(
                                     e => Char.IsUpper(e) ? " " + e : e.ToString(CultureInfo.InvariantCulture)))
                                 .TrimStart(' ');
-                        SummaryString = SummaryString.Replace("Odin", "Dominion");
-                        SummaryString = SummaryString.Replace("x", "v");
-                        StatsComboBox.Items.Add(SummaryString);
+                        summaryString = summaryString.Replace("Odin", "Dominion");
+                        summaryString = summaryString.Replace("x", "v");
+                        StatsComboBox.Items.Add(summaryString);
                     }
                 }
                 catch
@@ -128,9 +139,9 @@ namespace LegendaryClient.Windows.Profile
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     StatsListView.Items.Clear();
-                    PlayerStatSummary GameMode = Summaries[StatsComboBox.SelectedIndex];
+                    PlayerStatSummary gameMode = Summaries[StatsComboBox.SelectedIndex];
                     foreach (
-                        KudosItem Item in GameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
+                        KudosItem Item in gameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
                         {
                             Key = Client.TitleCaseString(stat.StatType.Replace('_', ' ')),
                             Value = stat.Value.ToString(CultureInfo.InvariantCulture)
@@ -139,7 +150,7 @@ namespace LegendaryClient.Windows.Profile
                                 item =>
                                     new KudosItem(item.Key.ToString(), item.Value.ToString())
                                     {
-                                        MinWidth = GameMode.AggregatedStats.Stats.Count < 15 ? 972 : 962,
+                                        MinWidth = gameMode.AggregatedStats.Stats.Count < 15 ? 972 : 962,
                                         MinHeight = 18
                                     }))
                     {
