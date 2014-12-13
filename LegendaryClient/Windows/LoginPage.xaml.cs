@@ -89,8 +89,13 @@ namespace LegendaryClient.Windows
                 var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath), UriKind.Absolute);
                 c.icon = new BitmapImage(Source);
                 Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
-                
-                //Champions.InsertExtraChampData(c); //why was this ever here? all of the needed info is already in the sqlite file
+
+                try
+                {
+
+                    Champions.InsertExtraChampData(c); //why was this ever here? all of the needed info is already in the sqlite file
+                }
+                catch { Client.Log("error, file not found", "NotFound"); }
             }
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
                                     orderby s.name
