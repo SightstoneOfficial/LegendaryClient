@@ -210,6 +210,7 @@ namespace LegendaryClient
 
             Client.PVPNet.Leave();
             Client.PVPNet.PurgeFromQueues();
+            Client.PVPNet.Disconnect();
             Environment.Exit(0);
         }
     }
