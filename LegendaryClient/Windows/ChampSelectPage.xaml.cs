@@ -1328,13 +1328,36 @@ namespace LegendaryClient.Windows
             //Enable dev mode if !~dev is typed in chat
             if (ChatTextBox.Text == "!~dev")
             {
-                DevMode = !DevMode;
-                ChampionSelectListView.IsHitTestVisible = true;
-                ChampionSelectListView.Opacity = 1;
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-                ChatTextBox.Text = "";
+                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+                dlg.DefaultExt = ".png";
+                dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
+                if ((bool)dlg.ShowDialog())
+                {
+                    string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
+                    using (WebClient client = new WebClient())
+                    {
+                        
+                        //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
+                        if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
+                        {
+                            DevMode = !DevMode;
+                            ChampionSelectListView.IsHitTestVisible = true;
+                            ChampionSelectListView.Opacity = 1;
+                            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                            tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                            ChatTextBox.Text = "";
+                        }
+                        else
+                        {
+                            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                            tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                            ChatTextBox.Text = "";
+                        }
+                    }
+                }
+                
             }
             else
             {
