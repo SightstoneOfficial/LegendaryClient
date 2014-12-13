@@ -10,6 +10,7 @@ using System.Windows.Shapes;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 
 #endregion
@@ -32,6 +33,8 @@ namespace LegendaryClient.Windows.Profile
         public Masteries()
         {
             InitializeComponent();
+            Change();
+
             MasteryPageListView.Items.Clear();
             for (int i = 1; i <= Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count; i++)
                 MasteryPageListView.Items.Add(i);
@@ -48,12 +51,24 @@ namespace LegendaryClient.Windows.Profile
             MasteryPageListView.SelectedIndex = MasteryPageOrder.IndexOf(selectedPageId);
         }
 
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
+        }
+
         public void ChangeBook()
         {
             MasteryTextBox.Text = SelectedBook.Name;
             foreach (TalentEntry talent in SelectedBook.TalentEntries)
-                foreach (masteries mastery in Client.Masteries.Where(mastery => mastery.id == talent.TalentId))
+            {
+                TalentEntry talent1 = talent;
+                foreach (masteries mastery in Client.Masteries.Where(mastery => mastery.id == talent1.TalentId))
                     mastery.selectedRank = talent.Rank;
+            }
         }
 
         public void RenderMasteries()
@@ -70,7 +85,6 @@ namespace LegendaryClient.Windows.Profile
             {
                 bool isOffense = false;
                 bool isDefense = false;
-                bool isUtility = false;
 
                 var item = new MasteryItem
                 {
@@ -101,7 +115,6 @@ namespace LegendaryClient.Windows.Profile
                         break;
                     default:
                         UtilityUsedPoints += mastery.selectedRank;
-                        isUtility = true;
                         UtilityListView.Items.Add(item);
                         break;
                 }
