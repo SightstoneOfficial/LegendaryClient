@@ -26,7 +26,6 @@ namespace LegendaryClient
     public partial class MainWindow : MetroWindow
     {
         private Accent myAccent = null;
-        Warning Warn = new Warning();
         private static readonly ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
         public MainWindow()
@@ -200,42 +199,18 @@ namespace LegendaryClient
             }
         }
 
-        
-        private bool QuitMe = false;
-        
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            Client.PVPNet.Leave();
-            Client.PVPNet.PurgeFromQueues();
-            Client.PVPNet.Disconnect();
-
-            if (QuitMe == true)
+            if (Client.ShouldExit)
             {
                 e.Cancel = true;
-                Warn.Title.Content = "Quit";
-                Warn.Content.Content = "Are You Sure You Want To Quit?";
-                Warn.backtochampselect.Click += Quit;
-                Warn.backtochampselect.Content = "Quit";
-                Warn.AcceptButton.Click += HideWarning;
-                Warn.hide.Click += HideWarning;
-                Client.OverlayContainer.Content = new Warning().Content;
-                Client.OverlayContainer.Visibility = Visibility.Visible;
+                Client.CancelExit();
+                return;
             }
-            else
-            {
-                e.Cancel = false;
-            }
-            
-        }
-        private void Quit(object sender, RoutedEventArgs e)
-        {
-            Client.PVPNet.PurgeFromQueues();
+
             Client.PVPNet.Leave();
+            Client.PVPNet.PurgeFromQueues();
             Environment.Exit(0);
-        }
-        private void HideWarning(object sender, RoutedEventArgs e)
-        {
-            Warn.Visibility = Visibility.Hidden;
         }
     }
 }
