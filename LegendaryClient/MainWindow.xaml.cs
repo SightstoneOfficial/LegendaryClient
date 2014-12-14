@@ -165,6 +165,11 @@ namespace LegendaryClient
                 uiLogic.UpdateMainPage();
                 Client.ClearPage(typeof(SettingsPage));
             }
+            else if (Client.donepatch)
+            {
+                Client.ClearPage(typeof(SettingsPage));
+                Client.SwitchPage(new LoginPage());
+            }
         }
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)

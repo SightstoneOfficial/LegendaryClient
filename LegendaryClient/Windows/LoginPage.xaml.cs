@@ -43,7 +43,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Change();
-
+            Client.donepatch = true;
             Client.patching = false;
             Version.TextChanged += WaterTextbox_TextChanged;
             if (Client.Version == "4.20.1" || Client.Version == "0.0.0")

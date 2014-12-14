@@ -883,6 +883,11 @@ namespace LegendaryClient.Logic
         internal static GameDTO GameLobbyDTO;
 
         /// <summary>
+        /// 
+        /// </summary>
+        internal static bool donepatch =false;
+
+        /// <summary>
         ///     A recorder
         /// </summary>
         internal static ReplayRecorder recorder = null;
