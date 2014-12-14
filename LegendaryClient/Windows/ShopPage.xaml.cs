@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using Awesomium.Core;
 using LegendaryClient.Logic;
+using LegendaryClient.Properties;
 
 #endregion
 
@@ -17,6 +18,16 @@ namespace LegendaryClient.Windows
         public ShopPage()
         {
             InitializeComponent();
+            Change();
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void RefreshBrowser()
@@ -37,12 +48,12 @@ namespace LegendaryClient.Windows
 
         private void ShopBrowser_NativeViewInitialized(object sender, WebViewEventArgs e)
         {
-            JSObject JSHook = ShopBrowser.CreateGlobalJavascriptObject("parentSandboxBridge");
-            foreach (String x in JSHook.GetMethodNames())
+            JSObject jsHook = ShopBrowser.CreateGlobalJavascriptObject("parentSandboxBridge");
+            foreach (String x in jsHook.GetMethodNames())
                 Client.Log(x, "JSHook");
 
-            JSHook.Bind("openInventoryBrowser", false, OnItemClick);
-            JSHook.Bind("getBuddyList", true, OnRequestBuddies);
+            jsHook.Bind("openInventoryBrowser", false, OnItemClick);
+            jsHook.Bind("getBuddyList", true, OnRequestBuddies);
         }
 
         public void OnRequestBuddies(object sender, JavascriptMethodEventArgs e)

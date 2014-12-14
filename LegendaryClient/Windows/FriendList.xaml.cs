@@ -401,6 +401,12 @@ namespace LegendaryClient.Windows
                 TheGrid.Background = (Brush) bc.ConvertFrom("#E5000000");
             else
                 TheGrid.Background = (Brush) bc.ConvertFrom("#E5B4B4B4");
+
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void Invite_Click(object sender, RoutedEventArgs e)

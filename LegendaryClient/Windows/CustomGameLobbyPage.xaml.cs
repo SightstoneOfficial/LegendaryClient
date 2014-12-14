@@ -285,9 +285,8 @@ namespace LegendaryClient.Windows
         private BotControl RenderBot(BotParticipant BotPlayer)
         {
             var botPlayer = new BotControl();
-            var uriSource =
-                new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", BotPlayer.SummonerName.Replace(" bot", "").Replace(" ", "").Replace("'", "") + ".png"),
-                    UriKind.RelativeOrAbsolute);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", BotPlayer.SummonerName.Replace(" bot", "").Replace(" ", "").Replace("'", "") + ".png"));
+            
             botPlayer.PlayerName.Content = BotPlayer.SummonerName;
             botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
             botPlayer.BanButton.Tag = BotPlayer;

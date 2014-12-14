@@ -43,6 +43,8 @@ namespace LegendaryClient.Windows
         public PatcherPage()
         {
             InitializeComponent();
+            Change();
+
             bool x = Settings.Default.DarkTheme;
             if (!x)
             {
@@ -54,6 +56,15 @@ namespace LegendaryClient.Windows
             DevKey.TextChanged += DevKey_TextChanged;
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void DevKey_TextChanged(object sender, TextChangedEventArgs e)
@@ -77,7 +88,7 @@ namespace LegendaryClient.Windows
             var client = new WebClient();
             string KeyPlayer = client.DownloadString("http://eddy5641.github.io/LegendaryClient/BetaUsers");
             string[] Players = KeyPlayer.Split(new[] {Environment.NewLine}, 0, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string[] BetaKey in Players.Select(Beta => Beta.Split(',')).Where(BetaKey => DevKey == BetaKey[0]))
+            foreach (var BetaKey in Players.Select(Beta => Beta.Split(',')).Where(BetaKey => DevKey == BetaKey[0]))
             {
                 Auth = true;
                 Welcome.Text = "Welcome " + BetaKey[1];
@@ -145,7 +156,8 @@ namespace LegendaryClient.Windows
                             double percentage = bytesIn/totalBytes*100;
                             CurrentProgressLabel.Content = "Downloaded " + e.BytesReceived + " of " +
                                                            e.TotalBytesToReceive;
-                            CurrentProgressBar.Value = int.Parse(Math.Truncate(percentage).ToString(CultureInfo.InvariantCulture));
+                            CurrentProgressBar.Value =
+                                int.Parse(Math.Truncate(percentage).ToString(CultureInfo.InvariantCulture));
                         }));
                     };
 
@@ -159,11 +171,15 @@ namespace LegendaryClient.Windows
 
                     client = new WebClient();
                     if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3")))
-                        client.DownloadFile(new Uri("https://s12.solidfilesusercontent.com/MDE1MWYxZGJmYWFhNzJmNGQ2N2ZhOWE0NzU4Yjk2ZDYwZjY3MGU2OToxWHp3OTk6dUllemo3WDM0RnlScUgxZk1YWXpKYmN0RXBn/7a0671ed14/Login.mp3"),
+                        client.DownloadFile(
+                            new Uri(
+                                "https://s12.solidfilesusercontent.com/MDE1MWYxZGJmYWFhNzJmNGQ2N2ZhOWE0NzU4Yjk2ZDYwZjY3MGU2OToxWHp3OTk6dUllemo3WDM0RnlScUgxZk1YWXpKYmN0RXBn/7a0671ed14/Login.mp3"),
                             Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
 
                     if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4")))
-                        client.DownloadFile(new Uri("https://s8.solidfilesusercontent.com/MzkxMTBjOTllZDczMTBjZDUwNzgwOTc1NTYwZmY1Nzg2YThkZDI5MzoxWHp2eE86alBDQXBkU1FuNmt6R3dsTzcycEtoOXpGdVZr/a38bbf759c/Login.mp4"),
+                        client.DownloadFile(
+                            new Uri(
+                                "https://s8.solidfilesusercontent.com/MzkxMTBjOTllZDczMTBjZDUwNzgwOTc1NTYwZmY1Nzg2YThkZDI5MzoxWHp2eE86alBDQXBkU1FuNmt6R3dsTzcycEtoOXpGdVZr/a38bbf759c/Login.mp4"),
                             Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
 
                     #endregion idk
@@ -469,14 +485,14 @@ namespace LegendaryClient.Windows
             FindLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
 
             bool? result = FindLeagueDialog.ShowDialog();
-            if (result != true) 
+            if (result != true)
                 return string.Empty;
 
             RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
             if (key != null)
                 key.SetValue("Path",
                     FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
-            
+
             if (restart)
                 LogTextBox("Saved value, please restart the client to login.");
 
@@ -552,7 +568,7 @@ namespace LegendaryClient.Windows
                 {
                     StartInfo =
                     {
-                        WorkingDirectory = location.ToString(), 
+                        WorkingDirectory = location.ToString(),
                         FileName = "Patcher.exe"
                     }
                 };
@@ -617,7 +633,8 @@ namespace LegendaryClient.Windows
             FileInfo fi = null;
 
             fi = new FileInfo(Process.GetCurrentProcess().MainModule.FileName);
-            FileStream stream = File.Open(Process.GetCurrentProcess().MainModule.FileName, FileMode.Open, FileAccess.Read);
+            FileStream stream = File.Open(Process.GetCurrentProcess().MainModule.FileName, FileMode.Open,
+                FileAccess.Read);
 
             md5.ComputeHash(stream);
 
@@ -764,7 +781,7 @@ namespace LegendaryClient.Windows
                     continue;
 
                 string SavePlace = Location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
-                if (!SavePlace.EndsWith(".jpg") && !SavePlace.EndsWith(".png") && !SavePlace.EndsWith(".mp3")) 
+                if (!SavePlace.EndsWith(".jpg") && !SavePlace.EndsWith(".png") && !SavePlace.EndsWith(".mp3"))
                     continue;
 
                 if (SavePlace.Contains("assets/images/champions/"))
@@ -831,7 +848,7 @@ namespace LegendaryClient.Windows
                 string[] VersionArray = Location.Split(new[] {"/files/"}, StringSplitOptions.None)[0].Split('/');
                 string Version = VersionArray[VersionArray.Length - 1];
                 int VersionNumber = Convert.ToInt32(Version.Split('.')[3]);
-                if (VersionNumber <= CurrentVersionNumber) 
+                if (VersionNumber <= CurrentVersionNumber)
                     continue;
 
                 LogTextBox("Downloading " + SavePlace);
@@ -903,7 +920,7 @@ namespace LegendaryClient.Windows
                     {
                         try
                         {
-                            BinaryWriter Writer = new BinaryWriter(File.OpenWrite(Path.Combine(n, Directories)));
+                            var Writer = new BinaryWriter(File.OpenWrite(Path.Combine(n, Directories)));
 
                             // Writer raw data                
                             Writer.Write(RAFFile.GetContent());
