@@ -280,7 +280,7 @@ namespace LegendaryClient.Windows
                 }
             };
             var uriSource =
-                new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", BotPlayer.Champion + ".png"),
+                new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", BotPlayer.champion + ".png"),
                     UriKind.RelativeOrAbsolute);
             botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
             botPlayer.BanButton.Tag = BotPlayer;
@@ -403,9 +403,9 @@ namespace LegendaryClient.Windows
 
             var par = new BotParticipant
             {
-                BotSkillLevelName = "Basic",
-                BotSkillLevel = 0,
-                Champion = champDTO
+                botSkillLevelName = "Basic",
+                botSkillLevel = 0,
+                champion = champDTO
             };
 
             await Client.PVPNet.SelectBotChampion(champint, par);
