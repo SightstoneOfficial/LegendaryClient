@@ -30,6 +30,8 @@ namespace LegendaryClient.Windows
         public ChampionDetailsPage(int championId)
         {
             InitializeComponent();
+            Change();
+
             RenderChampions(championId);
         }
 
@@ -42,6 +44,15 @@ namespace LegendaryClient.Windows
             SkinName.Content = skin.displayName;
             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath);
             ChampionImage.Source = Client.GetImage(uriSource);
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public void RenderChampions(int championId)

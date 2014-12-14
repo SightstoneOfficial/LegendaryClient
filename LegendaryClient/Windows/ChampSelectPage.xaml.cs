@@ -925,9 +925,9 @@ namespace LegendaryClient.Windows
                     if (previousPage.GetType() == typeof (FactionsGameLobbyPage))
                     {
                         var page = previousPage as FactionsGameLobbyPage;
-                        LeftTeamLabel.Content = page.getLeftTeam();
-                        RightTeamLabel.Content = page.getRightTeam();
-                        string myTeam = (AreWePurpleSide) ? page.getRightTeam() : page.getLeftTeam();
+                        LeftTeamLabel.Content = page.GetLeftTeam();
+                        RightTeamLabel.Content = page.GetRightTeam();
+                        string myTeam = (AreWePurpleSide) ? page.GetRightTeam() : page.GetLeftTeam();
                         switch (myTeam)
                         {
                             case "Ionia":

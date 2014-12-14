@@ -1,19 +1,9 @@
-﻿using jabber.client;
-using jabber.connection;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.JSON;
-using LegendaryClient.Logic.Region;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Logic.SWF;
-using LegendaryClient.Logic.SWF.SWFTypes;
-using LegendaryClient.Windows;
-using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Login;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -23,37 +13,52 @@ using System.Threading;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms.Integration;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using jabber.client;
+using jabber.connection;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.JSON;
+using LegendaryClient.Logic.Region;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Login;
+using SQLite;
+
+#endregion
 
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for LoginPage.xaml
+    ///     Interaction logic for LoginPage.xaml
     /// </summary>
-    public partial class LoginPage : Page
+    public partial class LoginPage
     {
         public LoginPage()
         {
             InitializeComponent();
+            Change();
+
             Client.patching = false;
             Version.TextChanged += WaterTextbox_TextChanged;
-            if (Client.Version == "4.20.1" || Client.Version == "0.0.0")	
+            if (Client.Version == "4.20.1" || Client.Version == "0.0.0")
                 Client.Version = "4.21.14";
-            bool x = Properties.Settings.Default.DarkTheme;
+            bool x = Settings.Default.DarkTheme;
             if (!x)
             {
                 var bc = new BrushConverter();
-                HideGrid.Background = (Brush)bc.ConvertFrom("#B24F4F4F");
-                LoggingInProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
+                HideGrid.Background = (Brush) bc.ConvertFrom("#B24F4F4F");
+                LoggingInProgressRing.Foreground = (Brush) bc.ConvertFrom("#FFFFFFFF");
             }
             //#B2C8C8C8
             Version.Text = Client.Version;
 
-            if (!Properties.Settings.Default.DisableLoginMusic)
+            if (!Settings.Default.DisableLoginMusic)
             {
                 SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
                 SoundPlayer.Play();
@@ -61,7 +66,7 @@ namespace LegendaryClient.Windows
             }
             else Sound.IsChecked = true;
 
-            if (Properties.Settings.Default.LoginPageImage == "")
+            if (Settings.Default.LoginPageImage == "")
             {
                 LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
                 LoginPic.LoadedBehavior = MediaState.Manual;
@@ -71,44 +76,55 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
-                    LoginImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
+                if (
+                    File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                        Settings.Default.LoginPageImage.Replace("\r\n", ""))))
+                    LoginImage.Source =
+                        new BitmapImage(
+                            new Uri(
+                                Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                                    Settings.Default.LoginPageImage), UriKind.Absolute));
             }
 
             Video.IsChecked = false;
 
             //Get client data after patcher completed
 
-            Client.SQLiteDatabase = new SQLite.SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
+            Client.SQLiteDatabase = new SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
-                                orderby s.name
-                                select s).ToList();
-            
+                orderby s.name
+                select s).ToList();
+
             foreach (champions c in Client.Champions)
             {
-                var Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath), UriKind.Absolute);
-                c.icon = new BitmapImage(Source);
+                var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
+                    UriKind.Absolute);
+                c.icon = new BitmapImage(source);
                 Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
 
                 try
                 {
-
-                    Champions.InsertExtraChampData(c); //why was this ever here? all of the needed info is already in the sqlite file
+                    Champions.InsertExtraChampData(c);
+                    //why was this ever here? all of the needed info is already in the sqlite file
                 }
-                catch { Client.Log("error, file not found", "NotFound"); }
+                catch
+                {
+                    Client.Log("error, file not found", "NotFound");
+                }
             }
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
-                                    orderby s.name
-                                    select s).ToList();
-            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>() //Needs Fixed
-                                        orderby s.name
-                                        select s).ToList();
+                orderby s.name
+                select s).ToList();
+            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
+                //Needs Fixed
+                orderby s.name
+                select s).ToList();
             Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
-                                 orderby s.id
-                                 select s).ToList();
+                orderby s.id
+                select s).ToList();
             Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
-                               orderby s.id
-                               select s).ToList();
+                orderby s.id
+                select s).ToList();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
@@ -132,36 +148,48 @@ namespace LegendaryClient.Windows
                 }
             }*/
 
-            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedUsername))
+            if (!String.IsNullOrWhiteSpace(Settings.Default.SavedUsername))
             {
                 RememberUsernameCheckbox.IsChecked = true;
-                LoginUsernameBox.Text = Properties.Settings.Default.SavedUsername;
+                LoginUsernameBox.Text = Settings.Default.SavedUsername;
             }
-            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword))
+            if (!String.IsNullOrWhiteSpace(Settings.Default.SavedPassword))
             {
                 SHA1 sha = new SHA1CryptoServiceProvider();
                 RememberPasswordCheckbox.IsChecked = true;
-                LoginPasswordBox.Password = Properties.Settings.Default.SavedPassword.DecryptStringAES(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Properties.Settings.Default.Guid)).ToString());
+                LoginPasswordBox.Password =
+                    Settings.Default.SavedPassword.DecryptStringAES(
+                        sha.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.Guid)).ToString());
             }
-            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.Region))
+            if (!String.IsNullOrWhiteSpace(Settings.Default.Region))
             {
-                RegionComboBox.SelectedValue = Properties.Settings.Default.Region;
+                RegionComboBox.SelectedValue = Settings.Default.Region;
             }
 
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
+            var uriSource =
+                new Uri(
+                    Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                        champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
             //LoginImage.Source = new BitmapImage(uriSource);//*/
-            
-            if (!String.IsNullOrWhiteSpace(Properties.Settings.Default.SavedPassword) &&
-                !String.IsNullOrWhiteSpace(Properties.Settings.Default.Region) &&
-                Properties.Settings.Default.AutoLogin)
-            {
-                AutoLoginCheckBox.IsChecked = true;
-                LoginButton_Click(null, null);
-            }
-            
+
+            if (String.IsNullOrWhiteSpace(Settings.Default.SavedPassword) ||
+                String.IsNullOrWhiteSpace(Settings.Default.Region) || !Settings.Default.AutoLogin)
+                return;
+
+            AutoLoginCheckBox.IsChecked = true;
+            LoginButton_Click(null, null);
         }
 
-        void LoginPic_MediaEnded(object sender, RoutedEventArgs e)
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
+        }
+
+        private void LoginPic_MediaEnded(object sender, RoutedEventArgs e)
         {
             LoginPic.Position = TimeSpan.FromSeconds(0);
             LoginPic.Play();
@@ -172,11 +200,12 @@ namespace LegendaryClient.Windows
             //Version.Text = Client.Version;]
             Client.Version = Version.Text;
         }
-        bool PlayingSound = true;
+
+        private bool PlayingSound = true;
+
         private void DisableSound_Click(object sender, RoutedEventArgs e)
         {
-            
-            if(PlayingSound)
+            if (PlayingSound)
             {
                 SoundPlayer.Pause();
                 Sound.IsChecked = true;
@@ -190,28 +219,30 @@ namespace LegendaryClient.Windows
                 PlayingSound = true;
             }
 
-            if (Sound.IsChecked.Value) Properties.Settings.Default.DisableLoginMusic = true;
-            else Properties.Settings.Default.DisableLoginMusic = false;
+            Settings.Default.DisableLoginMusic = Sound.IsChecked.Value;
         }
 
-        void SoundPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        private void SoundPlayer_MediaEnded(object sender, RoutedEventArgs e)
         {
             SoundPlayer.Position = TimeSpan.FromSeconds(0);
             SoundPlayer.Play();
         }
-        bool PlayingVideo = true;
+
+        private bool PlayingVideo = true;
+
         private void DisableVideo_Click(object sender, RoutedEventArgs e)
         {
-            if(PlayingVideo == true)
+            if (PlayingVideo)
             {
                 Video.IsChecked = true;
                 PlayingVideo = false;
                 try
                 {
-
                     LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
                 }
-                catch { }
+                catch
+                {
+                }
             }
             else
             {
@@ -225,25 +256,27 @@ namespace LegendaryClient.Windows
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             Client.PVPNet = null;
-            Client.PVPNet = new PVPNetConnect.PVPNetConnection();
-            
-            if (string.IsNullOrEmpty(Properties.Settings.Default.Guid))
-                Properties.Settings.Default.Guid = Guid.NewGuid().ToString();
-            Properties.Settings.Default.Save();
-            SHA1 sha =new SHA1CryptoServiceProvider();
+            Client.PVPNet = new PVPNetConnection();
+
+            if (string.IsNullOrEmpty(Settings.Default.Guid))
+                Settings.Default.Guid = Guid.NewGuid().ToString();
+
+            Settings.Default.Save();
+            SHA1 sha = new SHA1CryptoServiceProvider();
             if (RememberPasswordCheckbox.IsChecked == true)
-                Properties.Settings.Default.SavedPassword = LoginPasswordBox.Password.EncryptStringAES(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes(Properties.Settings.Default.Guid)).ToString());
+                Settings.Default.SavedPassword =
+                    LoginPasswordBox.Password.EncryptStringAES(
+                        sha.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.Guid)).ToString());
             else
-                Properties.Settings.Default.SavedPassword = "";
+                Settings.Default.SavedPassword = "";
 
-            if (RememberUsernameCheckbox.IsChecked == true)
-                Properties.Settings.Default.SavedUsername = LoginUsernameBox.Text;
-            else
-                Properties.Settings.Default.SavedUsername = "";
+            Settings.Default.SavedUsername = RememberUsernameCheckbox.IsChecked == true ? LoginUsernameBox.Text : "";
 
-            Properties.Settings.Default.AutoLogin = (bool)AutoLoginCheckBox.IsChecked;
-            Properties.Settings.Default.Region = (string)RegionComboBox.SelectedValue;
-            Properties.Settings.Default.Save();
+            if (AutoLoginCheckBox.IsChecked != null)
+                Settings.Default.AutoLogin = (bool) AutoLoginCheckBox.IsChecked;
+
+            Settings.Default.Region = (string) RegionComboBox.SelectedValue;
+            Settings.Default.Save();
 
             HideGrid.Visibility = Visibility.Hidden;
             ErrorTextBox.Visibility = Visibility.Hidden;
@@ -252,25 +285,27 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnError += PVPNet_OnError;
             Client.PVPNet.OnLogin += PVPNet_OnLogin;
             Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
-            BaseRegion SelectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+            BaseRegion selectedRegion = BaseRegion.GetRegion((string) RegionComboBox.SelectedValue);
 
-            Client.Region = SelectedRegion;
+            Client.Region = selectedRegion;
             //Client.Version = "4.18.14";
-            if (SelectedRegion.PVPRegion != PVPNetConnect.Region.CS)
-                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version);
+            if (selectedRegion.PVPRegion != Region.CS)
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.PVPRegion,
+                    Client.Version);
             else
             {
-                Dictionary<String, String> settings = SelectedRegion.Location.LeagueSettingsReader();
-                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, SelectedRegion.PVPRegion, Client.Version, true, settings["host"], settings["lq_uri"], SelectedRegion.Locale);
+                Dictionary<String, String> settings = selectedRegion.Location.LeagueSettingsReader();
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.PVPRegion,
+                    Client.Version, true, settings["host"], settings["lq_uri"], selectedRegion.Locale);
             }
         }
 
         private void PVPNet_OnLogin(object sender, string username, string ipAddress)
         {
-            Client.PVPNet.GetLoginDataPacketForUser(new LoginDataPacket.Callback(GotLoginPacket));
+            Client.PVPNet.GetLoginDataPacketForUser(GotLoginPacket);
         }
 
-        private void PVPNet_OnError(object sender, PVPNetConnect.Error error)
+        private void PVPNet_OnError(object sender, Error error)
         {
             //Display error message
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -281,8 +316,8 @@ namespace LegendaryClient.Windows
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 ErrorTextBox.Text = error.Message;
             }));
-            Client.PVPNet.OnMessageReceived -= Client.OnMessageReceived;	
-            Client.PVPNet.OnError -= PVPNet_OnError;			
+            Client.PVPNet.OnMessageReceived -= Client.OnMessageReceived;
+            Client.PVPNet.OnError -= PVPNet_OnError;
             Client.PVPNet.OnLogin -= PVPNet_OnLogin;
         }
 
@@ -297,12 +332,15 @@ namespace LegendaryClient.Windows
                 Client.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    CreateSummonerNameOverlay createSummoner = new CreateSummonerNameOverlay();
+                    var createSummoner = new CreateSummonerNameOverlay();
                     Client.OverlayContainer.Content = createSummoner.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                while (!Client.done) ;
-                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
+                while (!Client.done)
+                {
+                }
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion,
+                    Client.Version);
                 return;
             }
             Client.LoginPacket = packet;
@@ -314,8 +352,11 @@ namespace LegendaryClient.Windows
                     Client.OverlayContainer.Content = new ChooseProfilePicturePage().Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                while (!Client.done) ;
-                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
+                while (!Client.done)
+                {
+                }
+                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion,
+                    Client.Version);
                 return;
             }
             Client.PlayerChampions = await Client.PVPNet.GetAvailableChampions();
@@ -327,19 +368,20 @@ namespace LegendaryClient.Windows
             Client.IsLoggedIn = true;
 
 
-
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
-                Client.StatusContainer.Visibility = System.Windows.Visibility.Visible;
+                Client.StatusContainer.Visibility = Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
 
-                AuthenticationCredentials newCredentials = new AuthenticationCredentials();
-                newCredentials.Username = LoginUsernameBox.Text;
-                newCredentials.Password = LoginPasswordBox.Password;
-                newCredentials.ClientVersion = Client.Version;
-                newCredentials.IpAddress = GetNewIpAddress();
-                newCredentials.Locale = Client.Region.Locale;
-                newCredentials.Domain = "lolclient.lol.riotgames.com";
+                var newCredentials = new AuthenticationCredentials
+                {
+                    Username = LoginUsernameBox.Text,
+                    Password = LoginPasswordBox.Password,
+                    ClientVersion = Client.Version,
+                    IpAddress = GetNewIpAddress(),
+                    Locale = Client.Region.Locale,
+                    Domain = "lolclient.lol.riotgames.com"
+                };
                 //Almost like the lol client now
                 string os = Environment.OSVersion.ToString();
                 string[] ossplit = os.Split('.');
@@ -350,6 +392,7 @@ namespace LegendaryClient.Windows
                 }
                 else
                     os = ossplit[0];
+
                 newCredentials.OperatingSystem = os;
 
                 Session login = await Client.PVPNet.Login(newCredentials);
@@ -364,107 +407,110 @@ namespace LegendaryClient.Windows
                 Client.ChatClient.SSL = true;
                 Client.ChatClient.User = LoginUsernameBox.Text;
                 Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
-                Client.userpass = new KeyValuePair<String, String>(LoginUsernameBox.Text, "AIR_" + LoginPasswordBox.Password);
+                Client.userpass = new KeyValuePair<String, String>(LoginUsernameBox.Text,
+                    "AIR_" + LoginPasswordBox.Password);
                 Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                 Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                 Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
                 Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
                 Client.ChatClient.Connect();
 
-                Client.RostManager = new RosterManager();
-                Client.RostManager.Stream = Client.ChatClient;
-                Client.RostManager.AutoSubscribe = true;
-                Client.RostManager.AutoAllow = jabber.client.AutoSubscriptionHanding.AllowAll;
+                Client.RostManager = new RosterManager
+                {
+                    Stream = Client.ChatClient,
+                    AutoSubscribe = true,
+                    AutoAllow = AutoSubscriptionHanding.AllowAll
+                };
                 Client.RostManager.OnRosterItem += Client.RostManager_OnRosterItem;
-                Client.RostManager.OnRosterEnd += new bedrock.ObjectHandler(Client.ChatClientConnect);
+                Client.RostManager.OnRosterEnd += Client.ChatClientConnect;
 
-                Client.PresManager = new PresenceManager();
-                Client.PresManager.Stream = Client.ChatClient;
+                Client.PresManager = new PresenceManager
+                {
+                    Stream = Client.ChatClient
+                };
                 Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
 
-                Client.ConfManager = new ConferenceManager();
-                Client.ConfManager.Stream = Client.ChatClient;
+                Client.ConfManager = new ConferenceManager
+                {
+                    Stream = Client.ChatClient
+                };
                 //switch
-                Client.Log("Connected to " + Client.Region.RegionName + " and logged in as " + Client.LoginPacket.AllSummonerData.Summoner.Name);
+                Client.Log("Connected to " + Client.Region.RegionName + " and logged in as " +
+                           Client.LoginPacket.AllSummonerData.Summoner.Name);
 
                 //Gather data and convert it that way that it does not cause errors
                 PlatformGameLifecycleDTO data = Client.LoginPacket.ReconnectInfo;
 
                 if (data != null && data.Game != null)
                 {
-                    Client.Log(data.PlayerCredentials.ChampionId.ToString());
+                    Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
                     Client.CurrentGame = data.PlayerCredentials;
                     Client.SwitchPage(new InGame());
                 }
                 else
                     uiLogic.UpdateMainPage();
-                Client.ClearPage(typeof(LoginPage));
+
+                Client.ClearPage(typeof (LoginPage));
             }));
         }
 
         public static string GetNewIpAddress()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             WebRequest con = WebRequest.Create("http://ll.leagueoflegends.com/services/connection_info");
             WebResponse response = con.GetResponse();
 
             int c;
-            while ((c = response.GetResponseStream().ReadByte()) != -1)
-                sb.Append((char)c);
+            Stream responseStream = response.GetResponseStream();
+            while (responseStream != null && (c = responseStream.ReadByte()) != -1)
+                sb.Append((char) c);
 
             con.Abort();
 
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, string> deserializedJSON = serializer.Deserialize<Dictionary<string, string>>(sb.ToString());
+            var serializer = new JavaScriptSerializer();
+            var deserializedJson = serializer.Deserialize<Dictionary<string, string>>(sb.ToString());
             try
             {
-                foreach (var x in deserializedJSON)
-                {
-                    if (x.Key.Contains("403") || x.Value.Contains("403"))
-                        throw new HttpListenerException(403);
-                    
-                }
-                return deserializedJSON["ip_address"];
+                if (deserializedJson.Any(x => x.Key.Contains("403") || x.Value.Contains("403")))
+                    throw new HttpListenerException(403);
+
+                return deserializedJson["ip_address"];
             }
             catch
             {
-                IPHostEntry host;
-                string localIP = "?";
-                host = Dns.GetHostEntry(Dns.GetHostName());
-                foreach (IPAddress ip in host.AddressList)
-                {
-                    if (ip.AddressFamily.ToString() == "InterNetwork")
-                    {
-                        localIP = ip.ToString();
-                    }
-                }
-                return localIP;
+                string localIp = "?";
+                IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+                foreach (IPAddress ip in host.AddressList.Where(ip => ip.AddressFamily.ToString() == "InterNetwork"))
+                    localIp = ip.ToString();
+
+                return localIp;
             }
         }
 
         private Vector MoveOffset;
         private Point CurrentLocation;
+
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                CurrentLocation = Mouse.GetPosition(MouseGrid);
-                MoveOffset = new Vector(tt.X, tt.Y);
-                HideGrid.CaptureMouse();
-            }
+            if (Mouse.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            CurrentLocation = Mouse.GetPosition(MouseGrid);
+            MoveOffset = new Vector(tt.X, tt.Y);
+            HideGrid.CaptureMouse();
         }
 
         private void Grid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (HideGrid.IsMouseCaptured)
-            {
-                Vector offset = Point.Subtract(e.GetPosition(MouseGrid), CurrentLocation);
+            if (!HideGrid.IsMouseCaptured)
+                return;
 
-                tt.X = MoveOffset.X + offset.X;
-                tt.Y = MoveOffset.Y + offset.Y;
-            }
+            Vector offset = Point.Subtract(e.GetPosition(MouseGrid), CurrentLocation);
+            tt.X = MoveOffset.X + offset.X;
+            tt.Y = MoveOffset.Y + offset.Y;
         }
+
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
         {
             HideGrid.ReleaseMouseCapture();

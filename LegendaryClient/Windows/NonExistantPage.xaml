@@ -3,23 +3,74 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:LegendaryClient.Controls"
-      mc:Ignorable="d"
-      d:DesignHeight="738" d:DesignWidth="1280"
-	Title="ChampSelectPage">
+      Title="ChampSelectPage"
+      mc:Ignorable="d" d:DesignHeight="738"
+      d:DesignWidth="1280">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
         <Image x:Name="BackgroundSplash" Stretch="UniformToFill" Opacity=".40" />
 
-        <Label x:Name="BlueBansLabel" Content="Blue Bans" HorizontalAlignment="Left" Margin="10,0,0,240" VerticalAlignment="Bottom" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
-        <ListView x:Name="BlueBanListView" HorizontalAlignment="Left" Margin="5,0,0,10" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="225" Width="58" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
+        <Label x:Name="BlueBansLabel" Margin="10,0,0,240" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+               Content="Blue Bans" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
+        <ListView x:Name="BlueBanListView" Width="58" Height="225" Margin="5,0,0,10"
+                  HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,80,5,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="400" Width="140" Background="Transparent" BorderBrush="{x:Null}">
+        <ListView x:Name="PurpleListView" Width="140" Height="400" Margin="0,80,5,10"
+                  HorizontalAlignment="Right" VerticalAlignment="Top"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -27,8 +78,12 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label x:Name="PurpleBansLabel" Content="Purple Bans" HorizontalAlignment="Right" Margin="0,0,10,240" VerticalAlignment="Bottom" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
-        <ListView x:Name="PurpleBanListView" HorizontalAlignment="Right" Margin="0,0,5,10" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="225" Width="58" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
+        <Label x:Name="PurpleBansLabel" Margin="0,0,10,240" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+               Content="Purple Bans" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
+        <ListView x:Name="PurpleBanListView" Width="58" Height="225" Margin="0,0,5,10"
+                  HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -36,28 +91,34 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="145,80,145,0" Height="370" VerticalAlignment="Top" Background="#66505050" Visibility="Hidden">
-            <ListView x:Name="AbilityListView" HorizontalAlignment="Left" Width="390" Margin="5,5,00,5" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" BorderBrush="{x:Null}">
+        <Grid x:Name="AfterChampionSelectGrid" Height="370" Margin="145,80,145,0" HorizontalAlignment="Stretch"
+              VerticalAlignment="Top" Background="#66505050" Visibility="Hidden">
+            <ListView x:Name="AbilityListView" Width="390" Margin="5,5,00,5" HorizontalAlignment="Left"
+                      VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      Background="{x:Null}" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
-            <ListView x:Name="SkinSelectListView" HorizontalAlignment="Stretch" Margin="400,0,0,0" VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050" BorderBrush="{x:Null}">
+            <ListView x:Name="SkinSelectListView" Margin="400,0,0,0" HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                      Background="#66505050" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
                         <WrapPanel />
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
                 <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        
-                    </Style>
+                    <Style TargetType="ListViewItem" />
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
-        <Label Content="That Must Suck" HorizontalAlignment="Left" VerticalAlignment="Top" Height="738" Width="1260" Margin="10,0,0,0" FontSize="48"/>
-        <Label Content="The page you tried to access can not be found" HorizontalAlignment="Left" VerticalAlignment="Top" Height="648" Width="1270" Margin="0,80,0,0" FontSize="48"/>
+        <Label Width="1260" Height="738" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="That Must Suck" FontSize="48" />
+        <Label Width="1270" Height="648"
+               Margin="0,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="The page you tried to access can not be found" FontSize="48" />
     </Grid>
 </Page>

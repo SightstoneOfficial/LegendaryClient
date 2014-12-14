@@ -3,29 +3,91 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1280"
-	Title="EndOfGamePage">
+      Title="EndOfGamePage"
+      mc:Ignorable="d" d:DesignHeight="768"
+      d:DesignWidth="1280">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid Background="#B2000000">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="309*"/>
-            <ColumnDefinition Width="331*"/>
+            <ColumnDefinition Width="309*" />
+            <ColumnDefinition Width="331*" />
         </Grid.ColumnDefinitions>
-        <Grid HorizontalAlignment="Stretch" Margin="20,20,20,20" VerticalAlignment="Stretch" Background="#FF2B2B2B" Grid.ColumnSpan="2">
-            <Image x:Name="SkinImage" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" Opacity="0.3" Stretch="UniformToFill" />
-            <Label x:Name="GameResultLabel" FontSize="40" FontWeight="ExtraLight" Content="Victory" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="White" />
-            <Label x:Name="TimeLabel" FontSize="18" FontWeight="ExtraLight" Content="20:00" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top" Foreground="White" />
-            <Label x:Name="ModeLabel" FontSize="18" FontWeight="ExtraLight" Content="NORMAL" HorizontalAlignment="Left" Margin="10,95,0,0" VerticalAlignment="Top" Foreground="White" />
-            <Label x:Name="TypeLabel" FontWeight="ExtraLight" Content="RANKED SOLO 5x5" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" Foreground="White" />
+        <Grid Grid.ColumnSpan="2" Margin="20,20,20,20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+              Background="#FF2B2B2B">
+            <Image x:Name="SkinImage" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                   Opacity="0.3" Stretch="UniformToFill" />
+            <Label x:Name="GameResultLabel" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   FontSize="40" FontWeight="ExtraLight" Content="Victory" Foreground="White" />
+            <Label x:Name="TimeLabel" Margin="10,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   FontSize="18"
+                   FontWeight="ExtraLight" Content="20:00" Foreground="White" />
+            <Label x:Name="ModeLabel" Margin="10,95,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   FontSize="18"
+                   FontWeight="ExtraLight" Content="NORMAL" Foreground="White" />
+            <Label x:Name="TypeLabel" Margin="10,120,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   FontWeight="ExtraLight" Content="RANKED SOLO 5x5" Foreground="White" />
 
-            <Button x:Name="CloseButton" Content="X" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top" Width="30" Margin="0,5,5,0" Panel.ZIndex="4" Click="CloseButton_Click" />
-            <Label x:Name="GainedIP" Content="+100 IP" FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" />
-            <Label x:Name="TotalIP" Content="100 IP Total" FontSize="16" FontWeight="ExtraLight" Foreground="White" HorizontalAlignment="Left" Margin="10,180,0,0" VerticalAlignment="Top" />
-            <TabControl HorizontalAlignment="Stretch" Width="920" Margin="315,0,5,0" VerticalAlignment="Stretch">
+            <Button x:Name="CloseButton" Width="30" Height="30" Margin="0,5,5,0" HorizontalAlignment="Right"
+                    VerticalAlignment="Top" Panel.ZIndex="4" Content="X" Click="CloseButton_Click" />
+            <Label x:Name="GainedIP" Margin="10,160,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="+100 IP"
+                   FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" />
+            <Label x:Name="TotalIP" Margin="10,180,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="100 IP Total"
+                   FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+            <TabControl Width="920" Margin="315,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <TabItem Header="Overview" Foreground="White">
                     <Grid>
-                        <ListView x:Name="PlayersListView" HorizontalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="10,0,10,10" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+                        <ListView x:Name="PlayersListView" Margin="10,0,10,10"
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
+                                  Background="#66505050"
+                                  BorderBrush="{x:Null}">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel />
@@ -34,23 +96,32 @@
                         </ListView>
                     </Grid>
                 </TabItem>
-                
+
                 <TabItem Header="Grid" />
-                
+
             </TabControl>
-            <Label x:Name="TotalXP" Content="1000 XP Total" FontSize="16" FontWeight="ExtraLight" Foreground="White" HorizontalAlignment="Left" Margin="10,240,0,0" VerticalAlignment="Top" />
-            <Label x:Name="GainedXP" Content="+50 XP" FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" HorizontalAlignment="Left" Margin="10,218,0,0" VerticalAlignment="Top" />
+            <Label x:Name="TotalXP" Margin="10,240,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="1000 XP Total"
+                   FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+            <Label x:Name="GainedXP" Margin="10,218,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="+50 XP"
+                   FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" />
         </Grid>
 
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Left" Margin="30,305,0,65" Width="300" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <RichTextBox x:Name="ChatText" Width="300" Margin="30,305,0,65" HorizontalAlignment="Left"
+                     VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050"
+                     BorderBrush="{x:Null}">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
-        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Left" Height="23" Margin="30,0,0,30" Width="200" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Button x:Name="ChatButton" Content="Send" Margin="240,0,0,30" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="90" IsDefault="True" Height="24" Click="ChatButton_Click"/>
+        <TextBox x:Name="ChatTextBox" Width="200" Height="23" Margin="30,0,0,30" HorizontalAlignment="Left"
+                 VerticalAlignment="Bottom" TextWrapping="Wrap" />
+        <Button x:Name="ChatButton" Width="90" Height="26" Margin="240,0,0,30"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Send" IsDefault="True"
+                Click="ChatButton_Click" />
 
     </Grid>
 </Page>

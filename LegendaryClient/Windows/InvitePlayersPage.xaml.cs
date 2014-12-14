@@ -1,112 +1,128 @@
-﻿using LegendaryClient.Controls;
-using LegendaryClient.Logic;
+﻿#region
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Properties;
+using Timer = System.Timers.Timer;
+
+#endregion
 
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for InvitePlayersPage.xaml
+    ///     Interaction logic for InvitePlayersPage.xaml
     /// </summary>
-    public partial class InvitePlayersPage : Page
+    public partial class InvitePlayersPage
     {
-        private static System.Timers.Timer UpdateTimer;
-        private List<string> invitedPlayers;
+        private static Timer UpdateTimer;
+        private readonly List<string> invitedPlayers;
 
         public InvitePlayersPage()
         {
             InitializeComponent();
+            Change();
 
             invitedPlayers = new List<string>();
-            UpdateTimer = new System.Timers.Timer(1000);
-            UpdateTimer.Elapsed += new System.Timers.ElapsedEventHandler(UpdateChat);
+            UpdateTimer = new Timer(1000);
+            UpdateTimer.Elapsed += UpdateChat;
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
             UpdateChat(null, null);
         }
 
-        private void UpdateChat(object sender, System.Timers.ElapsedEventArgs e)
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
+        }
+
+        private void UpdateChat(object sender, ElapsedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 AvailablePlayerListView.Items.Clear();
                 InvitedPlayerListView.Items.Clear();
-                foreach (KeyValuePair<string, ChatPlayerItem> ChatPlayerPair in Client.AllPlayers.ToArray())
+                foreach (var chatPlayerPair in Client.AllPlayers.ToArray())
                 {
-                    if (ChatPlayerPair.Value.Level != 0)
+                    if (chatPlayerPair.Value.Level == 0)
+                        continue;
+
+                    var player = new ChatPlayer
                     {
-                        ChatPlayer player = new ChatPlayer();
-                        player.Width = 250;
-                        player.Tag = ChatPlayerPair.Value;
-                        player.DataContext = ChatPlayerPair.Value;
-                        ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
-                        player.PlayerName.Content = playerItem.Username;
-                        player.PlayerStatus.Content = playerItem.Status;
-                        player.PlayerId.Content = playerItem.Id;
-                        player.LevelLabel.Content = ChatPlayerPair.Value.Level;
-                        var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ChatPlayerPair.Value.ProfileIcon + ".png");
-                        player.ProfileImage.Source = Client.GetImage(uriSource);
-                        
+                        Width = 250,
+                        Tag = chatPlayerPair.Value,
+                        DataContext = chatPlayerPair.Value
+                    };
+                    var playerItem = (ChatPlayerItem) player.Tag;
+                    player.PlayerName.Content = playerItem.Username;
+                    player.PlayerStatus.Content = playerItem.Status;
+                    player.PlayerId.Content = playerItem.Id;
+                    player.LevelLabel.Content = chatPlayerPair.Value.Level;
+                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                        chatPlayerPair.Value.ProfileIcon + ".png");
+                    player.ProfileImage.Source = Client.GetImage(uriSource);
 
-                        //Show available players
-                        if (ChatPlayerPair.Value.GameStatus != "outOfGame")
-                            continue;
+                    //Show available players
+                    if (chatPlayerPair.Value.GameStatus != "outOfGame")
+                        continue;
 
-                        bool ShouldBreak = false;
-                        foreach (var x in Client.InviteListView.Items)
-                        {
-                            InvitePlayer invitePlayer = x as InvitePlayer;
-                            if ((string)invitePlayer.PlayerLabel.Content == ChatPlayerPair.Value.Username)
-                                if ((string)invitePlayer.StatusLabel.Content == "Accepted")
-                                    ShouldBreak = true;
-                        }
-                        if (ShouldBreak)
-                            continue;
+                    bool shouldBreak = false;
+                    KeyValuePair<string, ChatPlayerItem> pair = chatPlayerPair;
+                    foreach (InvitePlayer invitePlayer in from object x in Client.InviteListView.Items
+                        select x as InvitePlayer
+                        into invitePlayer
+                        where (string) invitePlayer.PlayerLabel.Content == pair.Value.Username
+                        where (string) invitePlayer.StatusLabel.Content == "Accepted"
+                        select invitePlayer)
+                        shouldBreak = true;
 
-                        if (invitedPlayers.Contains(ChatPlayerPair.Value.Id))
-                        {
-                            InvitedPlayerListView.Items.Add(player);
-                        }
-                        else
-                        {
-                            AvailablePlayerListView.Items.Add(player);
-                        }
-                    }
+                    if (shouldBreak)
+                        continue;
+
+                    if (invitedPlayers.Contains(chatPlayerPair.Value.Id))
+                        InvitedPlayerListView.Items.Add(player);
+                    else
+                        AvailablePlayerListView.Items.Add(player);
                 }
             }));
         }
 
         private void AvailablePlayerListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (AvailablePlayerListView.SelectedIndex != -1)
-            {
-                ChatPlayer player = (ChatPlayer)AvailablePlayerListView.SelectedItem;
-                AvailablePlayerListView.SelectedIndex = -1;
-                ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
-                player.PlayerName.Content = playerItem.Username;
-                invitedPlayers.Add(playerItem.Id);
-                UpdateChat(null, null);
-            }
+            if (AvailablePlayerListView.SelectedIndex == -1)
+                return;
+
+            var player = (ChatPlayer) AvailablePlayerListView.SelectedItem;
+            AvailablePlayerListView.SelectedIndex = -1;
+            var playerItem = (ChatPlayerItem) player.Tag;
+            player.PlayerName.Content = playerItem.Username;
+            invitedPlayers.Add(playerItem.Id);
+            UpdateChat(null, null);
         }
 
         private void InvitedPlayerListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (InvitedPlayerListView.SelectedIndex != -1)
-            {
-                ChatPlayer player = (ChatPlayer)InvitedPlayerListView.SelectedItem;
-                InvitedPlayerListView.SelectedIndex = -1;
-                ChatPlayerItem playerItem = (ChatPlayerItem)player.Tag;
-                player.PlayerName.Content = playerItem.Username;
-                invitedPlayers.Remove(playerItem.Id);
-                UpdateChat(null, null);
-            }
+            if (InvitedPlayerListView.SelectedIndex == -1)
+                return;
+
+            var player = (ChatPlayer) InvitedPlayerListView.SelectedItem;
+            InvitedPlayerListView.SelectedIndex = -1;
+            var playerItem = (ChatPlayerItem) player.Tag;
+            player.PlayerName.Content = playerItem.Username;
+            invitedPlayers.Remove(playerItem.Id);
+            UpdateChat(null, null);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -116,24 +132,24 @@ namespace LegendaryClient.Windows
 
         private void SendInvitesButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (string Player in invitedPlayers)
+            foreach (string player in invitedPlayers)
             {
                 //This invites the player
-                Client.PVPNet.Invite(Player.Replace("sum",""));
+                Client.PVPNet.Invite(player.Replace("sum", ""));
 
-                ChatPlayerItem PlayerInfo = Client.AllPlayers[Player];
+                ChatPlayerItem playerInfo = Client.AllPlayers[player];
 
                 //If has already invited
-                bool ShouldBreak = false;
-                foreach (var x in Client.InviteListView.Items)
-                {
-                    InvitePlayer invitePlayer = x as InvitePlayer;
-                    if ((string)invitePlayer.PlayerLabel.Content == PlayerInfo.Username)
-                        ShouldBreak = true;
-                }
-                if (ShouldBreak)
-                    continue;
+                bool shouldBreak = false;
+                foreach (
+                    InvitePlayer invitePlayer in
+                        Client.InviteListView.Items.Cast<object>()
+                            .Select(x => x as InvitePlayer)
+                            .Where(invitePlayer => (string) invitePlayer.PlayerLabel.Content == playerInfo.Username))
+                    shouldBreak = true;
 
+                if (shouldBreak)
+                    continue;
             }
             Client.OverlayContainer.Visibility = Visibility.Hidden;
         }

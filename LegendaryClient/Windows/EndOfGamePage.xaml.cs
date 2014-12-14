@@ -19,6 +19,7 @@ using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 
 #endregion
@@ -35,6 +36,8 @@ namespace LegendaryClient.Windows
         public EndOfGamePage(EndOfGameStats statistics)
         {
             InitializeComponent();
+            Change();
+
             RenderStats(statistics);
             uiLogic.UpdateMainPage();
             Client.runonce = false;
@@ -46,6 +49,15 @@ namespace LegendaryClient.Windows
             _newRoom.OnRoomMessage += newRoom_OnRoomMessage;
             _newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
             _newRoom.Join(statistics.RoomPassword);
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
@@ -74,13 +86,13 @@ namespace LegendaryClient.Windows
                     Text = msg.From.Resource + ": "
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
-
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (Client.Filter)
                     tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                               Environment.NewLine;
                 else
                     tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
                 ChatText.ScrollToEnd();
@@ -94,7 +106,6 @@ namespace LegendaryClient.Windows
                 Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
             if (Client.Filter)
                 tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
@@ -104,8 +115,8 @@ namespace LegendaryClient.Windows
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
             if (String.IsNullOrEmpty(ChatTextBox.Text))
                 return;
-            _newRoom.PublicMessage(ChatTextBox.Text);
 
+            _newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
             ChatText.ScrollToEnd();
         }
@@ -116,15 +127,12 @@ namespace LegendaryClient.Windows
             TimeLabel.Content = string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
             ModeLabel.Content = statistics.GameMode;
             TypeLabel.Content = statistics.GameType;
-
             GainedIP.Content = "+" + statistics.IpEarned + " IP";
             TotalIP.Content = statistics.IpTotal.ToString(CultureInfo.InvariantCulture).Replace(".0", "") + " IP Total";
             string game = " XP";
-
             var allParticipants =
                 new List<PlayerParticipantStatsSummary>(statistics.TeamPlayerParticipantStats.ToArray());
             allParticipants.AddRange(statistics.OtherTeamPlayerParticipantStats);
-
             foreach (PlayerParticipantStatsSummary summary in allParticipants)
             {
                 var playerStats = new EndOfGamePlayer();
@@ -142,11 +150,9 @@ namespace LegendaryClient.Windows
                         Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                             SummonerSpell.GetSpellImageName((int) summary.Spell2Id)), UriKind.Absolute);
                 playerStats.Spell2Image.Source = new BitmapImage(uriSource);
-
                 double championsKilled = 0;
                 double assists = 0;
                 double deaths = 0;
-
                 bool victory = false;
                 foreach (RawStatDTO stat in summary.Statistics.Where(stat => stat.StatTypeName.ToLower() == "win"))
                     victory = true;
@@ -154,7 +160,6 @@ namespace LegendaryClient.Windows
                 if (statistics.Ranked)
                 {
                     game = " LP";
-
                     GainedXP.Content = (victory ? "+" : "-") + statistics.ExperienceEarned + game;
                     TotalXP.Content = statistics.ExperienceTotal + game;
                 }
@@ -175,7 +180,6 @@ namespace LegendaryClient.Windows
                         item.Source = new BitmapImage(uriSource);
                         playerStats.ItemsListView.Items.Add(item);
                     }
-
                     switch (stat.StatTypeName)
                     {
                         case "GOLD_EARNED":
@@ -206,14 +210,10 @@ namespace LegendaryClient.Windows
                             break;
                     }
                 }
-
                 playerStats.ScoreLabel.Content = championsKilled + "/" + deaths + "/" + assists;
-
                 PlayersListView.Items.Add(playerStats);
             }
-
             PlayersListView.Items.Insert(allParticipants.Count/2, new Separator());
-
             championSkins skin = championSkins.GetSkin(statistics.SkinIndex);
             try
             {
@@ -223,7 +223,6 @@ namespace LegendaryClient.Windows
                 var skinSource =
                     new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath),
                         UriKind.Absolute);
-
                 SkinImage.Source = new BitmapImage(skinSource);
             }
             catch (Exception)
