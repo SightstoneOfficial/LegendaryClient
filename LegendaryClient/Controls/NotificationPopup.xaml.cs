@@ -38,55 +38,59 @@ namespace LegendaryClient.Controls
                     Client.TitleCaseString(name.Replace("_", " "));
 
             //TODO: Get name from id
-            ChatPlayerItem player = Client.AllPlayers[message.From.User];
-            using (XmlReader reader = XmlReader.Create(new StringReader(message.Body)))
+            if (Client.AllPlayers.ContainsKey(message.From.User))
             {
-                while (reader.Read())
+
+                ChatPlayerItem player = Client.AllPlayers[message.From.User];
+                using (XmlReader reader = XmlReader.Create(new StringReader(message.Body)))
                 {
-                    if (!reader.IsStartElement())
-                        continue;
-
-                    #region Parse Popup
-
-                    switch (reader.Name)
+                    while (reader.Read())
                     {
-                        case "inviteId":
-                            reader.Read();
-                            _inviteId = Convert.ToInt32(reader.Value);
-                            break;
-                        case "profileIconId":
-                            reader.Read();
-                            _profileIconId = Convert.ToInt32(reader.Value);
-                            break;
-                        case "gameType":
-                            reader.Read();
-                            _gameType = reader.Value;
-                            break;
-                        case "mapId":
-                            reader.Read();
-                            _mapId = Convert.ToInt32(reader.Value);
-                            break;
-                        case "queueId":
-                            reader.Read();
-                            _queueId = Convert.ToInt32(reader.Value);
-                            break;
-                        case "gameId":
-                            reader.Read();
-                            _gameId = Convert.ToInt32(reader.Value);
-                            break;
+                        if (!reader.IsStartElement())
+                            continue;
+
+                        #region Parse Popup
+
+                        switch (reader.Name)
+                        {
+                            case "inviteId":
+                                reader.Read();
+                                _inviteId = Convert.ToInt32(reader.Value);
+                                break;
+                            case "profileIconId":
+                                reader.Read();
+                                _profileIconId = Convert.ToInt32(reader.Value);
+                                break;
+                            case "gameType":
+                                reader.Read();
+                                _gameType = reader.Value;
+                                break;
+                            case "mapId":
+                                reader.Read();
+                                _mapId = Convert.ToInt32(reader.Value);
+                                break;
+                            case "queueId":
+                                reader.Read();
+                                _queueId = Convert.ToInt32(reader.Value);
+                                break;
+                            case "gameId":
+                                reader.Read();
+                                _gameId = Convert.ToInt32(reader.Value);
+                                break;
+                        }
+
+                        #endregion Parse Popup
                     }
-
-                    #endregion Parse Popup
                 }
+
+                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", _profileIconId + ".png");
+                ProfileImage.Source = Client.GetImage(uriSource);
+
+                NotificationTextBox.Text = player.Username + " has invited you to a game" + Environment.NewLine
+                                           + "Hosted on " + BaseMap.GetMap(_mapId).DisplayName + Environment.NewLine
+                                           + "Game Type: " + Client.TitleCaseString(_gameType).Replace("_", " ") +
+                                           Environment.NewLine;
             }
-
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", _profileIconId + ".png");
-            ProfileImage.Source = Client.GetImage(uriSource);
-
-            NotificationTextBox.Text = player.Username + " has invited you to a game" + Environment.NewLine
-                                       + "Hosted on " + BaseMap.GetMap(_mapId).DisplayName + Environment.NewLine
-                                       + "Game Type: " + Client.TitleCaseString(_gameType).Replace("_", " ") +
-                                       Environment.NewLine;
         }
 
         public NotificationPopup(ChatSubjects subject, string message)
