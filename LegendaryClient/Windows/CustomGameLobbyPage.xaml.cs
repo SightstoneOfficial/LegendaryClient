@@ -413,18 +413,18 @@ namespace LegendaryClient.Windows
 
             var par = new BotParticipant
             {
-                botSkillLevelName = "Beginner",
-                botSkillLevel = 0,
-                champion = champDTO,
-                teamId = 100,
+                BotSkillLevelName = "Beginner",
+                BotSkillLevel = 0,
+                Champion = champDTO,
+                TeamId = 100,
                 pickMode = 0,
-                isGameOwner = false,
+                IsGameOwner = false,
                 SummonerInternalName = "bot_" + champions.name + "_100", //probably?
-                pickTurn = 0,
-                isMe = false,
-                badges = 0,
-                teamName = null,
-                team = 0,
+                PickTurn = 0,
+                IsMe = false,
+                Badges = 0,
+                TeamName = null,
+                Team = 0,
                 SummonerName = champions.displayName + " bot"
             };
 
