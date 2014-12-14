@@ -4,6 +4,7 @@
                       x:Name="LegendaryWindow"
                       Title="LegendaryClient" Width="1280" Height="768" MinWidth="1024" MinHeight="550"
                       SaveWindowPosition="True" TitleCaps="False"
+                      WindowStartupLocation="CenterScreen"
                       Closing="MainWindow_Closing">
 
     <Controls:MetroWindow.WindowCommands>
