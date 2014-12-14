@@ -60,7 +60,7 @@
         <local:TextBoxWatermarked x:Name="StatusBox" Height="23" Margin="5,35,5,0" HorizontalAlignment="Stretch"
                                   VerticalAlignment="Top" TextWrapping="NoWrap" Watermark="Set your status message"
                                   MaxLength="25" />
-        <ScrollViewer Margin="0,92,0,37" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer Margin="0,65,0,37" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
             <StackPanel x:Name="ChatListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </ScrollViewer>
         <local:TextBoxWatermarked x:Name="FriendAddBox" Height="23" Margin="10,0,69,9" HorizontalAlignment="Stretch"
@@ -68,6 +68,5 @@
                                   MaxLength="25" />
         <Button x:Name="AddFriendButton" Width="54" Height="23" Margin="186,0,0,9"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add" Click="AddFriendButton_Click" />
-        <ComboBox x:Name="RankedChanger" HorizontalAlignment="Left" Margin="5,58,0,0" ItemsSource="{DynamicResource RankedTypes}" VerticalAlignment="Top" Width="240" SelectionChanged="RankedChanger_SelectionChanged"/>
     </Grid>
 </Page>
