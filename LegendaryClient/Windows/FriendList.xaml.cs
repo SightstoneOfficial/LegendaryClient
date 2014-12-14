@@ -37,6 +37,7 @@ namespace LegendaryClient.Windows
 
         public FriendList()
         {
+            
             InitializeComponent();
             if (Settings.Default.StatusMsg != "Set your status message")
                 StatusBox.Text = Settings.Default.StatusMsg;
@@ -45,6 +46,7 @@ namespace LegendaryClient.Windows
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
             Client.chatlistview = ChatListView;
+            RankedChanger.SelectedItem = Client.TierName;
             Change();
         }
 
@@ -440,6 +442,12 @@ namespace LegendaryClient.Windows
                 case "spectating":
                     break;
             }
+        }
+
+        private void RankedChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Client.TierName = RankedChanger.SelectedItem.ToString().ToUpper();
+            Client.SetChatHover();
         }
     }
 }
