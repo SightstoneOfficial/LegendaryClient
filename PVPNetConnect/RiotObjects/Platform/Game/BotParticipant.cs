@@ -37,10 +37,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("champion")]
-        public ChampionDTO champion { get; set; }
+        public ChampionDTO Champion { get; set; }
 
         [InternalName("botSkillLevel")]
-        public int botSkillLevel { get; set; }
+        public Int32 BotSkillLevel { get; set; }
 
         [InternalName("teamId")]
         public string teamId { get; set; }
@@ -49,36 +49,30 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public string botSkillLevelName { get; set; }
 
         [InternalName("pickMode")]
-        public int pickMode { get; set; }
-
-        [InternalName("isGameOwner")]
-        public bool isGameOwner { get; set; }
-
-        [InternalName("summonerInternalName")]
-        public string SummonerInternalName { get; set; }
-
-        [InternalName("pickTurn")]
-        public int pickTurn { get; set; }
+        public Int32 pickMode { get; set; }
 
         [InternalName("isMe")]
-        public bool isMe { get; set; }
-
-        [InternalName("badges")]
-        public int badges { get; set; }
-
-        [InternalName("teamName")]
-        public string teamName { get; set; }
-
-        [InternalName("team")]
-        public int team { get; set; }
+        public Boolean IsMe { get; set; }
 
         [InternalName("summonerName")]
         public string SummonerName { get; set; }
 
-        //?
-        [InternalName("dataVersion")]
-        public object dataVersion = null;
-        [InternalName("futureData")]
-        public object futureData = null;
+        [InternalName("team")]
+        public Int32 Team { get; set; }
+
+        [InternalName("summonerInternalName")]
+        public String SummonerInternalName { get; set; }
+
+        [InternalName("pickTurn")]
+        public Int32 PickTurn { get; set; }
+
+        [InternalName("badges")]
+        public Int32 Badges { get; set; }
+
+        [InternalName("teamName")]
+        public Object TeamName { get; set; }
+
+        [InternalName("isGameOwner")]
+        public Boolean IsGameOwner { get; set; }
     }
 }

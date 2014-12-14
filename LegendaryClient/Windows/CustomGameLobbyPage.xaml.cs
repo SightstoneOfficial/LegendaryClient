@@ -293,10 +293,10 @@ namespace LegendaryClient.Windows
             botPlayer.PlayerName.Content = BotPlayer.SummonerName;
             botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
             botPlayer.blueSide = BotPlayer.SummonerInternalName.Split('_')[2] == "100";
-            botPlayer.difficulty = BotPlayer.botSkillLevel;
+            botPlayer.difficulty = BotPlayer.BotSkillLevel;
             botPlayer.cmbSelectDificulty.Items.Add("Beginner");
             botPlayer.cmbSelectDificulty.Items.Add("Intermediate");
-            botPlayer.cmbSelectDificulty.SelectedIndex = BotPlayer.botSkillLevel;
+            botPlayer.cmbSelectDificulty.SelectedIndex = BotPlayer.BotSkillLevel;
             foreach (int bot in bots)
                 botPlayer.cmbSelectChamp.Items.Add(champions.GetChampion(bot).name);
             botPlayer.cmbSelectChamp.SelectedItem = champ.name;
@@ -428,14 +428,14 @@ namespace LegendaryClient.Windows
 
             var par = new BotParticipant
             {
-                champion = champDTO,
+                Champion = champDTO,
                 pickMode = 0,
-                isGameOwner = false,
-                pickTurn = 0,
-                isMe = false,
-                badges = 0,
-                teamName = null,
-                team = 0,
+                IsGameOwner = false,
+                PickTurn = 0,
+                IsMe = false,
+                Badges = 0,
+                TeamName = null,
+                Team = 0,
                 SummonerName = champions.displayName + " bot"
             };
             if (blueSide)
@@ -452,11 +452,11 @@ namespace LegendaryClient.Windows
             {
                 case 0:
                     par.botSkillLevelName = "Beginner";
-                    par.botSkillLevel = difficulty;
+                    par.BotSkillLevel = difficulty;
                     break;
                 case 1:
                     par.botSkillLevelName = "Intermediate";
-                    par.botSkillLevel = difficulty;
+                    par.BotSkillLevel = difficulty;
                     break;
             }
             await Client.PVPNet.SelectBotChampion(champint, par);
@@ -468,7 +468,7 @@ namespace LegendaryClient.Windows
             addBot(0, true, 0);
         }
 
-        private void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
+        private async void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
         {
             addBot(0, false, 0);
         }

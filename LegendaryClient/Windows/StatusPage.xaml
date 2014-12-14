@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:Controls="clr-namespace:LegendaryClient.Controls"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     Title="StatusPage"
     Width="1252.6"
     mc:Ignorable="d" d:DesignHeight="40">
@@ -91,10 +91,10 @@
                 VerticalAlignment="Stretch"
                 Style="{x:Null}" Content="!" Foreground="Black" FontSize="20"
                 Click="NotificationButton_Click" />
-        <Controls:TextBoxWatermarked x:Name="DevCommand" Width="254" Height="32"
-                                     Margin="0,0,115,4" HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                     TextWrapping="Wrap" Watermark="Enter Dev Command here" FontSize="20"
-                                     Visibility="Hidden" />
+        <TextBox x:Name="DevCommand" Width="254" Height="32"
+                 Margin="0,0,115,4" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                 TextWrapping="Wrap" controls:TextboxHelper.Watermark="Enter Dev Command here" FontSize="20"
+                 Visibility="Hidden" />
         <Button x:Name="JoinChat" Width="50" Margin="0,4,60,4" HorizontalAlignment="Right"
                 VerticalAlignment="Stretch" Style="{x:Null}" Click="JoinChatButton_Click">
             <StackPanel>
