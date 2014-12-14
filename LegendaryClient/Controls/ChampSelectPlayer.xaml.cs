@@ -37,7 +37,7 @@ namespace LegendaryClient.Controls
                 {
                     _stats = new PlayerStatisticsChampSelect();
                     PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
-                    if (summoner == null || _stats == null)
+                    if (summoner == null || _stats == null || summoner.InternalName.Contains("bot"))
                     {
                         _stats = null;
                         return;

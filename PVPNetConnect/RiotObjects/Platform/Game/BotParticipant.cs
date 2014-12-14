@@ -43,7 +43,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int botSkillLevel { get; set; }
 
         [InternalName("teamId")]
-        public int teamId { get; set; }
+        public string teamId { get; set; }
 
         [InternalName("botSkillLevelName")]
         public string botSkillLevelName { get; set; }

@@ -5,6 +5,8 @@
     /// </summary>
     public partial class BotControl
     {
+        public int difficulty {get; set;}
+        public bool blueSide { get; set; }
         public BotControl()
         {
             InitializeComponent();

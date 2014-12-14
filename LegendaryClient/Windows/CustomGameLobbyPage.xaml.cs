@@ -285,12 +285,36 @@ namespace LegendaryClient.Windows
         private BotControl RenderBot(BotParticipant BotPlayer)
         {
             var botPlayer = new BotControl();
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", BotPlayer.SummonerName.Replace(" bot", "").Replace(" ", "").Replace("'", "") + ".png"));
-            
+            champions champ = champions.GetChampion(BotPlayer.SummonerInternalName.Split('_')[1]);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", champ.name + ".png"));
+
+            botPlayer.Width = 400;
+            botPlayer.Margin = new Thickness(0, 0, 0, 5);
             botPlayer.PlayerName.Content = BotPlayer.SummonerName;
             botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
+            botPlayer.blueSide = BotPlayer.SummonerInternalName.Split('_')[2] == "100";
+            botPlayer.difficulty = BotPlayer.botSkillLevel;
+            botPlayer.cmbSelectDificulty.Items.Add("Beginner");
+            botPlayer.cmbSelectDificulty.Items.Add("Intermediate");
+            botPlayer.cmbSelectDificulty.SelectedIndex = BotPlayer.botSkillLevel;
+            foreach (int bot in bots)
+                botPlayer.cmbSelectChamp.Items.Add(champions.GetChampion(bot).name);
+            botPlayer.cmbSelectChamp.SelectedItem = champ.name;
+
             botPlayer.BanButton.Tag = BotPlayer;
             botPlayer.BanButton.Click += KickAndBan_Click;
+            botPlayer.cmbSelectChamp.SelectionChanged += async (a, b) =>
+            {
+                champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
+                await Client.PVPNet.RemoveBotChampion(champ.id, BotPlayer);
+                addBot(c.id, botPlayer.blueSide, botPlayer.difficulty);
+            };
+            botPlayer.cmbSelectDificulty.SelectionChanged += async (a, b) =>
+            {
+                champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
+                await Client.PVPNet.RemoveBotChampion(champ.id, BotPlayer);
+                addBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex);
+            };
 
             return botPlayer;
         }
@@ -315,8 +339,16 @@ namespace LegendaryClient.Windows
             if (button == null)
                 return;
 
-            var banPlayer = (PlayerParticipant)button.Tag;
-            await Client.PVPNet.BanUserFromGame(Client.GameID, banPlayer.AccountId);
+            if (button.Tag is PlayerParticipant)
+            {
+                var banPlayer = (PlayerParticipant)button.Tag;
+                await Client.PVPNet.BanUserFromGame(Client.GameID, banPlayer.AccountId);
+            }
+            else if (button.Tag is BotParticipant)
+            {
+                var banPlayer = (BotParticipant)button.Tag;
+                await Client.PVPNet.RemoveBotChampion(champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
+            }
         }
 
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
@@ -368,14 +400,10 @@ namespace LegendaryClient.Windows
 
             return bots[r];
         }
-        /*
-         * team id blue - 100, purple - 200
-         * 
-         * 
-         * */
-        private async void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
+
+        private async void addBot(int id, bool blueSide, int difficulty)
         {
-            Int32 champint = getRandomChampInt();
+            Int32 champint = (id == 0 ? getRandomChampInt() : id);
             champions champions = champions.GetChampion(champint);
             var champDTO = new ChampionDTO
             {
@@ -389,37 +417,20 @@ namespace LegendaryClient.Windows
             var skinlist = new List<ChampionSkinDTO>();
             foreach (Dictionary<string, object> skins in champions.Skins)
             {
-                var skin = new ChampionSkinDTO
-                {
-                    ChampionId = champint,
-                    FreeToPlayReward = false
-                };
-                Int32 skinInt = Convert.ToInt32(skins["id"]);
-                skin.SkinId = skinInt;
-                /*var champs = new List<ChampionDTO>(Client.PlayerChampions);
-                foreach (ChampionDTO x in champs)
-                {
-                    foreach (ChampionSkinDTO myskin in x.ChampionSkins)
-                    {
-                        if (myskin.Owned)
-                        {
-                        }
-                    }
-                }*/
-                skin.Owned = true;
+                var skin = new ChampionSkinDTO();
+                skin.ChampionId = champint;
+                skin.SkinId = Convert.ToInt32(skins["id"]);
+                skin.SkinIndex = Convert.ToInt32(skins["num"]);
+                skin.StillObtainable = true;
                 skinlist.Add(skin);
             }
             champDTO.ChampionSkins = skinlist;
 
             var par = new BotParticipant
             {
-                botSkillLevelName = "Beginner",
-                botSkillLevel = 0,
                 champion = champDTO,
-                teamId = 100,
                 pickMode = 0,
                 isGameOwner = false,
-                SummonerInternalName = "bot_" + champions.name + "_100", //probably?
                 pickTurn = 0,
                 isMe = false,
                 badges = 0,
@@ -427,19 +438,39 @@ namespace LegendaryClient.Windows
                 team = 0,
                 SummonerName = champions.displayName + " bot"
             };
-
+            if (blueSide)
+            {
+                par.teamId = "100";
+                par.SummonerInternalName = "bot_" + champions.name + "_100";
+            }
+            else
+            {
+                par.teamId = "200";
+                par.SummonerInternalName = "bot_" + champions.name + "_200";
+            }
+            switch(difficulty)
+            {
+                case 0:
+                    par.botSkillLevelName = "Beginner";
+                    par.botSkillLevel = difficulty;
+                    break;
+                case 1:
+                    par.botSkillLevelName = "Intermediate";
+                    par.botSkillLevel = difficulty;
+                    break;
+            }
             await Client.PVPNet.SelectBotChampion(champint, par);
 
+        }
 
-            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { }));
+        private void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
+        {
+            addBot(0, true, 0);
         }
 
         private void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                //Needs looked into
-            }));
+            addBot(0, false, 0);
         }
     }
 }

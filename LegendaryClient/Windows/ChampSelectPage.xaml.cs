@@ -649,7 +649,7 @@ namespace LegendaryClient.Windows
                         else if (tempParticipant is BotParticipant)
                         {
                             var bot = tempParticipant as BotParticipant;
-                            string botChamp = bot.SummonerName.Split(' ')[0]; //Why is this internal name rito?
+                            string botChamp = bot.SummonerInternalName.Split('_')[1]; //Why is this internal name rito?
                             champions botSelectedChamp = champions.GetChampion(botChamp);
                             var part = new PlayerParticipant();
                             var selection = new PlayerChampionSelectionDTO();
@@ -753,6 +753,7 @@ namespace LegendaryClient.Windows
                         InGame();
                         Client.ReturnButton.Visibility = Visibility.Hidden;
                     }));
+                    Client.AmbientSoundPlayer.Stop();
                 }
 
                 #endregion Launching Game
@@ -1191,6 +1192,7 @@ namespace LegendaryClient.Windows
 
         private async void QuitCurrentGame()
         {
+            Client.AmbientSoundPlayer.Stop();
             await Client.PVPNet.QuitGame();
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof (CustomGameLobbyPage));
