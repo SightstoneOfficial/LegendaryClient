@@ -93,7 +93,9 @@ namespace LegendaryClient.Windows
             InsertDefaultValues();
             mainWindow = window;
             HudLink.Text = "";
-            WarnExitCheckbox.IsChecked = Settings.Default.warnClose;
+            HudLink.Watermark =
+                "Enter your LeagueCraft HUD URL here (http://leaguecraft.com/uimods/2433-cloud-9-themed-ui.xhtml) and click install HUD";
+            warnExitCheckbox.IsChecked = Settings.Default.warnClose;
             StatsCheckbox.IsChecked = Settings.Default.GatherStatistics;
             ErrorCheckbox.IsChecked = Settings.Default.SendErrors;
             UseAsBackground.IsChecked = Settings.Default.UseAsBackgroundImage;
@@ -222,9 +224,9 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void warnExitCheckbox_Checked(object sender, RoutedEventArgs e)
         {
-            var cb = (CheckBox) sender;
+            var cb = (CheckBox)sender;
             if (cb.IsChecked != null)
-                Settings.Default.warnClose = (bool) cb.IsChecked;
+                Settings.Default.warnClose = (bool)cb.IsChecked;
 
             Settings.Default.Save();
         }

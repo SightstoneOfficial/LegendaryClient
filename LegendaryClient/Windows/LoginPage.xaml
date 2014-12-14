@@ -4,7 +4,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:Controls1="clr-namespace:LegendaryClient.Controls"
     Title="LoginPage"
     mc:Ignorable="d" d:DesignHeight="672"
     d:DesignWidth="1024">
@@ -68,7 +69,7 @@
                 <DropShadowEffect />
             </Grid.Effect>
             <Grid.RenderTransform>
-                <TranslateTransform x:Name="Tt" />
+                <TranslateTransform x:Name="tt" />
             </Grid.RenderTransform>
 
             <Label x:Name="WelcomeLabel" Margin="0,0,0,0" HorizontalAlignment="Center"
@@ -96,10 +97,10 @@
                 <CheckBox x:Name="AutoLoginCheckBox" Margin="10,160,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Auto-Login" Foreground="White" />
             </Grid>
-            <TextBox x:Name="Version" Width="330" Height="24"
-                     Margin="0,301,10,0" HorizontalAlignment="Right"
-                     VerticalAlignment="Top" TextWrapping="Wrap"
-                     controls:TextboxHelper.Watermark="Client Version Override" />
+            <Controls1:TextBoxWatermarked x:Name="Version" Width="330" Height="24"
+                                          Margin="0,301,10,0" HorizontalAlignment="Right"
+                                          VerticalAlignment="Top" TextWrapping="Wrap"
+                                          Watermark="Client Version Override" />
             <CheckBox x:Name="Sound" Margin="10,280,0,0" HorizontalAlignment="Left"
                       VerticalAlignment="Top" Click="DisableSound_Click" Content="Disable Login Music"
                       Foreground="White"
@@ -110,12 +111,12 @@
                       IsChecked="False" />
         </Grid>
 
-        <controls:ProgressRing x:Name="LoggingInProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center"
+        <Controls:ProgressRing x:Name="LoggingInProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center"
                                VerticalAlignment="Center" IsActive="True" Visibility="Hidden">
-            <controls:ProgressRing.Effect>
+            <Controls:ProgressRing.Effect>
                 <DropShadowEffect />
-            </controls:ProgressRing.Effect>
-        </controls:ProgressRing>
+            </Controls:ProgressRing.Effect>
+        </Controls:ProgressRing>
         <Label x:Name="LoggingInLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Logging in..."
                FontSize="36" FontWeight="Bold" Foreground="White" Visibility="Hidden">
             <Label.Effect>

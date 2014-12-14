@@ -503,7 +503,7 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() =>
             {
                 HintLabel.Margin = new Thickness(0, 30, 365, 0);
-                HintLabel.Content = "Replay Downloaded";
+                Command.Watermark = "replay downloaded";
                 var fadeGridInAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
                 Command.Visibility = Visibility.Visible;
                 Download.Visibility = Visibility.Visible;

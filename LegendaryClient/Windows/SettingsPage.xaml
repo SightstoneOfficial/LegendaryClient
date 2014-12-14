@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:controls1="clr-namespace:LegendaryClient.Controls"
     Title="SettingsPage"
     mc:Ignorable="d" d:DesignHeight="672"
     d:DesignWidth="1024">
@@ -58,10 +58,10 @@
         <TabControl Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="LegendaryClient">
                 <Grid>
-                    <CheckBox x:Name="WarnExitCheckbox" Margin="10,10,0,0"
+                    <CheckBox x:Name="warnExitCheckbox" Margin="10,10,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Top"
                               Content="Show exit confirmation"
-                              Checked="warnExitCheckbox_Checked" Unchecked="warnExitCheckbox_Checked" />
+                              Checked="warnExitCheckbox_Checked" Unchecked="warnExitCheckbox_Checked"/>
                     <CheckBox x:Name="StatsCheckbox" Margin="10,31,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Top"
                               Content="Gather Statistics to enhance LegendaryClient"
@@ -166,10 +166,8 @@
                         <ColumnDefinition Width="121*" />
                     </Grid.ColumnDefinitions>
                     <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="EasyHud Beta" FontSize="16" />
-                    <TextBox x:Name="HudLink" Grid.ColumnSpan="2" Margin="10,31,5,0"
-                             VerticalAlignment="Top"
-                             TextWrapping="Wrap"
-                             controls:TextboxHelper.Watermark="Enter your LeagueCraft HUD URL here (http://leaguecraft.com/uimods/2433-cloud-9-themed-ui.xhtml) and click install HUD" />
+                    <controls1:TextBoxWatermarked x:Name="HudLink" Grid.ColumnSpan="2" Margin="10,31,5,0"
+                                                  VerticalAlignment="Top" TextWrapping="Wrap" Watermark="hi" />
                     <Button Grid.Column="1" Width="75" Margin="0,58,10,0" HorizontalAlignment="Right"
                             VerticalAlignment="Top" Content="Install HUD" Click="Button_Click" />
                     <Label x:Name="ResultTextbox"

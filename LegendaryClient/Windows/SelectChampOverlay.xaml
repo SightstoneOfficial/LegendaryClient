@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:Controls="clr-namespace:LegendaryClient.Controls"
       Title="SelectChampOverlay"
       mc:Ignorable="d" d:DesignHeight="672"
       d:DesignWidth="1024">
@@ -67,10 +67,10 @@
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
-        <TextBox x:Name="SearchTextBox" Width="120" Height="22" Margin="10,-440,0,0"
-                 HorizontalAlignment="Left" VerticalAlignment="Center" controls:TextboxHelper.Watermark="Search"
-                 TextWrapping="Wrap"
-                 TextChanged="SearchBox_TextChanged" />
+        <Controls:TextBoxWatermarked x:Name="SearchTextBox" Width="120" Height="22" Margin="10,-440,0,0"
+                                     HorizontalAlignment="Left" VerticalAlignment="Center" Watermark="Search"
+                                     TextWrapping="Wrap"
+                                     TextChanged="SearchBox_TextChanged" />
 
     </Grid>
 </Page>
