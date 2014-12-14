@@ -36,20 +36,49 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
             callback(this);
         }
 
-        [InternalName("botSkillLevel")]
-        public Int32 BotSkillLevel { get; set; }
-
         [InternalName("champion")]
-        public ChampionDTO Champion { get; set; }
+        public ChampionDTO champion { get; set; }
 
-        [InternalName("botSkillLevelName")]
-        public String BotSkillLevelName { get; set; }
+        [InternalName("botSkillLevel")]
+        public int botSkillLevel { get; set; }
 
         [InternalName("teamId")]
-        public String TeamId { get; set; }
+        public int teamId { get; set; }
+
+        [InternalName("botSkillLevelName")]
+        public string botSkillLevelName { get; set; }
+
+        [InternalName("pickMode")]
+        public int pickMode { get; set; }
+
+        [InternalName("isGameOwner")]
+        public bool isGameOwner { get; set; }
+
+        [InternalName("summonerInternalName")]
+        public string summonerInternalName { get; set; }
+
+        [InternalName("pickTurn")]
+        public int pickTurn { get; set; }
+
+        [InternalName("isMe")]
+        public bool isMe { get; set; }
+
+        [InternalName("badges")]
+        public int badges { get; set; }
+
+        [InternalName("teamName")]
+        public string teamName { get; set; }
+
+        [InternalName("team")]
+        public int team { get; set; }
 
         [InternalName("summonerName")]
-        public new String SummonerName { get; set; }
+        public string summonerName { get; set; }
 
+        //?
+        [InternalName("dataVersion")]
+        public object dataVersion = null;
+        [InternalName("futureData")]
+        public object futureData = null;
     }
 }
