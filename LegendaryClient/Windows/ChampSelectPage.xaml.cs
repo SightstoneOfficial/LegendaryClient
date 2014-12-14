@@ -57,7 +57,7 @@ namespace LegendaryClient.Windows
         private GameDTO LatestDto;
         private MasteryBookDTO MyMasteries;
         private SpellBookDTO MyRunes;
-        private List<string> PreviousPlayers;
+        private List<string> PreviousPlayers = new List<string>(); //Needs to be initialized!
         private bool QuickLoad; //Don't load masteries and runes on load at start
         private bool _BanningPhase;
         private int _LastPickTurn;
@@ -1443,15 +1443,20 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Solve multipile joins
-                foreach (string PreviousPlayer in PreviousPlayers)
-                {
-                    if (PreviousPlayer == participant.Nick)
+
+
+                
+
+                    foreach (string PreviousPlayer in PreviousPlayers)
                     {
-                        Chatroom.OnRoomMessage -= Chatroom_OnRoomMessage;
-                        Chatroom.OnParticipantJoin -= Chatroom_OnParticipantJoin;
-                        return;
+                        if (PreviousPlayer == participant.Nick)
+                        {
+                            Chatroom.OnRoomMessage -= Chatroom_OnRoomMessage;
+                            Chatroom.OnParticipantJoin -= Chatroom_OnParticipantJoin;
+                            return;
+                        }
                     }
-                }
+                
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
 
@@ -1460,7 +1465,6 @@ namespace LegendaryClient.Windows
                 ChatText.ScrollToEnd();
             }));
         }
-
         private void Switch_Click(object sender, RoutedEventArgs e)
         {
             if (Switch.IsChecked.HasValue)
