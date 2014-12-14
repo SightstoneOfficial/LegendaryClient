@@ -161,16 +161,6 @@
             <sys:String>Blind Draft</sys:String>
             -->
         </x:Array>
-        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="RankedTypes"
-                 Type="sys:String">
-            <sys:String>Bronze</sys:String>
-            <sys:String>Silver</sys:String>
-            <sys:String>Gold</sys:String>
-            <sys:String>Platinum</sys:String>
-            <sys:String>Diamond</sys:String>
-            <sys:String>Master</sys:String>
-            <sys:String>Challenger</sys:String>
-        </x:Array>
 
         <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="FactionTeamTypes"
                  Type="sys:String">
