@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Linq;
 using System.Threading;
 using System.Timers;
@@ -31,6 +32,7 @@ namespace LegendaryClient.Windows
     public partial class FriendList
     {
         private static Timer UpdateTimer;
+        private bool dev = false;
         private LargeChatPlayer PlayerItem;
         private ChatPlayerItem LastPlayerItem;
         private SelectionChangedEventArgs selection;
@@ -439,6 +441,52 @@ namespace LegendaryClient.Windows
                     break;
                 case "spectating":
                     break;
+            }
+        }
+
+        private void RankedStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dev)
+            {
+                Client.TierName = RankedStatus.SelectedItem.ToString().ToUpper();
+                Client.SetChatHover();
+            }
+            if (!dev)
+            {
+                #region authenticate
+                var dlg = new System.Windows.Forms.OpenFileDialog();
+                dlg.DefaultExt = ".png";
+                dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
+                System.Windows.Forms.DialogResult result = dlg.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
+                    using (var client = new WebClient())
+                    {
+                        //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
+                        if (
+                            client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1")
+                                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
+                        {
+                            dev = !dev;
+
+                            MessageBox.Show("You can change ranks now!",
+                                "LC Notification",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                            Client.TierName = RankedStatus.SelectedItem.ToString();
+                            Client.SetChatHover();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to approve key",
+                                "LC Notification",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+                        }
+                    }
+                }
+                #endregion
             }
         }
     }
