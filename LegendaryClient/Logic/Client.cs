@@ -302,7 +302,7 @@ namespace LegendaryClient.Logic
         internal static ChampionDTO[] PlayerChampions;
 
         internal static ReplayRecorder Autorecorder;
-
+        internal static List<int> curentlyRecording = new List<int>();
 
         internal static List<string> Whitelist = new List<string>();
 
@@ -1161,33 +1161,6 @@ namespace LegendaryClient.Logic
                                     CurrentGame.EncryptionKey + " " +
                                     CurrentGame.SummonerId + "\"";
             p.Start();
-
-            if (!File.Exists(Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe")))
-                return;
-
-            PlayerCredentialsDto replaydata = CurrentGame;
-            string ObserverServerIp = replaydata.ObserverServerIp;
-            double GameId = replaydata.GameId;
-            string InternalName = Region.InternalName;
-            string ObserverEncryptionKey = replaydata.ObserverEncryptionKey;
-            var timer = new System.Timers.Timer {Interval = 5000};
-            timer.Elapsed += (o, e) =>
-            {
-                var x = new Process
-                {
-                    StartInfo =
-                    {
-                        WorkingDirectory = ExecutingDirectory,
-                        FileName = Path.Combine(ExecutingDirectory, "Replays", "ReplayRecorder.exe"),
-                        Arguments = "\"" + ExecutingDirectory + "\" \"" + GameId + "\" \"" +
-                                    ObserverEncryptionKey + "\" \"" +
-                                    InternalName + "\" \"" + ObserverServerIp + "\""
-                    }
-                };
-                x.Start();
-                timer.Stop();
-            };
-            timer.Start();
         }
 
         private static void p_Exited(object sender, EventArgs e)

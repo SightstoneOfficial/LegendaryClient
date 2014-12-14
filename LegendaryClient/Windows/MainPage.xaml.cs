@@ -43,14 +43,12 @@ namespace LegendaryClient.Windows
     {
         internal static Timer timer = new Timer();
         internal int SelectedGame = 0;
-        internal List<int> curentlyRecording;
         internal ArrayList gameList;
         internal ArrayList newsList;
 
         public MainPage()
         {
             InitializeComponent();
-            curentlyRecording = new List<int>();
             AppDomain current = AppDomain.CurrentDomain;
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.Region.RegionName;
@@ -180,7 +178,7 @@ namespace LegendaryClient.Windows
                                     string Series = "";
                                     if (miniSeries != null)
                                     {
-                                        Series = ((string) miniSeries["progress"]).Replace('N', '-');
+                                        Series = ((string)miniSeries["progress"]).Replace('N', '-');
                                         InPromo = true;
                                     }
                                     CurrentLP = (player.LeaguePoints == 100
@@ -229,7 +227,7 @@ namespace LegendaryClient.Windows
             {
                 if (pair.Key == "gameId")
                 {
-                    gameId = (int) pair.Value;
+                    gameId = (int)pair.Value;
                 }
                 if (pair.Key == "observers")
                 {
@@ -248,11 +246,8 @@ namespace LegendaryClient.Windows
                 }
             }
 
-            BaseRegion region = BaseRegion.GetRegion((string) SpectatorComboBox.SelectedValue);
-            //region.SpectatorIpAddress, key, gameId, platformId
-            var recorder = new ReplayRecorder(region.SpectatorIpAddress, gameId, platformId, key);
-            recorder.OnReplayRecorded += () => { curentlyRecording.Remove(gameId); };
-            curentlyRecording.Add(gameId);
+            BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
+            new ReplayRecorder(region.SpectatorIpAddress, gameId, platformId, key);
             RecordButton.IsEnabled = false;
             RecordButton.Content = "Recording...";
         }
@@ -290,7 +285,7 @@ namespace LegendaryClient.Windows
                     if (notif.BroadcastMessages != null)
                     {
                         var Message = notif.BroadcastMessages[0] as Dictionary<string, object>;
-                        if ((bool) Message["active"])
+                        if ((bool)Message["active"])
                         {
                             BroadcastMessage.Text = Convert.ToString(Message["content"]);
                         }
@@ -357,13 +352,13 @@ namespace LegendaryClient.Windows
                     }
                     if (kvPair.Key == "description" || kvPair.Key == "promoText")
                     {
-                        item.DescriptionLabel.Text = (string) kvPair.Value;
+                        item.DescriptionLabel.Text = (string)kvPair.Value;
                     }
                     if (kvPair.Key == "thumbUrl")
                     {
                         var promoImage = new BitmapImage();
                         promoImage.BeginInit(); //Download image
-                        promoImage.UriSource = new Uri((string) kvPair.Value, UriKind.RelativeOrAbsolute);
+                        promoImage.UriSource = new Uri((string)kvPair.Value, UriKind.RelativeOrAbsolute);
                         promoImage.CacheOption = BitmapCacheOption.OnLoad;
                         promoImage.EndInit();
                         item.PromoImage.Source = promoImage;
@@ -381,8 +376,8 @@ namespace LegendaryClient.Windows
         {
             if (NewsItemListView.SelectedIndex != -1)
             {
-                var item = (NewsItem) NewsItemListView.SelectedItem;
-                Process.Start((string) item.Tag); //Launch the news article in browser
+                var item = (NewsItem)NewsItemListView.SelectedItem;
+                Process.Start((string)item.Tag); //Launch the news article in browser
             }
         }
 
@@ -394,7 +389,7 @@ namespace LegendaryClient.Windows
         {
             if (SpectatorComboBox.SelectedIndex != -1 && SpectatorComboBox.SelectedValue != null)
             {
-                BaseRegion region = BaseRegion.GetRegion((string) SpectatorComboBox.SelectedValue);
+                BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
                 ChangeSpectatorRegion(region);
             }
         }
@@ -471,11 +466,11 @@ namespace LegendaryClient.Windows
                                 {
                                     if (playerPair.Key == "teamId")
                                     {
-                                        teamId = (int) playerPair.Value;
+                                        teamId = (int)playerPair.Value;
                                     }
                                     if (playerPair.Key == "championId")
                                     {
-                                        championId = (int) playerPair.Value;
+                                        championId = (int)playerPair.Value;
                                     }
                                     if (playerPair.Key == "summonerName")
                                     {
@@ -483,11 +478,11 @@ namespace LegendaryClient.Windows
                                     }
                                     if (playerPair.Key == "spell1Id")
                                     {
-                                        spell1Id = (int) playerPair.Value;
+                                        spell1Id = (int)playerPair.Value;
                                     }
                                     if (playerPair.Key == "spell2Id")
                                     {
-                                        spell2Id = (int) playerPair.Value;
+                                        spell2Id = (int)playerPair.Value;
                                     }
                                 }
                                 var control = new ChampSelectPlayer();
@@ -511,7 +506,7 @@ namespace LegendaryClient.Windows
                                 m.Opacity = 0.30;
                                 m.HorizontalAlignment = HorizontalAlignment.Left;
                                 m.VerticalAlignment = VerticalAlignment.Stretch;
-                                m.Margin = new Thickness(i++*100, 0, 0, 0);
+                                m.Margin = new Thickness(i++ * 100, 0, 0, 0);
                                 var cropRect = new Rectangle(new Point(100, 0), new Size(100, 560));
                                 var src =
                                     System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets",
@@ -540,14 +535,14 @@ namespace LegendaryClient.Windows
                         }
                         else if (pair.Key == "gameId")
                         {
-                            GameId = (int) pair.Value;
+                            GameId = (int)pair.Value;
                         }
-                            //tried this, caused a crash, worked fine when deleted
+                        //tried this, caused a crash, worked fine when deleted
                         else if (pair.Key == "mapId")
                         {
                             try
                             {
-                                MapLabel.Content = BaseMap.GetMap((int) pair.Value).DisplayName;
+                                MapLabel.Content = BaseMap.GetMap((int)pair.Value).DisplayName;
                             }
                             catch (Exception e)
                             {
@@ -557,8 +552,8 @@ namespace LegendaryClient.Windows
                         }
                         else if (pair.Key == "gameLength")
                         {
-                            var seconds = (int) pair.Value;
-                            GameTimeLabel.Content = string.Format("{0:D}:{1:00} min", seconds/60, seconds%60);
+                            var seconds = (int)pair.Value;
+                            GameTimeLabel.Content = string.Format("{0:D}:{1:00} min", seconds / 60, seconds % 60);
                         }
                         else if (pair.Key == "bannedChampions")
                         {
@@ -572,7 +567,7 @@ namespace LegendaryClient.Windows
                                 PurpleBansLabel.Visibility = Visibility.Visible;
                             }
                             foreach (Dictionary<string, object> keyArrayP in keyArray)
-                                //Dictionary<string, object> keyArrayP = keyArray as Dictionary<string, object>;
+                            //Dictionary<string, object> keyArrayP = keyArray as Dictionary<string, object>;
                             {
                                 int cid = 0;
                                 int teamId = 100;
@@ -580,11 +575,11 @@ namespace LegendaryClient.Windows
                                 {
                                     if (keyArrayPair.Key == "championId")
                                     {
-                                        cid = (int) keyArrayPair.Value;
+                                        cid = (int)keyArrayPair.Value;
                                     }
                                     if (keyArrayPair.Key == "teamId")
                                     {
-                                        teamId = (int) keyArrayPair.Value;
+                                        teamId = (int)keyArrayPair.Value;
                                     }
                                 }
                                 var item = new ListViewItem();
@@ -615,7 +610,7 @@ namespace LegendaryClient.Windows
 
                     try
                     {
-                        BaseRegion region = BaseRegion.GetRegion((string) SpectatorComboBox.SelectedValue);
+                        BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
                         string spectatorJSON = "";
                         string url = region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName + "/" +
                                      GameId + "/token";
@@ -632,7 +627,7 @@ namespace LegendaryClient.Windows
                         MMRLabel.Content = "N/A";
                     }
 
-                    if (curentlyRecording.Contains(GameId))
+                    if (Client.curentlyRecording.Contains(GameId))
                     {
                         RecordButton.IsEnabled = false;
                         RecordButton.Content = "Recording...";
@@ -662,7 +657,7 @@ namespace LegendaryClient.Windows
             {
                 if (pair.Key == "gameId")
                 {
-                    gameId = (int) pair.Value;
+                    gameId = (int)pair.Value;
                 }
                 if (pair.Key == "observers")
                 {
@@ -681,7 +676,7 @@ namespace LegendaryClient.Windows
                 }
             }
 
-            BaseRegion region = BaseRegion.GetRegion((string) SpectatorComboBox.SelectedValue);
+            BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
 
             Client.LaunchSpectatorGame(region.SpectatorIpAddress, key, gameId, platformId);
         }

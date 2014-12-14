@@ -51,7 +51,7 @@ namespace LegendaryClient
             Client.PVPNet.KeepDelegatesOnLogout = false;
             Client.PVPNet.OnError += Client.PVPNet_OnError;
             if (String.IsNullOrEmpty(Properties.Settings.Default.Theme))
-               Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
+                Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
             myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
             ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
 
@@ -178,7 +178,7 @@ namespace LegendaryClient
             }
         }
 
-        #pragma warning disable 4014 //Code does not need to be awaited
+#pragma warning disable 4014 //Code does not need to be awaited
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoLogin = false;
@@ -202,16 +202,12 @@ namespace LegendaryClient
             }
         }
 
-        
+
         private bool QuitMe = true;
-        
+
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            Client.PVPNet.Leave();
-            Client.PVPNet.PurgeFromQueues();
-            Client.PVPNet.Disconnect();
-
-            if (QuitMe == true)
+            if (QuitMe == true || Client.curentlyRecording.Count > 0)
             {
                 e.Cancel = true;
                 Warn.Title.Content = "Quit";
@@ -221,14 +217,19 @@ namespace LegendaryClient
                 Warn.AcceptButton.Content = "Back";
                 Warn.AcceptButton.Click += HideWarning;
                 Warn.hide.Click += HideWarning;
+                if (Client.curentlyRecording.Count > 0)
+                    Warn.MessageText.Content = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + Warn.MessageText.Content;
                 Client.OverlayContainer.Content = Warn.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
             }
             else
             {
+                Client.PVPNet.Leave();
+                Client.PVPNet.PurgeFromQueues();
+                Client.PVPNet.Disconnect();
                 e.Cancel = false;
             }
-            
+
         }
         private void Quit(object sender, RoutedEventArgs e)
         {
