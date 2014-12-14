@@ -3,16 +3,67 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1280"
-	Title="MessageOverlay">
+      Title="MessageOverlay"
+      mc:Ignorable="d" d:DesignHeight="768"
+      d:DesignWidth="1280">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid Background="#7F000000">
-        <Grid HorizontalAlignment="Center" Width="600" Height="500" Margin="0,0,0,0" VerticalAlignment="Center" Background="#B22B2B2B">
-            <Label x:Name="MessageTitle" Content="Create a summoner name!" HorizontalAlignment="Center" Margin="0,10,0,0" FontWeight="ExtraLight" FontSize="40" VerticalAlignment="Top" />
-            <Button x:Name="AcceptButton" Content="OK" HorizontalAlignment="Stretch" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="30" Click="AcceptButton_Click" />
-            <TextBox x:Name="MessageTextBox" HorizontalAlignment="Stretch" Margin="10,80,10,76" FontSize="20" FontWeight="ExtraLight" TextWrapping="Wrap" Background="{x:Null}" BorderBrush="{x:Null}"/>
-            <TextBox x:Name="UsernameTextBox" TextWrapping="NoWrap" Text=""  HorizontalAlignment="Center" Margin="10,424,10,49" VerticalAlignment="Center" Width="580" Height="27" />
+        <Grid Width="600" Height="500" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+              Background="#B22B2B2B">
+            <Label x:Name="MessageTitle" Margin="0,10,0,0" HorizontalAlignment="Center"
+                   VerticalAlignment="Top" Content="Create a summoner name!" FontWeight="ExtraLight" FontSize="40" />
+            <Button x:Name="AcceptButton" Height="30" Margin="10,0,10,10" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Bottom" Content="Accept" Click="AcceptButton_Click" />
+            <TextBox x:Name="MessageTextBox" Margin="10,80,10,76" HorizontalAlignment="Stretch" FontSize="20"
+                     FontWeight="ExtraLight" TextWrapping="Wrap" Foreground="White" Background="#66505050"
+                     BorderBrush="{x:Null}" />
+            <TextBox x:Name="UsernameTextBox" Width="580" Height="27" Margin="10,424,10,49"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="NoWrap" Text="" />
         </Grid>
     </Grid>
 </Page>

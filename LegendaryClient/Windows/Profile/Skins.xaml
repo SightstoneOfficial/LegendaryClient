@@ -68,7 +68,8 @@
             </ListView.ItemsPanel>
         </ListView>
         <CheckBox x:Name="LimitedSkinCheckBox" Width="136" Height="23" Margin="0,19,10,0"
-                  HorizontalAlignment="Right" VerticalAlignment="Top" Content="Limited Only" FontSize="18" Foreground="White"
+                  HorizontalAlignment="Right" VerticalAlignment="Top" Content="Limited Only" FontSize="18"
+                  Foreground="White"
                   Checked="LimitedSkinCheckBox_Checked" Unchecked="LimitedSkinCheckBox_Checked" />
     </Grid>
 </Page>

@@ -3,25 +3,75 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1280"
-	Title="InvitePlayersPage">
+      Title="InvitePlayersPage"
+      mc:Ignorable="d" d:DesignHeight="768"
+      d:DesignWidth="1280">
 
     <Page.Resources>
-        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility" Value="Collapsed" />
-        </Style>
-        <Style x:Key="NoFocus" TargetType="{x:Type ListView}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        </Style>
+        <ResourceDictionary>
+            <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+            <Style x:Key="NoFocus" TargetType="{x:Type ListView}">
+                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            </Style>
+
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid Background="#A5000000">
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Width="513" Height="550" Background="#A5000000">
-            <Label Content="Invite Players" HorizontalAlignment="Left" Margin="10,10,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
+        <Grid Width="513" Height="550" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#A5000000">
+            <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Invite Players"
+                   FontWeight="ExtraLight" FontSize="30" />
 
-            <Label Content="Available Players" HorizontalAlignment="Left" Margin="10,60,0,0" FontWeight="ExtraLight" FontSize="26" VerticalAlignment="Top" />
-            <ListView Style="{StaticResource NoFocus}" x:Name="AvailablePlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Left" Margin="10,115,0,50" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="AvailablePlayerListView_SelectionChanged" Width="250">
+            <Label Margin="10,60,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Available Players"
+                   FontWeight="ExtraLight" FontSize="26" />
+            <ListView x:Name="AvailablePlayerListView" Width="250"
+                      Margin="10,115,0,50" HorizontalAlignment="Left"
+                      VerticalAlignment="Stretch" Style="{StaticResource NoFocus}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}"
+                      Foreground="White" Background="{x:Null}"
+                      SelectionChanged="AvailablePlayerListView_SelectionChanged">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                         <GridViewColumn Width="250" />
@@ -29,8 +79,14 @@
                 </ListView.View>
             </ListView>
 
-            <Label Content="Invited Players" HorizontalAlignment="Right" Margin="0,60,10,0" FontWeight="ExtraLight" FontSize="26" VerticalAlignment="Top" />
-            <ListView Style="{StaticResource NoFocus}" x:Name="InvitedPlayerListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Right" Margin="0,115,10,50" VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" SelectionChanged="InvitedPlayerListView_SelectionChanged" Width="238">
+            <Label Margin="0,60,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Invited Players"
+                   FontWeight="ExtraLight" FontSize="26" />
+            <ListView x:Name="InvitedPlayerListView" Width="238"
+                      Margin="0,115,10,50" HorizontalAlignment="Right"
+                      VerticalAlignment="Stretch" Style="{StaticResource NoFocus}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}"
+                      Foreground="White" Background="{x:Null}"
+                      SelectionChanged="InvitedPlayerListView_SelectionChanged">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                         <GridViewColumn Width="250" />
@@ -38,8 +94,11 @@
                 </ListView.View>
             </ListView>
 
-            <Button x:Name="SendInvitesButton" Content="Send Invites" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" Width="200" Margin="0,0,115,5" Click="SendInvitesButton_Click" />
-            <Button x:Name="CloseButton" Content="Close" HorizontalAlignment="Right" Height="30" VerticalAlignment="Bottom" Width="100" Margin="0,0,5,5" Click="CloseButton_Click" />
+            <Button x:Name="SendInvitesButton" Width="200" Height="30" Margin="0,0,115,5"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send Invites"
+                    Click="SendInvitesButton_Click" />
+            <Button x:Name="CloseButton" Width="100" Height="30" Margin="0,0,5,5"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Close" Click="CloseButton_Click" />
         </Grid>
     </Grid>
 </Page>

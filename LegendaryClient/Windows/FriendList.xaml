@@ -3,36 +3,72 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:LegendaryClient.Controls"
-      mc:Ignorable="d"
-      d:DesignHeight="640" d:DesignWidth="250"
-	Title="ChatPage">
+      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      Title="ChatPage"
+      mc:Ignorable="d" d:DesignHeight="640"
+      d:DesignWidth="250">
 
     <Page.Resources>
-        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility" Value="Collapsed" />
-        </Style>
-        <Style x:Key="NoFocus" TargetType="{x:Type ListView}">
-            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        </Style>
-        <ContextMenu x:Key="PlayerChatMenu">
-            <MenuItem x:Name="Invite" Header="Invite to Game" Click="Invite_Click" />
-            <MenuItem x:Name="ProfileItem" Header="View Profile" Click="ProfileItem_Click" />
-            <MenuItem Header="Invite to Chat" />
-            <MenuItem Header="Remove Friend" />
-            <MenuItem Header="Ignore Friend" />
-            <MenuItem Header="Spectate Game" Click="SpectateGame_Click"/>
-        </ContextMenu>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid x:Name="TheGrid" Background="#E5000000">
-        <ComboBox x:Name="PresenceChanger" HorizontalAlignment="Stretch" Margin="5,5,5,0" VerticalAlignment="Top" ItemsSource="{DynamicResource ChatStates}" SelectedIndex="0" SelectionChanged="PresenceChanger_SelectionChanged" />
-        <local:TextBoxWatermarked x:Name="StatusBox" HorizontalAlignment="Stretch" Height="23" Margin="5,35,5,0" TextWrapping="NoWrap" VerticalAlignment="Top" Watermark="Set your status message" MaxLength="25"/>
+        <ComboBox x:Name="PresenceChanger" Margin="5,5,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                  ItemsSource="{DynamicResource ChatStates}" SelectedIndex="0"
+                  SelectionChanged="PresenceChanger_SelectionChanged" />
+        <TextBox x:Name="StatusBox" Height="23" Margin="5,35,5,0" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Top" TextWrapping="NoWrap"
+                 controls:TextboxHelper.Watermark="Set your status message"
+                 MaxLength="25" />
         <ScrollViewer Margin="0,65,0,37" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel x:Name="ChatListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            </StackPanel>
+            <StackPanel x:Name="ChatListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </ScrollViewer>
-        <local:TextBoxWatermarked x:Name="FriendAddBox" HorizontalAlignment="Stretch" Height="23" Margin="10,0,69,9" TextWrapping="NoWrap" VerticalAlignment="Bottom" Watermark="Enter friend name to add" MaxLength="25" />
-        <Button x:Name="AddFriendButton" Content="Add" HorizontalAlignment="Left" Margin="186,0,0,9" VerticalAlignment="Bottom" Width="54" Click="AddFriendButton_Click" />
+        <TextBox x:Name="FriendAddBox" Height="23" Margin="10,0,69,9" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Bottom" TextWrapping="NoWrap"
+                 controls:TextboxHelper.Watermark="Enter friend name to add"
+                 MaxLength="25" />
+        <Button x:Name="AddFriendButton" Width="54" Height="26" Margin="186,0,0,9"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add" Click="AddFriendButton_Click" />
     </Grid>
 </Page>

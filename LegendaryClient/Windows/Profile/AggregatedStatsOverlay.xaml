@@ -3,9 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1280"
-      Title="AggregatedStatsOverlay">
+      Title="AggregatedStatsOverlay"
+      mc:Ignorable="d" d:DesignHeight="768"
+      d:DesignWidth="1280">
 
     <Page.Resources>
         <ResourceDictionary>
@@ -57,33 +57,37 @@
     </Page.Resources>
 
     <Grid Background="#B2000000">
-        <Grid HorizontalAlignment="Stretch" Margin="20,20,20,20" VerticalAlignment="Stretch" Background="#FF2B2B2B">
-            <Label Content="Games:" HorizontalAlignment="Left" Margin="10,10,0,0" Foreground="White" FontSize="30"
-                   FontWeight="ExtraLight" VerticalAlignment="Top" />
-            <Label x:Name="GamesLabel" Content="0" HorizontalAlignment="Left" Margin="110,10,0,0" Foreground="White"
-                   FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top" />
+        <Grid Margin="20,20,20,20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF2B2B2B">
+            <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Games:"
+                   Foreground="White"
+                   FontSize="30" FontWeight="ExtraLight" />
+            <Label x:Name="GamesLabel" Margin="110,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="0"
+                   Foreground="White" FontSize="30" FontWeight="SemiBold" />
 
             <Grid x:Name="HideGrid">
-                <Label Content="Wins:" HorizontalAlignment="Left" Margin="260,10,0,0" Foreground="White" FontSize="30"
-                       FontWeight="ExtraLight" VerticalAlignment="Top" />
-                <Label x:Name="WinsLabel" Content="0" HorizontalAlignment="Left" Margin="335,10,0,0" Foreground="White"
-                       FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top" />
+                <Label Margin="260,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Wins:"
+                       Foreground="White"
+                       FontSize="30" FontWeight="ExtraLight" />
+                <Label x:Name="WinsLabel" Margin="335,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Content="0"
+                       Foreground="White" FontSize="30" FontWeight="SemiBold" />
 
-                <Label Content="Losses:" HorizontalAlignment="Left" Margin="460,10,0,0" Foreground="White"
-                       FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top" />
-                <Label x:Name="LossesLabel" Content="0" HorizontalAlignment="Left" Margin="555,10,0,0"
-                       Foreground="White" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top" />
+                <Label Margin="460,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Losses:"
+                       Foreground="White" FontSize="30" FontWeight="ExtraLight" />
+                <Label x:Name="LossesLabel" Margin="555,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Content="0" Foreground="White" FontSize="30" FontWeight="SemiBold" />
 
-                <Label Content="W/L Ratio:" HorizontalAlignment="Left" Margin="660,10,0,0" Foreground="White"
-                       FontSize="30" FontWeight="ExtraLight" VerticalAlignment="Top" />
-                <Label x:Name="RatioLabel" Content="0" HorizontalAlignment="Left" Margin="800,10,0,0"
-                       Foreground="White" FontSize="30" FontWeight="SemiBold" VerticalAlignment="Top" />
+                <Label Margin="660,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="W/L Ratio:"
+                       Foreground="White" FontSize="30" FontWeight="ExtraLight" />
+                <Label x:Name="RatioLabel" Margin="800,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                       Content="0" Foreground="White" FontSize="30" FontWeight="SemiBold" />
             </Grid>
 
-            <Button x:Name="CloseButton" Content="X" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top"
-                    Width="30" Margin="0,5,5,0" Click="CloseButton_Click" />
+            <Button x:Name="CloseButton" Width="30" Height="30" Margin="0,5,5,0" HorizontalAlignment="Right"
+                    VerticalAlignment="Top" Content="X" Click="CloseButton_Click" />
 
-            <ListView x:Name="StatsListView" HorizontalAlignment="Stretch" Margin="10,70,10,140"
+            <ListView x:Name="StatsListView" Margin="10,70,10,140" HorizontalAlignment="Stretch"
                       VerticalAlignment="Stretch" BorderBrush="{x:Null}" Foreground="White" Background="#FF505050">
                 <ListView.View>
                     <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
@@ -93,7 +97,7 @@
                 </ListView.View>
             </ListView>
 
-            <ListView x:Name="ChampionsListView" HorizontalAlignment="Stretch" Height="100" Margin="100,0,100,20"
+            <ListView x:Name="ChampionsListView" Height="100" Margin="100,0,100,20" HorizontalAlignment="Stretch"
                       VerticalAlignment="Bottom" BorderBrush="{x:Null}"
                       ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050"
                       SelectionChanged="ChampionsListView_SelectionChanged">
@@ -103,8 +107,8 @@
                     </ItemsPanelTemplate>
                 </ListView.ItemsPanel>
             </ListView>
-            <Button x:Name="ClearButton" Content="Clear Filter" HorizontalAlignment="Left" Margin="10,0,0,100"
-                    VerticalAlignment="Bottom" Width="75" Click="ClearButton_Click" />
+            <Button x:Name="ClearButton" Width="75" Margin="10,0,0,100" HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom" Content="Clear Filter" Click="ClearButton_Click" />
         </Grid>
     </Grid>
 </Page>

@@ -3,17 +3,67 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1280"
-	Title="QueuePopOverlay">
+      Title="QueuePopOverlay"
+      mc:Ignorable="d" d:DesignHeight="768"
+      d:DesignWidth="1280">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid Background="#B2000000">
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center" Background="#B22B2B2B" Width="550" Height="450">
-            <Label Content="Queue Pop!" HorizontalAlignment="Left" Margin="17,0,0,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" />
-            <Label x:Name="TimerLabel" Content="12" HorizontalAlignment="Right" Margin="0,0,334,0" FontWeight="ExtraLight" FontSize="30" VerticalAlignment="Top" RenderTransformOrigin="9.997,0.753" />
-            <ListBox x:Name="Team1ListBox" HorizontalAlignment="Left" Margin="10,50,0,0" Width="264" Height="357" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
-            <ListBox x:Name="Team2ListBox" HorizontalAlignment="Right" Margin="0,50,10,0" Width="264" Height="357" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden"/>
-            <Button x:Name="AcceptButton" Content="Accept Queue" HorizontalAlignment="Stretch" Margin="10,0,10,8" VerticalAlignment="Bottom" Height="30" Click="AcceptButton_Click" />
+        <Grid Width="550" Height="450" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#B22B2B2B">
+            <Label Margin="17,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Queue Pop!"
+                   FontWeight="ExtraLight" FontSize="30" />
+            <Label x:Name="TimerLabel" Margin="0,0,334,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+                   Content="12" FontWeight="ExtraLight" FontSize="30" RenderTransformOrigin="9.997,0.753" />
+            <ListBox x:Name="Team1ListBox" Width="264" Height="357" Margin="10,50,0,0" HorizontalAlignment="Left"
+                     VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden" />
+            <ListBox x:Name="Team2ListBox" Width="264" Height="357" Margin="0,50,10,0" HorizontalAlignment="Right"
+                     VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden" />
+            <Button x:Name="AcceptButton" Height="30" Margin="10,0,10,8" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Bottom" Content="Accept Queue" Click="AcceptButton_Click" />
         </Grid>
     </Grid>
 </Page>

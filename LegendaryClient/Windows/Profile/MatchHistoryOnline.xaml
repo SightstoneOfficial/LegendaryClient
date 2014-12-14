@@ -66,7 +66,8 @@
             </ListView.View>
         </ListView>
         <ListView x:Name="BlueListView" Width="84" Height="350" Margin="320,10,0,0"
-                  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -77,7 +78,8 @@
         <Label Margin="300,62,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="VS."
                FontWeight="ExtraLight" FontSize="50" Foreground="White" />
         <ListView x:Name="PurpleListView" Width="84" Height="350" Margin="300,10,10,0"
-                  HorizontalAlignment="Right" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  HorizontalAlignment="Right" VerticalAlignment="Top"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -88,7 +90,8 @@
 
         <ListView x:Name="ItemsListView" Width="530" Height="64" Margin="305,10,0,0"
                   HorizontalAlignment="Center" VerticalAlignment="Top"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050"
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050"
                   BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

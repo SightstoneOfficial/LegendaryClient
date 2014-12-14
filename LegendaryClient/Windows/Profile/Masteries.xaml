@@ -81,7 +81,8 @@
                 VerticalAlignment="Top" Content="Return All Points" Click="ReturnButton_Click" />
 
         <ListView x:Name="OffenseListView" Width="320" Height="450" Margin="240,50,0,0"
-                  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -91,7 +92,8 @@
         </ListView>
 
         <ListView x:Name="DefenseListView" Width="320" Height="450" Margin="580,50,0,0"
-                  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -101,7 +103,8 @@
         </ListView>
 
         <ListView x:Name="UtilityListView" Width="320" Height="450" Margin="920,50,0,0"
-                  HorizontalAlignment="Left" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -109,11 +112,14 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Label x:Name="OffenseLabel" Margin="240,505,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Offense: 0"
+        <Label x:Name="OffenseLabel" Margin="240,505,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Offense: 0"
                Foreground="White" FontSize="25" FontWeight="ExtraLight" />
-        <Label x:Name="DefenseLabel" Margin="580,505,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Defense: 0"
+        <Label x:Name="DefenseLabel" Margin="580,505,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Defense: 0"
                Foreground="White" FontSize="25" FontWeight="ExtraLight" />
-        <Label x:Name="UtilityLabel" Margin="920,505,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Utility: 0"
+        <Label x:Name="UtilityLabel" Margin="920,505,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Utility: 0"
                Foreground="White" FontSize="25" FontWeight="ExtraLight" />
     </Grid>
 </Page>

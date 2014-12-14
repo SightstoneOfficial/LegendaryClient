@@ -1,60 +1,139 @@
 ﻿<Page
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-      xmlns:Controls1="clr-namespace:LegendaryClient.Controls" x:Class="LegendaryClient.Windows.LoginPage"
-      mc:Ignorable="d"
-      xmlns:my="http://schemas.awesomium.com/winfx" 
-      d:DesignHeight="672" d:DesignWidth="1024"
-	Title="LoginPage">
-    <Grid x:Name="MouseGrid" Background="Black" Margin="0">
-        <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Panel.ZIndex="-2"/>
+    x:Class="LegendaryClient.Windows.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    Title="LoginPage"
+    mc:Ignorable="d" d:DesignHeight="672"
+    d:DesignWidth="1024">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid x:Name="MouseGrid" Margin="0" Background="Black">
+        <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-2"
+               Stretch="UniformToFill" />
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
 
-        <MediaElement x:Name="LoginPic" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1"/>
-        <Grid x:Name="HideGrid" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp" HorizontalAlignment="Left" Height="331" VerticalAlignment="Bottom" Width="350" Margin="20,0,0,50" Background="#B2000000">
+        <MediaElement x:Name="LoginPic" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1" />
+        <Grid x:Name="HideGrid" Width="350" Height="331" Margin="20,0,0,50"
+              HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseDown="Grid_MouseDown"
+              MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp"
+              Background="#B2000000">
             <Grid.Effect>
                 <DropShadowEffect />
             </Grid.Effect>
             <Grid.RenderTransform>
-                <TranslateTransform x:Name="tt"/>
+                <TranslateTransform x:Name="Tt" />
             </Grid.RenderTransform>
-            
-            <Label x:Name="WelcomeLabel" Content="Login to League of Legends" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,0,0,0" />
-            <Grid x:Name="LoginGrid" HorizontalAlignment="Left" Height="230" Margin="0,50,0,0" VerticalAlignment="Top" Width="350">
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Username" VerticalAlignment="Top" Foreground="White" Margin="10,10,0,0" FontSize="18" FontWeight="Bold" />
-                <TextBox x:Name="LoginUsernameBox" TextWrapping="NoWrap" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,40,0,0" FontSize="16" />
-                <CheckBox x:Name="RememberUsernameCheckbox" Content="Remember Username" HorizontalAlignment="Right" Margin="0,80,10,0" VerticalAlignment="Top" Foreground="White" IsChecked="True" />
-                <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="Password" VerticalAlignment="Top" Foreground="White" Margin="10,90,0,0" FontSize="18" FontWeight="Bold" />
-                <PasswordBox x:Name="LoginPasswordBox" VerticalAlignment="Top" Width="330" HorizontalAlignment="Left" Margin="10,120,0,0" FontSize="16" />
-                <CheckBox x:Name="RememberPasswordCheckbox" Content="Remember Password" HorizontalAlignment="Right" Margin="0,160,10,0" VerticalAlignment="Top" Foreground="White" />
-                <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Stretch" Margin="10,180,10,0" VerticalAlignment="Top" Height="41" Click="LoginButton_Click" IsDefault="True" />
-                <ComboBox x:Name="RegionComboBox" ItemsSource="{DynamicResource Regions}" HorizontalAlignment="Left" Margin="220,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="4" />
-                <CheckBox x:Name="AutoLoginCheckBox" Content="Auto-Login" HorizontalAlignment="Left" Margin="10,160,0,0" VerticalAlignment="Top" Foreground="White" />
+
+            <Label x:Name="WelcomeLabel" Margin="0,0,0,0" HorizontalAlignment="Center"
+                   VerticalAlignment="Top" Content="Login to League of Legends" FontSize="24" FontWeight="Bold"
+                   Foreground="White" />
+            <Grid x:Name="LoginGrid" Width="350" Height="230" Margin="0,50,0,0" HorizontalAlignment="Left"
+                  VerticalAlignment="Top">
+                <TextBlock Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
+                           Text="Username" Foreground="White" FontSize="18" FontWeight="Bold" />
+                <TextBox x:Name="LoginUsernameBox" Width="330" Margin="10,40,0,0" HorizontalAlignment="Left"
+                         VerticalAlignment="Top" TextWrapping="NoWrap" FontSize="16" />
+                <CheckBox x:Name="RememberUsernameCheckbox" Margin="0,80,10,0" HorizontalAlignment="Right"
+                          VerticalAlignment="Top" Content="Remember Username" Foreground="White" IsChecked="True" />
+                <TextBlock Margin="10,90,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
+                           Text="Password" Foreground="White" FontSize="18" FontWeight="Bold" />
+                <PasswordBox x:Name="LoginPasswordBox" Width="330" Margin="10,120,0,0" HorizontalAlignment="Left"
+                             VerticalAlignment="Top" FontSize="16" />
+                <CheckBox x:Name="RememberPasswordCheckbox" Margin="0,160,10,0" HorizontalAlignment="Right"
+                          VerticalAlignment="Top" Content="Remember Password" Foreground="White" />
+                <Button x:Name="LoginButton" Height="41" Margin="10,180,10,0" HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top" Content="Login" Click="LoginButton_Click" IsDefault="True" />
+                <ComboBox x:Name="RegionComboBox" Width="120" Margin="220,10,0,0"
+                          HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource Regions}"
+                          SelectedIndex="4" />
+                <CheckBox x:Name="AutoLoginCheckBox" Margin="10,160,0,0" HorizontalAlignment="Left"
+                          VerticalAlignment="Top" Content="Auto-Login" Foreground="White" />
             </Grid>
-            <Controls1:TextBoxWatermarked x:Name="Version" HorizontalAlignment="Right" TextWrapping="Wrap" Watermark="Client Version Override" VerticalAlignment="Top" Margin="0,301,10,0" Height="24" Width="330"/>
-            <CheckBox x:Name="Sound" Click="DisableSound_Click" Content="Disable Login Music" HorizontalAlignment="Left" Margin="10,280,0,0" VerticalAlignment="Top" Foreground="White" IsChecked="False" />
-            <CheckBox x:Name="Video" Click="DisableVideo_Click" Content="Disable Menu Animations" HorizontalAlignment="Right" Margin="0,280,14,0" VerticalAlignment="Top" Foreground="White" IsChecked="False" />
+            <TextBox x:Name="Version" Width="330" Height="24"
+                     Margin="0,301,10,0" HorizontalAlignment="Right"
+                     VerticalAlignment="Top" TextWrapping="Wrap"
+                     controls:TextboxHelper.Watermark="Client Version Override" />
+            <CheckBox x:Name="Sound" Margin="10,280,0,0" HorizontalAlignment="Left"
+                      VerticalAlignment="Top" Click="DisableSound_Click" Content="Disable Login Music"
+                      Foreground="White"
+                      IsChecked="False" />
+            <CheckBox x:Name="Video" Margin="0,280,14,0" HorizontalAlignment="Right"
+                      VerticalAlignment="Top" Click="DisableVideo_Click" Content="Disable Menu Animations"
+                      Foreground="White"
+                      IsChecked="False" />
         </Grid>
 
-        <Controls:ProgressRing x:Name="LoggingInProgressRing" IsActive="True" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,100" Visibility="Hidden">
-            <Controls:ProgressRing.Effect>
+        <controls:ProgressRing x:Name="LoggingInProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" IsActive="True" Visibility="Hidden">
+            <controls:ProgressRing.Effect>
                 <DropShadowEffect />
-            </Controls:ProgressRing.Effect>
-        </Controls:ProgressRing>
-        <Label x:Name="LoggingInLabel" Content="Logging in..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="36" FontWeight="Bold" Foreground="White" Visibility="Hidden">
+            </controls:ProgressRing.Effect>
+        </controls:ProgressRing>
+        <Label x:Name="LoggingInLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Logging in..."
+               FontSize="36" FontWeight="Bold" Foreground="White" Visibility="Hidden">
             <Label.Effect>
                 <DropShadowEffect />
             </Label.Effect>
         </Label>
 
-        <TextBox x:Name="ErrorTextBox" Text="Error" HorizontalAlignment="Left" VerticalAlignment="Bottom" TextWrapping="NoWrap" IsReadOnly="True" Width="350" Height="20" FontSize="12" FontWeight="999" Foreground="#FFFF7373" Margin="20,0,0,15" Background="#7F000000" Panel.ZIndex="-1" BorderBrush="{x:Null}" Visibility="Hidden">
+        <TextBox x:Name="ErrorTextBox" Width="350" Height="20" Margin="20,0,0,15"
+                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Panel.ZIndex="-1" Text="Error"
+                 TextWrapping="NoWrap" IsReadOnly="True"
+                 FontSize="12" FontWeight="999" Foreground="#FFFF7373" Background="#7F000000"
+                 BorderBrush="{x:Null}" Visibility="Hidden">
             <TextBox.Effect>
                 <DropShadowEffect ShadowDepth="3" />
             </TextBox.Effect>
         </TextBox>
-        <MediaElement x:Name="SoundPlayer" HorizontalAlignment="Left" LoadedBehavior="Manual" UnloadedBehavior="Stop" Height="100" VerticalAlignment="Top" Width="100" Margin="924,572,0,0" Visibility="Hidden"/>
+        <MediaElement x:Name="SoundPlayer" Width="100" Height="100" Margin="924,572,0,0"
+                      HorizontalAlignment="Left" VerticalAlignment="Top" LoadedBehavior="Manual"
+                      UnloadedBehavior="Stop" Visibility="Hidden" />
     </Grid>
 </Page>

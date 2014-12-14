@@ -64,6 +64,7 @@ namespace LegendaryClient.Logic.Replays
 
                     lastChunk = Convert.ToInt32(deserializedJson["endStartupChunkId"]);
                 }
+                Client.curentlyRecording.Add(gameId);
 
                 ThreadPool.QueueUserWorkItem(delegate
                 {
@@ -98,6 +99,7 @@ namespace LegendaryClient.Logic.Replays
             }
             catch (WebException e)
             {
+                Client.curentlyRecording.RemoveAll(id => id == gameId);
                 Client.Log(e.Message);
             }
         }
@@ -147,6 +149,7 @@ namespace LegendaryClient.Logic.Replays
 
                     if (OnReplayRecorded != null)
                         OnReplayRecorded();
+                    Client.curentlyRecording.RemoveAll(id => id == GameId);
 
                     Recording = false;
                     return;

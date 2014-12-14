@@ -4,20 +4,62 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:LegendaryClient.Controls"
-      mc:Ignorable="d"
-      d:DesignHeight="768" d:DesignWidth="1280"
-	Title="MainPage">
+      Title="MainPage"
+      mc:Ignorable="d" d:DesignHeight="768"
+      d:DesignWidth="1280">
 
     <Page.Resources>
-        <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
-            <Setter Property="Visibility" Value="Collapsed" />
-        </Style>
+        <ResourceDictionary>
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
-        <Border BorderThickness="1"  HorizontalAlignment="Left" Margin="27,30,0,0" VerticalAlignment="Top"  BorderBrush="Black"/>
-        <Label Content="InGame" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="48" Margin="10,10,0,0"/>
-        <Label Content="You are currently InGame" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="48" Margin="10,84,0,0"/>
-        <Button Content="Re-Connect" HorizontalAlignment="Center" VerticalAlignment="Center" Width="308" Height="62" FontSize="36" Click="Button_Click"/>
+        <Border Margin="27,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1"
+                BorderBrush="Black" />
+        <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="InGame" FontSize="48" />
+        <Label Margin="10,84,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="You are currently InGame"
+               FontSize="48" />
+        <Button Width="308" Height="62" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Re-Connect"
+                FontSize="36" Click="Button_Click" />
     </Grid>
 </Page>

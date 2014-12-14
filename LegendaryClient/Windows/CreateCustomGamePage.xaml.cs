@@ -1,34 +1,52 @@
-﻿using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Game.Map;
+#region
+
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using LegendaryClient.Logic;
+using LegendaryClient.Properties;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Game.Map;
+
+#endregion
 
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for CreateCustomGamePage.xaml
+    ///     Interaction logic for CreateCustomGamePage.xaml
     /// </summary>
-    public partial class CreateCustomGamePage : Page
+    public partial class CreateCustomGamePage
     {
-        private bool initFinished = false;
+        private readonly bool _initFinished;
+
         public CreateCustomGamePage()
         {
             InitializeComponent();
+            Change();
+
             Client.Whitelist = new List<string>();
             NameTextBox.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + "'s game";
-            initFinished = true;
+            _initFinished = true;
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void CreateGameButton_Click(object sender, RoutedEventArgs e)
         {
             NameInvalidLabel.Visibility = Visibility.Hidden;
             PracticeGameConfig gameConfig = GenerateGameConfig();
-            Client.PVPNet.CreatePracticeGame(gameConfig, new GameDTO.Callback(CreatedGame));
+            Client.PVPNet.CreatePracticeGame(gameConfig, CreatedGame);
         }
 
         private PracticeGameConfig GenerateGameConfig()
@@ -36,11 +54,13 @@ namespace LegendaryClient.Windows
             try
             {
                 NameInvalidLabel.Visibility = Visibility.Hidden;
-                PracticeGameConfig gameConfig = new PracticeGameConfig();
-                gameConfig.GameName = NameTextBox.Text;
-                gameConfig.GamePassword = PasswordTextBox.Text;
-                gameConfig.MaxNumPlayers = Convert.ToInt32(TeamSizeComboBox.SelectedItem) * 2;
-                switch ((string)GameTypeComboBox.SelectedItem)
+                var gameConfig = new PracticeGameConfig
+                {
+                    GameName = NameTextBox.Text,
+                    GamePassword = PasswordTextBox.Text,
+                    MaxNumPlayers = Convert.ToInt32(TeamSizeComboBox.SelectedItem)*2
+                };
+                switch ((string) GameTypeComboBox.SelectedItem)
                 {
                     case "Blind Pick":
                         gameConfig.GameTypeConfig = 1;
@@ -78,7 +98,7 @@ namespace LegendaryClient.Windows
                         gameConfig.GameTypeConfig = 6;
                         break;
                 }
-                switch ((string)((Label)MapListBox.SelectedItem).Content)
+                switch ((string) ((Label) MapListBox.SelectedItem).Content)
                 {
                     case "The Crystal Scar":
                         gameConfig.GameMap = GameMap.TheCrystalScar;
@@ -100,7 +120,7 @@ namespace LegendaryClient.Windows
                         gameConfig.GameMode = "CLASSIC";
                         break;
                 }
-                switch ((string)AllowSpectatorsComboBox.SelectedItem)
+                switch ((string) AllowSpectatorsComboBox.SelectedItem)
                 {
                     case "None":
                         gameConfig.AllowSpectators = "NONE";
@@ -121,7 +141,10 @@ namespace LegendaryClient.Windows
                 CreateGameButton.IsEnabled = true;
                 return gameConfig;
             }
-            catch { return null; }
+            catch
+            {
+                return null;
+            }
         }
 
         private void CreatedGame(GameDTO result)
@@ -141,6 +164,72 @@ namespace LegendaryClient.Windows
                     Client.SwitchPage(new CustomGameLobbyPage());
                 }
             }));
+        }
+
+        private void GenerateSpectatorCode()
+        {
+            if (!_initFinished)
+                return;
+
+            try
+            {
+                PracticeGameConfig gameConfig = GenerateGameConfig();
+                TournamentCodeTextbox.Text = "pvpnet://lol/customgame/joinorcreate";
+                TournamentCodeTextbox.Text += "/map" + gameConfig.GameMap.MapId;
+                TournamentCodeTextbox.Text += "/pick" + gameConfig.GameTypeConfig;
+                TournamentCodeTextbox.Text += "/team" + gameConfig.MaxNumPlayers*0.5;
+                TournamentCodeTextbox.Text += "/spec" + gameConfig.AllowSpectators;
+
+                string json;
+                if (String.IsNullOrEmpty(gameConfig.GamePassword))
+                    json = "{ \"name\": \"" + gameConfig.GameName + "\" }";
+                else
+                    json = "{ \"name\": \"" + gameConfig.GameName + "\", \"password\": \"" + gameConfig.GamePassword +
+                           "\" }";
+
+                //Also "report" to get riot to send a report back, and "extra" to have data sent so you can identify it (passbackDataPacket)
+
+                byte[] plainTextBytes = Encoding.UTF8.GetBytes(json);
+                TournamentCodeTextbox.Text += "/" + Convert.ToBase64String(plainTextBytes);
+            }
+            catch
+            {
+            }
+        }
+
+        private void WhitelistAddButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (String.IsNullOrWhiteSpace(WhiteListTextBox.Text))
+                return;
+
+            if (Client.Whitelist.Contains(WhiteListTextBox.Text.ToLower()))
+                return;
+
+            Client.Whitelist.Add(WhiteListTextBox.Text.ToLower());
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                WhitelistListBox.Items.Add(WhiteListTextBox.Text);
+                WhiteListTextBox.Text = "";
+            }));
+        }
+
+        private void WhitelistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (WhitelistListBox.SelectedIndex != -1)
+                WhitelistRemoveButton.IsEnabled = true;
+        }
+
+        private void WhitelistRemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (WhitelistListBox.SelectedIndex != -1)
+            {
+                if (Client.Whitelist.Count == 1)
+                    WhitelistRemoveButton.IsEnabled = false;
+
+                Client.Whitelist.Remove(WhitelistListBox.SelectedValue.ToString().ToLower());
+                Dispatcher.BeginInvoke(DispatcherPriority.Input,
+                    new ThreadStart(() => WhitelistListBox.Items.Remove(WhitelistListBox.SelectedValue)));
+            }
         }
 
         #region Spectator Code functions
@@ -163,7 +252,7 @@ namespace LegendaryClient.Windows
         private void MapListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             GenerateSpectatorCode();
-            MapLabel.Content = ((Label)MapListBox.SelectedItem).Content;
+            MapLabel.Content = ((Label) MapListBox.SelectedItem).Content;
         }
 
         private void PasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -177,70 +266,5 @@ namespace LegendaryClient.Windows
         }
 
         #endregion Spectator Code functions
-
-        private void GenerateSpectatorCode()
-        {
-            if (!initFinished)
-                return;
-            try
-            {
-                PracticeGameConfig gameConfig = GenerateGameConfig();
-                TournamentCodeTextbox.Text = "pvpnet://lol/customgame/joinorcreate";
-                TournamentCodeTextbox.Text += "/map" + gameConfig.GameMap.MapId;
-                TournamentCodeTextbox.Text += "/pick" + gameConfig.GameTypeConfig;
-                TournamentCodeTextbox.Text += "/team" + gameConfig.MaxNumPlayers * 0.5;
-                TournamentCodeTextbox.Text += "/spec" + gameConfig.AllowSpectators;
-
-                string json = "";
-                if (String.IsNullOrEmpty(gameConfig.GamePassword))
-                    json = "{ \"name\": \"" + gameConfig.GameName + "\" }";
-                else
-                    json = "{ \"name\": \"" + gameConfig.GameName + "\", \"password\": \"" + gameConfig.GamePassword + "\" }";
-
-                //Also "report" to get riot to send a report back, and "extra" to have data sent so you can identify it (passbackDataPacket)
-
-                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(json);
-                TournamentCodeTextbox.Text += "/" + System.Convert.ToBase64String(plainTextBytes);
-            }
-            catch { }
-        }
-
-        private void WhitelistAddButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (!String.IsNullOrWhiteSpace(WhiteListTextBox.Text))
-            {
-                if (!Client.Whitelist.Contains(WhiteListTextBox.Text.ToLower()))
-                {
-                    Client.Whitelist.Add(WhiteListTextBox.Text.ToLower());
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        WhitelistListBox.Items.Add(WhiteListTextBox.Text);
-                        WhiteListTextBox.Text = "";
-                    }));
-                }
-            }
-        }
-
-        private void WhitelistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (WhitelistListBox.SelectedIndex != -1)
-            {
-                WhitelistRemoveButton.IsEnabled = true;
-            }
-        }
-
-        private void WhitelistRemoveButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (WhitelistListBox.SelectedIndex != -1)
-            {
-                if (Client.Whitelist.Count == 1)
-                    WhitelistRemoveButton.IsEnabled = false;
-                Client.Whitelist.Remove(WhitelistListBox.SelectedValue.ToString().ToLower());
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                {
-                    WhitelistListBox.Items.Remove(WhitelistListBox.SelectedValue);
-                }));
-            }
-        }
     }
 }
