@@ -17,6 +17,7 @@ using System.Net;
 using System.Diagnostics;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using jabber.protocol.client;
 
 namespace LegendaryClient
 {
@@ -57,6 +58,12 @@ namespace LegendaryClient
 
             Client.ChatClient = new JabberClient();
             Client.FriendList = new FriendList();
+            if (Properties.Settings.Default.incognitoLogin)
+            {
+                Client.FriendList.PresenceChanger.SelectedItem = "Invisible";
+                Client.presenceStatus = "";
+                Client.CurrentPresence = PresenceType.invisible;
+            }
             ChatContainer.Content = Client.FriendList.Content;
             Client.notificationPage = new NotificationPage();
             NotificationContainer.Content = Client.notificationPage.Content;

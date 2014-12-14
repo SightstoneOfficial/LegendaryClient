@@ -273,5 +273,17 @@ namespace LegendaryClient.Properties {
                 this["warnClose"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool incognitoLogin {
+            get {
+                return ((bool)(this["incognitoLogin"]));
+            }
+            set {
+                this["incognitoLogin"] = value;
+            }
+        }
     }
 }
