@@ -239,6 +239,10 @@ namespace LegendaryClient.Controls
             {
                 Client.SwitchPage(new TeamQueuePage(_invitationId));
             }
+            else if (_gameType == "RANKED_TEAM_GAME")
+            {
+                Client.SwitchPage(new TeamQueuePage(_invitationId));
+            }
             Visibility = Visibility.Hidden;
             Client.InviteData.Remove(_invitationId);
         }
