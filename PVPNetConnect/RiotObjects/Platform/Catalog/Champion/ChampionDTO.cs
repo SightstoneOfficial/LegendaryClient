@@ -88,7 +88,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         public Int32 WinCountRemaining { get; set; }
 
         [InternalName("purchaseDate")]
-        public Int64 PurchaseDate { get; set; }
+        public Int32 PurchaseDate { get; set; }
 
         [InternalName("endDate")]
         public Int32 EndDate { get; set; }

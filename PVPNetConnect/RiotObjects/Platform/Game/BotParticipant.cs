@@ -55,7 +55,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public bool isGameOwner { get; set; }
 
         [InternalName("summonerInternalName")]
-        public string summonerInternalName { get; set; }
+        public string SummonerInternalName { get; set; }
 
         [InternalName("pickTurn")]
         public int pickTurn { get; set; }
@@ -73,7 +73,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int team { get; set; }
 
         [InternalName("summonerName")]
-        public string summonerName { get; set; }
+        public string SummonerName { get; set; }
 
         //?
         [InternalName("dataVersion")]
