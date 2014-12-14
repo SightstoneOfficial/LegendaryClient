@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using jabber.protocol.client;
 using LegendaryClient.Logic;
+using LegendaryClient.Properties;
 
 #endregion
 
@@ -22,7 +23,18 @@ namespace LegendaryClient.Controls
         public ChatItem()
         {
             InitializeComponent();
+            Change();
+
             Client.ChatClient.OnMessage += ChatClient_OnMessage;
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public void ChatClient_OnMessage(object sender, Message msg)
@@ -34,9 +46,7 @@ namespace LegendaryClient.Controls
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if ((string) Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
-                {
                     Update();
-                }
             }));
         }
 
@@ -73,29 +83,6 @@ namespace LegendaryClient.Controls
             ChatText.ScrollToEnd();
         }
 
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            Client.MainGrid.Children.Remove(Client.ChatItem);
-            Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
-            Client.ChatItem = null;
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            NotificationChatPlayer tempPlayer =
-                Client.ChatListView.Items.Cast<object>()
-                    .Where(i => i.GetType() == typeof (NotificationChatPlayer))
-                    .Cast<NotificationChatPlayer>()
-                    .FirstOrDefault(x => x.PlayerLabelName.Content == Client.ChatItem.PlayerLabelName.Content);
-
-            Client.MainGrid.Children.Remove(Client.ChatItem);
-            Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
-            Client.ChatItem = null;
-
-            if (tempPlayer != null)
-                Client.ChatListView.Items.Remove(tempPlayer);
-        }
-
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
@@ -124,9 +111,7 @@ namespace LegendaryClient.Controls
                 tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
 
             ChatText.ScrollToEnd();
-
             Client.ChatClient.Message(jid, Environment.NewLine + ChatTextBox.Text);
-
             ChatTextBox.Text = "";
         }
     }

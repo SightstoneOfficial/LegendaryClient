@@ -43,23 +43,19 @@ namespace LegendaryClient.Controls
             DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue.Equals(true))
-            {
                 AccessKeyManager.AddAccessKeyPressedHandler(d, HandleScopedElementAccessKeyPressed);
-            }
             else
-            {
                 AccessKeyManager.RemoveAccessKeyPressedHandler(d, HandleScopedElementAccessKeyPressed);
-            }
         }
 
         private static void HandleScopedElementAccessKeyPressed(object sender, AccessKeyPressedEventArgs e)
         {
-            if (!Keyboard.IsKeyDown(Key.LeftAlt) && !Keyboard.IsKeyDown(Key.RightAlt) &&
-                GetIsAccessKeyScope((DependencyObject) sender))
-            {
-                e.Scope = sender;
-                e.Handled = true;
-            }
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ||
+                !GetIsAccessKeyScope((DependencyObject) sender))
+                return;
+
+            e.Scope = sender;
+            e.Handled = true;
         }
     }
 }
