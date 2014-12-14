@@ -202,12 +202,9 @@ namespace LegendaryClient
             }
         }
 
-
-        private bool QuitMe = true;
-
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            if (QuitMe == true || Client.curentlyRecording.Count > 0)
+            if (Properties.Settings.Default.warnClose || Client.curentlyRecording.Count > 0)
             {
                 e.Cancel = true;
                 Warn.Title.Content = "Quit";

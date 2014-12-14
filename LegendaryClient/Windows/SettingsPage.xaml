@@ -58,12 +58,16 @@
         <TabControl Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="LegendaryClient">
                 <Grid>
-                    <CheckBox x:Name="StatsCheckbox" Margin="10,10,0,0"
+                    <CheckBox x:Name="warnExitCheckbox" Margin="10,10,0,0"
+                              HorizontalAlignment="Left" VerticalAlignment="Top"
+                              Content="Show exit confirmation"
+                              Checked="warnExitCheckbox_Checked" Unchecked="warnExitCheckbox_Checked"/>
+                    <CheckBox x:Name="StatsCheckbox" Margin="10,31,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Top"
                               Content="Gather Statistics to enhance LegendaryClient"
                               Checked="StatsCheckbox_Checked" IsEnabled="False" />
                     <CheckBox x:Name="ErrorCheckbox"
-                              Margin="10,30,0,0"
+                              Margin="10,53,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Top"
                               Content="Send Errors to LegendaryClient's developers to help fix bugs"
                               Checked="ErrorCheckbox_Checked" IsEnabled="False" />
