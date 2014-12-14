@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:Controls="clr-namespace:LegendaryClient.Controls"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     Title="PatcherPage"
     mc:Ignorable="d" d:DesignHeight="672"
     d:DesignWidth="1024">
@@ -74,17 +74,18 @@
         <TextBox x:Name="PatchTextBox" Margin="10,60,10,163" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                  IsReadOnly="True" TextWrapping="NoWrap" Background="#FF2E2E2E" BorderBrush="{x:Null}"
                  Foreground="White" />
-        <Controls:TextBoxWatermarked x:Name="DevKey" Margin="10,0,10,136" HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Bottom" Watermark="Type Your Dev Key Here" TextWrapping="Wrap"
-                                     Text=""
-                                     Background="#FF2E2E2E" Foreground="{x:Null}">
-            <Controls:TextBoxWatermarked.BorderBrush>
+        <TextBox x:Name="DevKey" Margin="10,0,10,136" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Bottom" controls:TextboxHelper.Watermark="Type Your Dev Key Here"
+                 TextWrapping="Wrap"
+                 Text=""
+                 Background="#FF2E2E2E" Foreground="{x:Null}">
+            <TextBox.BorderBrush>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Offset="0" Color="Black" />
                     <GradientStop Color="#FF2E2E2E" />
                 </LinearGradientBrush>
-            </Controls:TextBoxWatermarked.BorderBrush>
-        </Controls:TextBoxWatermarked>
+            </TextBox.BorderBrush>
+        </TextBox>
         <Button x:Name="DevSkip" Width="150" Height="50" Margin="0,5,165,0"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Content="DevSkip" Click="DevSkip_Click"
                 IsEnabled="True"

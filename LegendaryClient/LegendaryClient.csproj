@@ -305,7 +305,6 @@
     <Compile Include="ReplayElements\SmallChampionItem.xaml.cs">
       <DependentUpon>SmallChampionItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\TextBoxWatermarked.cs" />
     <Compile Include="Logic\ChatPrefixes.cs" />
     <Compile Include="Logic\ChatSubjects.cs" />
     <Compile Include="Logic\JSON\Items.cs" />

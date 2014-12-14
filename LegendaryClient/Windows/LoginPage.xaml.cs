@@ -497,7 +497,7 @@ namespace LegendaryClient.Windows
                 return;
 
             CurrentLocation = Mouse.GetPosition(MouseGrid);
-            MoveOffset = new Vector(tt.X, tt.Y);
+            MoveOffset = new Vector(Tt.X, Tt.Y);
             HideGrid.CaptureMouse();
         }
 
@@ -507,8 +507,8 @@ namespace LegendaryClient.Windows
                 return;
 
             Vector offset = Point.Subtract(e.GetPosition(MouseGrid), CurrentLocation);
-            tt.X = MoveOffset.X + offset.X;
-            tt.Y = MoveOffset.Y + offset.Y;
+            Tt.X = MoveOffset.X + offset.X;
+            Tt.Y = MoveOffset.Y + offset.Y;
         }
 
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
