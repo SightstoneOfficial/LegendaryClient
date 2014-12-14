@@ -95,6 +95,8 @@
                           SelectedIndex="4" />
                 <CheckBox x:Name="AutoLoginCheckBox" Margin="10,160,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Auto-Login" Foreground="White" />
+                <CheckBox x:Name="invisibleLoginCheckBox" Margin="100,160,0,0" HorizontalAlignment="Left"
+                          VerticalAlignment="Top" Content="Sign-in invisible" Foreground="White" />
             </Grid>
             <TextBox x:Name="Version" Width="330" Height="24"
                      Margin="0,301,10,0" HorizontalAlignment="Right"

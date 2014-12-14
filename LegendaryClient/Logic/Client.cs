@@ -329,7 +329,7 @@ namespace LegendaryClient.Logic
                     return;
 
                 if (ChatClient.IsAuthenticated)
-                    ChatClientConnect(null);
+                    SetChatHover();
             }
         }
 
@@ -348,7 +348,7 @@ namespace LegendaryClient.Logic
                     return;
 
                 if (ChatClient.IsAuthenticated)
-                    ChatClientConnect(null);
+                    SetChatHover();
             }
         }
 

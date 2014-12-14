@@ -165,6 +165,7 @@ namespace LegendaryClient.Windows
             {
                 RegionComboBox.SelectedValue = Settings.Default.Region;
             }
+            invisibleLoginCheckBox.IsChecked = Settings.Default.incognitoLogin;
 
             var uriSource =
                 new Uri(
@@ -273,7 +274,10 @@ namespace LegendaryClient.Windows
             Settings.Default.SavedUsername = RememberUsernameCheckbox.IsChecked == true ? LoginUsernameBox.Text : "";
 
             if (AutoLoginCheckBox.IsChecked != null)
-                Settings.Default.AutoLogin = (bool) AutoLoginCheckBox.IsChecked;
+                Settings.Default.AutoLogin = (bool)AutoLoginCheckBox.IsChecked;
+
+            if (invisibleLoginCheckBox.IsChecked != null)
+                Settings.Default.incognitoLogin = (bool)invisibleLoginCheckBox.IsChecked;
 
             Settings.Default.Region = (string) RegionComboBox.SelectedValue;
             Settings.Default.Save();
