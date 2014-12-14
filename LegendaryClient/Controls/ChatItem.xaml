@@ -75,7 +75,7 @@
         <TextBox x:Name="ChatTextBox" Width="250" Height="23" Margin="10,0,0,10" HorizontalAlignment="Left"
                  VerticalAlignment="Bottom" TextWrapping="Wrap" />
         <Button x:Name="SendButton" Width="75" Height="26" Margin="0,0,10,10"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send" Foreground="Black"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send"
                 Click="SendButton_Click"
                 IsDefault="True" />
     </Grid>
