@@ -434,9 +434,53 @@ namespace LegendaryClient.Windows
             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { }));
         }
 
-        private void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
+        private async void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            Int32 champint = getRandomChampInt();
+            champions champions = champions.GetChampion(champint);
+            var champDTO = new ChampionDTO
+            {
+                Active = true,
+                Banned = false,
+                BotEnabled = true,
+                ChampionId = champint,
+                DisplayName = champions.displayName
+            };
+
+            var skinlist = new List<ChampionSkinDTO>();
+            foreach (Dictionary<string, object> skins in champions.Skins)
+            {
+                var skin = new ChampionSkinDTO
+                {
+                    ChampionId = champint,
+                    FreeToPlayReward = false
+                };
+                Int32 skinInt = Convert.ToInt32(skins["id"]);
+                skin.SkinId = skinInt;
+                skin.Owned = true;
+                skinlist.Add(skin);
+            }
+            champDTO.ChampionSkins = skinlist;
+
+            var par = new BotParticipant
+            {
+                BotSkillLevelName = "Beginner",
+                BotSkillLevel = 0,
+                Champion = champDTO,
+                TeamId = 200,
+                pickMode = 0,
+                IsGameOwner = false,
+                SummonerInternalName = "bot_" + champions.name + "_200", //probably?
+                PickTurn = 0,
+                IsMe = false,
+                Badges = 0,
+                TeamName = null,
+                Team = 0,
+                SummonerName = champions.displayName + " bot"
+            };
+
+            await Client.PVPNet.SelectBotChampion(champint, par);
+            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Needs looked into
             }));
