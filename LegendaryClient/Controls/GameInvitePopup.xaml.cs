@@ -10,6 +10,7 @@ using LegendaryClient.Windows;
 using Newtonsoft.Json;
 using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Game;
 
 #endregion
 
@@ -42,6 +43,8 @@ namespace LegendaryClient.Controls
         private string _rankedTeamName;
         private string _type;
 
+        private GameDTO tempDTO;
+
         public GameInvitePopup(InvitationRequest stats)
         {
             InitializeComponent();
@@ -68,56 +71,62 @@ namespace LegendaryClient.Controls
         {
             if (!(message is InvitationRequest))
                 return;
-
-            var stats = (InvitationRequest) message;
-            try
+            if (message.GetType() == typeof(InvitationRequest))
             {
-                InviteInfo info = Client.InviteData[stats.InvitationId];
-                //Data about this popup has changed. We want to set this
-                if (!Equals(info.popup, this))
-                    return;
-
-                switch (stats.InvitationState)
+                var stats = (InvitationRequest)message;
+                try
                 {
-                    case "ON_HOLD":
-                        NotificationTextBox.Text = string.Format("The invite from {0} is now on hold",
-                            info.Inviter);
-                        Lockup();
-                        Visibility = Visibility.Hidden;
-                        break;
-                    case "TERMINATED":
-                        NotificationTextBox.Text = string.Format("The invite from {0} has been terminated",
-                            info.Inviter);
-                        Lockup();
-                        Visibility = Visibility.Hidden;
-                        break;
-                    case "REVOKED":
-                        NotificationTextBox.Text = string.Format("The invite from {0} has timed out", info.Inviter);
-                        Lockup();
-                        Visibility = Visibility.Hidden;
-                        break;
-                    case "ACTIVE":
-                        NotificationTextBox.Text = "";
-                        LoadGamePopupData(stats.Inviter == null ? info.stats : stats);
-                        Visibility = Visibility.Hidden;
+                    InviteInfo info = Client.InviteData[stats.InvitationId];
+                    //Data about this popup has changed. We want to set this
+                    if (!Equals(info.popup, this))
+                        return;
 
-                        RenderNotificationTextBox(_inviter + " has invited you to a game");
-                        RenderNotificationTextBox("");
-                        RenderNotificationTextBox("Mode: " + _mode);
-                        RenderNotificationTextBox("Map: " + _mapName);
-                        RenderNotificationTextBox("Type: " + _type);
-                        Unlock();
-                        break;
-                    default:
-                        NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter,
-                            Client.TitleCaseString(stats.InvitationState));
-                        Lockup();
-                        break;
+                    switch (stats.InvitationState)
+                    {
+                        case "ON_HOLD":
+                            NotificationTextBox.Text = string.Format("The invite from {0} is now on hold",
+                                info.Inviter);
+                            Lockup();
+                            Visibility = Visibility.Hidden;
+                            break;
+                        case "TERMINATED":
+                            NotificationTextBox.Text = string.Format("The invite from {0} has been terminated",
+                                info.Inviter);
+                            Lockup();
+                            Visibility = Visibility.Hidden;
+                            break;
+                        case "REVOKED":
+                            NotificationTextBox.Text = string.Format("The invite from {0} has timed out", info.Inviter);
+                            Lockup();
+                            Visibility = Visibility.Hidden;
+                            break;
+                        case "ACTIVE":
+                            NotificationTextBox.Text = "";
+                            LoadGamePopupData(stats.Inviter == null ? info.stats : stats);
+                            Visibility = Visibility.Hidden;
+
+                            RenderNotificationTextBox(_inviter + " has invited you to a game");
+                            RenderNotificationTextBox("");
+                            RenderNotificationTextBox("Mode: " + _mode);
+                            RenderNotificationTextBox("Map: " + _mapName);
+                            RenderNotificationTextBox("Type: " + _type);
+                            Unlock();
+                            break;
+                        default:
+                            NotificationTextBox.Text = string.Format("The invite from {0} is now {1}", info.Inviter,
+                                Client.TitleCaseString(stats.InvitationState));
+                            Lockup();
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    //We do not need this popup. it is a new one. Let it launch
                 }
             }
-            catch (Exception)
+            else if (message.GetType() == typeof(GameDTO))
             {
-                //We do not need this popup. it is a new one. Let it launch
+                tempDTO = (GameDTO)message;
             }
         }
 
@@ -213,7 +222,8 @@ namespace LegendaryClient.Controls
         {
             if (_gameType == "PRACTICE_GAME")
             {
-                Client.SwitchPage(new CustomGameLobbyPage());
+                Client.PVPNet.Accept(_invitationId);
+                Client.SwitchPage(new CustomGameLobbyPage(tempDTO));
             }
                 //goddammit teambuilder
             else if (_gameType == "NORMAL_GAME" && _queueId != 61)
