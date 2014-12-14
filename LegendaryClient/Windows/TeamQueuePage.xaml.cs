@@ -63,6 +63,7 @@ namespace LegendaryClient.Windows
             bool isranked = false)
         {
             InitializeComponent();
+            DevMode = Client.Dev;
             Change();
 
             Client.InviteListView = InviteListView;
@@ -596,6 +597,7 @@ namespace LegendaryClient.Windows
                 #endregion
 
                 DevMode = !DevMode;
+                Client.Dev = DevMode;
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);

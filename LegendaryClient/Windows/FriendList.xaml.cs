@@ -421,7 +421,7 @@ namespace LegendaryClient.Windows
         {
             PublicSummoner JID = await Client.PVPNet.GetSummonerByName(FriendAddBox.Text);
             var jid = new JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
-            string[] groups = new List<String>(new[] {"Online"}).ToArray();
+            string[] groups = new List<String>(new[] { "Online" }).ToArray();
             Client.ChatClient.Subscribe(jid, "", groups);
         }
 
@@ -446,12 +446,12 @@ namespace LegendaryClient.Windows
 
         private void RankedStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (dev)
+            if (Client.Dev)
             {
                 Client.TierName = RankedStatus.SelectedItem.ToString().ToUpper();
                 Client.SetChatHover();
             }
-            if (!dev)
+            if (!Client.Dev)
             {
                 #region authenticate
                 var dlg = new System.Windows.Forms.OpenFileDialog();
@@ -468,7 +468,7 @@ namespace LegendaryClient.Windows
                             client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1")
                                 .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
                         {
-                            dev = !dev;
+                            Client.Dev = !Client.Dev;
 
                             MessageBox.Show("You can change ranks now!",
                                 "LC Notification",

@@ -145,6 +145,7 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(Page previousPage)
         {
             InitializeComponent();
+            DevMode = Client.Dev;
             Client.OverlayContainer.Content = null;
             this.previousPage = previousPage;
             StartChampSelect();
@@ -1354,6 +1355,7 @@ namespace LegendaryClient.Windows
                             .Split(new[] {"\r\n", "\n"}, StringSplitOptions.None)[0] == filecontent)
                     {
                         DevMode = !DevMode;
+                        Client.Dev = DevMode;
                         ChampionSelectListView.IsHitTestVisible = true;
                         ChampionSelectListView.Opacity = 1;
                         var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
