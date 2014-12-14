@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -17,6 +19,8 @@ using jabber.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
@@ -26,6 +30,8 @@ using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using Timer = System.Timers.Timer;
+
+#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -53,11 +59,12 @@ namespace LegendaryClient.Windows
         /// <summary>
         ///     When invited to a team
         /// </summary>
-        /// <param name="Message"></param>
         public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false,
             bool isranked = false)
         {
             InitializeComponent();
+            Change();
+
             Client.InviteListView = InviteListView;
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
 
@@ -77,6 +84,15 @@ namespace LegendaryClient.Windows
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Lobby";
+        }
+
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void LoadStats()
@@ -546,34 +562,37 @@ namespace LegendaryClient.Windows
             if (ChatTextBox.Text == "!~dev")
             {
                 #region Authenticate
-                Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+                var dlg = new OpenFileDialog();
                 dlg.DefaultExt = ".png";
                 dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
-                if ((bool)dlg.ShowDialog())
+                if ((bool) dlg.ShowDialog())
                 {
                     string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
-                    using (WebClient client = new WebClient())
+                    using (var client = new WebClient())
                     {
-                        
                         //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
-                        if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
+                        if (
+                            client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1")
+                                .Split(new[] {"\r\n", "\n"}, StringSplitOptions.None)[0] == filecontent)
                         {
                             rankedQueue = 4;
 
                             MessageBox.Show("Ranked Hack Enabled",
-                            "LC Notification.",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+                                "LC Notification.",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
                         }
                         else
                         {
                             MessageBox.Show("Ranked Hack Enabled",
-                            "LC Notification",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+                                "LC Notification",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
                         }
                     }
                 }
+
                 #endregion
 
                 DevMode = !DevMode;
@@ -619,7 +638,7 @@ namespace LegendaryClient.Windows
 
 #pragma warning disable 4014
 
-        int rankedQueue = 2;
+        private int rankedQueue = 2;
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
@@ -629,7 +648,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = (makeRanked ? new[] { rankedQueue } : QueueIds.ToArray());
+                parameters.QueueIds = (makeRanked ? new[] {rankedQueue} : QueueIds.ToArray());
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
@@ -754,7 +773,8 @@ namespace LegendaryClient.Windows
         {
             Client.InstaCall = true;
             Client.CallString = ChatTextBox.Text;
-            CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select", Brushes.OrangeRed);
+            CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select",
+                Brushes.OrangeRed);
             ChatTextBox.Text = string.Empty;
         }
     }

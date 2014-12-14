@@ -1,24 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-namespace LegendaryClient.Windows
+﻿namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for WebsiteOverlayPage.xaml
+    ///     Interaction logic for WebsiteOverlayPage.xaml
     /// </summary>
-    public partial class WebsiteOverlayPage : Page
+    public partial class WebsiteOverlayPage
     {
         public WebsiteOverlayPage()
         {
