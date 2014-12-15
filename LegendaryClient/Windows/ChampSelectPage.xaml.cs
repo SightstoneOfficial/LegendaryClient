@@ -746,12 +746,8 @@ namespace LegendaryClient.Windows
                     Client.LaunchGame();
                     InGame();
                     Client.ReturnButton.Visibility = Visibility.Hidden;
-                }));
-                try
-                {
                     Client.AmbientSoundPlayer.Stop();
-                }
-                catch { }
+                }));
 
                 #endregion Launching Game
             }
