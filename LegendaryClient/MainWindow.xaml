@@ -9,7 +9,8 @@
 
     <Controls:MetroWindow.WindowCommands>
         <Controls:WindowCommands>
-            <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click" />
+            <Label x:Name="inQueueTimer" Content="00:00" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" Visibility="Hidden"/>
+            <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click"/>
             <Label x:Name="InfoLabel" Content="Not Logged In" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" />
             <Button x:Name="HomeButton" Content="home" Click="HomeButton_Click" />
             <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" />

@@ -197,6 +197,11 @@ namespace LegendaryClient.Logic
         internal static Button ReturnButton;
 
         /// <summary>
+        ///     inQueueTimer
+        /// </summary>
+        internal static Label inQueueTimer;
+
+        /// <summary>
         ///     Check if on Champion Select or Team Queue Lobby Page
         /// </summary>
         internal static Page CurrentPage;

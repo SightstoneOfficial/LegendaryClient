@@ -159,12 +159,12 @@ namespace LegendaryClient.Windows
 
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
-            if (message.GetType() == typeof (LcdsServiceProxyResponse))
+            if (message.GetType() == typeof(LcdsServiceProxyResponse))
             {
                 var ProxyResponse = message as LcdsServiceProxyResponse;
                 HandleProxyResponse(ProxyResponse);
             }
-            if (message.GetType() == typeof (GameDTO))
+            if (message.GetType() == typeof(GameDTO))
             {
                 var ChampDTO = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
@@ -176,7 +176,7 @@ namespace LegendaryClient.Windows
                     }
                 }));
             }
-            else if (message.GetType() == typeof (PlayerCredentialsDto))
+            else if (message.GetType() == typeof(PlayerCredentialsDto))
             {
                 #region Launching Game
 
@@ -199,7 +199,7 @@ namespace LegendaryClient.Windows
                                 string IP = n.PlayerCredentials.ObserverServerIp + ":" +
                                             n.PlayerCredentials.ObserverServerPort;
                                 string Key = n.PlayerCredentials.ObserverEncryptionKey;
-                                var GameID = (Int32) n.PlayerCredentials.GameId;
+                                var GameID = (Int32)n.PlayerCredentials.GameId;
                                 new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
                             }
                         });
@@ -286,8 +286,10 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
-                        QueueButton.Content = String.Format("Searching for team {0}:{1}", ts.Minutes,
-                            ts.Seconds < 10 ? "0" + ts.Seconds : "" + ts.Seconds);
+                        if (Client.inQueueTimer.Visibility == Visibility.Hidden)
+                            Client.inQueueTimer.Visibility = Visibility.Visible;
+                        Client.inQueueTimer.Content = String.Format("In Queue {0:D2}:{1:D2}", ts.Minutes, ts.Seconds);
+                        QueueButton.Content = "Searching for team";
                     }));
                 };
                 timer.AutoReset = true;
@@ -298,6 +300,7 @@ namespace LegendaryClient.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     timer.Stop();
+                    Client.inQueueTimer.Visibility = Visibility.Hidden;
                     TimeLeft = 10;
                     var m = JsonConvert.DeserializeObject<ReceivedGroupId>(Response.Payload);
                     teambuilderCandidateAutoQuitTimeout = m.candidateAutoQuitTimeout;
@@ -393,8 +396,10 @@ namespace LegendaryClient.Windows
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
-                        ReadyButton.Content = String.Format("Searching for match {0}:{1}", ts.Minutes,
-                            ts.Seconds < 10 ? "0" + ts.Seconds : "" + ts.Seconds);
+                        if (Client.inQueueTimer.Visibility == Visibility.Hidden)
+                            Client.inQueueTimer.Visibility = Visibility.Visible;
+                        Client.inQueueTimer.Content = String.Format("In Queue {0:D2}:{1:D2}", ts.Minutes, ts.Seconds);
+                        ReadyButton.Content = "Searching for match";
                     }));
                 };
                 timer.AutoReset = true;
@@ -402,6 +407,10 @@ namespace LegendaryClient.Windows
             }
             else if (Response.MethodName == "matchMadeV1")
             {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    Client.inQueueTimer.Visibility = Visibility.Hidden;
+                }));
                 timer.Stop();
             }
             else if (Response.MethodName == "removedFromServiceV1")
@@ -413,6 +422,7 @@ namespace LegendaryClient.Windows
 
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
+                    Client.inQueueTimer.Visibility = Visibility.Hidden;
                     if (Client.LastPageContent == Content) Client.LastPageContent = null;
                     if (Client.CurrentPage == this)
                     {
@@ -420,6 +430,10 @@ namespace LegendaryClient.Windows
                         Client.ReturnButton.Visibility = Visibility.Hidden;
                     }
                 }));
+                if (CountdownTimer != null)
+                    CountdownTimer.Stop();
+                if (timer != null)
+                    timer.Stop();
 
                 Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                 Client.GameStatus = "outOfGame";
@@ -595,7 +609,7 @@ namespace LegendaryClient.Windows
                 CountdownTimer.Stop();
                 MatchFoundGrid.Visibility = Visibility.Hidden;
                 CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
-                Client.ClearPage(typeof (TeamBuilderPage));
+                Client.ClearPage(typeof(TeamBuilderPage));
                 uiLogic.UpdateMainPage();
             }));
         }
@@ -707,7 +721,7 @@ namespace LegendaryClient.Windows
                 {
                     if (item.Tag is string)
                     {
-                        string[] splitItem = ((string) item.Tag).Split(':');
+                        string[] splitItem = ((string)item.Tag).Split(':');
                         int championId = Convert.ToInt32(splitItem[1]);
                         champions Champion = champions.GetChampion(championId);
                         SelectSkin(0);
@@ -717,7 +731,7 @@ namespace LegendaryClient.Windows
                     }
                     else
                     {
-                        championSkins skin = championSkins.GetSkin((int) item.Tag);
+                        championSkins skin = championSkins.GetSkin((int)item.Tag);
                         SelectSkin(skin.id);
                         var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                         tr.Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine;
@@ -750,13 +764,13 @@ namespace LegendaryClient.Windows
             string LastArg = string.Format("\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"", false,
                 teambuilderSlotId, teambuilderGroupId);
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", "{" + LastArg + "}");
-            Client.ClearPage(typeof (TeamBuilderPage));
+            Client.ClearPage(typeof(TeamBuilderPage));
             uiLogic.UpdateMainPage();
         }
 
         private void TeamPosition_SelectionChanged(object sender, EventArgs e)
         {
-            var itm = (Item) TeamPlayer.Position.SelectedItem;
+            var itm = (Item)TeamPlayer.Position.SelectedItem;
             position = itm.ComboRole;
             TeamPlayer.RunePage.Visibility = Visibility.Visible;
             TeamPlayer.MasteryPage.Visibility = Visibility.Visible;
@@ -785,7 +799,7 @@ namespace LegendaryClient.Windows
                     MasteryPageName = "Mastery Page " + ++i;
                 }
                 MasteryPage.Current = false;
-                if (MasteryPageName == (string) TeamPlayer.MasteryPage.SelectedItem)
+                if (MasteryPageName == (string)TeamPlayer.MasteryPage.SelectedItem)
                 {
                     MasteryPage.Current = true;
                     HasChanged = true;
@@ -829,7 +843,7 @@ namespace LegendaryClient.Windows
                     RunePageName = "Rune Page " + ++i;
                 }
                 RunePage.Current = false;
-                if (RunePageName == (string) TeamPlayer.RunePage.SelectedItem)
+                if (RunePageName == (string)TeamPlayer.RunePage.SelectedItem)
                 {
                     RunePage.Current = true;
                     SelectedRunePage = RunePage;
@@ -847,7 +861,7 @@ namespace LegendaryClient.Windows
 
         private void TeamRole_SelectionChanged(object sender, EventArgs e)
         {
-            var itm = (Item) TeamPlayer.Role.SelectedItem;
+            var itm = (Item)TeamPlayer.Role.SelectedItem;
             role = itm.ComboRole;
             TeamPlayer.Position.Visibility = Visibility.Visible;
         }
@@ -940,7 +954,7 @@ namespace LegendaryClient.Windows
         private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
-            SelectChamp((int) item.Tag);
+            SelectChamp((int)item.Tag);
 
             var fadingAnimation = new DoubleAnimation();
             fadingAnimation.From = 1;
@@ -949,7 +963,7 @@ namespace LegendaryClient.Windows
             fadingAnimation.Completed += (eSender, eArgs) =>
             {
                 string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                    champions.GetChampion((int) item.Tag).splashPath);
+                    champions.GetChampion((int)item.Tag).splashPath);
                 ChampAndSkinBackgroundImage.Source = Client.GetImage(uriSource);
                 fadingAnimation = new DoubleAnimation();
                 fadingAnimation.From = 0;
@@ -1028,11 +1042,11 @@ namespace LegendaryClient.Windows
 
         public void SelectSummonerSpells(string GameMode = "CLASSIC")
         {
-            Array values = Enum.GetValues(typeof (NameToImage));
+            Array values = Enum.GetValues(typeof(NameToImage));
             SummonerSpellListView.Items.Clear();
             foreach (NameToImage Spell in values)
             {
-                if (!availableSpells.Contains((int) Spell))
+                if (!availableSpells.Contains((int)Spell))
                     continue;
                 var champImage = new Image();
                 champImage.Height = 64;
@@ -1042,7 +1056,7 @@ namespace LegendaryClient.Windows
                     new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + Spell + ".png"),
                         UriKind.Absolute);
                 champImage.Source = new BitmapImage(uriSource);
-                champImage.Tag = (int) Spell;
+                champImage.Tag = (int)Spell;
                 SummonerSpellListView.Items.Add(champImage);
             }
         }
@@ -1054,9 +1068,9 @@ namespace LegendaryClient.Windows
         {
             if (SummonerSpellListView.SelectedIndex != -1)
             {
-                var item = (Image) SummonerSpellListView.SelectedItem;
+                var item = (Image)SummonerSpellListView.SelectedItem;
                 int spellId = Convert.ToInt32(item.Tag);
-                var spellName = (NameToImage) spellId;
+                var spellName = (NameToImage)spellId;
                 var uriSource =
                     new Uri(
                         Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spellName + ".png"),
@@ -1088,7 +1102,7 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.Leave();
             Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
-            Client.ClearPage(typeof (TeamBuilderPage));
+            Client.ClearPage(typeof(TeamBuilderPage));
             Client.GameStatus = "inGame";
             Client.timeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
@@ -1100,7 +1114,7 @@ namespace LegendaryClient.Windows
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
-            Client.ClearPage(typeof (TeamBuilderPage));
+            Client.ClearPage(typeof(TeamBuilderPage));
             uiLogic.UpdateMainPage();
         }
 

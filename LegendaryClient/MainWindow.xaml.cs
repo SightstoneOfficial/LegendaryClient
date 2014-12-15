@@ -99,6 +99,7 @@ namespace LegendaryClient
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;
             Client.ReturnButton = ReturnToPage;
+            Client.inQueueTimer = inQueueTimer;
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
