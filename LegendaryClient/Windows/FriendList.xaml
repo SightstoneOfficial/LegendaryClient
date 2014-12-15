@@ -70,6 +70,6 @@
                  MaxLength="25" />
         <Button x:Name="AddFriendButton" Width="54" Height="26" Margin="186,0,0,9"
                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Add" Click="AddFriendButton_Click" />
-        <ComboBox x:Name="RankedStatus" ItemsSource="{DynamicResource RankedTypes}" HorizontalAlignment="Left" Margin="5,66,0,0" VerticalAlignment="Top" Width="240" Height="22" SelectionChanged="RankedStatus_SelectionChanged"/>
+        <ComboBox x:Name="RankedStatus" ItemsSource="{DynamicResource RankedTypes}" HorizontalAlignment="Left" Margin="5,66,0,0" VerticalAlignment="Top" Width="240" Height="22" SelectionChanged="RankedStatus_SelectionChanged" Visibility="Hidden"/>
     </Grid>
 </Page>
