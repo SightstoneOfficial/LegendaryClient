@@ -64,6 +64,12 @@ namespace LegendaryClient
                 Client.presenceStatus = "";
                 Client.CurrentPresence = PresenceType.invisible;
             }
+            else
+            {
+                Client.FriendList.PresenceChanger.SelectedItem = "Online";
+                Client.presenceStatus = "chat";
+                Client.CurrentPresence = PresenceType.available;
+            }
             ChatContainer.Content = Client.FriendList.Content;
             Client.notificationPage = new NotificationPage();
             NotificationContainer.Content = Client.notificationPage.Content;

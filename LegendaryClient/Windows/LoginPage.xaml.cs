@@ -519,5 +519,38 @@ namespace LegendaryClient.Windows
         {
             HideGrid.ReleaseMouseCapture();
         }
+
+        private void devKeyLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var dlg = new System.Windows.Forms.OpenFileDialog();
+            dlg.DefaultExt = ".png";
+            dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
+            System.Windows.Forms.DialogResult result = dlg.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
+                using (var client = new WebClient())
+                {
+                    if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
+                    {
+                        Client.Dev = true;
+                        devKeyLabel.Content = "Dev";
+                        MessageBox.Show("Dev mode activated.",
+                            "LC Notification",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        Client.Dev = false;
+                        devKeyLabel.Content = "User";
+                        MessageBox.Show("Failed to approve key",
+                            "LC Notification",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
     }
 }

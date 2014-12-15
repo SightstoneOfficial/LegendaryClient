@@ -69,12 +69,6 @@ namespace LegendaryClient.Windows
 
         private void DevKey_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (DevKey.Text == "!~devmode=true")
-                Client.Dev = true;
-            else if (DevKey.Text == "!~devmode=false")
-                Client.Dev = false;
-            if (DevKey.Text.Contains("!~devmode="))
-                return;
             if (DevKey.Text.StartsWith("!~betakey-"))
                 if (DevKey.Text.EndsWith("~!"))
                     GetDev(DevKey.Text.Replace("!~betakey-", "").Replace("~!", ""));

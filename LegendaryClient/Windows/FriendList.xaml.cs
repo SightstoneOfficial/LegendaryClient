@@ -47,6 +47,7 @@ namespace LegendaryClient.Windows
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
             Client.chatlistview = ChatListView;
+            
             Change();
         }
 
@@ -55,7 +56,7 @@ namespace LegendaryClient.Windows
             if (PresenceChanger.SelectedIndex == -1)
                 return;
 
-            switch ((string) PresenceChanger.SelectedValue)
+            switch ((string)PresenceChanger.SelectedValue)
             {
                 case "Online":
                     Client.CurrentPresence = PresenceType.available;
@@ -115,13 +116,13 @@ namespace LegendaryClient.Windows
                         {
                             Tag = chatPlayerPair.Value,
                             DataContext = chatPlayerPair.Value,
-                            ContextMenu = (ContextMenu) Resources["PlayerChatMenu"],
-                            PlayerName = {Content = chatPlayerPair.Value.Username},
-                            LevelLabel = {Content = chatPlayerPair.Value.Level}
+                            ContextMenu = (ContextMenu)Resources["PlayerChatMenu"],
+                            PlayerName = { Content = chatPlayerPair.Value.Username },
+                            LevelLabel = { Content = chatPlayerPair.Value.Level }
                         };
 
                         var bc = new BrushConverter();
-                        var brush = (Brush) bc.ConvertFrom("#FFFFFFFF");
+                        var brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
                         player.PlayerStatus.Content = chatPlayerPair.Value.Status;
                         player.PlayerStatus.Foreground = brush;
 
@@ -129,7 +130,7 @@ namespace LegendaryClient.Windows
                         {
                             player.Width = 250;
                             bc = new BrushConverter();
-                            brush = (Brush) bc.ConvertFrom("#FFFFFFFF");
+                            brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
                             player.PlayerStatus.Foreground = brush;
                             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                                 chatPlayerPair.Value.ProfileIcon + ".png");
@@ -177,7 +178,7 @@ namespace LegendaryClient.Windows
                                         player.PlayerStatus.Content = "In Tutorial";
                                         break;
                                 }
-                                brush = (Brush) bc.ConvertFrom("#FFFFFF99");
+                                brush = (Brush)bc.ConvertFrom("#FFFFFF99");
                                 player.PlayerStatus.Foreground = brush;
                             }
 
@@ -201,8 +202,8 @@ namespace LegendaryClient.Windows
                     var groupControl = new ChatGroup
                     {
                         Width = 230,
-                        PlayersLabel = {Content = players},
-                        NameLabel = {Content = g.GroupName}
+                        PlayersLabel = { Content = players },
+                        NameLabel = { Content = g.GroupName }
                     };
                     groupControl.GroupListView.Children.Add(playersListView);
                     if (g.IsOpen)
@@ -219,8 +220,8 @@ namespace LegendaryClient.Windows
 
         private void player_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var item = (ChatPlayer) sender;
-            var playerItem = (ChatPlayerItem) item.Tag;
+            var item = (ChatPlayer)sender;
+            var playerItem = (ChatPlayerItem)item.Tag;
             LastPlayerItem = playerItem;
         }
 
@@ -229,12 +230,12 @@ namespace LegendaryClient.Windows
             if (selection.AddedItems.Count <= 0)
                 return;
 
-            var player = (ChatPlayer) selection.AddedItems[0];
-            ((ListView) e.Source).SelectedIndex = -1;
-            var playerItem = (ChatPlayerItem) player.Tag;
+            var player = (ChatPlayer)selection.AddedItems[0];
+            ((ListView)e.Source).SelectedIndex = -1;
+            var playerItem = (ChatPlayerItem)player.Tag;
             if (
                 Client.ChatListView.Items.Cast<NotificationChatPlayer>()
-                    .Any(x => (string) x.PlayerLabelName.Content == playerItem.Username))
+                    .Any(x => (string)x.PlayerLabelName.Content == playerItem.Username))
                 return;
 
             var chatPlayer = new NotificationChatPlayer
@@ -242,7 +243,7 @@ namespace LegendaryClient.Windows
                 Tag = playerItem,
                 PlayerName = playerItem.Username,
                 Margin = new Thickness(1, 0, 1, 0),
-                PlayerLabelName = {Content = playerItem.Username}
+                PlayerLabelName = { Content = playerItem.Username }
             };
             Client.ChatListView.Items.Add(chatPlayer);
         }
@@ -258,7 +259,7 @@ namespace LegendaryClient.Windows
                 RoutedEvent = MouseWheelEvent,
                 Source = sender
             };
-            var parent = ((Control) sender).Parent as UIElement;
+            var parent = ((Control)sender).Parent as UIElement;
             if (parent != null)
                 parent.RaiseEvent(eventArg);
         }
@@ -274,8 +275,8 @@ namespace LegendaryClient.Windows
 
         private void ChatPlayerMouseOver(object sender, MouseEventArgs e)
         {
-            var item = (ChatPlayer) sender;
-            var playerItem = (ChatPlayerItem) item.Tag;
+            var item = (ChatPlayer)sender;
+            var playerItem = (ChatPlayerItem)item.Tag;
             if (PlayerItem == null)
             {
                 PlayerItem = new LargeChatPlayer();
@@ -400,9 +401,9 @@ namespace LegendaryClient.Windows
             var bc = new BrushConverter();
             bool x = Settings.Default.DarkTheme;
             if (x)
-                TheGrid.Background = (Brush) bc.ConvertFrom("#E5000000");
+                TheGrid.Background = (Brush)bc.ConvertFrom("#E5000000");
             else
-                TheGrid.Background = (Brush) bc.ConvertFrom("#E5B4B4B4");
+                TheGrid.Background = (Brush)bc.ConvertFrom("#E5B4B4B4");
 
             var themeAccent = new ResourceDictionary
             {
@@ -430,14 +431,14 @@ namespace LegendaryClient.Windows
             switch (LastPlayerItem.GameStatus)
             {
                 case "inGame":
-                {
-                    PlatformGameLifecycleDTO n =
-                        await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
-                    if (n.GameName != null)
-                        Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress,
-                            n.PlayerCredentials.ObserverEncryptionKey, (int) n.PlayerCredentials.GameId,
-                            Client.Region.InternalName);
-                }
+                    {
+                        PlatformGameLifecycleDTO n =
+                            await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
+                        if (n.GameName != null)
+                            Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress,
+                                n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId,
+                                Client.Region.InternalName);
+                    }
                     break;
                 case "spectating":
                     break;
@@ -450,43 +451,6 @@ namespace LegendaryClient.Windows
             {
                 Client.TierName = RankedStatus.SelectedItem.ToString().ToUpper();
                 Client.SetChatHover();
-            }
-            if (!Client.Dev)
-            {
-                #region authenticate
-                var dlg = new System.Windows.Forms.OpenFileDialog();
-                dlg.DefaultExt = ".png";
-                dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
-                System.Windows.Forms.DialogResult result = dlg.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK)
-                {
-                    string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
-                    using (var client = new WebClient())
-                    {
-                        //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
-                        if (
-                            client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1")
-                                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
-                        {
-                            Client.Dev = !Client.Dev;
-
-                            MessageBox.Show("You can change ranks now!",
-                                "LC Notification",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                            Client.TierName = RankedStatus.SelectedItem.ToString();
-                            Client.SetChatHover();
-                        }
-                        else
-                        {
-                            MessageBox.Show("Failed to approve key",
-                                "LC Notification",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
-                        }
-                    }
-                }
-                #endregion
             }
         }
     }

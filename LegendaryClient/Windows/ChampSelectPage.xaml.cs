@@ -56,7 +56,6 @@ namespace LegendaryClient.Windows
         private List<ChampionBanInfoDTO> ChampionsForBan;
         private Room Chatroom;
         private Timer CountdownTimer;
-        private bool DevMode;
         private bool HasLaunchedGame;
         private bool HasLockedIn;
         private GameDTO LatestDto;
@@ -132,7 +131,7 @@ namespace LegendaryClient.Windows
             "Xerath", "Zilean", "Azir"
         };
 
-        private readonly string[] voidChampions = {"Cho'Gath", "Kha'Zix", "Kog'Maw", "Malzahar", "Vel'koz"};
+        private readonly string[] voidChampions = { "Cho'Gath", "Kha'Zix", "Kog'Maw", "Malzahar", "Vel'koz" };
 
         private readonly string[] zaunChampions =
         {
@@ -145,7 +144,6 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(Page previousPage)
         {
             InitializeComponent();
-            DevMode = Client.Dev;
             Client.OverlayContainer.Content = null;
             this.previousPage = previousPage;
             StartChampSelect();
@@ -290,7 +288,7 @@ namespace LegendaryClient.Windows
                         Text = "Invalid Config ID (" + latestDto.GameTypeConfigId +
                                "). Report to Eddy5641 [https://github.com/Eddy5641/LegendaryClient/issues/new]"
                     },
-                    MessageTitle = {Content = "Invalid Config"}
+                    MessageTitle = { Content = "Invalid Config" }
                 };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -354,7 +352,7 @@ namespace LegendaryClient.Windows
         /// <param name="message"></param>
         private void ChampSelect_OnMessageReceived(object sender, object message)
         {
-            if (message.GetType() == typeof (GameDTO))
+            if (message.GetType() == typeof(GameDTO))
             {
                 #region In Champion Select
 
@@ -441,7 +439,7 @@ namespace LegendaryClient.Windows
                             }
                         }
                         //Otherwise block selection of champions unless in dev mode
-                        if (!DevMode)
+                        if (!Client.Dev)
                         {
                             ChampionSelectListView.IsHitTestVisible = false;
                             ChampionSelectListView.Opacity = 0.5;
@@ -494,7 +492,7 @@ namespace LegendaryClient.Windows
                             else
                                 PurpleBanListView.Items.Add(champImage);
 
-                            foreach (ListViewItem y in championArray.Where(y => (int) y.Tag == x.ChampionId))
+                            foreach (ListViewItem y in championArray.Where(y => (int)y.Tag == x.ChampionId))
                             {
                                 ChampionSelectListView.Items.Remove(y);
                                 //Remove from arrays
@@ -558,7 +556,7 @@ namespace LegendaryClient.Windows
                         Client.GameStatus = "inQueue";
                         Client.SetChatHover();
                         Client.SwitchPage(previousPage);
-                        Client.ClearPage(typeof (ChampSelectPage));
+                        Client.ClearPage(typeof(ChampSelectPage));
                         Client.ReturnButton.Visibility = Visibility.Hidden;
                     }
 
@@ -605,7 +603,7 @@ namespace LegendaryClient.Windows
 
                                 PlayerChampionSelectionDTO selection1 = selection;
                                 foreach (
-                                    ListViewItem y in championArray.Where(y => (int) y.Tag == selection1.ChampionId))
+                                    ListViewItem y in championArray.Where(y => (int)y.Tag == selection1.ChampionId))
                                 {
                                     y.IsHitTestVisible = true;
                                     y.Opacity = 0.5;
@@ -630,7 +628,7 @@ namespace LegendaryClient.Windows
                                 //If we have locked in render skin select
                                 if (!HasLockedIn ||
                                     selection.SummonerInternalName !=
-                                    Client.LoginPacket.AllSummonerData.Summoner.InternalName || DevMode)
+                                    Client.LoginPacket.AllSummonerData.Summoner.InternalName || Client.Dev)
                                     continue;
 
                                 if (purpleSide)
@@ -709,7 +707,7 @@ namespace LegendaryClient.Windows
 
                 #endregion In Champion Select
             }
-            else if (message.GetType() == typeof (PlayerCredentialsDto))
+            else if (message.GetType() == typeof(PlayerCredentialsDto))
             {
                 Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
 
@@ -735,7 +733,7 @@ namespace LegendaryClient.Windows
                             string ip = n.PlayerCredentials.ObserverServerIp + ":" +
                                         n.PlayerCredentials.ObserverServerPort;
                             string key = n.PlayerCredentials.ObserverEncryptionKey;
-                            var gameId = (Int32) n.PlayerCredentials.GameId;
+                            var gameId = (Int32)n.PlayerCredentials.GameId;
                             new ReplayRecorder(ip, gameId, Client.Region.InternalName, key);
                         }
                     });
@@ -753,7 +751,7 @@ namespace LegendaryClient.Windows
 
                 #endregion Launching Game
             }
-            else if (message.GetType() == typeof (TradeContractDTO))
+            else if (message.GetType() == typeof(TradeContractDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -764,43 +762,43 @@ namespace LegendaryClient.Windows
                     switch (tradeDto.State)
                     {
                         case "PENDING":
-                        {
-                            PlayerTradeControl.Visibility = Visibility.Visible;
-                            PlayerTradeControl.Tag = tradeDto;
-                            PlayerTradeControl.AcceptButton.Visibility = Visibility.Visible;
-                            PlayerTradeControl.DeclineButton.Content = "Decline";
+                            {
+                                PlayerTradeControl.Visibility = Visibility.Visible;
+                                PlayerTradeControl.Tag = tradeDto;
+                                PlayerTradeControl.AcceptButton.Visibility = Visibility.Visible;
+                                PlayerTradeControl.DeclineButton.Content = "Decline";
 
-                            champions myChampion = champions.GetChampion((int) tradeDto.ResponderChampionId);
-                            PlayerTradeControl.MyChampImage.Source = myChampion.icon;
-                            PlayerTradeControl.MyChampLabel.Content = myChampion.displayName;
-                            champions theirChampion = champions.GetChampion((int) tradeDto.RequesterChampionId);
-                            PlayerTradeControl.TheirChampImage.Source = theirChampion.icon;
-                            PlayerTradeControl.TheirChampLabel.Content = theirChampion.displayName;
-                            PlayerTradeControl.RequestLabel.Content = string.Format("{0} wants to trade!",
-                                tradeDto.RequesterInternalSummonerName);
-                        }
+                                champions myChampion = champions.GetChampion((int)tradeDto.ResponderChampionId);
+                                PlayerTradeControl.MyChampImage.Source = myChampion.icon;
+                                PlayerTradeControl.MyChampLabel.Content = myChampion.displayName;
+                                champions theirChampion = champions.GetChampion((int)tradeDto.RequesterChampionId);
+                                PlayerTradeControl.TheirChampImage.Source = theirChampion.icon;
+                                PlayerTradeControl.TheirChampLabel.Content = theirChampion.displayName;
+                                PlayerTradeControl.RequestLabel.Content = string.Format("{0} wants to trade!",
+                                    tradeDto.RequesterInternalSummonerName);
+                            }
                             break;
                         case "BUSY":
                         case "DECLINED":
                         case "CANCELED":
-                        {
-                            PlayerTradeControl.Visibility = Visibility.Hidden;
+                            {
+                                PlayerTradeControl.Visibility = Visibility.Hidden;
 
-                            TextInfo text = new CultureInfo("en-US", false).TextInfo;
-                            var pop = new NotificationPopup(ChatSubjects.INVITE_STATUS_CHANGED,
-                                string.Format("{0} has {1} this trade", tradeDto.RequesterInternalSummonerName,
-                                    text.ToTitleCase(tradeDto.State)));
+                                TextInfo text = new CultureInfo("en-US", false).TextInfo;
+                                var pop = new NotificationPopup(ChatSubjects.INVITE_STATUS_CHANGED,
+                                    string.Format("{0} has {1} this trade", tradeDto.RequesterInternalSummonerName,
+                                        text.ToTitleCase(tradeDto.State)));
 
-                            if (tradeDto.State == "BUSY")
-                                pop.NotificationTextBox.Text = string.Format("{0} is currently busy",
-                                    tradeDto.RequesterInternalSummonerName);
+                                if (tradeDto.State == "BUSY")
+                                    pop.NotificationTextBox.Text = string.Format("{0} is currently busy",
+                                        tradeDto.RequesterInternalSummonerName);
 
-                            pop.Height = 200;
-                            pop.OkButton.Visibility = Visibility.Visible;
-                            pop.HorizontalAlignment = HorizontalAlignment.Right;
-                            pop.VerticalAlignment = VerticalAlignment.Bottom;
-                            Client.NotificationGrid.Children.Add(pop); //*/
-                        }
+                                pop.Height = 200;
+                                pop.OkButton.Visibility = Visibility.Visible;
+                                pop.HorizontalAlignment = HorizontalAlignment.Right;
+                                pop.VerticalAlignment = VerticalAlignment.Bottom;
+                                Client.NotificationGrid.Children.Add(pop); //*/
+                            }
                             break;
                     }
                 }));
@@ -887,10 +885,10 @@ namespace LegendaryClient.Windows
 
                 //Render champions
                 foreach (ChampionSkinDTO skin in from champ in ChampList
-                    where champ.ChampionId == selectedChampionId
-                    from skin in champ.ChampionSkins
-                    where skin.Owned
-                    select skin)
+                                                 where champ.ChampionId == selectedChampionId
+                                                 from skin in champ.ChampionSkins
+                                                 where skin.Owned
+                                                 select skin)
                 {
                     item = new ListViewItem();
                     skinImage = new Image();
@@ -920,7 +918,7 @@ namespace LegendaryClient.Windows
                 foreach (ChampionDTO champ in ChampList)
                 {
                     champions getChamp = champions.GetChampion(champ.ChampionId);
-                    if (previousPage.GetType() == typeof (FactionsGameLobbyPage))
+                    if (previousPage.GetType() == typeof(FactionsGameLobbyPage))
                     {
                         var page = previousPage as FactionsGameLobbyPage;
                         if (page != null)
@@ -977,7 +975,7 @@ namespace LegendaryClient.Windows
                     var item = new ListViewItem();
                     var championImage = new ChampionImage
                     {
-                        ChampImage = {Source = champions.GetChampion(champ.ChampionId).icon}
+                        ChampImage = { Source = champions.GetChampion(champ.ChampionId).icon }
                     };
                     if (champ.FreeToPlay)
                         championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
@@ -1001,7 +999,7 @@ namespace LegendaryClient.Windows
                     var item = new ListViewItem();
                     var championImage = new ChampionImage
                     {
-                        ChampImage = {Source = champions.GetChampion(champ.ChampionId).icon},
+                        ChampImage = { Source = champions.GetChampion(champ.ChampionId).icon },
                         Width = 64,
                         Height = 64
                     };
@@ -1029,20 +1027,20 @@ namespace LegendaryClient.Windows
             if (selection.Spell1Id != 0)
             {
                 string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                    SummonerSpell.GetSpellImageName((int) selection.Spell1Id));
+                    SummonerSpell.GetSpellImageName((int)selection.Spell1Id));
                 control.SummonerSpell1.Source = Client.GetImage(uriSource);
                 uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                    SummonerSpell.GetSpellImageName((int) selection.Spell2Id));
+                    SummonerSpell.GetSpellImageName((int)selection.Spell2Id));
                 control.SummonerSpell2.Source = Client.GetImage(uriSource);
             }
             //Set our summoner spells in client
             if (player.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
             {
                 string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                    SummonerSpell.GetSpellImageName((int) selection.Spell1Id));
+                    SummonerSpell.GetSpellImageName((int)selection.Spell1Id));
                 SummonerSpell1Image.Source = Client.GetImage(uriSource);
                 uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                    SummonerSpell.GetSpellImageName((int) selection.Spell2Id));
+                    SummonerSpell.GetSpellImageName((int)selection.Spell2Id));
                 SummonerSpell2Image.Source = Client.GetImage(uriSource);
                 MyChampId = selection.ChampionId;
             }
@@ -1061,14 +1059,14 @@ namespace LegendaryClient.Windows
                 control.Opacity = 1;
 
             //If trading with this player is possible
-            if (CanTradeWith != null && (CanTradeWith.PotentialTraders.Contains(player.SummonerInternalName) || DevMode))
+            if (CanTradeWith != null && (CanTradeWith.PotentialTraders.Contains(player.SummonerInternalName) || Client.Dev))
                 control.TradeButton.Visibility = Visibility.Visible;
 
             //If this player is duo/trio/quadra queued with players
-            if (player.TeamParticipantId != null && (double) player.TeamParticipantId != 0)
+            if (player.TeamParticipantId != null && (double)player.TeamParticipantId != 0)
             {
                 //Byte hack to get individual hex colors
-                byte[] values = BitConverter.GetBytes((double) player.TeamParticipantId);
+                byte[] values = BitConverter.GetBytes((double)player.TeamParticipantId);
                 if (!BitConverter.IsLittleEndian) Array.Reverse(values);
 
                 byte r = values[2];
@@ -1078,7 +1076,7 @@ namespace LegendaryClient.Windows
                 Color myColor = Color.FromArgb(r, b, g);
 
                 var converter = new BrushConverter();
-                var brush = (Brush) converter.ConvertFromString("#" + myColor.Name);
+                var brush = (Brush)converter.ConvertFromString("#" + myColor.Name);
                 control.TeamRectangle.Fill = brush;
                 control.TeamRectangle.Visibility = Visibility.Visible;
             }
@@ -1092,11 +1090,11 @@ namespace LegendaryClient.Windows
 
         private async void TradeButton_Click(object sender, RoutedEventArgs e)
         {
-            var p = (KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>) ((Button) sender).Tag;
+            var p = (KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>)((Button)sender).Tag;
             await Client.PVPNet.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
 
             PlayerTradeControl.Visibility = Visibility.Visible;
-            champions myChampion = champions.GetChampion((int) MyChampId);
+            champions myChampion = champions.GetChampion((int)MyChampId);
             PlayerTradeControl.MyChampImage.Source = myChampion.icon;
             PlayerTradeControl.MyChampLabel.Content = myChampion.displayName;
             champions theirChampion = champions.GetChampion(p.Key.ChampionId);
@@ -1118,7 +1116,7 @@ namespace LegendaryClient.Windows
                 if (item.Tag == null)
                     return;
                 //SelectChampion.SelectChampion(selection.ChampionId)
-                await Client.PVPNet.SelectChampion(SelectChampion.SelectChamp((int) item.Tag));
+                await Client.PVPNet.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
 
                 //TODO: Fix stupid animation glitch on left hand side
                 var fadingAnimation = new DoubleAnimation
@@ -1130,7 +1128,7 @@ namespace LegendaryClient.Windows
                 fadingAnimation.Completed += (eSender, eArgs) =>
                 {
                     string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                        champions.GetChampion((int) item.Tag).splashPath);
+                        champions.GetChampion((int)item.Tag).splashPath);
                     BackgroundSplash.Source = Client.GetImage(uriSource);
                     fadingAnimation = new DoubleAnimation
                     {
@@ -1143,10 +1141,10 @@ namespace LegendaryClient.Windows
                 };
 
                 BackgroundSplash.BeginAnimation(OpacityProperty, fadingAnimation);
-                ChangeSelectedChampionSkins((int) item.Tag);
+                ChangeSelectedChampionSkins((int)item.Tag);
             }
             else if (item.Tag != null)
-                await Client.PVPNet.BanChampion((int) item.Tag);
+                await Client.PVPNet.BanChampion((int)item.Tag);
         }
 
         private async void SkinSelectListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)
@@ -1173,7 +1171,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                championSkins skin = championSkins.GetSkin((int) item.Tag);
+                championSkins skin = championSkins.GetSkin((int)item.Tag);
                 await Client.PVPNet.SelectChampionSkin(skin.championId, skin.id);
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
@@ -1199,9 +1197,9 @@ namespace LegendaryClient.Windows
             Client.AmbientSoundPlayer.Stop();
             await Client.PVPNet.QuitGame();
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-            Client.ClearPage(typeof (CustomGameLobbyPage));
-            Client.ClearPage(typeof (CreateCustomGamePage));
-            Client.ClearPage(typeof (ChampSelectPage));
+            Client.ClearPage(typeof(CustomGameLobbyPage));
+            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ClearPage(typeof(ChampSelectPage));
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             uiLogic.UpdateMainPage();
@@ -1211,10 +1209,10 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.QuitGame();
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-            Client.ClearPage(typeof (CustomGameLobbyPage));
-            Client.ClearPage(typeof (CreateCustomGamePage));
-            Client.ClearPage(typeof (ChampSelectPage));
-            Client.ClearPage(typeof (FactionsCreateGamePage));
+            Client.ClearPage(typeof(CustomGameLobbyPage));
+            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ClearPage(typeof(ChampSelectPage));
+            Client.ClearPage(typeof(FactionsCreateGamePage));
             Client.GameStatus = "inGame";
             Client.timeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
@@ -1283,7 +1281,7 @@ namespace LegendaryClient.Windows
                     masteryPageName = "Mastery Page " + ++i;
 
                 masteryPage.Current = false;
-                if (masteryPageName == (string) MasteryComboBox.SelectedItem)
+                if (masteryPageName == (string)MasteryComboBox.SelectedItem)
                 {
                     masteryPage.Current = true;
                     hasChanged = true;
@@ -1315,7 +1313,7 @@ namespace LegendaryClient.Windows
                     runePageName = "Rune Page " + ++i;
 
                 runePage.Current = false;
-                if (runePageName != (string) RuneComboBox.SelectedItem)
+                if (runePageName != (string)RuneComboBox.SelectedItem)
                     continue;
 
                 runePage.Current = true;
@@ -1337,44 +1335,15 @@ namespace LegendaryClient.Windows
             //Enable dev mode if !~dev is typed in chat
             if (ChatTextBox.Text == "!~dev")
             {
-                var dlg = new OpenFileDialog
+                if (!Client.Dev)
                 {
-                    DefaultExt = ".png",
-                    Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key"
-                };
-                bool? showDialog = dlg.ShowDialog();
-                if (showDialog == null || !(bool) showDialog)
-                    return;
-
-                string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
-                using (var client = new WebClient())
-                {
-                    //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
-                    if (
-                        client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1")
-                            .Split(new[] {"\r\n", "\n"}, StringSplitOptions.None)[0] == filecontent)
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                     {
-                        DevMode = !DevMode;
-                        Client.Dev = DevMode;
-                        ChampionSelectListView.IsHitTestVisible = true;
-                        ChampionSelectListView.Opacity = 1;
-                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                        {
-                            Text = "DEV MODE: " + DevMode + Environment.NewLine
-                        };
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-                        ChatTextBox.Text = "";
-                    }
-                    else
-                    {
-                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                        {
-                            Text = "DEV MODE: " + DevMode + Environment.NewLine
-                        };
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-                        ChatTextBox.Text = "";
-                    }
+                        Text = "You are not a dev." + Environment.NewLine
+                    };
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 }
+                ChatTextBox.Text = "";
             }
             else
             {
@@ -1483,7 +1452,7 @@ namespace LegendaryClient.Windows
             if (!Switch.IsChecked.HasValue)
                 return;
 
-            if ((bool) Switch.IsChecked)
+            if ((bool)Switch.IsChecked)
             {
                 Switch.Content = "Champions";
                 ChampionSelectListView.Visibility = Visibility.Hidden;

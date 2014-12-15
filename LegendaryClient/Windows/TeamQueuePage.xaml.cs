@@ -59,11 +59,19 @@ namespace LegendaryClient.Windows
         /// <summary>
         ///     When invited to a team
         /// </summary>
-        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false,
-            bool isranked = false)
+        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false)
         {
             InitializeComponent();
-            DevMode = Client.Dev;
+            if (Client.Dev)
+            {
+                CreateRankedCheckBox.Visibility = Visibility.Visible;
+                SelectChamp.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                CreateRankedCheckBox.Visibility = Visibility.Hidden;
+                SelectChamp.Visibility = Visibility.Hidden;
+            }
             Change();
 
             Client.InviteListView = InviteListView;
@@ -78,9 +86,6 @@ namespace LegendaryClient.Windows
             {
                 LoadStats();
             }
-
-            if (isranked)
-                DevMode = true;
 
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
@@ -129,7 +134,7 @@ namespace LegendaryClient.Windows
             {
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
-                Client.ClearPage(typeof (TeamQueuePage));
+                Client.ClearPage(typeof(TeamQueuePage));
                 uiLogic.UpdateMainPage();
                 Client.Log("Failed to join room.");
             }
@@ -137,23 +142,23 @@ namespace LegendaryClient.Windows
 
         private void Profile_Click(object sender, RoutedEventArgs e)
         {
-            LastSender = (Button) sender;
-            var stats = (Member) LastSender.Tag;
+            LastSender = (Button)sender;
+            var stats = (Member)LastSender.Tag;
             uiLogic.UpdateProfile(stats.SummonerName);
             Client.SwitchPage(uiLogic.Profile);
         }
 
         private async void Kick_Click(object sender, RoutedEventArgs e)
         {
-            LastSender = (Button) sender;
-            var stats = (Member) LastSender.Tag;
+            LastSender = (Button)sender;
+            var stats = (Member)LastSender.Tag;
             await Client.PVPNet.Kick(stats.SummonerId);
         }
 
         private async void Owner_Click(object sender, RoutedEventArgs e)
         {
-            LastSender = (Button) sender;
-            var stats = (Member) LastSender.Tag;
+            LastSender = (Button)sender;
+            var stats = (Member)LastSender.Tag;
             await Client.PVPNet.MakeOwner(stats.SummonerId);
         }
 
@@ -186,17 +191,17 @@ namespace LegendaryClient.Windows
                     PingLabel.Text = "Ping not enabled for this region";
                 }
                 var bc = new BrushConverter();
-                var brush = (Brush) bc.ConvertFrom("#FFFF6767");
+                var brush = (Brush)bc.ConvertFrom("#FFFF6767");
                 if (PingAverage > 999 || PingAverage < 1)
                 {
                     PingRectangle.Fill = brush;
                 }
-                brush = (Brush) bc.ConvertFrom("#FFFFD667");
+                brush = (Brush)bc.ConvertFrom("#FFFFD667");
                 if (PingAverage > 110 && PingAverage < 999)
                 {
                     PingRectangle.Fill = brush;
                 }
-                brush = (Brush) bc.ConvertFrom("#FF67FF67");
+                brush = (Brush)bc.ConvertFrom("#FF67FF67");
                 if (PingAverage < 110 && PingAverage > 1)
                 {
                     PingRectangle.Fill = brush;
@@ -298,8 +303,8 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Kick.Click += Kick_Click;
                         TeamPlayer.Inviter.Click += async (object sender, RoutedEventArgs e) =>
                         {
-                            LastSender = (Button) sender;
-                            var s = (Member) LastSender.Tag;
+                            LastSender = (Button)sender;
+                            var s = (Member)LastSender.Tag;
                             await Client.PVPNet.GrantInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
@@ -309,8 +314,8 @@ namespace LegendaryClient.Windows
                         };
                         TeamPlayer.UnInviter.Click += async (object sender, RoutedEventArgs e) =>
                         {
-                            LastSender = (Button) sender;
-                            var s = (Member) LastSender.Tag;
+                            LastSender = (Button)sender;
+                            var s = (Member)LastSender.Tag;
                             await Client.PVPNet.revokeInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
@@ -379,7 +384,7 @@ namespace LegendaryClient.Windows
 
         private void Update_OnMessageReceived(object sender, object message)
         {
-            if (message.GetType() == typeof (LobbyStatus))
+            if (message.GetType() == typeof(LobbyStatus))
             {
                 var Lobby = message as LobbyStatus;
                 CurrentLobby = Lobby;
@@ -466,7 +471,7 @@ namespace LegendaryClient.Windows
                             {
                                 foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
                                 {
-                                    if ((string) item.PlayerLabel.Content == s.summonerName)
+                                    if ((string)item.PlayerLabel.Content == s.summonerName)
                                     {
                                         item.InviteButton.IsEnabled = false;
                                         item.InviteButton.Content = "Invited";
@@ -504,7 +509,7 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.PurgeFromQueues();
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
-            Client.ClearPage(typeof (TeamQueuePage));
+            Client.ClearPage(typeof(TeamQueuePage));
             uiLogic.UpdateMainPage();
             Client.ReturnButton.Visibility = Visibility.Hidden;
         }
@@ -556,64 +561,19 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private bool DevMode, makeRanked;
+        private bool makeRanked = false;
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
             if (ChatTextBox.Text == "!~dev")
             {
-                #region Authenticate
-
-                var dlg = new OpenFileDialog();
-                dlg.DefaultExt = ".png";
-                dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
-                if ((bool) dlg.ShowDialog())
+                if (!Client.Dev)
                 {
-                    string filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
-                    using (var client = new WebClient())
-                    {
-                        //Nope. You do not have the key file still shows the maked ranked so boosters learn the hard way
-                        if (
-                            client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1")
-                                .Split(new[] {"\r\n", "\n"}, StringSplitOptions.None)[0] == filecontent)
-                        {
-                            rankedQueue = 4;
-
-                            MessageBox.Show("Ranked Hack Enabled",
-                                "LC Notification.",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Ranked Hack Enabled",
-                                "LC Notification",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Information);
-                        }
-                    }
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = "You are not a dev." + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 }
-
-                #endregion
-
-                DevMode = !DevMode;
-                Client.Dev = DevMode;
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = "DEV MODE: " + DevMode + Environment.NewLine;
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatTextBox.Text = "";
-                if (DevMode)
-                {
-#if DEBUG
-                    CreateRankedCheckBox.Visibility = Visibility.Visible;
-#endif
-                    SelectChamp.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    CreateRankedCheckBox.Visibility = Visibility.Hidden;
-                    SelectChamp.Visibility = Visibility.Hidden;
-                }
             }
             else
             {
@@ -640,8 +600,6 @@ namespace LegendaryClient.Windows
 
 #pragma warning disable 4014
 
-        private int rankedQueue = 2;
-
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
             if (!inQueue)
@@ -650,7 +608,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = (makeRanked ? new[] {rankedQueue} : QueueIds.ToArray());
+                parameters.QueueIds = (makeRanked ? new[] { 4 } : QueueIds.ToArray());
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
@@ -746,7 +704,10 @@ namespace LegendaryClient.Windows
 
         private void CreateRankedCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            makeRanked = !makeRanked;
+            if (Client.Dev)
+                makeRanked = CreateRankedCheckBox.IsChecked.Value;
+            else
+                makeRanked = false;
         }
 
         private void SelectChamp_Click(object sender, RoutedEventArgs e)

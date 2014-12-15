@@ -98,10 +98,11 @@
                 <CheckBox x:Name="invisibleLoginCheckBox" Margin="100,160,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Sign-in invisible" Foreground="White" />
             </Grid>
-            <TextBox x:Name="Version" Width="330" Height="24"
-                     Margin="0,301,10,0" HorizontalAlignment="Right"
+            <TextBox x:Name="Version" Width="283" Height="24"
+                     Margin="0,301,57,0" HorizontalAlignment="Right"
                      VerticalAlignment="Top" TextWrapping="Wrap"
                      controls:TextboxHelper.Watermark="Client Version Override" />
+            <Label x:Name="devKeyLabel" Content="User" FontSize="16" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,0" MouseDoubleClick="devKeyLabel_MouseDoubleClick" />
             <CheckBox x:Name="Sound" Margin="10,280,0,0" HorizontalAlignment="Left"
                       VerticalAlignment="Top" Click="DisableSound_Click" Content="Disable Login Music"
                       Foreground="White"
