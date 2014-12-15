@@ -1,4 +1,6 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +36,8 @@ using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
 
+#endregion
+
 namespace LegendaryClient.Windows
 {
     /// <summary>
@@ -42,59 +46,57 @@ namespace LegendaryClient.Windows
     public partial class MainPage
     {
         internal static Timer timer = new Timer();
+        internal ArrayList GameList;
+        internal ArrayList NewsList;
         internal int SelectedGame = 0;
-        internal ArrayList gameList;
-        internal ArrayList newsList;
 
         public MainPage()
         {
             InitializeComponent();
-            AppDomain current = AppDomain.CurrentDomain;
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.Region.RegionName;
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
             uiLogic.CreateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
             ChangeSpectatorRegion(region);
             GetNews(region);
-            var update = new Timer();
-            update.Interval = 5000;
+            var update = new Timer
+            {
+                Interval = 5000
+            };
             update.Elapsed +=
                 (o, e) =>
-                {
                     Client.ChatClient.Presence(Client.CurrentPresence, Client.GetPresence(), Client.presenceStatus, 0);
-                };
             timer.Interval = (5000);
             //timer.Start();
 
-            timer.Elapsed += (o, e) =>
+            timer.Elapsed += (o, e) => Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                string jid =
+                    Client.GetChatroomJID(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public),
+                        string.Empty, true);
+
+                GroupChatItem item = Join(jid, "LegendaryClient");
+                var chatGroup = new NotificationChatGroup
                 {
-                    string JID =
-                        Client.GetChatroomJID(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public),
-                            string.Empty, true);
+                    Tag = item,
+                    GroupTitle = item.GroupTitle,
+                    Margin = new Thickness(1, 0, 1, 0),
+                    GroupLabelName = {Content = item.GroupTitle}
+                };
+                if (Client.GroupChatItems.All(i => i.GroupTitle != "LegendaryClient"))
+                {
+                    Client.ChatListView.Items.Add(chatGroup);
+                    Client.GroupChatItems.Add(item);
+                }
 
-                    GroupChatItem item = Join(JID, "LegendaryClient");
-                    var ChatGroup = new NotificationChatGroup();
-                    ChatGroup.Tag = item;
-                    ChatGroup.GroupTitle = item.GroupTitle;
-                    ChatGroup.Margin = new Thickness(1, 0, 1, 0);
-                    ChatGroup.GroupLabelName.Content = item.GroupTitle;
-                    if (!Client.GroupChatItems.Any(i => i.GroupTitle == "LegendaryClient"))
-                    {
-                        Client.ChatListView.Items.Add(ChatGroup);
-                        Client.GroupChatItems.Add(item);
-                    }
-
-                    timer.Stop();
-                }));
-            };
+                timer.Stop();
+            }));
         }
 
         [STAThread]
-        private GroupChatItem Join(string JID, string Chat)
+        private GroupChatItem Join(string jid, string chat)
         {
-            return new GroupChatItem(JID, "LegendaryClient");
+            return new GroupChatItem(jid, chat);
         }
 
         private void GotPlayerData(LoginDataPacket packet)
@@ -105,24 +107,26 @@ namespace LegendaryClient.Windows
 
         internal async void UpdateSummonerInformation()
         {
-            AllSummonerData PlayerData = await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
-            SummonerNameLabel.Content = PlayerData.Summoner.Name;
+            AllSummonerData playerData =
+                await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
+            SummonerNameLabel.Content = playerData.Summoner.Name;
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
             {
-                PlayerProgressBar.Value = (PlayerData.SummonerLevelAndPoints.ExpPoints / PlayerData.SummonerLevel.ExpToNextLevel) * 100;
-                PlayerProgressLabel.Content = String.Format("Level {0}", PlayerData.SummonerLevel.Level);
-                PlayerCurrentProgressLabel.Content = String.Format("{0}XP", PlayerData.SummonerLevelAndPoints.ExpPoints);
-                PlayerAimProgressLabel.Content = String.Format("{0}XP", PlayerData.SummonerLevel.ExpToNextLevel);
+                PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints/
+                                           playerData.SummonerLevel.ExpToNextLevel)*100;
+                PlayerProgressLabel.Content = String.Format("Level {0}", playerData.SummonerLevel.Level);
+                PlayerCurrentProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevelAndPoints.ExpPoints);
+                PlayerAimProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevel.ExpToNextLevel);
             }
             else
-            {
-                Client.PVPNet.GetAllLeaguesForPlayer(PlayerData.Summoner.SumId, GotLeaguesForPlayer);
-            }
+                Client.PVPNet.GetAllLeaguesForPlayer(playerData.Summoner.SumId, GotLeaguesForPlayer);
 
             if (Client.LoginPacket.BroadcastNotification.BroadcastMessages != null)
             {
-                var Message = Client.LoginPacket.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
-                BroadcastMessage.Text = Convert.ToString(Message["content"]);
+                var message =
+                    Client.LoginPacket.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
+                if (message != null)
+                    BroadcastMessage.Text = Convert.ToString(message["content"]);
             }
 
             foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
@@ -132,18 +136,18 @@ namespace LegendaryClient.Windows
                     Client.IsRanked = false;
                     Client.AmountOfWins = x.Wins;
                 }
-                if (x.PlayerStatSummaryTypeString == "RankedSolo5x5")
-                {
-                    Client.IsRanked = true;
-                    Client.AmountOfWins = x.Wins;
-                    break;
-                }
+                if (x.PlayerStatSummaryTypeString != "RankedSolo5x5")
+                    continue;
+
+                Client.IsRanked = true;
+                Client.AmountOfWins = x.Wins;
+                break;
             }
 
             Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
-            int ProfileIconID = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
+            int profileIconId = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
             var uriSource =
-                new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ProfileIconID + ".png"),
+                new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png"),
                     UriKind.RelativeOrAbsolute);
             ProfileImage.Source = new BitmapImage(uriSource);
             Client.MainPageProfileImage = ProfileImage;
@@ -153,39 +157,38 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                string CurrentLP = "";
-                string CurrentTier = "";
-                bool InPromo = false;
+                string currentLp = "";
+                string currentTier = "";
+                bool inPromo = false;
                 if (result.SummonerLeagues != null && result.SummonerLeagues.Count > 0)
                 {
-                    foreach (LeagueListDTO leagues in result.SummonerLeagues)
+                    foreach (
+                        LeagueListDTO leagues in
+                            result.SummonerLeagues.Where(leagues => leagues.Queue == "RANKED_SOLO_5x5"))
                     {
-                        if (leagues.Queue == "RANKED_SOLO_5x5")
+                        Client.Tier = leagues.RequestorsRank;
+                        Client.TierName = leagues.Tier;
+                        Client.LeagueName = leagues.Name;
+                        currentTier = leagues.Tier + " " + leagues.RequestorsRank;
+                        List<LeagueItemDTO> players =
+                            leagues.Entries.OrderBy(o => o.LeaguePoints)
+                                .Where(item => item.Rank == leagues.RequestorsRank)
+                                .ToList();
+                        foreach (LeagueItemDTO player in players)
                         {
-                            Client.Tier = leagues.RequestorsRank;
-                            Client.TierName = leagues.Tier;
-                            Client.LeagueName = leagues.Name;
-                            CurrentTier = leagues.Tier + " " + leagues.RequestorsRank;
-                            List<LeagueItemDTO> players =
-                                leagues.Entries.OrderBy(o => o.LeaguePoints)
-                                    .Where(item => item.Rank == leagues.RequestorsRank)
-                                    .ToList();
-                            foreach (LeagueItemDTO player in players)
+                            if (player.PlayerOrTeamName != Client.LoginPacket.AllSummonerData.Summoner.Name)
+                                continue;
+
+                            var miniSeries = player.MiniSeries as TypedObject;
+                            string series = "";
+                            if (miniSeries != null)
                             {
-                                if (player.PlayerOrTeamName == Client.LoginPacket.AllSummonerData.Summoner.Name)
-                                {
-                                    var miniSeries = player.MiniSeries as TypedObject;
-                                    string Series = "";
-                                    if (miniSeries != null)
-                                    {
-                                        Series = ((string)miniSeries["progress"]).Replace('N', '-');
-                                        InPromo = true;
-                                    }
-                                    CurrentLP = (player.LeaguePoints == 100
-                                        ? Series
-                                        : Convert.ToString(player.LeaguePoints));
-                                }
+                                series = ((string) miniSeries["progress"]).Replace('N', '-');
+                                inPromo = true;
                             }
+                            currentLp = (player.LeaguePoints == 100
+                                ? series
+                                : Convert.ToString(player.LeaguePoints));
                         }
                     }
                 }
@@ -197,56 +200,50 @@ namespace LegendaryClient.Windows
                     PlayerAimProgressLabel.Content = "";
                 }
 
-                PlayerProgressLabel.Content = CurrentTier;
-                if (InPromo)
+                PlayerProgressLabel.Content = currentTier;
+                if (inPromo)
                 {
-                    PlayerCurrentProgressLabel.Content = CurrentLP.Replace('N', '-');
+                    PlayerCurrentProgressLabel.Content = currentLp.Replace('N', '-');
                     PlayerProgressBar.Value = 100;
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(CurrentLP))
-                    {
-                        CurrentLP = "0";
-                    }
-                    PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
-                    PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
+                    if (string.IsNullOrEmpty(currentLp))
+                        currentLp = "0";
+
+                    PlayerCurrentProgressLabel.Content = currentLp + "LP";
+                    PlayerProgressBar.Value = Convert.ToInt32(currentLp);
                 }
             }));
         }
 
         private void RecordButton_Click(object sender, RoutedEventArgs e)
         {
-            object objectGame = gameList[SelectedGame];
-            var SpectatorGame = objectGame as Dictionary<string, object>;
+            object objectGame = GameList[SelectedGame];
+            var spectatorGame = objectGame as Dictionary<string, object>;
             string key = "";
             int gameId = 0;
             string platformId = "";
 
-            foreach (var pair in SpectatorGame)
-            {
-                if (pair.Key == "gameId")
+            if (spectatorGame != null)
+                foreach (var pair in spectatorGame)
                 {
-                    gameId = (int)pair.Value;
-                }
-                if (pair.Key == "observers")
-                {
-                    var keyArray = pair.Value as Dictionary<string, object>;
-                    foreach (var keyArrayPair in keyArray)
-                    {
-                        if (keyArrayPair.Key == "encryptionKey")
-                        {
-                            key = keyArrayPair.Value as string;
-                        }
-                    }
-                }
-                if (pair.Key == "platformId")
-                {
-                    platformId = pair.Value as string;
-                }
-            }
+                    if (pair.Key == "gameId")
+                        gameId = (int) pair.Value;
 
-            BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
+                    if (pair.Key == "observers")
+                    {
+                        var keyArray = pair.Value as Dictionary<string, object>;
+                        if (keyArray != null)
+                            foreach (
+                                var keyArrayPair in keyArray.Where(keyArrayPair => keyArrayPair.Key == "encryptionKey"))
+                                key = keyArrayPair.Value as string;
+                    }
+                    if (pair.Key == "platformId")
+                        platformId = pair.Value as string;
+                }
+
+            BaseRegion region = BaseRegion.GetRegion((string) SpectatorComboBox.SelectedValue);
             new ReplayRecorder(region.SpectatorIpAddress, gameId, platformId, key);
             RecordButton.IsEnabled = false;
             RecordButton.Content = "Recording...";
@@ -279,22 +276,18 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                if (message is BroadcastNotification)
-                {
-                    var notif = message as BroadcastNotification;
-                    if (notif.BroadcastMessages != null)
-                    {
-                        var Message = notif.BroadcastMessages[0] as Dictionary<string, object>;
-                        if ((bool)Message["active"])
-                        {
-                            BroadcastMessage.Text = Convert.ToString(Message["content"]);
-                        }
-                        else
-                        {
-                            BroadcastMessage.Text = "";
-                        }
-                    }
-                }
+                if (!(message is BroadcastNotification))
+                    return;
+
+                var notif = message as BroadcastNotification;
+                if (notif.BroadcastMessages == null)
+                    return;
+
+                var Message = notif.BroadcastMessages[0] as Dictionary<string, object>;
+                if (Message != null && (bool) Message["active"])
+                    BroadcastMessage.Text = Convert.ToString(Message["content"]);
+                else
+                    BroadcastMessage.Text = "";
             }));
         }
 
@@ -310,19 +303,21 @@ namespace LegendaryClient.Windows
             var worker = new BackgroundWorker();
             worker.DoWork += delegate
             {
-                string newsJSON = "";
+                string newsJson;
                 using (var client = new WebClient())
-                {
-                    newsJSON = client.DownloadString(region.NewsAddress);
-                }
+                    newsJson = client.DownloadString(region.NewsAddress);
+
                 var serializer = new JavaScriptSerializer();
-                var deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(newsJSON);
-                newsList = deserializedJSON["news"] as ArrayList;
-                var promoList = deserializedJSON["promos"] as ArrayList;
-                foreach (Dictionary<string, object> objectPromo in promoList)
-                {
-                    newsList.Add(objectPromo);
-                }
+                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
+                NewsList = deserializedJson["news"] as ArrayList;
+                var promoList = deserializedJson["promos"] as ArrayList;
+                if (promoList == null)
+                    return;
+
+                foreach (
+                    var objectPromo in
+                        promoList.Cast<Dictionary<string, object>>().Where(objectPromo => NewsList != null))
+                    NewsList.Add(objectPromo);
             };
 
             worker.RunWorkerCompleted += delegate { ParseNews(); };
@@ -336,37 +331,37 @@ namespace LegendaryClient.Windows
 
         private void ParseNews()
         {
-            if (newsList == null)
+            if (NewsList == null)
                 return;
-            if (newsList.Count <= 0)
+
+            if (NewsList.Count <= 0)
                 return;
-            foreach (Dictionary<string, object> pair in newsList)
+
+            foreach (Dictionary<string, object> pair in NewsList)
             {
-                var item = new NewsItem();
-                item.Margin = new Thickness(0, 5, 0, 5);
+                var item = new NewsItem
+                {
+                    Margin = new Thickness(0, 5, 0, 5)
+                };
                 foreach (var kvPair in pair)
                 {
                     if (kvPair.Key == "title")
-                    {
                         item.NewsTitle.Content = kvPair.Value;
-                    }
+
                     if (kvPair.Key == "description" || kvPair.Key == "promoText")
-                    {
-                        item.DescriptionLabel.Text = (string)kvPair.Value;
-                    }
+                        item.DescriptionLabel.Text = (string) kvPair.Value;
+
                     if (kvPair.Key == "thumbUrl")
                     {
                         var promoImage = new BitmapImage();
                         promoImage.BeginInit(); //Download image
-                        promoImage.UriSource = new Uri((string)kvPair.Value, UriKind.RelativeOrAbsolute);
+                        promoImage.UriSource = new Uri((string) kvPair.Value, UriKind.RelativeOrAbsolute);
                         promoImage.CacheOption = BitmapCacheOption.OnLoad;
                         promoImage.EndInit();
                         item.PromoImage.Source = promoImage;
                     }
                     if (kvPair.Key == "linkUrl")
-                    {
                         item.Tag = kvPair.Value;
-                    }
                 }
                 NewsItemListView.Items.Add(item);
             }
@@ -374,11 +369,11 @@ namespace LegendaryClient.Windows
 
         private void NewsItemListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (NewsItemListView.SelectedIndex != -1)
-            {
-                var item = (NewsItem)NewsItemListView.SelectedItem;
-                Process.Start((string)item.Tag); //Launch the news article in browser
-            }
+            if (NewsItemListView.SelectedIndex == -1)
+                return;
+
+            var item = (NewsItem) NewsItemListView.SelectedItem;
+            Process.Start((string) item.Tag); //Launch the news article in browser
         }
 
         #endregion News
@@ -387,11 +382,11 @@ namespace LegendaryClient.Windows
 
         private void SpectatorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (SpectatorComboBox.SelectedIndex != -1 && SpectatorComboBox.SelectedValue != null)
-            {
-                BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
-                ChangeSpectatorRegion(region);
-            }
+            if (SpectatorComboBox.SelectedIndex == -1 || SpectatorComboBox.SelectedValue == null)
+                return;
+
+            BaseRegion region = BaseRegion.GetRegion((string) SpectatorComboBox.SelectedValue);
+            ChangeSpectatorRegion(region);
         }
 
         public void ChangeSpectatorRegion(BaseRegion region)
@@ -404,16 +399,15 @@ namespace LegendaryClient.Windows
                 {
                     try
                     {
-                        string spectatorJSON = "";
+                        string spectatorJson;
                         using (var client = new WebClient())
-                        {
-                            spectatorJSON = client.DownloadString(region.SpectatorLink + "featured");
-                        }
+                            spectatorJson = client.DownloadString(region.SpectatorLink + "featured");
+
                         var serializer = new JavaScriptSerializer();
-                        var deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
-                        gameList = deserializedJSON["gameList"] as ArrayList;
+                        var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(spectatorJson);
+                        GameList = deserializedJson["gameList"] as ArrayList;
                     }
-                    catch (WebException e)
+                    catch (WebException)
                     {
                         Client.Log("Spectator JSON download timed out.");
                     }
@@ -427,207 +421,217 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private async void ParseSpectatorGames()
+        private void ParseSpectatorGames()
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 try
                 {
-                    if (gameList == null)
+                    if (GameList == null)
                         return;
-                    if (gameList.Count <= 0)
+
+                    if (GameList.Count <= 0)
                         return;
+
                     BlueBansLabel.Visibility = Visibility.Hidden;
                     PurpleBansLabel.Visibility = Visibility.Hidden;
                     BlueBanListView.Items.Clear();
                     PurpleBanListView.Items.Clear();
                     BlueListView.Items.Clear();
                     PurpleListView.Items.Clear();
-                    int GameId = 0;
-                    object objectGame = gameList[SelectedGame];
-                    var SpectatorGame = objectGame as Dictionary<string, object>;
+                    int gameId = 0;
+                    object objectGame = GameList[SelectedGame];
+                    var spectatorGame = objectGame as Dictionary<string, object>;
                     ImageGrid.Children.Clear();
-                    foreach (var pair in SpectatorGame)
-                    {
-                        if (pair.Key == "participants")
+                    if (spectatorGame != null)
+                        foreach (var pair in spectatorGame)
                         {
-                            var players = pair.Value as ArrayList;
-
-                            int i = 0;
-                            foreach (object objectPlayer in players)
+                            switch (pair.Key)
                             {
-                                var playerInfo = objectPlayer as Dictionary<string, object>;
-                                int teamId = 100;
-                                int championId = 0;
-                                int spell1Id = 0;
-                                int spell2Id = 0;
-                                string PlayerName = "";
-                                foreach (var playerPair in playerInfo)
+                                case "participants":
                                 {
-                                    if (playerPair.Key == "teamId")
+                                    var players = pair.Value as ArrayList;
+
+                                    int i = 0;
+                                    foreach (object objectPlayer in players)
                                     {
-                                        teamId = (int)playerPair.Value;
-                                    }
-                                    if (playerPair.Key == "championId")
-                                    {
-                                        championId = (int)playerPair.Value;
-                                    }
-                                    if (playerPair.Key == "summonerName")
-                                    {
-                                        PlayerName = playerPair.Value as string;
-                                    }
-                                    if (playerPair.Key == "spell1Id")
-                                    {
-                                        spell1Id = (int)playerPair.Value;
-                                    }
-                                    if (playerPair.Key == "spell2Id")
-                                    {
-                                        spell2Id = (int)playerPair.Value;
+                                        var playerInfo = objectPlayer as Dictionary<string, object>;
+                                        int teamId = 100;
+                                        int championId = 0;
+                                        int spell1Id = 0;
+                                        int spell2Id = 0;
+                                        string playerName = "";
+                                        foreach (var playerPair in playerInfo)
+                                        {
+                                            switch (playerPair.Key)
+                                            {
+                                                case "teamId":
+                                                    teamId = (int) playerPair.Value;
+                                                    break;
+                                                case "championId":
+                                                    championId = (int) playerPair.Value;
+                                                    break;
+                                                case "summonerName":
+                                                    playerName = playerPair.Value as string;
+                                                    break;
+                                                case "spell1Id":
+                                                    spell1Id = (int) playerPair.Value;
+                                                    break;
+                                                case "spell2Id":
+                                                    spell2Id = (int) playerPair.Value;
+                                                    break;
+                                            }
+                                        }
+                                        var control = new ChampSelectPlayer
+                                        {
+                                            ChampionImage = {Source = champions.GetChampion(championId).icon}
+                                        };
+                                        var uriSource =
+                                            new Uri(
+                                                Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                                                    SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
+                                        control.SummonerSpell1.Source = new BitmapImage(uriSource);
+                                        uriSource =
+                                            new Uri(
+                                                Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                                                    SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
+                                        control.SummonerSpell2.Source = new BitmapImage(uriSource);
+                                        control.PlayerName.Content = playerName;
+
+                                        var m = new Image();
+                                        Panel.SetZIndex(m, -2); //Put background behind everything
+                                        m.Stretch = Stretch.None;
+                                        m.Width = 100;
+                                        m.Opacity = 0.30;
+                                        m.HorizontalAlignment = HorizontalAlignment.Left;
+                                        m.VerticalAlignment = VerticalAlignment.Stretch;
+                                        m.Margin = new Thickness(i++*100, 0, 0, 0);
+                                        var cropRect = new Rectangle(new Point(100, 0), new Size(100, 560));
+                                        var src =
+                                            System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory,
+                                                "Assets",
+                                                "champions", champions.GetChampion(championId).portraitPath)) as Bitmap;
+                                        var target = new Bitmap(cropRect.Width, cropRect.Height);
+
+                                        using (Graphics g = Graphics.FromImage(target))
+                                            g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
+                                                cropRect,
+                                                GraphicsUnit.Pixel);
+
+                                        m.Source = Client.ToWpfBitmap(target);
+                                        ImageGrid.Children.Add(m);
+                                        if (teamId == 100)
+                                            BlueListView.Items.Add(control);
+                                        else
+                                            PurpleListView.Items.Add(control);
                                     }
                                 }
-                                var control = new ChampSelectPlayer();
-                                control.ChampionImage.Source = champions.GetChampion(championId).icon;
-                                var uriSource =
-                                    new Uri(
-                                        Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                                            SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
-                                control.SummonerSpell1.Source = new BitmapImage(uriSource);
-                                uriSource =
-                                    new Uri(
-                                        Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                                            SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
-                                control.SummonerSpell2.Source = new BitmapImage(uriSource);
-                                control.PlayerName.Content = PlayerName;
-
-                                var m = new Image();
-                                Panel.SetZIndex(m, -2); //Put background behind everything
-                                m.Stretch = Stretch.None;
-                                m.Width = 100;
-                                m.Opacity = 0.30;
-                                m.HorizontalAlignment = HorizontalAlignment.Left;
-                                m.VerticalAlignment = VerticalAlignment.Stretch;
-                                m.Margin = new Thickness(i++ * 100, 0, 0, 0);
-                                var cropRect = new Rectangle(new Point(100, 0), new Size(100, 560));
-                                var src =
-                                    System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets",
-                                        "champions", champions.GetChampion(championId).portraitPath)) as Bitmap;
-                                var target = new Bitmap(cropRect.Width, cropRect.Height);
-
-                                using (Graphics g = Graphics.FromImage(target))
+                                    break;
+                                case "gameId":
+                                    gameId = (int) pair.Value;
+                                    break;
+                                case "mapId":
+                                    try
+                                    {
+                                        MapLabel.Content = BaseMap.GetMap((int) pair.Value).DisplayName;
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        Client.Log(e.Source, "Error");
+                                        Client.Log(e.Message, "Error");
+                                    }
+                                    break;
+                                case "gameLength":
                                 {
-                                    g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
-                                        cropRect,
-                                        GraphicsUnit.Pixel);
-                                }
+                                    var seconds = (int) pair.Value;
 
-                                m.Source = Client.ToWpfBitmap(target);
-                                ImageGrid.Children.Add(m);
+                                    var spectatorTimer = new Timer(1000);
+                                    spectatorTimer.Elapsed += (s, e) => // Sincerely Idk when to stop it
+                                    {
+                                        seconds ++;
+                                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                                        {
+                                            TimeSpan ts = TimeSpan.FromSeconds(seconds);
+                                            GameTimeLabel.Content = string.Format("{0:D2}:{1:D2} min", ts.Minutes,
+                                                ts.Seconds);
+                                        }));
+                                    };
+                                    spectatorTimer.Start();
+                                }
+                                    break;
+                                case "bannedChampions":
+                                {
+                                    //ArrayList players = pair.Value as ArrayList;
+                                    //Dictionary<string, object> playerInfo = objectPlayer as Dictionary<string, object>;
+                                    //foreach (KeyValuePair<string, object> playerPair in playerInfo)
+                                    var keyArray = pair.Value as ArrayList;
+                                    if (keyArray.Count > 0)
+                                    {
+                                        BlueBansLabel.Visibility = Visibility.Visible;
+                                        PurpleBansLabel.Visibility = Visibility.Visible;
+                                    }
+                                    foreach (Dictionary<string, object> keyArrayP in keyArray)
+                                        //Dictionary<string, object> keyArrayP = keyArray as Dictionary<string, object>;
+                                    {
+                                        int cid = 0;
+                                        int teamId = 100;
+                                        foreach (var keyArrayPair in keyArrayP)
+                                        {
+                                            switch (keyArrayPair.Key)
+                                            {
+                                                case "championId":
+                                                    cid = (int) keyArrayPair.Value;
+                                                    break;
+                                                case "teamId":
+                                                    teamId = (int) keyArrayPair.Value;
+                                                    break;
+                                            }
+                                        }
+                                        var item = new ListViewItem();
+                                        var champImage = new Image
+                                        {
+                                            Height = 58,
+                                            Width = 58
+                                        };
+                                        //temp
+                                        try
+                                        {
+                                            champImage.Source = champions.GetChampion(cid).icon;
+                                        }
+                                        catch
+                                        {
+                                        }
 
-                                if (teamId == 100)
-                                {
-                                    BlueListView.Items.Add(control);
+                                        item.Content = champImage;
+                                        if (teamId == 100)
+                                            BlueBanListView.Items.Add(item);
+                                        else
+                                            PurpleBanListView.Items.Add(item);
+                                    }
                                 }
-                                else
-                                {
-                                    PurpleListView.Items.Add(control);
-                                }
+                                    break;
                             }
                         }
-                        else if (pair.Key == "gameId")
-                        {
-                            GameId = (int)pair.Value;
-                        }
-                        //tried this, caused a crash, worked fine when deleted
-                        else if (pair.Key == "mapId")
-                        {
-                            try
-                            {
-                                MapLabel.Content = BaseMap.GetMap((int)pair.Value).DisplayName;
-                            }
-                            catch (Exception e)
-                            {
-                                Client.Log(e.Source, "Error");
-                                Client.Log(e.Message, "Error");
-                            }
-                        }
-                        else if (pair.Key == "gameLength")
-                        {
-                            var seconds = (int)pair.Value;
-                            GameTimeLabel.Content = string.Format("{0:D}:{1:00} min", seconds / 60, seconds % 60);
-                        }
-                        else if (pair.Key == "bannedChampions")
-                        {
-                            //ArrayList players = pair.Value as ArrayList;
-                            //Dictionary<string, object> playerInfo = objectPlayer as Dictionary<string, object>;
-                            //foreach (KeyValuePair<string, object> playerPair in playerInfo)
-                            var keyArray = pair.Value as ArrayList;
-                            if (keyArray.Count > 0)
-                            {
-                                BlueBansLabel.Visibility = Visibility.Visible;
-                                PurpleBansLabel.Visibility = Visibility.Visible;
-                            }
-                            foreach (Dictionary<string, object> keyArrayP in keyArray)
-                            //Dictionary<string, object> keyArrayP = keyArray as Dictionary<string, object>;
-                            {
-                                int cid = 0;
-                                int teamId = 100;
-                                foreach (var keyArrayPair in keyArrayP)
-                                {
-                                    if (keyArrayPair.Key == "championId")
-                                    {
-                                        cid = (int)keyArrayPair.Value;
-                                    }
-                                    if (keyArrayPair.Key == "teamId")
-                                    {
-                                        teamId = (int)keyArrayPair.Value;
-                                    }
-                                }
-                                var item = new ListViewItem();
-                                var champImage = new Image();
-                                champImage.Height = 58;
-                                champImage.Width = 58;
-                                //temp
-                                try
-                                {
-                                    champImage.Source = champions.GetChampion(cid).icon;
-                                }
-                                catch
-                                {
-                                }
-
-                                item.Content = champImage;
-                                if (teamId == 100)
-                                {
-                                    BlueBanListView.Items.Add(item);
-                                }
-                                else
-                                {
-                                    PurpleBanListView.Items.Add(item);
-                                }
-                            }
-                        }
-                    }
 
                     try
                     {
-                        BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
-                        string spectatorJSON = "";
+                        BaseRegion region = BaseRegion.GetRegion((string) SpectatorComboBox.SelectedValue);
+                        string spectatorJson;
                         string url = region.SpectatorLink + "consumer/getGameMetaData/" + region.InternalName + "/" +
-                                     GameId + "/token";
+                                     gameId + "/token";
                         using (var client = new WebClient())
-                        {
-                            spectatorJSON = client.DownloadString(url);
-                        }
+                            spectatorJson = client.DownloadString(url);
+
                         var serializer = new JavaScriptSerializer();
-                        var deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(spectatorJSON);
-                        MMRLabel.Content = "≈" + deserializedJSON["interestScore"];
+                        var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(spectatorJson);
+                        MMRLabel.Content = "≈" + deserializedJson["interestScore"];
                     }
                     catch
                     {
                         MMRLabel.Content = "N/A";
                     }
 
-                    if (Client.curentlyRecording.Contains(GameId))
+                    if (Client.curentlyRecording.Contains(gameId))
                     {
                         RecordButton.IsEnabled = false;
                         RecordButton.Content = "Recording...";
@@ -647,36 +651,37 @@ namespace LegendaryClient.Windows
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)
         {
-            object objectGame = gameList[SelectedGame];
-            var SpectatorGame = objectGame as Dictionary<string, object>;
+            object objectGame = GameList[SelectedGame];
+            var spectatorGame = objectGame as Dictionary<string, object>;
             string key = "";
             int gameId = 0;
             string platformId = "";
 
-            foreach (var pair in SpectatorGame)
-            {
-                if (pair.Key == "gameId")
+            if (spectatorGame != null)
+                foreach (var pair in spectatorGame)
                 {
-                    gameId = (int)pair.Value;
-                }
-                if (pair.Key == "observers")
-                {
-                    var keyArray = pair.Value as Dictionary<string, object>;
-                    foreach (var keyArrayPair in keyArray)
+                    switch (pair.Key)
                     {
-                        if (keyArrayPair.Key == "encryptionKey")
+                        case "gameId":
+                            gameId = (int) pair.Value;
+                            break;
+                        case "observers":
                         {
-                            key = keyArrayPair.Value as string;
+                            var keyArray = pair.Value as Dictionary<string, object>;
+                            if (keyArray != null)
+                                foreach (
+                                    var keyArrayPair in
+                                        keyArray.Where(keyArrayPair => keyArrayPair.Key == "encryptionKey"))
+                                    key = keyArrayPair.Value as string;
                         }
+                            break;
+                        case "platformId":
+                            platformId = pair.Value as string;
+                            break;
                     }
                 }
-                if (pair.Key == "platformId")
-                {
-                    platformId = pair.Value as string;
-                }
-            }
 
-            BaseRegion region = BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue);
+            BaseRegion region = BaseRegion.GetRegion((string) SpectatorComboBox.SelectedValue);
 
             Client.LaunchSpectatorGame(region.SpectatorIpAddress, key, gameId, platformId);
         }
@@ -686,10 +691,9 @@ namespace LegendaryClient.Windows
             NextGameButton.IsEnabled = true;
             PrevGameButton.IsEnabled = true;
             SelectedGame = SelectedGame + 1;
-            if (SelectedGame >= gameList.Count - 1)
-            {
+            if (SelectedGame >= GameList.Count - 1)
                 NextGameButton.IsEnabled = false;
-            }
+
             ParseSpectatorGames();
         }
 
@@ -699,9 +703,8 @@ namespace LegendaryClient.Windows
             PrevGameButton.IsEnabled = true;
             SelectedGame = SelectedGame - 1;
             if (SelectedGame == 0)
-            {
                 PrevGameButton.IsEnabled = false;
-            }
+
             ParseSpectatorGames();
         }
 
