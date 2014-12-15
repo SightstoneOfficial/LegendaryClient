@@ -66,6 +66,12 @@ namespace LegendaryClient.Windows
             }
             else Sound.IsChecked = true;
 
+            if (Settings.Default.Dev)
+            {
+                Client.Dev = true;
+                devKeyLabel.Content = "Dev";
+            }
+
             if (Settings.Default.LoginPageImage == "")
             {
                 LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
@@ -539,6 +545,7 @@ namespace LegendaryClient.Windows
                             "LC Notification",
                             MessageBoxButton.OK,
                             MessageBoxImage.Information);
+                        Settings.Default.Dev = true;
                     }
                     else
                     {
@@ -548,6 +555,7 @@ namespace LegendaryClient.Windows
                             "LC Notification",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
+                        Settings.Default.Dev = false;
                     }
                 }
             }

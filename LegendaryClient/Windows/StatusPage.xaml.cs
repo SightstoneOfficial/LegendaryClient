@@ -93,7 +93,10 @@ namespace LegendaryClient.Windows
             if (Client.ChatContainer.Visibility == Visibility.Hidden)
             {
                 if (Client.Dev)
+                {
                     Client.FriendList.RankedStatus.Visibility = Visibility.Visible;
+                    Client.FriendList.FriendsList.Margin = new Thickness(0, 97, 0, 40);
+                }
                 else
                     Client.FriendList.RankedStatus.Visibility = Visibility.Hidden;
                 Client.ChatContainer.Visibility = Visibility.Visible;
