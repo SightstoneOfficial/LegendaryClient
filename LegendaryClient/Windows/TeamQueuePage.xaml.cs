@@ -69,6 +69,8 @@ namespace LegendaryClient.Windows
             }
             else
             {
+                AutoAcceptCheckBox.Margin = new Thickness(0, 0, 657, 202);
+                InstaCall.Margin = new Thickness(0, 0, 572, 200);
                 CreateRankedCheckBox.Visibility = Visibility.Hidden;
                 SelectChamp.Visibility = Visibility.Hidden;
             }

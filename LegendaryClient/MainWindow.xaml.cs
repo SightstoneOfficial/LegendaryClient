@@ -222,18 +222,15 @@ namespace LegendaryClient
 
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            if (Properties.Settings.Default.warnClose || Client.curentlyRecording.Count > 0)
+            if (Client.curentlyRecording.Count > 0)
             {
                 e.Cancel = true;
                 Warn.Title.Content = "Quit";
-                Warn.MessageText.Content = "Are You Sure You Want To Quit?";
-                Warn.backtochampselect.Click += Quit;
-                Warn.backtochampselect.Content = "Quit";
-                Warn.AcceptButton.Content = "Back";
-                Warn.AcceptButton.Click += HideWarning;
+                Warn.backtochampselect.Click += HideWarning;
+                Warn.AcceptButton.Click += Quit;
                 Warn.hide.Click += HideWarning;
                 if (Client.curentlyRecording.Count > 0)
-                    Warn.MessageText.Content = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + Warn.MessageText.Content;
+                    Warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n";
                 Client.FullNotificationOverlayContainer.Content = Warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
@@ -242,7 +239,6 @@ namespace LegendaryClient
                 Client.PVPNet.Leave();
                 Client.PVPNet.PurgeFromQueues();
                 Client.PVPNet.Disconnect();
-                e.Cancel = false;
                 Environment.Exit(0);
             }
 

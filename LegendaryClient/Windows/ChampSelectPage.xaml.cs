@@ -1184,11 +1184,6 @@ namespace LegendaryClient.Windows
 
         private void DodgeButton_Click(object sender, RoutedEventArgs e)
         {
-            //TODO - add messagebox
-            var pop = new Warning();
-            //pop.hide.Click =
-            //Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
-            Client.ReturnButton.Visibility = Visibility.Hidden;
             QuitCurrentGame();
         }
 
