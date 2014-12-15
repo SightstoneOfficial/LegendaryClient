@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="LegendaryClient.Controls.GameScouter.GameScouterPlayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="1200">
+    <Grid x:Name="MainGrid">
+        <Rectangle x:Name="QueueTeamColor" Fill="#FF00E8FF" HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+        <Image x:Name="ChampIcon" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="10,0,0,0"/>
+        <!--Do this so to make sure the name will fit-->
+        <Label x:Name="Username" Content="1234567890123456" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="285,10,0,0" Height="80" Width="584" FontSize="36"/>
+        <Label x:Name="AverageKDA" Content="100/100/100" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="0,10,105,0" Height="80" Width="221" FontSize="36"/>
+        <Image x:Name="ProfileIcon" HorizontalAlignment="Right" Height="100" VerticalAlignment="Top" Width="100" Margin="1100,0,0,0"/>
+        <Image x:Name="SumIcon1" HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="80" Margin="115,10,0,0"/>
+        <Image x:Name="SumIcon2" HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="80" Margin="200,10,0,0"/>
+    </Grid>
+</UserControl>
