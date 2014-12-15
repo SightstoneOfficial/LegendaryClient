@@ -80,6 +80,7 @@ namespace LegendaryClient
                 }
             }
 
+            Client.FullNotificationOverlayContainer = FullNotificationOverlayContainer;
             Client.PlayButton = PlayButton;
             Client.Pages = new List<Page>();
             Client.MainGrid = MainGrid;
@@ -226,8 +227,8 @@ namespace LegendaryClient
                 Warn.hide.Click += HideWarning;
                 if (Client.curentlyRecording.Count > 0)
                     Warn.MessageText.Content = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + Warn.MessageText.Content;
-                Client.OverlayContainer.Content = Warn.Content;
-                Client.OverlayContainer.Visibility = Visibility.Visible;
+                Client.FullNotificationOverlayContainer.Content = Warn.Content;
+                Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
             else
             {
@@ -235,6 +236,7 @@ namespace LegendaryClient
                 Client.PVPNet.PurgeFromQueues();
                 Client.PVPNet.Disconnect();
                 e.Cancel = false;
+                Environment.Exit(0);
             }
 
         }
@@ -247,7 +249,7 @@ namespace LegendaryClient
         }
         private void HideWarning(object sender, RoutedEventArgs e)
         {
-            Client.OverlayContainer.Visibility = Visibility.Hidden;
+            Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
         }
     }
 }

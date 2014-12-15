@@ -210,6 +210,9 @@
       <DependentUpon>TradeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WindowExtensions.cs" />
+    <Compile Include="GameScouter.xaml.cs">
+      <DependentUpon>GameScouter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Logic\uiLogic.cs" />
     <Compile Include="Logic\FilterChat.cs" />
     <Compile Include="Logic\GameClientSettings\General.cs" />
@@ -577,6 +580,10 @@
     <Page Include="Controls\TradeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GameScouter.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

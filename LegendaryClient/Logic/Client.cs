@@ -750,6 +750,7 @@ namespace LegendaryClient.Logic
         internal static ContentControl StatusContainer;
         internal static ContentControl NotificationOverlayContainer;
         internal static ContentControl NotificationContainer;
+        internal static ContentControl FullNotificationOverlayContainer;
         internal static ListView ChatListView;
         internal static ChatItem ChatItem;
         internal static List<GroupChatItem> GroupChatItems = new List<GroupChatItem>();
@@ -815,6 +816,7 @@ namespace LegendaryClient.Logic
             }
         }
 
+        public static GameScouter win;
         internal static void ClearNotification(Type containerType)
         {
             foreach (
