@@ -102,6 +102,9 @@ namespace LegendaryClient
                         GameScouterPlayer control = new GameScouterPlayer();
                         GameStats = new List<MatchStats>();
                         control.Username.Content = championSelect.SummonerInternalName;
+                        //Make it so you can see yourself
+                        if (championSelect.SummonerInternalName == GSUsername)
+                            control.Username.Foreground = (Brush)(new BrushConverter().ConvertFrom("#FF007A53"));
                         control.ChampIcon.Source = champions.GetChampion(championSelect.ChampionId).icon;
                         var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))),
                             UriKind.Absolute);
@@ -116,6 +119,7 @@ namespace LegendaryClient
                         try
                         {
                             PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(championSelect.SummonerInternalName);
+                            control.ProfileIcon.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png"));
                             RecentGames result = await Client.PVPNet.GetRecentGames(summoner.AcctId);
                             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
                             foreach (PlayerGameStats game in result.GameStatistics)
@@ -172,7 +176,7 @@ namespace LegendaryClient
                             catch { }
                             
                             if (ChampGamesPlayed == 0)
-                                ChampKDAString = "No Recent Games!";
+                                ChampKDAString = "No Games lately";
                             control.AverageKDA.Content = KDAString;
                             control.ChampAverageKDA.Content = ChampKDAString;
                             BrushConverter bc = new BrushConverter();
