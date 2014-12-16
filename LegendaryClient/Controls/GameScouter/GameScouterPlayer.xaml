@@ -7,8 +7,8 @@
              d:DesignHeight="100" d:DesignWidth="1200">
     <Grid x:Name="MainGrid">
         <Rectangle x:Name="ChampKDAColor" Fill="#FFFF0000" HorizontalAlignment="Right" Height="79" Stroke="Black" VerticalAlignment="Top" Width="165" Margin="0,12,275,0"/>
-        <Rectangle x:Name="GameKDAColor" Fill="#FF00FF3A" HorizontalAlignment="Right" Height="79" Stroke="Black" VerticalAlignment="Top" Width="165" Margin="0,10,105,0"/>
-        <Rectangle x:Name="QueueTeamColor" Fill="Yellow" HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+        <Rectangle x:Name="GameKDAColor" Fill="Lime" HorizontalAlignment="Right" Height="79" Stroke="Black" VerticalAlignment="Top" Width="165" Margin="0,10,105,0"/>
+        <Rectangle x:Name="QueueTeamColor" Visibility="Hidden" Fill="#FF00FF3A" HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="10"/>
         <Image x:Name="ChampIcon" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="10,0,0,0"/>
         <!--Do this so to make sure the name will fit-->
         <Label x:Name="Username" Content="1234567890123456" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="285,10,0,0" Height="80" Width="470" FontSize="24" Foreground="Black"/>

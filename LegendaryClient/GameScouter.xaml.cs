@@ -248,24 +248,43 @@ namespace LegendaryClient
                                         brush = (Brush)bc.ConvertFrom("#FFFFFF00");
                                         break;
                                     case 4:
+                                        //Blue Green
+                                        brush = (Brush)bc.ConvertFrom("#FF007A53");
                                         break;
                                     case 5:
+                                        //Purple
+                                        brush = (Brush)bc.ConvertFrom("#FF5100FF");
                                         break;
                                     case 6:
+                                        //Pink
+                                        brush = (Brush)bc.ConvertFrom("#FFCB46C5");
                                         break;
                                     case 7:
+                                        //Dark Green
+                                        brush = (Brush)bc.ConvertFrom("#FF006409");
                                         break;
                                     case 8:
+                                        //Brown
+                                        brush = (Brush)bc.ConvertFrom("#FF643200");
                                         break;
-                                    case 9:
+                                    case 9: 
+                                        //White
+                                        brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
                                         break;
                                     case 10:
+                                        //Grey
+                                        brush = (Brush)bc.ConvertFrom("#FF363636");
                                         break;
                                     case 11:
+                                        //Red Pink
+                                        brush = (Brush)bc.ConvertFrom("#FF8F4242");
                                         break;
                                     case 12:
+                                        //Grey Blue
+                                        brush = (Brush)bc.ConvertFrom("#FFFF0000");
                                         break;
                                 }
+                                color.Add((Double)participant.TeamParticipantId, brush);
                                 ColorId++;
                                 control.QueueTeamColor.Fill = brush;
                                 control.QueueTeamColor.Visibility = Visibility.Visible;
