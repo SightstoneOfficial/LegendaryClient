@@ -69,6 +69,8 @@ namespace LegendaryClient.Windows
             }
             else
             {
+                AutoAcceptCheckBox.Margin = new Thickness(0, 0, 657, 202);
+                InstaCall.Margin = new Thickness(0, 0, 572, 200);
                 CreateRankedCheckBox.Visibility = Visibility.Hidden;
                 SelectChamp.Visibility = Visibility.Hidden;
             }
@@ -404,17 +406,14 @@ namespace LegendaryClient.Windows
                 {
                     if (QueueDTO.GameState == "TERMINATED")
                     {
+                        HasPopped = false;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.OverlayContainer.Content = null;
-                        if (QueueDTO.QueuePosition == 0) //They changed this as soon as I fixed it. Damnit riot lol.
+                        if (QueueDTO.QueuePosition != 0) //They changed this as soon as I fixed it. Damnit riot lol.
                         {
                             setStartButtonText("Start Game");
                             inQueue = false;
                             Client.PVPNet.PurgeFromQueues();
-                        }
-                        else
-                        {
-                            Client.PVPNet.OnMessageReceived += GotQueuePop;
                         }
                     }
                 }));
@@ -553,11 +552,13 @@ namespace LegendaryClient.Windows
             }));
         }
 
+        private bool HasPopped = false;
+
         private void GotQueuePop(object sender, object message)
         {
-            if (Client.runonce == false && message is GameDTO &&
-                (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
+            if (!HasPopped &&Client.runonce == false && message is GameDTO && (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
             {
+                HasPopped = true;
                 var Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
