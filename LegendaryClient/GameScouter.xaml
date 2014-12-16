@@ -51,8 +51,8 @@
     </Window.Resources>
 
     <Grid>
-        <Label Content="Blue Team" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Foreground="Black" FontSize="22"/>
-        <Label Content="Purple Team" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,297,0,407" Foreground="Black" FontSize="22"/>
+        <Label Content="Blue Team" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0" Foreground="White" FontSize="22"/>
+        <Label Content="Purple Team" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,297,0,407" Foreground="White" FontSize="22"/>
         <Label Content="Curse Voice and Razer Comms Users (Not Working)" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,0,120" Foreground="Black" FontSize="22"/>
         <ListView x:Name="BlueTeam" HorizontalAlignment="Left" Height="238" VerticalAlignment="Top" Width="1252" Margin="10,54,0,0"/>
         <ListView x:Name="PurpleTeam" HorizontalAlignment="Left" Height="238" VerticalAlignment="Top" Width="1252" Margin="10,341,0,0"/>

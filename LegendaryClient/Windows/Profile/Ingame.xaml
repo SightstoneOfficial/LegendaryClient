@@ -104,5 +104,7 @@
         </ListView>
         <Button x:Name="SpectateButton" Width="400" Height="40" Margin="0,0,0,10"
                 HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="Spectate" Click="SpectateButton_Click" />
+        <Button x:Name="GameScouter" Width="400" Height="40" Margin="300,0,300,55"
+        	HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="View in GameScouter" Click="GameScouter_Click"/>
     </Grid>
 </Page>

@@ -29,17 +29,21 @@ namespace LegendaryClient
     /// </summary>
     public partial class GameScouter : MetroWindow
     {
+        string GSUsername;
         public GameScouter()
         {
             InitializeComponent();
             Client.win = this;
-            LoadScouter();
         }
-        public void LoadScouter(string User = null)
+        public async void LoadScouter(string User = null)
         {
             if (String.IsNullOrEmpty(User))
                 User = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            if (Convert.ToBoolean(IsUserValid(User)))
+
+            GSUsername = User;
+
+            bool x = await IsUserValid(User);
+            if (x)
                 LoadStats(User);
             else
             {
@@ -71,8 +75,22 @@ namespace LegendaryClient
             }
         }
         List<MatchStats> GameStats = new List<MatchStats>();
+        Dictionary<Double, Brush> color = new Dictionary<Double, Brush>();
+        Int32 ColorId;
         private async void Load(List<Participant> allParticipants,PlatformGameLifecycleDTO n, ListView list)
         {
+            bool isYourTeam = false;
+            list.Items.Clear();
+            list.Items.Refresh();
+            foreach (Participant par in allParticipants)
+            {
+                if (par is PlayerParticipant)
+                {
+                    PublicSummoner scoutersum = await Client.PVPNet.GetSummonerByName(GSUsername);
+                    if ((par as PlayerParticipant).AccountId == scoutersum.AcctId)
+                        isYourTeam = true;
+                }
+            }
             foreach (Participant par in allParticipants)
             {
                 if (par is PlayerParticipant)
@@ -82,6 +100,7 @@ namespace LegendaryClient
                         championSelect.SummonerInternalName == participant.SummonerInternalName))
                     {
                         GameScouterPlayer control = new GameScouterPlayer();
+                        GameStats = new List<MatchStats>();
                         control.Username.Content = championSelect.SummonerInternalName;
                         control.ChampIcon.Source = champions.GetChampion(championSelect.ChampionId).icon;
                         var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))),
@@ -115,12 +134,143 @@ namespace LegendaryClient
                                 match.Game = game;
                                 GameStats.Add(match);
                             }
+                            int Kills, ChampKills;
+                            int Deaths, ChampDeaths;
+                            int Assists, ChampAssists;
+                            int GamesPlayed, ChampGamesPlayed;
+                            Kills = 0; Deaths = 0; Assists = 0; GamesPlayed = 0; ChampKills = 0; ChampDeaths = 0; ChampAssists = 0; ChampGamesPlayed = 0;
+                            //Load average KDA for past 20 games if possible
+                            foreach (MatchStats stats in GameStats)
+                            {
+                                champions gameChamp = champions.GetChampion((int)Math.Round(stats.Game.ChampionId));
+                                Kills = Kills + (Int32)stats.ChampionsKilled;
+                                Deaths = Deaths + (Int32)stats.NumDeaths;
+                                Assists = Assists + (Int32)stats.Assists;
+                                GamesPlayed++;
+                                if (championSelect.ChampionId == (int)Math.Round(stats.Game.ChampionId))
+                                {
+                                    ChampKills = ChampKills + (Int32)stats.ChampionsKilled;
+                                    ChampDeaths = ChampDeaths + (Int32)stats.NumDeaths;
+                                    ChampAssists = ChampAssists + (Int32)stats.Assists;
+                                    ChampGamesPlayed++;
+                                }
+                            }
+                            //GetKDA String
+                            string KDAString = string.Format("{0}/{1}/{2}",
+                                (Kills / GamesPlayed),
+                                (Deaths / GamesPlayed),
+                                (Assists / GamesPlayed));
+                            string ChampKDAString = "";
+                            try
+                            {
+                                ChampKDAString = string.Format("{0}/{1}/{2}",
+                                (ChampKills / ChampGamesPlayed),
+                                (ChampDeaths / ChampGamesPlayed),
+                                (ChampAssists / ChampGamesPlayed));
+                                
+                            }
+                            catch { }
+                            
+                            if (ChampGamesPlayed == 0)
+                                ChampKDAString = "No Recent Games!";
+                            control.AverageKDA.Content = KDAString;
+                            control.ChampAverageKDA.Content = ChampKDAString;
+                            BrushConverter bc = new BrushConverter();
+                            if (isYourTeam)
+                            {
+                                bc = new BrushConverter();
+                                if (ChampKills < ChampDeaths)
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FFFF0000");
+                                else if (ChampKills == ChampDeaths)
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF67FF67");
+                                else
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF00FF3A");
+
+                                bc = new BrushConverter();
+                                if (Kills < Deaths)
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FFFF0000");
+                                else if (Kills == Deaths)
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF67FF67");
+                                else
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF00FF3A");
+                            }
+                            else
+                            {
+                                bc = new BrushConverter();
+                                if (ChampKills > ChampDeaths)
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FFFF0000");
+                                else if (ChampKills == ChampDeaths)
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF67FF67");
+                                else
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF00FF3A");
+
+                                bc = new BrushConverter();
+                                if (Kills > Deaths)
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FFFF0000");
+                                else if (Kills == Deaths)
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF67FF67");
+                                else
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF00FF3A");
+                            }
                         }
                         catch
                         {
-
+                            Client.Log("Failed to get stats about player", "GAME_SCOUTER_ERROR");
                         }
-
+                        if (participant.TeamParticipantId != null)
+                        {
+                            try
+                            {
+                                Brush myColor = color[(double)participant.TeamParticipantId];
+                                control.QueueTeamColor.Fill = myColor;
+                                control.QueueTeamColor.Visibility = Visibility.Visible;
+                            }
+                            catch
+                            {
+                                BrushConverter bc = new BrushConverter();
+                                Brush brush = Brushes.White;
+                                //I know that there is a better way in the InGamePage
+                                //I find that sometimes the colors (colours) are very hard to distinguish from eachother
+                                //This makes sure that each color is easy to see
+                                //because of hexa hill I put 12 in just in case
+                                switch (ColorId)
+                                {
+                                    case 0:
+                                        //blue
+                                        brush = (Brush)bc.ConvertFrom("#FF00E8FF");
+                                        break;
+                                    case 2:
+                                        //Lime Green
+                                        brush = (Brush)bc.ConvertFrom("#FF00FF00");
+                                        break;
+                                    case 3:
+                                        //Yellow
+                                        brush = (Brush)bc.ConvertFrom("#FFFFFF00");
+                                        break;
+                                    case 4:
+                                        break;
+                                    case 5:
+                                        break;
+                                    case 6:
+                                        break;
+                                    case 7:
+                                        break;
+                                    case 8:
+                                        break;
+                                    case 9:
+                                        break;
+                                    case 10:
+                                        break;
+                                    case 11:
+                                        break;
+                                    case 12:
+                                        break;
+                                }
+                                ColorId++;
+                                control.QueueTeamColor.Fill = brush;
+                                control.QueueTeamColor.Visibility = Visibility.Visible;
+                            }
+                        }
                         list.Items.Add(control);
                     }
                 }

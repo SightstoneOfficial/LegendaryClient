@@ -6,13 +6,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="1200">
     <Grid x:Name="MainGrid">
-        <Rectangle x:Name="QueueTeamColor" Fill="#FF00E8FF" HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="10"/>
+        <Rectangle x:Name="ChampKDAColor" Fill="#FFFF0000" HorizontalAlignment="Right" Height="79" Stroke="Black" VerticalAlignment="Top" Width="165" Margin="0,12,275,0"/>
+        <Rectangle x:Name="GameKDAColor" Fill="#FF00FF3A" HorizontalAlignment="Right" Height="79" Stroke="Black" VerticalAlignment="Top" Width="165" Margin="0,10,105,0"/>
+        <Rectangle x:Name="QueueTeamColor" Fill="Yellow" HorizontalAlignment="Left" Height="100" Stroke="Black" VerticalAlignment="Top" Width="10"/>
         <Image x:Name="ChampIcon" HorizontalAlignment="Left" Height="100" VerticalAlignment="Top" Width="100" Margin="10,0,0,0"/>
         <!--Do this so to make sure the name will fit-->
-        <Label x:Name="Username" Content="1234567890123456" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="285,10,0,0" Height="80" Width="584" FontSize="36"/>
-        <Label x:Name="AverageKDA" Content="100/100/100" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="0,10,105,0" Height="80" Width="221" FontSize="36"/>
+        <Label x:Name="Username" Content="1234567890123456" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="285,10,0,0" Height="80" Width="470" FontSize="24" Foreground="Black"/>
+        <Label x:Name="AverageKDA" Content="100/100/100" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Bottom" Margin="0,11,105,0" Height="80" Width="165" FontSize="14"/>
+        <Label Content="Average Game KDA" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Top" Margin="0,11,105,0" Height="80" Width="165" FontSize="16"/>
         <Image x:Name="ProfileIcon" HorizontalAlignment="Right" Height="100" VerticalAlignment="Top" Width="100" Margin="1100,0,0,0"/>
         <Image x:Name="SumIcon1" HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="80" Margin="115,10,0,0"/>
         <Image x:Name="SumIcon2" HorizontalAlignment="Left" Height="80" VerticalAlignment="Top" Width="80" Margin="200,10,0,0"/>
+        <Label x:Name="ChampAverageKDA" Content="100/100/100" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Bottom" Margin="0,11,275,0" Height="80" Width="165" FontSize="14"/>
+        <Label Content="Average Champ KDA" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Top" Margin="0,11,275,0" Height="80" Width="165" FontSize="16"/>
+
     </Grid>
 </UserControl>

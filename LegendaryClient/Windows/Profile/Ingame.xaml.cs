@@ -48,9 +48,10 @@ namespace LegendaryClient.Windows.Profile
             };
             Resources.MergedDictionaries.Add(themeAccent);
         }
-
-        public void Update(PlatformGameLifecycleDTO currentGame)
+        string User;
+        public void Update(PlatformGameLifecycleDTO currentGame, string username)
         {
+            User = username;
             Game = currentGame;
             BlueBansLabel.Visibility = Visibility.Hidden;
             PurpleBansLabel.Visibility = Visibility.Hidden;
@@ -185,6 +186,14 @@ namespace LegendaryClient.Windows.Profile
             {
                 MMRLabel.Content = "N/A";
             }
+        }
+
+        private void GameScouter_Click(object sender, RoutedEventArgs e)
+        {
+            LegendaryClient.GameScouter scouter = new GameScouter();
+            scouter.Show();
+            scouter.Activate();
+            scouter.LoadScouter(User);
         }
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)

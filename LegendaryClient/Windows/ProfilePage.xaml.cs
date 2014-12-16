@@ -96,7 +96,7 @@ namespace LegendaryClient.Windows
 
                 var ingame = InGameContainer.Content as Ingame;
                 if (ingame != null)
-                    ingame.Update(n);
+                    ingame.Update(n, summoner.Name);
             }
             else
             {
