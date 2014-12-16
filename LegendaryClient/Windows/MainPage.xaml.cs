@@ -359,17 +359,15 @@ namespace LegendaryClient.Windows
             if (NewsList.Count <= 0)
                 return;
 
-            string imageUri = "";
+            string imageUri = string.Empty;
             foreach (Dictionary<string, object> pair in NewsList)
             {
-                Client.Log(pair.ToString(), "Pair NewsList");
                 var item = new NewsItem
                 {
                     Margin = new Thickness(0, 5, 0, 5)
                 };
                 foreach (var kvPair in pair)
                 {
-                    Client.Log(kvPair.ToString(), "kvPair Pair");
                     if (kvPair.Key == "title")
                         item.NewsTitle.Content = kvPair.Value;
 
@@ -396,6 +394,8 @@ namespace LegendaryClient.Windows
                         promoImage.CacheOption = BitmapCacheOption.OnLoad;
                         promoImage.EndInit();
                         item.PromoImage.Source = promoImage;
+
+                        imageUri = string.Empty;
                     }
 
                     if (kvPair.Key == "link")
