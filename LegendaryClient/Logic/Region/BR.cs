@@ -36,7 +36,7 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); }
+            get { return new Uri("http://br.leagueoflegends.com/pt/rss.xml"); }
             //This returns english (not spanish) characters
         }
 

@@ -31,7 +31,7 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/la2/es_MX.js"); }
+            get { return new Uri("http://las.leagueoflegends.com/es/rss.xml"); }
         }
 
         public override bool Garena
