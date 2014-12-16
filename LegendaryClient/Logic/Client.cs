@@ -198,6 +198,11 @@ namespace LegendaryClient.Logic
         internal static Button ReturnButton;
 
         /// <summary>
+        ///     spectatorTimer
+        /// </summary>
+        internal static System.Timers.Timer spectatorTimer = new System.Timers.Timer();
+
+        /// <summary>
         ///     inQueueTimer
         /// </summary>
         internal static Label inQueueTimer;

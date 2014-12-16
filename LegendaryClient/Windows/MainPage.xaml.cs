@@ -49,7 +49,6 @@ namespace LegendaryClient.Windows
         internal ArrayList GameList;
         internal ArrayList NewsList;
         internal int SelectedGame = 0;
-        internal Timer spectatorTimer;
 
         public MainPage()
         {
@@ -431,8 +430,6 @@ namespace LegendaryClient.Windows
 
         private void ParseSpectatorGames()
         {
-            if (spectatorTimer != null)
-                spectatorTimer.Stop();
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 try
@@ -554,9 +551,9 @@ namespace LegendaryClient.Windows
                                 case "gameLength":
                                 {
                                     var seconds = (int) pair.Value;
-
-                                    spectatorTimer = new Timer(1000);
-                                    spectatorTimer.Elapsed += (s, e) => // Sincerely Idk when to stop it
+                                    Client.spectatorTimer.Stop();
+                                    Client.spectatorTimer = new Timer(1000);
+                                    Client.spectatorTimer.Elapsed += (s, e) => // Sincerely Idk when to stop it
                                     {
                                         seconds ++;
                                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -566,7 +563,7 @@ namespace LegendaryClient.Windows
                                                 ts.Seconds);
                                         }));
                                     };
-                                    spectatorTimer.Start();
+                                    Client.spectatorTimer.Start();
                                 }
                                     break;
                                 case "bannedChampions":
