@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -81,7 +82,8 @@ namespace LegendaryClient.Windows
         {
             if (message == null)
                 return;
-            if (message.GetType() != typeof(GameDTO))
+
+            if (message.GetType() != typeof (GameDTO))
                 return;
 
             var dto = message as GameDTO;
@@ -96,7 +98,7 @@ namespace LegendaryClient.Windows
                     GameTypeConfigDTO configType =
                         Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
                     TypeLabel.Content = GetGameMode(configType.Id);
-                    SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
+                    SizeLabel.Content = dto.MaxNumPlayers/2 + "v" + dto.MaxNumPlayers/2;
 
                     HasConnectedToChat = true;
                     try
@@ -118,67 +120,71 @@ namespace LegendaryClient.Windows
                 switch (dto.GameState)
                 {
                     case "TEAM_SELECT":
+                    {
+                        OptomisticLock = dto.OptimisticLock;
+                        LaunchedTeamSelect = false;
+                        BlueTeamListView.Items.Clear();
+                        PurpleTeamListView.Items.Clear();
+
+                        foreach (Participant playerTeam in dto.TeamOne)
                         {
-                            OptomisticLock = dto.OptimisticLock;
-                            LaunchedTeamSelect = false;
-                            BlueTeamListView.Items.Clear();
-                            PurpleTeamListView.Items.Clear();
-
-                            foreach (Participant playerTeam in dto.TeamOne)
+                            if (playerTeam is PlayerParticipant)
                             {
-                                if (playerTeam is PlayerParticipant)
-                                {
-                                    var lobbyPlayer = new CustomLobbyPlayer();
-                                    var player = playerTeam as PlayerParticipant;
-                                    lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                    IsOwner = dto.OwnerSummary.SummonerId ==
-                                              Client.LoginPacket.AllSummonerData.Summoner.SumId;
-                                    StartGameButton.IsEnabled = IsOwner;
-                                    AddBotBlueTeam.IsEnabled = IsOwner;
-                                    AddBotPurpleTeam.IsEnabled = IsOwner;
+                                var lobbyPlayer = new CustomLobbyPlayer();
+                                var player = playerTeam as PlayerParticipant;
+                                lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
+                                IsOwner = dto.OwnerSummary.SummonerId ==
+                                          Client.LoginPacket.AllSummonerData.Summoner.SumId;
+                                StartGameButton.IsEnabled = IsOwner;
+                                AddBotBlueTeam.IsEnabled = IsOwner;
+                                AddBotPurpleTeam.IsEnabled = IsOwner;
 
-                                    BlueTeamListView.Items.Add(lobbyPlayer);
+                                BlueTeamListView.Items.Add(lobbyPlayer);
 
-                                    if (Client.Whitelist.Count > 0)
-                                        if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                            await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
-                                }
-                                else if (playerTeam is BotParticipant)
-                                {
-                                    var botParticipant = playerTeam as BotParticipant;
-                                    var botPlayer = new BotControl();
-                                    botPlayer = RenderBot(botParticipant);
-                                    BlueTeamListView.Items.Add(botPlayer);
-                                }
+                                if (Client.Whitelist.Count <= 0)
+                                    continue;
+
+                                if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
+                                    await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
                             }
-                            foreach (Participant playerTeam in dto.TeamTwo)
+                            else if (playerTeam is BotParticipant)
                             {
-                                if (playerTeam is PlayerParticipant)
-                                {
-                                    var lobbyPlayer = new CustomLobbyPlayer();
-                                    var player = playerTeam as PlayerParticipant;
-                                    lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                    IsOwner = dto.OwnerSummary.SummonerId ==
-                                              Client.LoginPacket.AllSummonerData.Summoner.SumId;
-                                    StartGameButton.IsEnabled = IsOwner;
-                                    AddBotBlueTeam.IsEnabled = IsOwner;
-                                    AddBotPurpleTeam.IsEnabled = IsOwner;
-
-                                    PurpleTeamListView.Items.Add(lobbyPlayer);
-
-                                    if (Client.Whitelist.Count > 0)
-                                        if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                            await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
-                                }
-                                else if (playerTeam is BotParticipant)
-                                {
-                                    var botParticipant = playerTeam as BotParticipant;
-                                    var botPlayer = new BotControl();
-                                    botPlayer = RenderBot(botParticipant);
-                                    PurpleTeamListView.Items.Add(botPlayer);
-                                }
+                                var botParticipant = playerTeam as BotParticipant;
+                                var botPlayer = new BotControl();
+                                botPlayer = RenderBot(botParticipant);
+                                BlueTeamListView.Items.Add(botPlayer);
                             }
                         }
+                        foreach (Participant playerTeam in dto.TeamTwo)
+                        {
+                            if (playerTeam is PlayerParticipant)
+                            {
+                                var lobbyPlayer = new CustomLobbyPlayer();
+                                var player = playerTeam as PlayerParticipant;
+                                lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
+                                IsOwner = dto.OwnerSummary.SummonerId ==
+                                          Client.LoginPacket.AllSummonerData.Summoner.SumId;
+                                StartGameButton.IsEnabled = IsOwner;
+                                AddBotBlueTeam.IsEnabled = IsOwner;
+                                AddBotPurpleTeam.IsEnabled = IsOwner;
+
+                                PurpleTeamListView.Items.Add(lobbyPlayer);
+
+                                if (Client.Whitelist.Count <= 0)
+                                    continue;
+
+                                if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
+                                    await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                            }
+                            else if (playerTeam is BotParticipant)
+                            {
+                                var botParticipant = playerTeam as BotParticipant;
+                                var botPlayer = new BotControl();
+                                botPlayer = RenderBot(botParticipant);
+                                PurpleTeamListView.Items.Add(botPlayer);
+                            }
+                        }
+                    }
                         break;
                     case "PRE_CHAMP_SELECT":
                     case "CHAMP_SELECT":
@@ -296,26 +302,29 @@ namespace LegendaryClient.Windows
             botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
             botPlayer.blueSide = BotPlayer.SummonerInternalName.Split('_')[2] == "100";
             botPlayer.difficulty = BotPlayer.BotSkillLevel;
+            botPlayer.cmbSelectDificulty.Visibility = IsOwner ? Visibility.Visible : Visibility.Hidden;
             botPlayer.cmbSelectDificulty.Items.Add("Beginner");
             botPlayer.cmbSelectDificulty.Items.Add("Intermediate");
             botPlayer.cmbSelectDificulty.SelectedIndex = BotPlayer.BotSkillLevel;
             foreach (int bot in bots)
                 botPlayer.cmbSelectChamp.Items.Add(champions.GetChampion(bot).name);
-            botPlayer.cmbSelectChamp.SelectedItem = champ.name;
 
+            botPlayer.cmbSelectChamp.Visibility = IsOwner ? Visibility.Visible : Visibility.Hidden;
+            botPlayer.cmbSelectChamp.SelectedItem = champ.name;
+            botPlayer.BanButton.Visibility = IsOwner ? Visibility.Visible : Visibility.Hidden;
             botPlayer.BanButton.Tag = BotPlayer;
             botPlayer.BanButton.Click += KickAndBan_Click;
             botPlayer.cmbSelectChamp.SelectionChanged += async (a, b) =>
             {
-                champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
+                champions c = champions.GetChampion((string) botPlayer.cmbSelectChamp.SelectedValue);
                 await Client.PVPNet.RemoveBotChampion(champ.id, BotPlayer);
-                addBot(c.id, botPlayer.blueSide, botPlayer.difficulty);
+                AddBot(c.id, botPlayer.blueSide, botPlayer.difficulty);
             };
             botPlayer.cmbSelectDificulty.SelectionChanged += async (a, b) =>
             {
-                champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
+                champions c = champions.GetChampion((string) botPlayer.cmbSelectChamp.SelectedValue);
                 await Client.PVPNet.RemoveBotChampion(champ.id, BotPlayer);
-                addBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex);
+                AddBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex);
             };
 
             return botPlayer;
@@ -324,8 +333,8 @@ namespace LegendaryClient.Windows
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.QuitGame();
-            Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
-            Client.ClearPage(typeof(CreateCustomGamePage));
+            Client.ClearPage(typeof (CustomGameLobbyPage)); //Clear pages
+            Client.ClearPage(typeof (CreateCustomGamePage));
             Client.ReturnButton.Visibility = Visibility.Hidden;
             uiLogic.UpdateMainPage();
         }
@@ -335,21 +344,28 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.SwitchTeams(Client.GameID);
         }
 
-        private async void KickAndBan_Click(object sender, RoutedEventArgs e)
+        private static async void KickAndBan_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             if (button == null)
                 return;
 
-            if (button.Tag is PlayerParticipant)
+            var player = button.Tag as PlayerParticipant;
+            if (player != null)
             {
-                var banPlayer = (PlayerParticipant)button.Tag;
+                PlayerParticipant banPlayer = player;
                 await Client.PVPNet.BanUserFromGame(Client.GameID, banPlayer.AccountId);
             }
-            else if (button.Tag is BotParticipant)
+            else
             {
-                var banPlayer = (BotParticipant)button.Tag;
-                await Client.PVPNet.RemoveBotChampion(champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
+                var tag = button.Tag as BotParticipant;
+                if (tag == null)
+                    return;
+
+                BotParticipant banPlayer = tag;
+                await
+                    Client.PVPNet.RemoveBotChampion(
+                        champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
             }
         }
 
@@ -385,8 +401,8 @@ namespace LegendaryClient.Windows
 
                 case 12:
                     return "Captain Pick";
-                //R.I.P One for All
-                /*
+                    //R.I.P One for All
+                    /*
             case 14:
                 return "One for All";*/
 
@@ -395,7 +411,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private Int32 getRandomChampInt()
+        private static Int32 GetRandomChampInt()
         {
             var rnd = new Random();
             Int32 r = rnd.Next(bots.Count);
@@ -403,9 +419,9 @@ namespace LegendaryClient.Windows
             return bots[r];
         }
 
-        private async void addBot(int id, bool blueSide, int difficulty)
+        private static async void AddBot(int id, bool blueSide, int difficulty)
         {
-            Int32 champint = (id == 0 ? getRandomChampInt() : id);
+            Int32 champint = (id == 0 ? GetRandomChampInt() : id);
             champions champions = champions.GetChampion(champint);
             var champDTO = new ChampionDTO
             {
@@ -416,16 +432,14 @@ namespace LegendaryClient.Windows
                 DisplayName = champions.displayName
             };
 
-            var skinlist = new List<ChampionSkinDTO>();
-            foreach (Dictionary<string, object> skins in champions.Skins)
-            {
-                var skin = new ChampionSkinDTO();
-                skin.ChampionId = champint;
-                skin.SkinId = Convert.ToInt32(skins["id"]);
-                skin.SkinIndex = Convert.ToInt32(skins["num"]);
-                skin.StillObtainable = true;
-                skinlist.Add(skin);
-            }
+            List<ChampionSkinDTO> skinlist = (from Dictionary<string, object> skins in champions.Skins
+                select new ChampionSkinDTO
+                {
+                    ChampionId = champint,
+                    SkinId = Convert.ToInt32(skins["id"]),
+                    SkinIndex = Convert.ToInt32(skins["num"]),
+                    StillObtainable = true
+                }).ToList();
             champDTO.ChampionSkins = skinlist;
 
             var par = new BotParticipant
@@ -450,7 +464,7 @@ namespace LegendaryClient.Windows
                 par.teamId = "200";
                 par.SummonerInternalName = "bot_" + champions.name + "_200";
             }
-            switch(difficulty)
+            switch (difficulty)
             {
                 case 0:
                     par.botSkillLevelName = "Beginner";
@@ -462,17 +476,16 @@ namespace LegendaryClient.Windows
                     break;
             }
             await Client.PVPNet.SelectBotChampion(champint, par);
-
         }
 
         private void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
         {
-            addBot(0, true, 0);
+            AddBot(0, true, 0);
         }
 
-        private async void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
+        private void AddBotPurpleTeam_Click(object sender, RoutedEventArgs e)
         {
-            addBot(0, false, 0);
+            AddBot(0, false, 0);
         }
     }
 }
