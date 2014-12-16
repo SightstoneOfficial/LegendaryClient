@@ -384,22 +384,17 @@ namespace LegendaryClient.Windows
                         item.DescriptionLabel.Text = noHtmlNormalised;
                     }
 
-                    if (imageUri != null)
-                    {
-                        var promoImage = new BitmapImage();
-                        promoImage.BeginInit(); //Download image
-                        promoImage.UriSource =
-                            new Uri("http://" + region.RegionName + ".leagueoflegends.com/" + imageUri,
-                                UriKind.RelativeOrAbsolute);
-                        promoImage.CacheOption = BitmapCacheOption.OnLoad;
-                        promoImage.EndInit();
-                        item.PromoImage.Source = promoImage;
-
-                        imageUri = string.Empty;
-                    }
-
                     if (kvPair.Key == "link")
                         item.Tag = kvPair.Value;
+
+                    var promoImage = new BitmapImage();
+                    promoImage.BeginInit();
+                    promoImage.UriSource =
+                        new Uri("http://" + region.RegionName + ".leagueoflegends.com/" + imageUri,
+                            UriKind.RelativeOrAbsolute);
+                    promoImage.CacheOption = BitmapCacheOption.OnLoad;
+                    promoImage.EndInit();
+                    item.PromoImage.Source = promoImage;
                 }
                 NewsItemListView.Items.Add(item);
             }
