@@ -96,7 +96,7 @@ namespace PVPNetConnect
         TH,
 
         [ServerValue("prodph.lol.garenanow.com")]
-        [LoginQueueValue("https://storeph.lol.garenanow.com/")]
+        [LoginQueueValue("https://lqph.lol.garenanow.com/")]
         [LocaleValue("en_US")]
         [UseGarenaValue(true)]
         PH,
