@@ -92,6 +92,10 @@
                 <Label HorizontalAlignment="Center" Content="VS" FontSize="30" />
                 <StackPanel x:Name="TeamTwoPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             </StackPanel>
+            <Button x:Name="deleteReplayButton" Width="75" Height="24" 
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="deleteReplayButton_Click"
+                Content="Delete replay"
+                FontSize="11" Margin="36,0,0,18" />
         </Grid>
     </Grid>
 

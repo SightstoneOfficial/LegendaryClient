@@ -563,6 +563,14 @@ namespace LegendaryClient.Windows
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", selectedStats.Difficulty, "key")),
                 Convert.ToInt32(details[0]), details[1]);
         }
+        private void deleteReplayButton_Click(object sender, RoutedEventArgs e)
+        {
+            string path = Path.Combine(Client.ExecutingDirectory, "cabinet", selectedStats.Difficulty);
+            if (Directory.Exists(path))
+                Directory.Delete(path,true);
+            UpdateReplays();
+            ReplayOverviewGrid.Visibility = Visibility.Hidden;
+        }
 
         private void refresh_Click(object sender, RoutedEventArgs e)
         {
