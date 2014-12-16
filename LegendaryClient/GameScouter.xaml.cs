@@ -96,11 +96,11 @@ namespace LegendaryClient
 
                 var serializer = new JavaScriptSerializer();
                 var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(mmrJson);
-                MMRLabel.Content = "≈" + deserializedJson["interestScore"];
+                MMRLabel.Content = "Game MMR ≈ " + deserializedJson["interestScore"];
             }
             catch
             {
-                MMRLabel.Content = "N/A";
+                MMRLabel.Content = "Unable to calculate Game MMR";
             }
 
             foreach (Participant par in allParticipants)

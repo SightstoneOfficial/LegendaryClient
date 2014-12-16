@@ -1173,6 +1173,19 @@ namespace LegendaryClient.Logic
                                     CurrentGame.EncryptionKey + " " +
                                     CurrentGame.SummonerId + "\"";
             p.Start();
+            Timer t = new Timer
+            {
+                Interval = 5000,
+            };
+            t.Tick += (o, m) =>
+                {
+                    LegendaryClient.GameScouter scouter = new GameScouter();
+                    scouter.LoadScouter(LoginPacket.AllSummonerData.Summoner.Name);
+                    scouter.Show();
+                    scouter.Activate();
+                    t.Stop();
+                };
+            t.Start();
         }
 
         private static void p_Exited(object sender, EventArgs e)

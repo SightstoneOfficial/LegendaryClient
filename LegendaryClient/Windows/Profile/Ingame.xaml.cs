@@ -191,9 +191,9 @@ namespace LegendaryClient.Windows.Profile
         private void GameScouter_Click(object sender, RoutedEventArgs e)
         {
             LegendaryClient.GameScouter scouter = new GameScouter();
+            scouter.LoadScouter(User);
             scouter.Show();
             scouter.Activate();
-            scouter.LoadScouter(User);
         }
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)
