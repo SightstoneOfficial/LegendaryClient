@@ -53,7 +53,7 @@
     <Grid Background="#FF737B89">
         <Label Content="Blue Team" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,4,0,0" Foreground="White" FontSize="22" Height="45"/>
         <Label Content="Purple Team" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,328,0,404" Foreground="White" FontSize="22" Height="45"/>
-        <Label Content="Curse Voice and Razer Comms Users (Not Working)" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="386,0,376,95" Foreground="Black" FontSize="22"/>
+        <Label Content="Curse Voice and Razer Comms Users (Not Working). Get Perm first" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,12,95" Foreground="Black" FontSize="22" Width="1252"/>
         <ListView x:Name="BlueTeam" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="1252" Margin="10,54,0,0"/>
         <ListView x:Name="PurpleTeam" HorizontalAlignment="Left" Height="260" VerticalAlignment="Top" Width="1252" Margin="10,378,0,0"/>
         <ListView x:Name="VoiceChat" HorizontalAlignment="Left" Height="80" VerticalAlignment="Bottom" Width="1252" Margin="10,0,0,10"/>
