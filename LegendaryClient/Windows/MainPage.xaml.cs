@@ -49,6 +49,7 @@ namespace LegendaryClient.Windows
         internal ArrayList GameList;
         internal ArrayList NewsList;
         internal int SelectedGame = 0;
+        internal Timer spectatorTimer;
 
         public MainPage()
         {
@@ -91,6 +92,13 @@ namespace LegendaryClient.Windows
 
                 timer.Stop();
             }));
+
+            if(Client.Dev)
+            {
+                fakeend.Visibility = Visibility.Visible;
+                testChat.Visibility = Visibility.Visible;
+                testInvite.Visibility = Visibility.Visible;
+            }
         }
 
         [STAThread]
@@ -423,6 +431,8 @@ namespace LegendaryClient.Windows
 
         private void ParseSpectatorGames()
         {
+            if (spectatorTimer != null)
+                spectatorTimer.Stop();
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 try
@@ -545,7 +555,7 @@ namespace LegendaryClient.Windows
                                 {
                                     var seconds = (int) pair.Value;
 
-                                    var spectatorTimer = new Timer(1000);
+                                    spectatorTimer = new Timer(1000);
                                     spectatorTimer.Elapsed += (s, e) => // Sincerely Idk when to stop it
                                     {
                                         seconds ++;
