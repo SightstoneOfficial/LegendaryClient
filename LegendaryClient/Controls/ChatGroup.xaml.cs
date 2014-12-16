@@ -19,7 +19,7 @@ namespace LegendaryClient.Controls
             InitializeComponent();
         }
 
-        private void GroupGrid_MouseDown(object sender, MouseButtonEventArgs e)
+        internal void GroupGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (GroupListView.Visibility == Visibility.Collapsed)
             {
