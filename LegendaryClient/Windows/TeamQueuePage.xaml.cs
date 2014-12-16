@@ -610,6 +610,7 @@ namespace LegendaryClient.Windows
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
+            HasPopped = false;
             if (!inQueue)
             {
                 var parameters = new MatchMakerParams();
