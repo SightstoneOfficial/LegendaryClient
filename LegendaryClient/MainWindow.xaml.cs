@@ -222,15 +222,16 @@ namespace LegendaryClient
 
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            if (Client.curentlyRecording.Count > 0)
+            if (Properties.Settings.Default.warnClose || Client.curentlyRecording.Count > 0)
             {
                 e.Cancel = true;
                 Warn.Title.Content = "Quit";
+                Warn.MessageText.Text = "Are You Sure You Want To Quit?";
                 Warn.backtochampselect.Click += HideWarning;
                 Warn.AcceptButton.Click += Quit;
                 Warn.hide.Click += HideWarning;
                 if (Client.curentlyRecording.Count > 0)
-                    Warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n";
+                    Warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + Warn.MessageText.Text;
                 Client.FullNotificationOverlayContainer.Content = Warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
