@@ -21,6 +21,7 @@ using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using Timer = System.Timers.Timer;
+using System.Diagnostics;
 
 #endregion
 
@@ -31,7 +32,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class FriendList
     {
-       
+
         private static Timer UpdateTimer;
         private LargeChatPlayer PlayerItem;
         private ChatPlayerItem LastPlayerItem;
@@ -39,8 +40,8 @@ namespace LegendaryClient.Windows
 
         public FriendList()
         {
-            
-            InitializeComponent();            
+
+            InitializeComponent();
             if (Settings.Default.StatusMsg != "Set your status message")
                 StatusBox.Text = Settings.Default.StatusMsg;
             UpdateTimer = new Timer(1000);
@@ -50,7 +51,7 @@ namespace LegendaryClient.Windows
             Client.chatlistview = ChatListView;
             Change();
         }
-        
+
         private void PresenceChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PresenceChanger.SelectedIndex == -1)
@@ -214,6 +215,8 @@ namespace LegendaryClient.Windows
                         ChatListView.Children.Add(groupControl);
                     else Client.Log("Removed a group");
                 }
+                if(ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup)
+                    (ChatListView.Children[0] as ChatGroup).GroupGrid_MouseDown(null, null);
             }));
         }
 
@@ -232,9 +235,7 @@ namespace LegendaryClient.Windows
             var player = (ChatPlayer)selection.AddedItems[0];
             ((ListView)e.Source).SelectedIndex = -1;
             var playerItem = (ChatPlayerItem)player.Tag;
-            if (
-                Client.ChatListView.Items.Cast<NotificationChatPlayer>()
-                    .Any(x => (string)x.PlayerLabelName.Content == playerItem.Username))
+            if (Client.ChatListView.Items.Cast<NotificationChatPlayer>().Any(x => (string)x.PlayerLabelName.Content == playerItem.Username))
                 return;
 
             var chatPlayer = new NotificationChatPlayer
@@ -423,6 +424,7 @@ namespace LegendaryClient.Windows
             var jid = new JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
             string[] groups = new List<String>(new[] { "Online" }).ToArray();
             Client.ChatClient.Subscribe(jid, "", groups);
+            FriendAddBox.Text = "";
         }
 
         private async void SpectateGame_Click(object sender, RoutedEventArgs e)

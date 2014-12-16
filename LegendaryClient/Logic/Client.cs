@@ -51,6 +51,7 @@ using Label = System.Windows.Controls.Label;
 using ListView = System.Windows.Controls.ListView;
 using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
+using System.Net;
 
 #endregion
 
@@ -89,10 +90,10 @@ namespace LegendaryClient.Logic
             var settings = new Dictionary<String, String>();
             string[] file = File.ReadAllLines(FileLocation);
             foreach (string x in from x in file
-                where !String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x)
-                where !x.Contains("[") && !x.Contains("]")
-                where !x.StartsWith("#") && x.Contains("=")
-                select x)
+                                 where !String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x)
+                                 where !x.Contains("[") && !x.Contains("]")
+                                 where !x.StartsWith("#") && x.Contains("=")
+                                 select x)
             {
                 try
                 {
@@ -116,14 +117,14 @@ namespace LegendaryClient.Logic
             string y = Settings.Default.Theme;
             var bc = new BrushConverter();
             if (y.Contains("Blue"))
-                return (Brush) bc.ConvertFrom("#FF1585B5");
+                return (Brush)bc.ConvertFrom("#FF1585B5");
             if (y.Contains("Red"))
-                return (Brush) bc.ConvertFrom("#FFA01414");
+                return (Brush)bc.ConvertFrom("#FFA01414");
             if (y.Contains("Green"))
-                return (Brush) bc.ConvertFrom("#FF2DA014");
+                return (Brush)bc.ConvertFrom("#FF2DA014");
             if (y.Contains("Purple"))
-                return (Brush) bc.ConvertFrom("#FF5A14A0");
-            return (Brush) bc.ConvertFrom("#FF141414"); //Steel
+                return (Brush)bc.ConvertFrom("#FF5A14A0");
+            return (Brush)bc.ConvertFrom("#FF141414"); //Steel
         }
 
         internal static Dictionary<String, PVPNetConnection> pvpnetlist = new Dictionary<String, PVPNetConnection>();
@@ -376,7 +377,7 @@ namespace LegendaryClient.Logic
             {
                 MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    var subject = (ChatSubjects) Enum.Parse(typeof (ChatSubjects), msg.Subject, true);
+                    var subject = (ChatSubjects)Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
                     NotificationPopup pop = new NotificationPopup(subject, msg);
                     pop.Height = 230;
                     pop.HorizontalAlignment = HorizontalAlignment.Right;
@@ -409,7 +410,7 @@ namespace LegendaryClient.Logic
             if (manager != null)
             {
                 string ParseString = manager.ToString();
-                var StringHackOne = new List<string>(ParseString.Split(new[] {"@pvp.net="}, StringSplitOptions.None));
+                var StringHackOne = new List<string>(ParseString.Split(new[] { "@pvp.net=" }, StringSplitOptions.None));
                 StringHackOne.RemoveAt(0);
                 foreach (
                     string Parse in
@@ -708,7 +709,7 @@ namespace LegendaryClient.Logic
             while (incrementValue < result.Length)
             {
                 int bitHack = result[incrementValue];
-                obfuscatedName = obfuscatedName + Convert.ToString(((uint) (bitHack & 240) >> 4), 16);
+                obfuscatedName = obfuscatedName + Convert.ToString(((uint)(bitHack & 240) >> 4), 16);
                 obfuscatedName = obfuscatedName + Convert.ToString(bitHack & 15, 16);
                 incrementValue = incrementValue + 1;
             }
@@ -784,13 +785,13 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static void SwitchPage(Page page)
         {
-            IsOnPlayPage = page.GetType() == typeof (PlayPage);
-            BackgroundImage.Visibility = page.GetType() == typeof (ChampSelectPage)
+            IsOnPlayPage = page.GetType() == typeof(PlayPage);
+            BackgroundImage.Visibility = page.GetType() == typeof(ChampSelectPage)
                 ? Visibility.Hidden
                 : Visibility.Visible;
-            if (page.GetType() == typeof (MainPage))
+            if (page.GetType() == typeof(MainPage))
             {
-                Page p = Pages.FirstOrDefault(x => x.GetType() == typeof (MainPage));
+                Page p = Pages.FirstOrDefault(x => x.GetType() == typeof(MainPage));
 
                 var mainPage = p as MainPage;
                 if (mainPage != null)
@@ -892,7 +893,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         /// 
         /// </summary>
-        internal static bool donepatch =false;
+        internal static bool donepatch = false;
 
         /// <summary>
         ///     A recorder
@@ -953,7 +954,7 @@ namespace LegendaryClient.Logic
                     if (gameNotification != null)
                     {
                         GameNotification notification = gameNotification;
-                        var messageOver = new MessageOverlay {MessageTitle = {Content = notification.Type}};
+                        var messageOver = new MessageOverlay { MessageTitle = { Content = notification.Type } };
                         switch (notification.Type)
                         {
                             case "PLAYER_BANNED_FROM_GAME":
@@ -968,7 +969,7 @@ namespace LegendaryClient.Logic
                         }
                         OverlayContainer.Content = messageOver.Content;
                         OverlayContainer.Visibility = Visibility.Visible;
-                        ClearPage(typeof (CustomGameLobbyPage));
+                        ClearPage(typeof(CustomGameLobbyPage));
                         if (messageOver.MessageTitle.Content.ToString() != "PLAYER_QUIT")
                             SwitchPage(new MainPage());
                     }
@@ -976,7 +977,7 @@ namespace LegendaryClient.Logic
                     {
                         var stats = message as EndOfGameStats;
                         var EndOfGame = new EndOfGamePage(stats);
-                        ClearPage(typeof (TeamQueuePage));
+                        ClearPage(typeof(TeamQueuePage));
                         OverlayContainer.Visibility = Visibility.Visible;
                         OverlayContainer.Content = EndOfGame.Content;
                     }
@@ -1219,7 +1220,7 @@ namespace LegendaryClient.Logic
         {
             if (OnMessage != null)
                 foreach (Delegate d in OnMessage.GetInvocationList())
-                    OnMessage -= (OnMessageHandler) d;
+                    OnMessage -= (OnMessageHandler)d;
 
             FixChampSelect();
             FixLobby();
@@ -1242,8 +1243,8 @@ namespace LegendaryClient.Logic
 
             foreach (Delegate d in OnFixLobby.GetInvocationList())
             {
-                PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler) d;
-                OnFixLobby -= (PVPNetConnection.OnMessageReceivedHandler) d;
+                PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                OnFixLobby -= (PVPNetConnection.OnMessageReceivedHandler)d;
             }
         }
 
@@ -1254,8 +1255,8 @@ namespace LegendaryClient.Logic
 
             foreach (Delegate d in OnFixChampSelect.GetInvocationList())
             {
-                PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler) d;
-                OnFixChampSelect -= (PVPNetConnection.OnMessageReceivedHandler) d;
+                PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                OnFixChampSelect -= (PVPNetConnection.OnMessageReceivedHandler)d;
             }
         }
 
@@ -1323,7 +1324,7 @@ namespace LegendaryClient.Logic
         {
             // Java timestamp is millisecods past epoch
             var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp/1000)).ToLocalTime();
+            dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp / 1000)).ToLocalTime();
             return dtDateTime;
         }
 
@@ -1371,7 +1372,7 @@ namespace LegendaryClient.Logic
                 // generate the key from the shared secret and the salt
                 var key = new Rfc2898DeriveBytes(Secret, Encoding.ASCII.GetBytes("o6806642kbM7c5"));
                 // Create a RijndaelManaged object
-                aesAlg.Key = key.GetBytes(aesAlg.KeySize/8);
+                aesAlg.Key = key.GetBytes(aesAlg.KeySize / 8);
 
                 // Create a decryptor to perform the stream transform.
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
@@ -1380,7 +1381,7 @@ namespace LegendaryClient.Logic
                 using (var msEncrypt = new MemoryStream())
                 {
                     // prepend the IV
-                    msEncrypt.Write(BitConverter.GetBytes(aesAlg.IV.Length), 0, sizeof (int));
+                    msEncrypt.Write(BitConverter.GetBytes(aesAlg.IV.Length), 0, sizeof(int));
                     msEncrypt.Write(aesAlg.IV, 0, aesAlg.IV.Length);
                     using (var csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
                     {
@@ -1420,7 +1421,7 @@ namespace LegendaryClient.Logic
                     // Create a RijndaelManaged object
                     // with the specified key and IV.
                     aesAlg = new RijndaelManaged();
-                    aesAlg.Key = key.GetBytes(aesAlg.KeySize/8);
+                    aesAlg.Key = key.GetBytes(aesAlg.KeySize / 8);
                     // Get the initialization vector from the encrypted stream
                     aesAlg.IV = ReadByteArray(msDecrypt);
                     // Create a decrytor to perform the stream transform.
@@ -1450,7 +1451,7 @@ namespace LegendaryClient.Logic
 
         private static byte[] ReadByteArray(Stream s)
         {
-            var rawLength = new byte[sizeof (int)];
+            var rawLength = new byte[sizeof(int)];
             if (s.Read(rawLength, 0, rawLength.Length) != rawLength.Length)
                 throw new SystemException("Stream did not contain properly formatted byte array");
 
@@ -1459,6 +1460,47 @@ namespace LegendaryClient.Logic
                 throw new SystemException("Did not read byte array properly");
 
             return buffer;
+        }
+
+        public static bool Authenticate(string filename)
+        {
+            try
+            {
+                string filecontent = null;
+                System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
+                if (String.IsNullOrEmpty(filename))
+                {
+                    dlg.DefaultExt = ".png";
+                    dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
+                    System.Windows.Forms.DialogResult result = dlg.ShowDialog();
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                        filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
+                }
+                else
+                {
+                    if (File.Exists(filename))
+                        filecontent = File.ReadAllText(filename).ToSHA1();
+                }
+
+                if (filecontent != null)
+                {
+                    using (var client = new WebClient())
+                    {
+                        if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
+                        {
+                            Settings.Default.devKeyLoc = filename == null ? dlg.FileName : filename;
+                            Settings.Default.Save();
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ee)
+            {
+                Client.Log("Failed to authernticate", "ERROR");
+                Client.Log(ee.ToString(), "ERROR");
+            }
+            return false;
         }
 
         internal static int SelectChamp;
