@@ -265,22 +265,6 @@ namespace LegendaryClient.Windows
             return lobbyPlayer;
         }
 
-        private BotControl RenderBot(BotParticipant BotPlayer)
-        {
-            var botPlayer = new BotControl
-            {
-                PlayerName = {Content = BotPlayer.SummonerName},
-                BanButton = {Tag = BotPlayer}
-            };
-
-            //var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", BotPlayer.Champion + ".png"), UriKind.RelativeOrAbsolute);
-            //botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
-
-            botPlayer.BanButton.Click += KickAndBan_Click;
-
-            return botPlayer;
-        }
-
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.QuitGame();
