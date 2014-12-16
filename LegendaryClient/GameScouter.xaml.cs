@@ -21,6 +21,10 @@ using LegendaryClient.Controls.GameScouter;
 using LegendaryClient.Windows.Profile;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System.Reflection;
+using System.Net;
+using System.Web.Script.Serialization;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Runes;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 
 namespace LegendaryClient
 {
@@ -82,6 +86,23 @@ namespace LegendaryClient
             bool isYourTeam = false;
             list.Items.Clear();
             list.Items.Refresh();
+            try
+            {
+                string mmrJson;
+                string url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName +
+                             "/" + n.Game.Id + "/token";
+                using (var client = new WebClient())
+                    mmrJson = client.DownloadString(url);
+
+                var serializer = new JavaScriptSerializer();
+                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(mmrJson);
+                MMRLabel.Content = "≈" + deserializedJson["interestScore"];
+            }
+            catch
+            {
+                MMRLabel.Content = "N/A";
+            }
+
             foreach (Participant par in allParticipants)
             {
                 if (par is PlayerParticipant)
@@ -100,6 +121,7 @@ namespace LegendaryClient
                         championSelect.SummonerInternalName == participant.SummonerInternalName))
                     {
                         GameScouterPlayer control = new GameScouterPlayer();
+                        control.Tag = championSelect;
                         GameStats = new List<MatchStats>();
                         control.Username.Content = championSelect.SummonerInternalName;
                         //Make it so you can see yourself
@@ -298,6 +320,18 @@ namespace LegendaryClient
                     }
                 }
             }
+        }
+        private async void GetUserRunesPage(string User)
+        {
+            PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
+            SummonerRuneInventory runes = await Client.PVPNet.GetSummonerRuneInventory(summoner.SummonerId);
+
+
+        }
+        private async void GetUserMasterPage(string User)
+        {
+            PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
+            MasteryBookDTO page = await Client.PVPNet.GetMasteryBook(summoner.SummonerId);
         }
     }
 }
