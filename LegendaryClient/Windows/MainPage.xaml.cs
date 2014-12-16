@@ -318,7 +318,7 @@ namespace LegendaryClient.Windows
                 {
                     // To skip the 403 Error (Forbbiden)
                     webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
-                    webClient.Headers.Add("Content-Type", "application / zip, application / octet - stream");
+                    webClient.Headers.Add("Content-Type", "text/html; charset=UTF-8");
                     webClient.Headers.Add("Accept-Encoding", "gzip,deflate,sdch");
                     webClient.Headers.Add("Referer", "http://google.com/");
                     webClient.Headers.Add("Accept",
@@ -382,9 +382,8 @@ namespace LegendaryClient.Windows
 
                         string noHtml = Regex.Replace(((string) kvPair.Value), @"<[^>]+>|&nbsp;", "").Trim();
                         string noHtmlNormalised = Regex.Replace(noHtml, @"\s{2,}", " ");
-                        string apostropheNormalize = Regex.Replace(noHtmlNormalised, @"â€™", "'");
 
-                        item.DescriptionLabel.Text = apostropheNormalize;
+                        item.DescriptionLabel.Text = noHtmlNormalised;
                     }
 
                     if (imageUri != null)

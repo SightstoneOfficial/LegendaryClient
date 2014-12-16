@@ -1,49 +1,26 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Win32;
 
 namespace LegendaryClient.Logic.Region
 {
     /// <summary>
-    /// Allow users to specify custom servers (When servers change, this can also be used)
+    ///     Allow users to specify custom servers (When servers change, this can also be used)
     /// </summary>
-    class CS : BaseRegion
+    internal class CS : BaseRegion
     {
-        private static Dictionary<String, String> vals = getSettings();
+        private static readonly Dictionary<String, String> vals = getSettings();
         private static string location;
-        private static Dictionary<String, String> getSettings()
-        {
-            Dictionary<String, String> result = new Dictionary<String, String>();
-            OpenFileDialog file = new OpenFileDialog();
-            file.Title = "Find League Of Legends";
-            file.Multiselect = false;
-
-            if ((bool)file.ShowDialog())
-            {
-                result = file.FileName.LeagueSettingsReader();
-            }
-            location = file.FileName;
-            return result;
-        }
 
         public override string Location
         {
-            get
-            {
-                return Location;
-            }
+            get { return Location; }
         }
 
         public override string RegionName
         {
-            get 
-            {
-                return vals["regionTag"];
-            }
+            get { return vals["regionTag"]; }
         }
 
         public override bool Garena
@@ -53,18 +30,12 @@ namespace LegendaryClient.Logic.Region
 
         public override string InternalName
         {
-            get 
-            {
-                return vals["platformId"];
-            }
+            get { return vals["platformId"]; }
         }
 
         public override string ChatName
         {
-            get
-            {
-                return vals["host"].Split('.')[1];
-            }
+            get { return vals["host"].Split('.')[1]; }
         }
 
         public override Uri NewsAddress
@@ -101,7 +72,24 @@ namespace LegendaryClient.Logic.Region
         public override string SpectatorIpAddress
         {
             get { return "nil"; } //Unknown, Get from the server
-            set {  }
+            set { }
+        }
+
+        private static Dictionary<String, String> getSettings()
+        {
+            var result = new Dictionary<String, String>();
+            var file = new OpenFileDialog
+            {
+                Title = "Find League Of Legends",
+                Multiselect = false
+            };
+
+            bool? showDialog = file.ShowDialog();
+            if (showDialog != null && (bool) showDialog)
+                result = file.FileName.LeagueSettingsReader();
+
+            location = file.FileName;
+            return result;
         }
     }
 }
