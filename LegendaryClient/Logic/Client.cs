@@ -931,14 +931,6 @@ namespace LegendaryClient.Logic
             Log(error.Type.ToString(), "PVPNetError");
             Log(error.Message, "PVPNetError");
         }
-
-
-        internal static System.Timers.Timer HeartbeatTimer;
-        internal static int HeartbeatCount;
-
-
-        //internal static Inviter CurrentInviter;
-
 #pragma warning disable 4014
 
         internal static void OnMessageReceived(object sender, object message)
@@ -998,13 +990,11 @@ namespace LegendaryClient.Logic
                     else if (message is InvitationRequest)
                     {
                         var stats = message as InvitationRequest;
-                        //TypedObject body = (TypedObject)to["body"];
                         if (stats.Inviter == null)
                             return;
 
                         try
                         {
-                            //Already existant popup. Do not create a new one
                             InviteInfo x = InviteData[stats.InvitationId];
                             if (x.Inviter != null)
                                 return;

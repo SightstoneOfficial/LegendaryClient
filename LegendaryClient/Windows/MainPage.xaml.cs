@@ -35,6 +35,7 @@ using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
+using System.Xml;
 
 #endregion
 
@@ -314,17 +315,37 @@ namespace LegendaryClient.Windows
                 using (var client = new WebClient())
                     newsJson = client.DownloadString(region.NewsAddress);
 
-                var serializer = new JavaScriptSerializer();
-                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
-                NewsList = deserializedJson["news"] as ArrayList;
-                var promoList = deserializedJson["promos"] as ArrayList;
-                if (promoList == null)
-                    return;
+                if (!region.NewsAddress.ToString().Contains("/rss.xml"))
+                {
+                    var serializer = new JavaScriptSerializer();
+                    var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
+                    NewsList = deserializedJson["news"] as ArrayList;
+                    var promoList = deserializedJson["promos"] as ArrayList;
+                    if (promoList == null)
+                        return;
 
-                foreach (
-                    var objectPromo in
-                        promoList.Cast<Dictionary<string, object>>().Where(objectPromo => NewsList != null))
-                    NewsList.Add(objectPromo);
+                    foreach (
+                        var objectPromo in
+                            promoList.Cast<Dictionary<string, object>>().Where(objectPromo => NewsList != null))
+                        NewsList.Add(objectPromo);
+                }
+                else
+                {
+                    using (XmlReader reader = XmlReader.Create(new StringReader(newsJson)))
+                    {
+                        while (reader.Read())
+                        {
+                            if (!reader.IsStartElement())
+                                continue;
+
+                            switch (reader.Name)
+                            {
+                                case "title":
+                                    break;
+                            }
+                        }
+                    }
+                }
             };
 
             worker.RunWorkerCompleted += delegate { ParseNews(); };
@@ -343,7 +364,6 @@ namespace LegendaryClient.Windows
 
             if (NewsList.Count <= 0)
                 return;
-
             foreach (Dictionary<string, object> pair in NewsList)
             {
                 var item = new NewsItem

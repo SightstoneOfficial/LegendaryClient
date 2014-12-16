@@ -36,7 +36,7 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/na/en_US.js"); }
+            get { return new Uri("http://na.leagueoflegends.com/en/rss.xml"); }
         }
 
         public override PVPNetConnect.Region PVPRegion
