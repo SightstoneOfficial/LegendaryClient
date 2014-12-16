@@ -296,15 +296,15 @@ namespace LegendaryClient.Windows
                         try
                         {
                             string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
-                            try
+                            string[] AllFiles = Package.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                            int i = 0;
+                            while(!AllFiles[i].Contains("gameStats_en_US.sqlite"))
                             {
-                                UpdateClient.DownloadFile(new Uri( "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
+                                i++;
                             }
-                            catch
-                            {
-                                Client.Log("gameStats_en_US.sqlite not found on l3cdn.riotgames.com - skiping");
-                                Client.Log("Please get updated copy of this file from your league folder.");
-                            }
+                            string gameStatsLink = AllFiles[i].Split(',')[0];
+                            UpdateClient.DownloadFile(new Uri(AllFiles[i].Split(',')[0]), Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
+
                             GetAllPngs(Package);
                             string[] x = Package.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
 
