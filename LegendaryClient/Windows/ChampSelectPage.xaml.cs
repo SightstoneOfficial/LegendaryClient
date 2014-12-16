@@ -550,6 +550,7 @@ namespace LegendaryClient.Windows
                             HorizontalAlignment = HorizontalAlignment.Right,
                             VerticalAlignment = VerticalAlignment.Bottom
                         };
+                        Client.HasPopped = false;
                         Client.NotificationGrid.Children.Add(pop);
                         Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                         Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;

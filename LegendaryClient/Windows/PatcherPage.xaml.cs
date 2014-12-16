@@ -101,32 +101,22 @@ namespace LegendaryClient.Windows
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
             var UpdateClient = new WebClient();
-            string Package =
-                UpdateClient.DownloadString(
-                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[0] +
-                    "/packages/files/packagemanifest");
+            /*string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[0] + "/packages/files/packagemanifest");
             try
             {
-                UpdateClient.DownloadFile(
-                    new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
-                            latestversion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"),
-                    Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
             }
             catch
             {
                 try
                 {
-                    UpdateClient.DownloadFile(
-                        new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
-                                latestversion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"),
-                        Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                    UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
                 }
                 catch
                 {
-                    Client.Log("Unable to update gamestats file. Perhaps a different LegendaryClient is running?",
-                        "Small Error");
+                    Client.Log("Unable to update gamestats file. Perhaps a different LegendaryClient is running?", "Small Error");
                 }
-            }
+            }*/
             Client.SwitchPage(new LoginPage());
         }
 
@@ -286,21 +276,17 @@ namespace LegendaryClient.Windows
 
                     if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                     {
-                        FileStream VersionAIR =
-                            File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
+                        FileStream VersionAIR = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                         VersionAIR.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
                         VersionAIR.Close();
                     }
 
                     string LatestAIR = patcher.GetLatestAir();
                     LogTextBox("Air Assets Version: " + LatestAIR);
-                    string AirVersion =
-                        File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
+                    string AirVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                     LogTextBox("Current Air Assets Version: " + AirVersion);
                     var UpdateClient = new WebClient();
-                    string Release =
-                        UpdateClient.DownloadString(
-                            "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                    string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
                     string[] LatestVersion = Release.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
                     latestversion = LatestVersion;
                     string vers = LatestVersion[0];
@@ -309,17 +295,10 @@ namespace LegendaryClient.Windows
                         //Download Air Assists from riot
                         try
                         {
-                            string Package =
-                                UpdateClient.DownloadString(
-                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
-                                    LatestVersion[0] + "/packages/files/packagemanifest");
+                            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
                             try
                             {
-                                UpdateClient.DownloadFile(
-                                    new Uri(
-                                        "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
-                                        LatestVersion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"),
-                                    Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
+                                UpdateClient.DownloadFile(new Uri( "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
                             }
                             catch
                             {
@@ -331,12 +310,9 @@ namespace LegendaryClient.Windows
 
                             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                                 File.Delete(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
-                            using (
-                                FileStream file =
-                                    File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
+                            using (FileStream file = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                             {
-                                file.Write(encoding.GetBytes(LatestVersion[0]), 0,
-                                    encoding.GetBytes(LatestVersion[0]).Length);
+                                file.Write(encoding.GetBytes(LatestVersion[0]), 0, encoding.GetBytes(LatestVersion[0]).Length);
                             }
                         }
                         catch (Exception e)

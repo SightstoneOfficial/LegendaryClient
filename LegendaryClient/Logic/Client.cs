@@ -1512,6 +1512,7 @@ namespace LegendaryClient.Logic
         internal static bool usingInstaPick = false;
 
         internal static KeyValuePair<String, String> userpass;
+        internal static bool HasPopped = false;
 
         internal static void ChatClient_OnDisconnect(object sender)
         {

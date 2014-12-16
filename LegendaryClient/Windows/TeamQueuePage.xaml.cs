@@ -178,7 +178,7 @@ namespace LegendaryClient.Windows
                     Dispatcher.Invoke(() =>
                     {
                         if (Client.inQueueTimer.Visibility == Visibility.Hidden)
-                             Client.inQueueTimer.Visibility = Visibility.Visible;
+                            Client.inQueueTimer.Visibility = Visibility.Visible;
                         Client.inQueueTimer.Content = String.Format("In Queue {0:D2}:{1:D2}", time.Minutes, time.Seconds);
                     });
                     setStartButtonText("Re-Click To Leave");
@@ -406,7 +406,7 @@ namespace LegendaryClient.Windows
                 {
                     if (QueueDTO.GameState == "TERMINATED")
                     {
-                        HasPopped = false;
+                        Client.HasPopped = false;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.OverlayContainer.Content = null;
                         if (QueueDTO.QueuePosition != 0) //They changed this as soon as I fixed it. Damnit riot lol.
@@ -552,20 +552,17 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        private bool HasPopped = false;
-
         private void GotQueuePop(object sender, object message)
         {
-            if (!HasPopped &&Client.runonce == false && message is GameDTO && (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
+            if (!Client.HasPopped && Client.runonce == false && message is GameDTO && (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
             {
-                HasPopped = true;
+                Client.HasPopped = true;
                 var Queue = message as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                Client.PVPNet.OnMessageReceived -= GotQueuePop;
             }
         }
 
@@ -610,7 +607,6 @@ namespace LegendaryClient.Windows
 
         private void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            HasPopped = false;
             if (!inQueue)
             {
                 var parameters = new MatchMakerParams();
@@ -639,7 +635,7 @@ namespace LegendaryClient.Windows
                 Client.SetChatHover();
                 Dispatcher.Invoke(() =>
                 {
-                        Client.inQueueTimer.Visibility = Visibility.Hidden;
+                    Client.inQueueTimer.Visibility = Visibility.Hidden;
                 });
             }
         }
@@ -655,6 +651,7 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
+                    Client.HasPopped = false;
                     var messageOver = new MessageOverlay();
                     messageOver.MessageTitle.Content = "Could not join the queue";
                     foreach (QueueDodger x in result.PlayerJoinFailures)
@@ -662,34 +659,23 @@ namespace LegendaryClient.Windows
                         TimeSpan time = TimeSpan.FromMilliseconds(x.PenaltyRemainingTime);
                         switch (x.ReasonFailed)
                         {
-                            case "LEAVER_BUSTER_TAINT_WARNING":
-                                messageOver.MessageTextBox.Text +=
-                                    " - You have left a game in progress. Please use the official client to remove the warning for now.";
+                            case "LEAVER_BUSTER_TAINTED_WARNING":
+                                messageOver.MessageTextBox.Text += " - You have left a game in progress. Please use the official client to remove the warning for now.";
                                 //Need to implement their new warning for leaving.
                                 break;
                             case "QUEUE_DODGER":
-                                messageOver.MessageTextBox.Text += " - " + x.Summoner.Name +
-                                                                   " is unable to join the queue as they recently dodged a game." +
-                                                                   Environment.NewLine;
-                                messageOver.MessageTextBox.Text += " - You have " +
-                                                                   string.Format("{0:D2}m:{1:D2}s", time.Minutes,
-                                                                       time.Seconds) +
-                                                                   " remaining until you may queue again";
+                                messageOver.MessageTextBox.Text += " - " + x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
+                                messageOver.MessageTextBox.Text += " - You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
                                 break;
                             case "QUEUE_RESTRICTED":
-                                messageOver.MessageTextBox.Text +=
-                                    " - You are too far apart in ranked to queue together.";
-                                messageOver.MessageTextBox.Text +=
-                                    " - For instance, Silvers can only queue with Bronze, Silver, or Gold players.";
+                                messageOver.MessageTextBox.Text += " - You are too far apart in ranked to queue together.";
+                                messageOver.MessageTextBox.Text += " - For instance, Silvers can only queue with Bronze, Silver, or Gold players.";
                                 break;
                             case "RANKED_RESTRICTED":
-                                messageOver.MessageTextBox.Text +=
-                                    " - You are not currently able to queue for ranked for: " + x.PenaltyRemainingTime +
-                                    " games. If this is inaccurate please report it as an issue on the github page. Thanks!";
+                                messageOver.MessageTextBox.Text += " - You are not currently able to queue for ranked for: " + x.PenaltyRemainingTime + " games. If this is inaccurate please report it as an issue on the github page. Thanks!";
                                 break;
                             default:
-                                messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed +
-                                                                   " - as an Issue on github explaining what it meant. Thanks!";
+                                messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
                                 break;
                         }
                     }
@@ -703,16 +689,13 @@ namespace LegendaryClient.Windows
             startTime = 1;
             inQueue = true;
             Client.GameStatus = "inQueue";
-            Client.timeStampSince =
-                (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
         }
 
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue)
-                ? AutoAcceptCheckBox.IsChecked.Value
-                : false;
+            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
         }
 
         private void CreateRankedCheckBox_Checked(object sender, RoutedEventArgs e)
@@ -749,8 +732,7 @@ namespace LegendaryClient.Windows
         {
             Client.InstaCall = true;
             Client.CallString = ChatTextBox.Text;
-            CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select",
-                Brushes.OrangeRed);
+            CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select", Brushes.OrangeRed);
             ChatTextBox.Text = string.Empty;
         }
     }
