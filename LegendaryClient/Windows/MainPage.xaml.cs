@@ -1,4 +1,4 @@
-﻿#region
+#region
 
 using System;
 using System.Collections;
@@ -9,6 +9,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.Script.Serialization;
 using System.Windows;
@@ -17,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Xml;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
@@ -24,6 +26,7 @@ using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
+using Newtonsoft.Json;
 using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Broadcast;
@@ -35,7 +38,6 @@ using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
-using System.Xml;
 
 #endregion
 
@@ -93,7 +95,7 @@ namespace LegendaryClient.Windows
                 timer.Stop();
             }));
 
-            if(Client.Dev)
+            if (Client.Dev)
             {
                 fakeend.Visibility = Visibility.Visible;
                 testChat.Visibility = Visibility.Visible;
@@ -311,44 +313,36 @@ namespace LegendaryClient.Windows
             var worker = new BackgroundWorker();
             worker.DoWork += delegate
             {
-                string newsJson;
-                using (var client = new WebClient())
-                    newsJson = client.DownloadString(region.NewsAddress);
-
-                if (!region.NewsAddress.ToString().Contains("/rss.xml"))
+                string newsXml;
+                using (var webClient = new WebClient())
                 {
-                    var serializer = new JavaScriptSerializer();
-                    var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
-                    NewsList = deserializedJson["news"] as ArrayList;
-                    var promoList = deserializedJson["promos"] as ArrayList;
-                    if (promoList == null)
-                        return;
+                    // To skip the 403 Error (Forbbiden)
+                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+                    webClient.Headers.Add("Content-Type", "application / zip, application / octet - stream");
+                    webClient.Headers.Add("Accept-Encoding", "gzip,deflate,sdch");
+                    webClient.Headers.Add("Referer", "http://google.com/");
+                    webClient.Headers.Add("Accept",
+                        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
 
-                    foreach (
-                        var objectPromo in
-                            promoList.Cast<Dictionary<string, object>>().Where(objectPromo => NewsList != null))
-                        NewsList.Add(objectPromo);
+                    newsXml = webClient.DownloadString(region.NewsAddress);
                 }
-                else
-                {
-                    using (XmlReader reader = XmlReader.Create(new StringReader(newsJson)))
-                    {
-                        while (reader.Read())
-                        {
-                            if (!reader.IsStartElement())
-                                continue;
 
-                            switch (reader.Name)
-                            {
-                                case "title":
-                                    break;
-                            }
-                        }
-                    }
-                }
+                var xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(newsXml);
+
+                string newsJson = JsonConvert.SerializeXmlNode(xmlDocument);
+                var serializer = new JavaScriptSerializer();
+                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
+                var rss = deserializedJson["rss"] as Dictionary<string, object>;
+                if (rss == null)
+                    return;
+
+                var channel = rss["channel"] as Dictionary<string, object>;
+                if (channel != null)
+                    NewsList = channel["item"] as ArrayList;
             };
 
-            worker.RunWorkerCompleted += delegate { ParseNews(); };
+            worker.RunWorkerCompleted += delegate { ParseNews(region); };
 
             worker.RunWorkerAsync();
         }
@@ -357,37 +351,55 @@ namespace LegendaryClient.Windows
         {
         }
 
-        private void ParseNews()
+        private void ParseNews(BaseRegion region)
         {
             if (NewsList == null)
                 return;
 
             if (NewsList.Count <= 0)
                 return;
+
+            string imageUri = "";
             foreach (Dictionary<string, object> pair in NewsList)
             {
+                Client.Log(pair.ToString(), "Pair NewsList");
                 var item = new NewsItem
                 {
                     Margin = new Thickness(0, 5, 0, 5)
                 };
                 foreach (var kvPair in pair)
                 {
+                    Client.Log(kvPair.ToString(), "kvPair Pair");
                     if (kvPair.Key == "title")
                         item.NewsTitle.Content = kvPair.Value;
 
-                    if (kvPair.Key == "description" || kvPair.Key == "promoText")
-                        item.DescriptionLabel.Text = (string) kvPair.Value;
+                    if (kvPair.Key == "description")
+                    {
+                        imageUri =
+                            ((string) kvPair.Value).Substring(
+                                ((string) kvPair.Value).IndexOf("src", StringComparison.Ordinal) + 6);
+                        imageUri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
 
-                    if (kvPair.Key == "thumbUrl")
+                        string noHtml = Regex.Replace(((string) kvPair.Value), @"<[^>]+>|&nbsp;", "").Trim();
+                        string noHtmlNormalised = Regex.Replace(noHtml, @"\s{2,}", " ");
+                        string apostropheNormalize = Regex.Replace(noHtmlNormalised, @"â€™", "'");
+
+                        item.DescriptionLabel.Text = apostropheNormalize;
+                    }
+
+                    if (imageUri != null)
                     {
                         var promoImage = new BitmapImage();
                         promoImage.BeginInit(); //Download image
-                        promoImage.UriSource = new Uri((string) kvPair.Value, UriKind.RelativeOrAbsolute);
+                        promoImage.UriSource =
+                            new Uri("http://" + region.RegionName + ".leagueoflegends.com/" + imageUri,
+                                UriKind.RelativeOrAbsolute);
                         promoImage.CacheOption = BitmapCacheOption.OnLoad;
                         promoImage.EndInit();
                         item.PromoImage.Source = promoImage;
                     }
-                    if (kvPair.Key == "linkUrl")
+
+                    if (kvPair.Key == "link")
                         item.Tag = kvPair.Value;
                 }
                 NewsItemListView.Items.Add(item);
