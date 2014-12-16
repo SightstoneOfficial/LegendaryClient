@@ -303,7 +303,7 @@ namespace LegendaryClient.Windows
                                 i++;
                             }
                             string gameStatsLink = AllFiles[i].Split(',')[0];
-                            UpdateClient.DownloadFile(new Uri(AllFiles[i].Split(',')[0]), Path.Combine(Client.ExecutingDirectory, "Client", "gameStats_en_US.sqlite"));
+                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/" + AllFiles[i].Split(',')[0]), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
                             GetAllPngs(Package);
                             string[] x = Package.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
