@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using System;
 using System.Collections;
@@ -317,22 +317,31 @@ namespace LegendaryClient.Windows
                 using (var webClient = new WebClient())
                 {
                     // To skip the 403 Error (Forbbiden)
-                    webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
-                    webClient.Headers.Add("Content-Type", "text/html; charset=UTF-8");
-                    webClient.Headers.Add("Accept-Encoding", "gzip,deflate,sdch");
-                    webClient.Headers.Add("Referer", "http://google.com/");
-                    webClient.Headers.Add("Accept",
-                        "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                    try
+                    {
+                        webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+                        webClient.Headers.Add("Content-Type", "text/html; charset=UTF-8");
+                        webClient.Headers.Add("Accept-Encoding", "gzip,deflate,sdch");
+                        webClient.Headers.Add("Referer", "http://google.com/");
+                        webClient.Headers.Add("Accept",
+                            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                    }
+                    catch { }
 
                     newsXml = webClient.DownloadString(region.NewsAddress);
                 }
-
-                var xmlDocument = new XmlDocument();
-                xmlDocument.LoadXml(newsXml);
-
-                string newsJson = JsonConvert.SerializeXmlNode(xmlDocument);
-                var serializer = new JavaScriptSerializer();
-                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
+                string newsJson;
+                try
+                {
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.LoadXml(newsXml);
+                    newsJson = JsonConvert.SerializeXmlNode(xmlDocument);
+                }
+                catch
+                {
+                    newsJson = newsXml;
+                }
+                var deserializedJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(newsJson);
                 var rss = deserializedJson["rss"] as Dictionary<string, object>;
                 if (rss == null)
                     return;
