@@ -19,6 +19,7 @@
         <Image x:Name="SumIcon2" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Margin="100,10,0,0"/>
         <Label x:Name="ChampAverageKDA" Content="100/100/100" HorizontalAlignment="Right" VerticalAlignment="Top" HorizontalContentAlignment="Right" VerticalContentAlignment="Bottom" Margin="0,10,295,0" Height="30" Width="118" FontSize="14"/>
         <Label Content="Average Champ KDA" HorizontalAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Top" Margin="0,10,409,0" Height="29" Width="121" FontSize="12"/>
+        <Label x:Name="Tooltip" Content="Hover over for info" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" Margin="508,0,0,0" Height="50" Width="157" FontSize="11" Foreground="White" HorizontalContentAlignment="Right"/>
 
     </Grid>
 </UserControl>

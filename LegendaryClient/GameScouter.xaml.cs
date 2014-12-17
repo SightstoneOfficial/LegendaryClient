@@ -34,6 +34,7 @@ namespace LegendaryClient
     public partial class GameScouter : MetroWindow
     {
         string GSUsername;
+        Point mouseLocation;
         public GameScouter()
         {
             InitializeComponent();
@@ -69,8 +70,8 @@ namespace LegendaryClient
             PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(user);
             if (n.GameName != null)
             {
-                Load(new List<Participant>(n.Game.TeamOne.ToArray()), n, BlueTeam);
-                Load(new List<Participant>(n.Game.TeamTwo.ToArray()), n, PurpleTeam);
+                LoadPar(new List<Participant>(n.Game.TeamOne.ToArray()), n, BlueTeam);
+                LoadPar(new List<Participant>(n.Game.TeamTwo.ToArray()), n, PurpleTeam);
             }
             else
             {
@@ -81,7 +82,13 @@ namespace LegendaryClient
         List<MatchStats> GameStats = new List<MatchStats>();
         Dictionary<Double, Brush> color = new Dictionary<Double, Brush>();
         Int32 ColorId;
-        private async void Load(List<Participant> allParticipants,PlatformGameLifecycleDTO n, ListView list)
+        /// <summary>
+        /// Loads the particiapants for the game
+        /// </summary>
+        /// <param name="allParticipants"></param>
+        /// <param name="n"></param>
+        /// <param name="list"></param>
+        private async void LoadPar(List<Participant> allParticipants,PlatformGameLifecycleDTO n, ListView list)
         {
             bool isYourTeam = false;
             list.Items.Clear();
@@ -316,10 +323,44 @@ namespace LegendaryClient
                                 control.QueueTeamColor.Visibility = Visibility.Visible;
                             }
                         }
+                        control.MouseMove += controlMouseEnter;
+                        control.MouseLeave += control_MouseLeave;
+                        control.MouseDown += control_MouseDown;
+                        TinyRuneMasteryData smallData = new TinyRuneMasteryData();
+                        control.Tag = smallData;
                         list.Items.Add(control);
                     }
                 }
             }
+        }
+
+        void control_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        void control_MouseLeave(object sender, MouseEventArgs e)
+        {
+            GameScouterPlayer control = (GameScouterPlayer)sender;
+            control.Tooltip.Content = "Hover over for info";
+            TinyRuneMasteryData smallData = (TinyRuneMasteryData)control.Tag;
+            Mousegrid.Children.Remove(smallData);
+        }
+
+        void controlMouseEnter(object sender, MouseEventArgs e)
+        {
+            GameScouterPlayer control = (GameScouterPlayer)sender;
+            TinyRuneMasteryData smallData = (TinyRuneMasteryData)control.Tag;
+            control.Tooltip.Content = "Click for even more info";
+            mouseLocation = e.GetPosition(Mousegrid);
+            double xMargin = mouseLocation.X;
+            double yMargin = mouseLocation.Y;
+            smallData.Margin = new Thickness(xMargin - 640, yMargin - 400, xMargin + 640, yMargin + 400);
+            try
+            {
+                Mousegrid.Children.Add(smallData);
+            }
+            catch { }
         }
         private async void GetUserRunesPage(string User)
         {

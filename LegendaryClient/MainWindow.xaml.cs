@@ -200,7 +200,7 @@ namespace LegendaryClient
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoLogin = false;
-            if (Client.IsLoggedIn)
+            if (Client.IsLoggedIn && Client.GameStatus.ToLower() != "championSelect".ToLower())
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
@@ -218,8 +218,19 @@ namespace LegendaryClient
                 Client.SwitchPage(new LoginPage());
                 Client.ClearPage(typeof(MainPage));
             }
+            else
+            {
+                Warn.Title.Content = "Logout while in Game";
+                Warn.MessageText.Text = "Are You Sure You Want To Quit? This will result in a dodge.";
+                Warn.backtochampselect.Click += HideWarning;
+                Warn.AcceptButton.Click += Quit;
+                Warn.hide.Click += HideWarning;
+                Warn.backtochampselect.Content = "Return to Champ Select";
+                Warn.AcceptButton.Content = "Dodge game and logout";
+                Client.FullNotificationOverlayContainer.Content = Warn.Content;
+                Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
+            }
         }
-
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
             if (Properties.Settings.Default.warnClose || Client.curentlyRecording.Count > 0)

@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="LegendaryClient.Controls.GameScouter.TinyRuneMasteryData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             Height="150" Width="400">
+    <Grid Background="#E5000000">
+        <Label Content="Runes" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White" Width="152"/>
+        <Label Content="Masteries" HorizontalAlignment="Right" VerticalAlignment="Top" HorizontalContentAlignment="Right" Foreground="White" Width="152"/>
+        <Label Content="Total Stats" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" Foreground="White" Width="97" FontSize="14"/>
+        <Label Content="Ap:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,26,0,0" Foreground="White" FontSize="8"/>
+        <Label Content="Magic Resist:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,47,0,0" Foreground="White" FontSize="8" Width="100"/>
+        <Label Content="Hover over Runes or Masteries to see more info about those stats only" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="White" FontSize="6"/>
+
+    </Grid>
+</UserControl>

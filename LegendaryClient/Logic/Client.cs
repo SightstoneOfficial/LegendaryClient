@@ -784,6 +784,7 @@ namespace LegendaryClient.Logic
 
         internal static bool IsOnPlayPage = false;
 
+
         /// <summary>
         ///     Switches the contents of the frame to the requested page. Also sets background on
         ///     the button on the top to show what section you are currently on.
