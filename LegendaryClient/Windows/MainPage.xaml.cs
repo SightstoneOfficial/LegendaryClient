@@ -326,7 +326,9 @@ namespace LegendaryClient.Windows
                         webClient.Headers.Add("Accept",
                             "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
                     }
-                    catch { }
+                    catch
+                    {
+                    }
 
                     newsXml = webClient.DownloadString(region.NewsAddress);
                 }
@@ -341,7 +343,8 @@ namespace LegendaryClient.Windows
                 {
                     newsJson = newsXml;
                 }
-                var deserializedJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(newsJson);
+                var serializer = new JavaScriptSerializer();
+                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
                 var rss = deserializedJson["rss"] as Dictionary<string, object>;
                 if (rss == null)
                     return;
@@ -389,8 +392,9 @@ namespace LegendaryClient.Windows
 
                         string noHtml = Regex.Replace(((string) kvPair.Value), @"<[^>]+>|&nbsp;", "").Trim();
                         string noHtmlNormalised = Regex.Replace(noHtml, @"\s{2,}", " ");
+                        string noXmlAmpersands = Regex.Replace(noHtmlNormalised, @"&amp;", "&");
 
-                        item.DescriptionLabel.Text = noHtmlNormalised;
+                        item.DescriptionLabel.Text = noXmlAmpersands;
                     }
 
                     if (kvPair.Key == "link")
