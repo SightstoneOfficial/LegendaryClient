@@ -244,7 +244,10 @@ namespace LegendaryClient.Logic
         ///     To see if the user is a dev
         /// </summary>
         internal static bool Dev = false;
-
+        /// <summary>
+        ///     Returns current level
+        /// </summary>
+        internal static int Level = 0;
         /// <summary>
         ///     The current directory the client is running from
         /// </summary>
@@ -408,6 +411,7 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClientConnect(object sender)
         {
+            Level = Convert.ToInt32(LoginPacket.AllSummonerData.SummonerLevel.Level);
             Groups.Add(new Group("Online"));
 
             //Get all groups
@@ -490,7 +494,7 @@ namespace LegendaryClient.Logic
             sb.Append("<body><profileIcon>");
             sb.Append(LoginPacket.AllSummonerData.Summoner.ProfileIconId);
             sb.Append("</profileIcon><level>");
-            sb.Append(LoginPacket.AllSummonerData.SummonerLevel.Level);
+            sb.Append(Level);
             sb.Append("</level>");
             if (!hidelegendaryaddition)
             {
