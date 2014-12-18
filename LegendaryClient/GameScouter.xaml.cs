@@ -321,7 +321,12 @@ namespace LegendaryClient
                         control.MouseLeave += control_MouseLeave;
                         control.MouseDown += control_MouseDown;
                         TinyRuneMasteryData smallData = new TinyRuneMasteryData();
-                        control.Tag = smallData;
+                        //Now store data in the tags so that all of the event handlers work
+                        Dictionary<String, Object> data = new Dictionary<string, object>();
+                        data.Add("MasteryDataControl", smallData);
+                        data.Add("RuneData", await GetUserRunesPage(GSUsername));
+                        data.Add("MasteryData", await GetUserRunesPage(GSUsername));
+                        control.Tag = data;
                         list.Items.Add(control);
                     }
                 }
@@ -330,21 +335,30 @@ namespace LegendaryClient
 
         void control_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            
+            GameScouterPlayer control = (GameScouterPlayer)sender;
+            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            try
+            {
+                Mousegrid.Children.Remove(smallData);
+            }
+            catch { }
+            //start the popup
+            //TODO
+
         }
 
         void control_MouseLeave(object sender, MouseEventArgs e)
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
             control.Tooltip.Content = "Hover over for info";
-            TinyRuneMasteryData smallData = (TinyRuneMasteryData)control.Tag;
+            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
             Mousegrid.Children.Remove(smallData);
         }
 
         void controlMouseEnter(object sender, MouseEventArgs e)
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
-            TinyRuneMasteryData smallData = (TinyRuneMasteryData)control.Tag;
+            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
             control.Tooltip.Content = "Click for even more info";
             mouseLocation = e.GetPosition(Mousegrid);
             smallData.HorizontalAlignment = HorizontalAlignment.Left;
@@ -356,17 +370,19 @@ namespace LegendaryClient
             }
             catch { }
         }
-        private async void GetUserRunesPage(string User)
+        private async Task<SummonerRuneInventory> GetUserRunesPage(string User)
         {
             PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
             SummonerRuneInventory runes = await Client.PVPNet.GetSummonerRuneInventory(summoner.SummonerId);
+            return runes;
 
 
         }
-        private async void GetUserMasterPage(string User)
+        private async Task<MasteryBookDTO> GetUserMasterPage(string User)
         {
             PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
             MasteryBookDTO page = await Client.PVPNet.GetMasteryBook(summoner.SummonerId);
+            return page;
         }
     }
 }
