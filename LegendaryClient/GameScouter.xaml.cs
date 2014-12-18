@@ -135,14 +135,9 @@ namespace LegendaryClient
                         if (championSelect.SummonerInternalName == GSUsername)
                             control.Username.Foreground = (Brush)(new BrushConverter().ConvertFrom("#FF007A53"));
                         control.ChampIcon.Source = champions.GetChampion(championSelect.ChampionId).icon;
-                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))),
-                            UriKind.Absolute);
+                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
                         control.SumIcon1.Source = new BitmapImage(uriSource);
-                        uriSource =
-                            new Uri(
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                                    SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))),
-                                UriKind.Absolute);
+                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
                         control.SumIcon2.Source = new BitmapImage(uriSource);
                         GameStats.Clear();
                         try
@@ -153,8 +148,7 @@ namespace LegendaryClient
                             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
                             foreach (PlayerGameStats game in result.GameStatistics)
                             {
-                                game.GameType =
-                                    Client.TitleCaseString(game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
+                                game.GameType = Client.TitleCaseString(game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
                                 var match = new MatchStats();
 
                                 foreach (RawStat stat in game.Statistics)
@@ -353,9 +347,9 @@ namespace LegendaryClient
             TinyRuneMasteryData smallData = (TinyRuneMasteryData)control.Tag;
             control.Tooltip.Content = "Click for even more info";
             mouseLocation = e.GetPosition(Mousegrid);
-            double xMargin = mouseLocation.X;
-            double yMargin = mouseLocation.Y;
-            smallData.Margin = new Thickness(xMargin - 640, yMargin - 400, xMargin + 640, yMargin + 400);
+            smallData.HorizontalAlignment = HorizontalAlignment.Left;
+            smallData.VerticalAlignment = VerticalAlignment.Top;
+            smallData.Margin = new Thickness(mouseLocation.X - smallData.Width, mouseLocation.Y + 20, 0, 0);
             try
             {
                 Mousegrid.Children.Add(smallData);

@@ -18,7 +18,7 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class ChampSelectPlayer
     {
-        private PlayerStatisticsChampSelect _stats;
+        private PlayerStatisticsChampSelect stats;
 
         public ChampSelectPlayer()
         {
@@ -33,25 +33,22 @@ namespace LegendaryClient.Controls
 
             try
             {
-                if (_stats == null)
+                if (stats == null)
                 {
-                    _stats = new PlayerStatisticsChampSelect();
+                    stats = new PlayerStatisticsChampSelect();
                     PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(PlayerName.Content.ToString());
-                    if (summoner == null || _stats == null || summoner.InternalName.Contains("bot"))
+                    if (summoner == null || stats == null || summoner.InternalName.Contains("bot"))
                     {
-                        _stats = null;
+                        stats = null;
                         return;
                     }
-                    ChampionStatInfo[] topChampions =
-                        await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
-                    _stats.PlayerName.Content = summoner.Name;
+                    ChampionStatInfo[] topChampions = await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
+                    stats.PlayerName.Content = summoner.Name;
 
                     if (topChampions.Length > 0)
                     {
-                        _stats.MostPlayed.Source = champions.GetChampion((int) topChampions[0].ChampionId).icon;
-                        _stats.Champion1.Content =
-                            champions.GetChampion((int) topChampions[0].ChampionId).displayName + " - Games: " +
-                            topChampions[0].TotalGamesPlayed;
+                        stats.MostPlayed.Source = champions.GetChampion((int) topChampions[0].ChampionId).icon;
+                        stats.Champion1.Content = champions.GetChampion((int) topChampions[0].ChampionId).displayName + " - Games: " + topChampions[0].TotalGamesPlayed;
                         double wins = 0.0;
                         double total = 0.0;
                         foreach (AggregatedStat stat in topChampions[0].Stats)
@@ -68,20 +65,18 @@ namespace LegendaryClient.Controls
                         }
 
                         if ((Math.Abs(wins/total*100.0) > 0) && Math.Abs(total) > 0)
-                            _stats.Champ1ProgressBar.Value = wins/total*100.0;
-                        else _stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
+                            stats.Champ1ProgressBar.Value = wins/total*100.0;
+                        else stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
                     }
                     else
                     {
-                        _stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
-                        _stats.Champion1.Visibility = Visibility.Hidden;
+                        stats.Champ1ProgressBar.Visibility = Visibility.Hidden;
+                        stats.Champion1.Visibility = Visibility.Hidden;
                     }
 
                     if (topChampions.Length > 1)
                     {
-                        _stats.Champion2.Content =
-                            champions.GetChampion((int) topChampions[1].ChampionId).displayName + " - Games: " +
-                            topChampions[1].TotalGamesPlayed;
+                        stats.Champion2.Content = champions.GetChampion((int) topChampions[1].ChampionId).displayName + " - Games: " + topChampions[1].TotalGamesPlayed;
                         double wins = 0.0;
                         double total = 0.0;
                         foreach (AggregatedStat stat in topChampions[1].Stats)
@@ -91,20 +86,18 @@ namespace LegendaryClient.Controls
                                 total = stat.Value;
 
                         if ((Math.Abs(wins/total*100.0) > 0) && Math.Abs(total) > 0)
-                            _stats.Champ2ProgressBar.Value = wins/total*100.0;
-                        else _stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
+                            stats.Champ2ProgressBar.Value = wins/total*100.0;
+                        else stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
                     }
                     else
                     {
-                        _stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
-                        _stats.Champion2.Visibility = Visibility.Hidden;
+                        stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
+                        stats.Champion2.Visibility = Visibility.Hidden;
                     }
 
                     if (topChampions.Length > 2)
                     {
-                        _stats.Champion3.Content =
-                            champions.GetChampion((int) topChampions[2].ChampionId).displayName + " - Games: " +
-                            topChampions[2].TotalGamesPlayed;
+                        stats.Champion3.Content = champions.GetChampion((int) topChampions[2].ChampionId).displayName + " - Games: " + topChampions[2].TotalGamesPlayed;
                         double wins = 0.0;
                         double total = 0.0;
                         foreach (AggregatedStat stat in topChampions[2].Stats)
@@ -114,29 +107,29 @@ namespace LegendaryClient.Controls
                                 total = stat.Value;
 
                         if ((Math.Abs(wins/total*100.0) > 0) && Math.Abs(total) > 0)
-                            _stats.Champ3ProgressBar.Value = wins/total*100.0;
-                        else _stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
+                            stats.Champ3ProgressBar.Value = wins/total*100.0;
+                        else stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
                     }
                     else
                     {
-                        _stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
-                        _stats.Champion3.Visibility = Visibility.Hidden;
+                        stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
+                        stats.Champion3.Visibility = Visibility.Hidden;
                     }
-                    Client.MainGrid.Children.Add(_stats);
+                    Client.MainGrid.Children.Add(stats);
                 }
                 Point mouseLocation = e.GetPosition(Client.MainGrid);
                 double yMargin = mouseLocation.Y - 25;
                 if (Mouse.GetPosition(Client.MainGrid).X < 200)
                 {
-                    _stats.HorizontalAlignment = HorizontalAlignment.Left;
-                    _stats.VerticalAlignment = VerticalAlignment.Top;
-                    _stats.Margin = new Thickness(142, yMargin, 0, 0);
+                    stats.HorizontalAlignment = HorizontalAlignment.Left;
+                    stats.VerticalAlignment = VerticalAlignment.Top;
+                    stats.Margin = new Thickness(142, yMargin, 0, 0);
                 }
                 else
                 {
-                    _stats.HorizontalAlignment = HorizontalAlignment.Right;
-                    _stats.VerticalAlignment = VerticalAlignment.Top;
-                    _stats.Margin = new Thickness(0, yMargin, 155, 0);
+                    stats.HorizontalAlignment = HorizontalAlignment.Right;
+                    stats.VerticalAlignment = VerticalAlignment.Top;
+                    stats.Margin = new Thickness(0, yMargin, 155, 0);
                 }
             }
             catch (Exception)
@@ -147,11 +140,11 @@ namespace LegendaryClient.Controls
 
         private void ChampPlayer_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (_stats == null)
+            if (stats == null)
                 return;
 
-            Client.MainGrid.Children.Remove(_stats);
-            _stats = null;
+            Client.MainGrid.Children.Remove(stats);
+            stats = null;
         }
     }
 }
