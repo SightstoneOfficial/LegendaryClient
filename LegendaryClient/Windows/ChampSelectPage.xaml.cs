@@ -1207,6 +1207,10 @@ namespace LegendaryClient.Windows
                 Client.FullNotificationOverlayContainer.Content = Warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
+            else
+            {
+                QuitCurrentGame();
+            }
         }
 
         private async void QuitCurrentGame()
