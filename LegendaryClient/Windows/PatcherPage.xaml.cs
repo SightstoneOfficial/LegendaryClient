@@ -37,7 +37,7 @@ namespace LegendaryClient.Windows
         //#FF2E2E2E
         internal static bool LoLDataIsUpToDate = false;
         internal static string LatestLolDataVersion = string.Empty;
-        internal static string LolDataVersion = "";
+        internal static string LolDataVersion = string.Empty;
         private string[] latestversion;
 
         public PatcherPage()
@@ -74,22 +74,22 @@ namespace LegendaryClient.Windows
                     GetDev(DevKey.Text.Replace("!~betakey-", "").Replace("~!", ""));
         }
 
-        private void GetDev(string DevKey)
+        private void GetDev(string devKey)
         {
-            if (DevKey.Length != 20)
+            if (devKey.Length != 20)
                 return;
-            bool Auth = false;
+            bool auth = false;
             var client = new WebClient();
-            string KeyPlayer = client.DownloadString("http://eddy5641.github.io/LegendaryClient/BetaUsers");
-            string[] Players = KeyPlayer.Split(new[] {Environment.NewLine}, 0, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var BetaKey in Players.Select(Beta => Beta.Split(',')).Where(BetaKey => DevKey == BetaKey[0]))
+            string keyPlayer = client.DownloadString("http://eddy5641.github.io/LegendaryClient/BetaUsers");
+            string[] players = keyPlayer.Split(new[] {Environment.NewLine}, 0, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var betaKey in players.Select(beta => beta.Split(',')).Where(betaKey => devKey == betaKey[0]))
             {
-                Auth = true;
-                Welcome.Text = "Welcome " + BetaKey[1];
+                auth = true;
+                Welcome.Text = "Welcome " + betaKey[1];
                 Welcome.Visibility = Visibility.Visible;
             }
-            if (Auth == false)
-                this.DevKey.Text = "";
+            if (auth == false)
+                DevKey.Text = string.Empty;
         }
 
         private void DevSkip_Click(object sender, RoutedEventArgs e)
@@ -100,7 +100,7 @@ namespace LegendaryClient.Windows
 
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
-            var UpdateClient = new WebClient();
+            var updateClient = new WebClient();
             /*string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[0] + "/packages/files/packagemanifest");
             try
             {
@@ -131,19 +131,18 @@ namespace LegendaryClient.Windows
                     var client = new WebClient();
                     client.DownloadProgressChanged += client_DownloadProgressChanged;
                     client.DownloadFileCompleted += client_DownloadDDragon;
-                    client.DownloadProgressChanged += (o, e) =>
-                    {
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    client.DownloadProgressChanged +=
+                        (o, e) => Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            double bytesIn = double.Parse(e.BytesReceived.ToString());
-                            double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
+                            double bytesIn = double.Parse(e.BytesReceived.ToString(CultureInfo.InvariantCulture));
+                            double totalBytes =
+                                double.Parse(e.TotalBytesToReceive.ToString(CultureInfo.InvariantCulture));
                             double percentage = bytesIn/totalBytes*100;
                             CurrentProgressLabel.Content = "Downloaded " + e.BytesReceived + " of " +
                                                            e.TotalBytesToReceive;
                             CurrentProgressBar.Value =
                                 int.Parse(Math.Truncate(percentage).ToString(CultureInfo.InvariantCulture));
                         }));
-                    };
 
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
@@ -176,29 +175,29 @@ namespace LegendaryClient.Windows
 
                     if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon")))
                     {
-                        FileStream VersionLOL =
+                        FileStream versionLol =
                             File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
-                        VersionLOL.Write(encoding.GetBytes("0.0.0"), 0, encoding.GetBytes("0.0.0").Length);
+                        versionLol.Write(encoding.GetBytes("0.0.0"), 0, encoding.GetBytes("0.0.0").Length);
 
-                        VersionLOL.Close();
+                        versionLol.Close();
                     }
 
 
                     var patcher = new RiotPatcher();
-                    string DDragonDownloadURL = patcher.GetDragon();
-                    if (!String.IsNullOrEmpty(DDragonDownloadURL))
+                    string dDragonDownloadUrl = patcher.GetDragon();
+                    if (!String.IsNullOrEmpty(dDragonDownloadUrl))
                     {
                         LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
-                        string DDragonVersion =
+                        string dDragonVersion =
                             File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
-                        LogTextBox("Current DataDragon Version: " + DDragonVersion);
+                        LogTextBox("Current DataDragon Version: " + dDragonVersion);
 
-                        Client.Version = DDragonVersion;
-                        Client.Log("DDragon Version (LOL Version) = " + DDragonVersion);
+                        Client.Version = dDragonVersion;
+                        Client.Log("DDragon Version (LOL Version) = " + dDragonVersion);
 
                         LogTextBox("Client Version: " + Client.Version);
 
-                        if (patcher.DDragonVersion != DDragonVersion)
+                        if (patcher.DDragonVersion != dDragonVersion)
                         {
                             try
                             {
@@ -207,7 +206,7 @@ namespace LegendaryClient.Windows
 
                                 Dispatcher.BeginInvoke(DispatcherPriority.Input,
                                     new ThreadStart(() => { CurrentProgressLabel.Content = "Downloading DataDragon"; }));
-                                client.DownloadFile(DDragonDownloadURL,
+                                client.DownloadFile(dDragonDownloadUrl,
                                     Path.Combine(Client.ExecutingDirectory, "Assets",
                                         "dragontail-" + patcher.DDragonVersion + ".tgz"));
 
@@ -224,7 +223,6 @@ namespace LegendaryClient.Windows
                                     TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
                                     tarArchive.ExtractContents(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
                                     //tarArchive.Close();
-                                    tarArchive = null;
                                 }
                                 inStream.Close();
 
@@ -236,13 +234,13 @@ namespace LegendaryClient.Windows
                                         "img"), Path.Combine(Client.ExecutingDirectory, "Assets"));
                                 DeleteDirectoryRecursive(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
 
-                                FileStream VersionDDragon =
+                                FileStream versionDDragon =
                                     File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
-                                VersionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0,
+                                versionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0,
                                     encoding.GetBytes(patcher.DDragonVersion).Length);
 
-                                Client.Version = DDragonVersion;
-                                VersionDDragon.Close();
+                                Client.Version = dDragonVersion;
+                                versionDDragon.Close();
                             }
                             catch
                             {
@@ -276,44 +274,53 @@ namespace LegendaryClient.Windows
 
                     if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                     {
-                        FileStream VersionAIR = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
-                        VersionAIR.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
-                        VersionAIR.Close();
+                        FileStream versionAir =
+                            File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
+                        versionAir.Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
+                        versionAir.Close();
                     }
 
-                    string LatestAIR = patcher.GetLatestAir();
-                    LogTextBox("Air Assets Version: " + LatestAIR);
-                    string AirVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
-                    LogTextBox("Current Air Assets Version: " + AirVersion);
-                    var UpdateClient = new WebClient();
-                    string Release = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
-                    string[] LatestVersion = Release.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-                    latestversion = LatestVersion;
-                    string vers = LatestVersion[0];
-                    if (AirVersion != LatestVersion[0])
+                    string latestAir = patcher.GetLatestAir();
+                    LogTextBox("Air Assets Version: " + latestAir);
+                    string airVersion =
+                        File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
+                    LogTextBox("Current Air Assets Version: " + airVersion);
+                    var updateClient = new WebClient();
+                    string release =
+                        updateClient.DownloadString(
+                            "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                    string[] latestVersion = release.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+                    latestversion = latestVersion;
+                    string vers = latestVersion[0];
+                    if (airVersion != latestVersion[0])
                     {
                         //Download Air Assists from riot
                         try
                         {
-                            string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + LatestVersion[0] + "/packages/files/packagemanifest");
-                            string[] AllFiles = Package.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                            string package =
+                                updateClient.DownloadString(
+                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
+                                    latestVersion[0] + "/packages/files/packagemanifest");
+                            string[] allFiles = package.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
                             int i = 0;
-                            while(!AllFiles[i].Contains("gameStats_en_US.sqlite"))
-                            {
+                            while (!allFiles[i].Contains("gameStats_en_US.sqlite"))
                                 i++;
-                            }
-                            string gameStatsLink = AllFiles[i].Split(',')[0];
-                            UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/" + AllFiles[i].Split(',')[0]), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
-                            GetAllPngs(Package);
-                            string[] x = Package.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+                            string gameStatsLink = allFiles[i].Split(',')[0];
+                            updateClient.DownloadFile(
+                                new Uri("http://l3cdn.riotgames.com/releases/live/" + allFiles[i].Split(',')[0]),
+                                Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
+                            GetAllPngs(package);
+                            string[] x = package.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
                             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                                 File.Delete(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
-                            using (FileStream file = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
-                            {
-                                file.Write(encoding.GetBytes(LatestVersion[0]), 0, encoding.GetBytes(LatestVersion[0]).Length);
-                            }
+
+                            using (
+                                FileStream file =
+                                    File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
+                                file.Write(encoding.GetBytes(latestVersion[0]), 0,
+                                    encoding.GetBytes(latestVersion[0]).Length);
                         }
                         catch (Exception e)
                         {
@@ -321,7 +328,7 @@ namespace LegendaryClient.Windows
                         }
                     }
 
-                    if (AirVersion != LatestAIR)
+                    if (airVersion != latestAir)
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
                             SkipPatchButton.IsEnabled = true;
@@ -337,35 +344,35 @@ namespace LegendaryClient.Windows
                     LogTextBox("Trying to detect League of Legends GameClient");
                     LogTextBox("League of Legends is located at: " + lolRootPath);
                     //RADS\solutions\lol_game_client_sln\releases
-                    string GameLocation = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
+                    string gameLocation = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
                         "releases");
 
-                    string LolVersion2 =
+                    string lolVersion2 =
                         new WebClient().DownloadString(
                             "http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
-                    string LolVersion =
+                    string lolVersion =
                         new WebClient().DownloadString(
                             "http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_NA");
-                    string GameClientSln = LolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
-                    string GameClient = LolVersion2.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
-                    LogTextBox("Latest League of Legends GameClient: " + GameClientSln);
+                    string gameClientSln = lolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+                    string gameClient = lolVersion2.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+                    LogTextBox("Latest League of Legends GameClient: " + gameClientSln);
                     LogTextBox("Checking if League of Legends is Up-To-Date");
 
-                    string LolLauncherVersion =
+                    string lolLauncherVersion =
                         new WebClient().DownloadString(
                             "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
-                    string LauncherVersion =
-                        LolLauncherVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+                    string launcherVersion =
+                        lolLauncherVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
                     bool toExit = false;
 
-                    if (Directory.Exists(Path.Combine(GameLocation, GameClientSln)))
+                    if (Directory.Exists(Path.Combine(gameLocation, gameClientSln)))
                     {
                         LogTextBox("League of Legends is Up-To-Date");
-                        Client.LOLCLIENTVERSION = LolVersion2;
+                        Client.LOLCLIENTVERSION = lolVersion2;
                         Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
-                            "releases", GameClientSln, "deploy");
+                            "releases", gameClientSln, "deploy");
                         Client.LoLLauncherLocation = Path.Combine(lolRootPath, "RADS", "projects", "lol_air_client",
-                            "releases", LauncherVersion, "deploy");
+                            "releases", launcherVersion, "deploy");
                         Client.RootLocation = lolRootPath;
                     }
                     else
@@ -443,34 +450,34 @@ namespace LegendaryClient.Windows
                 }
             }
 
-            var FindLeagueDialog = new OpenFileDialog();
+            var findLeagueDialog = new OpenFileDialog();
 
             if (!Directory.Exists(Path.Combine("C:\\", "Riot Games", "League of Legends")))
-                FindLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Program Files (x86)", "GarenaLoL", "GameData",
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Program Files (x86)", "GarenaLoL", "GameData",
                     "Apps", "LoL");
             else
-                FindLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Riot Games", "League of Legends");
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Riot Games", "League of Legends");
 
-            FindLeagueDialog.DefaultExt = ".exe";
-            FindLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
+            findLeagueDialog.DefaultExt = ".exe";
+            findLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
 
-            bool? result = FindLeagueDialog.ShowDialog();
+            bool? result = findLeagueDialog.ShowDialog();
             if (result != true)
                 return string.Empty;
 
             RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
             if (key != null)
                 key.SetValue("Path",
-                    FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
+                    findLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
 
             if (restart)
                 LogTextBox("Saved value, please restart the client to login.");
 
-            return FindLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
+            return findLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
         }
 
         [Obsolete]
-        private void update(object sender, EventArgs e)
+        private void Update(object sender, EventArgs e)
         {
             var legendaryupdatedata = new UpdateData();
             var client = new WebClient();
@@ -482,30 +489,30 @@ namespace LegendaryClient.Windows
             string filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
             client.DownloadProgressChanged += client_DownloadProgressChanged;
             client.DownloadFileCompleted += client_DownloadFileCompleted;
-            string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
-            LogTextBox("Retreving Update Data from: " + DownloadLocation);
-            client.DownloadFileAsync(new Uri(DownloadLocation),
+            string downloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
+            LogTextBox("Retreving Update Data from: " + downloadLocation);
+            client.DownloadFileAsync(new Uri(downloadLocation),
                 Path.Combine(Client.ExecutingDirectory, "Temp", "LegendaryClientUpdateFile.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
         }
 
         [Obsolete]
-        private void updatebetausers(object sender, EventArgs e)
+        private void UpdateBetaUsers(object sender, EventArgs e)
         {
             var legendaryupdatedata = new UpdateData();
             var client = new WebClient();
-            DirectoryInfo Startup = Directory.GetParent(Client.ExecutingDirectory);
-            if (!Directory.Exists(Path.Combine(Startup.ToString(), "Temp")))
-                Directory.CreateDirectory(Path.Combine(Startup.ToString(), "Temp"));
+            DirectoryInfo startup = Directory.GetParent(Client.ExecutingDirectory);
+            if (!Directory.Exists(Path.Combine(startup.ToString(), "Temp")))
+                Directory.CreateDirectory(Path.Combine(startup.ToString(), "Temp"));
 
             string downloadLink =
                 new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
             string filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
             client.DownloadProgressChanged += client_DownloadProgressChanged;
-            string DownloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
-            LogTextBox("Retreving Update Data from: " + DownloadLocation);
-            client.DownloadFileAsync(new Uri(DownloadLocation),
+            string downloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
+            LogTextBox("Retreving Update Data from: " + downloadLocation);
+            client.DownloadFileAsync(new Uri(downloadLocation),
                 Path.Combine("Temp", "LegendaryClientBetaTesterUpdateFile.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
             //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
@@ -651,9 +658,9 @@ namespace LegendaryClient.Windows
             foreach (DirectoryInfo info in subdirs)
                 latestVersion = info.Name;
 
-            FileStream VersionLOL = File.Create(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
-            VersionLOL.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
-            VersionLOL.Close();
+            FileStream versionLol = File.Create(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
+            versionLol.Write(encoding.GetBytes(latestVersion), 0, encoding.GetBytes(latestVersion).Length);
+            versionLol.Close();
             LolDataVersion = latestVersion;
         }
 
@@ -667,7 +674,7 @@ namespace LegendaryClient.Windows
             output.Flush();
         }
 
-        public void uncompressFile(string inFile, string outFile)
+        public void UncompressFile(string inFile, string outFile)
         {
             try
             {
@@ -677,8 +684,8 @@ namespace LegendaryClient.Windows
                 var inZStream = new ZInputStream(File.Open(inFile, FileMode.Open, FileAccess.Read));
                 while (stopByte != (data = inZStream.Read()))
                 {
-                    var _dataByte = (byte) data;
-                    outFileStream.WriteByte(_dataByte);
+                    var dataByte = (byte) data;
+                    outFileStream.WriteByte(dataByte);
                 }
 
                 inZStream.Close();
@@ -691,38 +698,38 @@ namespace LegendaryClient.Windows
         }
 
         [Obsolete]
-        private void GetAllExe(string PackageManifest)
+        private void GetAllExe(string packageManifest)
         {
             string[] FileMetaData =
-                PackageManifest.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
+                packageManifest.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
             foreach (string s in FileMetaData)
             {
                 if (String.IsNullOrEmpty(s))
                     continue;
 
                 //Remove size and type metadata
-                string Location = s.Split(',')[0];
+                string location = s.Split(',')[0];
                 //Get save position
-                string SavePlace = Location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
-                if (!SavePlace.EndsWith(".exe.compressed") && !SavePlace.EndsWith(".dll.compressed"))
+                string savePlace = location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
+                if (!savePlace.EndsWith(".exe.compressed") && !savePlace.EndsWith(".dll.compressed"))
                     continue;
 
-                LogTextBox("Downloading " + SavePlace);
+                LogTextBox("Downloading " + savePlace);
                 using (var newClient = new WebClient())
-                    newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location,
-                        Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                    newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                        Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace));
 
-                uncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace),
-                    Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace)
+                UncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace),
+                    Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace)
                         .Replace(".compressed", ""));
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace));
             }
         }
 
-        private void GetAllPngs(string PackageManifest)
+        private void GetAllPngs(string packageManifest)
         {
-            string[] FileMetaData =
-                PackageManifest.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
+            string[] fileMetaData =
+                packageManifest.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
             var currentVersion =
                 new Version(File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")));
 
@@ -738,62 +745,62 @@ namespace LegendaryClient.Windows
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient"));
 
-            foreach (string s in FileMetaData)
+            foreach (string s in fileMetaData)
             {
                 if (String.IsNullOrEmpty(s))
                     continue;
 
                 //Remove size and type metadata
-                string Location = s.Split(',')[0];
+                string location = s.Split(',')[0];
                 //Get save position
-                var version = new Version(Location.Split(new[] {"/releases/", "/files/"}, StringSplitOptions.None)[1]);
+                var version = new Version(location.Split(new[] {"/releases/", "/files/"}, StringSplitOptions.None)[1]);
                 if (version <= currentVersion)
                     continue;
 
-                string SavePlace = Location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
-                if (!SavePlace.EndsWith(".jpg") && !SavePlace.EndsWith(".png") && !SavePlace.EndsWith(".mp3"))
+                string savePlace = location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
+                if (!savePlace.EndsWith(".jpg") && !savePlace.EndsWith(".png") && !savePlace.EndsWith(".mp3"))
                     continue;
 
-                if (SavePlace.Contains("assets/images/champions/"))
+                if (savePlace.Contains("assets/images/champions/"))
                 {
                     using (var newClient = new WebClient())
                     {
-                        string SaveName = Location.Split(new[] {"/champions/"}, StringSplitOptions.None)[1];
-                        LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
-                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location,
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "champions", SaveName));
+                        string saveName = location.Split(new[] {"/champions/"}, StringSplitOptions.None)[1];
+                        LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
+                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "champions", saveName));
                     }
                 }
-                else if (SavePlace.Contains("assets/images/abilities/"))
+                else if (savePlace.Contains("assets/images/abilities/"))
                 {
                     using (var newClient = new WebClient())
                     {
-                        string SaveName = Location.Split(new[] {"/abilities/"}, StringSplitOptions.None)[1];
-                        LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
-                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location,
-                            SaveName.ToLower().Contains("passive")
-                                ? Path.Combine(Client.ExecutingDirectory, "Assets", "passive", SaveName)
-                                : Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SaveName));
+                        string saveName = location.Split(new[] {"/abilities/"}, StringSplitOptions.None)[1];
+                        LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
+                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            saveName.ToLower().Contains("passive")
+                                ? Path.Combine(Client.ExecutingDirectory, "Assets", "passive", saveName)
+                                : Path.Combine(Client.ExecutingDirectory, "Assets", "spell", saveName));
                     }
                 }
-                else if (SavePlace.Contains("assets/sounds/"))
+                else if (savePlace.Contains("assets/sounds/"))
                 {
                     using (var newClient = new WebClient())
                     {
-                        if (SavePlace.Contains("en_US/champions/"))
+                        if (savePlace.Contains("en_US/champions/"))
                         {
-                            string SaveName = Location.Split(new[] {"/champions/"}, StringSplitOptions.None)[1];
-                            LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location,
+                            string saveName = location.Split(new[] {"/champions/"}, StringSplitOptions.None)[1];
+                            LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
+                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions",
-                                    SaveName));
+                                    saveName));
                         }
-                        else if (SavePlace.Contains("assets/sounds/ambient"))
+                        else if (savePlace.Contains("assets/sounds/ambient"))
                         {
-                            string SaveName = Location.Split(new[] {"/ambient/"}, StringSplitOptions.None)[1];
-                            LogTextBox("Downloading " + SaveName + " from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location,
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient", SaveName));
+                            string saveName = location.Split(new[] {"/ambient/"}, StringSplitOptions.None)[1];
+                            LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
+                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                                Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient", saveName));
                         }
                     }
                 }
@@ -801,44 +808,44 @@ namespace LegendaryClient.Windows
         }
 
         [Obsolete]
-        private void UpdateFrom(string version, string PackageManifest)
+        private void UpdateFrom(string version, string packageManifest)
         {
-            int CurrentVersionNumber = Convert.ToInt32(version.Split('.')[3]);
-            string[] FileMetaData =
-                PackageManifest.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
-            foreach (string s in FileMetaData)
+            int currentVersionNumber = Convert.ToInt32(version.Split('.')[3]);
+            string[] fileMetaData =
+                packageManifest.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
+            foreach (string s in fileMetaData)
             {
                 if (String.IsNullOrEmpty(s))
                     continue;
 
                 //Remove size and type metadata
-                string Location = s.Split(',')[0];
+                string location = s.Split(',')[0];
                 //Get save position
-                string SavePlace = Location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
-                string[] VersionArray = Location.Split(new[] {"/files/"}, StringSplitOptions.None)[0].Split('/');
-                string Version = VersionArray[VersionArray.Length - 1];
-                int VersionNumber = Convert.ToInt32(Version.Split('.')[3]);
-                if (VersionNumber <= CurrentVersionNumber)
+                string savePlace = location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
+                string[] versionArray = location.Split(new[] {"/files/"}, StringSplitOptions.None)[0].Split('/');
+                string Version = versionArray[versionArray.Length - 1];
+                int versionNumber = Convert.ToInt32(Version.Split('.')[3]);
+                if (versionNumber <= currentVersionNumber)
                     continue;
 
-                LogTextBox("Downloading " + SavePlace);
+                LogTextBox("Downloading " + savePlace);
                 using (var newClient = new WebClient())
                 {
                     try
                     {
-                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + Location,
-                            Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace));
                     }
                     catch
                     {
                     }
                 }
-                uncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace),
-                    Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace)
+                UncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace),
+                    Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace)
                         .Replace(".compressed", ""));
                 try
                 {
-                    File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", SavePlace));
+                    File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace));
                 }
                 catch
                 {
@@ -849,18 +856,18 @@ namespace LegendaryClient.Windows
         [Obsolete]
         private void CheckIfPatched()
         {
-            string LolVersion =
+            string lolVersion =
                 new WebClient().DownloadString(
                     "http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
-            string CurrentLolVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
+            string currentLolVersion = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "RADS", "VERSION_LOL"));
             LogTextBox("Latest version of League of Legends: " +
-                       LolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0]);
+                       lolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0]);
             LogTextBox("Your version of League of Legends: " +
-                       CurrentLolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0]);
-            LoLDataIsUpToDate = LolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0] ==
-                                CurrentLolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
-            LolDataVersion = CurrentLolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
-            LatestLolDataVersion = LolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+                       currentLolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0]);
+            LoLDataIsUpToDate = lolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0] ==
+                                currentLolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+            LolDataVersion = currentLolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+            LatestLolDataVersion = lolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
         }
 
         [Obsolete]
@@ -874,33 +881,33 @@ namespace LegendaryClient.Windows
             int i = 0;
             foreach (var x in list.FileDictFull)
             {
-                string FileLastWritten = "";
+                string FileLastWritten = string.Empty;
                 RAFFileListEntry RAFFile = x.Value[0];
                 string n = Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client");
-                foreach (string Directories in RAFFile.FileName.Split('/'))
+                foreach (string directories in RAFFile.FileName.Split('/'))
                 {
-                    if (!Directories.Contains('.'))
+                    if (!directories.Contains('.'))
                     {
-                        if (!Directory.Exists(Path.Combine(n, Directories)))
-                            Directory.CreateDirectory(Path.Combine(n, Directories));
+                        if (!Directory.Exists(Path.Combine(n, directories)))
+                            Directory.CreateDirectory(Path.Combine(n, directories));
 
-                        n = Path.Combine(n, Directories);
+                        n = Path.Combine(n, directories);
                     }
                     else
                     {
                         try
                         {
-                            var Writer = new BinaryWriter(File.OpenWrite(Path.Combine(n, Directories)));
+                            var writer = new BinaryWriter(File.OpenWrite(Path.Combine(n, directories)));
 
                             // Writer raw data                
-                            Writer.Write(RAFFile.GetContent());
-                            Writer.Flush();
-                            Writer.Close();
-                            FileLastWritten = Path.Combine(n, Directories);
+                            writer.Write(RAFFile.GetContent());
+                            writer.Flush();
+                            writer.Close();
+                            FileLastWritten = Path.Combine(n, directories);
                         }
                         catch
                         {
-                            LogTextBox("Unable to write " + Path.Combine(n, Directories));
+                            LogTextBox("Unable to write " + Path.Combine(n, directories));
                         }
                     }
                 }

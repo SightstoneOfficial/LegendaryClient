@@ -76,9 +76,8 @@
                  Foreground="White" />
         <TextBox x:Name="DevKey" Margin="10,0,10,136" HorizontalAlignment="Stretch"
                  VerticalAlignment="Bottom" controls:TextboxHelper.Watermark="Type Your Dev Key Here"
-                 TextWrapping="Wrap"
-                 Text=""
-                 Background="#FF2E2E2E" Foreground="{x:Null}">
+                 TextWrapping="NoWrap"
+                 Background="#FF2E2E2E">
             <TextBox.BorderBrush>
                 <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Offset="0" Color="Black" />
