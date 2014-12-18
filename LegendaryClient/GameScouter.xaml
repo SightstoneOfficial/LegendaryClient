@@ -53,6 +53,7 @@
     </Controls:MetroWindow.Resources>
 
     <Grid x:Name="Mousegrid" Background="#FF737B89">
+        <ContentControl x:Name="Overlay" Panel.ZIndex="999"/>
         <Label Content="Blue Team" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,4,0,0" Foreground="White" FontSize="22" Height="45"/>
         <Label Content="Purple Team" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,328,0,404" Foreground="White" FontSize="22" Height="45"/>
         <Label Content="Curse Voice and Razer Comms Users (Not Working). Get Perm first" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="10,0,12,95" Foreground="Black" FontSize="22" Width="1252"/>

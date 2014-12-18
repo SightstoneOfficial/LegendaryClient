@@ -455,7 +455,7 @@ namespace LegendaryClient.Windows
                         if (CountdownTimer != null)
                             CountdownTimer.Stop();
 
-                        FixChampSelect();
+                        Client.FixChampSelect();
                         var fakePage = new FakePage
                         {
                             Content = LobbyContent

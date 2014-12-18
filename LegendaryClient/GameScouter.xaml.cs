@@ -355,7 +355,7 @@ namespace LegendaryClient
             mouseLocation = e.GetPosition(Mousegrid);
             double xMargin = mouseLocation.X;
             double yMargin = mouseLocation.Y;
-            smallData.Margin = new Thickness(xMargin - 640, yMargin - 400, xMargin + 640, yMargin + 400);
+            smallData.Margin = new Thickness(xMargin - 640, yMargin - 400, xMargin + 640, yMargin + 400); //This is very buggy
             try
             {
                 Mousegrid.Children.Add(smallData);
@@ -373,6 +373,85 @@ namespace LegendaryClient
         {
             PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
             MasteryBookDTO page = await Client.PVPNet.GetMasteryBook(summoner.SummonerId);
+        }
+    }
+    public class RuneMasterData
+    {
+        public RuneMasterData(MasteryBookDTO masteries, SummonerRuneInventory runes)
+        {
+            
+        }
+        #region Runes
+        [Rune(true)]
+        internal static int FlatArmer { get; set; }
+
+        [Rune(true)]
+        internal static int MagicPen { get; set; }
+
+        [Rune(true)]
+        internal static int HpPerLevel { get; set; }
+
+        [Rune(true)]
+        internal static int MagicResist { get; set; }
+
+        [Rune(true)]
+        internal static int Mana { get; set; }
+
+        [Rune(true)]
+        internal static int cdr { get; set; }
+
+        [Rune(true)]
+        internal static int ArmorPen { get; set; }
+
+        [Rune(true)]
+        internal static int Ad { get; set; }
+
+        [Rune(true)]
+        internal static int Hp { get; set; }
+
+        [Rune(true)]
+        internal static int ManaPerLevel { get; set; }
+
+        [Rune(true)]
+        internal static int Crit { get; set; }
+
+        [Rune(true)]
+        internal static int AttackSpeed { get; set; }
+
+        [Rune(true)]
+        internal static int MagicResistPerLevel { get; set; }
+
+        [Rune(true)]
+        internal static int Ap { get; set; }
+
+        [Rune(true)]
+        internal static int AdPerLevel { get; set; }
+
+        [Rune(true)]
+        internal static int ManaRegen { get; set; }
+
+        [Rune(true)]
+        internal static int ApPerLevel { get; set; }
+        #endregion
+
+        #region Masteries
+        #endregion
+
+    }
+    public class Rune : Attribute
+    {
+        private bool _value;
+        public Rune(bool value)
+        {
+            _value = value;
+        }
+    }
+    public class Mastery : Attribute
+    {
+        private bool _value;
+        public Mastery(bool value)
+        {
+            _value = value;
         }
     }
 }
