@@ -53,11 +53,9 @@
     </Page.Resources>
 
     <Grid Background="#B2000000">
-        <Grid Margin="20,50,20,50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF2B2B2B">
-            <Button x:Name="CloseButton" Width="30" Height="30" Margin="0,5,5,0" HorizontalAlignment="Right"
-                    VerticalAlignment="Top" Content="X" Click="CloseButton_Click" />
-            <ContentControl x:Name="Container" Margin="0,0,0,0" HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch" />
+        <Grid Margin="20,50,20,50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#FF2B2B2B" Opacity="0.85">
+            <Button x:Name="CloseButton" Width="30" Height="30" Margin="0,5,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="X" Click="CloseButton_Click" Opacity="0.5" />
+            <ContentControl x:Name="Container" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
         </Grid>
     </Grid>
 </Page>

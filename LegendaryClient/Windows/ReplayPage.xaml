@@ -58,44 +58,24 @@
         <Label Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Watch Replays"
                FontWeight="ExtraLight" FontSize="22" />
         <!--TODO Style ListView-->
-        <ScrollViewer Width="420" Margin="0,143,0,0"
-                      HorizontalAlignment="Left" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"
-                      HorizontalScrollBarVisibility="Disabled">
+        <ScrollViewer Width="420" Margin="0,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
             <StackPanel x:Name="GamePanel" />
         </ScrollViewer>
-        <Button Name="Refresh" Width="100" Margin="425,0,0,10" HorizontalAlignment="Left"
-                VerticalAlignment="Bottom" Content="Refresh Replays" Click="refresh_Click" />
-        <TextBox x:Name="Command" Width="330" Height="24"
-                 Margin="10,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                 Text="" TextChanged="Command_TextChanged" TextWrapping="Wrap"
-                 controls:TextboxHelper.Watermark="Enter username here" />
-        <Button x:Name="Download" Width="75" Height="24" Margin="345,49,0,0"
-                HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" Click="Download_Click"
-                Content="Download"
-                FontSize="11" />
+        <Button Name="Refresh" Width="100" Margin="425,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Refresh Replays" Click="refresh_Click" />
+        <TextBox x:Name="Command" Width="330" Height="24" Margin="10,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="" TextChanged="Command_TextChanged" TextWrapping="Wrap" controls:TextboxHelper.Watermark="Enter username here" />
+        <Button x:Name="Download" Width="75" Height="24" Margin="345,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" Click="Download_Click" Content="Download" FontSize="11" />
         <Label x:Name="HintLabel" Margin="10,78,604,568" Content="" />
-        <Grid x:Name="ReplayOverviewGrid" Width="581" Margin="0,40,0,0" HorizontalAlignment="Right" Opacity="0"
-              Visibility="Hidden">
-            <Button x:Name="WatchReplayButton" Height="40" Margin="5,5,5,0"
-                    HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Watch Replay" Background="#27ae60"
-                    FontSize="16"
-                    FontWeight="Bold" Foreground="White" Click="WatchReplayButton_Click" d:IsHidden="True" />
-            <Label x:Name="GameId" Margin="0,50,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="0"
-                   FontStyle="Italic" Foreground="#FF838383" d:IsHidden="True" />
-            <Label x:Name="GameType" Margin="0,50,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom"
-                   Content="classic" FontStyle="Italic" Foreground="#FF838383" d:IsHidden="True" />
-            <Label x:Name="GameTime" Margin="0,50,5,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                   Content="0:00"
-                   FontStyle="Italic" Foreground="#FF838383" d:IsHidden="True" />
+        <Grid x:Name="ReplayOverviewGrid" Width="581" Margin="0,40,0,0" HorizontalAlignment="Right" Opacity="0" Visibility="Hidden">
+            <Button x:Name="WatchReplayButton" Height="40" Margin="5,5,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Watch Replay" Background="#27ae60" FontSize="16" FontWeight="Bold" Foreground="White" Click="WatchReplayButton_Click" d:IsHidden="True" />
+            <Label x:Name="GameId" Margin="0,50,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="0" FontStyle="Italic" Foreground="#FF838383" d:IsHidden="True" />
+            <Label x:Name="GameType" Margin="0,50,0,0" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="classic" FontStyle="Italic" Foreground="#FF838383" d:IsHidden="True" />
+            <Label x:Name="GameTime" Margin="0,50,5,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="0:00" FontStyle="Italic" Foreground="#FF838383" d:IsHidden="True" />
             <StackPanel Margin="0,80,0,0">
                 <StackPanel x:Name="TeamOnePanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 <Label HorizontalAlignment="Center" Content="VS" FontSize="30" />
                 <StackPanel x:Name="TeamTwoPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
             </StackPanel>
-            <Button x:Name="deleteReplayButton" Width="75" Height="24" 
-                HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="deleteReplayButton_Click"
-                Content="Delete replay"
-                FontSize="11" Margin="36,0,0,18" />
+            <Button x:Name="deleteReplayButton" Width="75" Height="24" HorizontalAlignment="Left" VerticalAlignment="Bottom" Click="deleteReplayButton_Click" Content="Delete replay" FontSize="11" Margin="36,0,0,18" />
         </Grid>
     </Grid>
 
