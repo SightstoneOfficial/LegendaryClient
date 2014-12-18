@@ -400,6 +400,8 @@ namespace LegendaryClient.Windows
                     if (kvPair.Key == "link")
                         item.Tag = kvPair.Value;
 
+
+                    // Image
                     var promoImage = new BitmapImage();
                     promoImage.BeginInit();
                     promoImage.UriSource =
@@ -407,6 +409,7 @@ namespace LegendaryClient.Windows
                             UriKind.RelativeOrAbsolute);
                     promoImage.CacheOption = BitmapCacheOption.OnLoad;
                     promoImage.EndInit();
+                    item.PromoImage.Stretch = Stretch.Fill;
                     item.PromoImage.Source = promoImage;
                 }
                 NewsItemListView.Items.Add(item);
