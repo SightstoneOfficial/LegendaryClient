@@ -1093,7 +1093,7 @@ namespace LegendaryClient.Logic
                 case "matching-queue-TT-6x6-game-queue":
                     return "Hexakill Twisted Treeline";
 
-                case "matching-queue-KINGPORO-5x5-game-queu":
+                case "matching-queue-KINGPORO-5x5-game-queue":
                     return "King Poro 5v5";
 
                 default:
