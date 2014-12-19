@@ -32,7 +32,8 @@ namespace LegendaryClient.Windows
     public partial class EndOfGamePage
     {
         private readonly Room _newRoom;
-
+        private string MatchStatsOnline;
+        
         public EndOfGamePage(EndOfGameStats statistics)
         {
             InitializeComponent();
@@ -127,6 +128,7 @@ namespace LegendaryClient.Windows
             TimeLabel.Content = string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
             ModeLabel.Content = statistics.GameMode;
             TypeLabel.Content = statistics.GameType;
+            MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + (int)Math.Round(statistics.GameId) + "/" + statistics.UserId;
             GainedIP.Content = "+" + statistics.IpEarned + " IP";
             TotalIP.Content = statistics.IpTotal.ToString(CultureInfo.InvariantCulture).Replace(".0", "") + " IP Total";
             string game = " XP";
@@ -211,7 +213,7 @@ namespace LegendaryClient.Windows
                     }
                 }
                 playerStats.ScoreLabel.Content = championsKilled + "/" + deaths + "/" + assists;
-                PlayersListView.Items.Add(playerStats);
+                PlayersListView.Items.Add(playerStats);                
             }
             PlayersListView.Items.Insert(allParticipants.Count/2, new Separator());
             championSkins skin = championSkins.GetSkin(statistics.SkinIndex);
@@ -234,6 +236,12 @@ namespace LegendaryClient.Windows
         {
             _newRoom.Leave(null);
             Client.OverlayContainer.Visibility = Visibility.Hidden;
+            Client.ClearPage(typeof(EndOfGamePage));
+        }
+
+        private void OnlineHistory_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(MatchStatsOnline);
         }
     }
 }

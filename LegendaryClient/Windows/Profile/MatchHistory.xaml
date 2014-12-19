@@ -52,5 +52,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="MatchLink" Content="Match online" HorizontalAlignment="Left" VerticalAlignment="Top" Width="114" Margin="430,37,0,0" Click="MatchLink_Click"/>
     </Grid>
 </Page>
