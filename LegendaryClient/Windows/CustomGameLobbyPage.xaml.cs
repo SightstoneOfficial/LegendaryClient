@@ -95,17 +95,14 @@ namespace LegendaryClient.Windows
                     BaseMap map = BaseMap.GetMap(dto.MapId);
                     MapLabel.Content = map.DisplayName;
                     ModeLabel.Content = Client.TitleCaseString(dto.GameMode);
-                    GameTypeConfigDTO configType =
-                        Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
+                    GameTypeConfigDTO configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
                     TypeLabel.Content = GetGameMode(configType.Id);
                     SizeLabel.Content = dto.MaxNumPlayers/2 + "v" + dto.MaxNumPlayers/2;
 
                     HasConnectedToChat = true;
                     try
                     {
-                        string obfuscatedName =
-                            Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id),
-                                ChatPrefixes.Arranging_Practice);
+                        string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
                         string jid = Client.GetChatroomJID(obfuscatedName, dto.RoomPassword, false);
                         newRoom = Client.ConfManager.GetRoom(new JID(jid));
                         newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
@@ -133,8 +130,7 @@ namespace LegendaryClient.Windows
                                 var lobbyPlayer = new CustomLobbyPlayer();
                                 var player = playerTeam as PlayerParticipant;
                                 lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                IsOwner = dto.OwnerSummary.SummonerId ==
-                                          Client.LoginPacket.AllSummonerData.Summoner.SumId;
+                                IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
                                 StartGameButton.IsEnabled = IsOwner;
                                 AddBotBlueTeam.IsEnabled = IsOwner;
                                 AddBotPurpleTeam.IsEnabled = IsOwner;
@@ -162,8 +158,7 @@ namespace LegendaryClient.Windows
                                 var lobbyPlayer = new CustomLobbyPlayer();
                                 var player = playerTeam as PlayerParticipant;
                                 lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                IsOwner = dto.OwnerSummary.SummonerId ==
-                                          Client.LoginPacket.AllSummonerData.Summoner.SumId;
+                                IsOwner = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
                                 StartGameButton.IsEnabled = IsOwner;
                                 AddBotBlueTeam.IsEnabled = IsOwner;
                                 AddBotPurpleTeam.IsEnabled = IsOwner;
@@ -234,8 +229,7 @@ namespace LegendaryClient.Windows
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (Client.Filter)
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
-                              Environment.NewLine;
+                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() + Environment.NewLine;
                 else
                     tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
 
@@ -270,18 +264,14 @@ namespace LegendaryClient.Windows
                     Content = player.SummonerName
                 }
             };
-            var uriSource =
-                new Uri(
-                    Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", player.ProfileIconId + ".png"),
-                    UriKind.RelativeOrAbsolute);
+            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", player.ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
             lobbyPlayer.ProfileImage.Source = new BitmapImage(uriSource);
             if (IsOwner)
                 lobbyPlayer.OwnerLabel.Visibility = Visibility.Visible;
 
             lobbyPlayer.Width = 400;
             lobbyPlayer.Margin = new Thickness(0, 0, 0, 5);
-            if ((player.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId) ||
-                (player.SummonerId != Client.LoginPacket.AllSummonerData.Summoner.SumId && !this.IsOwner))
+            if ((player.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId) || (player.SummonerId != Client.LoginPacket.AllSummonerData.Summoner.SumId && !this.IsOwner))
                 lobbyPlayer.BanButton.Visibility = Visibility.Hidden;
 
             lobbyPlayer.BanButton.Tag = player;
@@ -363,9 +353,7 @@ namespace LegendaryClient.Windows
                     return;
 
                 BotParticipant banPlayer = tag;
-                await
-                    Client.PVPNet.RemoveBotChampion(
-                        champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
+                await Client.PVPNet.RemoveBotChampion(champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
             }
         }
 

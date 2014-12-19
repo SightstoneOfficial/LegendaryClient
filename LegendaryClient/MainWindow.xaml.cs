@@ -218,7 +218,7 @@ namespace LegendaryClient
                 Client.SwitchPage(new LoginPage());
                 Client.ClearPage(typeof(MainPage));
             }
-            else
+            else if (Properties.Settings.Default.warnClose)
             {
                 Warn.Title.Content = "Logout while in Game";
                 Warn.MessageText.Text = "Are You Sure You Want To Quit? This will result in a dodge.";

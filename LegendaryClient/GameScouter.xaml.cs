@@ -135,14 +135,9 @@ namespace LegendaryClient
                         if (championSelect.SummonerInternalName == GSUsername)
                             control.Username.Foreground = (Brush)(new BrushConverter().ConvertFrom("#FF007A53"));
                         control.ChampIcon.Source = champions.GetChampion(championSelect.ChampionId).icon;
-                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))),
-                            UriKind.Absolute);
+                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
                         control.SumIcon1.Source = new BitmapImage(uriSource);
-                        uriSource =
-                            new Uri(
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                                    SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))),
-                                UriKind.Absolute);
+                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
                         control.SumIcon2.Source = new BitmapImage(uriSource);
                         GameStats.Clear();
                         try
@@ -153,8 +148,7 @@ namespace LegendaryClient
                             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
                             foreach (PlayerGameStats game in result.GameStatistics)
                             {
-                                game.GameType =
-                                    Client.TitleCaseString(game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
+                                game.GameType = Client.TitleCaseString(game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
                                 var match = new MatchStats();
 
                                 foreach (RawStat stat in game.Statistics)
@@ -327,7 +321,12 @@ namespace LegendaryClient
                         control.MouseLeave += control_MouseLeave;
                         control.MouseDown += control_MouseDown;
                         TinyRuneMasteryData smallData = new TinyRuneMasteryData();
-                        control.Tag = smallData;
+                        //Now store data in the tags so that all of the event handlers work
+                        Dictionary<String, Object> data = new Dictionary<string, object>();
+                        data.Add("MasteryDataControl", smallData);
+                        data.Add("RuneData", await GetUserRunesPage(GSUsername));
+                        data.Add("MasteryData", await GetUserRunesPage(GSUsername));
+                        control.Tag = data;
                         list.Items.Add(control);
                     }
                 }
@@ -336,122 +335,54 @@ namespace LegendaryClient
 
         void control_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            
+            GameScouterPlayer control = (GameScouterPlayer)sender;
+            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            try
+            {
+                Mousegrid.Children.Remove(smallData);
+            }
+            catch { }
+            //start the popup
+            //TODO
+
         }
 
         void control_MouseLeave(object sender, MouseEventArgs e)
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
             control.Tooltip.Content = "Hover over for info";
-            TinyRuneMasteryData smallData = (TinyRuneMasteryData)control.Tag;
+            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
             Mousegrid.Children.Remove(smallData);
         }
 
         void controlMouseEnter(object sender, MouseEventArgs e)
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
-            TinyRuneMasteryData smallData = (TinyRuneMasteryData)control.Tag;
+            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
             control.Tooltip.Content = "Click for even more info";
             mouseLocation = e.GetPosition(Mousegrid);
-            double xMargin = mouseLocation.X;
-            double yMargin = mouseLocation.Y;
-            smallData.Margin = new Thickness(xMargin - 640, yMargin - 400, xMargin + 640, yMargin + 400); //This is very buggy
+            smallData.HorizontalAlignment = HorizontalAlignment.Left;
+            smallData.VerticalAlignment = VerticalAlignment.Top;
+            smallData.Margin = new Thickness(mouseLocation.X - smallData.Width, mouseLocation.Y + 20, 0, 0);
             try
             {
                 Mousegrid.Children.Add(smallData);
             }
             catch { }
         }
-        private async void GetUserRunesPage(string User)
+        private async Task<SummonerRuneInventory> GetUserRunesPage(string User)
         {
             PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
             SummonerRuneInventory runes = await Client.PVPNet.GetSummonerRuneInventory(summoner.SummonerId);
+            return runes;
 
 
         }
-        private async void GetUserMasterPage(string User)
+        private async Task<MasteryBookDTO> GetUserMasterPage(string User)
         {
             PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
             MasteryBookDTO page = await Client.PVPNet.GetMasteryBook(summoner.SummonerId);
-        }
-    }
-    public class RuneMasterData
-    {
-        public RuneMasterData(MasteryBookDTO masteries, SummonerRuneInventory runes)
-        {
-            
-        }
-        #region Runes
-        [Rune(true)]
-        internal static int FlatArmer { get; set; }
-
-        [Rune(true)]
-        internal static int MagicPen { get; set; }
-
-        [Rune(true)]
-        internal static int HpPerLevel { get; set; }
-
-        [Rune(true)]
-        internal static int MagicResist { get; set; }
-
-        [Rune(true)]
-        internal static int Mana { get; set; }
-
-        [Rune(true)]
-        internal static int cdr { get; set; }
-
-        [Rune(true)]
-        internal static int ArmorPen { get; set; }
-
-        [Rune(true)]
-        internal static int Ad { get; set; }
-
-        [Rune(true)]
-        internal static int Hp { get; set; }
-
-        [Rune(true)]
-        internal static int ManaPerLevel { get; set; }
-
-        [Rune(true)]
-        internal static int Crit { get; set; }
-
-        [Rune(true)]
-        internal static int AttackSpeed { get; set; }
-
-        [Rune(true)]
-        internal static int MagicResistPerLevel { get; set; }
-
-        [Rune(true)]
-        internal static int Ap { get; set; }
-
-        [Rune(true)]
-        internal static int AdPerLevel { get; set; }
-
-        [Rune(true)]
-        internal static int ManaRegen { get; set; }
-
-        [Rune(true)]
-        internal static int ApPerLevel { get; set; }
-        #endregion
-
-        #region Masteries
-        #endregion
-
-    }
-    public class Rune : Attribute
-    {
-        private bool _value;
-        public Rune(bool value)
-        {
-            _value = value;
-        }
-    }
-    public class Mastery : Attribute
-    {
-        private bool _value;
-        public Mastery(bool value)
-        {
-            _value = value;
+            return page;
         }
     }
 }
