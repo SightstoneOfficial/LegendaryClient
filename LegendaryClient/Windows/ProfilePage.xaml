@@ -94,7 +94,7 @@
             <TabItem x:Name="SkinsTab" Header="Skins">
                 <Frame x:Name="SkinsContainer" />
             </TabItem>
-            <TabItem x:Name="MatchHistoryBetaTab" Header="Match History Beta">
+            <TabItem x:Name="MatchHistoryBetaTab" Header="Match History Beta" Visibility="Hidden">
                 <Frame x:Name="LeagueMatchHistoryBetaContainer" />
             </TabItem>
         </TabControl>
