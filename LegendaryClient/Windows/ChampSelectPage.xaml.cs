@@ -144,6 +144,7 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(Page previousPage)
         {
             InitializeComponent();
+            Client.inQueueTimer.Visibility = Visibility.Hidden;
             Client.OverlayContainer.Content = null;
             this.previousPage = previousPage;
             StartChampSelect();
@@ -1223,6 +1224,7 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof(ChampSelectPage));
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
+            Client.ReturnButton.Visibility = Visibility.Hidden;
             uiLogic.UpdateMainPage();
         }
 

@@ -177,8 +177,6 @@ namespace LegendaryClient.Windows
 
                     Dispatcher.Invoke(() =>
                     {
-                        if (Client.inQueueTimer.Visibility == Visibility.Hidden)
-                            Client.inQueueTimer.Visibility = Visibility.Visible;
                         Client.inQueueTimer.Content = String.Format("In Queue {0:D2}:{1:D2}", time.Minutes, time.Seconds);
                     });
                     setStartButtonText("Re-Click To Leave");
@@ -406,6 +404,7 @@ namespace LegendaryClient.Windows
                 {
                     if (QueueDTO.GameState == "TERMINATED")
                     {
+                        Client.inQueueTimer.Visibility = Visibility.Visible;
                         Client.HasPopped = false;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.OverlayContainer.Content = null;
@@ -689,6 +688,11 @@ namespace LegendaryClient.Windows
             startTime = 1;
             inQueue = true;
             Client.GameStatus = "inQueue";
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if (Client.inQueueTimer.Visibility == Visibility.Hidden)
+                    Client.inQueueTimer.Visibility = Visibility.Visible;
+            }));
             Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
         }
