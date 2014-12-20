@@ -48,8 +48,6 @@ namespace LegendaryClient.Windows
             Client.donepatch = true;
             Client.patching = false;
             Version.TextChanged += WaterTextbox_TextChanged;
-            if (Client.Version == "4.20.1" || Client.Version == "0.0.0")
-                Client.Version = "4.21.14";
             bool x = Settings.Default.DarkTheme;
             if (!x)
             {
@@ -58,7 +56,7 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Foreground = (Brush) bc.ConvertFrom("#FFFFFFFF");
             }
             //#B2C8C8C8
-            Version.Text = Client.Version;
+            
 
             if (!Settings.Default.DisableLoginMusic)
             {
@@ -166,7 +164,7 @@ namespace LegendaryClient.Windows
                     }
                 }
             }
-            
+            Version.Text = Client.Version;
 
             if (!String.IsNullOrWhiteSpace(Settings.Default.SavedUsername))
             {
