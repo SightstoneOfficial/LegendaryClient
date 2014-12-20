@@ -54,7 +54,9 @@ namespace LegendaryClient.Windows
                 PatchTextBox.Foreground = (Brush) bc.ConvertFrom("#FF1B1919");
             }
             DevKey.TextChanged += DevKey_TextChanged;
+#if !DEBUG
             UpdateSplash();
+#endif
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
         }
@@ -121,6 +123,7 @@ namespace LegendaryClient.Windows
             Client.SwitchPage(new LoginPage());
         }
 
+#if !DEBUG
         private void UpdateSplash()
         {
             FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(Client.ExecutingDirectory, "LCStartUpSplash.exe"));
@@ -130,7 +133,7 @@ namespace LegendaryClient.Windows
 
             }
         }
-
+#endif
         private void StartPatcher()
         {
             try
