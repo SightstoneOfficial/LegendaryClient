@@ -14,7 +14,7 @@
     </Page.Resources>
 
     <Grid>
-        <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" SelectionChanged="GamesListView_SelectionChanged">
+        <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300" VerticalAlignment="Stretch" Foreground="White" Background="#66505050" SelectionChanged="GamesListView_SelectionChanged" MouseDoubleClick="MatchLink_Click">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn />
@@ -52,6 +52,5 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="MatchLink" Content="Match online" HorizontalAlignment="Left" VerticalAlignment="Top" Width="114" Margin="430,37,0,0" Click="MatchLink_Click"/>
     </Grid>
 </Page>

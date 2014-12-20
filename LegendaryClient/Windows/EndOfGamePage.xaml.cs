@@ -128,7 +128,7 @@ namespace LegendaryClient.Windows
             TimeLabel.Content = string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
             ModeLabel.Content = statistics.GameMode;
             TypeLabel.Content = statistics.GameType;
-            MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + (int)Math.Round(statistics.GameId) + "/" + statistics.UserId;
+            MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + statistics.ReportGameId + "/" + statistics.UserId;
             GainedIP.Content = "+" + statistics.IpEarned + " IP";
             TotalIP.Content = statistics.IpTotal.ToString(CultureInfo.InvariantCulture).Replace(".0", "") + " IP Total";
             string game = " XP";

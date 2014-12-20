@@ -150,6 +150,7 @@ namespace LegendaryClient.Windows.Profile
                 PurpleListView.Items.Clear();
                 BlueListView.Items.Clear();
                 ItemsListView.Items.Clear();
+                MatchLinkOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + (int)Math.Round(stats.Game.GameId) + "/" + stats.Game.UserId;
 
                 //Add self to game players
                 Image img = new Image();
@@ -283,14 +284,7 @@ namespace LegendaryClient.Windows.Profile
 
         private void MatchLink_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                System.Diagnostics.Process.Start(MatchLinkOnline); 
-            }
-            catch
-            {
-
-            }
+            System.Diagnostics.Process.Start(MatchLinkOnline); 
         }
     }
 
