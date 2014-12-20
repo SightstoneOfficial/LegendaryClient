@@ -88,24 +88,28 @@ namespace LegendaryClient.Logic
         public static Dictionary<String, String> LeagueSettingsReader(this string FileLocation)
         {
             var settings = new Dictionary<String, String>();
-            string[] file = File.ReadAllLines(FileLocation);
-            foreach (string x in from x in file
-                                 where !String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x)
-                                 where !x.Contains("[") && !x.Contains("]")
-                                 where !x.StartsWith("#") && x.Contains("=")
-                                 select x)
+            try
             {
-                try
+                string[] file = File.ReadAllLines(FileLocation);
+                foreach (string x in from x in file
+                    where !String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x)
+                    where !x.Contains("[") && !x.Contains("]")
+                    where !x.StartsWith("#") && x.Contains("=")
+                    select x)
                 {
-                    //Spit the one value into 2 values
-                    string[] value = x.Split('=');
-                    settings.Add(value[0], value[1]);
-                }
-                catch
-                {
-                    Log("Error reading a setting value: " + x, "ReaderError");
+                    try
+                    {
+                        //Spit the one value into 2 values
+                        string[] value = x.Split('=');
+                        settings.Add(value[0], value[1]);
+                    }
+                    catch
+                    {
+                        Log("Error reading a setting value: " + x, "ReaderError");
+                    }
                 }
             }
+            catch { }
             return settings;
         }
 
@@ -168,12 +172,6 @@ namespace LegendaryClient.Logic
         ///     Use this to play sounds in the background only
         /// </summary>
         internal static MediaElement AmbientSoundPlayer;
-
-
-        /// <summary>
-        ///     Timer used so replays won't start right away
-        /// </summary>
-        internal static Timer ReplayTimer;
 
         internal static bool isOwnerOfGame = false;
 

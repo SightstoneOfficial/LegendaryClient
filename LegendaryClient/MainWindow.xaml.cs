@@ -218,8 +218,9 @@ namespace LegendaryClient
                 Client.SwitchPage(new LoginPage());
                 Client.ClearPage(typeof(MainPage));
             }
-            else if (Properties.Settings.Default.warnClose)
+            else if (Properties.Settings.Default.warnClose && Client.IsInGame)
             {
+                Warn = new Warning();
                 Warn.Title.Content = "Logout while in Game";
                 Warn.MessageText.Text = "Are You Sure You Want To Quit? This will result in a dodge.";
                 Warn.backtochampselect.Click += HideWarning;
@@ -233,8 +234,9 @@ namespace LegendaryClient
         }
         private void MainWindow_Closing(Object sender, CancelEventArgs e)
         {
-            if (Properties.Settings.Default.warnClose || Client.curentlyRecording.Count > 0)
+            if (Properties.Settings.Default.warnClose || Client.curentlyRecording.Count > 0 || Client.IsInGame)
             {
+                Warn = new Warning();
                 e.Cancel = true;
                 Warn.Title.Content = "Quit";
                 Warn.MessageText.Text = "Are You Sure You Want To Quit?";

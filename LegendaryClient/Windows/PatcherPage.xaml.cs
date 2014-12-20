@@ -54,6 +54,7 @@ namespace LegendaryClient.Windows
                 PatchTextBox.Foreground = (Brush) bc.ConvertFrom("#FF1B1919");
             }
             DevKey.TextChanged += DevKey_TextChanged;
+            UpdateSplash();
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
         }
@@ -118,6 +119,16 @@ namespace LegendaryClient.Windows
                 }
             }*/
             Client.SwitchPage(new LoginPage());
+        }
+
+        private void UpdateSplash()
+        {
+            FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(Path.Combine(Client.ExecutingDirectory, "LCStartUpSplash.exe"));
+            string latestSplash = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/LatestSplash.Version").Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+            if (versionInfo.FileVersion != latestSplash)
+            {
+
+            }
         }
 
         private void StartPatcher()
