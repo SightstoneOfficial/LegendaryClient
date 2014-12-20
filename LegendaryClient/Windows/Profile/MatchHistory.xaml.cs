@@ -28,6 +28,7 @@ namespace LegendaryClient.Windows.Profile
         private List<MatchStats> GameStats = new List<MatchStats>();
         private LargeChatPlayer PlayerItem;
         private static readonly ILog log = LogManager.GetLogger(typeof(MatchHistory));
+        private string MatchLinkOnline;
 
         public MatchHistory()
         {
@@ -57,7 +58,7 @@ namespace LegendaryClient.Windows.Profile
                 }
 
                 Match.Game = Game;
-
+                
                 GameStats.Add(Match);
             }
 
@@ -145,11 +146,11 @@ namespace LegendaryClient.Windows.Profile
             if (GamesListView.SelectedIndex != -1)
             {
                 MatchStats stats = GameStats[GamesListView.SelectedIndex];
-
                 GameStatsListView.Items.Clear();
                 PurpleListView.Items.Clear();
                 BlueListView.Items.Clear();
                 ItemsListView.Items.Clear();
+                MatchLinkOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + (int)Math.Round(stats.Game.GameId) + "/" + stats.Game.UserId;
 
                 //Add self to game players
                 Image img = new Image();
@@ -279,6 +280,11 @@ namespace LegendaryClient.Windows.Profile
                 XMargin = Client.MainGrid.ActualWidth - PlayerItem.Width - 10;
 
             PlayerItem.Margin = new Thickness(XMargin + 5, YMargin + 5, 0, 0);
+        }
+
+        private void MatchLink_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(MatchLinkOnline); 
         }
     }
 

@@ -180,8 +180,8 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="fakeend" Width="125" Margin="985,10,0,0" HorizontalAlignment="Left"
-                VerticalAlignment="Top" Visibility="Hidden" Content="Fake end of game" Click="fakeend_Click" />
+        <Button x:Name="fakeend" Margin="0,10,170,0"
+                VerticalAlignment="Top" Visibility="Hidden" Content="Fake end of game" Click="fakeend_Click" HorizontalAlignment="Right" Width="125" />
         <Button x:Name="testInvite" Width="75" Margin="0,10,90,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestInvite"
                 Visibility="Hidden" Click="InviteTest_Click" />
         <Button x:Name="testChat" Width="75" Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestChat"

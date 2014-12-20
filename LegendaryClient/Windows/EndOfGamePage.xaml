@@ -106,6 +106,7 @@
             <Label x:Name="GainedXP" Margin="10,218,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                    Content="+50 XP"
                    FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" />
+            <Button Content="History online" HorizontalAlignment="Right" Margin="0,5,55,0" VerticalAlignment="Top" Width="141" Click="OnlineHistory_Click"/>
         </Grid>
 
         <RichTextBox x:Name="ChatText" Width="300" Margin="30,305,0,65" HorizontalAlignment="Left"

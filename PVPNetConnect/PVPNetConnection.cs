@@ -197,7 +197,7 @@ namespace PVPNetConnect
         }
 
         private bool GetGarenaToken()
-        {            
+        {
             try
             {
                 System.Text.UTF8Encoding encoding = new System.Text.UTF8Encoding();
@@ -208,7 +208,7 @@ namespace PVPNetConnect
                 /*
                 //GET OUR USER ID
                 List<byte> userIdRequestBytes = new List<byte>();
-
+                
                 byte[] junk = new byte[] { 0x49, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x79, 0x2f };
                 userIdRequestBytes.AddRange(junk);
                 userIdRequestBytes.AddRange(encoding.GetBytes(user));
@@ -1134,6 +1134,7 @@ namespace PVPNetConnect
                         //If it isn't, give an error and remove the callback if there is one.
                         if (result["result"].Equals("_error"))
                         {
+                            System.Diagnostics.Debug.WriteLine(result.GetTO("data")["faultString"]);
                             Error(GetErrorMessage(result), GetErrorCode(result), ErrorType.Receive);
                         }
 
@@ -1200,7 +1201,7 @@ namespace PVPNetConnect
                                                 body.type.Equals(
                                                 "com.riotgames.platform.gameinvite.contract.LobbyStatus"))
                                                 MessageReceived(new LobbyStatus(body));
-                                            
+
                                             //MessageReceived(to["body"]);
                                         })).Start();
                                     }

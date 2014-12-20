@@ -26,6 +26,11 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Change();
+            if (Client.Dev == true)
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                MatchHistoryBetaTab.Visibility = Visibility.Visible;
+            }));
         }
 
         public void Change()
@@ -143,6 +148,7 @@ namespace LegendaryClient.Windows
                     LeagueHeader.Visibility = Visibility.Collapsed;
             }));
         }
+
 
         private void TabContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
