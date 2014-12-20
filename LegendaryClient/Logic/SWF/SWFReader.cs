@@ -39,6 +39,31 @@ namespace LegendaryClient.Logic.SWF
                 Tags.Add(b);
             }
         }
+        public SWFReader(Stream stream)
+        {
+            Tags = new List<Tag>();
+            using (var b = new BinaryReader(stream))
+                if (b.PeekChar() == 'C') //Zlib Compressed
+                    Uncompress(b);
+
+            if (SWFBinary == null)
+                SWFBinary = new BinaryReader(stream);
+
+            ReadSWFHeader();
+
+            bool readEndTag = false;
+            while (SWFBinary.BaseStream.Position < SWFBinary.BaseStream.Length && !readEndTag)
+            {
+                Tag b = ReadTag();
+                if (b == null)
+                    continue;
+
+                if (b is End)
+                    readEndTag = true;
+
+                Tags.Add(b);
+            }
+        }
 
         public SWFCompression SWFCompressionType { get; private set; }
 

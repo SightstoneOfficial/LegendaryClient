@@ -336,7 +336,16 @@ namespace LegendaryClient
         void control_MouseDown(object sender, MouseButtonEventArgs e)
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
-            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            object m = ((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            TinyRuneMasteryData smallData;
+            if (m.GetType() == typeof(TinyRuneMasteryData))
+            {
+                smallData = (TinyRuneMasteryData)m;
+            }
+            else
+            {
+                smallData = new TinyRuneMasteryData();
+            }
             try
             {
                 Mousegrid.Children.Remove(smallData);
@@ -351,14 +360,37 @@ namespace LegendaryClient
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
             control.Tooltip.Content = "Hover over for info";
-            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            object m = ((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            TinyRuneMasteryData smallData;
+            if (m.GetType() == typeof(TinyRuneMasteryData))
+            {
+                smallData = (TinyRuneMasteryData)m;
+            }
+            else
+            {
+                smallData = new TinyRuneMasteryData();
+            }
+            try
+            {
+                Mousegrid.Children.Remove(smallData);
+            }
+            catch { }
             Mousegrid.Children.Remove(smallData);
         }
 
         void controlMouseEnter(object sender, MouseEventArgs e)
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
-            TinyRuneMasteryData smallData = (TinyRuneMasteryData)((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            object m = ((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            TinyRuneMasteryData smallData;
+            if (m.GetType() == typeof(TinyRuneMasteryData))
+            {
+                smallData = (TinyRuneMasteryData)m;
+            }
+            else
+            {
+                smallData = new TinyRuneMasteryData();
+            }
             control.Tooltip.Content = "Click for even more info";
             mouseLocation = e.GetPosition(Mousegrid);
             smallData.HorizontalAlignment = HorizontalAlignment.Left;

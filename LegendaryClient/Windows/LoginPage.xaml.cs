@@ -29,6 +29,8 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Login;
 using SQLite;
+using LegendaryClient.Logic.SWF;
+using LegendaryClient.Logic.SWF.SWFTypes;
 
 #endregion
 
@@ -138,9 +140,17 @@ namespace LegendaryClient.Windows
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
 
-            //Retrieve latest client version
-            /*
-            SWFReader reader = new SWFReader("ClientLibCommon.dat");
+            string tempString = new WebClient().DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA").Split(new[] { Environment.NewLine },StringSplitOptions.None)[0];
+            string[] packages = new WebClient().DownloadString(
+                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
+                                    tempString + "/packages/files/packagemanifest").Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            foreach (string package in packages)
+            {
+                string usestring = package.Split(',')[0];
+                if (usestring.Contains("ClientLibCommon.dat"))
+                    new WebClient().DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live" + usestring), Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
+            }
+            SWFReader reader = new SWFReader(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
             foreach (Tag tag in reader.Tags)
             {
                 if (tag is DoABC)
@@ -151,11 +161,12 @@ namespace LegendaryClient.Windows
                         var str = System.Text.Encoding.Default.GetString(abcTag.ABCData);
                         //Ugly hack ahead - turn back now! (http://pastebin.com/yz1X4HBg)
                         string[] firstSplit = str.Split((char)6);
-                        string[] secondSplit = firstSplit[0].Split((char)18);
-                        //Client.Version = secondSplit[1];
+                        string[] secondSplit = firstSplit[0].Split((char)19);
+                        Client.Version = secondSplit[1];
                     }
                 }
-            }*/
+            }
+            
 
             if (!String.IsNullOrWhiteSpace(Settings.Default.SavedUsername))
             {

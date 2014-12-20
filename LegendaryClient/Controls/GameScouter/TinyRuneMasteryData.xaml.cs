@@ -29,7 +29,7 @@ namespace LegendaryClient.Controls.GameScouter
         {
 
         }
-        private void Leave(object sender, MouseEventArgs e)
+        private void MouseLeave(object sender, MouseEventArgs e)
         {
 
         }
