@@ -412,6 +412,7 @@ namespace LegendaryClient.Windows
                         {
                             setStartButtonText("Start Game");
                             inQueue = false;
+                            Client.inQueueTimer.Visibility = Visibility.Hidden;
                             Client.PVPNet.PurgeFromQueues();
                         }
                     }
@@ -423,6 +424,7 @@ namespace LegendaryClient.Windows
                 {
                     setStartButtonText("Start Game");
                     inQueue = false;
+                    Client.inQueueTimer.Visibility = Visibility.Hidden;
                 }));
             }
             else if (message is SearchingForMatchNotification)
@@ -512,6 +514,9 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.Leave();
             await Client.PVPNet.PurgeFromQueues();
+            inQueue = false;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                Client.inQueueTimer.Visibility = Visibility.Hidden)); 
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             Client.ClearPage(typeof(TeamQueuePage));
