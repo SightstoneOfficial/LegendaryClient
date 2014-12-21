@@ -389,9 +389,10 @@ namespace LegendaryClient.Windows
             selection = e;
         }
 
-        public void ProfileItem_Click(object sender, RoutedEventArgs e)
+        private void ProfileItem_Click(object sender, RoutedEventArgs e)
         {
-            uiLogic.UpdateProfile(LastPlayerItem.Username);
+            var item = (ChatPlayer)selection.AddedItems[0];
+            uiLogic.UpdateProfile(item.PlayerName.Content.ToString());
         }
 
 #pragma warning disable 4014
