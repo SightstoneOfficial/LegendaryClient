@@ -26,11 +26,11 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Change();
-            if (Client.Dev == true)
+            if (Client.Dev)
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                MatchHistoryBetaTab.Visibility = Visibility.Visible;
-            }));
+                {
+                    MatchHistoryBetaTab.Visibility = Visibility.Visible;
+                }));
         }
 
         public void Change()
@@ -42,7 +42,7 @@ namespace LegendaryClient.Windows
             Resources.MergedDictionaries.Add(themeAccent);
         }
 
-        public void ProfileCreate(string Name)
+        public void ProfileCreate(string name)
         {
             InGameContainer.Content = new Ingame();
             OverviewContainer.Content = new Overview();
@@ -52,9 +52,9 @@ namespace LegendaryClient.Windows
             RunesContainer.Content = new Runes();
             MasteriesContainer.Content = new Masteries();
             SkinsContainer.Content = new Skins();
-            LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline(Name);
+            LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline(name);
 
-            GetSummonerProfile(String.IsNullOrEmpty(Name) ? Client.LoginPacket.AllSummonerData.Summoner.Name : Name);
+            GetSummonerProfile(String.IsNullOrEmpty(name) ? Client.LoginPacket.AllSummonerData.Summoner.Name : name);
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -69,7 +70,7 @@ namespace LegendaryClient.Windows
             DifficultyProgressBar.Value = champ.ratingDifficulty;
 
             HPLabel.Content = string.Format("HP: {0} (+{1} per level)", champ.healthBase, champ.healthLevel);
-            ResourceLabel.Content = string.Format("MP: {0} (+{1} per level)", champ.manaBase,
+            ResourceLabel.Content = string.Format("{0}: {1} (+{2} per level)", champ.ResourceType, champ.manaBase,
                 champ.manaLevel);
             HPRegenLabel.Content = string.Format("HP/5: {0} (+{1} per level)", champ.healthRegenBase,
                 champ.healthRegenLevel);
@@ -100,13 +101,15 @@ namespace LegendaryClient.Windows
                 }
 
             if (champ.Spells != null)
-                foreach (Spell sp in champ.Spells)
-                {
-                    var detailAbility = new ChampionDetailAbility {DataContext = sp};
-                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", sp.Image);
-                    detailAbility.AbilityImage.Source = Client.GetImage(uriSource);
+                foreach (ChampionDetailAbility detailAbility in from sp in champ.Spells
+                    let uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", sp.Image)
+                    select new ChampionDetailAbility
+                    {
+                        AbilityImage = {Source = Client.GetImage(uriSource)},
+                        AbilityName = {Content = sp.Name},
+                        AbilityDescription = {Text = sp.Description.Replace("<br>", Environment.NewLine)}
+                    })
                     AbilityListView.Items.Add(detailAbility);
-                }
 
             ChampionImage.Source =
                 Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.splashPath));
