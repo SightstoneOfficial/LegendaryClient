@@ -1,14 +1,16 @@
 ﻿#region
-using LegendaryClient.Patcher.Logic;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+
 using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using LegendaryClient.Patcher.Logic;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+
 #endregion
 
 namespace LegendaryClient.Patcher.Pages
@@ -20,7 +22,7 @@ namespace LegendaryClient.Patcher.Pages
     /// </summary>
     public partial class PatcherPage
     {
-        private String _executingDirectory;
+        private readonly String _executingDirectory;
         private Boolean _isLogVisible;
 
         public PatcherPage()
@@ -47,14 +49,14 @@ namespace LegendaryClient.Patcher.Pages
                 File.Delete(Path.Combine(_executingDirectory, "LegendaryClientPatcher.log"));
             }
 
-            
-            load();
+
+            Load();
             //LogTextBox(CreateConfigurationmanifest());
         }
 
-        private async void load()
+        private static async void Load()
         {
-            PVPNetConnect.PVPNetConnection connection = new PVPNetConnect.PVPNetConnection();
+            PVPNetConnection connection = new PVPNetConnection();
             ChampionDTO[] champs = await connection.GetAvailableChampions();
             throw new Exception(champs[0].SkinName);
         }
