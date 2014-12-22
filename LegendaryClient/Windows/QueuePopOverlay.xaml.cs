@@ -1,31 +1,34 @@
-﻿using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
+﻿#region
+
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Threading;
-using System.Linq;
-using System.Threading.Tasks;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Leagues.Pojo;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+using Timer = System.Timers.Timer;
+
+#endregion
 
 namespace LegendaryClient.Windows
 {
     /// <summary>
-    /// Interaction logic for QueuePopOverlay.xaml
+    ///     Interaction logic for QueuePopOverlay.xaml
     /// </summary>
-    public partial class QueuePopOverlay : Page
+    public partial class QueuePopOverlay
     {
+        private static Timer QueueTimer;
+        private readonly Page previousPage;
         public bool ReverseString = false;
-        private static System.Timers.Timer QueueTimer;
         public int TimeLeft = 12;
-        private Page previousPage;
 
         public QueuePopOverlay(GameDTO InitialDTO, Page previousPage)
         {
@@ -37,8 +40,8 @@ namespace LegendaryClient.Windows
                 this.previousPage = previousPage;
                 TimeLeft = InitialDTO.JoinTimerDuration;
                 Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
-                QueueTimer = new System.Timers.Timer(1000);
-                QueueTimer.Elapsed += new ElapsedEventHandler(QueueElapsed);
+                QueueTimer = new Timer(1000);
+                QueueTimer.Elapsed += QueueElapsed;
                 QueueTimer.Enabled = true;
             }
         }
@@ -47,27 +50,26 @@ namespace LegendaryClient.Windows
         {
             if (TimeLeft <= 0)
                 return;
+
             TimeLeft = TimeLeft - 1;
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                TimerLabel.Content = TimeLeft;
-            }));
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { TimerLabel.Content = TimeLeft; }));
         }
 
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
-            if (message.GetType() == typeof(GameDTO))
+            if (message.GetType() == typeof (GameDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    GameDTO QueueDTO = message as GameDTO;
-                    if (QueueDTO.GameState == "TERMINATED")
+                    var QueueDTO = message as GameDTO;
+                    if (QueueDTO != null && QueueDTO.GameState == "TERMINATED")
                     {
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         return;
                     }
-                    else if (QueueDTO.GameState == "PRE_CHAMP_SELECT" || QueueDTO.GameState == "CHAMP_SELECT")
+                    if (QueueDTO != null &&
+                        (QueueDTO.GameState == "PRE_CHAMP_SELECT" || QueueDTO.GameState == "CHAMP_SELECT"))
                     {
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         string s = QueueDTO.GameState;
@@ -81,28 +83,33 @@ namespace LegendaryClient.Windows
                     }
 
                     int i = 0;
-                    string PlayerParticipantStatus = (string)QueueDTO.StatusOfParticipants;
+                    if (QueueDTO == null)
+                        return;
+
+                    var playerParticipantStatus = (string) QueueDTO.StatusOfParticipants;
                     if (ReverseString)
                     {
-                        string FirstHalf = PlayerParticipantStatus.Substring(0, PlayerParticipantStatus.Length / 2);
-                        string SecondHalf = PlayerParticipantStatus.Substring(PlayerParticipantStatus.Length / 2, PlayerParticipantStatus.Length / 2);
-                        PlayerParticipantStatus = SecondHalf + FirstHalf;
+                        string firstHalf = playerParticipantStatus.Substring(0, playerParticipantStatus.Length/2);
+                        string secondHalf = playerParticipantStatus.Substring(playerParticipantStatus.Length/2,
+                            playerParticipantStatus.Length/2);
+                        playerParticipantStatus = secondHalf + firstHalf;
                     }
-                    foreach (char c in PlayerParticipantStatus)
+                    foreach (char c in playerParticipantStatus)
                     {
                         if (c == '1') //If checked
                         {
                             QueuePopPlayer player = null;
-                            if (i < PlayerParticipantStatus.Length / 2) //Team 1
+                            if (i < playerParticipantStatus.Length/2) //Team 1
                             {
-                                if (i <= Team1ListBox.Items.Count - 1) player = (QueuePopPlayer)Team1ListBox.Items[i];
+                                if (i <= Team1ListBox.Items.Count - 1)
+                                    player = (QueuePopPlayer) Team1ListBox.Items[i];
                             }
-                            //Team 2
+                                //Team 2
                             else if (i - 5 <= Team2ListBox.Items.Count - 1)
-                            {
-                                player = (QueuePopPlayer)Team2ListBox.Items[i - (PlayerParticipantStatus.Length / 2)];
-                            }
-                            if (player != null) player.ReadyCheckBox.IsChecked = true;
+                                player = (QueuePopPlayer) Team2ListBox.Items[i - (playerParticipantStatus.Length/2)];
+
+                            if (player != null)
+                                player.ReadyCheckBox.IsChecked = true;
                         }
                         i++;
                     }
@@ -112,23 +119,26 @@ namespace LegendaryClient.Windows
 
         public async void InitializePop(GameDTO InitialDTO)
         {
-            List<Participant> AllParticipants = InitialDTO.TeamOne;
-            AllParticipants.AddRange(InitialDTO.TeamTwo);
+            List<Participant> allParticipants = InitialDTO.TeamOne;
+            allParticipants.AddRange(InitialDTO.TeamTwo);
             if (InitialDTO.TeamOne[0] is ObfuscatedParticipant)
-            {
                 ReverseString = true;
-            }
-            AllParticipants = AllParticipants.Distinct().ToList(); //Seems to have fixed the queuepopoverlay page crashing.
+
+            allParticipants = allParticipants.Distinct().ToList();
+            //Seems to have fixed the queuepopoverlay page crashing.
             //whichever team you're on sometimes duplicates and could not find a reason as it doesn't happen a lot.
             int i = 1;
-            foreach (Participant p in AllParticipants)
+            foreach (Participant p in allParticipants)
             {
-                QueuePopPlayer player = new QueuePopPlayer();
-                player.Width = 264;
-                player.Height = 70;
-                if (p is PlayerParticipant)
+                var player = new QueuePopPlayer
                 {
-                    PlayerParticipant playerPart = (PlayerParticipant)p;
+                    Width = 264,
+                    Height = 70
+                };
+                var part = p as PlayerParticipant;
+                if (part != null)
+                {
+                    PlayerParticipant playerPart = part;
                     if (!String.IsNullOrEmpty(playerPart.SummonerName))
                     {
                         player.PlayerLabel.Content = playerPart.SummonerName;
@@ -136,15 +146,14 @@ namespace LegendaryClient.Windows
 
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                         {
-                            var playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
+                            SummonerLeaguesDTO playerLeagues =
+                                await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
 
-                            foreach (LeagueListDTO x in playerLeagues.SummonerLeagues)
-                            {
-                                if (x.Queue == "RANKED_SOLO_5x5")
-                                {
-                                    player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
-                                }
-                            }
+                            foreach (
+                                LeagueListDTO x in
+                                    playerLeagues.SummonerLeagues.Where(x => x.Queue == "RANKED_SOLO_5x5"))
+                                player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+
                             if (String.IsNullOrEmpty(player.RankLabel.Content.ToString()))
                                 player.RankLabel.Content = "Unranked";
                         }));
@@ -153,7 +162,7 @@ namespace LegendaryClient.Windows
                     }
                     else
                     {
-                        Client.Log(playerPart.SummonerId.ToString());
+                        Client.Log(playerPart.SummonerId.ToString(CultureInfo.InvariantCulture));
                         player.PlayerLabel.Content = "Summoner " + i;
                         i++;
                         player.RankLabel.Content = "";
@@ -162,17 +171,17 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    ObfuscatedParticipant oPlayer = p as ObfuscatedParticipant;
-                    player.PlayerLabel.Content = "Summoner " + (oPlayer.GameUniqueId - (oPlayer.GameUniqueId > 5 ? 5 : 0));
+                    var oPlayer = p as ObfuscatedParticipant;
+                    if (oPlayer != null)
+                        player.PlayerLabel.Content = "Summoner " +
+                                                     (oPlayer.GameUniqueId - (oPlayer.GameUniqueId > 5 ? 5 : 0));
                     player.RankLabel.Content = "";
                     Team2ListBox.Items.Add(player);
                 }
             }
 
             if (Client.AutoAcceptQueue)
-            {
                 await Client.PVPNet.AcceptPoppedGame(true);
-            }
         }
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)
