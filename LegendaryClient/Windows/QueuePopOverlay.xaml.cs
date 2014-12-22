@@ -29,6 +29,7 @@ namespace LegendaryClient.Windows
         private readonly Page previousPage;
         public bool ReverseString = false;
         public int TimeLeft = 12;
+        bool accepted = false;
 
         public QueuePopOverlay(GameDTO InitialDTO, Page previousPage)
         {
@@ -66,6 +67,7 @@ namespace LegendaryClient.Windows
                     {
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                        Client.SendAccept(accepted);
                         return;
                     }
                     if (QueueDTO != null &&
@@ -80,6 +82,7 @@ namespace LegendaryClient.Windows
                         Client.GameStatus = "championSelect";
                         Client.SetChatHover();
                         Client.SwitchPage(new ChampSelectPage(previousPage));
+                        Client.SendAccept(accepted);
                     }
 
                     int i = 0;
@@ -181,12 +184,16 @@ namespace LegendaryClient.Windows
             }
 
             if (Client.AutoAcceptQueue)
+            {
                 await Client.PVPNet.AcceptPoppedGame(true);
+                accepted = true;
+            }
         }
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.AcceptPoppedGame(true);
+            accepted = true;
         }
     }
 }

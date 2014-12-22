@@ -50,6 +50,7 @@ namespace LegendaryClient.Windows
         public PlayPage()
         {
             InitializeComponent();
+            Client.PlayerAccepedQueue += Client_PlayerAccepedQueue;
             Change();
 
             Client.IsOnPlayPage = true;
@@ -60,6 +61,13 @@ namespace LegendaryClient.Windows
             PingElapsed(1, null);
         }
 
+        private async void Client_PlayerAccepedQueue(bool accept)
+        {
+            if (accept)
+                Client.PVPNet.OnMessageReceived += RestartDodgePop;
+            else
+                await LeaveAllQueues();
+        }
         public void Change()
         {
             var themeAccent = new ResourceDictionary
@@ -155,8 +163,8 @@ namespace LegendaryClient.Windows
                             QueueButton = {Tag = config}
                         };
                         item.QueueButton.Click += QueueButton_Click;
-                        item.QueueButton.IsEnabled = false;
-                        item.QueueButton.Content = "Use Team Page";
+                        //item.QueueButton.IsEnabled = false;
+                        item.QueueButton.Content = "Queue (Beta)";
                         item.TeamQueueButton.Tag = config;
                         item.TeamQueueButton.Click += TeamQueueButton_Click;
                         item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
@@ -239,7 +247,6 @@ namespace LegendaryClient.Windows
         {
             if (IsInGame())
                 return;
-
             //to queue
             if (InQueue == false)
             {
@@ -345,17 +352,32 @@ namespace LegendaryClient.Windows
                 return;
 
             var queue = message as GameDTO;
+            if (Client.runonce)
+                return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
+                Client.runonce = true;
                 Client.OverlayContainer.Content = new QueuePopOverlay(queue, this).Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
             }));
             Client.PVPNet.OnMessageReceived -= GotQueuePop;
         }
 
-        public void readdHandler()
+        private void RestartDodgePop(object sender, object message)
         {
-            Client.PVPNet.OnMessageReceived += GotQueuePop;
+            if (message is GameDTO)
+            {
+                var queue = message as GameDTO;
+                if (queue.GameState == "TERMINATED")
+                {
+                    Client.runonce = false;
+                    Client.PVPNet.OnMessageReceived += GotQueuePop;
+                }
+            }
+            else if (message is PlayerCredentialsDto)
+            {
+                Client.PVPNet.OnMessageReceived -= RestartDodgePop;
+            }
         }
 
         internal double HighestPingTime(IPAddress[] addresses)
@@ -449,7 +471,7 @@ namespace LegendaryClient.Windows
             Client.ClearPage(typeof (ChampSelectPage));
 
             foreach (Button realButton in ButtonTimers.Keys.Select(btn => (Button) btn.Tag))
-                realButton.Content = "Queue";
+                realButton.Content = "Queue (Beta)";
 
             ButtonTimers.Clear();
             Queues.Clear();

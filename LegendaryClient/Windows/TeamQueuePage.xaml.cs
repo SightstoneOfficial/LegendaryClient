@@ -404,17 +404,8 @@ namespace LegendaryClient.Windows
                 {
                     if (QueueDTO.GameState == "TERMINATED")
                     {
-                        Client.inQueueTimer.Visibility = Visibility.Visible;
                         Client.HasPopped = false;
-                        Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.OverlayContainer.Content = null;
-                        if (QueueDTO.QueuePosition != 0) //They changed this as soon as I fixed it. Damnit riot lol.
-                        {
-                            setStartButtonText("Start Game");
-                            inQueue = false;
-                            Client.inQueueTimer.Visibility = Visibility.Hidden;
-                            Client.PVPNet.PurgeFromQueues();
-                        }
+                        Client.PVPNet.OnMessageReceived += GotQueuePop;
                     }
                 }));
             }
@@ -568,6 +559,28 @@ namespace LegendaryClient.Windows
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
             }
+        }
+        private void RestartDodgePop(object sender, object message)
+        {
+            if (message is GameDTO)
+            {
+                var queue = message as GameDTO;
+                if (queue.GameState == "TERMINATED")
+                {
+                    Client.runonce = false;
+                    Client.PlayerAccepedQueue += Client_PlayerAccepedQueue;
+                }
+            }
+            else if (message is PlayerCredentialsDto)
+            {
+                Client.PVPNet.OnMessageReceived -= RestartDodgePop;
+            }
+        }
+
+        void Client_PlayerAccepedQueue(bool accept)
+        {
+            if (accept)
+                Client.PVPNet.OnMessageReceived += RestartDodgePop;
         }
 
         private bool makeRanked = false;

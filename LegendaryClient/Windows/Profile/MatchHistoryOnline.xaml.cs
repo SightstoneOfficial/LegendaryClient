@@ -153,7 +153,6 @@ namespace LegendaryClient.Windows.Profile
             {
                 MatchStats stats = GameStats[GamesListView.SelectedIndex];
                 Browser.Source = new Uri("http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + (int)Math.Round(stats.Game.GameId) + "/" + stats.Game.UserId + "?tab=overview");
-                
             }
         }
     }

@@ -64,6 +64,15 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
+        public delegate void OnAccept(bool accept);
+
+        public static event OnAccept PlayerAccepedQueue;
+
+        public static void SendAccept(bool accept)
+        {
+            PlayerAccepedQueue(accept);
+        }
+
         public static string ToSHA1(this string input)
         {
             using (SHA1Managed sha1 = new SHA1Managed())
