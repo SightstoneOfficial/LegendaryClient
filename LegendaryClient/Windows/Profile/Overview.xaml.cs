@@ -54,18 +54,18 @@ namespace LegendaryClient.Windows.Profile
             Client.PVPNet.RetrievePlayerStatsByAccountId(accountId, "3", GotPlayerStats);
         }
 
-        public void RenderKudos(LcdsResponseString TotalKudos)
+        public void RenderKudos(LcdsResponseString totalKudos)
         {
             KudosListView.Items.Clear();
-            TotalKudos.Value = TotalKudos.Value.Replace("{\"totals\":[0,", "").Replace("]}", "");
-            string[] kudos = TotalKudos.Value.Split(',');
-            var item = new KudosItem("Friendly", kudos[0]);
+            totalKudos.Value = totalKudos.Value.Replace("{\"totals\":[0,", "").Replace("]}", "");
+            string[] kudos = totalKudos.Value.Split(',');
+            var item = new KudosItem("Friendly", kudos[0]) { Height = 52 };
             KudosListView.Items.Add(item);
-            item = new KudosItem("Helpful", kudos[1]);
+            item = new KudosItem("Helpful", kudos[1]) { Height = 52 };
             KudosListView.Items.Add(item);
-            item = new KudosItem("Teamwork", kudos[2]);
+            item = new KudosItem("Teamwork", kudos[2]) { Height = 52 };
             KudosListView.Items.Add(item);
-            item = new KudosItem("Honorable Opponent", kudos[3]);
+            item = new KudosItem("Honorable Opponent", kudos[3]) { Height = 52 };
             KudosListView.Items.Add(item);
         }
 
@@ -91,7 +91,7 @@ namespace LegendaryClient.Windows.Profile
                     PlayerStatus = {Content = info.TotalGamesPlayed + " games played"},
                     ProfileImage = {Source = champions.GetChampion(champion.id).icon},
                     Background = new SolidColorBrush(Color.FromArgb(102, 80, 80, 80)),
-                    Height = 51.5,
+                    Height = 52,
                     Width = 278
                 };
                 TopChampionsListView.Items.Add(player);
@@ -150,7 +150,6 @@ namespace LegendaryClient.Windows.Profile
                                 item =>
                                     new KudosItem(item.Key.ToString(), item.Value.ToString())
                                     {
-                                        MinWidth = gameMode.AggregatedStats.Stats.Count < 15 ? 972 : 962,
                                         MinHeight = 18
                                     }))
                     {

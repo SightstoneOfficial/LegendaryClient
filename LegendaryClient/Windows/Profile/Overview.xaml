@@ -88,6 +88,12 @@
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   Foreground="White" Background="#66505050"
-                  BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                  BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </Grid>
 </Page>
