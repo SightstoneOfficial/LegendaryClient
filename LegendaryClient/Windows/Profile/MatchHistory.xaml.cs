@@ -281,11 +281,6 @@ namespace LegendaryClient.Windows.Profile
 
             PlayerItem.Margin = new Thickness(XMargin + 5, YMargin + 5, 0, 0);
         }
-
-        private void MatchLink_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(MatchLinkOnline); 
-        }
     }
 
     public class MatchStats

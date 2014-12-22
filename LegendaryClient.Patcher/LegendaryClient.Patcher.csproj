@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LegendaryClient.Patcher</RootNamespace>
     <AssemblyName>LegendaryClient.Patcher</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,6 +49,7 @@
       <HintPath>..\DLLS\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -75,6 +77,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Logic\Client.cs" />
+    <Compile Include="Logic\Data\FreeChamps.cs" />
+    <Compile Include="Logic\Data\ServerStatus.cs" />
     <Compile Include="Logic\LeagueDownloadLogic.cs" />
     <Compile Include="Logic\Region\MainRegion.cs" />
     <Compile Include="Logic\Region\NA.cs" />

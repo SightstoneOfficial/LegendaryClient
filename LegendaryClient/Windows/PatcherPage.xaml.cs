@@ -103,23 +103,7 @@ namespace LegendaryClient.Windows
 
         private void SkipPatchButton_Click(object sender, RoutedEventArgs e)
         {
-            var updateClient = new WebClient();
-            /*string Package = UpdateClient.DownloadString("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[0] + "/packages/files/packagemanifest");
-            try
-            {
-                UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[0] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-            }
-            catch
-            {
-                try
-                {
-                    UpdateClient.DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestversion[1] + "/files/assets/data/gameStats/gameStats_en_US.sqlite"), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
-                }
-                catch
-                {
-                    Client.Log("Unable to update gamestats file. Perhaps a different LegendaryClient is running?", "Small Error");
-                }
-            }*/
+            //var updateClient = new WebClient();
             Client.SwitchPage(new LoginPage());
         }
 

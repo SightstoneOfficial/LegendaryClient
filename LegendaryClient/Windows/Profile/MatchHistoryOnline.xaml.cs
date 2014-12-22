@@ -4,6 +4,11 @@ using System;
 using System.Windows;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
+using System.Windows.Controls;
+using System.Threading;
+using System.Windows.Threading;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
+using System.Collections.Generic;
 
 #endregion
 
@@ -15,7 +20,7 @@ namespace LegendaryClient.Windows.Profile
     public partial class MatchHistoryOnline
     {
         private string SumName;
-
+        private List<MatchStats> GameStats = new List<MatchStats>();
         public MatchHistoryOnline(String name = "")
         {
             InitializeComponent();
@@ -26,7 +31,6 @@ namespace LegendaryClient.Windows.Profile
                 name = Client.LoginPacket.AllSummonerData.Summoner.Name;
 
             SumName = name;
-            GetData();
         }
 
         public void Change()
@@ -38,17 +42,41 @@ namespace LegendaryClient.Windows.Profile
             Resources.MergedDictionaries.Add(themeAccent);
         }
 
-        public void GetData()
+        public void Update(double AccountId)
         {
-            //PlayerMatchHistory history = new PlayerMatchHistory();
-            //HistoryAccount acc = await history.GetPlayerAsync(Client.Region.InternalName, SumName);
-            //PlayerListGames games = await history.GetGamesAsync(acc);
+            Client.PVPNet.GetRecentGames(AccountId, new RecentGames.Callback(GotRecentGames));
+        }
 
-            //This is the first game
-            //Game game = await history.GetFullGameDataAsync(games.games.games[0]);
+        public void GotRecentGames(RecentGames result)
+        {
+            GameStats.Clear();
+            result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
+            foreach (PlayerGameStats Game in result.GameStatistics)
+            {
+                Game.GameType = Client.TitleCaseString(Game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
+                MatchStats Match = new MatchStats();
 
-            //This is the IndepthTimeline
-            //IndepthTimeline timeline = await history.GetGameTimelineAsync(games.games.games[0]);
+                foreach (RawStat Stat in Game.Statistics)
+                {
+                    var type = typeof(MatchStats);
+                    string fieldName = Client.TitleCaseString(Stat.StatType.Replace('_', ' ')).Replace(" ", "");
+                    var f = type.GetField(fieldName);
+                    f.SetValue(Match, Stat.Value);
+                }
+
+                Match.Game = Game;
+                
+                GameStats.Add(Match);
+            }
+        }
+
+        private void GamesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (GamesListView.SelectedIndex != -1)
+            {
+                MatchStats stats = GameStats[GamesListView.SelectedIndex];
+                Browser.Source = new Uri("http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + (int)Math.Round(stats.Game.GameId) + "/" + stats.Game.UserId);
+            }
         }
     }
 }
