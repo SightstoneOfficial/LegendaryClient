@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -101,17 +101,15 @@ namespace LegendaryClient.Windows
                 }
 
             if (champ.Spells != null)
-                foreach (Spell sp in champ.Spells)
-                {
-                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", sp.Image);
-                    var detailAbility = new ChampionDetailAbility
+                foreach (ChampionDetailAbility detailAbility in from sp in champ.Spells
+                    let uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", sp.Image)
+                    select new ChampionDetailAbility
                     {
-                        AbilityImage = { Source = Client.GetImage(uriSource) },
-                        AbilityName = { Content = sp.Name },
-                        AbilityDescription = { Text = sp.Description.Replace("<br>", Environment.NewLine) }
-                    };
+                        AbilityImage = {Source = Client.GetImage(uriSource)},
+                        AbilityName = {Content = sp.Name},
+                        AbilityDescription = {Text = sp.Description.Replace("<br>", Environment.NewLine)}
+                    })
                     AbilityListView.Items.Add(detailAbility);
-                }
 
             ChampionImage.Source =
                 Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.splashPath));
