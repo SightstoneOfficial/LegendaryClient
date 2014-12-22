@@ -66,7 +66,7 @@
                Content="Level 0" FontWeight="ExtraLight" FontSize="22" />
         <TextBox x:Name="SearchTextBox" Width="180" Height="23" Margin="0,30,90,0"
                  HorizontalAlignment="Right" VerticalAlignment="Top" TextWrapping="NoWrap" />
-        <Button x:Name="SearchButton" Width="75" Height="24" Margin="0,30,10,0" HorizontalAlignment="Right"
+        <Button x:Name="SearchButton" Width="75" Height="26" Margin="0,30,10,0" HorizontalAlignment="Right"
                 VerticalAlignment="Top" Content="Search" IsDefault="True" Click="SearchButton_Click" />
         <TabControl x:Name="TabContainer" Margin="10,100,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                     SelectionChanged="TabContainer_SelectionChanged">
