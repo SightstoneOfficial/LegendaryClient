@@ -52,7 +52,7 @@ namespace LegendaryClient.Windows
             RunesContainer.Content = new Runes();
             MasteriesContainer.Content = new Masteries();
             SkinsContainer.Content = new Skins();
-            LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline(name);
+            LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline();
 
             GetSummonerProfile(String.IsNullOrEmpty(name) ? Client.LoginPacket.AllSummonerData.Summoner.Name : name);
         }
@@ -122,6 +122,10 @@ namespace LegendaryClient.Windows
                 SkinsTab.Visibility = Visibility.Hidden;
                 MatchHistoryBetaTab.Margin = new Thickness(-211, 0, 211, 0);
             }
+
+            var historyBeta = LeagueMatchHistoryBetaContainer.Content as MatchHistoryOnline;
+            if (historyBeta != null)
+                historyBeta.Update(summoner.AcctId);
 
             var history = MatchHistoryContainer.Content as MatchHistory;
             if (history != null)

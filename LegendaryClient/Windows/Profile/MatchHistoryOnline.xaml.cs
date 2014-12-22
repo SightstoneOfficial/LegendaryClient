@@ -9,6 +9,9 @@ using System.Threading;
 using System.Windows.Threading;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System.Collections.Generic;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic.SQLite;
+using System.Windows.Media;
 
 #endregion
 
@@ -65,9 +68,83 @@ namespace LegendaryClient.Windows.Profile
                 }
 
                 Match.Game = Game;
-                
+
                 GameStats.Add(Match);
             }
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                GamesListView.Items.Clear();
+                foreach (MatchStats stats in GameStats)
+                {
+                    RecentGameOverview item = new RecentGameOverview();
+                    champions GameChamp = champions.GetChampion((int)Math.Round(stats.Game.ChampionId));
+                    item.ChampionImage.Source = GameChamp.icon;
+                    item.ChampionNameLabel.Content = GameChamp.displayName;
+                    item.ScoreLabel.Content =
+                        string.Format("{0}/{1}/{2} ",
+                        stats.ChampionsKilled,
+                        stats.NumDeaths,
+                        stats.Assists);
+
+                    switch (stats.Game.QueueType)
+                    {
+                        case "NORMAL":
+                            item.ScoreLabel.Content += "(Normal)";
+                            break;
+                        case "NORMAL_3x3":
+                            item.ScoreLabel.Content += "(Normal 3v3)";
+                            break;
+                        case "ARAM_UNRANKED_5x5":
+                            item.ScoreLabel.Content += "(ARAM)";
+                            break;
+                        case "NONE":
+                            item.ScoreLabel.Content += "(Custom)";
+                            break;
+                        case "RANKED_SOLO_5x5":
+                            item.ScoreLabel.Content += "(Ranked 5v5)";
+                            break;
+                        case "RANKED_TEAM_5x5":
+                            item.ScoreLabel.Content += "(Ranked Team 5v5)";
+                            break;
+                        case "RANKED_TEAM_3x3":
+                            item.ScoreLabel.Content += "(Ranked Team 3v3)";
+                            break;
+                        case "CAP_5x5":
+                            item.ScoreLabel.Content += "(Team Builder)";
+                            break;
+                        case "BOT":
+                            item.ScoreLabel.Content += "(Bots)";
+                            break;
+                        case "KING_PORO":
+                            item.ScoreLabel.Content += "(King Poro)";
+                            break;
+                        default:
+                            Client.Log(stats.Game.QueueType);
+                            item.ScoreLabel.Content += "Please upload this log to github.";
+                            break;
+                    }
+
+                    item.CreepScoreLabel.Content = stats.MinionsKilled + " minions";
+                    item.DateLabel.Content = stats.Game.CreateDate;
+                    item.IPEarnedLabel.Content = "+" + stats.Game.IpEarned + " IP";
+                    item.PingLabel.Content = stats.Game.UserServerPing + "ms";
+
+                    BrushConverter bc = new BrushConverter();
+                    Brush brush = (Brush)bc.ConvertFrom("#FF609E74");
+
+                    if (stats.Lose == 1)
+                        brush = (Brush)bc.ConvertFrom("#FF9E6060");
+
+                    else if (stats.Game.IpEarned == 0)
+                        brush = (Brush)bc.ConvertFrom("#FFE27100");
+
+                    item.GridView.Background = brush;
+                    item.GridView.Width = 250;
+                    GamesListView.Items.Add(item);
+                }
+                if (GamesListView.Items.Count > 0) GamesListView.SelectedIndex = 0;
+            }));
         }
 
         private void GamesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -76,6 +153,7 @@ namespace LegendaryClient.Windows.Profile
             {
                 MatchStats stats = GameStats[GamesListView.SelectedIndex];
                 Browser.Source = new Uri("http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + (int)Math.Round(stats.Game.GameId) + "/" + stats.Game.UserId);
+                
             }
         }
     }
