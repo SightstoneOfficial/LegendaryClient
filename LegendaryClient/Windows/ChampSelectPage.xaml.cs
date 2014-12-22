@@ -1413,6 +1413,7 @@ namespace LegendaryClient.Windows
             }));
         }
 
+        string firstPlayer = null;
         private void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
             connected = true;
@@ -1449,13 +1450,19 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Solve multipile joins
-
+                if (firstPlayer == null)
+                    firstPlayer = participant.Nick;
+                else
+                {
+                    if (firstPlayer == participant.Nick)
+                    {
+                        Chatroom.OnParticipantJoin -= Chatroom_OnParticipantJoin;
+                        Chatroom.OnRoomMessage -= Chatroom_OnRoomMessage;
+                    }
+                }
 
                 if (PreviousPlayers.Any(previousPlayer => previousPlayer == participant.Nick))
                 {
-                    Chatroom.OnRoomMessage -= Chatroom_OnRoomMessage;
-                    Chatroom.OnParticipantJoin -= Chatroom_OnParticipantJoin;
-
                     return;
                 }
 
