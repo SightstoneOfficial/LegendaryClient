@@ -9,6 +9,9 @@
 
     <Page.Resources>
         <ResourceDictionary>
+            <Style TargetType="{x:Type ListViewItem}">
+                <Setter Property="Width" Value="{Binding (ListView.ActualWidth), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}"/>
+            </Style>
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="#FF474747" />
                 <Setter Property="BorderBrush" Value="{x:Null}" />
