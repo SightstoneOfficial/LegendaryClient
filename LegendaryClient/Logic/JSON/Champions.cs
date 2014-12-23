@@ -17,7 +17,7 @@ namespace LegendaryClient.Logic.JSON
     {
         public static void InsertExtraChampData(champions champ)
         {
-            string champJson =
+            var champJson =
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "champion",
                     champ.name + ".json"));
 
@@ -55,6 +55,9 @@ namespace LegendaryClient.Logic.JSON
                 foreach (Dictionary<string, object> x in (ArrayList) champSpells["vars"])
                 {
                     var type = x["link"] as string;
+                    if (type == null)
+                        continue;
+
                     type = type.Replace("spelldamage", "Ability Power");
                     type = type.Replace("bonusattackdamage", "Bonus Attack Damage");
                     type = type.Replace("attackdamage", "Total Attack Damage");
@@ -63,8 +66,8 @@ namespace LegendaryClient.Logic.JSON
                         Convert.ToString(x["coeff"]) + " " + type);
                 }
 
-                int i = 0;
-                foreach (string scaling in from ArrayList x in (ArrayList) champSpells["effect"]
+                var i = 0;
+                foreach (var scaling in from ArrayList x in (ArrayList) champSpells["effect"]
                     where x != null
                     select x.Cast<object>().Aggregate("", (current, y) => current + (y + "/"))
                     into scaling
