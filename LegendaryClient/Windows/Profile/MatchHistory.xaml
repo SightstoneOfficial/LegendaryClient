@@ -59,14 +59,15 @@
     <Grid>
         <ListView x:Name="GamesListView" Width="300" Margin="10,10,0,10" HorizontalAlignment="Left"
                   VerticalAlignment="Stretch" Foreground="White" Background="#66505050"
-                  SelectionChanged="GamesListView_SelectionChanged" BorderBrush="{x:Null}">
+                  SelectionChanged="GamesListView_SelectionChanged" BorderBrush="{x:Null}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn />
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="BlueListView" Width="60" Height="296" Margin="320,10,0,0"
+        <ListView x:Name="BlueListView" Width="60" Height="294" Margin="320,10,0,0"
                   HorizontalAlignment="Left" VerticalAlignment="Top"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050"
@@ -79,7 +80,7 @@
         </ListView>
         <Label Height="65" Margin="0,67,-330,0" HorizontalAlignment="Center" VerticalAlignment="Top"
                Content="VS." FontWeight="ExtraLight" FontSize="50" Foreground="White" />
-        <ListView x:Name="PurpleListView" Width="60" Height="296" Margin="0,10,10,0"
+        <ListView x:Name="PurpleListView" Width="60" Height="294" Margin="0,10,10,0"
                   HorizontalAlignment="Right"
                   VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.VerticalScrollBarVisibility="Disabled"

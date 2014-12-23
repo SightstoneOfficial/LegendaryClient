@@ -1,18 +1,41 @@
-﻿<UserControl x:Name="RecentOverview"
-             x:Class="LegendaryClient.Controls.RecentGameOverview"
+﻿<UserControl x:Class="LegendaryClient.Controls.RecentGameOverview"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             x:Name="RecentOverview"
              mc:Ignorable="d"
              d:DesignHeight="70" d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid x:Name="GridView">
-        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="64" Margin="2.5,2.5,0,0" VerticalAlignment="Top" Width="64" Stretch="UniformToFill" />
-        <Label x:Name="ChampionNameLabel" Content="ChampionName" HorizontalAlignment="Left" Margin="65,2.5,0,0" VerticalAlignment="Top" Foreground="White" />
-        <Label x:Name="ScoreLabel" Content="Label" HorizontalAlignment="Right" Margin="0,2.5,5,0" VerticalAlignment="Top" Foreground="White" />
-        <Label x:Name="IPEarnedLabel" Content="Label" HorizontalAlignment="Left" Margin="65,20,0,0" VerticalAlignment="Top" Foreground="#FF17FF00" Background="{x:Null}" />
-        <Label x:Name="CreepScoreLabel" Content="Label" HorizontalAlignment="Right" Margin="0,20,5,0" VerticalAlignment="Top" Foreground="White" />
-        <Label x:Name="DateLabel" Content="Label" HorizontalAlignment="Left" Margin="65,0,0,2.5" VerticalAlignment="Bottom" Foreground="White" />
-        <Label x:Name="PingLabel" Content="Label" HorizontalAlignment="Right" Margin="0,38.5,5,0" VerticalAlignment="Top" Foreground="White" />
+        <Image x:Name="ChampionImage" Width="64" Height="64" Margin="2.5,2.5,0,0"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="UniformToFill" />
+        <Label x:Name="ChampionNameLabel" Margin="65,2.5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="ChampionName" Foreground="White" />
+        <Label x:Name="ScoreLabel" Margin="0,2.5,5,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+               Content="Label" Foreground="White" />
+        <Label x:Name="IPEarnedLabel" Margin="65,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Label" Foreground="#FF17FF00" Background="{x:Null}" />
+        <Label x:Name="CreepScoreLabel" Margin="0,20,5,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+               Content="Label" Foreground="White" />
+        <Label x:Name="DateLabel" Margin="65,0,0,2.5" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+               Content="Label" Foreground="White" />
+        <Label x:Name="PingLabel" Margin="0,38.5,5,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+               Content="Label" Foreground="White" />
     </Grid>
 </UserControl>
