@@ -18,7 +18,7 @@
 
         <TextBox x:Name="NotificationTextBox" Text="Enter Channel Name to Join" HorizontalAlignment="Left" Height="28"
                  Margin="10,44,0,0" TextWrapping="Wrap" FontWeight="ExtraLight" FontSize="14" Foreground="White"
-                 VerticalAlignment="Top" Width="280" Background="#E5505050" BorderBrush="{x:Null}" />
+                 VerticalAlignment="Top" Width="280" Background="#E5505050" IsReadOnly="True" BorderBrush="{x:Null}" />
 
         <Button x:Name="OkayButton" Style="{x:Null}" Content="Join" HorizontalAlignment="Left" Margin="238,80,0,0"
                 Foreground="Black" VerticalAlignment="Top" IsDefault="True" Width="50" Height="25"

@@ -20,7 +20,7 @@ namespace LegendaryClient.Controls
 
         private void JoinButton_Click(object sender, RoutedEventArgs e)
         {
-            string jid =
+            var jid =
                 Client.GetChatroomJID(
                     Client.GetObfuscatedChatroomName(ChatNameTextBox.Text.ToLower(), ChatPrefixes.Public), string.Empty,
                     true);
