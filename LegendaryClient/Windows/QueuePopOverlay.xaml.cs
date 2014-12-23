@@ -29,22 +29,22 @@ namespace LegendaryClient.Windows
         private readonly Page previousPage;
         public bool ReverseString = false;
         public int TimeLeft = 12;
-        bool accepted = false;
+        private bool accepted;
 
         public QueuePopOverlay(GameDTO InitialDTO, Page previousPage)
         {
-            if (InitialDTO != null)
-            {
-                InitializeComponent();
-                Client.FocusClient();
-                InitializePop(InitialDTO);
-                this.previousPage = previousPage;
-                TimeLeft = InitialDTO.JoinTimerDuration;
-                Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
-                QueueTimer = new Timer(1000);
-                QueueTimer.Elapsed += QueueElapsed;
-                QueueTimer.Enabled = true;
-            }
+            if (InitialDTO == null)
+                return;
+
+            InitializeComponent();
+            Client.FocusClient();
+            InitializePop(InitialDTO);
+            this.previousPage = previousPage;
+            TimeLeft = InitialDTO.JoinTimerDuration;
+            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            QueueTimer = new Timer(1000);
+            QueueTimer.Elapsed += QueueElapsed;
+            QueueTimer.Enabled = true;
         }
 
         internal void QueueElapsed(object sender, ElapsedEventArgs e)
@@ -107,8 +107,7 @@ namespace LegendaryClient.Windows
                                 if (i <= Team1ListBox.Items.Count - 1)
                                     player = (QueuePopPlayer) Team1ListBox.Items[i];
                             }
-                                //Team 2
-                            else if (i - 5 <= Team2ListBox.Items.Count - 1)
+                            else if (i - 5 <= Team2ListBox.Items.Count - 1) //Team 2
                                 player = (QueuePopPlayer) Team2ListBox.Items[i - (playerParticipantStatus.Length/2)];
 
                             if (player != null)
@@ -182,12 +181,11 @@ namespace LegendaryClient.Windows
                     Team2ListBox.Items.Add(player);
                 }
             }
+            if (!Client.AutoAcceptQueue)
+                return;
 
-            if (Client.AutoAcceptQueue)
-            {
-                await Client.PVPNet.AcceptPoppedGame(true);
-                accepted = true;
-            }
+            await Client.PVPNet.AcceptPoppedGame(true);
+            accepted = true;
         }
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)
