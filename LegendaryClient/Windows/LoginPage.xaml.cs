@@ -104,6 +104,8 @@ namespace LegendaryClient.Windows
                 orderby s.name
                 select s).ToList();
 
+            FreeToPlayChampions.GetInstance();
+
             foreach (champions c in Client.Champions)
             {
                 var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
@@ -113,6 +115,7 @@ namespace LegendaryClient.Windows
 
                 try
                 {
+                    c.IsFreeToPlay = FreeToPlayChampions.GetInstance().IsFreeToPlay(c);
                     Champions.InsertExtraChampData(c);
                     //why was this ever here? all of the needed info is already in the sqlite file
                 }
