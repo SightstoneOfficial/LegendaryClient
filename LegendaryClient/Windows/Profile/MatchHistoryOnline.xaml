@@ -1,4 +1,4 @@
-﻿<Page x:Class="LegendaryClient.Windows.Profile.MatchHistoryOnline"
+<Page x:Class="LegendaryClient.Windows.Profile.MatchHistoryOnline"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:my="http://schemas.awesomium.com/winfx"
@@ -58,10 +58,12 @@
     </Page.Resources>
 
     <Grid>
-        <my:WebControl x:Name="Browser"  Height="528" HorizontalAlignment="Right"
-                       VerticalAlignment="Stretch" Margin="0,10,10,10" Width="955" />
-        <ListView x:Name="GamesListView" SelectionChanged="GamesListView_SelectionChanged" Width="300" Margin="10,10,0,10" HorizontalAlignment="Left"
-                  VerticalAlignment="Stretch" Foreground="White" Background="#FF505050" BorderBrush="{x:Null}">
+        <my:WebControl x:Name="Browser" Width="955"
+                       Margin="0,10,10,10" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
+        <ListView x:Name="GamesListView" Width="300" Margin="10,10,0,10"
+                  HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                  SelectionChanged="GamesListView_SelectionChanged" Foreground="White" Background="#FF505050"
+                  BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn />
