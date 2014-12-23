@@ -1,22 +1,25 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Script.Serialization;
+using LegendaryClient.Logic.SQLite;
+
+#endregion
 
 namespace LegendaryClient.Logic.JSON
 {
-    class FreeToPlayChampions
+    internal class FreeToPlayChampions
     {
-        private static FreeToPlayChampions _instance = null;
-        private List<FreeToPlayChampion> champions = null;
-        private bool isLoaded = false;
+        private static FreeToPlayChampions _instance;
+        private readonly bool _isLoaded;
+        private List<FreeToPlayChampion> _champions;
 
         private FreeToPlayChampions()
         {
-            isLoaded = load();
+            _isLoaded = Load();
         }
 
         public static FreeToPlayChampions GetInstance()
@@ -24,18 +27,19 @@ namespace LegendaryClient.Logic.JSON
             if (_instance == null)
                 _instance = new FreeToPlayChampions();
 
-            if (_instance.champions == null)
-                return null;
-            return _instance;
+            return _instance._champions == null ? null : _instance;
         }
 
-        private bool load()
+        private bool Load()
         {
             try
             {
-                WebClient client = new WebClient();
-                string json = client.DownloadString("http://cdn.leagueoflegends.com/patcher/data/regions/na/champData/freeToPlayChamps.json");
-                champions = new JavaScriptSerializer().Deserialize<Response>(json).champions.ToList();
+                var client = new WebClient();
+                var json =
+                    client.DownloadString(
+                        "http://cdn.leagueoflegends.com/patcher/data/regions/na/champData/freeToPlayChamps.json");
+                _champions = new JavaScriptSerializer().Deserialize<Response>(json).champions.ToList();
+
                 return true;
             }
             catch (Exception e)
@@ -43,30 +47,29 @@ namespace LegendaryClient.Logic.JSON
                 Client.Log("Error loading free to play champs.", "ERROR");
                 Client.Log(e.ToString(), "ERROR");
             }
+
             return false;
         }
 
         public bool ReloadChamps(bool force)
         {
-            if (champions == null || force)
-                return load();
-            if (champions != null)
-                return true;
+            if (_champions == null || force)
+                return Load();
 
-            return false;
+            return _champions != null;
         }
 
         public bool IsLoaded()
         {
-            return isLoaded;
+            return _isLoaded;
         }
 
         public bool IsFreeToPlay(int id)
         {
-            return champions.FirstOrDefault(x => x.id == id) != null;
+            return _champions.FirstOrDefault(x => x.id == id) != null;
         }
 
-        public bool IsFreeToPlay(SQLite.champions champion)
+        public bool IsFreeToPlay(champions champion)
         {
             return IsFreeToPlay(champion.id);
         }
@@ -75,6 +78,7 @@ namespace LegendaryClient.Logic.JSON
         {
             public FreeToPlayChampion[] champions { get; set; }
         }
+
         private class FreeToPlayChampion
         {
             public int id { get; set; }
