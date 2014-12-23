@@ -135,15 +135,22 @@ namespace LegendaryClient
                         if (championSelect.SummonerInternalName == GSUsername)
                             control.Username.Foreground = (Brush)(new BrushConverter().ConvertFrom("#FF007A53"));
                         control.ChampIcon.Source = champions.GetChampion(championSelect.ChampionId).icon;
-                        var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
-                        control.SumIcon1.Source = new BitmapImage(uriSource);
-                        uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
-                        control.SumIcon2.Source = new BitmapImage(uriSource);
+                        if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id)))))
+                        {
+                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
+                            control.SumIcon1.Source = new BitmapImage(uriSource);
+                        }
+                        if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id)))))
+                        {
+                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
+                            control.SumIcon2.Source = new BitmapImage(uriSource);
+                        }
                         GameStats.Clear();
                         try
                         {
                             PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(championSelect.SummonerInternalName);
-                            control.ProfileIcon.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png"));
+                            if(File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png")))
+                                control.ProfileIcon.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png"));
                             RecentGames result = await Client.PVPNet.GetRecentGames(summoner.AcctId);
                             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
                             foreach (PlayerGameStats game in result.GameStatistics)

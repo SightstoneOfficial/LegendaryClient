@@ -142,16 +142,20 @@ namespace LegendaryClient.Windows
                 playerStats.ChampImage.Source = champ.icon;
                 playerStats.ChampLabel.Content = champ.name;
                 playerStats.PlayerLabel.Content = summary.SummonerName;
-                var uriSource =
-                    new Uri(
-                        Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                            SummonerSpell.GetSpellImageName((int) summary.Spell1Id)), UriKind.Absolute);
-                playerStats.Spell1Image.Source = new BitmapImage(uriSource);
-                uriSource =
-                    new Uri(
-                        Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                            SummonerSpell.GetSpellImageName((int) summary.Spell2Id)), UriKind.Absolute);
-                playerStats.Spell2Image.Source = new BitmapImage(uriSource);
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id))))
+                {
+                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id)), UriKind.Absolute);
+                    playerStats.Spell1Image.Source = new BitmapImage(uriSource);
+                }
+                else
+                    Client.Log(SummonerSpell.GetSpellImageName((int)summary.Spell1Id) + " is missing");
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id))))
+                {
+                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id)), UriKind.Absolute);
+                    playerStats.Spell2Image.Source = new BitmapImage(uriSource);
+                }
+                else
+                    Client.Log(SummonerSpell.GetSpellImageName((int)summary.Spell2Id) + " is missing");
                 double championsKilled = 0;
                 double assists = 0;
                 double deaths = 0;
@@ -176,10 +180,13 @@ namespace LegendaryClient.Windows
                     if (stat.StatTypeName.StartsWith("ITEM") && Math.Abs(stat.Value) > 0)
                     {
                         var item = new Image();
-                        uriSource =
-                            new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"),
-                                UriKind.Absolute);
-                        item.Source = new BitmapImage(uriSource);
+                        if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png")))
+                        {
+                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"), UriKind.Absolute);
+                            item.Source = new BitmapImage(uriSource);
+                        }
+                        else
+                            Client.Log(stat.Value + ".png is missing");
                         playerStats.ItemsListView.Items.Add(item);
                     }
                     switch (stat.StatTypeName)
