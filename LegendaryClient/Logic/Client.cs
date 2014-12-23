@@ -94,12 +94,12 @@ namespace LegendaryClient.Logic
         ///     Gets the value of the league of Legends Settings
         /// </summary>
         /// <returns>All of the League Of Legends Settings</returns>
-        public static Dictionary<String, String> LeagueSettingsReader(this string FileLocation)
+        public static Dictionary<String, String> LeagueSettingsReader(this string fileLocation)
         {
             var settings = new Dictionary<String, String>();
             try
             {
-                string[] file = File.ReadAllLines(FileLocation);
+                string[] file = File.ReadAllLines(fileLocation);
                 foreach (string x in from x in file
                     where !String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x)
                     where !x.Contains("[") && !x.Contains("]")
@@ -131,12 +131,16 @@ namespace LegendaryClient.Logic
             var bc = new BrushConverter();
             if (y.Contains("Blue"))
                 return (Brush)bc.ConvertFrom("#FF1585B5");
+
             if (y.Contains("Red"))
                 return (Brush)bc.ConvertFrom("#FFA01414");
+
             if (y.Contains("Green"))
                 return (Brush)bc.ConvertFrom("#FF2DA014");
+
             if (y.Contains("Purple"))
                 return (Brush)bc.ConvertFrom("#FF5A14A0");
+
             return (Brush)bc.ConvertFrom("#FF141414"); //Steel
         }
 
@@ -153,17 +157,18 @@ namespace LegendaryClient.Logic
                 return new LoginDataPacket();
 
             accountslist.Add(packet.AllSummonerData.Summoner.Name, packet);
+
             return packet;
         }
 
-        internal static async Task<LoginDataPacket> AddAccount(string Username, string Password)
+        internal static async Task<LoginDataPacket> AddAccount(string username, string password)
         {
             var pvp = new PVPNetConnection();
             var credentials = new AuthenticationCredentials
             {
                 ClientVersion = Version,
                 AuthToken = "",
-                Password = Password,
+                Password = password,
                 IpAddress = ""
             };
             //pvp.Login();
@@ -820,6 +825,7 @@ namespace LegendaryClient.Logic
             foreach (Page p in Pages.Where(p => p.GetType() == page.GetType()))
             {
                 Container.Content = p.Content;
+
                 return;
             }
             Container.Content = page.Content;
@@ -1030,9 +1036,9 @@ namespace LegendaryClient.Logic
             }));
         }
 
-        internal static string InternalQueueToPretty(string InternalQueue)
+        internal static string InternalQueueToPretty(string internalQueue)
         {
-            switch (InternalQueue)
+            switch (internalQueue)
             {
                 case "matching-queue-NORMAL-5x5-game-queue":
                     return "Normal 5v5";
@@ -1104,7 +1110,7 @@ namespace LegendaryClient.Logic
                     return "King Poro 5v5";
 
                 default:
-                    return InternalQueue;
+                    return internalQueue;
             }
         }
 
@@ -1184,13 +1190,13 @@ namespace LegendaryClient.Logic
                                     CurrentGame.EncryptionKey + " " +
                                     CurrentGame.SummonerId + "\"";
             p.Start();
-            Timer t = new Timer
+            var t = new Timer
             {
                 Interval = 5000,
             };
             t.Tick += (o, m) =>
                 {
-                    LegendaryClient.GameScouter scouter = new GameScouter();
+                    GameScouter scouter = new GameScouter();
                     scouter.LoadScouter(LoginPacket.AllSummonerData.Summoner.Name);
                     scouter.Show();
                     scouter.Activate();
@@ -1310,6 +1316,7 @@ namespace LegendaryClient.Logic
 
                 words[i] = firstChar + rest;
             }
+
             return String.Join(" ", words);
         }
 
@@ -1326,6 +1333,7 @@ namespace LegendaryClient.Logic
                 result.StreamSource = stream;
                 result.EndInit();
                 result.Freeze();
+
                 return result;
             }
         }
@@ -1349,16 +1357,16 @@ namespace LegendaryClient.Logic
         }
 
         //Get Image
-        public static BitmapImage GetImage(string Address)
+        public static BitmapImage GetImage(string address)
         {
-            var UriSource = new Uri(Address, UriKind.RelativeOrAbsolute);
-            if (File.Exists(Address) || Address.StartsWith("/LegendaryClient;component"))
-                return new BitmapImage(UriSource);
+            var uriSource = new Uri(address, UriKind.RelativeOrAbsolute);
+            if (File.Exists(address) || address.StartsWith("/LegendaryClient;component"))
+                return new BitmapImage(uriSource);
 
-            Log("Cannot find " + Address, "WARN");
-            UriSource = new Uri("/LegendaryClient;component/NONE.png", UriKind.RelativeOrAbsolute);
+            Log("Cannot find " + address, "WARN");
+            uriSource = new Uri("/LegendaryClient;component/NONE.png", UriKind.RelativeOrAbsolute);
 
-            return new BitmapImage(UriSource);
+            return new BitmapImage(uriSource);
         }
         #endregion Public Helper Methods
 
@@ -1370,17 +1378,17 @@ namespace LegendaryClient.Logic
                 ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
         }
 
-        internal static string EncryptStringAES(this string input, string Secret)
+        internal static string EncryptStringAES(this string input, string secret)
         {
             string output = String.Empty;
             var aesAlg = new RijndaelManaged();
-            if (String.IsNullOrEmpty(input) || String.IsNullOrEmpty(Secret))
+            if (String.IsNullOrEmpty(input) || String.IsNullOrEmpty(secret))
                 return output;
 
             try
             {
                 // generate the key from the shared secret and the salt
-                var key = new Rfc2898DeriveBytes(Secret, Encoding.ASCII.GetBytes("o6806642kbM7c5"));
+                var key = new Rfc2898DeriveBytes(secret, Encoding.ASCII.GetBytes("o6806642kbM7c5"));
                 // Create a RijndaelManaged object
                 aesAlg.Key = key.GetBytes(aesAlg.KeySize / 8);
 
@@ -1409,6 +1417,7 @@ namespace LegendaryClient.Logic
                 // Clear the RijndaelManaged object.
                 aesAlg.Clear();
             }
+
             return output;
         }
 
@@ -1477,20 +1486,18 @@ namespace LegendaryClient.Logic
             try
             {
                 string filecontent = null;
-                System.Windows.Forms.OpenFileDialog dlg = new System.Windows.Forms.OpenFileDialog();
+                var dlg = new System.Windows.Forms.OpenFileDialog();
                 if (String.IsNullOrEmpty(filename))
                 {
                     dlg.DefaultExt = ".png";
-                    dlg.Filter = "Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
+                    dlg.Filter = @"Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
                     System.Windows.Forms.DialogResult result = dlg.ShowDialog();
                     if (result == System.Windows.Forms.DialogResult.OK)
                         filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
                 }
                 else
-                {
                     if (File.Exists(filename))
                         filecontent = File.ReadAllText(filename).ToSHA1();
-                }
 
                 if (filecontent != null)
                 {
@@ -1498,7 +1505,7 @@ namespace LegendaryClient.Logic
                     {
                         if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
                         {
-                            Settings.Default.devKeyLoc = filename == null ? dlg.FileName : filename;
+                            Settings.Default.devKeyLoc = filename ?? dlg.FileName;
                             Settings.Default.Save();
                             return true;
                         }
@@ -1507,8 +1514,8 @@ namespace LegendaryClient.Logic
             }
             catch (Exception ee)
             {
-                Client.Log("Failed to authernticate", "ERROR");
-                Client.Log(ee.ToString(), "ERROR");
+                Log("Failed to authernticate", "ERROR");
+                Log(ee.ToString(), "ERROR");
             }
             return false;
         }
