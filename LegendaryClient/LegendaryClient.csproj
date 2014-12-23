@@ -222,6 +222,7 @@
     <Compile Include="GameScouter.xaml.cs">
       <DependentUpon>GameScouter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
     <Compile Include="Logic\uiLogic.cs" />
     <Compile Include="Logic\FilterChat.cs" />
     <Compile Include="Logic\GameClientSettings\General.cs" />
