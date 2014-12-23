@@ -9,7 +9,6 @@ using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using Newtonsoft.Json;
 using PVPNetConnect.RiotObjects.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Game;
 
 #endregion
@@ -27,14 +26,10 @@ namespace LegendaryClient.Controls
             _gameType;
 
         private int _gameTypeConfigId;
-
         private string _invitationId;
-
         private string _invitationState;
         private string _invitationStateAsString;
-
         private string _inviter;
-
         private bool _isRanked;
         private int _mapId;
         private string _mapName;
@@ -42,7 +37,6 @@ namespace LegendaryClient.Controls
         private int _queueId;
         private string _rankedTeamName;
         private string _type;
-
         private GameDTO tempDTO;
 
         public GameInvitePopup(InvitationRequest stats)
@@ -51,10 +45,11 @@ namespace LegendaryClient.Controls
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             try
             {
-                InviteInfo info = Client.InviteData[stats.InvitationId];
+                var info = Client.InviteData[stats.InvitationId];
                 Client.Log("Tried to find a popup that existed but should have been blocked. ", "Error");
                 if (info == null)
                     throw new NullReferenceException("Tried to find a nonexistant popup");
+
                 PVPNet_OnMessageReceived(this, stats);
 
                 //This should be hidden
@@ -71,12 +66,13 @@ namespace LegendaryClient.Controls
         {
             if (!(message is InvitationRequest))
                 return;
-            if (message.GetType() == typeof(InvitationRequest))
+
+            if (message.GetType() == typeof (InvitationRequest))
             {
-                var stats = (InvitationRequest)message;
+                var stats = (InvitationRequest) message;
                 try
                 {
-                    InviteInfo info = Client.InviteData[stats.InvitationId];
+                    var info = Client.InviteData[stats.InvitationId];
                     //Data about this popup has changed. We want to set this
                     if (!Equals(info.popup, this))
                         return;
@@ -124,9 +120,9 @@ namespace LegendaryClient.Controls
                     //We do not need this popup. it is a new one. Let it launch
                 }
             }
-            else if (message.GetType() == typeof(GameDTO))
+            else if (message.GetType() == typeof (GameDTO))
             {
-                tempDTO = (GameDTO)message;
+                tempDTO = (GameDTO) message;
             }
         }
 
@@ -156,11 +152,9 @@ namespace LegendaryClient.Controls
             _invitationState = stats.InvitationState;
             _inviter = stats.Inviter.SummonerName;
             _invitationId = stats.InvitationId;
-
             if (_invitationId != null)
-            {
                 NoGame.Visibility = Visibility.Hidden;
-            }
+
             var m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
             _queueId = m.queueId;
             _isRanked = m.isRanked;
@@ -192,10 +186,10 @@ namespace LegendaryClient.Controls
                     _mapName = "Unknown Map";
                     break;
             }
-            string gameModeLower = Client.TitleCaseString(string.Format(_gameMode.ToLower()));
-            string gameTypeLower = Client.TitleCaseString(string.Format(_gameType.ToLower()));
-            string gameTypeRemove = gameTypeLower.Replace("_game", "");
-            string removeAllUnder = gameTypeRemove.Replace("_", " ");
+            var gameModeLower = Client.TitleCaseString(string.Format(_gameMode.ToLower()));
+            var gameTypeLower = Client.TitleCaseString(string.Format(_gameType.ToLower()));
+            var gameTypeRemove = gameTypeLower.Replace("_game", string.Empty);
+            var removeAllUnder = gameTypeRemove.Replace("_", " ");
 
             if (String.IsNullOrEmpty(_inviter))
                 _inviter = "An unknown player";
@@ -203,7 +197,7 @@ namespace LegendaryClient.Controls
             _mode = gameModeLower;
             _type = removeAllUnder;
             RenderNotificationTextBox(_inviter + " has invited you to a game");
-            RenderNotificationTextBox("");
+            RenderNotificationTextBox(string.Empty);
             RenderNotificationTextBox("Mode: " + gameModeLower);
             RenderNotificationTextBox("Map: " + _mapName);
             RenderNotificationTextBox("Type: " + removeAllUnder);
@@ -222,17 +216,19 @@ namespace LegendaryClient.Controls
         {
             if (_gameType == "PRACTICE_GAME")
             {
+#pragma warning disable 4014
                 Client.PVPNet.Accept(_invitationId);
+#pragma warning restore 4014
                 Client.SwitchPage(new CustomGameLobbyPage(tempDTO));
             }
-                //goddammit teambuilder
+            //goddammit teambuilder
             else if (_gameType == "NORMAL_GAME" && _queueId != 61)
             {
                 Client.SwitchPage(new TeamQueuePage(_invitationId));
             }
             else if (_gameType == "NORMAL_GAME" && _queueId == 61)
             {
-                LobbyStatus newLobby = Client.PVPNet.InviteLobby;
+                var newLobby = Client.PVPNet.InviteLobby;
                 Client.SwitchPage(new TeamBuilderPage(false, newLobby));
             }
             else if (_gameType == "RANKED_GAME")
@@ -250,14 +246,16 @@ namespace LegendaryClient.Controls
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { Visibility = Visibility.Hidden; }));
+#pragma warning disable 4014
             Client.PVPNet.Decline(_invitationId);
+#pragma warning restore 4014
             Client.InviteData.Remove(_invitationId);
         }
 
         private void Hide_Click(object sender, RoutedEventArgs e)
         {
             Visibility = Visibility.Hidden;
-            InviteInfo x = Client.InviteData[_invitationId];
+            var x = Client.InviteData[_invitationId];
             x.PopupVisible = false;
         }
     }

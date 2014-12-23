@@ -20,10 +20,10 @@ namespace LegendaryClient.Controls
 
         public int CompareTo(object ability)
         {
-            if (ability is ChampionAbility)
-            {
-                return Order.CompareTo((ability as ChampionAbility).Order);
-            }
+            var championAbility = ability as ChampionAbility;
+            if (championAbility != null)
+                return Order.CompareTo(championAbility.Order);
+
             throw new ArgumentException("Passed object is not of type ChampionAbility");
         }
     }

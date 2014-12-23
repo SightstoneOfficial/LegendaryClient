@@ -13,13 +13,6 @@ namespace LegendaryClient.Controls
     public static class AccessKeyScoper
     {
         /// <summary>
-        ///     Identifies the IsAccessKeyScope attached dependency property
-        /// </summary>
-        public static readonly DependencyProperty IsAccessKeyScopeProperty =
-            DependencyProperty.RegisterAttached("IsAccessKeyScope", typeof (bool), typeof (AccessKeyScoper),
-                new PropertyMetadata(false, HandleIsAccessKeyScopePropertyChanged));
-
-        /// <summary>
         ///     Sets the IsAccessKeyScope attached property value for the specified object
         /// </summary>
         /// <param name="obj">The object to retrieve the value for</param>
@@ -57,5 +50,12 @@ namespace LegendaryClient.Controls
             e.Scope = sender;
             e.Handled = true;
         }
+
+        /// <summary>
+        ///     Identifies the IsAccessKeyScope attached dependency property
+        /// </summary>
+        public static readonly DependencyProperty IsAccessKeyScopeProperty =
+            DependencyProperty.RegisterAttached("IsAccessKeyScope", typeof (bool), typeof (AccessKeyScoper),
+                new PropertyMetadata(false, HandleIsAccessKeyScopePropertyChanged));
     }
 }

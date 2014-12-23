@@ -8,7 +8,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using LegendaryClient.Logic;
 using LegendaryClient.Windows;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 
 #endregion
 
@@ -40,16 +39,16 @@ namespace LegendaryClient.Controls
                 Triangle.RenderTransform = transform;
 
                 _rotated = !_rotated;
-                for (int i = _myQueueBox.SelectedIndex + 1; i < _myQueueBox.Items.Count; i++)
+                for (var i = _myQueueBox.SelectedIndex + 1; i < _myQueueBox.Items.Count; i++)
                     _tempList.Add(_myQueueBox.Items.GetItemAt(i));
 
-                foreach (object t in _tempList)
+                foreach (var t in _tempList)
                     _myQueueBox.Items.Remove(t);
 
-                foreach (JoinQueue t in _myItems)
+                foreach (var t in _myItems)
                     _myQueueBox.Items.Add(t);
 
-                foreach (object t in _tempList)
+                foreach (var t in _tempList)
                     _myQueueBox.Items.Add(t);
 
                 _tempList.Clear();
@@ -58,12 +57,9 @@ namespace LegendaryClient.Controls
             {
                 var transform = new RotateTransform(0, 25, 40);
                 Triangle.RenderTransform = transform;
-
                 _rotated = !_rotated;
-                foreach (JoinQueue t in _myItems)
-                {
+                foreach (var t in _myItems)
                     _myQueueBox.Items.Remove(t);
-                }
             }
         }
 
@@ -81,13 +77,13 @@ namespace LegendaryClient.Controls
         {
             try
             {
-                foreach (JoinQueue item in _myItems.Where(item => item != null && Client.IsOnPlayPage))
+                foreach (var item in _myItems.Where(item => item != null && Client.IsOnPlayPage))
                 {
-                    QueueInfo t = await Client.PVPNet.GetQueueInformation(item.QueueId);
+                    var t = await Client.PVPNet.GetQueueInformation(item.QueueId);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                 }
 
-                int amount =
+                var amount =
                     _myItems.Sum(
                         t =>
                             t.AmountInQueueLabel != null

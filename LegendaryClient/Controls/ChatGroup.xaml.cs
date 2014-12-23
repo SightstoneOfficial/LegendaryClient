@@ -25,16 +25,14 @@ namespace LegendaryClient.Controls
             {
                 ExpandLabel.Content = "-";
                 GroupListView.Visibility = Visibility.Visible;
-
-                foreach (Group g in Client.Groups.Where(g => g.GroupName == (string) NameLabel.Content))
+                foreach (var g in Client.Groups.Where(g => g.GroupName == (string) NameLabel.Content))
                     g.IsOpen = true;
             }
             else
             {
                 ExpandLabel.Content = "+";
                 GroupListView.Visibility = Visibility.Collapsed;
-
-                foreach (Group g in Client.Groups.Where(g => g.GroupName == (string) NameLabel.Content))
+                foreach (var g in Client.Groups.Where(g => g.GroupName == (string) NameLabel.Content))
                     g.IsOpen = false;
             }
         }

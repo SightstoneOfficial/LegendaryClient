@@ -29,7 +29,6 @@ namespace LegendaryClient.Windows.Profile
         private readonly AggregatedChampion AllStats;
         private readonly List<AggregatedChampion> ChampionStats;
         private readonly Boolean IsOwnPlayer;
-
         private AggregatedChampion SelectedStats;
 
         public AggregatedStatsOverlay(AggregatedStats stats, Boolean isSelf)
@@ -67,9 +66,9 @@ namespace LegendaryClient.Windows.Profile
             else
                 RatioLabel.Content = "100%";
 
-            Type classType = typeof (AggregatedChampion);
+            var classType = typeof (AggregatedChampion);
             foreach (
-                ProfilePage.KeyValueItem item in
+                var item in
                     from field in classType.GetFields(BindingFlags.Public | BindingFlags.Instance)
                     where (double) field.GetValue(SelectedStats) != 0
                     select new ProfilePage.KeyValueItem
@@ -85,7 +84,7 @@ namespace LegendaryClient.Windows.Profile
             {
                 if (((string) item.Key).Contains("Time"))
                 {
-                    TimeSpan span = TimeSpan.FromMinutes((double) item.Value);
+                    var span = TimeSpan.FromMinutes((double) item.Value);
                     if (((string) item.Key).Contains("Time Spent Living"))
                         span = TimeSpan.FromSeconds((double) item.Value);
 
@@ -107,9 +106,9 @@ namespace LegendaryClient.Windows.Profile
 
         private void ParseStats(AggregatedStats stats)
         {
-            foreach (AggregatedStat stat in stats.LifetimeStatistics)
+            foreach (var stat in stats.LifetimeStatistics)
             {
-                AggregatedChampion champion = ChampionStats.Find(x => x.ChampionId == stat.ChampionId);
+                var champion = ChampionStats.Find(x => x.ChampionId == stat.ChampionId);
                 if (champion == null)
                 {
                     champion = new AggregatedChampion
@@ -119,9 +118,9 @@ namespace LegendaryClient.Windows.Profile
                     ChampionStats.Add(champion);
                 }
 
-                Type type = typeof (AggregatedChampion);
-                string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
-                FieldInfo f = type.GetField(fieldName);
+                var type = typeof (AggregatedChampion);
+                var fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
+                var f = type.GetField(fieldName);
                 f.SetValue(champion, stat.Value);
             }
 
@@ -129,14 +128,14 @@ namespace LegendaryClient.Windows.Profile
 
             //AllStats = ChampionStats;
 
-            foreach (AggregatedChampion championStat in ChampionStats)
+            foreach (var championStat in ChampionStats)
             {
                 if (championStat.ChampionId == 0)
                     continue;
 
                 var item = new ListViewItem();
                 var championImage = new ProfileChampionImage();
-                champions champ = champions.GetChampion((int) championStat.ChampionId);
+                var champ = champions.GetChampion((int) championStat.ChampionId);
                 championImage.ChampImage.Source = champ.icon;
                 championImage.ChampName.Content = champ.displayName;
                 championImage.Width = 96;
@@ -175,7 +174,7 @@ namespace LegendaryClient.Windows.Profile
     public class AggregatedChampion
     {
         public double BotGamesPlayed = 0;
-        public double ChampionId = 0;
+        public double ChampionId;
         public double KillingSpree = 0;
         public double MaxChampionsKilled = 0;
         public double MaxLargestCriticalStrike = 0;

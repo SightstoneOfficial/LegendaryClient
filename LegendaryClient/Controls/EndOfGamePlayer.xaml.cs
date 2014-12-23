@@ -1,11 +1,9 @@
-﻿using System.Windows.Controls;
-
-namespace LegendaryClient.Controls
+﻿namespace LegendaryClient.Controls
 {
     /// <summary>
-    /// Interaction logic for EndOfGamePlayer.xaml
+    ///     Interaction logic for EndOfGamePlayer.xaml
     /// </summary>
-    public partial class EndOfGamePlayer : UserControl
+    public partial class EndOfGamePlayer
     {
         public EndOfGamePlayer()
         {

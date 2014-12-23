@@ -12,7 +12,6 @@ using jabber;
 using jabber.connection;
 using jabber.protocol.client;
 using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 
 #endregion
 
@@ -60,8 +59,8 @@ namespace LegendaryClient.Controls
             foreach (RoomParticipant par in _newRoom.Participants)
             {
                 var player = new GroupChatPlayer {SName = {Content = par.Nick}};
-                PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(par.Nick);
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                var summoner = await Client.PVPNet.GetSummonerByName(par.Nick);
+                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                     summoner.ProfileIconId + ".png");
                 player.SIcon.Source = Client.GetImage(uriSource);
                 ParticipantList.Items.Add(player);
@@ -82,7 +81,7 @@ namespace LegendaryClient.Controls
 
                 ChatText.ScrollToEnd();
                 foreach (
-                    GroupChatPlayer x in
+                    var x in
                         from GroupChatPlayer x in ParticipantList.Items
                         where participant.Nick == (string) x.SName.Content
                         select x)
@@ -106,8 +105,8 @@ namespace LegendaryClient.Controls
 
                 ChatText.ScrollToEnd();
                 var x = new GroupChatPlayer {SName = {Content = participant.Nick}};
-                PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(participant.Nick);
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                var summoner = await Client.PVPNet.GetSummonerByName(participant.Nick);
+                var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                     summoner.ProfileIconId + ".png");
                 x.SIcon.Source = Client.GetImage(uriSource);
                 ParticipantList.Items.Add(x);
@@ -130,7 +129,7 @@ namespace LegendaryClient.Controls
 
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine
+                    Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", string.Empty) + Environment.NewLine
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
@@ -156,6 +155,9 @@ namespace LegendaryClient.Controls
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
+            if (String.IsNullOrEmpty(ChatTextBox.Text))
+                return;
+
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
                 Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
@@ -168,12 +170,8 @@ namespace LegendaryClient.Controls
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
-            if (String.IsNullOrEmpty(ChatTextBox.Text))
-                return;
-
             _newRoom.PublicMessage(ChatTextBox.Text);
-
-            ChatTextBox.Text = "";
+            ChatTextBox.Text = string.Empty;
             ChatText.ScrollToEnd();
         }
     }
