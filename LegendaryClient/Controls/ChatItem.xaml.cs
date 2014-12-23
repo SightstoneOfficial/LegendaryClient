@@ -42,7 +42,7 @@ namespace LegendaryClient.Controls
             if (!Client.AllPlayers.ContainsKey(msg.From.User) || String.IsNullOrWhiteSpace(msg.Body))
                 return;
 
-            ChatPlayerItem chatItem = Client.AllPlayers[msg.From.User];
+            var chatItem = Client.AllPlayers[msg.From.User];
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if ((string) Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
@@ -53,15 +53,15 @@ namespace LegendaryClient.Controls
         public void Update()
         {
             ChatText.Document.Blocks.Clear();
-            ChatPlayerItem tempItem =
+            var tempItem =
                 (from x in Client.AllPlayers
                     where x.Value.Username == (string) Client.ChatItem.PlayerLabelName.Content
                     select x.Value).FirstOrDefault();
 
             if (tempItem != null)
-                foreach (string x in tempItem.Messages.ToArray())
+                foreach (var x in tempItem.Messages.ToArray())
                 {
-                    string[] message = x.Split('|');
+                    var message = x.Split('|');
                     var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (message[0] == tempItem.Username)
                     {
@@ -75,7 +75,7 @@ namespace LegendaryClient.Controls
                     }
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                     {
-                        Text = x.Replace(message[0] + "|", "") + Environment.NewLine
+                        Text = x.Replace(message[0] + "|", string.Empty) + Environment.NewLine
                     };
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 }
@@ -85,6 +85,9 @@ namespace LegendaryClient.Controls
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
+            if (String.IsNullOrWhiteSpace(ChatTextBox.Text))
+                return;
+
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
                 Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
@@ -98,13 +101,14 @@ namespace LegendaryClient.Controls
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
             ChatPlayerItem tempItem = null;
-            string jid = "";
+            var jid = string.Empty;
             foreach (
                 var x in
                     Client.AllPlayers.Where(x => x.Value.Username == (string) Client.ChatItem.PlayerLabelName.Content))
             {
                 tempItem = x.Value;
                 jid = x.Key + "@pvp.net";
+
                 break;
             }
             if (tempItem != null)
@@ -112,7 +116,7 @@ namespace LegendaryClient.Controls
 
             ChatText.ScrollToEnd();
             Client.ChatClient.Message(jid, Environment.NewLine + ChatTextBox.Text);
-            ChatTextBox.Text = "";
+            ChatTextBox.Text = string.Empty;
         }
     }
 }
