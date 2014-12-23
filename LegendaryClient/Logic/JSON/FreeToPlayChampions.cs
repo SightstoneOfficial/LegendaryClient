@@ -10,9 +10,9 @@ namespace LegendaryClient.Logic.JSON
 {
     class FreeToPlayChampions
     {
-        private static FreeToPlayChampions _instance;
-        private List<FreeToPlayChampion> champions;
-        private bool isLoaded;
+        private static FreeToPlayChampions _instance = null;
+        private List<FreeToPlayChampion> champions = null;
+        private bool isLoaded = false;
 
         private FreeToPlayChampions()
         {
@@ -35,7 +35,7 @@ namespace LegendaryClient.Logic.JSON
             {
                 WebClient client = new WebClient();
                 string json = client.DownloadString("http://cdn.leagueoflegends.com/patcher/data/regions/na/champData/freeToPlayChamps.json");
-                champions = new JavaScriptSerializer().Deserialize<List<FreeToPlayChampion>>(json);
+                champions = new JavaScriptSerializer().Deserialize<Response>(json).champions.ToList();
                 return true;
             }
             catch (Exception e)
@@ -71,6 +71,10 @@ namespace LegendaryClient.Logic.JSON
             return IsFreeToPlay(champion.id);
         }
 
+        private class Response
+        {
+            public FreeToPlayChampion[] champions { get; set; }
+        }
         private class FreeToPlayChampion
         {
             public int id { get; set; }
