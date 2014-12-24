@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,8 +22,8 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class MatchHistoryOnline
     {
-        private readonly List<MatchStats> GameStats = new List<MatchStats>();
-        private string SumName;
+        private readonly List<MatchStats> _gameStats = new List<MatchStats>();
+        private string _sumName;
 
         public MatchHistoryOnline(String name = "")
         {
@@ -35,7 +34,7 @@ namespace LegendaryClient.Windows.Profile
             if (String.IsNullOrEmpty(name))
                 name = Client.LoginPacket.AllSummonerData.Summoner.Name;
 
-            SumName = name;
+            _sumName = name;
         }
 
         public void Change()
@@ -54,30 +53,31 @@ namespace LegendaryClient.Windows.Profile
 
         public void GotRecentGames(RecentGames result)
         {
-            GameStats.Clear();
+            _gameStats.Clear();
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
-            foreach (PlayerGameStats game in result.GameStatistics)
+            foreach (var game in result.GameStatistics)
             {
-                game.GameType = Client.TitleCaseString(game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
+                game.GameType =
+                    Client.TitleCaseString(game.GameType.Replace("_GAME", string.Empty).Replace("MATCHED", "NORMAL"));
                 var match = new MatchStats();
-                foreach (RawStat stat in game.Statistics)
+                foreach (var stat in game.Statistics)
                 {
-                    Type type = typeof (MatchStats);
-                    string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
-                    FieldInfo f = type.GetField(fieldName);
+                    var type = typeof (MatchStats);
+                    var fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", string.Empty);
+                    var f = type.GetField(fieldName);
                     f.SetValue(match, stat.Value);
                 }
                 match.Game = game;
-                GameStats.Add(match);
+                _gameStats.Add(match);
             }
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 GamesListView.Items.Clear();
-                foreach (MatchStats stats in GameStats)
+                foreach (var stats in _gameStats)
                 {
                     var item = new RecentGameOverview();
-                    champions gameChamp = champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
+                    var gameChamp = champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
                     item.ChampionImage.Source = gameChamp.icon;
                     item.ChampionNameLabel.Content = gameChamp.displayName;
                     item.ScoreLabel.Content =
@@ -150,7 +150,7 @@ namespace LegendaryClient.Windows.Profile
             if (GamesListView.SelectedIndex == -1)
                 return;
 
-            MatchStats stats = GameStats[GamesListView.SelectedIndex];
+            var stats = _gameStats[GamesListView.SelectedIndex];
             Browser.Source =
                 new Uri("http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName +
                         "/" + (int) Math.Round(stats.Game.GameId) + "/" + stats.Game.UserId + "?tab=overview");
