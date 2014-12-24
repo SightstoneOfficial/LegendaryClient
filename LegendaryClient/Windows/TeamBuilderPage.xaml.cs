@@ -609,8 +609,8 @@ namespace LegendaryClient.Windows
                 CountdownTimer.Stop();
                 MatchFoundGrid.Visibility = Visibility.Hidden;
                 CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
-                Client.ClearPage(typeof(TeamBuilderPage));
                 uiLogic.UpdateMainPage();
+                Client.ClearPage(typeof(TeamBuilderPage));
             }));
         }
 
@@ -764,8 +764,8 @@ namespace LegendaryClient.Windows
             string LastArg = string.Format("\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"", false,
                 teambuilderSlotId, teambuilderGroupId);
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", "{" + LastArg + "}");
-            Client.ClearPage(typeof(TeamBuilderPage));
             uiLogic.UpdateMainPage();
+            Client.ClearPage(typeof(TeamBuilderPage));
         }
 
         private void TeamPosition_SelectionChanged(object sender, EventArgs e)
@@ -1102,20 +1102,20 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.Leave();
             Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
-            Client.ClearPage(typeof(TeamBuilderPage));
             Client.GameStatus = "inGame";
             Client.timeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
 
             Client.SwitchPage(new InGame());
+            Client.ClearPage(typeof(TeamBuilderPage));
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
-            Client.ClearPage(typeof(TeamBuilderPage));
             uiLogic.UpdateMainPage();
+            Client.ClearPage(typeof(TeamBuilderPage));
         }
 
         private void InviteButton_Click(object sender, RoutedEventArgs e)

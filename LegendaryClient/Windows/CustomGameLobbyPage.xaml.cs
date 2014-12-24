@@ -323,10 +323,10 @@ namespace LegendaryClient.Windows
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
             await Client.PVPNet.QuitGame();
-            Client.ClearPage(typeof (CustomGameLobbyPage)); //Clear pages
-            Client.ClearPage(typeof (CreateCustomGamePage));
             Client.ReturnButton.Visibility = Visibility.Hidden;
             uiLogic.UpdateMainPage();
+            Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
+            Client.ClearPage(typeof(CreateCustomGamePage));
         }
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)

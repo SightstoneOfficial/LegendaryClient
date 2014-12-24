@@ -53,8 +53,8 @@ namespace LegendaryClient.Windows
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 Client.IsInGame = false;
                 Client.PVPNet.OnMessageReceived -= Update_OnMessageReceived;
-                Client.ClearPage(typeof (InGame));
                 uiLogic.UpdateMainPage();
+                Client.ClearPage(typeof(InGame));
             }));
         }
 

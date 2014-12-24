@@ -722,6 +722,7 @@ namespace LegendaryClient.Windows
                     return;
 
                 HasLaunchedGame = true;
+                Client.LaunchGame();
                 if (Settings.Default.AutoRecordGames)
                 {
                     Dispatcher.InvokeAsync(async () =>
@@ -744,8 +745,7 @@ namespace LegendaryClient.Windows
                 {
                     if (CountdownTimer != null)
                         CountdownTimer.Stop();
-
-                    Client.LaunchGame();
+                    
                     InGame();
                     Client.ReturnButton.Visibility = Visibility.Hidden;
                     Client.AmbientSoundPlayer.Stop();
@@ -1221,11 +1221,11 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
-            Client.ClearPage(typeof(ChampSelectPage));
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             Client.ReturnButton.Visibility = Visibility.Hidden;
             uiLogic.UpdateMainPage();
+            Client.ClearPage(typeof(ChampSelectPage));
         }
 
         private async void InGame()
@@ -1234,7 +1234,6 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
-            Client.ClearPage(typeof(ChampSelectPage));
             Client.ClearPage(typeof(FactionsCreateGamePage));
             Client.GameStatus = "inGame";
             Client.timeStampSince =
@@ -1242,6 +1241,7 @@ namespace LegendaryClient.Windows
             Client.SetChatHover();
 
             Client.SwitchPage(new InGame());
+            Client.ClearPage(typeof(ChampSelectPage));
         }
 
         private async void LockInButton_Click(object sender, RoutedEventArgs e)
