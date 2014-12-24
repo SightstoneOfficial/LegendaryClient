@@ -1,63 +1,60 @@
-﻿using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
+﻿#region
+
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using log4net;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
+
+#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
     /// <summary>
-    /// Interaction logic for Masteries.xaml
+    ///     Interaction logic for Masteries.xaml
     /// </summary>
-    public partial class Masteries : Page
+    public partial class Masteries
     {
-        private MasteryBookPageDTO SelectedBook;
-        private LargeChatPlayer PlayerItem;
-        private int UsedPoints = 0;
-        private int OffenseUsedPoints = 0;
-        private int DefenseUsedPoints = 0;
-        private int UtilityUsedPoints = 0;
-        private List<double> MasteryPageOrder = new List<double>();
-        private static readonly ILog log = LogManager.GetLogger(typeof(Masteries));
+        private readonly List<double> _masteryPageOrder = new List<double>();
+        private int _defenseUsedPoints;
+        private int _offenseUsedPoints;
+        private LargeChatPlayer _playerItem;
+        private MasteryBookPageDTO _selectedBook;
+        private int _usedPoints;
+        private int _utilityUsedPoints;
+        //private static readonly ILog Log = LogManager.GetLogger(typeof(Masteries));
         public Masteries()
         {
             InitializeComponent();
             MasteryPageListView.Items.Clear();
-            for (int i = 1; i <= Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count; i++)
+            for (var i = 1; i <= Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count; i++)
                 MasteryPageListView.Items.Add(i + " ");
-            double SelectedPageId = 0;
-            foreach (MasteryBookPageDTO MasteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
+
+            double selectedPageId = 0;
+            foreach (var masteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
             {
-                MasteryPageOrder.Add(MasteryPage.PageId);
-                if (MasteryPage.Current)
-                {
-                    SelectedPageId = MasteryPage.PageId;
-                }
+                _masteryPageOrder.Add(masteryPage.PageId);
+                if (masteryPage.Current)
+                    selectedPageId = masteryPage.PageId;
             }
-            MasteryPageOrder.Sort();
-            MasteryPageListView.SelectedIndex = MasteryPageOrder.IndexOf(SelectedPageId);
+            _masteryPageOrder.Sort();
+            MasteryPageListView.SelectedIndex = _masteryPageOrder.IndexOf(selectedPageId);
         }
 
         public void ChangeBook()
         {
-            MasteryTextBox.Text = SelectedBook.Name;
-            foreach (TalentEntry talent in SelectedBook.TalentEntries)
+            MasteryTextBox.Text = _selectedBook.Name;
+            foreach (var talent in _selectedBook.TalentEntries)
             {
-                foreach (masteries Mastery in Client.Masteries)
-                {
-                    if (Mastery.id == talent.TalentId)
-                    {
-                        Mastery.selectedRank = talent.Rank;
-                    }
-                }
+                var talent1 = talent;
+                foreach (var mastery in Client.Masteries.Where(mastery => mastery.id == talent1.TalentId))
+                    mastery.selectedRank = talent.Rank;
             }
         }
 
@@ -67,79 +64,93 @@ namespace LegendaryClient.Windows.Profile
             DefenseListView.Items.Clear();
             UtilityListView.Items.Clear();
 
-            UsedPoints = 0;
-            OffenseUsedPoints = 0;
-            DefenseUsedPoints = 0;
-            UtilityUsedPoints = 0;
-            foreach (masteries Mastery in Client.Masteries)
+            _usedPoints = 0;
+            _offenseUsedPoints = 0;
+            _defenseUsedPoints = 0;
+            _utilityUsedPoints = 0;
+            foreach (var mastery in Client.Masteries)
             {
-                bool IsOffense = false;
-                bool IsDefense = false;
-                bool IsUtility = false;
+                var isOffense = false;
+                var isDefense = false;
 
-                MasteryItem item = new MasteryItem();
-                item.RankLabel.Content = "0/" + Mastery.ranks;
-                item.MasteryImage.Source = Mastery.icon;
-                item.MasteryImage.Opacity = 0.4;
-                item.Margin = new Thickness(2, 2, 2, 2);
+                var item = new MasteryItem
+                {
+                    RankLabel =
+                    {
+                        Content = "0/" + mastery.ranks
+                    },
+                    MasteryImage = {Source = mastery.icon, Opacity = 0.4},
+                    Margin = new Thickness(2, 2, 2, 2)
+                };
 
-                if (Mastery.selectedRank > 0)
+                if (mastery.selectedRank > 0)
                 {
                     item.MasteryImage.Opacity = 1;
-                    item.RankLabel.Content = Mastery.selectedRank + "/" + Mastery.ranks;
+                    item.RankLabel.Content = mastery.selectedRank + "/" + mastery.ranks;
                 }
 
-                UsedPoints += Mastery.selectedRank;
+                _usedPoints += mastery.selectedRank;
 
-                switch (Mastery.tree)
+                switch (mastery.tree)
                 {
                     case "Offense":
-                        OffenseUsedPoints += Mastery.selectedRank;
-                        IsOffense = true;
+                        _offenseUsedPoints += mastery.selectedRank;
+                        isOffense = true;
                         OffenseListView.Items.Add(item);
                         break;
                     case "Defense":
-                        DefenseUsedPoints += Mastery.selectedRank;
-                        IsDefense = true;
+                        _defenseUsedPoints += mastery.selectedRank;
+                        isDefense = true;
                         DefenseListView.Items.Add(item);
                         break;
                     default:
-                        UtilityUsedPoints += Mastery.selectedRank;
-                        IsUtility = true;
+                        _utilityUsedPoints += mastery.selectedRank;
                         UtilityListView.Items.Add(item);
                         break;
                 }
 
                 //Add spaces
-                if (Mastery.id == 4152 ||
-                    Mastery.id == 4222 ||
-                    Mastery.id == 4253 ||
-                    Mastery.id == 4314 ||
-                    Mastery.id == 4344 ||
-                    Mastery.id == 4353 ||
-                    Mastery.id == 4154)
+                if (mastery.id == 4152 ||
+                    mastery.id == 4222 ||
+                    mastery.id == 4253 ||
+                    mastery.id == 4314 ||
+                    mastery.id == 4344 ||
+                    mastery.id == 4353 ||
+                    mastery.id == 4154)
                 {
-                    Rectangle rect = new Rectangle();
-                    rect.Width = 64;
-                    rect.Height = 64;
-                    rect.Margin = new Thickness(2, 2, 2, 2);
-                    if (IsOffense)
+                    var rect = new Rectangle
+                    {
+                        Width = 64,
+                        Height = 64,
+                        Margin = new Thickness(2, 2, 2, 2)
+                    };
+                    if (isOffense)
                         OffenseListView.Items.Add(rect);
-                    else if (IsDefense)
+                    else if (isDefense)
                     {
                         DefenseListView.Items.Add(rect);
-                        if (Mastery.id == 4253)
-                            DefenseListView.Items.Add(new Rectangle() { Width = 64, Height = 64, Margin = new Thickness(2, 2, 2, 2) });
+                        if (mastery.id == 4253)
+                            DefenseListView.Items.Add(new Rectangle
+                            {
+                                Width = 64,
+                                Height = 64,
+                                Margin = new Thickness(2, 2, 2, 2)
+                            });
                     }
-                    else if (IsUtility)
+                    else
                     {
                         UtilityListView.Items.Add(rect);
-                        if (Mastery.id == 4353)
-                            UtilityListView.Items.Add(new Rectangle() { Width = 64, Height = 64, Margin = new Thickness(2, 2, 2, 2) });
+                        if (mastery.id == 4353)
+                            UtilityListView.Items.Add(new Rectangle
+                            {
+                                Width = 64,
+                                Height = 64,
+                                Margin = new Thickness(2, 2, 2, 2)
+                            });
                     }
                 }
 
-                item.Tag = Mastery;
+                item.Tag = mastery;
                 item.MouseWheel += item_MouseWheel;
                 item.MouseLeftButtonDown += item_MouseLeftButtonDown;
                 item.MouseRightButtonDown += item_MouseRightButtonDown;
@@ -147,14 +158,15 @@ namespace LegendaryClient.Windows.Profile
                 item.MouseLeave += item_MouseLeave;
             }
 
-            UsedLabel.Content = "Points Used: " + UsedPoints;
-            FreeLabel.Content = "Points Free: " + (Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints - UsedPoints);
-            OffenseLabel.Content = "Offense: " + OffenseUsedPoints;
-            DefenseLabel.Content = "Defense: " + DefenseUsedPoints;
-            UtilityLabel.Content = "Utility: " + UtilityUsedPoints;
+            UsedLabel.Content = "Points Used: " + _usedPoints;
+            FreeLabel.Content = "Points Free: " +
+                                (Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints - _usedPoints);
+            OffenseLabel.Content = "Offense: " + _offenseUsedPoints;
+            DefenseLabel.Content = "Defense: " + _defenseUsedPoints;
+            UtilityLabel.Content = "Utility: " + _utilityUsedPoints;
         }
 
-        void item_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void item_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
                 item_MouseLeftButtonDown(sender, null);
@@ -162,205 +174,200 @@ namespace LegendaryClient.Windows.Profile
                 item_MouseRightButtonDown(sender, null);
         }
 
-        void item_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void item_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MasteryItem item = (MasteryItem)sender;
-            masteries playerItem = (masteries)item.Tag;
+            var item = (MasteryItem) sender;
+            var playerItem = (masteries) item.Tag;
             if (playerItem.selectedRank == 0)
                 return;
 
             //Temp check - make it so you can remove masteries even if they are above mastery if enough points in tree
-            List<masteries> FilteredMasteries = Client.Masteries.FindAll(x => x.tree == playerItem.tree && x.treeRow > playerItem.treeRow);
-            foreach (masteries checkMastery in FilteredMasteries)
-            {
-                if (checkMastery.selectedRank > 0)
-                    return;
-            }
+            var filteredMasteries =
+                Client.Masteries.FindAll(x => x.tree == playerItem.tree && x.treeRow > playerItem.treeRow);
+            if (filteredMasteries.Any(checkMastery => checkMastery.selectedRank > 0))
+                return;
+
             playerItem.selectedRank -= 1;
-            foreach (masteries talent in Client.Masteries)
-                if (playerItem.id == talent.id)
-                    talent.selectedRank = playerItem.selectedRank;
+            foreach (var talent in Client.Masteries.Where(talent => playerItem.id == talent.id))
+                talent.selectedRank = playerItem.selectedRank;
+
             RenderMasteries();
         }
 
-        void item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void item_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MasteryItem item = (MasteryItem)sender;
-            masteries playerItem = (masteries)item.Tag;
+            var item = (MasteryItem) sender;
+            var playerItem = (masteries) item.Tag;
             //Max rank
             if (playerItem.selectedRank == playerItem.ranks)
                 return;
+
             //Has enough points in tree
             switch (playerItem.tree)
             {
                 case "Offense":
-                    if (OffenseUsedPoints < playerItem.treeRow * 4)
+                    if (_offenseUsedPoints < playerItem.treeRow*4)
                         return;
                     break;
                 case "Defense":
-                    if (DefenseUsedPoints < playerItem.treeRow * 4)
+                    if (_defenseUsedPoints < playerItem.treeRow*4)
                         return;
                     break;
                 default:
-                    if (UtilityUsedPoints < playerItem.treeRow * 4)
+                    if (_utilityUsedPoints < playerItem.treeRow*4)
                         return;
                     break;
             }
             //Has enough points overall
-            if (UsedPoints >= Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints)
+            if (_usedPoints >= Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints)
                 return;
+
             //If it has a prerequisite mastery, check if points in it
             if (playerItem.prereq != 0)
             {
-                masteries prereqMastery = Client.Masteries.Find(x => playerItem.prereq == x.id);
+                var prereqMastery = Client.Masteries.Find(x => playerItem.prereq == x.id);
                 if (prereqMastery.selectedRank != prereqMastery.ranks)
                     return;
             }
 
             playerItem.selectedRank += 1;
-            foreach (masteries talent in Client.Masteries)
-                if (playerItem.id == talent.id)
-                    talent.selectedRank = playerItem.selectedRank;
+            foreach (var talent in Client.Masteries.Where(talent => playerItem.id == talent.id))
+                talent.selectedRank = playerItem.selectedRank;
+
             RenderMasteries();
         }
 
         private void item_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (PlayerItem != null)
-            {
-                Client.MainGrid.Children.Remove(PlayerItem);
-                PlayerItem = null;
-            }
+            if (_playerItem == null)
+                return;
+
+            Client.MainGrid.Children.Remove(_playerItem);
+            _playerItem = null;
         }
 
         private void item_MouseMove(object sender, MouseEventArgs e)
         {
-            MasteryItem item = (MasteryItem)sender;
-            masteries playerItem = (masteries)item.Tag;
-            if (PlayerItem == null)
+            var item = (MasteryItem) sender;
+            var playerItem = (masteries) item.Tag;
+            if (_playerItem == null)
             {
-                PlayerItem = new LargeChatPlayer();
-                Client.MainGrid.Children.Add(PlayerItem);
+                _playerItem = new LargeChatPlayer();
+                Client.MainGrid.Children.Add(_playerItem);
 
-                Panel.SetZIndex(PlayerItem, 4);
+                Panel.SetZIndex(_playerItem, 4);
 
                 //Only load once
-                PlayerItem.ProfileImage.Source = playerItem.icon;
-                PlayerItem.PlayerName.Content = playerItem.name;
+                _playerItem.ProfileImage.Source = playerItem.icon;
+                _playerItem.PlayerName.Content = playerItem.name;
 
-                PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                if (PlayerItem.PlayerName.DesiredSize.Width > 250) //Make title fit in item
-                    PlayerItem.Width = PlayerItem.PlayerName.DesiredSize.Width;
-                else
-                    PlayerItem.Width = 250;
+                _playerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                _playerItem.Width = _playerItem.PlayerName.DesiredSize.Width > 250
+                    ? _playerItem.PlayerName.DesiredSize.Width
+                    : 250;
 
-                PlayerItem.PlayerWins.Content = "Requires " + playerItem.treeRow * 4 + " points in " + playerItem.tree;
+                _playerItem.PlayerWins.Content = "Requires " + playerItem.treeRow*4 + " points in " + playerItem.tree;
 
-                bool IsAtRequirement = true;
+                var isAtRequirement = true;
                 switch (playerItem.tree)
                 {
                     case "Offense":
-                        if (OffenseUsedPoints < playerItem.treeRow * 4)
-                            IsAtRequirement = false;
+                        if (_offenseUsedPoints < playerItem.treeRow*4)
+                            isAtRequirement = false;
                         break;
                     case "Defense":
-                        if (DefenseUsedPoints < playerItem.treeRow * 4)
-                            IsAtRequirement = false;
+                        if (_defenseUsedPoints < playerItem.treeRow*4)
+                            isAtRequirement = false;
                         break;
                     default:
-                        if (UtilityUsedPoints < playerItem.treeRow * 4)
-                            IsAtRequirement = false;
+                        if (_utilityUsedPoints < playerItem.treeRow*4)
+                            isAtRequirement = false;
                         break;
                 }
 
-                if (IsAtRequirement)
+                if (isAtRequirement)
                 {
                     if (playerItem.prereq != 0)
                     {
-                        masteries prereqMastery = Client.Masteries.Find(x => playerItem.prereq == x.id);
-                        PlayerItem.PlayerWins.Content = "Requires " + prereqMastery.ranks + " points in " + prereqMastery.name;
+                        var prereqMastery = Client.Masteries.Find(x => playerItem.prereq == x.id);
+                        _playerItem.PlayerWins.Content = "Requires " + prereqMastery.ranks + " points in " +
+                                                         prereqMastery.name;
                     }
                 }
 
-                PlayerItem.PlayerLeague.Content = playerItem.id;
-                PlayerItem.LevelLabel.Content = playerItem.selectedRank + "/" + playerItem.ranks;
-                PlayerItem.UsingLegendary.Visibility = System.Windows.Visibility.Hidden;
+                _playerItem.PlayerLeague.Content = playerItem.id;
+                _playerItem.LevelLabel.Content = playerItem.selectedRank + "/" + playerItem.ranks;
+                _playerItem.UsingLegendary.Visibility = Visibility.Hidden;
 
-                int SelectedRank = playerItem.selectedRank;
-                if (SelectedRank == 0)
-                    SelectedRank = 1;
-                PlayerItem.PlayerStatus.Text = ((string)playerItem.description[SelectedRank - 1]).Replace("<br>", Environment.NewLine);
+                var selectedRank = playerItem.selectedRank;
+                if (selectedRank == 0)
+                    selectedRank = 1;
+                _playerItem.PlayerStatus.Text = ((string) playerItem.description[selectedRank - 1]).Replace("<br>",
+                    Environment.NewLine);
 
-                PlayerItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-                PlayerItem.VerticalAlignment = System.Windows.VerticalAlignment.Top;
+                _playerItem.HorizontalAlignment = HorizontalAlignment.Left;
+                _playerItem.VerticalAlignment = VerticalAlignment.Top;
             }
 
-            Point MouseLocation = e.GetPosition(Client.MainGrid);
+            var mouseLocation = e.GetPosition(Client.MainGrid);
 
-            double YMargin = MouseLocation.Y;
+            var yMargin = mouseLocation.Y;
 
-            double XMargin = MouseLocation.X;
-            if (XMargin + PlayerItem.Width + 10 > Client.MainGrid.ActualWidth)
-                XMargin = Client.MainGrid.ActualWidth - PlayerItem.Width - 10;
+            var xMargin = mouseLocation.X;
+            if (xMargin + _playerItem.Width + 10 > Client.MainGrid.ActualWidth)
+                xMargin = Client.MainGrid.ActualWidth - _playerItem.Width - 10;
 
-            PlayerItem.Margin = new Thickness(XMargin + 5, YMargin + 5, 0, 0);
+            _playerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
         }
 
         private void ReturnButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (masteries mastery in Client.Masteries)
-            {
+            foreach (var mastery in Client.Masteries)
                 mastery.selectedRank = 0;
-            }
+
             RenderMasteries();
         }
 
-        private List<TalentEntry> GetCurrentTalentEntries()
+        private static List<TalentEntry> GetCurrentTalentEntries()
         {
-            List<TalentEntry> talentEntries = new List<TalentEntry>();
-            foreach (masteries mastery in Client.Masteries)
-            {
-                if (mastery.selectedRank > 0)
+            return (from mastery in Client.Masteries
+                where mastery.selectedRank > 0
+                select new TalentEntry
                 {
-                    TalentEntry talentEntry = new TalentEntry();
-                    talentEntry.Rank = mastery.selectedRank;
-                    talentEntry.TalentId = mastery.id;
-                    talentEntries.Add(talentEntry);
-                }
-            }
-            return talentEntries;
+                    Rank = mastery.selectedRank,
+                    TalentId = mastery.id
+                }).ToList();
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (MasteryBookPageDTO MasteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
+            foreach (
+                var MasteryPage in
+                    Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Where(masteryPage => masteryPage.Current))
             {
-                if (MasteryPage.Current)
-                {
-                    MasteryPage.TalentEntries = GetCurrentTalentEntries();
-                    MasteryPage.Name = MasteryTextBox.Text;
-                }
+                MasteryPage.TalentEntries = GetCurrentTalentEntries();
+                MasteryPage.Name = MasteryTextBox.Text;
             }
+
             await Client.PVPNet.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
         }
 
         private void MasteryPageListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            foreach (masteries mastery in Client.Masteries)
-            {
+            foreach (var mastery in Client.Masteries)
                 mastery.selectedRank = 0;
-            }
-            foreach (MasteryBookPageDTO MasteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
+
+            foreach (var masteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
             {
-                if (MasteryPage.Current)
+                if (masteryPage.Current)
                 {
-                    MasteryPage.Current = false;
+                    masteryPage.Current = false;
                 }
-                if (MasteryPage.PageId == MasteryPageOrder[MasteryPageListView.SelectedIndex])
-                {
-                    MasteryPage.Current = true;
-                    SelectedBook = MasteryPage;
-                }
+                if (masteryPage.PageId != _masteryPageOrder[MasteryPageListView.SelectedIndex])
+                    continue;
+
+                masteryPage.Current = true;
+                _selectedBook = masteryPage;
             }
             ChangeBook();
             RenderMasteries();
@@ -368,17 +375,14 @@ namespace LegendaryClient.Windows.Profile
 
         private void RevertButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (masteries mastery in Client.Masteries)
-            {
+            foreach (var mastery in Client.Masteries)
                 mastery.selectedRank = 0;
-            }
-            foreach (TalentEntry savedMastery in SelectedBook.TalentEntries)
+
+            foreach (var savedMastery in _selectedBook.TalentEntries)
             {
-                foreach (masteries mastery in Client.Masteries)
-                {
-                    if (mastery.id == savedMastery.TalentId)
-                        mastery.selectedRank = savedMastery.Rank;
-                }
+                var mastery1 = savedMastery;
+                foreach (var mastery in Client.Masteries.Where(mastery => mastery.id == mastery1.TalentId))
+                    mastery.selectedRank = savedMastery.Rank;
             }
         }
     }

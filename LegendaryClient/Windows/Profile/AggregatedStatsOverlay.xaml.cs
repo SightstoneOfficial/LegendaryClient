@@ -119,7 +119,7 @@ namespace LegendaryClient.Windows.Profile
                 }
 
                 var type = typeof (AggregatedChampion);
-                var fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
+                var fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", string.Empty);
                 var f = type.GetField(fieldName);
                 f.SetValue(champion, stat.Value);
             }

@@ -32,7 +32,8 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class Ingame
     {
-        private PlatformGameLifecycleDTO Game;
+        private PlatformGameLifecycleDTO _game;
+        private string _user;
         //private static readonly ILog log = LogManager.GetLogger(typeof(InGame));
         public Ingame()
         {
@@ -48,11 +49,11 @@ namespace LegendaryClient.Windows.Profile
             };
             Resources.MergedDictionaries.Add(themeAccent);
         }
-        string User;
+
         public void Update(PlatformGameLifecycleDTO currentGame, string username)
         {
-            User = username;
-            Game = currentGame;
+            _user = username;
+            _game = currentGame;
             BlueBansLabel.Visibility = Visibility.Hidden;
             PurpleBansLabel.Visibility = Visibility.Hidden;
             PurpleBanListView.Items.Clear();
@@ -66,16 +67,16 @@ namespace LegendaryClient.Windows.Profile
             var allParticipants = new List<Participant>(currentGame.Game.TeamOne.ToArray());
             allParticipants.AddRange(currentGame.Game.TeamTwo);
 
-            int i = 0;
-            int y = 0;
-            foreach (Participant part in allParticipants)
+            var i = 0;
+            var y = 0;
+            foreach (var part in allParticipants)
             {
                 var control = new ChampSelectPlayer();
                 if (part is PlayerParticipant)
                 {
                     var participant = part as PlayerParticipant;
                     foreach (
-                        PlayerChampionSelectionDTO championSelect in
+                        var championSelect in
                             currentGame.Game.PlayerChampionSelections.Where(
                                 championSelect =>
                                     championSelect.SummonerInternalName == participant.SummonerInternalName))
@@ -111,7 +112,7 @@ namespace LegendaryClient.Windows.Profile
                                 Bitmap;
                         var target = new Bitmap(cropRect.Width, cropRect.Height);
 
-                        using (Graphics g = Graphics.FromImage(target))
+                        using (var g = Graphics.FromImage(target))
                             if (src != null)
                                 g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
                                     cropRect,
@@ -127,14 +128,14 @@ namespace LegendaryClient.Windows.Profile
 
                     if (participant.TeamParticipantId != null)
                     {
-                        byte[] values = BitConverter.GetBytes((double) participant.TeamParticipantId);
+                        var values = BitConverter.GetBytes((double) participant.TeamParticipantId);
                         if (!BitConverter.IsLittleEndian) Array.Reverse(values);
 
-                        byte r = values[2];
-                        byte b = values[3];
-                        byte g = values[4];
+                        var r = values[2];
+                        var b = values[3];
+                        var g = values[4];
 
-                        Color myColor = Color.FromArgb(r, b, g);
+                        var myColor = Color.FromArgb(r, b, g);
 
                         var converter = new BrushConverter();
                         var brush = (Brush) converter.ConvertFromString("#" + myColor.Name);
@@ -156,7 +157,7 @@ namespace LegendaryClient.Windows.Profile
                 PurpleBansLabel.Visibility = Visibility.Visible;
             }
 
-            foreach (BannedChampion x in currentGame.Game.BannedChampions)
+            foreach (var x in currentGame.Game.BannedChampions)
             {
                 var champImage = new Image
                 {
@@ -173,8 +174,8 @@ namespace LegendaryClient.Windows.Profile
             try
             {
                 string mmrJson;
-                string url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName +
-                             "/" + currentGame.Game.Id + "/token";
+                var url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName +
+                          "/" + currentGame.Game.Id + "/token";
                 using (var client = new WebClient())
                     mmrJson = client.DownloadString(url);
 
@@ -190,17 +191,17 @@ namespace LegendaryClient.Windows.Profile
 
         private void GameScouter_Click(object sender, RoutedEventArgs e)
         {
-            LegendaryClient.GameScouter scouter = new GameScouter();
-            scouter.LoadScouter(User);
+            var scouter = new GameScouter();
+            scouter.LoadScouter(_user);
             scouter.Show();
             scouter.Activate();
         }
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)
         {
-            string ip = Game.PlayerCredentials.ObserverServerIp;
-            string key = Game.PlayerCredentials.ObserverEncryptionKey;
-            double gameId = Game.PlayerCredentials.GameId;
+            var ip = _game.PlayerCredentials.ObserverServerIp;
+            var key = _game.PlayerCredentials.ObserverEncryptionKey;
+            var gameId = _game.PlayerCredentials.GameId;
             Client.LaunchSpectatorGame(ip, key, (int) gameId, Client.Region.InternalName);
         }
     }

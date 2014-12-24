@@ -22,7 +22,7 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class Skins
     {
-        private List<ChampionDTO> ChampionList;
+        private List<ChampionDTO> _championList;
 
         public Skins()
         {
@@ -43,11 +43,11 @@ namespace LegendaryClient.Windows.Profile
         {
             try
             {
-                ChampionDTO[] champList = await Client.PVPNet.GetAvailableChampions();
+                var champList = await Client.PVPNet.GetAvailableChampions();
 
-                ChampionList = new List<ChampionDTO>(champList);
+                _championList = new List<ChampionDTO>(champList);
 
-                ChampionList.Sort(
+                _championList.Sort(
                     (x, y) =>
                         String.Compare(champions.GetChampion(x.ChampionId)
                             .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
@@ -69,10 +69,10 @@ namespace LegendaryClient.Windows.Profile
         {
             SkinSelectListView.Items.Clear();
 
-            List<ChampionDTO> tempList = ChampionList.ToList();
+            var tempList = _championList.ToList();
             var skinList = new List<ChampionSkinDTO>();
 
-            foreach (ChampionDTO champion in tempList)
+            foreach (var champion in tempList)
                 skinList.AddRange(champion.ChampionSkins);
 
             if (LimitedSkinCheckBox.IsChecked != null &&
@@ -83,14 +83,14 @@ namespace LegendaryClient.Windows.Profile
                             championSkins.GetSkin(x.SkinId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower()))
                         .ToList();
 
-            foreach (ChampionSkinDTO skin in skinList)
+            foreach (var skin in skinList)
             {
                 if (LimitedSkinCheckBox.IsChecked == null ||
                     (LimitedSkinCheckBox.IsChecked.Value ? skin.StillObtainable || !skin.Owned : !skin.Owned))
                     continue;
 
                 var skinImage = new ProfileSkinImage();
-                championSkins championSkin = championSkins.GetSkin(skin.SkinId);
+                var championSkin = championSkins.GetSkin(skin.SkinId);
                 var uriSource =
                     new Uri(
                         Path.Combine(Client.ExecutingDirectory, "Assets", "champions",

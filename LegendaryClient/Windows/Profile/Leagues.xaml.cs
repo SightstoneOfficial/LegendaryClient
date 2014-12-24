@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,10 +13,8 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
 using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 
 #endregion
 
@@ -29,10 +26,10 @@ namespace LegendaryClient.Windows.Profile
     public partial class Leagues
     {
         //private static readonly ILog log = LogManager.GetLogger(typeof (Leagues));
-        private SummonerLeaguesDTO MyLeagues;
-        private string Queue;
-        private AggregatedStats SelectedAggregatedStats;
-        private string SelectedRank;
+        private SummonerLeaguesDTO _myLeagues;
+        private string _queue;
+        private AggregatedStats _selectedAggregatedStats;
+        private string _selectedRank;
 
         public Leagues()
         {
@@ -51,21 +48,21 @@ namespace LegendaryClient.Windows.Profile
 
         public void Update(SummonerLeaguesDTO result)
         {
-            MyLeagues = result;
+            _myLeagues = result;
             foreach (
-                LeagueListDTO leagues in MyLeagues.SummonerLeagues.Where(leagues => leagues.Queue == "RANKED_SOLO_5x5"))
-                SelectedRank = leagues.RequestorsRank;
+                var leagues in _myLeagues.SummonerLeagues.Where(leagues => leagues.Queue == "RANKED_SOLO_5x5"))
+                _selectedRank = leagues.RequestorsRank;
 
-            Queue = "RANKED_SOLO_5x5";
+            _queue = "RANKED_SOLO_5x5";
             RenderLeague();
         }
 
         public void RenderLeague()
         {
             LeaguesListView.Items.Clear();
-            foreach (LeagueListDTO leagues in MyLeagues.SummonerLeagues.Where(leagues => leagues.Queue == Queue))
+            foreach (var leagues in _myLeagues.SummonerLeagues.Where(leagues => leagues.Queue == _queue))
             {
-                switch (SelectedRank)
+                switch (_selectedRank)
                 {
                     case "V":
                         UpTierButton.IsEnabled = true;
@@ -81,13 +78,13 @@ namespace LegendaryClient.Windows.Profile
                         break;
                 }
 
-                CurrentLeagueLabel.Content = leagues.Tier + " " + SelectedRank;
+                CurrentLeagueLabel.Content = leagues.Tier + " " + _selectedRank;
                 CurrentLeagueNameLabel.Content = leagues.Name;
-                List<LeagueItemDTO> players =
-                    leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == SelectedRank).ToList();
+                var players =
+                    leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == _selectedRank).ToList();
                 players.Reverse();
-                int i = 0;
-                foreach (LeagueItemDTO player in players)
+                var i = 0;
+                foreach (var player in players)
                 {
                     i++;
                     var item = new LeagueItem
@@ -122,19 +119,19 @@ namespace LegendaryClient.Windows.Profile
 
         private void DownTierButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (SelectedRank)
+            switch (_selectedRank)
             {
                 case "I":
-                    SelectedRank = "II";
+                    _selectedRank = "II";
                     break;
                 case "II":
-                    SelectedRank = "III";
+                    _selectedRank = "III";
                     break;
                 case "III":
-                    SelectedRank = "IV";
+                    _selectedRank = "IV";
                     break;
                 case "IV":
-                    SelectedRank = "V";
+                    _selectedRank = "V";
                     break;
             }
 
@@ -143,19 +140,19 @@ namespace LegendaryClient.Windows.Profile
 
         private void UpTierButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (SelectedRank)
+            switch (_selectedRank)
             {
                 case "V":
-                    SelectedRank = "IV";
+                    _selectedRank = "IV";
                     break;
                 case "IV":
-                    SelectedRank = "III";
+                    _selectedRank = "III";
                     break;
                 case "III":
-                    SelectedRank = "II";
+                    _selectedRank = "II";
                     break;
                 case "II":
-                    SelectedRank = "I";
+                    _selectedRank = "I";
                     break;
             }
 
@@ -169,7 +166,7 @@ namespace LegendaryClient.Windows.Profile
 
             var item = (LeagueItem) LeaguesListView.SelectedItem;
             PlayerLabel.Content = item.PlayerLabel.Content;
-            PublicSummoner x = await Client.PVPNet.GetSummonerByName((string) item.PlayerLabel.Content);
+            var x = await Client.PVPNet.GetSummonerByName((string) item.PlayerLabel.Content);
             Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", GotStats);
         }
 
@@ -177,21 +174,21 @@ namespace LegendaryClient.Windows.Profile
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                SelectedAggregatedStats = stats;
+                _selectedAggregatedStats = stats;
 
                 ViewAggregatedStatsButton.IsEnabled = false;
                 TopChampionsListView.Items.Clear();
                 var championStats = new List<AggregatedChampion>();
-                int i = 0;
-                if (SelectedAggregatedStats.LifetimeStatistics == null)
+                var i = 0;
+                if (_selectedAggregatedStats.LifetimeStatistics == null)
                     return;
 
-                if (!SelectedAggregatedStats.LifetimeStatistics.Any())
+                if (!_selectedAggregatedStats.LifetimeStatistics.Any())
                     return;
 
-                foreach (AggregatedStat stat in SelectedAggregatedStats.LifetimeStatistics)
+                foreach (var stat in _selectedAggregatedStats.LifetimeStatistics)
                 {
-                    AggregatedChampion champion = championStats.Find(x => x.ChampionId == stat.ChampionId);
+                    var champion = championStats.Find(x => x.ChampionId == stat.ChampionId);
                     if (champion == null)
                     {
                         champion = new AggregatedChampion
@@ -201,22 +198,22 @@ namespace LegendaryClient.Windows.Profile
                         championStats.Add(champion);
                     }
 
-                    Type type = typeof (AggregatedChampion);
-                    string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
-                    FieldInfo f = type.GetField(fieldName);
+                    var type = typeof (AggregatedChampion);
+                    var fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", string.Empty);
+                    var f = type.GetField(fieldName);
 
                     f.SetValue(champion, stat.Value);
                 }
 
                 championStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
 
-                foreach (AggregatedChampion info in championStats.TakeWhile(info => i++ <= 6))
+                foreach (var info in championStats.TakeWhile(info => i++ <= 6))
                 {
                     ViewAggregatedStatsButton.IsEnabled = true;
                     if (!(Math.Abs(info.ChampionId) > 0))
                         continue;
 
-                    champions champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
+                    var champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
                     var player = new ChatPlayer
                     {
                         LevelLabel = {Visibility = Visibility.Hidden},
