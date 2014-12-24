@@ -17,7 +17,6 @@ using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
-using log4net;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 
 #endregion
@@ -29,10 +28,10 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class MatchHistory
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof (MatchHistory));
-        private readonly List<MatchStats> GameStats = new List<MatchStats>();
-        private string MatchLinkOnline;
-        private LargeChatPlayer PlayerItem;
+        //private static readonly ILog Log = LogManager.GetLogger(typeof (MatchHistory));
+        private readonly List<MatchStats> _gameStats = new List<MatchStats>();
+        //private string _matchLinkOnline;
+        private LargeChatPlayer _playerItem;
 
         public MatchHistory()
         {
@@ -56,24 +55,25 @@ namespace LegendaryClient.Windows.Profile
 
         public void GotRecentGames(RecentGames result)
         {
-            GameStats.Clear();
+            _gameStats.Clear();
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
-            foreach (PlayerGameStats game in result.GameStatistics)
+            foreach (var game in result.GameStatistics)
             {
-                game.GameType = Client.TitleCaseString(game.GameType.Replace("_GAME", "").Replace("MATCHED", "NORMAL"));
+                game.GameType =
+                    Client.TitleCaseString(game.GameType.Replace("_GAME", string.Empty).Replace("MATCHED", "NORMAL"));
                 var match = new MatchStats();
 
-                foreach (RawStat stat in game.Statistics)
+                foreach (var stat in game.Statistics)
                 {
-                    Type type = typeof (MatchStats);
-                    string fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", "");
-                    FieldInfo f = type.GetField(fieldName);
+                    var type = typeof (MatchStats);
+                    var fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", string.Empty);
+                    var f = type.GetField(fieldName);
                     f.SetValue(match, stat.Value);
                 }
 
                 match.Game = game;
 
-                GameStats.Add(match);
+                _gameStats.Add(match);
             }
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -83,10 +83,10 @@ namespace LegendaryClient.Windows.Profile
                 ItemsListView.Items.Clear();
                 PurpleListView.Items.Clear();
                 GameStatsListView.Items.Clear();
-                foreach (MatchStats stats in GameStats)
+                foreach (var stats in _gameStats)
                 {
                     var item = new RecentGameOverview();
-                    champions gameChamp = champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
+                    var gameChamp = champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
                     item.ChampionImage.Source = gameChamp.icon;
                     item.ChampionNameLabel.Content = gameChamp.displayName;
                     item.ScoreLabel.Content =
@@ -159,14 +159,14 @@ namespace LegendaryClient.Windows.Profile
         {
             if (GamesListView.SelectedIndex != -1)
             {
-                MatchStats stats = GameStats[GamesListView.SelectedIndex];
+                var stats = _gameStats[GamesListView.SelectedIndex];
                 GameStatsListView.Items.Clear();
                 PurpleListView.Items.Clear();
                 BlueListView.Items.Clear();
                 ItemsListView.Items.Clear();
-                MatchLinkOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" +
+                /*_matchLinkOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" +
                                   Client.Region.InternalName + "/" + (int) Math.Round(stats.Game.GameId) + "/" +
-                                  stats.Game.UserId;
+                                  stats.Game.UserId;*/
 
                 //Add self to game players
                 var img = new Image
@@ -177,7 +177,7 @@ namespace LegendaryClient.Windows.Profile
                 };
                 BlueListView.Items.Add(img);
 
-                foreach (FellowPlayerInfo info in stats.Game.FellowPlayers)
+                foreach (var info in stats.Game.FellowPlayers)
                 {
                     img = new Image
                     {
@@ -189,10 +189,13 @@ namespace LegendaryClient.Windows.Profile
                         BlueListView.Items.Add(img);
                     else
                         PurpleListView.Items.Add(img);
+
+                    BlueListView.Visibility = BlueListView.Items.Count > 0 ? Visibility.Visible : Visibility.Hidden;
+                    PurpleListView.Visibility = PurpleListView.Items.Count > 0 ? Visibility.Visible : Visibility.Hidden;
                 }
 
-                Type classType = typeof (MatchStats);
-                foreach (FieldInfo field in classType.GetFields(BindingFlags.Public | BindingFlags.Instance))
+                var classType = typeof (MatchStats);
+                foreach (var field in classType.GetFields(BindingFlags.Public | BindingFlags.Instance))
                 {
                     if (field.GetValue(stats) is double)
                     {
@@ -247,58 +250,58 @@ namespace LegendaryClient.Windows.Profile
 
         private void img_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (PlayerItem == null)
+            if (_playerItem == null)
                 return;
 
-            Client.MainGrid.Children.Remove(PlayerItem);
-            PlayerItem = null;
+            Client.MainGrid.Children.Remove(_playerItem);
+            _playerItem = null;
         }
 
         private void img_MouseMove(object sender, MouseEventArgs e)
         {
             var item = (Image) sender;
             var playerItem = (ProfilePage.KeyValueItem) item.Tag;
-            if (PlayerItem == null)
+            if (_playerItem == null)
             {
-                PlayerItem = new LargeChatPlayer();
-                Client.MainGrid.Children.Add(PlayerItem);
+                _playerItem = new LargeChatPlayer();
+                Client.MainGrid.Children.Add(_playerItem);
 
-                items Item = items.GetItem(Convert.ToInt32(playerItem.Value));
+                var Item = items.GetItem(Convert.ToInt32(playerItem.Value));
 
-                PlayerItem.PlayerName.Content = Item.name;
+                _playerItem.PlayerName.Content = Item.name;
 
-                PlayerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                PlayerItem.Width = PlayerItem.PlayerName.DesiredSize.Width > 250
-                    ? PlayerItem.PlayerName.DesiredSize.Width
+                _playerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                _playerItem.Width = _playerItem.PlayerName.DesiredSize.Width > 250
+                    ? _playerItem.PlayerName.DesiredSize.Width
                     : 250;
 
-                PlayerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
-                PlayerItem.PlayerLeague.Content = "Item ID " + Item.id;
-                PlayerItem.LevelLabel.Content = "";
-                PlayerItem.UsingLegendary.Visibility = Visibility.Hidden;
+                _playerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
+                _playerItem.PlayerLeague.Content = "Item ID " + Item.id;
+                _playerItem.LevelLabel.Content = string.Empty;
+                _playerItem.UsingLegendary.Visibility = Visibility.Hidden;
 
-                string parsedDescription = Item.description;
+                var parsedDescription = Item.description;
                 parsedDescription = parsedDescription.Replace("<br>", Environment.NewLine);
                 parsedDescription = Regex.Replace(parsedDescription, "<.*?>", string.Empty);
-                PlayerItem.PlayerStatus.Text = parsedDescription;
+                _playerItem.PlayerStatus.Text = parsedDescription;
 
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"),
                     UriKind.RelativeOrAbsolute);
-                PlayerItem.ProfileImage.Source = new BitmapImage(uriSource);
+                _playerItem.ProfileImage.Source = new BitmapImage(uriSource);
 
-                PlayerItem.HorizontalAlignment = HorizontalAlignment.Left;
-                PlayerItem.VerticalAlignment = VerticalAlignment.Top;
+                _playerItem.HorizontalAlignment = HorizontalAlignment.Left;
+                _playerItem.VerticalAlignment = VerticalAlignment.Top;
             }
 
-            Point mouseLocation = e.GetPosition(Client.MainGrid);
+            var mouseLocation = e.GetPosition(Client.MainGrid);
 
-            double yMargin = mouseLocation.Y;
+            var yMargin = mouseLocation.Y;
 
-            double xMargin = mouseLocation.X;
-            if (xMargin + PlayerItem.Width + 10 > Client.MainGrid.ActualWidth)
-                xMargin = Client.MainGrid.ActualWidth - PlayerItem.Width - 10;
+            var xMargin = mouseLocation.X;
+            if (xMargin + _playerItem.Width + 10 > Client.MainGrid.ActualWidth)
+                xMargin = Client.MainGrid.ActualWidth - _playerItem.Width - 10;
 
-            PlayerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
+            _playerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
         }
     }
 
@@ -308,7 +311,7 @@ namespace LegendaryClient.Windows.Profile
         public double BarracksKilled = 0;
         public double ChampionsKilled = 0;
         public double CombatPlayerScore = 0;
-        public PlayerGameStats Game = null;
+        public PlayerGameStats Game;
         public double GoldEarned = 0;
         public double Item0 = 0;
         public double Item1 = 0;
