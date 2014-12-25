@@ -521,7 +521,8 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.PurgeFromQueues();
             inQueue = false;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                Client.inQueueTimer.Visibility = Visibility.Hidden)); 
+                Client.inQueueTimer.Visibility = Visibility.Hidden));
+            PingTimer.Stop();
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             uiLogic.UpdateMainPage();
@@ -772,6 +773,19 @@ namespace LegendaryClient.Windows
             Client.CallString = ChatTextBox.Text;
             CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select", Brushes.OrangeRed);
             ChatTextBox.Text = string.Empty;
+        }
+
+        public void VisualQueueLeave()
+        {
+            setStartButtonText("Start Game");
+            inQueue = false;
+            Client.GameStatus = "outOfGame";
+            Client.SetChatHover();
+            Dispatcher.Invoke(() =>
+            {
+                Client.inQueueTimer.Visibility = Visibility.Hidden;
+                TeamListView.Opacity = 1D;
+            });
         }
     }
 }

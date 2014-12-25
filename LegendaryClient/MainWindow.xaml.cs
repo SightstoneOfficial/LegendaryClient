@@ -11,12 +11,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using log4net;
-using log4net.Config;
-using System.Security.Permissions;
-using System.Net;
-using System.Diagnostics;
 using System.Windows.Media.Imaging;
-using System.Windows.Media;
 using jabber.protocol.client;
 
 namespace LegendaryClient
@@ -250,18 +245,24 @@ namespace LegendaryClient
             }
             else
             {
-                Client.PVPNet.Leave();
-                Client.PVPNet.PurgeFromQueues();
-                Client.PVPNet.Disconnect();
+                if (Client.IsLoggedIn)
+                {
+                    Client.PVPNet.PurgeFromQueues();
+                    Client.PVPNet.Leave();
+                    Client.PVPNet.Disconnect();
+                }
                 Environment.Exit(0);
             }
 
         }
         private void Quit(object sender, RoutedEventArgs e)
         {
-            Client.PVPNet.PurgeFromQueues();
-            Client.PVPNet.Leave();
-            Client.PVPNet.Disconnect();
+            if (Client.IsLoggedIn)
+            {
+                Client.PVPNet.PurgeFromQueues();
+                Client.PVPNet.Leave();
+                Client.PVPNet.Disconnect();
+            }
             Environment.Exit(0);
         }
         private void HideWarning(object sender, RoutedEventArgs e)

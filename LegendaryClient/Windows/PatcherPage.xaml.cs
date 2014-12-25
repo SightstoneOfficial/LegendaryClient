@@ -800,6 +800,12 @@ namespace LegendaryClient.Windows
                             newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient", saveName));
                         }
+                        else if (savePlace.Contains("assets/sounds/matchmakingqueued.mp3"))
+                        {
+                            LogTextBox("Downloading matchmakingqueued.mp3 from http://l3cdn.riotgames.com");
+                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                                Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "matchmakingqueued.mp3"));
+                        }
                     }
                 }
             }

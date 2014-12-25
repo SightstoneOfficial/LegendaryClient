@@ -62,8 +62,10 @@
                      VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden" />
             <ListBox x:Name="Team2ListBox" Width="264" Height="357" Margin="0,50,10,0" HorizontalAlignment="Right"
                      VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Hidden" />
-            <Button x:Name="AcceptButton" Height="30" Margin="10,0,10,8" HorizontalAlignment="Stretch"
+            <Button x:Name="AcceptButton" Height="30" Margin="10,0,276,8" HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom" Content="Accept Queue" Click="AcceptButton_Click" />
+            <Button x:Name="DeclineButton" Height="30" Margin="279,0,10,8" HorizontalAlignment="Stretch"
+                    VerticalAlignment="Bottom" Content="Decline Queue" Click="DeclineButton_Click" />
         </Grid>
     </Grid>
 </Page>

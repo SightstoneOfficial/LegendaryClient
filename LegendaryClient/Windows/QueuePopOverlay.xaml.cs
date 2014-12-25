@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.SoundLogic;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
@@ -45,6 +46,8 @@ namespace LegendaryClient.Windows
             QueueTimer = new Timer(1000);
             QueueTimer.Elapsed += QueueElapsed;
             QueueTimer.Enabled = true;
+            Client.MainWin.FlashWindow();
+            QueuePopSound.PlayQueuePopSound();
         }
 
         internal void QueueElapsed(object sender, ElapsedEventArgs e)
@@ -58,7 +61,7 @@ namespace LegendaryClient.Windows
 
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
-            if (message.GetType() == typeof (GameDTO))
+            if (message.GetType() == typeof(GameDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -89,30 +92,38 @@ namespace LegendaryClient.Windows
                     if (QueueDTO == null)
                         return;
 
-                    var playerParticipantStatus = (string) QueueDTO.StatusOfParticipants;
+                    var playerParticipantStatus = (string)QueueDTO.StatusOfParticipants;
                     if (ReverseString)
                     {
-                        string firstHalf = playerParticipantStatus.Substring(0, playerParticipantStatus.Length/2);
-                        string secondHalf = playerParticipantStatus.Substring(playerParticipantStatus.Length/2,
-                            playerParticipantStatus.Length/2);
+                        string firstHalf = playerParticipantStatus.Substring(0, playerParticipantStatus.Length / 2);
+                        string secondHalf = playerParticipantStatus.Substring(playerParticipantStatus.Length / 2,
+                            playerParticipantStatus.Length / 2);
                         playerParticipantStatus = secondHalf + firstHalf;
                     }
                     foreach (char c in playerParticipantStatus)
                     {
-                        if (c == '1') //If checked
+                        QueuePopPlayer player = null;
+                        if (i < playerParticipantStatus.Length / 2) //Team 1
                         {
-                            QueuePopPlayer player = null;
-                            if (i < playerParticipantStatus.Length/2) //Team 1
-                            {
-                                if (i <= Team1ListBox.Items.Count - 1)
-                                    player = (QueuePopPlayer) Team1ListBox.Items[i];
-                            }
-                            else if (i - 5 <= Team2ListBox.Items.Count - 1) //Team 2
-                                player = (QueuePopPlayer) Team2ListBox.Items[i - (playerParticipantStatus.Length/2)];
-
-                            if (player != null)
-                                player.ReadyCheckBox.IsChecked = true;
+                            if (i <= Team1ListBox.Items.Count - 1)
+                                player = (QueuePopPlayer)Team1ListBox.Items[i];
                         }
+                        else if (i - 5 <= Team2ListBox.Items.Count - 1) //Team 2
+                            player = (QueuePopPlayer)Team2ListBox.Items[i - (playerParticipantStatus.Length / 2)];
+
+                        if (player != null)
+                        {
+                            switch (c)
+                            {
+                                case '1':
+                                    player.ReadyImage.Source = Client.GetImage("/LegendaryClient;component/accepted.png");
+                                    break;
+                                case '2':
+                                    player.ReadyImage.Source = Client.GetImage("/LegendaryClient;component/declined.png");
+                                    break;
+                            }
+                        }
+
                         i++;
                     }
                 }));
@@ -192,6 +203,16 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.AcceptPoppedGame(true);
             accepted = true;
+        }
+
+        private async void DeclineButton_Click(object sender, RoutedEventArgs e)
+        {
+            await Client.PVPNet.AcceptPoppedGame(false);
+            accepted = false;
+
+            //TODO: temp, use the Client.PlayerAccepedQueue event instead
+            if (previousPage is TeamQueuePage)
+                (previousPage as TeamQueuePage).VisualQueueLeave();
         }
     }
 }

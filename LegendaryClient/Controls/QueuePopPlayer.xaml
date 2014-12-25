@@ -10,11 +10,11 @@
                FontWeight="ExtraLight" VerticalAlignment="Top" />
         <Label x:Name="RankLabel" Content="Diamond I" HorizontalAlignment="Left" FontSize="18" FontWeight="SemiBold"
                VerticalAlignment="Bottom" />
-        <CheckBox x:Name="ReadyCheckBox" Content="" HorizontalAlignment="Right" Margin="0,0,0,0"
+        <Image x:Name="ReadyImage" Source="/LegendaryClient;component/undecided.png"  HorizontalAlignment="Right" Margin="0,0,0,0"
                   IsHitTestVisible="false" VerticalAlignment="Center">
-            <CheckBox.LayoutTransform>
+            <Image.LayoutTransform>
                 <ScaleTransform ScaleX="4" ScaleY="4" />
-            </CheckBox.LayoutTransform>
-        </CheckBox>
+            </Image.LayoutTransform>
+        </Image>
     </Grid>
 </UserControl>

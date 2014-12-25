@@ -223,6 +223,7 @@
       <DependentUpon>GameScouter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
+    <Compile Include="Logic\SoundLogic\QueuePopSound.cs" />
     <Compile Include="Logic\uiLogic.cs" />
     <Compile Include="Logic\FilterChat.cs" />
     <Compile Include="Logic\GameClientSettings\General.cs" />
@@ -1045,6 +1046,8 @@
     <Resource Include="chat.png" />
     <Resource Include="Locked.png" />
     <Resource Include="joinchat.png" />
+    <Resource Include="accepted.png" />
+    <Resource Include="declined.png" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -1057,6 +1060,7 @@
     </Content>
     <Resource Include="trade.png" />
     <Resource Include="star.png" />
+    <Resource Include="undecided.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
