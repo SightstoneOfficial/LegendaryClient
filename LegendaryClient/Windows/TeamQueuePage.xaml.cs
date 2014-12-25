@@ -268,6 +268,20 @@ namespace LegendaryClient.Windows
                         var invitePlayer = new InvitePlayer();
                         invitePlayer.StatusLabel.Content = InviteeStateTitleCase;
                         invitePlayer.PlayerLabel.Content = statsx.SummonerName;
+                        switch (InviteeState)
+                        {
+                            case "owner":
+                            case "accepted":
+                                invitePlayer.StatusLabel.Foreground = Brushes.Green;
+                                break;
+                            case "pending":
+                                invitePlayer.StatusLabel.Foreground = Brushes.Yellow;
+                                break;
+                            case "declined":
+                            case "quit":
+                                invitePlayer.StatusLabel.Foreground = Brushes.Red;
+                                break;
+                        }
                         Client.InviteListView.Items.Add(invitePlayer);
                     }
 
@@ -653,6 +667,7 @@ namespace LegendaryClient.Windows
                 Dispatcher.Invoke(() =>
                 {
                     Client.inQueueTimer.Visibility = Visibility.Hidden;
+                    TeamListView.Opacity = 1D;
                 });
             }
         }
@@ -710,6 +725,7 @@ namespace LegendaryClient.Windows
             {
                 if (Client.inQueueTimer.Visibility == Visibility.Hidden)
                     Client.inQueueTimer.Visibility = Visibility.Visible;
+                TeamListView.Opacity = 0.3D;
             }));
             Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
