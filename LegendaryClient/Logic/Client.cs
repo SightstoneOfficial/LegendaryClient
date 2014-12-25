@@ -70,7 +70,8 @@ namespace LegendaryClient.Logic
 
         public static void SendAccept(bool accept)
         {
-            PlayerAccepedQueue(accept);
+            if (PlayerAccepedQueue != null)
+                PlayerAccepedQueue(accept);
         }
 
         public static string ToSHA1(this string input)
@@ -101,10 +102,10 @@ namespace LegendaryClient.Logic
             {
                 string[] file = File.ReadAllLines(fileLocation);
                 foreach (string x in from x in file
-                    where !String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x)
-                    where !x.Contains("[") && !x.Contains("]")
-                    where !x.StartsWith("#") && x.Contains("=")
-                    select x)
+                                     where !String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x)
+                                     where !x.Contains("[") && !x.Contains("]")
+                                     where !x.StartsWith("#") && x.Contains("=")
+                                     select x)
                 {
                     try
                     {

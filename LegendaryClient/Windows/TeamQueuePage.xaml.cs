@@ -272,6 +272,7 @@ namespace LegendaryClient.Windows
                         {
                             case "owner":
                             case "accepted":
+                            case "creator":
                                 invitePlayer.StatusLabel.Foreground = Brushes.Green;
                                 break;
                             case "pending":
