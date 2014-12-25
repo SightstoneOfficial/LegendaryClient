@@ -62,5 +62,8 @@
     <Setting Name="devKeyLoc" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="updateRegion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Live</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

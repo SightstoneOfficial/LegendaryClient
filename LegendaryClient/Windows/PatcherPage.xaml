@@ -95,5 +95,8 @@
         <Button x:Name="FindClientButton" Width="150" Height="30" Margin="0,10,165,0"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Content="Find LoL Client" Click="FindClient_Click"
                 Visibility="Hidden" />
+        <ComboBox x:Name="UpdateRegionComboBox" Width="120" Margin="256,14,0,0"
+                HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}"
+                SelectedIndex="2" SelectionChanged="UpdateRegionComboBox_SelectionChanged" />
     </Grid>
 </Page>

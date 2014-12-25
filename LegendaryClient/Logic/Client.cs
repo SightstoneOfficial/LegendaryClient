@@ -1168,8 +1168,6 @@ namespace LegendaryClient.Logic
         }
 
         internal static string Location;
-        internal static string LoLLauncherLocation;
-        internal static string LOLCLIENTVERSION;
         internal static string RootLocation;
 
         internal static void LaunchGame()
@@ -1533,6 +1531,8 @@ namespace LegendaryClient.Logic
             ChatClient.Password = userpass.Value;
             ChatClient.Login();
         }
+
+        public static string UpdateRegion { get; set; }
     }
 
 

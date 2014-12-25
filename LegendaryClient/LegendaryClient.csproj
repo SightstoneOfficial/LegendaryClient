@@ -261,6 +261,11 @@
     <Compile Include="Logic\TempRunes\LCRunePages.cs" />
     <Compile Include="Logic\TempRunes\LcRunes\Rune.cs" />
     <Compile Include="Logic\TempRunes\LcRunes\RuneStats.cs" />
+    <Compile Include="Logic\UpdateRegion\BaseUpdateRegion.cs" />
+    <Compile Include="Logic\UpdateRegion\Garena.cs" />
+    <Compile Include="Logic\UpdateRegion\Korea.cs" />
+    <Compile Include="Logic\UpdateRegion\Live.cs" />
+    <Compile Include="Logic\UpdateRegion\PBE.cs" />
     <Compile Include="ReplayElements\ChampionItem.xaml.cs">
       <DependentUpon>ChampionItem.xaml</DependentUpon>
     </Compile>

@@ -128,6 +128,14 @@
             <sys:String>VN</sys:String> -->
         </x:Array>
 
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="UpdateRegions"
+                 Type="sys:String">
+            <sys:String>Garena</sys:String>
+            <sys:String>PBE</sys:String>
+            <sys:String>Live</sys:String>
+            <sys:String>Korea</sys:String>
+        </x:Array>
+
         <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="TeamSizes"
                  Type="sys:Int32">
             <sys:Int32>1</sys:Int32>

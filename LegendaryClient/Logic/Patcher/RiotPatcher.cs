@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web.Script.Serialization;
+using LegendaryClient.Logic.UpdateRegion;
 
 #endregion
 
@@ -44,42 +45,43 @@ namespace LegendaryClient.Logic.Patcher
             return s;
         }
 
-        public string GetLatestAir()
+        public string GetListing(string listingLink)
         {
-            string airVersions = "0.0.0";
+            string versions = "0.0.0";
             using (var client = new WebClient())
             {
                 try
                 {
-                    airVersions =
+                    versions =
                         client.DownloadString(
-                            "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
+                             listingLink);
                 }
                 catch (WebException e)
                 {
                     Client.Log(e.Message);
                 }
             }
-            return airVersions.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+            return versions.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
         }
 
-        public string GetLatestGame()
-        {
-            string gameVersions = "0.0.0";
+        public string[] GetManifest(string manifestLink)
+        {   
+            string Manifest = null;
             using (var client = new WebClient())
             {
+                
                 try
                 {
-                    gameVersions =
+                    Manifest = 
                         client.DownloadString(
-                            "http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
+                             manifestLink);
                 }
                 catch (WebException e)
                 {
                     Client.Log(e.Message);
                 }
             }
-            return gameVersions.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+            return Manifest.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
         }
 
         public string GetCurrentAirInstall(string location)

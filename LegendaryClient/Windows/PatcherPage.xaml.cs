@@ -21,6 +21,7 @@ using ICSharpCode.SharpZipLib.Tar;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Patcher;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Logic.UpdateRegion;
 using LegendaryClient.Properties;
 using Microsoft.Win32;
 using RAFlibPlus;
@@ -38,12 +39,14 @@ namespace LegendaryClient.Windows
         internal static bool LoLDataIsUpToDate = false;
         internal static string LatestLolDataVersion = string.Empty;
         internal static string LolDataVersion = string.Empty;
-        private string[] latestversion;
 
         public PatcherPage()
         {
             InitializeComponent();
             Change();
+
+            UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion;
+            Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
 
             bool x = Settings.Default.DarkTheme;
             if (!x)
@@ -278,47 +281,39 @@ namespace LegendaryClient.Windows
                         versionAir.Close();
                     }
 
-                    string latestAir = patcher.GetLatestAir();
+                    BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
+                    string latestAir = patcher.GetListing(updateRegion.AirListing);
                     LogTextBox("Air Assets Version: " + latestAir);
                     string airVersion =
                         File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                     LogTextBox("Current Air Assets Version: " + airVersion);
                     var updateClient = new WebClient();
-                    string release =
-                        updateClient.DownloadString(
-                            "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
-                    string[] latestVersion = release.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
-                    latestversion = latestVersion;
-                    string vers = latestVersion[0];
-                    if (airVersion != latestVersion[0])
+                    string vers = latestAir;
+                    if (airVersion != latestAir)
                     {
                         //Download Air Assists from riot
                         try
                         {
-                            string package =
-                                updateClient.DownloadString(
-                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
-                                    latestVersion[0] + "/packages/files/packagemanifest");
-                            string[] allFiles = package.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+                            string airManifestLink = updateRegion.AirManifest + latestAir + "/packages/files/packagemanifest";
+                            string[] allFiles = patcher.GetManifest(airManifestLink);
                             int i = 0;
                             while (!allFiles[i].Contains("gameStats_en_US.sqlite"))
                                 i++;
 
                             string gameStatsLink = allFiles[i].Split(',')[0];
                             updateClient.DownloadFile(
-                                new Uri("http://l3cdn.riotgames.com/releases/live/" + allFiles[i].Split(',')[0]),
+                                new Uri(updateRegion.AirManifest + allFiles[i].Split(',')[0]),
                                 Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
-                            GetAllPngs(package);
-                            string[] x = package.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+                            GetAllPngs(allFiles);
                             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                                 File.Delete(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
 
                             using (
                                 FileStream file =
                                     File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
-                                file.Write(encoding.GetBytes(latestVersion[0]), 0,
-                                    encoding.GetBytes(latestVersion[0]).Length);
+                                file.Write(encoding.GetBytes(latestAir), 0,
+                                    encoding.GetBytes(latestAir).Length);
                         }
                         catch (Exception e)
                         {
@@ -345,32 +340,21 @@ namespace LegendaryClient.Windows
                     string gameLocation = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
                         "releases");
 
-                    string lolVersion2 =
-                        new WebClient().DownloadString(
-                            "http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
-                    string lolVersion =
-                        new WebClient().DownloadString(
-                            "http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_NA");
-                    string gameClientSln = lolVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
-                    string gameClient = lolVersion2.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
-                    LogTextBox("Latest League of Legends GameClient: " + gameClientSln);
+                    string solutionListing = 
+                        patcher.GetListing(
+                            updateRegion.SolutionListing);
+
+                    string solutionVersion = solutionListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+                    LogTextBox("Latest League of Legends GameClient: " + solutionVersion);
                     LogTextBox("Checking if League of Legends is Up-To-Date");
 
-                    string lolLauncherVersion =
-                        new WebClient().DownloadString(
-                            "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
-                    string launcherVersion =
-                        lolLauncherVersion.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
                     bool toExit = false;
 
-                    if (Directory.Exists(Path.Combine(gameLocation, gameClientSln)))
+                    if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
                     {
                         LogTextBox("League of Legends is Up-To-Date");
-                        Client.LOLCLIENTVERSION = lolVersion2;
                         Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
-                            "releases", gameClientSln, "deploy");
-                        Client.LoLLauncherLocation = Path.Combine(lolRootPath, "RADS", "projects", "lol_air_client",
-                            "releases", launcherVersion, "deploy");
+                            "releases", solutionVersion, "deploy");
                         Client.RootLocation = lolRootPath;
                     }
                     else
@@ -724,10 +708,10 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void GetAllPngs(string packageManifest)
+        private void GetAllPngs(string[] packageManifest)
         {
             string[] fileMetaData =
-                packageManifest.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
+                packageManifest.Skip(1).ToArray();
             var currentVersion =
                 new Version(File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")));
 
@@ -925,6 +909,11 @@ namespace LegendaryClient.Windows
         private void FindClient_Click(object sender, RoutedEventArgs e)
         {
             GetLolRootPath(true);
+        }
+
+        private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Settings.Default.updateRegion = (string) UpdateRegionComboBox.SelectedValue;
         }
     }
 }
