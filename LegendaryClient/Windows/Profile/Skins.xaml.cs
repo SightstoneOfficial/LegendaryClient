@@ -71,23 +71,28 @@ namespace LegendaryClient.Windows.Profile
 
             var tempList = _championList.ToList();
             var skinList = new List<ChampionSkinDTO>();
-
             foreach (var champion in tempList)
+            {
                 skinList.AddRange(champion.ChampionSkins);
+            }
 
             if (LimitedSkinCheckBox.IsChecked != null &&
                 (!String.IsNullOrEmpty(SearchTextBox.Text) && !LimitedSkinCheckBox.IsChecked.Value))
+            {
                 skinList =
                     skinList.Where(
                         x =>
                             championSkins.GetSkin(x.SkinId).displayName.ToLower().Contains(SearchTextBox.Text.ToLower()))
                         .ToList();
+            }
 
             foreach (var skin in skinList)
             {
                 if (LimitedSkinCheckBox.IsChecked == null ||
                     (LimitedSkinCheckBox.IsChecked.Value ? skin.StillObtainable || !skin.Owned : !skin.Owned))
+                {
                     continue;
+                }
 
                 var skinImage = new ProfileSkinImage();
                 var championSkin = championSkins.GetSkin(skin.SkinId);
@@ -97,7 +102,9 @@ namespace LegendaryClient.Windows.Profile
                             championSkins.GetSkin(skin.SkinId).portraitPath), UriKind.Absolute);
                 skinImage.SkinImage.Source = new BitmapImage(uriSource);
                 if (!skin.StillObtainable)
+                {
                     skinImage.LimitedLabel.Visibility = Visibility.Visible;
+                }
 
                 skinImage.SkinName.Content = championSkin.displayName;
                 skinImage.Margin = new Thickness(5, 0, 5, 0);
