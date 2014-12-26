@@ -60,7 +60,7 @@ namespace LegendaryClient.Windows
                 DevKey.Background = (Brush) bc.ConvertFrom("#FFECECEC");
                 PatchTextBox.Foreground = (Brush) bc.ConvertFrom("#FF1B1919");
             }
-            DevKey.TextChanged += DevKey_TextChanged;
+            //DevKey.TextChanged += DevKey_TextChanged;
 #if !DEBUG
             UpdateSplash();
 #endif
