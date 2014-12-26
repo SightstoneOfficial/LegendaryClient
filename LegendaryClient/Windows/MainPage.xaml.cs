@@ -136,7 +136,9 @@ namespace LegendaryClient.Windows
                 var message =
                     Client.LoginPacket.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
                 if (message != null)
-                    BroadcastMessage.Text = Convert.ToString(message["content"]);
+                    BroadcastMessage.Text = System.Text.Encoding.UTF8.GetString(
+                        System.Text.Encoding.Default.GetBytes(
+                            message.ToString()));
             }
 
             foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
@@ -450,7 +452,10 @@ namespace LegendaryClient.Windows
                     {
                         string spectatorJson;
                         using (var client = new WebClient())
+                        {
+                            client.Encoding = System.Text.Encoding.UTF8;
                             spectatorJson = client.DownloadString(region.SpectatorLink + "featured");
+                        }
 
                         var serializer = new JavaScriptSerializer();
                         var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(spectatorJson);
