@@ -77,31 +77,6 @@ namespace LegendaryClient.Windows
             Resources.MergedDictionaries.Add(themeAccent);
         }
 
-        private void DevKey_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (DevKey.Text.StartsWith("!~betakey-"))
-                if (DevKey.Text.EndsWith("~!"))
-                    GetDev(DevKey.Text.Replace("!~betakey-", "").Replace("~!", ""));
-        }
-
-        private void GetDev(string devKey)
-        {
-            if (devKey.Length != 20)
-                return;
-            bool auth = false;
-            var client = new WebClient();
-            string keyPlayer = client.DownloadString("http://eddy5641.github.io/LegendaryClient/BetaUsers");
-            string[] players = keyPlayer.Split(new[] {Environment.NewLine}, 0, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var betaKey in players.Select(beta => beta.Split(',')).Where(betaKey => devKey == betaKey[0]))
-            {
-                auth = true;
-                Welcome.Text = "Welcome " + betaKey[1];
-                Welcome.Visibility = Visibility.Visible;
-            }
-            if (auth == false)
-                DevKey.Text = string.Empty;
-        }
-
         private void DevSkip_Click(object sender, RoutedEventArgs e)
         {
             Client.SwitchPage(new LoginPage());
@@ -460,48 +435,6 @@ namespace LegendaryClient.Windows
                 LogTextBox("Saved value, please restart the client to login.");
 
             return findLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
-        }
-
-        [Obsolete]
-        private void Update(object sender, EventArgs e)
-        {
-            var legendaryupdatedata = new UpdateData();
-            var client = new WebClient();
-            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Temp")))
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Temp"));
-
-            string downloadLink =
-                new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
-            string filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
-            client.DownloadProgressChanged += client_DownloadProgressChanged;
-            client.DownloadFileCompleted += client_DownloadFileCompleted;
-            string downloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
-            LogTextBox("Retreving Update Data from: " + downloadLocation);
-            client.DownloadFileAsync(new Uri(downloadLocation),
-                Path.Combine(Client.ExecutingDirectory, "Temp", "LegendaryClientUpdateFile.zip"));
-            //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
-            //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
-        }
-
-        [Obsolete]
-        private void UpdateBetaUsers(object sender, EventArgs e)
-        {
-            var legendaryupdatedata = new UpdateData();
-            var client = new WebClient();
-            DirectoryInfo startup = Directory.GetParent(Client.ExecutingDirectory);
-            if (!Directory.Exists(Path.Combine(startup.ToString(), "Temp")))
-                Directory.CreateDirectory(Path.Combine(startup.ToString(), "Temp"));
-
-            string downloadLink =
-                new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/downloadLink");
-            string filename = new WebClient().DownloadString("http://eddy5641.github.io/LegendaryClient/filename");
-            client.DownloadProgressChanged += client_DownloadProgressChanged;
-            string downloadLocation = "https://github.com/eddy5641/LegendaryClient/releases/download/" + downloadLink;
-            LogTextBox("Retreving Update Data from: " + downloadLocation);
-            client.DownloadFileAsync(new Uri(downloadLocation),
-                Path.Combine("Temp", "LegendaryClientBetaTesterUpdateFile.zip"));
-            //client.DownloadFileAsync(new Uri(DownloadLocation), Path.Combine("temp", "1.0.1.2.zip"));
-            //client.DownloadFileAsync(new Uri(DownloadLocation), filename);
         }
 
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
