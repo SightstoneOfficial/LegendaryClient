@@ -136,9 +136,8 @@ namespace LegendaryClient.Windows
                 var message =
                     Client.LoginPacket.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
                 if (message != null)
-                    BroadcastMessage.Text = System.Text.Encoding.UTF8.GetString(
-                        System.Text.Encoding.Default.GetBytes(
-                            message.ToString()));
+                    BroadcastMessage.Text = 
+                        message.ToString();
             }
 
             foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
