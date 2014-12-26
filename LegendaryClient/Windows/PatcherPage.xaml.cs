@@ -46,7 +46,7 @@ namespace LegendaryClient.Windows
             Change();
 
 
-            if (Settings.Default.updateRegion != null)
+            if (Settings.Default.updateRegion != string.Empty)
                 UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion;
             else
                 UpdateRegionComboBox.SelectedValue = "Live";
@@ -918,7 +918,7 @@ namespace LegendaryClient.Windows
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (UpdateRegionComboBox.SelectedValue != null)
-                Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
+                Settings.Default.updateRegion = (string) UpdateRegionComboBox.SelectedValue;
         }
     }
 }
