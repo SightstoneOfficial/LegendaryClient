@@ -17,7 +17,7 @@ namespace LegendaryClient.Logic.JSON
         {
             var runeList = new List<runes>();
 
-            string runeJson =
+            var runeJson =
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "rune.json"));
             var serializer = new JavaScriptSerializer();
             var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(runeJson);
@@ -39,14 +39,14 @@ namespace LegendaryClient.Logic.JSON
                     description = singularRuneData["description"] as string
                 };
                 newRune.description = newRune.description.Replace("(", "\n");
-                newRune.description = newRune.description.Replace(")", "");
+                newRune.description = newRune.description.Replace(")", string.Empty);
                 newRune.stats = singularRuneData["stats"] as Dictionary<string, object>;
                 newRune.tags = singularRuneData["tags"] as ArrayList;
 
                 var imageData = singularRuneData["image"] as Dictionary<string, object>;
                 if (imageData != null)
                 {
-                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune",
+                    var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune",
                         (string) imageData["full"]);
                     newRune.icon = Client.GetImage(uriSource);
                 }

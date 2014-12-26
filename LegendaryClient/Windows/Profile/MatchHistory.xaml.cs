@@ -28,10 +28,10 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class MatchHistory
     {
-        //private static readonly ILog Log = LogManager.GetLogger(typeof (MatchHistory));
-        private readonly List<MatchStats> _gameStats = new List<MatchStats>();
         //private string _matchLinkOnline;
         private LargeChatPlayer _playerItem;
+        //private static readonly ILog Log = LogManager.GetLogger(typeof (MatchHistory));
+        private readonly List<MatchStats> _gameStats = new List<MatchStats>();
 
         public MatchHistory()
         {
@@ -56,7 +56,9 @@ namespace LegendaryClient.Windows.Profile
         public void GotRecentGames(RecentGames result)
         {
             if (result.GameStatistics == null)
+            {
                 return;
+            }
 
             _gameStats.Clear();
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
@@ -144,17 +146,23 @@ namespace LegendaryClient.Windows.Profile
                     var bc = new BrushConverter();
                     var brush = (Brush) bc.ConvertFrom("#FF609E74");
 
-                    if (stats.Lose == 1)
+                    if (Math.Abs(stats.Lose - 1) < .00001)
+                    {
                         brush = (Brush) bc.ConvertFrom("#FF9E6060");
-                    else if (stats.Game.IpEarned == 0)
+                    }
+                    else if (Math.Abs(stats.Game.IpEarned) < .00001)
+                    {
                         brush = (Brush) bc.ConvertFrom("#FFE27100");
+                    }
 
                     item.GridView.Background = brush;
                     item.GridView.Width = 280;
                     GamesListView.Items.Add(item);
                 }
                 if (GamesListView.Items.Count > 0)
+                {
                     GamesListView.SelectedIndex = 0;
+                }
             }));
         }
 
@@ -188,10 +196,14 @@ namespace LegendaryClient.Windows.Profile
                         Height = 58,
                         Source = champions.GetChampion((int) Math.Round(info.ChampionId)).icon
                     };
-                    if (info.TeamId == stats.Game.TeamId)
+                    if (Math.Abs(info.TeamId - stats.Game.TeamId) < .00001)
+                    {
                         BlueListView.Items.Add(img);
+                    }
                     else
+                    {
                         PurpleListView.Items.Add(img);
+                    }
 
                     BlueListView.Visibility = BlueListView.Items.Count > 0 ? Visibility.Visible : Visibility.Hidden;
                     PurpleListView.Visibility = PurpleListView.Items.Count > 0 ? Visibility.Visible : Visibility.Hidden;
@@ -202,11 +214,15 @@ namespace LegendaryClient.Windows.Profile
                 {
                     if (field.GetValue(stats) is double)
                     {
-                        if ((double) field.GetValue(stats) == 0)
+                        if (Math.Abs((double) field.GetValue(stats)) < .00001)
+                        {
                             continue;
+                        }
                     }
                     else
+                    {
                         continue;
+                    }
 
                     var item = new ProfilePage.KeyValueItem
                     {
@@ -223,7 +239,9 @@ namespace LegendaryClient.Windows.Profile
                             new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"),
                                 UriKind.Absolute);
                         if (!File.Exists(uriSource.AbsolutePath))
+                        {
                             continue;
+                        }
 
                         img = new Image
                         {
@@ -237,15 +255,21 @@ namespace LegendaryClient.Windows.Profile
                         ItemsListView.Items.Add(img);
                     }
                     else
+                    {
                         GameStatsListView.Items.Add(item);
+                    }
                 }
             }
 
             if (double.IsNaN(GameKeyHeader.Width))
+            {
                 GameKeyHeader.Width = GameKeyHeader.ActualWidth;
+            }
 
             if (double.IsNaN(GameValueHeader.Width))
+            {
                 GameValueHeader.Width = GameValueHeader.ActualWidth;
+            }
 
             GameKeyHeader.Width = double.NaN;
             GameValueHeader.Width = double.NaN;
@@ -254,7 +278,9 @@ namespace LegendaryClient.Windows.Profile
         private void img_MouseLeave(object sender, MouseEventArgs e)
         {
             if (_playerItem == null)
+            {
                 return;
+            }
 
             Client.MainGrid.Children.Remove(_playerItem);
             _playerItem = null;
@@ -302,7 +328,9 @@ namespace LegendaryClient.Windows.Profile
 
             var xMargin = mouseLocation.X;
             if (xMargin + _playerItem.Width + 10 > Client.MainGrid.ActualWidth)
+            {
                 xMargin = Client.MainGrid.ActualWidth - _playerItem.Width - 10;
+            }
 
             _playerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
         }

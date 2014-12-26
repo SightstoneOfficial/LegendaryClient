@@ -51,7 +51,9 @@ namespace LegendaryClient.Windows.Profile
             _myLeagues = result;
             foreach (
                 var leagues in _myLeagues.SummonerLeagues.Where(leagues => leagues.Queue == "RANKED_SOLO_5x5"))
+            {
                 _selectedRank = leagues.RequestorsRank;
+            }
 
             _queue = "RANKED_SOLO_5x5";
             RenderLeague();
@@ -92,24 +94,34 @@ namespace LegendaryClient.Windows.Profile
                         PlayerRankLabel = {Content = i}
                     };
                     if (i - player.PreviousDayLeaguePosition != 0)
+                    {
                         item.RankChangeLabel.Content = i - player.PreviousDayLeaguePosition;
+                    }
 
                     item.PlayerLabel.Content = player.PlayerOrTeamName;
                     if (player.FreshBlood)
+                    {
                         item.RecruitLabel.Visibility = Visibility.Visible;
+                    }
 
                     if (player.Veteran)
+                    {
                         item.VeteranLabel.Visibility = Visibility.Visible;
+                    }
 
                     if (player.HotStreak)
+                    {
                         item.HotStreakLabel.Visibility = Visibility.Visible;
+                    }
 
                     item.WinsLabel.Content = player.Wins;
                     item.LpLabel.Content = player.LeaguePoints;
 
                     var miniSeries = player.MiniSeries as TypedObject;
                     if (miniSeries != null)
+                    {
                         item.LpLabel.Content = ((string) miniSeries["progress"]).Replace('N', '-');
+                    }
 
                     LeaguesListView.Items.Add(item);
                 }
@@ -162,10 +174,13 @@ namespace LegendaryClient.Windows.Profile
         private async void LeaguesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (LeaguesListView.SelectedItem == null)
+            {
                 return;
+            }
 
             var item = (LeagueItem) LeaguesListView.SelectedItem;
             PlayerLabel.Content = item.PlayerLabel.Content;
+
             var x = await Client.PVPNet.GetSummonerByName((string) item.PlayerLabel.Content);
             Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", GotStats);
         }
@@ -181,14 +196,18 @@ namespace LegendaryClient.Windows.Profile
                 var championStats = new List<AggregatedChampion>();
                 var i = 0;
                 if (_selectedAggregatedStats.LifetimeStatistics == null)
+                {
                     return;
+                }
 
                 if (!_selectedAggregatedStats.LifetimeStatistics.Any())
+                {
                     return;
+                }
 
                 foreach (var stat in _selectedAggregatedStats.LifetimeStatistics)
                 {
-                    var champion = championStats.Find(x => x.ChampionId == stat.ChampionId);
+                    var champion = championStats.Find(x => Math.Abs(x.ChampionId - stat.ChampionId) < .00001);
                     if (champion == null)
                     {
                         champion = new AggregatedChampion
@@ -211,7 +230,9 @@ namespace LegendaryClient.Windows.Profile
                 {
                     ViewAggregatedStatsButton.IsEnabled = true;
                     if (!(Math.Abs(info.ChampionId) > 0))
+                    {
                         continue;
+                    }
 
                     var champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
                     var player = new ChatPlayer

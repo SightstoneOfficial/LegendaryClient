@@ -74,14 +74,18 @@ namespace LegendaryClient.Windows.Profile
             ViewAggregatedStatsButton.IsEnabled = false;
             TopChampionsListView.Items.Clear();
             if (!topChampions.Any())
+            {
                 return;
+            }
 
             TopChampionsLabel.Content = "Top Champions (" + topChampions[0].TotalGamesPlayed + " Ranked Games)";
             foreach (var info in topChampions)
             {
                 ViewAggregatedStatsButton.IsEnabled = true;
                 if (!(Math.Abs(info.ChampionId) > 0))
+                {
                     continue;
+                }
 
                 var champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
                 var player = new ChatPlayer
