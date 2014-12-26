@@ -27,72 +27,15 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class SettingsPage
     {
-        #region DLL Stuff
-
-        //private const int ENUM_CURRENT_SETTINGS = -1;
-
-        //private const int ENUM_REGISTRY_SETTINGS = -2;
-
-        [DllImport("user32.dll")]
-        public static extern bool EnumDisplaySettings(
-            string deviceName, int modeNum, ref DEVMODE devMode);
-
-        [StructLayout(LayoutKind.Sequential)]
-        public struct DEVMODE
-        {
-            //private const int CCHDEVICENAME = 0x20;
-            //private const int CCHFORMNAME = 0x20;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)] public string dmDeviceName;
-
-            public short dmSpecVersion;
-            public short dmDriverVersion;
-            public short dmSize;
-            public short dmDriverExtra;
-            public int dmFields;
-            public int dmPositionX;
-            public int dmPositionY;
-            public ScreenOrientation dmDisplayOrientation;
-            public int dmDisplayFixedOutput;
-            public short dmColor;
-            public short dmDuplex;
-            public short dmYResolution;
-            public short dmTTOption;
-            public short dmCollate;
-
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)] public string dmFormName;
-
-            public short dmLogPixels;
-            public int dmBitsPerPel;
-            public int dmPelsWidth;
-            public int dmPelsHeight;
-            public int dmDisplayFlags;
-            public int dmDisplayFrequency;
-            public int dmICMMethod;
-            public int dmICMIntent;
-            public int dmMediaType;
-            public int dmDitherType;
-            public int dmReserved1;
-            public int dmReserved2;
-            public int dmPanningWidth;
-            public int dmPanningHeight;
-        }
-
-        #endregion DLL Stuff
-
-        private readonly List<string> Resolutions = new List<string>();
-
-        private readonly Dictionary<string, WinThemes> list = new Dictionary<string, WinThemes>();
-        private readonly Dictionary<WinThemes, string> list2 = new Dictionary<WinThemes, string>();
-        private readonly Dictionary<string, string> list3 = new Dictionary<string, string>();
-        private readonly MainWindow mainWindow;
+        private readonly MainWindow _mainWindow;
+        private readonly List<string> _resolutions = new List<string>();
 
         public SettingsPage(MainWindow window)
         {
             InitializeComponent();
             InsertDefaultValues();
-            mainWindow = window;
-            HudLink.Text = "";
+            _mainWindow = window;
+            HudLink.Text = string.Empty;
             WarnExitCheckbox.IsChecked = Settings.Default.warnClose;
             StatsCheckbox.IsChecked = Settings.Default.GatherStatistics;
             ErrorCheckbox.IsChecked = Settings.Default.SendErrors;
@@ -170,7 +113,7 @@ A code signing license (So you know that you are using LegendaryClient)
         /// </summary>
         private void UpdateStats()
         {
-            Dictionary<String, String> val =
+            var val =
                 Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
             try
             {
@@ -192,30 +135,26 @@ A code signing license (So you know that you are using LegendaryClient)
                 Value = value
             };
             ThemeBox.Items.Add(theme);
-            list.Add(text, theme);
-            list2.Add(theme, text);
-            list3.Add(text, value);
         }
 
         public void InsertDefaultValues()
         {
             //Insert resolutions
-            var vDevMode = new DEVMODE();
-            int i = 0;
+            var vDevMode = new Devmode();
+            var i = 0;
 
             while (EnumDisplaySettings(null, i, ref vDevMode))
             {
-                if (!Resolutions.Contains(String.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight)) &&
+                if (!_resolutions.Contains(String.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight)) &&
                     vDevMode.dmPelsWidth >= 1000)
                 {
-                    Resolutions.Add(String.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight));
+                    _resolutions.Add(String.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight));
                     ResolutionComboBox.Items.Add(String.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight));
                 }
                 i++;
             }
 
             LoginImageBox.Text = Settings.Default.LoginPageImage;
-
             ResolutionComboBox.SelectedIndex = ResolutionComboBox.Items.Count - 1;
             WindowModeComboBox.SelectedIndex = 0;
         }
@@ -224,7 +163,9 @@ A code signing license (So you know that you are using LegendaryClient)
         {
             var cb = (CheckBox) sender;
             if (cb.IsChecked != null)
+            {
                 Settings.Default.warnClose = (bool) cb.IsChecked;
+            }
 
             Settings.Default.Save();
         }
@@ -232,7 +173,9 @@ A code signing license (So you know that you are using LegendaryClient)
         private void StatsCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             if (StatsCheckbox.IsChecked != null)
+            {
                 Settings.Default.GatherStatistics = (bool) StatsCheckbox.IsChecked;
+            }
 
             Settings.Default.Save();
         }
@@ -240,7 +183,9 @@ A code signing license (So you know that you are using LegendaryClient)
         private void ErrorCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             if (ErrorCheckbox.IsChecked != null)
+            {
                 Settings.Default.SendErrors = (bool) ErrorCheckbox.IsChecked;
+            }
 
             Settings.Default.Save();
         }
@@ -248,38 +193,41 @@ A code signing license (So you know that you are using LegendaryClient)
         private void LoginImageBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             Settings.Default.LoginPageImage = LoginImageBox.Text;
-
-            if (UseAsBackground.IsChecked != null && (UseAsBackground.HasContent && (bool) UseAsBackground.IsChecked &&
-                                                      File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets",
-                                                          "champions",
-                                                          Settings.Default.LoginPageImage.Replace("\r\n", "")))))
+            if (UseAsBackground.IsChecked != null &&
+                (UseAsBackground.HasContent && (bool) UseAsBackground.IsChecked &&
+                 File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                     Settings.Default.LoginPageImage.Replace("\r\n", string.Empty)))))
+            {
                 Client.BackgroundImage.Source =
                     new BitmapImage(
                         new Uri(
                             Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                                 Settings.Default.LoginPageImage), UriKind.Absolute));
+            }
         }
 
         private void LoginImageBox_DropDownClosed(object sender, EventArgs e)
         {
-            string temp = Settings.Default.LoginPageImage;
+            var temp = Settings.Default.LoginPageImage;
             LoginImageBox.Items.Clear();
             LoginImageBox.Text = temp;
-            if (UseAsBackground.IsChecked != null && (UseAsBackground.HasContent && (bool) UseAsBackground.IsChecked &&
-                                                      File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets",
-                                                          "champions",
-                                                          Settings.Default.LoginPageImage.Replace("\r\n", "")))))
+            if (UseAsBackground.IsChecked != null &&
+                (UseAsBackground.HasContent && (bool) UseAsBackground.IsChecked &&
+                 File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                     Settings.Default.LoginPageImage.Replace("\r\n", string.Empty)))))
+            {
                 Client.BackgroundImage.Source =
                     new BitmapImage(
                         new Uri(
                             Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                                 Settings.Default.LoginPageImage), UriKind.Absolute));
+            }
         }
 
         private void LoginImageBox_DropDownOpened(object sender, EventArgs e)
         {
             foreach (
-                string s in
+                var s in
                     Directory.EnumerateFiles(Path.Combine(Client.ExecutingDirectory, "Assets", "champions"), "*",
                         SearchOption.AllDirectories)
                         .Select(Path.GetFileName).Where(s => s.Contains("Splash")))
@@ -297,7 +245,7 @@ A code signing license (So you know that you are using LegendaryClient)
                 Settings.Default.Theme = (string) winThemes.Value;
             }
 
-            mainWindow.ChangeTheme();
+            _mainWindow.ChangeTheme();
             Client.statusPage.Change();
             Client.FriendList.Change();
             Client.notificationPage.Change();
@@ -306,18 +254,24 @@ A code signing license (So you know that you are using LegendaryClient)
         private void UseAsBackground_Changed(object sender, RoutedEventArgs e)
         {
             if (!UseAsBackground.HasContent)
+            {
                 return;
+            }
 
             if (UseAsBackground.IsChecked == null)
+            {
                 return;
+            }
 
             Settings.Default.UseAsBackgroundImage = (bool) UseAsBackground.IsChecked;
             if (Settings.Default.UseAsBackgroundImage)
             {
                 if (!UseAsBackground.HasContent || !(bool) UseAsBackground.IsChecked ||
                     !File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                        Settings.Default.LoginPageImage.Replace("\r\n", ""))))
+                        Settings.Default.LoginPageImage.Replace("\r\n", string.Empty))))
+                {
                     return;
+                }
 
                 Client.BackgroundImage.Visibility = Visibility.Visible;
                 Client.BackgroundImage.Source =
@@ -327,7 +281,9 @@ A code signing license (So you know that you are using LegendaryClient)
                                 Settings.Default.LoginPageImage), UriKind.Absolute));
             }
             else
+            {
                 Client.BackgroundImage.Visibility = Visibility.Hidden;
+            }
         }
 
         /// <summary>
@@ -338,15 +294,15 @@ A code signing license (So you know that you are using LegendaryClient)
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             //If you have any other hud websites, send them to me, I will try to support that website
-            string x = HudLink.Text;
+            var x = HudLink.Text;
             if (!x.Contains("http://leaguecraft.com/uimods/"))
             {
                 ResultTextbox.Content =
                     "Invalid Uri. Please try a different Uri. Be sure that the Uri is from LeagueCraft.com (Easy hud only works with Leaguecraft currently)";
                 ResultTextbox.Visibility = Visibility.Visible;
             }
-            x = x.Replace("http://leaguecraft.com/uimods/", "");
-            string y = x.Split('-')[0];
+            x = x.Replace("http://leaguecraft.com/uimods/", string.Empty);
+            var y = x.Split('-')[0];
             using (var client = new WebClient())
             {
                 try
@@ -357,9 +313,9 @@ A code signing license (So you know that you are using LegendaryClient)
                     {
                         ResultTextbox.Content = "Hud downloaded. Extracting your hud";
                         ResultTextbox.Visibility = Visibility.Visible;
-                        string final = Path.Combine(Client.Location, "DATA", "menu", "hud");
-                        string[] files = Directory.GetFiles(final);
-                        foreach (string file in files.Where(file => !file.EndsWith(".ini")))
+                        var final = Path.Combine(Client.Location, "DATA", "menu", "hud");
+                        var files = Directory.GetFiles(final);
+                        foreach (var file in files.Where(file => !file.EndsWith(".ini")))
                             File.Delete(Path.Combine(final, file));
 
                         ZipFile.ExtractToDirectory(Path.Combine(Client.ExecutingDirectory, "LCHudFile.zip"), final);
@@ -394,13 +350,15 @@ A code signing license (So you know that you are using LegendaryClient)
             {
                 try
                 {
-                    string final = Path.Combine(Client.Location, "DATA", "menu", "hud");
-                    string[] files = Directory.GetFiles(final);
-                    foreach (string file in files)
+                    var final = Path.Combine(Client.Location, "DATA", "menu", "hud");
+                    var files = Directory.GetFiles(final);
+                    foreach (var file in files)
                     {
                         //All settings in this folder end with .ini so delete all other files that do not end it .ini
                         if (!file.EndsWith(".ini"))
+                        {
                             File.Delete(Path.Combine(final, file));
+                        }
 
                         ResultTextbox.Content = "Hud removed.";
                         ResultTextbox.Visibility = Visibility.Visible;
@@ -414,11 +372,11 @@ A code signing license (So you know that you are using LegendaryClient)
             }
         }
 
-        private bool DoAsyncExtractLoop(string dir)
+        private static bool DoAsyncExtractLoop(string dir)
         {
             try
             {
-                foreach (string filesindir in Directory.GetFiles(dir).Where(filesindir => !filesindir.EndsWith(".ini")))
+                foreach (var filesindir in Directory.GetFiles(dir).Where(filesindir => !filesindir.EndsWith(".ini")))
                 {
                     //Try to extract the file
                     if (filesindir.EndsWith(".zip"))
@@ -426,26 +384,36 @@ A code signing license (So you know that you are using LegendaryClient)
                         ZipFile.ExtractToDirectory(Path.Combine(dir, filesindir), dir);
                         File.Delete(Path.Combine(dir, filesindir));
                     }
-                        //Use SharpCompres to read .rar files
+                    //Use SharpCompres to read .rar files
                     else if (filesindir.EndsWith(".rar"))
                     {
                         using (Stream stream = File.OpenRead(Path.Combine(dir, filesindir)))
                         {
-                            IReader reader = ReaderFactory.Open(stream);
+                            var reader = ReaderFactory.Open(stream);
                             while (reader.MoveToNextEntry())
+                            {
                                 if (!reader.Entry.IsDirectory)
+                                {
                                     reader.WriteEntryToDirectory(dir,
                                         ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                                }
+                            }
                         }
                         File.Delete(Path.Combine(dir, filesindir));
                     }
-                        //File has been extracted. No point of trying to extract it anymore
+                    //File has been extracted. No point of trying to extract it anymore
                     else if (filesindir.EndsWith(".dds"))
+                    {
                         return true;
+                    }
                     else if (filesindir.EndsWith(".tga"))
+                    {
                         return false;
+                    }
                     else if (filesindir.EndsWith(".exe"))
+                    {
                         return false;
+                    }
                 }
 
                 return DoAsyncExtractLoop(dir);
@@ -461,7 +429,9 @@ A code signing license (So you know that you are using LegendaryClient)
         {
             var cb = (CheckBox) sender;
             if (cb.IsChecked != null)
+            {
                 Settings.Default.AutoRecordGames = (bool) cb.IsChecked;
+            }
 
             Settings.Default.Save();
         }
@@ -475,6 +445,59 @@ A code signing license (So you know that you are using LegendaryClient)
         {
             Client.AmbientSoundPlayer.Volume = ChampSelectVolumeSlider.Value/100;
         }
+
+        #region DLL Stuff
+
+        //private const int ENUM_CURRENT_SETTINGS = -1;
+
+        //private const int ENUM_REGISTRY_SETTINGS = -2;
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplaySettings(
+            string deviceName, int modeNum, ref Devmode devMode);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct Devmode
+        {
+            //private const int CCHDEVICENAME = 0x20;
+            //private const int CCHFORMNAME = 0x20;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)] public string dmDeviceName;
+
+            public short dmSpecVersion;
+            public short dmDriverVersion;
+            public short dmSize;
+            public short dmDriverExtra;
+            public int dmFields;
+            public int dmPositionX;
+            public int dmPositionY;
+            public ScreenOrientation dmDisplayOrientation;
+            public int dmDisplayFixedOutput;
+            public short dmColor;
+            public short dmDuplex;
+            public short dmYResolution;
+            public short dmTTOption;
+            public short dmCollate;
+
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)] public string dmFormName;
+
+            public short dmLogPixels;
+            public int dmBitsPerPel;
+            public int dmPelsWidth;
+            public int dmPelsHeight;
+            public int dmDisplayFlags;
+            public int dmDisplayFrequency;
+            public int dmICMMethod;
+            public int dmICMIntent;
+            public int dmMediaType;
+            public int dmDitherType;
+            public int dmReserved1;
+            public int dmReserved2;
+            public int dmPanningWidth;
+            public int dmPanningHeight;
+        }
+
+        #endregion DLL Stuff
     }
 
     public class WinThemes
