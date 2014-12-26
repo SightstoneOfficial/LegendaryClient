@@ -264,7 +264,7 @@ namespace LegendaryClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Live")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string updateRegion {
             get {
                 return ((string)(this["updateRegion"]));

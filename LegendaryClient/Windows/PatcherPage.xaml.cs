@@ -45,7 +45,11 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Change();
 
-            UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion;
+
+            if (Settings.Default.updateRegion != null)
+                UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion;
+            else
+                UpdateRegionComboBox.SelectedValue = "Live";
             Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
 
             bool x = Settings.Default.DarkTheme;
@@ -913,7 +917,8 @@ namespace LegendaryClient.Windows
 
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Settings.Default.updateRegion = (string) UpdateRegionComboBox.SelectedValue;
+            if (UpdateRegionComboBox.SelectedValue != null)
+                Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
         }
     }
 }
