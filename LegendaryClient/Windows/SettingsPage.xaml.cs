@@ -445,7 +445,16 @@ A code signing license (So you know that you are using LegendaryClient)
                     else if (filesindir.EndsWith(".tga"))
                         return false;
                     else if (filesindir.EndsWith(".exe"))
-                        return false;
+                    {
+                        if (System.Windows.MessageBox.Show("Warning this hud is installed by an .exe file!" + Environment.NewLine +
+                            "It may contain viruses, are you sure you want to install", "Potential VIRUS", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        {
+                            Process.Start(Path.Combine(dir, filesindir));
+                        }
+                        else
+                            System.Windows.MessageBox.Show("Hud not installed.");
+                        return true;
+                    }
                 }
 
                 return DoAsyncExtractLoop(dir);
