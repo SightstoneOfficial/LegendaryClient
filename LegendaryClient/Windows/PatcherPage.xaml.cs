@@ -378,6 +378,23 @@ namespace LegendaryClient.Windows
         {
             if (!restart)
             {
+                switch(Client.UpdateRegion)
+                {
+                    case "PBE": if (Settings.Default.PBELocation != string.Empty)
+                        return Settings.Default.PBELocation;
+                        else break;
+                    case "Live": if (Settings.Default.LiveLocation != string.Empty)
+                            return Settings.Default.LiveLocation;
+                        else break;
+                    case "Korea": if (Settings.Default.KRLocation != string.Empty)
+                            return Settings.Default.KRLocation;
+                        else break;
+                    case "Garena": if (Settings.Default.GarenaLocation != string.Empty)
+                            return Settings.Default.GarenaLocation;
+                        else break;
+                    default :
+                        break;
+                }
                 var possiblePaths = new List<Tuple<string, string>>
                 {
                     new Tuple<string, string>(
@@ -851,7 +868,75 @@ namespace LegendaryClient.Windows
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (UpdateRegionComboBox.SelectedValue != null)
-                Settings.Default.updateRegion = (string) UpdateRegionComboBox.SelectedValue;
+            {
+                Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
+                ClientRegionLocation(Settings.Default.updateRegion);
+            }
+        }
+
+        private void ClientRegionLocation(string regionName)
+        {
+            var findLeagueDialog = new OpenFileDialog();
+
+            if (!Directory.Exists(Path.Combine("C:\\", "Riot Games", "League of Legends")))
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Program Files (x86)", "GarenaLoL", "GameData",
+                    "Apps", "LoL");
+            else
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Riot Games", "League of Legends");
+
+            findLeagueDialog.DefaultExt = ".exe";
+            findLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
+
+            switch (regionName)
+            {
+                case "PBE": if (Settings.Default.PBELocation == string.Empty)
+                    {
+                        bool? result = findLeagueDialog.ShowDialog();
+                        if (result != true)
+                        {
+                            Settings.Default.PBELocation = string.Empty;
+                            break;
+                        }
+                        else Settings.Default.PBELocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                    }
+                    break;
+                case "Live": if (Settings.Default.LiveLocation == string.Empty)
+                    {
+                        bool? result = findLeagueDialog.ShowDialog();
+                        if (result != true)
+                        {
+                            Settings.Default.LiveLocation = string.Empty;
+                            break;
+                        }
+                        else Settings.Default.LiveLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                    }
+                    break;
+                case "Korea": if (Settings.Default.KRLocation == string.Empty)
+                    {
+                        bool? result = findLeagueDialog.ShowDialog();
+                        if (result != true)
+                        {
+                            Settings.Default.KRLocation = string.Empty;
+                            break;
+                        }
+                        else Settings.Default.KRLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                    }
+                    break;
+                case "Garena": if (Settings.Default.GarenaLocation == string.Empty)
+                    {
+                        bool? result = findLeagueDialog.ShowDialog();
+                        if (result != true)
+                        {
+                            Settings.Default.GarenaLocation = string.Empty;
+                            break;
+                        }
+                        else Settings.Default.GarenaLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                    }
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

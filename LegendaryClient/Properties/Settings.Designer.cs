@@ -273,5 +273,53 @@ namespace LegendaryClient.Properties {
                 this["updateRegion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PBELocation {
+            get {
+                return ((string)(this["PBELocation"]));
+            }
+            set {
+                this["PBELocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string KRLocation {
+            get {
+                return ((string)(this["KRLocation"]));
+            }
+            set {
+                this["KRLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LiveLocation {
+            get {
+                return ((string)(this["LiveLocation"]));
+            }
+            set {
+                this["LiveLocation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string GarenaLocation {
+            get {
+                return ((string)(this["GarenaLocation"]));
+            }
+            set {
+                this["GarenaLocation"] = value;
+            }
+        }
     }
 }

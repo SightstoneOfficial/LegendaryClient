@@ -96,12 +96,11 @@
             <sys:String>Borderless</sys:String>
         </x:Array>
 
-        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="Regions"
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="LiveRegions"
                  Type="sys:String">
             <sys:String>BR</sys:String>
             <sys:String>EUNE</sys:String>
             <sys:String>EUW</sys:String>
-            <sys:String>KR</sys:String>
             <sys:String>NA</sys:String>
             <sys:String>OCE</sys:String>
             <sys:String>RU</sys:String>
@@ -109,23 +108,26 @@
             <sys:String>LAN</sys:String>
             <sys:String>TR</sys:String>
             <sys:String>CS</sys:String>
+        </x:Array>
 
-            <sys:String>MY</sys:String>
-            <sys:String>PH</sys:String>
-            <sys:String>SG</sys:String>
-            <sys:String>SGMY</sys:String>
-            <sys:String>TH</sys:String>
-            <sys:String>TW</sys:String>
-            <sys:String>VN</sys:String>
-
-            <!--Garena Regions-->
-            <!--<sys:String>MY</sys:String>
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GarenaRegions"
+                 Type="sys:String">
             <sys:String>PH</sys:String>
             <sys:String>SG</sys:String>
             <sys:String>SGMY</sys:String>
             <sys:String>TH</sys:String>
             <sys:String>TW</sys:String>
             <sys:String>VN</sys:String> -->
+        </x:Array>
+
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="KRRegion"
+                 Type="sys:String">
+            <sys:String>KR</sys:String>
+        </x:Array>
+
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="PBERegions"
+                 Type="sys:String">
+            <sys:String>PBE</sys:String>
         </x:Array>
 
         <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="UpdateRegions"
