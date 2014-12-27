@@ -3,16 +3,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:LegendaryClient.Controls"
-             Width="350"
-             Height="350" mc:Ignorable="d">
-
+             xmlns:local="clr-namespace:LegendaryClient.Controls" Width="350" Height="350" mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type Paragraph}">
                 <Setter Property="Margin" Value="0" />
             </Style>
-
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="#FF474747" />
                 <Setter Property="BorderBrush" Value="{x:Null}" />
@@ -42,7 +38,6 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
@@ -57,7 +52,6 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-
     <Grid local:AccessKeyScoper.IsAccessKeyScope="True">
         <Rectangle Fill="#99505050" Stroke="#FF646464">
             <Rectangle.Effect>
@@ -65,18 +59,14 @@
             </Rectangle.Effect>
         </Rectangle>
         <Label x:Name="PlayerLabelName" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Content="Eddy5641"
-               Foreground="White" FontWeight="ExtraLight" FontSize="16" />
-        <RichTextBox x:Name="ChatText" Width="330" Margin="10,35,0,40" HorizontalAlignment="Left"
-                     VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{x:Null}" Background="#E5505050"
-                     BorderBrush="{x:Null}" />
-
+               Content="Eddy5641" Foreground="White" FontWeight="ExtraLight" FontSize="16" />
+        <ListView x:Name="ChatText" Width="330" Margin="10,35,0,40" HorizontalAlignment="Left"
+                  VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                  ScrollViewer.HorizontalScrollBarVisibility="Hidden" Style="{x:Null}"
+                  Background="#E5505050" BorderBrush="{x:Null}" />
         <TextBox x:Name="ChatTextBox" Width="250" Height="23" Margin="10,0,0,10" HorizontalAlignment="Left"
                  VerticalAlignment="Bottom" TextWrapping="Wrap" />
-        <Button x:Name="SendButton" Width="76" Height="26" Margin="0,0,11,10"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send"
-                Click="SendButton_Click"
-                IsDefault="True" />
+        <Button x:Name="SendButton" Width="76" Height="26" Margin="0,0,11,10" HorizontalAlignment="Right"
+                VerticalAlignment="Bottom" Content="Send" Click="SendButton_Click" IsDefault="True" />
     </Grid>
 </UserControl>
