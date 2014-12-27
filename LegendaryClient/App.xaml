@@ -110,6 +110,28 @@
             <sys:String>CS</sys:String>
         </x:Array>
 
+
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="SpectateRegions"
+                 Type="sys:String">
+            <sys:String>BR</sys:String>
+            <sys:String>EUNE</sys:String>
+            <sys:String>EUW</sys:String>
+            <sys:String>NA</sys:String>
+            <sys:String>KR</sys:String>
+            <sys:String>OCE</sys:String>
+            <sys:String>RU</sys:String>
+            <sys:String>LAS</sys:String>
+            <sys:String>LAN</sys:String>
+            <sys:String>TR</sys:String>
+            <sys:String>CS</sys:String>
+            <sys:String>PH</sys:String>
+            <sys:String>SG</sys:String>
+            <sys:String>SGMY</sys:String>
+            <sys:String>TH</sys:String>
+            <sys:String>TW</sys:String>
+            <sys:String>VN</sys:String>
+        </x:Array>
+        
         <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GarenaRegions"
                  Type="sys:String">
             <sys:String>PH</sys:String>

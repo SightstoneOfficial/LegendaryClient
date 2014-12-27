@@ -267,7 +267,7 @@ namespace LegendaryClient.Windows
                         //Download Air Assists from riot
                         try
                         {
-                            string airManifestLink = updateRegion.AirManifest + latestAir + "/packages/files/packagemanifest";
+                            string airManifestLink = updateRegion.AirManifest + "releases/" + latestAir + "/packages/files/packagemanifest";
                             string[] allFiles = patcher.GetManifest(airManifestLink);
                             int i = 0;
                             while (!allFiles[i].Contains("gameStats_en_US.sqlite"))
@@ -276,7 +276,7 @@ namespace LegendaryClient.Windows
                             }
 
                             updateClient.DownloadFile(
-                                new Uri(updateRegion.AirManifest + allFiles[i].Split(',')[0]),
+                                new Uri(updateRegion.BaseLink + allFiles[i].Split(',')[0]),
                                 Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
                             GetAllPngs(allFiles);
@@ -689,6 +689,7 @@ namespace LegendaryClient.Windows
                 var version = new Version(location.Split(new[] {"/releases/", "/files/"}, StringSplitOptions.None)[1]);
                 if (version <= currentVersion)
                     continue;
+                BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
 
                 string savePlace = location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
                 if (!savePlace.EndsWith(".jpg") && !savePlace.EndsWith(".png") && !savePlace.EndsWith(".mp3"))
@@ -700,7 +701,7 @@ namespace LegendaryClient.Windows
                     {
                         string saveName = location.Split(new[] {"/champions/"}, StringSplitOptions.None)[1];
                         LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                        newClient.DownloadFile(updateRegion.BaseLink + location,
                             Path.Combine(Client.ExecutingDirectory, "Assets", "champions", saveName));
                     }
                 }
@@ -710,7 +711,7 @@ namespace LegendaryClient.Windows
                     {
                         string saveName = location.Split(new[] {"/abilities/"}, StringSplitOptions.None)[1];
                         LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                        newClient.DownloadFile(updateRegion.BaseLink + location,
                             saveName.ToLower().Contains("passive")
                                 ? Path.Combine(Client.ExecutingDirectory, "Assets", "passive", saveName)
                                 : Path.Combine(Client.ExecutingDirectory, "Assets", "spell", saveName));
@@ -724,7 +725,7 @@ namespace LegendaryClient.Windows
                         {
                             string saveName = location.Split(new[] {"/champions/"}, StringSplitOptions.None)[1];
                             LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            newClient.DownloadFile(updateRegion.BaseLink + location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions",
                                     saveName));
                         }
@@ -732,13 +733,13 @@ namespace LegendaryClient.Windows
                         {
                             string saveName = location.Split(new[] {"/ambient/"}, StringSplitOptions.None)[1];
                             LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            newClient.DownloadFile(updateRegion.BaseLink + location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient", saveName));
                         }
                         else if (savePlace.Contains("assets/sounds/matchmakingqueued.mp3"))
                         {
                             LogTextBox("Downloading matchmakingqueued.mp3 from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            newClient.DownloadFile(updateRegion.BaseLink + location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "matchmakingqueued.mp3"));
                         }
                     }

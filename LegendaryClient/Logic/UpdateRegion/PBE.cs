@@ -32,5 +32,10 @@ namespace LegendaryClient.Logic.UpdateRegion
         {
             get { return "http://l3cdn.riotgames.com/releases/pbe/solutions/lol_game_client_sln/"; }
         }
+
+        public override string BaseLink
+        {
+            get { return "http://l3cdn.riotgames.com/releases/pbe"; }
+        }
     }
 }

@@ -67,6 +67,7 @@ namespace LegendaryClient.Logic.Patcher
         public string[] GetManifest(string manifestLink)
         {   
             string Manifest = null;
+            string[] Manifest2 = null;
             using (var client = new WebClient())
             {
                 
@@ -75,13 +76,14 @@ namespace LegendaryClient.Logic.Patcher
                     Manifest = 
                         client.DownloadString(
                              manifestLink);
+                    Manifest2 = Manifest.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                 }
                 catch (WebException e)
                 {
                     Client.Log(e.Message);
                 }
             }
-            return Manifest.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            return Manifest2;
         }
 
         public string GetCurrentAirInstall(string location)
