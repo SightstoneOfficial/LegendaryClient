@@ -79,7 +79,7 @@ namespace LegendaryClient.Logic
             using (SHA1Managed sha1 = new SHA1Managed())
             {
                 var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
-                return Convert.ToBase64String(hash);
+                return System.Convert.ToBase64String(hash);
             }
         }
         internal static bool patching = true;
@@ -124,7 +124,7 @@ namespace LegendaryClient.Logic
         }
 
         public static bool InstaCall = false;
-        public static string CallString = "";
+        public static string CallString = string.Empty;
 
         public static Brush Change()
         {
@@ -168,9 +168,9 @@ namespace LegendaryClient.Logic
             var credentials = new AuthenticationCredentials
             {
                 ClientVersion = Version,
-                AuthToken = "",
+                AuthToken = string.Empty,
                 Password = password,
-                IpAddress = ""
+                IpAddress = string.Empty
             };
             //pvp.Login();
             return new LoginDataPacket();
@@ -264,7 +264,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         ///     The current directory the client is running from
         /// </summary>
-        internal static string ExecutingDirectory = "";
+        internal static string ExecutingDirectory = string.Empty;
 
         /// <summary>
         ///     Riot's database with all the client data
@@ -424,7 +424,7 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClientConnect(object sender)
         {
-            Level = Convert.ToInt32(LoginPacket.AllSummonerData.SummonerLevel.Level);
+            Level = System.Convert.ToInt32(LoginPacket.AllSummonerData.SummonerLevel.Level);
             Groups.Add(new Group("Online"));
 
             //Get all groups
@@ -629,32 +629,32 @@ namespace LegendaryClient.Logic
                         {
                             case "profileIcon":
                                 reader.Read();
-                                Player.ProfileIcon = Convert.ToInt32(reader.Value);
+                                Player.ProfileIcon = System.Convert.ToInt32(reader.Value);
                                 break;
 
                             case "level":
                                 reader.Read();
-                                Player.Level = Convert.ToInt32(reader.Value);
+                                Player.Level = System.Convert.ToInt32(reader.Value);
                                 break;
 
                             case "wins":
                                 reader.Read();
-                                Player.Wins = Convert.ToInt32(reader.Value);
+                                Player.Wins = System.Convert.ToInt32(reader.Value);
                                 break;
 
                             case "leaves":
                                 reader.Read();
-                                Player.Leaves = Convert.ToInt32(reader.Value);
+                                Player.Leaves = System.Convert.ToInt32(reader.Value);
                                 break;
 
                             case "rankedWins":
                                 reader.Read();
-                                Player.RankedWins = Convert.ToInt32(reader.Value);
+                                Player.RankedWins = System.Convert.ToInt32(reader.Value);
                                 break;
 
                             case "timeStamp":
                                 reader.Read();
-                                Player.Timestamp = Convert.ToInt64(reader.Value);
+                                Player.Timestamp = System.Convert.ToInt64(reader.Value);
                                 break;
 
                             case "statusMsg":
@@ -726,17 +726,17 @@ namespace LegendaryClient.Logic
             byte[] data = Encoding.UTF8.GetBytes(Subject);
             SHA1 sha = new SHA1CryptoServiceProvider();
             byte[] result = sha.ComputeHash(data);
-            string obfuscatedName = "";
+            string obfuscatedName = string.Empty;
             int incrementValue = 0;
             while (incrementValue < result.Length)
             {
                 int bitHack = result[incrementValue];
-                obfuscatedName = obfuscatedName + Convert.ToString(((uint)(bitHack & 240) >> 4), 16);
-                obfuscatedName = obfuscatedName + Convert.ToString(bitHack & 15, 16);
+                obfuscatedName = obfuscatedName + System.Convert.ToString(((uint)(bitHack & 240) >> 4), 16);
+                obfuscatedName = obfuscatedName + System.Convert.ToString(bitHack & 15, 16);
                 incrementValue = incrementValue + 1;
             }
-            obfuscatedName = Regex.Replace(obfuscatedName, @"/\s+/gx", "");
-            obfuscatedName = Regex.Replace(obfuscatedName, @"/[^a-zA-Z0-9_~]/gx", "");
+            obfuscatedName = Regex.Replace(obfuscatedName, @"/\s+/gx", string.Empty);
+            obfuscatedName = Regex.Replace(obfuscatedName, @"/[^a-zA-Z0-9_~]/gx", string.Empty);
 
             return Type + "~" + obfuscatedName;
         }
@@ -907,7 +907,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         ///     Game Name of the current game that the client is connected to
         /// </summary>
-        internal static string GameName = "";
+        internal static string GameName = string.Empty;
 
         /// <summary>
         ///     The DTO of the game lobby when connected to a custom game
@@ -980,7 +980,7 @@ namespace LegendaryClient.Logic
 
                             default:
                                 messageOver.MessageTextBox.Text = notification.MessageCode + Environment.NewLine;
-                                messageOver.MessageTextBox.Text = Convert.ToString(notification.MessageArgument);
+                                messageOver.MessageTextBox.Text = System.Convert.ToString(notification.MessageArgument);
                                 break;
                         }
                         OverlayContainer.Content = messageOver.Content;
@@ -1118,29 +1118,29 @@ namespace LegendaryClient.Logic
         /// <summary>
         ///     Super complex method to get the queue name when it is unknown
         /// </summary>
-        /// <param name="QueueName"></param>
+        /// <param name="queueName"></param>
         /// <returns></returns>
-        private static string convert(string QueueName)
+        private static string Convert(string queueName)
         {
             string result = string.Empty;
-            string Queueinternal = "";
-            string Bots = "";
-            const string Players = "";
-            const string Extra = "";
-            string start = QueueName.Replace("matching-queue-", "").Replace("-game-queue", "");
+            string queueinternal = string.Empty;
+            string bots = string.Empty;
+            const string players = "";
+            const string extra = "";
+            string start = queueName.Replace("matching-queue-", string.Empty).Replace("-game-queue", string.Empty);
             string[] x = start.Split('_');
             if (x[1].ToLower() == "bot")
             {
-                Bots = " Bots";
+                bots = " Bots";
                 string[] m = x[3].Split('-');
             }
             else if (x[0].ToLower() == "bot" && x[1].ToLower() == "intro")
             {
-                Queueinternal = "Intro";
-                Bots = "Bots";
+                queueinternal = "Intro";
+                bots = "Bots";
             }
 
-            result = string.Format("{0}{1} {2} {3}", Queueinternal, Bots, Players, Extra);
+            result = string.Format("{0}{1} {2} {3}", queueinternal, bots, players, extra);
             return result;
         }
 
@@ -1309,7 +1309,7 @@ namespace LegendaryClient.Logic
                     continue;
 
                 Char firstChar = Char.ToUpper(words[i][0]);
-                String rest = "";
+                String rest = string.Empty;
                 if (words[i].Length > 1)
                     rest = words[i].Substring(1).ToLower();
 
@@ -1373,7 +1373,7 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnPresence(object sender, Presence pres)
         {
-            if (pres.InnerText == "")
+            if (pres.InnerText == string.Empty)
                 ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
         }
 
@@ -1408,7 +1408,7 @@ namespace LegendaryClient.Logic
                             swEncrypt.Write(input);
                         }
                     }
-                    output = Convert.ToBase64String(msEncrypt.ToArray());
+                    output = System.Convert.ToBase64String(msEncrypt.ToArray());
                 }
             }
             finally
@@ -1433,7 +1433,7 @@ namespace LegendaryClient.Logic
                 var key = new Rfc2898DeriveBytes(Secret, Encoding.ASCII.GetBytes("o6806642kbM7c5"));
 
                 // Create the streams used for decryption.                
-                byte[] bytes = Convert.FromBase64String(input);
+                byte[] bytes = System.Convert.FromBase64String(input);
                 using (var msDecrypt = new MemoryStream(bytes))
                 {
                     // Create a RijndaelManaged object

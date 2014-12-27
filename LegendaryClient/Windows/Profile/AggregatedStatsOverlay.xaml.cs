@@ -25,22 +25,22 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class AggregatedStatsOverlay
     {
+        private AggregatedChampion _selectedStats;
         //private static readonly ILog log = LogManager.GetLogger(typeof (AggregatedStatsOverlay));
-        private readonly AggregatedChampion AllStats;
-        private readonly List<AggregatedChampion> ChampionStats;
-        private readonly Boolean IsOwnPlayer;
-        private AggregatedChampion SelectedStats;
+        private readonly AggregatedChampion _allStats;
+        private readonly List<AggregatedChampion> _championStats;
+        private readonly Boolean _isOwnPlayer;
 
         public AggregatedStatsOverlay(AggregatedStats stats, Boolean isSelf)
         {
             InitializeComponent();
             Change();
 
-            IsOwnPlayer = isSelf;
-            AllStats = new AggregatedChampion();
-            ChampionStats = new List<AggregatedChampion>();
+            _isOwnPlayer = isSelf;
+            _allStats = new AggregatedChampion();
+            _championStats = new List<AggregatedChampion>();
             ParseStats(stats);
-            SelectedStats = AllStats;
+            _selectedStats = _allStats;
             HideGrid.Visibility = Visibility.Visible;
             DisplayStats();
         }
@@ -57,20 +57,24 @@ namespace LegendaryClient.Windows.Profile
         private void DisplayStats()
         {
             StatsListView.Items.Clear();
-            GamesLabel.Content = SelectedStats.TotalSessionsPlayed;
-            WinsLabel.Content = SelectedStats.TotalSessionsWon;
-            LossesLabel.Content = SelectedStats.TotalSessionsPlayed - SelectedStats.TotalSessionsWon;
-            if (SelectedStats.TotalSessionsPlayed != 0)
+            GamesLabel.Content = _selectedStats.TotalSessionsPlayed;
+            WinsLabel.Content = _selectedStats.TotalSessionsWon;
+            LossesLabel.Content = _selectedStats.TotalSessionsPlayed - _selectedStats.TotalSessionsWon;
+            if (Math.Abs(_selectedStats.TotalSessionsPlayed) >= 1)
+            {
                 RatioLabel.Content = string.Format("{0:0.00}%",
-                    (SelectedStats.TotalSessionsWon/SelectedStats.TotalSessionsPlayed)*100);
+                    (_selectedStats.TotalSessionsWon/_selectedStats.TotalSessionsPlayed)*100);
+            }
             else
+            {
                 RatioLabel.Content = "100%";
+            }
 
             var classType = typeof (AggregatedChampion);
             foreach (
                 var item in
                     from field in classType.GetFields(BindingFlags.Public | BindingFlags.Instance)
-                    where (double) field.GetValue(SelectedStats) != 0
+                    where Math.Abs((double) field.GetValue(_selectedStats)) >= 1
                     select new ProfilePage.KeyValueItem
                     {
                         Key =
@@ -79,14 +83,16 @@ namespace LegendaryClient.Windows.Profile
                                     field.Name.Select(
                                         e => Char.IsUpper(e) ? " " + e : e.ToString(CultureInfo.InvariantCulture)))
                                     .TrimStart(' ')),
-                        Value = field.GetValue(SelectedStats)
+                        Value = field.GetValue(_selectedStats)
                     })
             {
                 if (((string) item.Key).Contains("Time"))
                 {
                     var span = TimeSpan.FromMinutes((double) item.Value);
                     if (((string) item.Key).Contains("Time Spent Living"))
+                    {
                         span = TimeSpan.FromSeconds((double) item.Value);
+                    }
 
                     item.Value = string.Format("{0:D2}d:{1:D2}m:{2:D2}s", span.Days, span.Minutes, span.Seconds);
                 }
@@ -95,10 +101,14 @@ namespace LegendaryClient.Windows.Profile
             }
 
             if (double.IsNaN(KeyHeader.Width))
+            {
                 KeyHeader.Width = KeyHeader.ActualWidth;
+            }
 
             if (double.IsNaN(ValueHeader.Width))
+            {
                 ValueHeader.Width = ValueHeader.ActualWidth;
+            }
 
             KeyHeader.Width = double.NaN;
             ValueHeader.Width = double.NaN;
@@ -108,14 +118,15 @@ namespace LegendaryClient.Windows.Profile
         {
             foreach (var stat in stats.LifetimeStatistics)
             {
-                var champion = ChampionStats.Find(x => x.ChampionId == stat.ChampionId);
+                var champion =
+                    _championStats.Find(x => Math.Abs(x.ChampionId - stat.ChampionId) < Math.Abs(x.ChampionId*.00001));
                 if (champion == null)
                 {
                     champion = new AggregatedChampion
                     {
                         ChampionId = stat.ChampionId
                     };
-                    ChampionStats.Add(champion);
+                    _championStats.Add(champion);
                 }
 
                 var type = typeof (AggregatedChampion);
@@ -124,14 +135,16 @@ namespace LegendaryClient.Windows.Profile
                 f.SetValue(champion, stat.Value);
             }
 
-            ChampionStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
+            _championStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
 
             //AllStats = ChampionStats;
 
-            foreach (var championStat in ChampionStats)
+            foreach (var championStat in _championStats)
             {
-                if (championStat.ChampionId == 0)
+                if (Math.Abs(championStat.ChampionId) < .00001)
+                {
                     continue;
+                }
 
                 var item = new ListViewItem();
                 var championImage = new ProfileChampionImage();
@@ -154,18 +167,22 @@ namespace LegendaryClient.Windows.Profile
         private void ChampionsListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (((ListViewItem) ChampionsListView.SelectedItem).Tag == null)
+            {
                 return;
+            }
 
-            SelectedStats = (AggregatedChampion) ((ListViewItem) ChampionsListView.SelectedItem).Tag;
-            if (!IsOwnPlayer)
+            _selectedStats = (AggregatedChampion) ((ListViewItem) ChampionsListView.SelectedItem).Tag;
+            if (!_isOwnPlayer)
+            {
                 HideGrid.Visibility = Visibility.Hidden;
+            }
 
             DisplayStats();
         }
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            SelectedStats = AllStats;
+            _selectedStats = _allStats;
             HideGrid.Visibility = Visibility.Visible;
             DisplayStats();
         }

@@ -73,7 +73,6 @@ namespace LegendaryClient.Windows.Profile
             ChampionSelectListView.Items.Clear();
 
             var tempList = _championList.ToList();
-
             if (!String.IsNullOrEmpty(SearchTextBox.Text))
             {
                 tempList =
@@ -94,15 +93,12 @@ namespace LegendaryClient.Windows.Profile
                 case "All":
                     allChampions = true;
                     break;
-
                 case "Owned":
                     ownedChampions = true;
                     break;
-
                 case "Not Owned":
                     notOwnedChampions = true;
                     break;
-
                 default:
                     avaliableChampions = true;
                     break;
@@ -112,17 +108,23 @@ namespace LegendaryClient.Windows.Profile
             {
                 if ((!avaliableChampions || (!champ.Owned && !champ.FreeToPlay)) && (!allChampions) &&
                     (!ownedChampions || !champ.Owned) && (!notOwnedChampions || champ.Owned))
+                {
                     continue;
+                }
 
                 var championImage = new ProfileChampionImage();
                 var champion = champions.GetChampion(champ.ChampionId);
                 championImage.ChampImage.Source = champion.icon;
                 if (champ.FreeToPlay)
+                {
                     championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
+                }
 
                 championImage.ChampName.Content = champion.displayName;
                 if (!champ.Owned && !champ.FreeToPlay)
+                {
                     championImage.ChampImage.Opacity = 0.5;
+                }
 
                 championImage.Tag = champ.ChampionId;
                 ChampionSelectListView.Items.Add(championImage);
