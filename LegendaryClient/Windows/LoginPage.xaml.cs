@@ -25,7 +25,9 @@ using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Logic.SWF;
 using LegendaryClient.Logic.SWF.SWFTypes;
+using LegendaryClient.Logic.UpdateRegion;
 using LegendaryClient.Properties;
+using LegendaryClient.Logic.Patcher;
 using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
@@ -155,20 +157,18 @@ namespace LegendaryClient.Windows
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
+            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
+            var patcher = new RiotPatcher();
 
-            string tempString =
-                new WebClient().DownloadString(
-                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA")
-                    .Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
-            string[] packages = new WebClient().DownloadString(
-                "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
-                tempString + "/packages/files/packagemanifest")
-                .Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            string tempString = patcher.GetListing(updateRegion.AirListing);
+
+            string[] packages = patcher.GetManifest(
+                updateRegion.AirManifest + "releases/" + tempString + "/packages/files/packagemanifest");
             foreach (
                 string usestring in
                     packages.Select(package => package.Split(',')[0])
                         .Where(usestring => usestring.Contains("ClientLibCommon.dat")))
-                new WebClient().DownloadFile(new Uri("http://l3cdn.riotgames.com/releases/live" + usestring),
+                new WebClient().DownloadFile(new Uri(updateRegion.BaseLink + usestring),
                     Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
 
             var reader = new SWFReader(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
@@ -178,8 +178,19 @@ namespace LegendaryClient.Windows
                 into str
                 select str.Split((char) 6)
                 into firstSplit
-                select firstSplit[0].Split((char) 19))
-                Client.Version = secondSplit[1];
+                 
+                select firstSplit[0].Split((char) 19))  
+
+                try
+                {
+                    Client.Version = secondSplit[1];
+                }
+                catch
+                {
+                    var thirdSplit = secondSplit[0].Split((char) 18);
+                    Client.Version = thirdSplit[1];
+                }
+                
 
             Version.Text = Client.Version;
 

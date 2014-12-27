@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LegendaryClient.Logic.UpdateRegion
 {
-    public sealed class China : BaseUpdateRegion
+    public sealed class China : BaseUpdateRegion // http://lol.qq.com/ Client works very much like Garena
     {
         public override string AirListing
         {
@@ -31,6 +31,11 @@ namespace LegendaryClient.Logic.UpdateRegion
         public override string SolutionManifest
         {
             get { return "http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/"; }
+        }
+
+        public override string BaseLink
+        {
+            get { return "http://l3cdn.riotgames.com/releases/live"; }
         }
     }
 }

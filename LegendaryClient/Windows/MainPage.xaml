@@ -120,7 +120,7 @@
                     </ListView>
                     <ComboBox x:Name="SpectatorComboBox" Width="160" Margin="0,60,0,0"
                               HorizontalAlignment="Center" VerticalAlignment="Top"
-                              ItemsSource="{DynamicResource Regions}"
+                              ItemsSource="{DynamicResource SpectateRegions}"
                               SelectionChanged="SpectatorComboBox_SelectionChanged" />
                     <Label x:Name="MMRLabel" Margin="0,10,0,0" HorizontalAlignment="Center" VerticalAlignment="Top"
                            Content="MMR" FontSize="26" FontWeight="ExtraLight" Foreground="White" />

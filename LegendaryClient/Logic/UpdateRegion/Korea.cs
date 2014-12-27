@@ -32,5 +32,10 @@ namespace LegendaryClient.Logic.UpdateRegion
         {
             get { return "http://legendspatch-lol.x-cdn.com/KR_CBT/solutions/lol_game_client_sln/"; }
         }
+
+        public override string BaseLink
+        {
+            get { return "http://legendspatch-lol.x-cdn.com/KR_CBT"; }
+        }
     }
 }
