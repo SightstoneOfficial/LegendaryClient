@@ -20,7 +20,6 @@ using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Patcher;
-using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Logic.UpdateRegion;
 using LegendaryClient.Properties;
 using Microsoft.Win32;
@@ -36,7 +35,7 @@ namespace LegendaryClient.Windows
     public partial class PatcherPage
     {
         //#FF2E2E2E
-        internal static bool LoLDataIsUpToDate = false;
+        internal static bool LoLDataIsUpToDate;
         internal static string LatestLolDataVersion = string.Empty;
         internal static string LolDataVersion = string.Empty;
 
@@ -45,11 +44,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Change();
 
-
-            if (Settings.Default.updateRegion != string.Empty)
-                UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion;
-            else
-                UpdateRegionComboBox.SelectedValue = "Live";
+            UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion != string.Empty ? Settings.Default.updateRegion : "Live";
             Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
 
             bool x = Settings.Default.DarkTheme;
@@ -267,7 +262,6 @@ namespace LegendaryClient.Windows
                         File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                     LogTextBox("Current Air Assets Version: " + airVersion);
                     var updateClient = new WebClient();
-                    string vers = latestAir;
                     if (airVersion != latestAir)
                     {
                         //Download Air Assists from riot
@@ -277,16 +271,19 @@ namespace LegendaryClient.Windows
                             string[] allFiles = patcher.GetManifest(airManifestLink);
                             int i = 0;
                             while (!allFiles[i].Contains("gameStats_en_US.sqlite"))
+                            {
                                 i++;
+                            }
 
-                            string gameStatsLink = allFiles[i].Split(',')[0];
                             updateClient.DownloadFile(
                                 new Uri(updateRegion.AirManifest + allFiles[i].Split(',')[0]),
                                 Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
                             GetAllPngs(allFiles);
                             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
+                            {
                                 File.Delete(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
+                            }
 
                             using (
                                 FileStream file =
@@ -446,12 +443,12 @@ namespace LegendaryClient.Windows
             RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
             if (key != null)
                 key.SetValue("Path",
-                    findLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
+                    findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty));
 
             if (restart)
                 LogTextBox("Saved value, please restart the client to login.");
 
-            return findLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
+            return findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty);
         }
 
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -462,7 +459,7 @@ namespace LegendaryClient.Windows
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                CurrentProgressBar.Value = int.Parse(Math.Truncate(percentage).ToString());
+                CurrentProgressBar.Value = int.Parse(Math.Truncate(percentage).ToString(CultureInfo.InvariantCulture));
                 CurrentProgressLabel.Content = "Now downloading LegendaryClient";
             }));
         }
@@ -553,7 +550,7 @@ namespace LegendaryClient.Windows
 
             stream.Close();
 
-            string rtrn = md5.Hash.Aggregate("", (current, t) => current + (t.ToString("x2")));
+            string rtrn = md5.Hash.Aggregate(string.Empty, (current, t) => current + (t.ToString("x2")));
             return rtrn.ToUpper();
         }
 
@@ -657,7 +654,7 @@ namespace LegendaryClient.Windows
 
                 UncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace),
                     Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace)
-                        .Replace(".compressed", ""));
+                        .Replace(".compressed", string.Empty));
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace));
             }
         }
@@ -784,7 +781,7 @@ namespace LegendaryClient.Windows
                 }
                 UncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace),
                     Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace)
-                        .Replace(".compressed", ""));
+                        .Replace(".compressed", string.Empty));
                 try
                 {
                     File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace));

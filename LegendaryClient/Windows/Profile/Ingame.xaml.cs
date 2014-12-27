@@ -113,10 +113,14 @@ namespace LegendaryClient.Windows.Profile
                         var target = new Bitmap(cropRect.Width, cropRect.Height);
 
                         using (var g = Graphics.FromImage(target))
+                        {
                             if (src != null)
+                            {
                                 g.DrawImage(src, new Rectangle(0, 0, target.Width, target.Height),
                                     cropRect,
                                     GraphicsUnit.Pixel);
+                            }
+                        }
 
                         m.Source = Client.ToWpfBitmap(target);
                         ImageGrid.Children.Add(m);
@@ -146,9 +150,13 @@ namespace LegendaryClient.Windows.Profile
 
                 i++;
                 if (i <= 5)
+                {
                     BlueListView.Items.Add(control);
+                }
                 else
+                {
                     PurpleListView.Items.Add(control);
+                }
             }
 
             if (currentGame.Game.BannedChampions.Count > 0)
@@ -166,9 +174,13 @@ namespace LegendaryClient.Windows.Profile
                     Source = champions.GetChampion(x.ChampionId).icon
                 };
                 if (x.TeamId == 100)
+                {
                     BlueBanListView.Items.Add(champImage);
+                }
                 else
+                {
                     PurpleBanListView.Items.Add(champImage);
+                }
             }
 
             try
@@ -177,7 +189,9 @@ namespace LegendaryClient.Windows.Profile
                 var url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName +
                           "/" + currentGame.Game.Id + "/token";
                 using (var client = new WebClient())
+                {
                     mmrJson = client.DownloadString(url);
+                }
 
                 var serializer = new JavaScriptSerializer();
                 var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(mmrJson);

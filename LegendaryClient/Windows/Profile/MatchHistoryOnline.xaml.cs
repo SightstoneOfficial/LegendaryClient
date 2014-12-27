@@ -22,8 +22,8 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class MatchHistoryOnline
     {
-        private readonly List<MatchStats> _gameStats = new List<MatchStats>();
         private string _sumName;
+        private readonly List<MatchStats> _gameStats = new List<MatchStats>();
 
         public MatchHistoryOnline(String name = "")
         {
@@ -32,7 +32,9 @@ namespace LegendaryClient.Windows.Profile
 
             //Started work on
             if (String.IsNullOrEmpty(name))
+            {
                 name = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            }
 
             _sumName = name;
         }
@@ -132,23 +134,32 @@ namespace LegendaryClient.Windows.Profile
                     var bc = new BrushConverter();
                     var brush = (Brush) bc.ConvertFrom("#FF609E74");
 
-                    if (stats.Lose == 1)
+                    if (Math.Abs(stats.Lose - 1) < .00001)
+                    {
                         brush = (Brush) bc.ConvertFrom("#FF9E6060");
-                    else if (stats.Game.IpEarned == 0)
+                    }
+                    else if (Math.Abs(stats.Game.IpEarned) < .00001)
+                    {
                         brush = (Brush) bc.ConvertFrom("#FFE27100");
+                    }
 
                     item.GridView.Background = brush;
                     item.GridView.Width = 280;
                     GamesListView.Items.Add(item);
                 }
-                if (GamesListView.Items.Count > 0) GamesListView.SelectedIndex = 0;
+                if (GamesListView.Items.Count > 0)
+                {
+                    GamesListView.SelectedIndex = 0;
+                }
             }));
         }
 
         private void GamesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (GamesListView.SelectedIndex == -1)
+            {
                 return;
+            }
 
             var stats = _gameStats[GamesListView.SelectedIndex];
             Browser.Source =

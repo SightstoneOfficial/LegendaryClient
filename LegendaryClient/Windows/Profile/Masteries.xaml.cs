@@ -21,27 +21,31 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class Masteries
     {
-        private readonly List<double> _masteryPageOrder = new List<double>();
         private int _defenseUsedPoints;
         private int _offenseUsedPoints;
         private LargeChatPlayer _playerItem;
         private MasteryBookPageDTO _selectedBook;
         private int _usedPoints;
         private int _utilityUsedPoints;
+        private readonly List<double> _masteryPageOrder = new List<double>();
         //private static readonly ILog Log = LogManager.GetLogger(typeof(Masteries));
         public Masteries()
         {
             InitializeComponent();
             MasteryPageListView.Items.Clear();
             for (var i = 1; i <= Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count; i++)
+            {
                 MasteryPageListView.Items.Add(i + " ");
+            }
 
             double selectedPageId = 0;
             foreach (var masteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
             {
                 _masteryPageOrder.Add(masteryPage.PageId);
                 if (masteryPage.Current)
+                {
                     selectedPageId = masteryPage.PageId;
+                }
             }
             _masteryPageOrder.Sort();
             MasteryPageListView.SelectedIndex = _masteryPageOrder.IndexOf(selectedPageId);
@@ -54,7 +58,9 @@ namespace LegendaryClient.Windows.Profile
             {
                 var talent1 = talent;
                 foreach (var mastery in Client.Masteries.Where(mastery => mastery.id == talent1.TalentId))
+                {
                     mastery.selectedRank = talent.Rank;
+                }
             }
         }
 
@@ -125,28 +131,34 @@ namespace LegendaryClient.Windows.Profile
                         Margin = new Thickness(2, 2, 2, 2)
                     };
                     if (isOffense)
+                    {
                         OffenseListView.Items.Add(rect);
+                    }
                     else if (isDefense)
                     {
                         DefenseListView.Items.Add(rect);
                         if (mastery.id == 4253)
+                        {
                             DefenseListView.Items.Add(new Rectangle
                             {
                                 Width = 64,
                                 Height = 64,
                                 Margin = new Thickness(2, 2, 2, 2)
                             });
+                        }
                     }
                     else
                     {
                         UtilityListView.Items.Add(rect);
                         if (mastery.id == 4353)
+                        {
                             UtilityListView.Items.Add(new Rectangle
                             {
                                 Width = 64,
                                 Height = 64,
                                 Margin = new Thickness(2, 2, 2, 2)
                             });
+                        }
                     }
                 }
 
@@ -169,9 +181,13 @@ namespace LegendaryClient.Windows.Profile
         private void item_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             if (e.Delta > 0)
+            {
                 item_MouseLeftButtonDown(sender, null);
+            }
             else
+            {
                 item_MouseRightButtonDown(sender, null);
+            }
         }
 
         private void item_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -179,17 +195,23 @@ namespace LegendaryClient.Windows.Profile
             var item = (MasteryItem) sender;
             var playerItem = (masteries) item.Tag;
             if (playerItem.selectedRank == 0)
+            {
                 return;
+            }
 
             //Temp check - make it so you can remove masteries even if they are above mastery if enough points in tree
             var filteredMasteries =
                 Client.Masteries.FindAll(x => x.tree == playerItem.tree && x.treeRow > playerItem.treeRow);
             if (filteredMasteries.Any(checkMastery => checkMastery.selectedRank > 0))
+            {
                 return;
+            }
 
             playerItem.selectedRank -= 1;
             foreach (var talent in Client.Masteries.Where(talent => playerItem.id == talent.id))
+            {
                 talent.selectedRank = playerItem.selectedRank;
+            }
 
             RenderMasteries();
         }
@@ -200,7 +222,9 @@ namespace LegendaryClient.Windows.Profile
             var playerItem = (masteries) item.Tag;
             //Max rank
             if (playerItem.selectedRank == playerItem.ranks)
+            {
                 return;
+            }
 
             //Has enough points in tree
             switch (playerItem.tree)
@@ -220,19 +244,25 @@ namespace LegendaryClient.Windows.Profile
             }
             //Has enough points overall
             if (_usedPoints >= Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints)
+            {
                 return;
+            }
 
             //If it has a prerequisite mastery, check if points in it
             if (playerItem.prereq != 0)
             {
                 var prereqMastery = Client.Masteries.Find(x => playerItem.prereq == x.id);
                 if (prereqMastery.selectedRank != prereqMastery.ranks)
+                {
                     return;
+                }
             }
 
             playerItem.selectedRank += 1;
             foreach (var talent in Client.Masteries.Where(talent => playerItem.id == talent.id))
+            {
                 talent.selectedRank = playerItem.selectedRank;
+            }
 
             RenderMasteries();
         }
@@ -240,7 +270,9 @@ namespace LegendaryClient.Windows.Profile
         private void item_MouseLeave(object sender, MouseEventArgs e)
         {
             if (_playerItem == null)
+            {
                 return;
+            }
 
             Client.MainGrid.Children.Remove(_playerItem);
             _playerItem = null;
@@ -273,15 +305,21 @@ namespace LegendaryClient.Windows.Profile
                 {
                     case "Offense":
                         if (_offenseUsedPoints < playerItem.treeRow*4)
+                        {
                             isAtRequirement = false;
+                        }
                         break;
                     case "Defense":
                         if (_defenseUsedPoints < playerItem.treeRow*4)
+                        {
                             isAtRequirement = false;
+                        }
                         break;
                     default:
                         if (_utilityUsedPoints < playerItem.treeRow*4)
+                        {
                             isAtRequirement = false;
+                        }
                         break;
                 }
 
@@ -301,7 +339,10 @@ namespace LegendaryClient.Windows.Profile
 
                 var selectedRank = playerItem.selectedRank;
                 if (selectedRank == 0)
+                {
                     selectedRank = 1;
+                }
+
                 _playerItem.PlayerStatus.Text = ((string) playerItem.description[selectedRank - 1]).Replace("<br>",
                     Environment.NewLine);
 
@@ -315,7 +356,9 @@ namespace LegendaryClient.Windows.Profile
 
             var xMargin = mouseLocation.X;
             if (xMargin + _playerItem.Width + 10 > Client.MainGrid.ActualWidth)
+            {
                 xMargin = Client.MainGrid.ActualWidth - _playerItem.Width - 10;
+            }
 
             _playerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
         }
@@ -323,7 +366,9 @@ namespace LegendaryClient.Windows.Profile
         private void ReturnButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (var mastery in Client.Masteries)
+            {
                 mastery.selectedRank = 0;
+            }
 
             RenderMasteries();
         }
@@ -355,7 +400,9 @@ namespace LegendaryClient.Windows.Profile
         private void MasteryPageListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             foreach (var mastery in Client.Masteries)
+            {
                 mastery.selectedRank = 0;
+            }
 
             foreach (var masteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
             {
@@ -363,8 +410,11 @@ namespace LegendaryClient.Windows.Profile
                 {
                     masteryPage.Current = false;
                 }
-                if (masteryPage.PageId != _masteryPageOrder[MasteryPageListView.SelectedIndex])
+
+                if (Math.Abs(masteryPage.PageId - _masteryPageOrder[MasteryPageListView.SelectedIndex]) > .00001)
+                {
                     continue;
+                }
 
                 masteryPage.Current = true;
                 _selectedBook = masteryPage;
@@ -376,13 +426,17 @@ namespace LegendaryClient.Windows.Profile
         private void RevertButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (var mastery in Client.Masteries)
+            {
                 mastery.selectedRank = 0;
+            }
 
             foreach (var savedMastery in _selectedBook.TalentEntries)
             {
                 var mastery1 = savedMastery;
                 foreach (var mastery in Client.Masteries.Where(mastery => mastery.id == mastery1.TalentId))
+                {
                     mastery.selectedRank = savedMastery.Rank;
+                }
             }
         }
     }
