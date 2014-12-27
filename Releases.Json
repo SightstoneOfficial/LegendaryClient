@@ -1,5 +1,6 @@
 {"LCVersions":[
-{"isLatest":true, "VersionId":"2.2.1.0","VersionName":"2.2.1.0","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.2.1.0/Release.zip","IsPrerelease":false,"IsBeta":false},
+{"isLatest":true, "VersionId":"2.2.1.1","VersionName":"2.2.1.1","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.2.1.1/LegendaryClient.zip","IsPrerelease":false,"IsBeta":false},
+{"isLatest":false, "VersionId":"2.2.1.0","VersionName":"2.2.1.0","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.2.1.0/Release.zip","IsPrerelease":false,"IsBeta":false},
 {"isLatest":false, "VersionId":"2.2.0.6","VersionName":"2.2.0.6","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.2.0.6/LegendaryClient.zip","IsPrerelease":false,"IsBeta":false},
 {"isLatest":false, "VersionId":"2.2.0.5","VersionName":"Actual fix","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.2.0.5/LegendaryClient.zip","IsPrerelease":false,"IsBeta":false},
 {"isLatest":false, "VersionId":"2.2.0.4","VersionName":"Updates","VersionDescription":"","DownloadLink":"https://github.com/eddy5641/LegendaryClient/releases/download/2.2.0.4/LegendaryClient.zip","IsPrerelease":false,"IsBeta":false},
