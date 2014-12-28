@@ -678,6 +678,9 @@ namespace LegendaryClient.Windows
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient"));
 
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon"));
+
             foreach (string s in fileMetaData)
             {
                 if (String.IsNullOrEmpty(s))
@@ -717,6 +720,18 @@ namespace LegendaryClient.Windows
                                 : Path.Combine(Client.ExecutingDirectory, "Assets", "spell", saveName));
                     }
                 }
+                else if (savePlace.Contains("assets/storeImages/content/summoner_icon/"))
+                {
+                    using (var newClient = new WebClient())
+                    {
+                        string saveName = location.Split(new[] { "/summoner_icon/" }, StringSplitOptions.None)[1];
+                        LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
+                        newClient.DownloadFile(updateRegion.BaseLink + location,
+                            saveName.ToLower().Contains("_")
+                                ? Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", saveName.Split(new[] {"_"}, StringSplitOptions.None)[0] + ".png")
+                                : Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", saveName.Replace("profileIcon", string.Empty)));
+                    }
+                } 
                 else if (savePlace.Contains("assets/sounds/"))
                 {
                     using (var newClient = new WebClient())
