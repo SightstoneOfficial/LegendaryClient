@@ -61,7 +61,7 @@
         <Border Margin="27,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1"
                 BorderBrush="Black">
             <Image x:Name="ProfileImage" Width="100" Height="100" Margin="0,0,0,0"
-                   HorizontalAlignment="Left" VerticalAlignment="Top" />
+                   HorizontalAlignment="Left" VerticalAlignment="Top" Source="/LegendaryClient;component/NONE.png" />
         </Border>
         <local:HoverOverLabel x:Name="HoverLabel" Width="100" Height="100" Margin="27,30,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Top" MouseDown="HoverLabel_MouseDown"
