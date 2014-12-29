@@ -98,6 +98,8 @@ namespace LegendaryClient.Windows
             ErrorCheckbox.IsChecked = Settings.Default.SendErrors;
             UseAsBackground.IsChecked = Settings.Default.UseAsBackgroundImage;
             AutoRecordCheckbox.IsChecked = Settings.Default.AutoRecordGames;
+            PickBanCheckBox.IsChecked = Settings.Default.PickBanFocus;
+            PickBanCheckBoxFlash.IsChecked = Settings.Default.PickBanFlash;
 
             #region AboutTextbox
 
@@ -483,6 +485,24 @@ A code signing license (So you know that you are using LegendaryClient)
         private void ChampSelectVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Client.AmbientSoundPlayer.Volume = ChampSelectVolumeSlider.Value/100;
+        }
+
+        private void PickBanCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            var cb = (CheckBox)sender;
+            if (cb.IsChecked != null)
+                Settings.Default.PickBanFocus = (bool)cb.IsChecked;
+
+            Settings.Default.Save();
+        }
+
+        private void PickBanCheckBoxFlash_Checked(object sender, RoutedEventArgs e)
+        {
+            var cb = (CheckBox)sender;
+            if (cb.IsChecked != null)
+                Settings.Default.PickBanFlash = (bool)cb.IsChecked;
+
+            Settings.Default.Save();
         }
     }
 

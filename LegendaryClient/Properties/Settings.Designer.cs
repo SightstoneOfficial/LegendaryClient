@@ -321,5 +321,29 @@ namespace LegendaryClient.Properties {
                 this["GarenaLocation"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PickBanFocus {
+            get {
+                return ((bool)(this["PickBanFocus"]));
+            }
+            set {
+                this["PickBanFocus"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool PickBanFlash {
+            get {
+                return ((bool)(this["PickBanFlash"]));
+            }
+            set {
+                this["PickBanFlash"] = value;
+            }
+        }
     }
 }
