@@ -722,7 +722,8 @@ namespace LegendaryClient.Windows
                     return;
 
                 HasLaunchedGame = true;
-                Client.LaunchGame();
+
+                
                 if (Settings.Default.AutoRecordGames)
                 {
                     Dispatcher.InvokeAsync(async () =>
@@ -1240,7 +1241,7 @@ namespace LegendaryClient.Windows
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
             Client.SetChatHover();
 
-            Client.SwitchPage(new InGame());
+            Client.SwitchPage(new InGame(true));
             Client.ClearPage(typeof(ChampSelectPage));
         }
 

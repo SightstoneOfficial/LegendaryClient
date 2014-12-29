@@ -17,10 +17,14 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class InGame
     {
-        public InGame()
+        public InGame(bool start = false)
         {
             InitializeComponent();
             Change();
+            if (start)
+            {
+                Client.LaunchGame();
+            }
 
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
             Client.IsInGame = true;
