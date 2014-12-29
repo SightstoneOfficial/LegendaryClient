@@ -37,11 +37,13 @@ namespace LegendaryClient.Windows
         private LargeChatPlayer PlayerItem;
         private ChatPlayerItem LastPlayerItem;
         private SelectionChangedEventArgs selection;
+        bool loaded = false;
 
         public FriendList()
         {
 
             InitializeComponent();
+            loaded = false;
             if (Settings.Default.StatusMsg != "Set your status message")
                 StatusBox.Text = Settings.Default.StatusMsg;
             UpdateTimer = new Timer(1000);
@@ -215,8 +217,12 @@ namespace LegendaryClient.Windows
                         ChatListView.Children.Add(groupControl);
                     else Client.Log("Removed a group");
                 }
-                if(ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup)
+                if(ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup && loaded)
+                {
+                    //Stop droping 100 times
                     (ChatListView.Children[0] as ChatGroup).GroupGrid_MouseDown(null, null);
+                    loaded = true;
+                }
             }));
         }
 
@@ -423,7 +429,7 @@ namespace LegendaryClient.Windows
         {
             PublicSummoner JID = await Client.PVPNet.GetSummonerByName(FriendAddBox.Text);
             var jid = new JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
-            string[] groups = new List<String>(new[] { "Online" }).ToArray();
+            string[] groups = new List<String>(new[] { "**Default" }).ToArray();
             Client.ChatClient.Subscribe(jid, "", groups);
             FriendAddBox.Text = "";
         }

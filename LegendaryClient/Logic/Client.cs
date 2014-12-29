@@ -422,6 +422,7 @@ namespace LegendaryClient.Logic
             await PVPConnect.Accept(GameID);
         }
 
+        public static Dictionary<String, String> PlayerNote = new Dictionary<String, String>();
         internal static void ChatClientConnect(object sender)
         {
             Level = System.Convert.ToInt32(LoginPacket.AllSummonerData.SummonerLevel.Level);
@@ -436,16 +437,22 @@ namespace LegendaryClient.Logic
                 StringHackOne.RemoveAt(0);
                 foreach (
                     string Parse in
-                        StringHackOne.Select(StringHack => StringHack.Split(','))
+                        StringHackOne.Select(StringHack => Regex.Split(StringHack, @"</item>,"))
                             .Select(StringHackTwo => StringHackTwo[0]))
                 {
-                    using (XmlReader reader = XmlReader.Create(new StringReader(Parse)))
+                    string temp;
+                    if (!Parse.Contains("</item>"))
+                        temp = Parse + "</item>";
+                    else
+                        temp = Parse;
+                    using (XmlReader reader = XmlReader.Create(new StringReader(temp)))
                     {
                         while (reader.Read())
                         {
                             if (!reader.IsStartElement())
                                 continue;
-
+                            string JID = string.Empty;
+                            string Note = string.Empty;
                             switch (reader.Name)
                             {
                                 case "group":
@@ -454,7 +461,17 @@ namespace LegendaryClient.Logic
                                     if (Group != "**Default" && Groups.Find(e => e.GroupName == Group) == null)
                                         Groups.Add(new Group(Group));
                                     break;
+                                case "jid":
+                                    reader.Read();
+                                    JID = reader.Value;
+                                    break;
+                                case "note":
+                                    reader.Read();
+                                    Note = reader.Value;
+                                    break;
                             }
+                            if (!String.IsNullOrEmpty(JID) && !String.IsNullOrEmpty(Note))
+                                PlayerNote.Add(JID, Note);
                         }
                     }
                 }
