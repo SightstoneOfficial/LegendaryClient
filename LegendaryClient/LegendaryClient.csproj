@@ -170,6 +170,9 @@
     <Compile Include="Controls\GameScouter\TinyRuneMasteryData.xaml.cs">
       <DependentUpon>TinyRuneMasteryData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\InnerChatItem.xaml.cs">
+      <DependentUpon>InnerChatItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PlayerStatisticsChampSelect.xaml.cs">
       <DependentUpon>PlayerStatisticsChampSelect.xaml</DependentUpon>
     </Compile>
@@ -223,6 +226,7 @@
       <DependentUpon>GameScouter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
+    <Compile Include="Logic\Region\PBE.cs" />
     <Compile Include="Logic\SoundLogic\QueuePopSound.cs" />
     <Compile Include="Logic\uiLogic.cs" />
     <Compile Include="Logic\FilterChat.cs" />
@@ -527,6 +531,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\GameScouter\TinyRuneMasteryData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\InnerChatItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -18,6 +18,8 @@ namespace LegendaryClient.Logic.UpdateRegion
 
         public abstract string SolutionManifest { get; }
 
+        public abstract string BaseLink { get; }
+
         public static BaseUpdateRegion GetUpdateRegion(String requestedRegion)
         {
             Type t = Type.GetType("LegendaryClient.Logic.UpdateRegion." + requestedRegion);

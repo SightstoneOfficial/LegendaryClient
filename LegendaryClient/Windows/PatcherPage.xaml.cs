@@ -20,49 +20,13 @@ using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Patcher;
-using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Logic.UpdateRegion;
 using LegendaryClient.Properties;
 using Microsoft.Win32;
 using RAFlibPlus;
 
 #endregion
-/*
- ____                  _        __   __                            _           _     _                  _ _ _                 
-|  _ \ ___   __ _  ___| |__     \ \ / /__  _   _   _ __  _ __ ___ | |__   __ _| |__ | |_   _  __      _(_) | |  ___  ___  ___ 
-| |_) / _ \ / _` |/ __| '_ \     \ V / _ \| | | | | '_ \| '__/ _ \| '_ \ / _` | '_ \| | | | | \ \ /\ / / | | | / __|/ _ \/ _ \
-|  _ < (_) | (_| | (__| | | |_    | | (_) | |_| | | |_) | | | (_) | |_) | (_| | |_) | | |_| |  \ V  V /| | | | \__ \  __/  __/
-|_| \_\___/ \__,_|\___|_| |_( )   |_|\___/ \__,_| | .__/|_|  \___/|_.__/ \__,_|_.__/|_|\__, |   \_/\_/ |_|_|_| |___/\___|\___|
-                            |/                    |_|                                  |___/                                  
- _   _     _       ____             
-| |_| |__ (_)___  / ___|  ___       
-| __| '_ \| / __| \___ \ / _ \      
-| |_| | | | \__ \  ___) | (_) | _ _ 
- \__|_| |_|_|___/ |____/ \___(_|_|_)
-                                    
- 
-  ____                                      _                     _                  _               _   _                          _      
- / ___|__ _ _ __    _   _  ___  _   _   ___| |_ ___  _ __     ___| | ___  __ _ _ __ (_)_ __   __ _  | |_| |__   ___    ___ ___   __| | ___ 
-| |   / _` | '_ \  | | | |/ _ \| | | | / __| __/ _ \| '_ \   / __| |/ _ \/ _` | '_ \| | '_ \ / _` | | __| '_ \ / _ \  / __/ _ \ / _` |/ _ \
-| |__| (_| | | | | | |_| | (_) | |_| | \__ \ || (_) | |_) | | (__| |  __/ (_| | | | | | | | | (_| | | |_| | | |  __/ | (_| (_) | (_| |  __/
- \____\__,_|_| |_|  \__, |\___/ \__,_| |___/\__\___/| .__/   \___|_|\___|\__,_|_| |_|_|_| |_|\__, |  \__|_| |_|\___|  \___\___/ \__,_|\___|
-                    |___/                           |_|                                      |___/                                         
-		
 
- _   _       _   _ _   _   _                 _ _            _     _        __ _       _     _              _ 
-| | | |_ __ | |_(_) | | |_| |__   ___    ___| (_) ___ _ __ | |_  (_)___   / _(_)_ __ (_)___| |__   ___  __| |
-| | | | '_ \| __| | | | __| '_ \ / _ \  / __| | |/ _ \ '_ \| __| | / __| | |_| | '_ \| / __| '_ \ / _ \/ _` |
-| |_| | | | | |_| | | | |_| | | |  __/ | (__| | |  __/ | | | |_  | \__ \ |  _| | | | | \__ \ | | |  __/ (_| |
- \___/|_| |_|\__|_|_|  \__|_| |_|\___|  \___|_|_|\___|_| |_|\__| |_|___/ |_| |_|_| |_|_|___/_| |_|\___|\__,_|
-                                                                                                             
-
- _____ _                        _                    _   _                          _     ___ 
-|_   _| |__   __ _ _ __     ___| | ___  __ _ _ __   | |_| |__   ___    ___ ___   __| | __|__ \
-  | | | '_ \ / _` | '_ \   / __| |/ _ \/ _` | '_ \  | __| '_ \ / _ \  / __/ _ \ / _` |/ _ \/ /
-  | | | | | | (_| | | | | | (__| |  __/ (_| | | | | | |_| | | |  __/ | (_| (_) | (_| |  __/_| 
-  |_| |_| |_|\__,_|_| |_|  \___|_|\___|\__,_|_| |_|  \__|_| |_|\___|  \___\___/ \__,_|\___(_) 
-                                                                                              
-//*/
 namespace LegendaryClient.Windows
 {
     /// <summary>
@@ -71,7 +35,7 @@ namespace LegendaryClient.Windows
     public partial class PatcherPage
     {
         //#FF2E2E2E
-        internal static bool LoLDataIsUpToDate = false;
+        internal static bool LoLDataIsUpToDate;
         internal static string LatestLolDataVersion = string.Empty;
         internal static string LolDataVersion = string.Empty;
 
@@ -80,12 +44,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             Change();
 
-            throw new Exception("LOOK UP ROACH PLS");
-
-            if (Settings.Default.updateRegion != string.Empty)
-                UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion;
-            else
-                UpdateRegionComboBox.SelectedValue = "Live";
+            UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion != string.Empty ? Settings.Default.updateRegion : "Live";
             Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
 
             bool x = Settings.Default.DarkTheme;
@@ -303,26 +262,28 @@ namespace LegendaryClient.Windows
                         File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                     LogTextBox("Current Air Assets Version: " + airVersion);
                     var updateClient = new WebClient();
-                    string vers = latestAir;
                     if (airVersion != latestAir)
                     {
                         //Download Air Assists from riot
                         try
                         {
-                            string airManifestLink = updateRegion.AirManifest + latestAir + "/packages/files/packagemanifest";
+                            string airManifestLink = updateRegion.AirManifest + "releases/" + latestAir + "/packages/files/packagemanifest";
                             string[] allFiles = patcher.GetManifest(airManifestLink);
                             int i = 0;
                             while (!allFiles[i].Contains("gameStats_en_US.sqlite"))
+                            {
                                 i++;
+                            }
 
-                            string gameStatsLink = allFiles[i].Split(',')[0];
                             updateClient.DownloadFile(
-                                new Uri(updateRegion.AirManifest + allFiles[i].Split(',')[0]),
+                                new Uri(updateRegion.BaseLink + allFiles[i].Split(',')[0]),
                                 Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
                             GetAllPngs(allFiles);
                             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
+                            {
                                 File.Delete(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
+                            }
 
                             using (
                                 FileStream file =
@@ -414,6 +375,23 @@ namespace LegendaryClient.Windows
         {
             if (!restart)
             {
+                switch(Client.UpdateRegion)
+                {
+                    case "PBE": if (Settings.Default.PBELocation != string.Empty)
+                        return Settings.Default.PBELocation;
+                        else break;
+                    case "Live": if (Settings.Default.LiveLocation != string.Empty)
+                            return Settings.Default.LiveLocation;
+                        else break;
+                    case "Korea": if (Settings.Default.KRLocation != string.Empty)
+                            return Settings.Default.KRLocation;
+                        else break;
+                    case "Garena": if (Settings.Default.GarenaLocation != string.Empty)
+                            return Settings.Default.GarenaLocation;
+                        else break;
+                    default :
+                        break;
+                }
                 var possiblePaths = new List<Tuple<string, string>>
                 {
                     new Tuple<string, string>(
@@ -465,12 +443,12 @@ namespace LegendaryClient.Windows
             RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
             if (key != null)
                 key.SetValue("Path",
-                    findLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", ""));
+                    findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty));
 
             if (restart)
                 LogTextBox("Saved value, please restart the client to login.");
 
-            return findLeagueDialog.FileName.Replace("lol.launcher.exe", "").Replace("lol.launcher.admin.exe", "");
+            return findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty);
         }
 
         private void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -481,7 +459,7 @@ namespace LegendaryClient.Windows
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                CurrentProgressBar.Value = int.Parse(Math.Truncate(percentage).ToString());
+                CurrentProgressBar.Value = int.Parse(Math.Truncate(percentage).ToString(CultureInfo.InvariantCulture));
                 CurrentProgressLabel.Content = "Now downloading LegendaryClient";
             }));
         }
@@ -572,7 +550,7 @@ namespace LegendaryClient.Windows
 
             stream.Close();
 
-            string rtrn = md5.Hash.Aggregate("", (current, t) => current + (t.ToString("x2")));
+            string rtrn = md5.Hash.Aggregate(string.Empty, (current, t) => current + (t.ToString("x2")));
             return rtrn.ToUpper();
         }
 
@@ -676,7 +654,7 @@ namespace LegendaryClient.Windows
 
                 UncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace),
                     Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace)
-                        .Replace(".compressed", ""));
+                        .Replace(".compressed", string.Empty));
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace));
             }
         }
@@ -700,6 +678,9 @@ namespace LegendaryClient.Windows
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient"));
 
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon"));
+
             foreach (string s in fileMetaData)
             {
                 if (String.IsNullOrEmpty(s))
@@ -711,6 +692,7 @@ namespace LegendaryClient.Windows
                 var version = new Version(location.Split(new[] {"/releases/", "/files/"}, StringSplitOptions.None)[1]);
                 if (version <= currentVersion)
                     continue;
+                BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
 
                 string savePlace = location.Split(new[] {"/files/"}, StringSplitOptions.None)[1];
                 if (!savePlace.EndsWith(".jpg") && !savePlace.EndsWith(".png") && !savePlace.EndsWith(".mp3"))
@@ -722,7 +704,7 @@ namespace LegendaryClient.Windows
                     {
                         string saveName = location.Split(new[] {"/champions/"}, StringSplitOptions.None)[1];
                         LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                        newClient.DownloadFile(updateRegion.BaseLink + location,
                             Path.Combine(Client.ExecutingDirectory, "Assets", "champions", saveName));
                     }
                 }
@@ -732,12 +714,24 @@ namespace LegendaryClient.Windows
                     {
                         string saveName = location.Split(new[] {"/abilities/"}, StringSplitOptions.None)[1];
                         LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                        newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                        newClient.DownloadFile(updateRegion.BaseLink + location,
                             saveName.ToLower().Contains("passive")
                                 ? Path.Combine(Client.ExecutingDirectory, "Assets", "passive", saveName)
                                 : Path.Combine(Client.ExecutingDirectory, "Assets", "spell", saveName));
                     }
                 }
+                else if (savePlace.Contains("assets/storeImages/content/summoner_icon/"))
+                {
+                    using (var newClient = new WebClient())
+                    {
+                        string saveName = location.Split(new[] { "/summoner_icon/" }, StringSplitOptions.None)[1];
+                        LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
+                        newClient.DownloadFile(updateRegion.BaseLink + location,
+                            saveName.ToLower().Contains("_")
+                                ? Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", saveName.Split(new[] {"_"}, StringSplitOptions.None)[0] + ".png")
+                                : Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", saveName.Replace("profileIcon", string.Empty)));
+                    }
+                } 
                 else if (savePlace.Contains("assets/sounds/"))
                 {
                     using (var newClient = new WebClient())
@@ -746,7 +740,7 @@ namespace LegendaryClient.Windows
                         {
                             string saveName = location.Split(new[] {"/champions/"}, StringSplitOptions.None)[1];
                             LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            newClient.DownloadFile(updateRegion.BaseLink + location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions",
                                     saveName));
                         }
@@ -754,13 +748,13 @@ namespace LegendaryClient.Windows
                         {
                             string saveName = location.Split(new[] {"/ambient/"}, StringSplitOptions.None)[1];
                             LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            newClient.DownloadFile(updateRegion.BaseLink + location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "ambient", saveName));
                         }
                         else if (savePlace.Contains("assets/sounds/matchmakingqueued.mp3"))
                         {
                             LogTextBox("Downloading matchmakingqueued.mp3 from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                            newClient.DownloadFile(updateRegion.BaseLink + location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "matchmakingqueued.mp3"));
                         }
                     }
@@ -803,7 +797,7 @@ namespace LegendaryClient.Windows
                 }
                 UncompressFile(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace),
                     Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace)
-                        .Replace(".compressed", ""));
+                        .Replace(".compressed", string.Empty));
                 try
                 {
                     File.Delete(Path.Combine(Client.ExecutingDirectory, "RADS", "lol_game_client", savePlace));
@@ -887,7 +881,75 @@ namespace LegendaryClient.Windows
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (UpdateRegionComboBox.SelectedValue != null)
-                Settings.Default.updateRegion = (string) UpdateRegionComboBox.SelectedValue;
+            {
+                Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
+                ClientRegionLocation(Settings.Default.updateRegion);
+            }
+        }
+
+        private void ClientRegionLocation(string regionName)
+        {
+            var findLeagueDialog = new OpenFileDialog();
+
+            if (!Directory.Exists(Path.Combine("C:\\", "Riot Games", "League of Legends")))
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Program Files (x86)", "GarenaLoL", "GameData",
+                    "Apps", "LoL");
+            else
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Riot Games", "League of Legends");
+
+            findLeagueDialog.DefaultExt = ".exe";
+            findLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
+
+            switch (regionName)
+            {
+                case "PBE": if (Settings.Default.PBELocation == string.Empty)
+                    {
+                        bool? result = findLeagueDialog.ShowDialog();
+                        if (result != true)
+                        {
+                            Settings.Default.PBELocation = string.Empty;
+                            break;
+                        }
+                        else Settings.Default.PBELocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                    }
+                    break;
+                case "Live": if (Settings.Default.LiveLocation == string.Empty)
+                    {
+                        bool? result = findLeagueDialog.ShowDialog();
+                        if (result != true)
+                        {
+                            Settings.Default.LiveLocation = string.Empty;
+                            break;
+                        }
+                        else Settings.Default.LiveLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                    }
+                    break;
+                case "Korea": if (Settings.Default.KRLocation == string.Empty)
+                    {
+                        bool? result = findLeagueDialog.ShowDialog();
+                        if (result != true)
+                        {
+                            Settings.Default.KRLocation = string.Empty;
+                            break;
+                        }
+                        else Settings.Default.KRLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                    }
+                    break;
+                case "Garena": if (Settings.Default.GarenaLocation == string.Empty)
+                    {
+                        bool? result = findLeagueDialog.ShowDialog();
+                        if (result != true)
+                        {
+                            Settings.Default.GarenaLocation = string.Empty;
+                            break;
+                        }
+                        else Settings.Default.GarenaLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                    }
+                    break;
+                default:
+                    break;
+            }
+
         }
     }
 }

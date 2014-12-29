@@ -91,12 +91,15 @@
                 <Button x:Name="LoginButton" Height="41" Margin="10,180,10,0" HorizontalAlignment="Stretch"
                         VerticalAlignment="Top" Content="Login" Click="LoginButton_Click" IsDefault="True" />
                 <ComboBox x:Name="RegionComboBox" Width="120" Margin="220,10,0,0"
-                          HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource Regions}"
+                          HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource LiveRegions}"
                           SelectedIndex="4" />
                 <CheckBox x:Name="AutoLoginCheckBox" Margin="10,160,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Auto-Login" Foreground="White" />
                 <CheckBox x:Name="invisibleLoginCheckBox" Margin="100,160,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Sign-in invisible" Foreground="White" />
+                <ComboBox x:Name="UpdateRegionComboBox" Width="120" Margin="220,288,0,-84"
+                	HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}"
+                	SelectedIndex="4" SelectionChanged="UpdateRegionComboBox_SelectionChanged" />
             </Grid>
             <TextBox x:Name="Version" Width="283" Height="24"
                      Margin="0,301,57,0" HorizontalAlignment="Right"

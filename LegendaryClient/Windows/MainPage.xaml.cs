@@ -159,8 +159,15 @@ namespace LegendaryClient.Windows
             int profileIconId = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
             var uriSource =
                 new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png"),
-                    UriKind.RelativeOrAbsolute);
-            ProfileImage.Source = new BitmapImage(uriSource);
+                UriKind.RelativeOrAbsolute);
+            try
+            {
+                ProfileImage.Source = new BitmapImage(uriSource);
+            }
+            catch
+            {
+                Client.Log("Can't load profile image.", "ERROR");
+            }
             Client.MainPageProfileImage = ProfileImage;
         }
 
