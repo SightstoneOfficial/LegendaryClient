@@ -79,6 +79,12 @@
                     <Button Width="994" Margin="10,0,10,205"
                             HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                             Content="Donate to help LegendaryClient's work" Click="Button_Click_1" />
+                    <CheckBox x:Name="PickBanCheckBox" Margin="10,75,0,0"
+                    	HorizontalAlignment="Left" VerticalAlignment="Top"
+                    	Content="Move window to front when picking/baning" Checked="PickBanCheckBox_Checked" />
+                    <CheckBox x:Name="PickBanCheckBoxFlash" Margin="10,97,0,0"
+                    	HorizontalAlignment="Left" VerticalAlignment="Top"
+                    	Content="Flash window when picking/baning" Checked="PickBanCheckBoxFlash_Checked" />
                 </Grid>
             </TabItem>
             <TabItem Header="Video">

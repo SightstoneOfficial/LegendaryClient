@@ -391,6 +391,10 @@ namespace LegendaryClient.Windows
                             {
                                 if (play.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId)
                                 {
+                                    if (Settings.Default.PickBanFocus)
+                                        Client.MainWin.Focus();
+                                    if (Settings.Default.PickBanFlash)
+                                        Client.MainWin.FlashWindow();
                                     //Allows us to instapick any champ we own. 
                                     if (Client.usingInstaPick)
                                     {

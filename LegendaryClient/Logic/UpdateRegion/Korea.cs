@@ -10,7 +10,7 @@ namespace LegendaryClient.Logic.UpdateRegion
     {
         public override string AirListing
         {
-            get { return "http://legendspatch-lol.x-cdn.com/KR_CBT/projects/lol_game_client/releases/releaselisting_KR"; }
+            get { return "http://legendspatch-lol.x-cdn.com/KR_CBT/projects/lol_air_client/releases/releaselisting_KR"; }
         }
 
         public override string AirManifest
