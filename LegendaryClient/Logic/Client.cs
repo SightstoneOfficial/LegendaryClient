@@ -448,15 +448,28 @@ namespace LegendaryClient.Logic
                         temp = Parse;
                     var xmlDocument = new XmlDocument();
                     xmlDocument.LoadXml(temp);
-                    string PlayerJson = JsonConvert.SerializeXmlNode(xmlDocument);
+                    string PlayerJson = JsonConvert.SerializeXmlNode(xmlDocument).Replace("#", "").Replace("@", "");
+                    Debugger.Log(0, "JSON Status", "Player Json loaded: " + PlayerJson);
+                    try
+                    {
+                        RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
 
-                    RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
+                        if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
+                            PlayerNote.Add(root.item.name, root.item.note);
 
-                    if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
-                        PlayerNote.Add(root.item.name, root.item.note);
+                        if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
+                            Groups.Add(new Group(root.item.group.text));
+                    }
+                    catch
+                    {
+                        RootObject2 root = JsonConvert.DeserializeObject<RootObject2>(PlayerJson);
 
-                    if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null)
-                        Groups.Add(new Group(root.item.group.text));
+                        if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
+                            PlayerNote.Add(root.item.name, root.item.note);
+
+                        if (root.item.group != "**Default" && Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
+                            Groups.Add(new Group(root.item.group));
+                    }
                 }
             }
 
@@ -1611,5 +1624,20 @@ namespace LegendaryClient.Logic
     public class RootObject
     {
         public JsonItems item { get; set; }
+    }
+
+    public class JsonItems2
+    {
+        public string subscription { get; set; }
+        public string jid { get; set; }
+        public string name { get; set; }
+        public string xmlns { get; set; }
+        public string note { get; set; }
+        public string group { get; set; }
+    }
+
+    public class RootObject2
+    {
+        public JsonItems2 item { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace LegendaryClient.Windows
             loaded = false;
             if (Settings.Default.StatusMsg != "Set your status message")
                 StatusBox.Text = Settings.Default.StatusMsg;
-            UpdateTimer = new Timer(1000);
+            UpdateTimer = new Timer(5000);
             UpdateTimer.Elapsed += UpdateChat;
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
