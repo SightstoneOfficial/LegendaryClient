@@ -292,6 +292,7 @@ namespace LegendaryClient.Windows
                 try
                 {
                     PlayerItem.Note.Text = Client.PlayerNote[playerItem.Username];
+                    PlayerItem.Note.Foreground = Brushes.Green;
                     PlayerItem.Note.Visibility = Visibility.Visible;
                 }
                 catch { }

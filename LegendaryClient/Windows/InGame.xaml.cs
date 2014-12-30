@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using System.Diagnostics;
 
 #endregion
 
@@ -23,7 +24,9 @@ namespace LegendaryClient.Windows
             Change();
             if (start)
             {
-                Client.LaunchGame();
+                Process[] lol = Process.GetProcessesByName("League of Legends.exe");
+                if (lol.Length == 0)
+                    Client.LaunchGame();
             }
 
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
