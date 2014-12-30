@@ -292,10 +292,10 @@ namespace LegendaryClient.Windows.Profile
             var playerItem = (ProfilePage.KeyValueItem) item.Tag;
             if (_playerItem == null)
             {
+                var Item = items.GetItem(Convert.ToInt32(playerItem.Value));
                 _playerItem = new LargeChatPlayer();
                 Client.MainGrid.Children.Add(_playerItem);
 
-                var Item = items.GetItem(Convert.ToInt32(playerItem.Value));
 
                 _playerItem.PlayerName.Content = Item.name;
 

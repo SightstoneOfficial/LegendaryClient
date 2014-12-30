@@ -1,4 +1,6 @@
-﻿namespace LegendaryClient.Controls
+﻿using LegendaryClient.Logic;
+using System.Windows;
+namespace LegendaryClient.Controls
 {
     /// <summary>
     ///     Interaction logic for LargeChatPlayer.xaml

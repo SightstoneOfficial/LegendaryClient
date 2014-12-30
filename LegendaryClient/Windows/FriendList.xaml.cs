@@ -289,6 +289,12 @@ namespace LegendaryClient.Windows
                 Client.MainGrid.Children.Add(PlayerItem);
                 Panel.SetZIndex(PlayerItem, 5);
                 PlayerItem.Tag = playerItem;
+                try
+                {
+                    PlayerItem.Note.Text = Client.PlayerNote[playerItem.Username];
+                    PlayerItem.Note.Visibility = Visibility.Visible;
+                }
+                catch { }
                 PlayerItem.PlayerName.Content = playerItem.Username;
                 PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;
                 PlayerItem.PlayerStatus.Text = playerItem.Status;
@@ -378,7 +384,7 @@ namespace LegendaryClient.Windows
                     PlayerItem.InGameStatus.Visibility = Visibility.Visible;
                 }
 
-                PlayerItem.Width = 250;
+                PlayerItem.Width = 300;
                 PlayerItem.HorizontalAlignment = HorizontalAlignment.Right;
                 PlayerItem.VerticalAlignment = VerticalAlignment.Top;
             }

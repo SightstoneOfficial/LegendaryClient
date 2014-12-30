@@ -408,12 +408,13 @@ namespace LegendaryClient.Windows
             var playerItem = (LargeChatPlayer) icon.Tag;
             if (playerItem == null)
             {
-                playerItem = new LargeChatPlayer();
                 string[] s = img.UriSource.Segments;
                 int id = int.Parse(s[s.Length - 1].Replace(".png", ""));
                 Client.MainGrid.Children.Add(playerItem);
 
                 items item = items.GetItem(id);
+
+                playerItem = new LargeChatPlayer();
 
                 playerItem.PlayerName.Content = item.name;
                 playerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));

@@ -52,6 +52,7 @@ using ListView = System.Windows.Controls.ListView;
 using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
 using System.Net;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -445,35 +446,17 @@ namespace LegendaryClient.Logic
                         temp = Parse + "</item>";
                     else
                         temp = Parse;
-                    using (XmlReader reader = XmlReader.Create(new StringReader(temp)))
-                    {
-                        while (reader.Read())
-                        {
-                            if (!reader.IsStartElement())
-                                continue;
-                            string JID = string.Empty;
-                            string Note = string.Empty;
-                            switch (reader.Name)
-                            {
-                                case "group":
-                                    reader.Read();
-                                    string Group = reader.Value;
-                                    if (Group != "**Default" && Groups.Find(e => e.GroupName == Group) == null)
-                                        Groups.Add(new Group(Group));
-                                    break;
-                                case "jid":
-                                    reader.Read();
-                                    JID = reader.Value;
-                                    break;
-                                case "note":
-                                    reader.Read();
-                                    Note = reader.Value;
-                                    break;
-                            }
-                            if (!String.IsNullOrEmpty(JID) && !String.IsNullOrEmpty(Note))
-                                PlayerNote.Add(JID, Note);
-                        }
-                    }
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.LoadXml(temp);
+                    string PlayerJson = JsonConvert.SerializeXmlNode(xmlDocument);
+
+                    RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
+
+                    if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
+                        PlayerNote.Add(root.item.name, root.item.note);
+
+                    if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null)
+                        Groups.Add(new Group(root.item.group.text));
                 }
             }
 
@@ -1607,5 +1590,26 @@ namespace LegendaryClient.Logic
         public string GroupName { get; set; }
 
         public bool IsOpen { get; set; }
+    }
+
+    public class Groups
+    {
+        public string priority { get; set; }
+        public string text { get; set; }
+    }
+
+    public class JsonItems
+    {
+        public string subscription { get; set; }
+        public string jid { get; set; }
+        public string name { get; set; }
+        public string xmlns { get; set; }
+        public string note { get; set; }
+        public Groups group { get; set; }
+    }
+
+    public class RootObject
+    {
+        public JsonItems item { get; set; }
     }
 }
