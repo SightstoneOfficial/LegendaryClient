@@ -11,7 +11,7 @@ namespace LegendaryClient.Logic.Region.Garena
     {
         public override string RegionName
         {
-            get { return "prod.lol.garenanow.com"; }
+            get { return "prodph.lol.garenanow.com"; }
         }
 
         public override string Location
@@ -31,7 +31,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string ChatName
         {
-            get { return "chat.lol.garenanow.com"; }
+            get { return "chatph.lol.garenanow.com"; }
         }
 
         public override Uri NewsAddress

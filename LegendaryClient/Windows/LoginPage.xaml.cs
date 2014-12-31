@@ -591,6 +591,27 @@ namespace LegendaryClient.Windows
         {
             if (UpdateRegionComboBox.SelectedValue != null)
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
+
+            Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
+            if (!RegionComboBox.Items.IsInUse)
+            {
+                RegionComboBox.Items.Clear();
+                Thread.Sleep(100);
+            }
+            switch (Client.UpdateRegion)
+            {
+                case "PBE": RegionComboBox.ItemsSource = new string[] { "PBE" };
+                    break;
+
+                case "Live": RegionComboBox.ItemsSource = new string[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
+                    break;
+
+                case "Korea": RegionComboBox.ItemsSource = new string[] { "KR" };
+                    break;
+
+                case "Garena": RegionComboBox.ItemsSource = new string[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                    break;
+            }
         }
     }
 }
