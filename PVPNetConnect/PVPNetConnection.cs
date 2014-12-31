@@ -152,7 +152,7 @@ namespace PVPNetConnect
                     //Check for riot webserver status
                     //along with gettin out Auth Key that we need for the login process.
                     if (useGarena)
-                        if (!GetGarenaToken())
+                        if (!GetGarenaToken(RegionInfo.GetGarenaAuthServerValue(region)))
                             return;
 
 
@@ -196,7 +196,7 @@ namespace PVPNetConnect
             return true;
         }
 
-        private bool GetGarenaToken()
+        private bool GetGarenaToken(string server)
         {
             try
             {
@@ -205,19 +205,14 @@ namespace PVPNetConnect
                 System.Security.Cryptography.MD5 md5Cryp = System.Security.Cryptography.MD5.Create();
                 byte[] inputBytes = encoding.GetBytes(password);
                 byte[] md5 = md5Cryp.ComputeHash(inputBytes);
-                /*
+                //*
                 //GET OUR USER ID
                 List<byte> userIdRequestBytes = new List<byte>();
-                
-                byte[] junk = new byte[] { 0x49, 0x00, 0x00, 0x00, 0x10, 0x01, 0x00, 0x79, 0x2f };
+               
                 userIdRequestBytes.AddRange(junk);
                 userIdRequestBytes.AddRange(encoding.GetBytes(user));
                 for (int i = 0; i < 16; i++)
                     userIdRequestBytes.Add(0x00);
-
-                System.Security.Cryptography.MD5 md5Cryp = System.Security.Cryptography.MD5.Create();
-                byte[] inputBytes = encoding.GetBytes(password);
-                byte[] md5 = md5Cryp.ComputeHash(inputBytes);
 
                 foreach (byte b in md5)
                     userIdRequestBytes.AddRange(encoding.GetBytes(String.Format("%02x", b)));
@@ -237,7 +232,9 @@ namespace PVPNetConnect
 
                 byte[] userIdBytes = userIdRequestBytes.ToArray();
 
-                var client = new TcpClient("203.117.158.170", 9100);
+                //203.117.158.187     THIS IP CHANGE
+                //203.117.158.170     IS REAL -.-
+                var client = new TcpClient("203.117.158.187", 9100);
 
                 client.GetStream().Write(userIdBytes, 0, userIdBytes.Length);
                 client.GetStream().Flush();
@@ -261,14 +258,14 @@ namespace PVPNetConnect
 
                 byte[] tokenBytes = tokenRequestBytes.ToArray();
 
-                client = new TcpClient("lol.auth.garenanow.com", 12000);
+                client = new TcpClient(server, 12000);
                 NetworkStream stream = client.GetStream();
                 stream.Write(tokenBytes, 0, tokenBytes.Length);
                 stream.Flush();
                 byte[] bytes = new byte[client.ReceiveBufferSize];
                 var x = stream.Read(bytes, 0, (int)client.ReceiveBufferSize);
-                garenaToken = x.ToString();
-                /*
+                //garenaToken = x.ToString();
+                //*
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < 5; i++)
                     client.GetStream().ReadByte();
