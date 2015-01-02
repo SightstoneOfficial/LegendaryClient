@@ -1028,7 +1028,10 @@ namespace LegendaryClient.Windows
             var control = new ChampSelectPlayer();
             //Render champion
             if (selection.ChampionId != 0)
+            {
                 control.ChampionImage.Source = champions.GetChampion(selection.ChampionId).icon;
+                control.Tag = selection.ChampionId;
+            }
 
             //Render summoner spells
             if (selection.Spell1Id != 0)

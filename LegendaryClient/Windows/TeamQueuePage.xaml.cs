@@ -565,7 +565,7 @@ namespace LegendaryClient.Windows
 
         private void GotQueuePop(object sender, object message)
         {
-            if (!Client.HasPopped && Client.runonce == false && message is GameDTO && (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
+            if (!Client.HasPopped && message is GameDTO && (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
             {
                 Client.HasPopped = true;
                 var Queue = message as GameDTO;

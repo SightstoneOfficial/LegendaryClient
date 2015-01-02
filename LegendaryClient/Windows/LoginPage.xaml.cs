@@ -129,6 +129,7 @@ namespace LegendaryClient.Windows
                     UriKind.Absolute);
                 c.icon = new BitmapImage(source);
                 Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
+                Debugger.Log(0, "", Environment.NewLine);
 
                 try
                 {

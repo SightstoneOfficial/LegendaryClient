@@ -71,6 +71,7 @@ namespace LegendaryClient.Windows
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                         Client.SendAccept(accepted);
+                        Client.HasPopped = false;
                         return;
                     }
                     if (QueueDTO != null &&
@@ -86,6 +87,7 @@ namespace LegendaryClient.Windows
                         Client.SetChatHover();
                         Client.SwitchPage(new ChampSelectPage(previousPage));
                         Client.SendAccept(accepted);
+                        Client.HasPopped = false;
                     }
 
                     int i = 0;
@@ -157,7 +159,7 @@ namespace LegendaryClient.Windows
                         player.PlayerLabel.Content = playerPart.SummonerName;
                         player.RankLabel.Content = "";
 
-                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
+                        await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                         {
                             SummonerLeaguesDTO playerLeagues =
                                 await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);

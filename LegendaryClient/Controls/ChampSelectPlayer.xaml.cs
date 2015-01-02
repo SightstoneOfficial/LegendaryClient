@@ -6,6 +6,7 @@ using System.Windows.Input;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
+using LegendaryClient.Logic.Player;
 
 #endregion
 
@@ -25,8 +26,7 @@ namespace LegendaryClient.Controls
 
         private async void ChampPlayer_MouseOver(object sender, MouseEventArgs e)
         {
-            if (Client.TrueCurrentPage.GetType() != typeof (ChampSelectPage) ||
-                PlayerName.Content.ToString().StartsWith("Summoner "))
+            if (PlayerName.Content.ToString().StartsWith("Summoner "))
                 return;
 
             try
@@ -42,7 +42,7 @@ namespace LegendaryClient.Controls
                     }
                     var topChampions = await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
                     _stats.PlayerName.Content = summoner.Name;
-
+                    GetKDA kda;
                     if (topChampions.Length > 0)
                     {
                         _stats.MostPlayed.Source = champions.GetChampion((int) topChampions[0].ChampionId).icon;
@@ -50,6 +50,8 @@ namespace LegendaryClient.Controls
                                                    " - Games: " + topChampions[0].TotalGamesPlayed;
                         var wins = 0.0;
                         var total = 0.0;
+                        kda = new GetKDA((int)summoner.AcctId, (int)topChampions[0].ChampionId);
+                        _stats.MPChamp.Content = kda.stats.Champkda.KDAToString();
                         foreach (var stat in topChampions[0].Stats)
                         {
                             switch (stat.StatType)
@@ -74,61 +76,27 @@ namespace LegendaryClient.Controls
                         _stats.Champion1.Visibility = Visibility.Hidden;
                     }
 
-                    if (topChampions.Length > 1)
-                    {
-                        _stats.Champion2.Content = champions.GetChampion((int) topChampions[1].ChampionId).displayName +
-                                                   " - Games: " + topChampions[1].TotalGamesPlayed;
-                        var wins = 0.0;
-                        var total = 0.0;
-                        foreach (var stat in topChampions[1].Stats)
-                            switch (stat.StatType)
-                            {
-                                case "TOTAL_SESSIONS_WON":
-                                    wins = stat.Value;
-                                    break;
-                                case "TOTAL_SESSIONS_PLAYED":
-                                    total = stat.Value;
-                                    break;
-                            }
+                    kda = new GetKDA((int)summoner.AcctId, 103);
+                    _stats.Overall.Content = kda.stats.OverallKDA.KDAToString();
+                    _stats.Champ3ProgressBar.Value = kda.stats.WinLossRatio;
 
-                        if ((Math.Abs(wins/total*100.0) > 0) && Math.Abs(total) > 0)
-                            _stats.Champ2ProgressBar.Value = wins/total*100.0;
+                    //
+                    if (this.Tag != null)
+                    {
+                        kda = new GetKDA((int)summoner.AcctId, (int)this.Tag);
+                        if (kda.stats.GamesWithChamp != 0)
+                        {
+                            _stats.Champ2ProgressBar.Value = kda.stats.WinLossChampRatio;
+                            _stats.CurrentChamp.Content = kda.stats.Champkda;
+                        }
                         else
-                            _stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
+                        {
+                            _stats.Champ2ProgressBar.Value = 0;
+                            _stats.CurrentChamp.Content = "NO GAMES!";
+                        }
                     }
-                    else
-                    {
-                        _stats.Champ2ProgressBar.Visibility = Visibility.Hidden;
-                        _stats.Champion2.Visibility = Visibility.Hidden;
-                    }
+                    
 
-                    if (topChampions.Length > 2)
-                    {
-                        _stats.Champion3.Content = champions.GetChampion((int) topChampions[2].ChampionId).displayName +
-                                                   " - Games: " + topChampions[2].TotalGamesPlayed;
-                        var wins = 0.0;
-                        var total = 0.0;
-                        foreach (var stat in topChampions[2].Stats)
-                            switch (stat.StatType)
-                            {
-                                case "TOTAL_SESSIONS_WON":
-                                    wins = stat.Value;
-                                    break;
-                                case "TOTAL_SESSIONS_PLAYED":
-                                    total = stat.Value;
-                                    break;
-                            }
-
-                        if ((Math.Abs(wins/total*100.0) > 0) && Math.Abs(total) > 0)
-                            _stats.Champ3ProgressBar.Value = wins/total*100.0;
-                        else
-                            _stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
-                    }
-                    else
-                    {
-                        _stats.Champ3ProgressBar.Visibility = Visibility.Hidden;
-                        _stats.Champion3.Visibility = Visibility.Hidden;
-                    }
                     Client.MainGrid.Children.Add(_stats);
                 }
                 var mouseLocation = e.GetPosition(Client.MainGrid);

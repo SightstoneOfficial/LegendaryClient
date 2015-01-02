@@ -226,6 +226,9 @@
       <DependentUpon>GameScouter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
+    <Compile Include="Logic\Player\ChampStats.cs" />
+    <Compile Include="Logic\Player\GetKDA.cs" />
+    <Compile Include="Logic\Player\KDA.cs" />
     <Compile Include="Logic\Region\PBE.cs" />
     <Compile Include="Logic\SoundLogic\QueuePopSound.cs" />
     <Compile Include="Logic\uiLogic.cs" />

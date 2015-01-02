@@ -352,11 +352,11 @@ namespace LegendaryClient.Windows
                 return;
 
             var queue = message as GameDTO;
-            if (Client.runonce)
+            if (!Client.HasPopped)
                 return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                Client.runonce = true;
+                Client.HasPopped = true;
                 Client.OverlayContainer.Content = new QueuePopOverlay(queue, this).Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
             }));
@@ -370,7 +370,7 @@ namespace LegendaryClient.Windows
                 var queue = message as GameDTO;
                 if (queue.GameState == "TERMINATED")
                 {
-                    Client.runonce = false;
+                    Client.HasPopped = false;
                     Client.PVPNet.OnMessageReceived += GotQueuePop;
                 }
             }
