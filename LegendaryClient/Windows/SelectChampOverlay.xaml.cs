@@ -85,9 +85,18 @@ namespace LegendaryClient.Windows
             if (item != null && (int) item.Tag == 0)
             {
                 Client.usingInstaPick = false;
-                tqp.CreateText(
-                    "You will no longer attempt to auto select: " +
-                    champions.GetChampion(Client.SelectChamp).displayName, Brushes.OrangeRed);
+                try
+                {
+                    tqp.CreateText(
+                        "You will no longer attempt to auto select: " +
+                        champions.GetChampion(Client.SelectChamp).displayName, Brushes.OrangeRed);
+                }
+                catch
+                {
+                    tqp.CreateText(
+                           "You will not try to auto select any champ you didn't even pick one to instalock. This is not the random button... yet", Brushes.OrangeRed);
+                }
+                Client.SelectChamp = 0;
                 return;
             }
             if (item != null)

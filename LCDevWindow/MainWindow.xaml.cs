@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using LCDevWindow.Commands;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,44 @@ namespace LCDevWindow
         public MainWindow()
         {
             InitializeComponent();
+            Main.win = this;
+            Log("LegendaryClient Logger. Starting Pipe, please wait.", Brushes.DarkRed);
+        }
+        public void Log(string text, SolidColorBrush color)
+        {
+            var tr = new TextRange(LogWindow.Document.ContentEnd, LogWindow.Document.ContentEnd);
+            tr.Text = text + Environment.NewLine;
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
+            LogWindow.ScrollToEnd();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            string m = DevCommand.Text;
+            if (m.Contains("(") && m.Contains(")"))
+            {
+                DevCommand.Text = "";
+                string[] tempsplit = m.Split('(');
+
+                Command x = Command.GetCommand(tempsplit[0]);
+                if (x != null)
+                {
+                    List<String> splittwo = new List<String>();
+
+                    string[] xm = tempsplit[1].Replace(")", "").Split(',');
+                    foreach (string xd in xm)
+                        splittwo.Add(xd);
+                    x.ActivateCommand(splittwo.ToArray());
+                }
+                else
+                {
+                    Log("Invalid Command! Check out the help tips by doing \"Help()\" (Capitals Matter!!!)", Brushes.Red);
+                }
+            }
+            else
+            {
+                Log("Invalid Command! Check out the help tips by doing \"Help()\" (Capitals Matter!!!)", Brushes.Red);
+            }
         }
     }
 }
