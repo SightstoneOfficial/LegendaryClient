@@ -33,9 +33,14 @@ namespace LegendaryClient
 
         public MainWindow()
         {
+            InitializeComponent();
+            StartPipe();
             System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
             System.Diagnostics.PresentationTraceSources.ResourceDictionarySource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
-            InitializeComponent();
+            Thread.Sleep(100);
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+
             ReturnToPage.Visibility = Visibility.Hidden;
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             //Keep this this way that way the auto updator knows what to update
@@ -47,11 +52,14 @@ namespace LegendaryClient
             LCLog.WriteToLog.CreateLogFile();
             if (Client.Authenticate(Settings.Default.devKeyLoc))
             {
-                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-                AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
-                StartPipe();
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe")))
-                    Process.Start(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe"));
+                {
+                    Thread xls = new Thread(() =>
+                    {
+                        Process.Start(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe"));
+                    });
+                    xls.Start();
+                }
             }
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
@@ -123,12 +131,20 @@ namespace LegendaryClient
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Client.PIPE.WriteString("[" + "UnhandledException" + "] " + e.ExceptionObject);
+            try
+            {
+                Client.PIPE.WriteString("[" + "UnhandledException" + "] " + e.ExceptionObject);
+            }
+            catch { }
         }
 
         void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
-            Client.PIPE.WriteString("[" + "Exception" + "] " + e.Exception.Message);
+            try
+            {
+                Client.PIPE.WriteString("[" + "Exception" + "] " + e.Exception.Message);
+            }
+            catch { }
         }
 
         public void ChangeTheme()
@@ -304,25 +320,23 @@ namespace LegendaryClient
             servers[i] = new Thread(ServerThread);
             servers[i].Start();
         }
+        static NamedPipeServerStream pipeServer;
         private static void ServerThread(object data)
         {
-            NamedPipeServerStream pipeServer =
-                new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, numThreads);
+            pipeServer = new NamedPipeServerStream("LegendaryClientPipe", PipeDirection.InOut, numThreads);
 
             int threadId = Thread.CurrentThread.ManagedThreadId;
 
             pipeServer.WaitForConnection();
-
+            Client.PIPE = new StreamString(pipeServer);
+            Client.PIPE.WriteString("Logger started. All errors will be logged from now on");
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            Client.PIPE.WriteString("LegendaryClient Version: " + version);
             try
             {
-
-                StreamString ss = new StreamString(pipeServer);
-                ss.WriteString("Logger started. All errors will be logged from now on");
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                string version = fvi.FileVersion;
-                ss.WriteString("LegendaryClient Version: " + version);
-                Client.PIPE = ss;
+                
             }
             catch (IOException e)
             {

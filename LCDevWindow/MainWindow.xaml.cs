@@ -7,6 +7,7 @@ using System.IO.Pipes;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace LCDevWindow
 {
@@ -25,33 +27,45 @@ namespace LCDevWindow
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        bool pipe = true;
         public MainWindow()
         {
             InitializeComponent();
             Main.win = this;
             //191537514598135486vneaoifjidafd are just random chars, they will match up to the one in LC
-            Log("LegendaryClient Logger. Starting Pipe, please wait.", Brushes.Yellow);
-
-            Main.pipeClient = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            Log("LegendaryClient Logger. Starting Pipe, please wait.", Brushes.Brown);
+            Thread.Sleep(1000);
+            Main.pipeClient = new NamedPipeClientStream(".", "LegendaryClientPipe", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            Main.pipeClient.Connect();
             StreamString ss = new StreamString(Main.pipeClient);
-            Log("Pipe to LegendaryClient Created! Logging has started", Brushes.Gold);
-            while (true)
-            {
-                string x = ss.ReadString();
-                if (x == "191537514598135486vneaoifjidafd->RemoveAllPipe[MainWin.Shutdown.AppClose]")
+            Log("Pipe to LegendaryClient Created! Logging has started", Brushes.Green);
+            Thread xls = new Thread(() =>
                 {
-                    Log("LegendaryClient has closed and the pipe has been shut down!", Brushes.Red);
-                    Environment.Exit(0);
-                }
-                Log(x, Brushes.Green);
-            }
+                    while (pipe)
+                    {
+                        string x = ss.ReadString();
+                        if (x == "191537514598135486vneaoifjidafd")
+                        {
+                            pipe = false;
+                            Log("LegendaryClient has closed and the pipe has been shut down!", Brushes.Red);
+                            Thread.Sleep(100);
+                            Main.pipeClient.Close();
+                        }
+                        else
+                            Log(x, Brushes.Green);
+                    }
+                });
+            xls.Start();
         }
         public void Log(string text, SolidColorBrush color)
         {
-            var tr = new TextRange(LogWindow.Document.ContentEnd, LogWindow.Document.ContentEnd);
-            tr.Text = text + Environment.NewLine;
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
-            LogWindow.ScrollToEnd();
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    var tr = new TextRange(LogWindow.Document.ContentEnd, LogWindow.Document.ContentEnd);
+                    tr.Text = text + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
+                    LogWindow.ScrollToEnd();
+                }));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -107,7 +121,7 @@ namespace LCDevWindow
                 }
                 catch
                 {
-                    return "Wingless Air Client Has Shutdown. Press enter to close";
+                    return "191537514598135486vneaoifjidafd";
                 }
             }
 
