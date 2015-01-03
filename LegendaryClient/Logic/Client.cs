@@ -69,6 +69,8 @@ namespace LegendaryClient.Logic
 
         public static event OnAccept PlayerAccepedQueue;
 
+        public static StreamString PIPE;
+
         public static void SendAccept(bool accept)
         {
             if (PlayerAccepedQueue != null)
@@ -1366,6 +1368,7 @@ namespace LegendaryClient.Logic
         public static void Log(String lines, String type = "LOG")
         {
             WriteToLog.Log(lines, type);
+            PIPE.WriteString("[" + type + "] " + lines);
         }
 
         //Get Image

@@ -13,6 +13,11 @@ using System.Windows.Controls;
 using log4net;
 using System.Windows.Media.Imaging;
 using jabber.protocol.client;
+using System.Threading;
+using System.IO.Pipes;
+using System.Reflection;
+using System.Diagnostics;
+using System.Text;
 
 namespace LegendaryClient
 {
@@ -40,7 +45,10 @@ namespace LegendaryClient
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            StartPipe();
 
             Client.InfoLabel = InfoLabel;
             Client.PVPNet = new PVPNetConnection();
@@ -105,6 +113,16 @@ namespace LegendaryClient
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
                     Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
             }
+        }
+
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Client.PIPE.WriteString("[" + "UnhandledException" + "] " + e.ExceptionObject);
+        }
+
+        void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        {
+            Client.PIPE.WriteString("[" + "Exception" + "] " + e.Exception.Message);
         }
 
         public void ChangeTheme()
@@ -268,6 +286,83 @@ namespace LegendaryClient
         private void HideWarning(object sender, RoutedEventArgs e)
         {
             Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
+        }
+
+        private static int numThreads = 4;
+        public static void StartPipe()
+        {
+            int i = 0;
+            Thread[] servers = new Thread[numThreads];
+            if (i < numThreads)
+                i++;
+            servers[i] = new Thread(ServerThread);
+            servers[i].Start();
+        }
+        private static void ServerThread(object data)
+        {
+            NamedPipeServerStream pipeServer =
+                new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, numThreads);
+
+            int threadId = Thread.CurrentThread.ManagedThreadId;
+
+            pipeServer.WaitForConnection();
+
+            try
+            {
+
+                StreamString ss = new StreamString(pipeServer);
+                ss.WriteString("Logger started. All errors will be logged from now on");
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+                string version = fvi.FileVersion;
+                ss.WriteString("LegendaryClient Version: " + version);
+                Client.PIPE = ss;
+            }
+            catch (IOException e)
+            {
+                Client.Log(e.Message, "IOException");
+                Client.Log(e.StackTrace, "IOException");
+                Client.Log(e.Source, "IOException");
+            }
+        }
+    }
+    public class StreamString
+    {
+        private Stream ioStream;
+        private UnicodeEncoding streamEncoding;
+
+        public StreamString(Stream ioStream)
+        {
+            this.ioStream = ioStream;
+            streamEncoding = new UnicodeEncoding();
+        }
+
+        public string ReadString()
+        {
+            int len = 0;
+
+            len = ioStream.ReadByte() * 256;
+            len += ioStream.ReadByte();
+            byte[] inBuffer = new byte[len];
+            ioStream.Read(inBuffer, 0, len);
+
+            return streamEncoding.GetString(inBuffer);
+        }
+
+        public int WriteString(string outString)
+        {
+            byte[] outBuffer = streamEncoding.GetBytes(outString);
+            int len = outBuffer.Length;
+            if (len > UInt16.MaxValue)
+            {
+                len = (int)UInt16.MaxValue;
+            }
+            ioStream.WriteByte((byte)(len / 256));
+            ioStream.WriteByte((byte)(len & 255));
+            ioStream.Write(outBuffer, 0, len);
+            ioStream.Flush();
+
+            return outBuffer.Length + 2;
         }
     }
 }
