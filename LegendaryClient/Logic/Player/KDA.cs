@@ -8,14 +8,14 @@ namespace LegendaryClient.Logic.Player
 {
     public class KDA
     {
-        public int Kills { get; set; }
-        public int Deaths { get; set; }
-        public int Assists { get; set; }
-        public int Games { get; set; }
+        public int Kills;
+        public int Deaths;
+        public int Assists;
+        public int Games;
 
-        public string KDAToString()
+        public string KDAToString(KDA kda)
         {
-            return (Kills/Games) + "/" + (Deaths/Games) + "/" + (Assists/Games);
+            return (kda.Kills / kda.Games) + "/" + (kda.Deaths / kda.Games) + "/" + (kda.Assists / kda.Games);
         }
     }
 }

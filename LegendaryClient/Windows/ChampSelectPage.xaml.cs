@@ -592,7 +592,10 @@ namespace LegendaryClient.Windows
                         {
                             var player = tempParticipant as PlayerParticipant;
                             if (!String.IsNullOrEmpty(player.SummonerName))
+                            {
                                 control.PlayerName.Content = player.SummonerName;
+                                control._sumName = player.SummonerName;
+                            }
                             else
                             {
                                 AllPublicSummonerDataDTO summoner =
@@ -1025,7 +1028,7 @@ namespace LegendaryClient.Windows
         /// <returns></returns>
         internal ChampSelectPlayer RenderPlayer(PlayerChampionSelectionDTO selection, PlayerParticipant player)
         {
-            var control = new ChampSelectPlayer();
+            var control = new ChampSelectPlayer(selection.SummonerInternalName, selection.ChampionId, true);
             //Render champion
             if (selection.ChampionId != 0)
             {

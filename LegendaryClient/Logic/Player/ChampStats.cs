@@ -16,32 +16,32 @@ namespace LegendaryClient.Logic.Player
         /// <summary>
         /// The champion who they are playing
         /// </summary>
-        public champions Champ { get; set; }
+        public champions Champ;
 
         /// <summary>
         /// The KDA they have with this champion ~20 aprox (last games)
         /// </summary>
-        public KDA Champkda { get; set; }
+        public KDA Champkda;
 
         /// <summary>
         /// Player's overall kda ~20 aprox
         /// </summary>
-        public KDA OverallKDA { get; set; }
+        public KDA OverallKDA;
 
         /// <summary>
         /// out of 100
         /// </summary>
-        public int WinLossRatio { get; set; }
+        public int WinLossRatio;
 
         /// <summary>
         /// out of 100
         /// </summary>
-        public int WinLossChampRatio { get; set; }
+        public int WinLossChampRatio;
 
         /// <summary>
         /// Games with the champ
         /// </summary>
-        public int GamesWithChamp { get; set; }
+        public int GamesWithChamp;
 
         public ChampStats(int champId, string playerName)
         {
@@ -74,12 +74,13 @@ namespace LegendaryClient.Logic.Player
         async void LoadName(string Name)
         {
             PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(Name);
-            Load(summoner.AcctId);
+            await Load(summoner.AcctId);
         }
 
         public int ChampID { get; set; }
         private List<MatchStats> GameStats = new List<MatchStats>();
-        async void Load(double ID)
+
+        public async Task<string[]> Load(double ID)
         {
             RecentGames result = await Client.PVPNet.GetRecentGames(ID);
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
@@ -129,9 +130,29 @@ namespace LegendaryClient.Logic.Player
                 }
             }
             WinLossRatio = (Wins / AGamesPlayed) * 100;
-            WinLossChampRatio = (ChampWins / ChampGamesPlayed) * 100;
+            try
+            {
+                WinLossChampRatio = (ChampWins / ChampGamesPlayed) * 100;
+            }
+            catch { }
+
+            string KDAString = string.Format("{0}/{1}/{2}",
+                                (AKills / AGamesPlayed),
+                                (ADeaths / AGamesPlayed),
+                                (AAssists / AGamesPlayed));
+            string ChampKDAString = "";
+            try
+            {
+                ChampKDAString = string.Format("{0}/{1}/{2}",
+                (ChampKills / ChampGamesPlayed),
+                (ChampDeaths / ChampGamesPlayed),
+                (ChampAssists / ChampGamesPlayed));
+
+            }
+            catch
+            { ChampKDAString = "NO RECENT GAMES!!!"; }
             //GetKDA String
-            OverallKDA = new KDA
+            OverallKDA = new KDA()
             {
                 Kills = AKills,
                 Deaths = ADeaths,
@@ -139,13 +160,14 @@ namespace LegendaryClient.Logic.Player
                 Games = AGamesPlayed
             };
             //Get champ KDA
-            Champkda = new KDA
+            Champkda = new KDA()
             {
                 Kills = ChampKills,
                 Deaths = ChampDeaths,
                 Assists = ChampAssists,
                 Games = ChampGamesPlayed
             };
+            return new List<string>() { ChampKDAString, KDAString }.ToArray();
         }
     }
 }

@@ -544,7 +544,10 @@ namespace LegendaryClient.Windows
                                         }
                                         var control = new ChampSelectPlayer
                                         {
-                                            ChampionImage = {Source = champions.GetChampion(championId).icon}
+                                            ChampionImage = {Source = champions.GetChampion(championId).icon},
+                                            _champID = championId,
+                                             _sumName = playerName,
+                                             KnownPar = true
                                         };
                                         var uriSource =
                                             new Uri(
@@ -557,6 +560,7 @@ namespace LegendaryClient.Windows
                                                     SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
                                         control.SummonerSpell2.Source = new BitmapImage(uriSource);
                                         control.PlayerName.Content = playerName;
+                                        control.Tag = new List<Object> { playerName, championId };
 
                                         var m = new Image();
                                         Panel.SetZIndex(m, -2); //Put background behind everything

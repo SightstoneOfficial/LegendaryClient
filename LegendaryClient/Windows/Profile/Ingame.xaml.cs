@@ -81,6 +81,9 @@ namespace LegendaryClient.Windows.Profile
                                 championSelect =>
                                     championSelect.SummonerInternalName == participant.SummonerInternalName))
                     {
+                        control.KnownPar = true;
+                        control._sumName = participant.SummonerInternalName;
+                        control._champID = championSelect.ChampionId;
                         control.ChampionImage.Source = champions.GetChampion(championSelect.ChampionId).icon;
                         var uriSource =
                             new Uri(
