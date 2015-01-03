@@ -18,6 +18,7 @@ using System.IO.Pipes;
 using System.Reflection;
 using System.Diagnostics;
 using System.Text;
+using LegendaryClient.Properties;
 
 namespace LegendaryClient
 {
@@ -44,11 +45,16 @@ namespace LegendaryClient
             LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
+            if (Client.Authenticate(Settings.Default.devKeyLoc))
+            {
+                AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+                AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+                StartPipe();
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe")))
+                    Process.Start(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe"));
+            }
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            StartPipe();
 
             Client.InfoLabel = InfoLabel;
             Client.PVPNet = new PVPNetConnection();

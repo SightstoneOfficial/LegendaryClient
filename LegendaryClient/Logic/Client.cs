@@ -1368,7 +1368,11 @@ namespace LegendaryClient.Logic
         public static void Log(String lines, String type = "LOG")
         {
             WriteToLog.Log(lines, type);
-            PIPE.WriteString("[" + type + "] " + lines);
+            try
+            {
+                PIPE.WriteString("[" + type + "] " + lines);
+            }
+            catch { }
         }
 
         //Get Image
