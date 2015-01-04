@@ -32,6 +32,7 @@ namespace LegendaryClient.Windows
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
             Client.OverlayContainer.Visibility = Visibility.Hidden;
+            Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
         }
     }
 }
