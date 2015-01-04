@@ -35,7 +35,7 @@ namespace LCDevWindow
             //191537514598135486vneaoifjidafd are just random chars, they will match up to the one in LC
             Log("LegendaryClient Logger. Starting Pipe, please wait.", Brushes.Brown);
             Thread.Sleep(1000);
-            Main.pipeClient = new NamedPipeClientStream(".", "LegendaryClientPipe", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            Main.pipeClient = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
             Main.pipeClient.Connect();
             StreamString ss = new StreamString(Main.pipeClient);
             Log("Pipe to LegendaryClient Created! Logging has started", Brushes.Green);
@@ -51,8 +51,10 @@ namespace LCDevWindow
                             Thread.Sleep(100);
                             Main.pipeClient.Close();
                         }
-                        else
-                            Log(x, Brushes.Green);
+                        else if (!x.ToLower().Contains("exception"))
+                            Log(x, Brushes.Orange);
+                        else if (x.ToLower().Contains("unhandled"))
+                            Log(x, Brushes.Red);
                     }
                 });
             xls.Start();
