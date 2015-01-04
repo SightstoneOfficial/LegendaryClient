@@ -34,7 +34,6 @@ namespace LCDevWindow
             Main.win = this;
             //191537514598135486vneaoifjidafd are just random chars, they will match up to the one in LC
             Log("LegendaryClient Logger. Starting Pipe, please wait.", Brushes.Brown);
-            Thread.Sleep(1000);
             Main.pipeClient = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
             Main.pipeClient.Connect();
             StreamString ss = new StreamString(Main.pipeClient);
@@ -48,7 +47,6 @@ namespace LCDevWindow
                         {
                             pipe = false;
                             Log("LegendaryClient has closed and the pipe has been shut down!", Brushes.Red);
-                            Thread.Sleep(100);
                             Main.pipeClient.Close();
                         }
                         else if (!x.ToLower().Contains("exception"))
