@@ -332,7 +332,13 @@ namespace PVPNetConnect
 
             }
         }
-
+        private string reToken(string s)
+        {
+            string s1 = s.Replace("/", "%2F");
+            s1 = s1.Replace("+", "%2B");
+            s1 = s1.Replace("=", "%3D");
+            return s1;
+        }
         private bool GetAuthKey()
         {
             try
@@ -340,9 +346,11 @@ namespace PVPNetConnect
                 StringBuilder sb = new StringBuilder();
                 string payload = "user=" + user + ",password=" + password;
                 string query = "payload=" + payload;
-
                 if (useGarena)
-                    payload = garenaToken;
+                {
+                    payload = reToken(garenaToken);
+                    query = "payload=8393%20" + payload;
+                }
 
                 WebRequest con = WebRequest.Create(loginQueue + "login-queue/rest/queue/authenticate");
                 con.Method = "POST";
