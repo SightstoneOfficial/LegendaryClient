@@ -11,10 +11,12 @@ namespace LCDevWindow.Commands
     {
         public override object ActivateCommand(string[] args)
         {
-            Main.win.Log("LC Dev Window. Using pipes to connect to LC", Brushes.Black);
+            Main.win.Log("LC Dev Window. Using pipes to connect to LC", Brushes.LightSeaGreen);
             Main.win.Log("You can not have \",\" in your args, because it thinks that it is now a new arg", Brushes.Black);
             Main.win.Log("DoLog(string) -> Writes somthing to the log textbox", Brushes.Black);
-            Main.win.Log("I will write more commands later, one rtmp command to send and read a message :P", Brushes.Black);
+            Main.win.Log("", Brushes.Green);
+            Main.win.Log("LegenadryClient Commands", Brushes.Blue);
+            Main.win.Log("SendOverlay(string, string, [string]) -> Send an overlay to LC; 3rd string can be \"fullover to be a full overlay\"", Brushes.Black);
             return null;
         }
     }

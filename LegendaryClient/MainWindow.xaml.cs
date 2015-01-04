@@ -19,9 +19,12 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Text;
 using LegendaryClient.Properties;
+using System.Security.Principal;
+using System.Windows.Threading;
 
 namespace LegendaryClient
 {
+    
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -29,6 +32,7 @@ namespace LegendaryClient
     {
         private Accent myAccent = null;
         Warning Warn = new Warning();
+        public static bool started = false;
         private static readonly ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
         public MainWindow()
@@ -49,10 +53,11 @@ namespace LegendaryClient
             {
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe")))
                 {
+                    StartPipe();
                     AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
                     AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
-                    StartPipe();
                     Process.Start(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe"));
+                    
                 }
             }
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
@@ -125,12 +130,14 @@ namespace LegendaryClient
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Client.PIPE.WriteString("[" + "UnhandledException" + "] " + e.ExceptionObject);
+            if (Client.SendPIPE != null)
+                Client.SendPIPE.WriteString("[" + "UnhandledException" + "] " + e.ExceptionObject);
         }
 
         void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
-            Client.PIPE.WriteString("[" + "Exception" + "] " + e.Exception.Message);
+            if (Client.SendPIPE != null)
+                Client.SendPIPE.WriteString("[" + "Exception" + "] " + e.Exception.Message);
         }
 
         public void ChangeTheme()
@@ -297,7 +304,7 @@ namespace LegendaryClient
         }
 
         private static int numThreads = 4;
-        public static void StartPipe()
+        public void StartPipe()
         {
             int i = 0;
             Thread[] servers = new Thread[numThreads];
@@ -306,25 +313,64 @@ namespace LegendaryClient
             servers[i] = new Thread(ServerThread);
             servers[i].Start();
         }
-        private static void ServerThread(object data)
+        private void ServerThread(object data)
         {
             NamedPipeServerStream pipeServer =
                 new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, numThreads);
-
             int threadId = Thread.CurrentThread.ManagedThreadId;
-
             pipeServer.WaitForConnection();
-
             try
             {
-
-                StreamString ss = new StreamString(pipeServer);
-                ss.WriteString("Logger started. All errors will be logged from now on");
+                Client.SendPIPE = new StreamString(pipeServer);
+                Client.SendPIPE.WriteString("Logger started. All errors will be logged from now on");
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
                 string version = fvi.FileVersion;
-                ss.WriteString("LegendaryClient Version: " + version);
-                Client.PIPE = ss;
+                Client.SendPIPE.WriteString("LegendaryClient Version: " + version);
+
+                Client.SendPIPE.WriteString("AwaitStart");
+
+                
+                NamedPipeClientStream output = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifjidafdOUTPUT", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+                output.Connect();
+                StreamString ss = new StreamString(output);
+                Client.InPIPE = ss;
+                started = true;
+                while (started)
+                {
+                    string x = ss.ReadString();
+                    if (x.Contains("SendOVERLAY"))
+                    {
+                        try
+                        {
+                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            {
+                                string[] mmm = x.Split('|');
+                                var messageOver = new MessageOverlay { MessageTitle = { Content = mmm[1] }, MessageTextBox = { Text = mmm[2] } };
+                                if (!x.ToLower().Contains("fullover"))
+                                {
+                                    Client.OverlayContainer.Content = messageOver.Content;
+                                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                                }
+                                else
+                                {
+                                    Client.FullNotificationOverlayContainer.Content = messageOver.Content;
+                                    Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
+                                }
+                                Client.SendPIPE.WriteString("Overlay received!");
+                            }));
+
+                        }
+                        catch
+                        {
+                            Client.SendPIPE.WriteString("Unable to show the overlay :(");
+                        }
+                    }
+                    else if (x == "Server_STOPPED")
+                    {
+                        started = false;
+                    }
+                }
             }
             catch (IOException e)
             {
@@ -347,14 +393,21 @@ namespace LegendaryClient
 
         public string ReadString()
         {
-            int len = 0;
+            try
+            {
+                int len = 0;
 
-            len = ioStream.ReadByte() * 256;
-            len += ioStream.ReadByte();
-            byte[] inBuffer = new byte[len];
-            ioStream.Read(inBuffer, 0, len);
+                len = ioStream.ReadByte() * 256;
+                len += ioStream.ReadByte();
+                byte[] inBuffer = new byte[len];
+                ioStream.Read(inBuffer, 0, len);
 
-            return streamEncoding.GetString(inBuffer);
+                return streamEncoding.GetString(inBuffer);
+            }
+            catch
+            {
+                return "Server_STOPPED";
+            }
         }
 
         public int WriteString(string outString)

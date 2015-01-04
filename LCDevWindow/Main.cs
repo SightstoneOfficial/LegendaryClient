@@ -17,6 +17,12 @@ namespace LCDevWindow
         /// <summary>
         /// Main Pipe used for talking to LC
         /// </summary>
-        public static NamedPipeClientStream pipeClient;
+        public static NamedPipeClientStream inPipeClient;
+
+        /// <summary>
+        /// The thing that talks to LC
+        /// </summary>
+        public static MainWindow.StreamString inPipeStream;
+        public static MainWindow.StreamString SendPIPE;
     }
 }

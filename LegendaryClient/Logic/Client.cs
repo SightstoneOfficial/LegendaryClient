@@ -69,7 +69,8 @@ namespace LegendaryClient.Logic
 
         public static event OnAccept PlayerAccepedQueue;
 
-        public static StreamString PIPE;
+        public static StreamString SendPIPE;
+        public static StreamString InPIPE;
 
         public static void SendAccept(bool accept)
         {
@@ -1370,7 +1371,9 @@ namespace LegendaryClient.Logic
             WriteToLog.Log(lines, type);
             try
             {
-                PIPE.WriteString("[" + type + "] " + lines);
+                if (SendPIPE == null)
+                    return;
+                SendPIPE.WriteString("[" + type + "] " + lines);
             }
             catch { }
         }
