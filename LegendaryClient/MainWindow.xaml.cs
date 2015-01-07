@@ -347,7 +347,6 @@ namespace LegendaryClient
                             {
                                 string[] mmm = x.Split('|');
                                 var messageOver = new MessageOverlay { MessageTitle = { Content = mmm[1] }, MessageTextBox = { Text = mmm[2] } };
-                                messageOver.
                                 if (!x.ToLower().Contains("fullover"))
                                 {
                                     Client.OverlayContainer.Content = messageOver.Content;

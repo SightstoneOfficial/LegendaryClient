@@ -2,17 +2,17 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:win="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="LC Dev Window" Height="350" Width="525" ResizeMode="CanMinimize">
+        Title="LC Dev Window" Height="500" Width="750" ResizeMode="CanMinimize">
     <Grid>
-        <RichTextBox x:Name="LogWindow" HorizontalAlignment="Left" Height="272" VerticalAlignment="Top" IsReadOnly="True" Width="497" Margin="10,10,0,0">
+        <RichTextBox x:Name="LogWindow" HorizontalAlignment="Left" Height="420" VerticalAlignment="Top" IsReadOnly="True" Width="724" Margin="10,10,0,0">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
-        <TextBox x:Name="DevCommand" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" win:TextBoxHelper.Watermark="Enter Dev Command Here" VerticalAlignment="Bottom" Width="417" Margin="10,0,0,10"/>
-        <Button IsDefault="True" Content="Send" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="75" Margin="432,0,0,10" Click="Button_Click"/>
+        <TextBox x:Name="DevCommand" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="" win:TextBoxHelper.Watermark="Enter Dev Command Here" VerticalAlignment="Bottom" Width="644" Margin="10,0,0,10"/>
+        <Button IsDefault="True" Content="Send" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="75" Margin="659,0,0,10" Click="Button_Click"/>
 
     </Grid>
 </win:MetroWindow>

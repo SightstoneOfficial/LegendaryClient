@@ -1,4 +1,5 @@
 ﻿using LCDevWindow.Commands;
+using LCDevWindow.Commands.LegendaryClient;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Timer = System.Timers.Timer;
 
 namespace LCDevWindow
 {
@@ -30,6 +32,7 @@ namespace LCDevWindow
     public partial class MainWindow : MetroWindow
     {
         bool pipe = true;
+        Timer shutdown = new Timer();
         public MainWindow()
         {
             InitializeComponent();
@@ -50,6 +53,13 @@ namespace LCDevWindow
                         {
                             pipe = false;
                             Log("LegendaryClient has closed and the pipe has been shut down!", Brushes.Red);
+                            Log("This window will now close in 30 seconds, do \"-abortShutdown\" to stop the shutdown", Brushes.Red);
+                            shutdown.Interval = 30000;
+                            shutdown.Elapsed += (A, B) =>
+                                {
+                                    Environment.Exit(0);
+                                };
+                            shutdown.Start();
                             Main.inPipeClient.Close();
                         }
                         else if (x == "AwaitStart")
@@ -106,12 +116,14 @@ namespace LCDevWindow
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string m = DevCommand.Text;
+            if (m == "-abortShutdown")
+                shutdown.Stop();
             if (m.Contains("(") && m.Contains(")"))
             {
                 DevCommand.Text = "";
                 string[] tempsplit = m.Split('(');
 
-                Command x = Command.GetCommand(tempsplit[0]);
+                object x = Command.GetCommand(tempsplit[0]);
                 if (x != null)
                 {
                     List<String> splittwo = new List<String>();
@@ -119,7 +131,10 @@ namespace LCDevWindow
                     string[] xm = tempsplit[1].Replace(")", "").Split(',');
                     foreach (string xd in xm)
                         splittwo.Add(xd);
-                    x.ActivateCommand(splittwo.ToArray());
+                    if (!x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient"))
+                        ((Command)x).ActivateCommand(splittwo.ToArray());
+                    else if (x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient"))
+                        ((LCCommand)x).ActivateCommand(splittwo.ToArray());
                 }
                 else
                 {
