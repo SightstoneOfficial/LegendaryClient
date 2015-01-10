@@ -396,16 +396,24 @@ namespace LegendaryClient.Windows
 
                     if (kvPair.Key == "description")
                     {
-                        imageUri =
-                            ((string) kvPair.Value).Substring(
-                                ((string) kvPair.Value).IndexOf("src", StringComparison.Ordinal) + 6);
-                        imageUri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
+                        try
+                        {
+                            imageUri =
+                                ((string)kvPair.Value).Substring(
+                                    ((string)kvPair.Value).IndexOf("src", StringComparison.Ordinal) + 6);
+                            imageUri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
 
-                        string noHtml = Regex.Replace(((string) kvPair.Value), @"<[^>]+>|&nbsp;", "").Trim();
-                        string noHtmlNormalised = Regex.Replace(noHtml, @"\s{2,}", " ");
-                        string noXmlAmpersands = Regex.Replace(noHtmlNormalised, @"&amp;", "&");
+                            string noHtml = Regex.Replace(((string)kvPair.Value), @"<[^>]+>|&nbsp;", "").Trim();
+                            string noHtmlNormalised = Regex.Replace(noHtml, @"\s{2,}", " ");
+                            string noXmlAmpersands = Regex.Replace(noHtmlNormalised, @"&amp;", "&");
 
-                        item.DescriptionLabel.Text = noXmlAmpersands;
+                            item.DescriptionLabel.Text = noXmlAmpersands;
+                        }
+                        catch(ArgumentOutOfRangeException e)
+                        {
+                            string noXmlAmpersands = e.ToString();
+                            item.DescriptionLabel.Text = noXmlAmpersands;
+                        }
                     }
 
                     if (kvPair.Key == "link")
