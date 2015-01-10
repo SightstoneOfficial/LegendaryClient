@@ -16,7 +16,7 @@ using log4net.Config;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Legendary Coding")]
 [assembly: AssemblyProduct("LegendaryClient")]
-[assembly: AssemblyCopyright("Copyright (c) 2013-2014, Eddy5641/Snowl (Eddy V)")]
+[assembly: AssemblyCopyright("Copyright (c) 2013-2015, Eddy5641/Snowl (Eddy V)")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
