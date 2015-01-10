@@ -396,6 +396,9 @@ namespace LegendaryClient.Windows
 
                     if (kvPair.Key == "description")
                     {
+                        if (kvPair.Value == string.Empty)
+                            continue;
+
                         imageUri =
                             ((string) kvPair.Value).Substring(
                                 ((string) kvPair.Value).IndexOf("src", StringComparison.Ordinal) + 6);
