@@ -150,8 +150,11 @@ namespace LegendaryClient.Windows
                 if (x.PlayerStatSummaryTypeString != "RankedSolo5x5")
                     continue;
 
-                Client.IsRanked = true;
-                Client.AmountOfWins = x.Wins;
+                if (x.Rating != 0)
+                {
+                    Client.IsRanked = true;
+                    Client.AmountOfWins = x.Wins;
+                }
                 break;
             }
 
