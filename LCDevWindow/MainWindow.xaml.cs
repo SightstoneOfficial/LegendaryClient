@@ -10,8 +10,10 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -33,6 +35,7 @@ namespace LCDevWindow
     {
         bool pipe = true;
         Timer shutdown = new Timer();
+        int shutdownint = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -54,10 +57,17 @@ namespace LCDevWindow
                             pipe = false;
                             Log("LegendaryClient has closed and the pipe has been shut down!", Brushes.Red);
                             Log("This window will now close in 30 seconds, do \"-abortShutdown\" to stop the shutdown", Brushes.Red);
-                            shutdown.Interval = 30000;
+                            shutdown.Interval = 1000;
+                            shutdownint = 0;
                             shutdown.Elapsed += (A, B) =>
                                 {
-                                    Environment.Exit(0);
+                                    shutdownint++;
+                                    if (shutdownint == 30)
+                                        Environment.Exit(0);
+                                    else if (!((decimal)shutdownint / 5).ToString().Contains("."))
+                                        Log("Shutdown in " + (30 - shutdownint) + " seconds", Brushes.OrangeRed);
+                                    if (shutdownint == 30)
+                                        Log("Shutting down... Please wait", Brushes.OrangeRed);
                                 };
                             shutdown.Start();
                             Main.inPipeClient.Close();
@@ -129,6 +139,7 @@ namespace LCDevWindow
                     List<String> splittwo = new List<String>();
 
                     string[] xm = tempsplit[1].Replace(")", "").Split(',');
+                    
                     foreach (string xd in xm)
                         splittwo.Add(xd);
                     if (!x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient"))
