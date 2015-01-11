@@ -24,6 +24,7 @@ namespace LegendaryClient.Controls
         private readonly Message _messageData;
         private readonly int _profileIconId;
         private readonly ChatSubjects _subject;
+        private readonly string _teamName;
         private int _inviteId;
         private int _queueId;
 
@@ -77,6 +78,10 @@ namespace LegendaryClient.Controls
                             reader.Read();
                             _gameId = Convert.ToInt32(reader.Value);
                             break;
+                        case "teamName":
+                            reader.Read();
+                            _teamName = reader.Value;
+                            break;
                     }
 
                     #endregion Parse Popup
@@ -86,6 +91,12 @@ namespace LegendaryClient.Controls
             var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", _profileIconId + ".png");
             ProfileImage.Source = Client.GetImage(uriSource);
 
+            if (name == "RANKED_TEAM_UPDATE")
+                NotificationTextBox.Text = player.Username + " has invited you to a Ranked Team" + Environment.NewLine
+                                       + "Team Name: " + _teamName + Environment.NewLine
+                                       + "Use official client to accept invite." +
+                                       Environment.NewLine;
+            else
             NotificationTextBox.Text = player.Username + " has invited you to a game" + Environment.NewLine
                                        + "Hosted on " + BaseMap.GetMap(_mapId).DisplayName + Environment.NewLine
                                        + "Game Type: " + Client.TitleCaseString(_gameType).Replace("_", " ") +

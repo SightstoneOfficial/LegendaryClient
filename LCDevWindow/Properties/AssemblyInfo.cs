@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("LCDevWindow")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Hewlett-Packard Company")]
+[assembly: AssemblyCompany("LegendaryClient")]
 [assembly: AssemblyProduct("LCDevWindow")]
-[assembly: AssemblyCopyright("Copyright © Hewlett-Packard Company 2015")]
+[assembly: AssemblyCopyright("Copyright © eddy5641 (And Github collabs) 2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

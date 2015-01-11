@@ -455,23 +455,30 @@ namespace LegendaryClient.Logic
                     Debugger.Log(0, "JSON Status", "Player Json loaded: " + PlayerJson);
                     try
                     {
-                        RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
+                        if (PlayerJson.Contains(":{\"priority\":"))
+                        {
+                            RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
 
-                        if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
-                            PlayerNote.Add(root.item.name, root.item.note);
+                            if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
+                                PlayerNote.Add(root.item.name, root.item.note);
 
-                        if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
-                            Groups.Add(new Group(root.item.group.text));
+                            if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
+                                Groups.Add(new Group(root.item.group.text));
+                        }
+                        else
+                        {
+                            RootObject2 root = JsonConvert.DeserializeObject<RootObject2>(PlayerJson);
+
+                            if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
+                                PlayerNote.Add(root.item.name, root.item.note);
+
+                            if (root.item.group != "**Default" && Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
+                                Groups.Add(new Group(root.item.group));
+                        }
                     }
                     catch
                     {
-                        RootObject2 root = JsonConvert.DeserializeObject<RootObject2>(PlayerJson);
-
-                        if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
-                            PlayerNote.Add(root.item.name, root.item.note);
-
-                        if (root.item.group != "**Default" && Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
-                            Groups.Add(new Group(root.item.group));
+                        Client.Log("Can't load friends", "ERROR");
                     }
                 }
             }

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="120" d:DesignWidth="800">
+             d:DesignHeight="110" d:DesignWidth="800">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -22,11 +22,11 @@
     </UserControl.Resources>
 
     <Grid Background="#66505050">
-        <Image x:Name="PromoImage" Width="100" Height="100" Margin="10,10,0,0" HorizontalAlignment="Left"
+        <Image x:Name="PromoImage" Width="160" Height="90" Margin="10,10,0,0" HorizontalAlignment="Left"
                VerticalAlignment="Top" Stretch="UniformToFill" />
-        <Label x:Name="NewsTitle" Margin="115,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <Label x:Name="NewsTitle" Margin="175,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Announcing Season 3 Rewards!" FontSize="28" FontWeight="ExtraLight" />
-        <Label Height="65" MaxWidth="850" Margin="115,50,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
+        <Label Height="65" MaxWidth="790" Margin="175,50,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
                FontSize="18" FontWeight="ExtraLight">
             <TextBlock x:Name="DescriptionLabel"
                        Text="Learn more about how you nab end-of-season rewards, and check out a sneak peek of what you can earn."
