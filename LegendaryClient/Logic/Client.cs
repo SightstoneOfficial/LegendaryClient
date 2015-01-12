@@ -1563,6 +1563,8 @@ namespace LegendaryClient.Logic
         }
 
         public static string UpdateRegion { get; set; }
+
+        public static string GameType { get; set; }
     }
 
 
