@@ -217,7 +217,7 @@ namespace LegendaryClient.Windows
                         ChatListView.Children.Add(groupControl);
                     else Client.Log("Removed a group");
                 }
-                if(ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup && loaded)
+                if (ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup && loaded)
                 {
                     //Stop droping 100 times
                     (ChatListView.Children[0] as ChatGroup).GroupGrid_MouseDown(null, null);

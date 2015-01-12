@@ -275,7 +275,6 @@ namespace LegendaryClient.Windows
                 await
                     Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
                         Client.ChampSelectDTO.PickTurn);
-            Client.GameType = latestDto.GameType;
             Joinchat(latestDto);
             //Find the game config for timers
             configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDto.GameTypeConfigId);
@@ -743,7 +742,7 @@ namespace LegendaryClient.Windows
 
                 HasLaunchedGame = true;
 
-                
+
                 if (Settings.Default.AutoRecordGames)
                 {
                     Dispatcher.InvokeAsync(async () =>
@@ -766,7 +765,7 @@ namespace LegendaryClient.Windows
                 {
                     if (CountdownTimer != null)
                         CountdownTimer.Stop();
-                    
+
                     InGame();
                     Client.ReturnButton.Visibility = Visibility.Hidden;
                     Client.AmbientSoundPlayer.Stop();

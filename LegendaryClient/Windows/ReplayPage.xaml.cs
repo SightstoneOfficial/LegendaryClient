@@ -56,9 +56,9 @@ namespace LegendaryClient.Windows
 
             context = new SerializationContext();
 
-            context.Register(typeof (EndOfGameStats));
-            context.Register(typeof (PlayerParticipantStatsSummary));
-            context.Register(typeof (RawStatDTO));
+            context.Register(typeof(EndOfGameStats));
+            context.Register(typeof(PlayerParticipantStatsSummary));
+            context.Register(typeof(RawStatDTO));
 
             #endregion Register Context
 
@@ -117,7 +117,7 @@ namespace LegendaryClient.Windows
                         File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "endOfGameStats")));
                 var statsReader = new AmfReader(new MemoryStream(base64Stats), context);
 
-                var stats = (EndOfGameStats) statsReader.ReadAmf3Item();
+                var stats = (EndOfGameStats)statsReader.ReadAmf3Item();
 
                 var item = new ReplayItem();
 
@@ -131,8 +131,8 @@ namespace LegendaryClient.Windows
                 item.GameId.Tag = d;
                 item.GameType.Content = stats.GameMode.ToLower();
                 item.GameDate.Content = di.CreationTime.ToShortTimeString() + " " + di.CreationTime.ToShortDateString();
-                double seconds = stats.GameLength%60;
-                double minutes = stats.GameLength/60;
+                double seconds = stats.GameLength % 60;
+                double minutes = stats.GameLength / 60;
                 item.GameTime.Content = string.Format("{0:0}:{1:00}", minutes, seconds);
                 item.Margin = new Thickness(0, 5, 0, 0);
 
@@ -175,8 +175,8 @@ namespace LegendaryClient.Windows
 
         private void item_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            var item = (ReplayItem) sender;
-            var stats = (EndOfGameStats) item.Tag;
+            var item = (ReplayItem)sender;
+            var stats = (EndOfGameStats)item.Tag;
             selectedStats = stats;
 
             ReplayOverviewGrid.Visibility = Visibility.Visible;
@@ -185,8 +185,8 @@ namespace LegendaryClient.Windows
 
             GameId.Content = stats.Difficulty;
             GameType.Content = stats.GameMode.ToLower();
-            double seconds = stats.GameLength%60;
-            double minutes = stats.GameLength/60;
+            double seconds = stats.GameLength % 60;
+            double minutes = stats.GameLength / 60;
             GameTime.Content = string.Format("{0:0}:{1:00}", minutes, seconds);
 
             TeamOnePanel.Children.Clear();
@@ -260,10 +260,10 @@ namespace LegendaryClient.Windows
                             .Where(
                                 element =>
                                     element is SmallChampionItem &&
-                                    ((SmallChampionItem) element).Name.StartsWith("game")))
+                                    ((SmallChampionItem)element).Name.StartsWith("game")))
                 {
-                    ((SmallChampionItem) element).MouseMove += img_MouseMove;
-                    ((SmallChampionItem) element).MouseLeave += img_MouseLeave;
+                    ((SmallChampionItem)element).MouseMove += img_MouseMove;
+                    ((SmallChampionItem)element).MouseLeave += img_MouseLeave;
                 }
 
                 player.ChampionIcon.ChampionImage.Source =
@@ -342,10 +342,10 @@ namespace LegendaryClient.Windows
                             .Where(
                                 element =>
                                     element is SmallChampionItem &&
-                                    ((SmallChampionItem) element).Name.StartsWith("game")))
+                                    ((SmallChampionItem)element).Name.StartsWith("game")))
                 {
-                    ((SmallChampionItem) element).MouseMove += img_MouseMove;
-                    ((SmallChampionItem) element).MouseLeave += img_MouseLeave;
+                    ((SmallChampionItem)element).MouseMove += img_MouseMove;
+                    ((SmallChampionItem)element).MouseLeave += img_MouseLeave;
                 }
 
                 player.File.Content = summary.SkinName;
@@ -360,7 +360,7 @@ namespace LegendaryClient.Windows
 
         private void GameId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var item = (TextBox) sender;
+            var item = (TextBox)sender;
             if (!item.IsReadOnly)
                 return;
 
@@ -371,26 +371,26 @@ namespace LegendaryClient.Windows
 
         private void GameId_MouseLeave(object sender, MouseEventArgs e)
         {
-            var item = (TextBox) sender;
+            var item = (TextBox)sender;
             if (item.IsReadOnly)
                 return;
 
             item.IsReadOnly = true;
-            item.Background = ((Grid) item.Parent).Background;
-            File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", (string) item.Tag, "name"),
+            item.Background = ((Grid)item.Parent).Background;
+            File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", (string)item.Tag, "name"),
                 item.Text);
         }
 
         private void item_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                GameId_MouseLeave(((ReplayItem) sender).GameId, null);
+                GameId_MouseLeave(((ReplayItem)sender).GameId, null);
         }
 
         private void img_MouseLeave(object sender, MouseEventArgs e)
         {
-            var icon = (SmallChampionItem) sender;
-            var playerItem = (LargeChatPlayer) icon.Tag;
+            var icon = (SmallChampionItem)sender;
+            var playerItem = (LargeChatPlayer)icon.Tag;
             if (playerItem == null)
                 return;
 
@@ -400,13 +400,13 @@ namespace LegendaryClient.Windows
 
         private void img_MouseMove(object sender, MouseEventArgs e)
         {
-            var icon = (SmallChampionItem) sender;
-            var img = (BitmapImage) icon.ChampionImage.Source;
+            var icon = (SmallChampionItem)sender;
+            var img = (BitmapImage)icon.ChampionImage.Source;
             if (img == null)
                 return;
 
-            var playerItem = (LargeChatPlayer) icon.Tag;
-            if (playerItem == null)
+            var playerItem = (LargeChatPlayer)icon.Tag;
+            if (playerItem != null)
             {
                 string[] s = img.UriSource.Segments;
                 int id = int.Parse(s[s.Length - 1].Replace(".png", ""));
@@ -441,8 +441,8 @@ namespace LegendaryClient.Windows
             if (playerItem.ActualHeight == 0 || playerItem.ActualWidth == 0)
                 return;
 
-            double yMargin = (Client.MainGrid.ActualHeight/2) - (playerItem.ActualHeight/2);
-            double xMargin = (Client.MainGrid.ActualWidth/2) - (playerItem.ActualWidth/2);
+            double yMargin = (Client.MainGrid.ActualHeight / 2) - (playerItem.ActualHeight / 2);
+            double xMargin = (Client.MainGrid.ActualWidth / 2) - (playerItem.ActualWidth / 2);
             playerItem.Margin = new Thickness(xMargin, yMargin, 0, 0);
             if (playerItem.Visibility == Visibility.Hidden)
                 playerItem.Visibility = Visibility.Visible;
@@ -457,8 +457,8 @@ namespace LegendaryClient.Windows
                 {
                     var overlay = new MessageOverlay
                     {
-                        MessageTitle = {Content = "No Summoner Found"},
-                        MessageTextBox = {Text = "The summoner \"" + Command.Text + "\" does not exist."}
+                        MessageTitle = { Content = "No Summoner Found" },
+                        MessageTextBox = { Text = "The summoner \"" + Command.Text + "\" does not exist." }
                     };
                     Client.OverlayContainer.Content = overlay.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -474,7 +474,7 @@ namespace LegendaryClient.Windows
                 {
                     string ip = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
                     string key = n.PlayerCredentials.ObserverEncryptionKey;
-                    var gameId = (Int32) n.PlayerCredentials.GameId;
+                    var gameId = (Int32)n.PlayerCredentials.GameId;
                     recorder = new ReplayRecorder(ip, gameId, Client.Region.InternalName, key);
                     recorder.OnReplayRecorded += recorder_OnReplayRecorded;
                     recorder.OnGotChunk += recorder_OnGotChunk;
@@ -568,7 +568,7 @@ namespace LegendaryClient.Windows
         {
             string path = Path.Combine(Client.ExecutingDirectory, "cabinet", selectedStats.Difficulty);
             if (Directory.Exists(path))
-                Directory.Delete(path,true);
+                Directory.Delete(path, true);
             UpdateReplays();
             ReplayOverviewGrid.Visibility = Visibility.Hidden;
         }
@@ -582,12 +582,12 @@ namespace LegendaryClient.Windows
     public class FocusVisualTreeChanger
     {
         public static readonly DependencyProperty IsChangedProperty =
-            DependencyProperty.RegisterAttached("IsChanged", typeof (bool), typeof (FocusVisualTreeChanger),
+            DependencyProperty.RegisterAttached("IsChanged", typeof(bool), typeof(FocusVisualTreeChanger),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits, IsChangedCallback));
 
         public static bool GetIsChanged(DependencyObject obj)
         {
-            return (bool) obj.GetValue(IsChangedProperty);
+            return (bool)obj.GetValue(IsChangedProperty);
         }
 
         public static void SetIsChanged(DependencyObject obj, bool value)
