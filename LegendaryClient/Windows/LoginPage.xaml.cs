@@ -492,6 +492,7 @@ namespace LegendaryClient.Windows
                 {
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
                     Client.CurrentGame = data.PlayerCredentials;
+                    Client.GameType = data.Game.GameType;
                     Client.SwitchPage(new InGame());
                 }
                 else

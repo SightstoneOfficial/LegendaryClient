@@ -61,5 +61,7 @@
                FontSize="48" />
         <Button Width="308" Height="62" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Re-Connect"
                 FontSize="36" Click="Button_Click" />
+        <Button Name="QuitButton" Width="308" Height="62" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Quit game"
+        	FontSize="36" Click="QuitButton_Click" Margin="486,448,486,258" Visibility="Hidden"/>
     </Grid>
 </Page>
