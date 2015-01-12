@@ -329,12 +329,24 @@ namespace LegendaryClient.Windows
                 return;
 
             //Join champion select chatroom
-            string jid = Client.GetChatroomJID(latestDto.RoomName.Replace("@sec", ""), latestDto.RoomPassword, false);
-            Chatroom = Client.ConfManager.GetRoom(new JID(jid));
-            Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
-            Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
-            Chatroom.Join(latestDto.RoomPassword);
+            if (!String.IsNullOrEmpty(latestDto.RoomPassword))
+            {
+                string jid = Client.GetChatroomJID(latestDto.RoomName.Replace("@sec", ""), latestDto.RoomPassword, false);
+                Chatroom = Client.ConfManager.GetRoom(new JID(jid));
+                Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
+                Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
+                Chatroom.Join(latestDto.RoomPassword);
+            }
+            else
+            {
+                string jid = Client.GetChatroomJID(latestDto.RoomName.Replace("@sec", ""), string.Empty, false);
+                Chatroom = Client.ConfManager.GetRoom(new JID(jid));
+                Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
+                Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
+                Chatroom.Join(string.Empty);
+            }
         }
 
         private void CountdownTimer_Tick(object sender, EventArgs e)
