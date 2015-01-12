@@ -54,12 +54,12 @@ namespace LegendaryClient.Windows
             if (!x)
             {
                 var bc = new BrushConverter();
-                HideGrid.Background = (Brush) bc.ConvertFrom("#B24F4F4F");
-                LoggingInProgressRing.Foreground = (Brush) bc.ConvertFrom("#FFFFFFFF");
+                HideGrid.Background = (Brush)bc.ConvertFrom("#B24F4F4F");
+                LoggingInProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
             //#B2C8C8C8
 
-            switch(Client.UpdateRegion)
+            switch (Client.UpdateRegion)
             {
                 case "PBE": RegionComboBox.ItemsSource = new string[] { "PBE" };
                     break;
@@ -118,8 +118,8 @@ namespace LegendaryClient.Windows
 
             Client.SQLiteDatabase = new SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
-                orderby s.name
-                select s).ToList();
+                                orderby s.name
+                                select s).ToList();
 
             FreeToPlayChampions.GetInstance();
 
@@ -128,8 +128,6 @@ namespace LegendaryClient.Windows
                 var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
                     UriKind.Absolute);
                 c.icon = new BitmapImage(source);
-                Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
-                Debugger.Log(0, "", Environment.NewLine);
 
                 try
                 {
@@ -143,18 +141,18 @@ namespace LegendaryClient.Windows
                 }
             }
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
-                orderby s.name
-                select s).ToList();
+                                    orderby s.name
+                                    select s).ToList();
             Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
-                //Needs Fixed
-                orderby s.name
-                select s).ToList();
+                                        //Needs Fixed
+                                        orderby s.name
+                                        select s).ToList();
             Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
-                orderby s.id
-                select s).ToList();
+                                 orderby s.id
+                                 select s).ToList();
             Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
-                orderby s.id
-                select s).ToList();
+                               orderby s.id
+                               select s).ToList();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
@@ -174,13 +172,13 @@ namespace LegendaryClient.Windows
 
             var reader = new SWFReader(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
             foreach (var secondSplit in from abcTag in reader.Tags.OfType<DoABC>()
-                where abcTag.Name.Contains("riotgames/platform/gameclient/application/Version")
-                select Encoding.Default.GetString(abcTag.ABCData)
-                into str
-                select str.Split((char) 6)
-                into firstSplit
-                 
-                select firstSplit[0].Split((char) 19))  
+                                        where abcTag.Name.Contains("riotgames/platform/gameclient/application/Version")
+                                        select Encoding.Default.GetString(abcTag.ABCData)
+                                            into str
+                                            select str.Split((char)6)
+                                                into firstSplit
+
+                                                select firstSplit[0].Split((char)19))
 
                 try
                 {
@@ -188,10 +186,10 @@ namespace LegendaryClient.Windows
                 }
                 catch
                 {
-                    var thirdSplit = secondSplit[0].Split((char) 18);
+                    var thirdSplit = secondSplit[0].Split((char)18);
                     Client.Version = thirdSplit[1];
                 }
-                
+
 
             Version.Text = Client.Version;
 
@@ -319,12 +317,12 @@ namespace LegendaryClient.Windows
             Settings.Default.SavedUsername = RememberUsernameCheckbox.IsChecked == true ? LoginUsernameBox.Text : "";
 
             if (AutoLoginCheckBox.IsChecked != null)
-                Settings.Default.AutoLogin = (bool) AutoLoginCheckBox.IsChecked;
+                Settings.Default.AutoLogin = (bool)AutoLoginCheckBox.IsChecked;
 
             if (invisibleLoginCheckBox.IsChecked != null)
-                Settings.Default.incognitoLogin = (bool) invisibleLoginCheckBox.IsChecked;
+                Settings.Default.incognitoLogin = (bool)invisibleLoginCheckBox.IsChecked;
 
-            Settings.Default.Region = (string) RegionComboBox.SelectedValue;
+            Settings.Default.Region = (string)RegionComboBox.SelectedValue;
             Settings.Default.Save();
 
             HideGrid.Visibility = Visibility.Hidden;
@@ -334,7 +332,7 @@ namespace LegendaryClient.Windows
             Client.PVPNet.OnError += PVPNet_OnError;
             Client.PVPNet.OnLogin += PVPNet_OnLogin;
             Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
-            BaseRegion selectedRegion = BaseRegion.GetRegion((string) RegionComboBox.SelectedValue);
+            BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
             Client.Region = selectedRegion;
             //Client.Version = "4.18.14";
@@ -457,8 +455,7 @@ namespace LegendaryClient.Windows
                 Client.ChatClient.SSL = true;
                 Client.ChatClient.User = LoginUsernameBox.Text;
                 Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
-                Client.userpass = new KeyValuePair<String, String>(LoginUsernameBox.Text,
-                    "AIR_" + LoginPasswordBox.Password);
+                Client.userpass = new KeyValuePair<String, String>(LoginUsernameBox.Text, "AIR_" + LoginPasswordBox.Password);
                 Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                 Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                 Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
@@ -500,7 +497,7 @@ namespace LegendaryClient.Windows
                 else
                     uiLogic.UpdateMainPage();
 
-                Client.ClearPage(typeof (LoginPage));
+                Client.ClearPage(typeof(LoginPage));
             }));
         }
 
@@ -514,7 +511,7 @@ namespace LegendaryClient.Windows
             int c;
             Stream responseStream = response.GetResponseStream();
             while (responseStream != null && (c = responseStream.ReadByte()) != -1)
-                sb.Append((char) c);
+                sb.Append((char)c);
 
             con.Abort();
 

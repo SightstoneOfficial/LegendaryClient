@@ -452,7 +452,6 @@ namespace LegendaryClient.Logic
                     var xmlDocument = new XmlDocument();
                     xmlDocument.LoadXml(temp);
                     string PlayerJson = JsonConvert.SerializeXmlNode(xmlDocument).Replace("#", "").Replace("@", "");
-                    Debugger.Log(0, "JSON Status", "Player Json loaded: " + PlayerJson);
                     try
                     {
                         if (PlayerJson.Contains(":{\"priority\":"))
@@ -1217,13 +1216,13 @@ namespace LegendaryClient.Logic
                 Interval = 5000,
             };
             t.Tick += (o, m) =>
-                {
-                    GameScouter scouter = new GameScouter();
-                    scouter.LoadScouter(LoginPacket.AllSummonerData.Summoner.Name);
-                    scouter.Show();
-                    scouter.Activate();
-                    t.Stop();
-                };
+            {
+                GameScouter scouter = new GameScouter();
+                scouter.LoadScouter(LoginPacket.AllSummonerData.Summoner.Name);
+                scouter.Show();
+                scouter.Activate();
+                t.Stop();
+            };
             t.Start();
         }
 
