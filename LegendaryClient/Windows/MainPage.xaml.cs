@@ -402,7 +402,8 @@ namespace LegendaryClient.Windows
                         imageUri =
                             ((string)kvPair.Value).Substring(
                                 ((string)kvPair.Value).IndexOf("src", StringComparison.Ordinal) + 6);
-                        imageUri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
+                        if (imageUri.IndexOf("?itok", StringComparison.Ordinal) > 0)
+                            imageUri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
 
                         string noHtml = Regex.Replace(((string)kvPair.Value), @"<[^>]+>|&nbsp;", "").Trim();
                         string noHtmlNormalised = Regex.Replace(noHtml, @"\s{2,}", " ");

@@ -114,8 +114,25 @@ namespace LegendaryClient.Windows
 
             Video.IsChecked = false;
 
-            //Get client data after patcher completed
+            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
+            var patcher = new RiotPatcher();
 
+            //Get client data after patcher completed
+            if (new FileInfo(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")).Length < 1)
+            {
+                using (WebClient updateClient = new WebClient())
+                {
+                    string latestAir = patcher.GetListing(updateRegion.AirListing);
+                    string airManifestLink = updateRegion.AirManifest + "releases/" + latestAir + "/packages/files/packagemanifest";
+                    string[] allFiles = patcher.GetManifest(airManifestLink);
+                    int i = 0;
+                    while (!allFiles[i].Contains("gameStats_en_US.sqlite"))
+                    {
+                        i++;
+                    }
+                    updateClient.DownloadFile(new Uri(updateRegion.BaseLink + allFiles[i].Split(',')[0]), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                }
+            }
             Client.SQLiteDatabase = new SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
             Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
                                 orderby s.name
@@ -156,8 +173,6 @@ namespace LegendaryClient.Windows
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
-            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
-            var patcher = new RiotPatcher();
 
             string tempString = patcher.GetListing(updateRegion.AirListing);
 
