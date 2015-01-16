@@ -503,7 +503,7 @@ namespace LegendaryClient.Windows
                 //Gather data and convert it that way that it does not cause errors
                 PlatformGameLifecycleDTO data = Client.LoginPacket.ReconnectInfo;
 
-                if (data != null && data.Game != null)
+                if (data != null && data.Game != null && data.PlayerCredentials != null)
                 {
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
                     Client.CurrentGame = data.PlayerCredentials;

@@ -73,15 +73,7 @@ namespace PVPNetConnect
         {
             BroadcastNotification broadcast = new BroadcastNotification()
             {
-                BroadcastMessages = new object[1] {
-                    new Dictionary<string, object> () {
-                        {"id", 0},
-                        {"active", true},
-                        {"content", Message},
-                        {"messageKey", "generic"},
-                        {"severity", Severity}
-                    }
-                }
+                BroadcastMessages = new BroadcastMessage[1]
             };
             MessageReceived(broadcast);
         }

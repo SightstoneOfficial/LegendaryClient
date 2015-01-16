@@ -133,11 +133,10 @@ namespace LegendaryClient.Windows
 
             if (Client.LoginPacket.BroadcastNotification.BroadcastMessages != null)
             {
-                var message =
-                    Client.LoginPacket.BroadcastNotification.BroadcastMessages[0] as Dictionary<string, object>;
+                var message = Client.LoginPacket.BroadcastNotification.BroadcastMessages[0];
                 if (message != null)
                     BroadcastMessage.Text =
-                        message.ToString();
+                        message.Content;
             }
 
             foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
@@ -304,9 +303,9 @@ namespace LegendaryClient.Windows
                 if (notif.BroadcastMessages == null)
                     return;
 
-                var Message = notif.BroadcastMessages[0] as Dictionary<string, object>;
-                if (Message != null && (bool)Message["active"])
-                    BroadcastMessage.Text = Convert.ToString(Message["content"]);
+                var Message = notif.BroadcastMessages[0];
+                if (Message != null && Message.Active)
+                    BroadcastMessage.Text = Message.Content;
                 else
                     BroadcastMessage.Text = "";
             }));

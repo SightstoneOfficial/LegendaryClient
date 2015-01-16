@@ -1208,6 +1208,10 @@ namespace PVPNetConnect
                                                 MessageReceived(new StoreAccountBalanceNotification(body));
                                             else if (
                                                 body.type.Equals(
+                                                    "com.riotgames.platform.broadcast.BroadcastMessage"))
+                                                MessageReceived(new BroadcastMessage(body));
+                                            else if (
+                                                body.type.Equals(
                                                     "com.riotgames.platform.messaging.persistence.SimpleDialogMessage"))
                                                 MessageReceived(new SimpleDialogMessage(body));
                                             else if (

@@ -35,7 +35,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
             callback(this);
         }
 
-        [InternalName("id")]
+        [InternalName("id")] 
         public Int32 Id { get; set; }
 
         [InternalName("allowTrades")]
@@ -52,6 +52,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
 
         [InternalName("duplicatePick")]
         public Boolean DuplicatePick { get; set; }
+
+        [InternalName("crossTeamChampionPool")]
+        public Boolean CrossTeamChampionPool { get; set; }
 
         [InternalName("teamChampionPool")]
         public Boolean TeamChampionPool { get; set; }

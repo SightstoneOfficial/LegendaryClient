@@ -70,6 +70,7 @@
     <Compile Include="RiotObjects\Leagues\Pojo\LeagueListDTO.cs" />
     <Compile Include="RiotObjects\Leagues\Pojo\MiniSeriesDTO.cs" />
     <Compile Include="RiotObjects\Platform\Account\AccountSummary.cs" />
+    <Compile Include="RiotObjects\Platform\Broadcast\BroadcastMessage.cs" />
     <Compile Include="RiotObjects\Platform\Broadcast\BroadcastNotification.cs" />
     <Compile Include="RiotObjects\Platform\Catalog\Champion\ChampionDTO.cs" />
     <Compile Include="RiotObjects\Platform\Catalog\Champion\ChampionSkinDTO.cs" />

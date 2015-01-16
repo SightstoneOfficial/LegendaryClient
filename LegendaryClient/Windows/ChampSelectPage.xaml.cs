@@ -68,6 +68,7 @@ namespace LegendaryClient.Windows
         private GameTypeConfigDTO configType;
         private bool connected;
         private int counter;
+        private List<int> disabledCharacters = new List<int>();
 
         #region champs
 
@@ -567,7 +568,11 @@ namespace LegendaryClient.Windows
                             HorizontalAlignment = HorizontalAlignment.Right,
                             VerticalAlignment = VerticalAlignment.Bottom
                         };
+                        Client.CurrentPage = previousPage;
                         Client.HasPopped = false;
+                        Client.ReturnButton.Content = "Return to Lobby Page";
+                        Client.ReturnButton.Visibility = Visibility.Visible;
+                        Client.inQueueTimer.Visibility = Visibility.Visible;
                         Client.NotificationGrid.Children.Add(pop);
                         Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
                         Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
@@ -575,7 +580,6 @@ namespace LegendaryClient.Windows
                         Client.SetChatHover();
                         Client.SwitchPage(previousPage);
                         Client.ClearPage(typeof(ChampSelectPage));
-                        Client.ReturnButton.Visibility = Visibility.Hidden;
                     }
 
                     #region Display players
@@ -623,8 +627,7 @@ namespace LegendaryClient.Windows
                                 #region Disable picking selected champs
 
                                 PlayerChampionSelectionDTO selection1 = selection;
-                                foreach (
-                                    ListViewItem y in championArray.Where(y => (int)y.Tag == selection1.ChampionId))
+                                foreach (ListViewItem y in championArray.Where(y => (int)y.Tag == selection1.ChampionId))
                                 {
                                     y.IsHitTestVisible = true;
                                     y.Opacity = 0.5;
@@ -636,6 +639,11 @@ namespace LegendaryClient.Windows
 
                                     y.IsHitTestVisible = false;
                                     y.Opacity = 1;
+                                }
+
+                                foreach(ListViewItem y in championArray.Where(y => disabledCharacters.Contains((int)y.Tag))) {
+                                    y.Opacity = .7;
+                                    y.IsHitTestVisible = false;
                                 }
 
                                 #endregion Disable picking selected champs
@@ -999,8 +1007,16 @@ namespace LegendaryClient.Windows
                     {
                         ChampImage = { Source = champions.GetChampion(champ.ChampionId).icon }
                     };
-                    if (champ.FreeToPlay)
+
+                    if (champ.FreeToPlay || !champ.Active)
                         championImage.FreeToPlayLabel.Visibility = Visibility.Visible;
+
+                    if (!champ.Active)
+                    {
+                        disabledCharacters.Add(champ.ChampionId);
+                        championImage.FreeToPlayLabel.Content = "Disabled";
+                        championImage.FreeToPlayLabel.FontSize = 11;
+                    }
 
                     championImage.Width = 64;
                     championImage.Height = 64;
@@ -1140,9 +1156,8 @@ namespace LegendaryClient.Windows
             {
                 if (item.Tag == null)
                     return;
-                //SelectChampion.SelectChampion(selection.ChampionId)
+                //SelectChampion.SelectChampion(selection.ChampionId)*/
                 await Client.PVPNet.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
-
                 //TODO: Fix stupid animation glitch on left hand side
                 var fadingAnimation = new DoubleAnimation
                 {
