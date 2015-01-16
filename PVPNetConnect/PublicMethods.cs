@@ -1372,7 +1372,7 @@ namespace PVPNetConnect
 
         public async Task<object> DeclineTeamInvite(TeamId teamId)
         {
-            int Id = Invoke("summonerTeamService", "declineInvite", new object[] { teamId.GetBaseTypedObject() });
+            int Id = Invoke("summonerTeamService", "leaveTeam", new object[] { teamId.GetBaseTypedObject() });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);
