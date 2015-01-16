@@ -49,7 +49,7 @@ namespace LegendaryClient
             LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
-            if (Client.Authenticate(Settings.Default.devKeyLoc) && Settings.Default.devKeyLoc != null)
+            if (Client.Authenticate(Settings.Default.devKeyLoc))
             {
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe")))
                 {
