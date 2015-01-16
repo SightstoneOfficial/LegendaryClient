@@ -89,6 +89,8 @@
                         VerticalAlignment="Bottom" Panel.ZIndex="3" Visibility="Hidden" />
         <ContentControl x:Name="OverlayContainer" Margin="0,0,0,40" HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch" Panel.ZIndex="2" Visibility="Hidden" />
+        <ContentControl x:Name="OverOverlayContainer" Margin="0,0,0,40" HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch" Panel.ZIndex="3" Visibility="Hidden" />
         <ContentControl x:Name="NotificationOverlayContainer" Margin="0,0,10,50" HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch" Panel.ZIndex="1" />
         

@@ -112,6 +112,7 @@ namespace LegendaryClient
             Client.MainWin = this;
             Client.Container = Container;
             Client.OverlayContainer = OverlayContainer;
+            Client.OverOverlayContainer = OverOverlayContainer;
             Client.NotificationContainer = NotificationContainer;
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;

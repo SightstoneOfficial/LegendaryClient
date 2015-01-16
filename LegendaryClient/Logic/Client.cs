@@ -795,6 +795,7 @@ namespace LegendaryClient.Logic
         internal static Label StatusLabel;
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
+        internal static ContentControl OverOverlayContainer;
         internal static Button PlayButton;
         internal static ContentControl ChatContainer;
         internal static ContentControl StatusContainer;

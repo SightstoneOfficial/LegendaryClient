@@ -32,6 +32,7 @@ using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using System.Diagnostics;
+using PVPNetConnect.RiotObjects.Platform.Harassment;
 
 namespace PVPNetConnect
 {
@@ -1216,15 +1217,19 @@ namespace PVPNetConnect
                                                 MessageReceived(new SimpleDialogMessage(body));
                                             else if (
                                                 body.type.Equals(
-                                                "com.riotgames.platform.trade.api.contract.TradeContractDTO"))
+                                                    "com.riotgames.platform.trade.api.contract.TradeContractDTO"))
                                                 MessageReceived(new TradeContractDTO(body));
                                             else if (
                                                 body.type.Equals(
-                                                "com.riotgames.platform.statistics.EndOfGameStats"))
+                                                    "com.riotgames.platform.statistics.EndOfGameStats"))
                                                 MessageReceived(new EndOfGameStats(body));
                                             else if (
                                                 body.type.Equals(
-                                                "com.riotgames.platform.gameinvite.contract.LobbyStatus"))
+                                                    "com.riotgames.platform.harassment.HarassmentReport"))
+                                                MessageReceived(new HarassmentReport(body));
+                                            else if (
+                                                body.type.Equals(
+                                                    "com.riotgames.platform.gameinvite.contract.LobbyStatus"))
                                                 MessageReceived(new LobbyStatus(body));
 
                                             //MessageReceived(to["body"]);

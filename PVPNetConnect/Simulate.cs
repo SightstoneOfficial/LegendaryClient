@@ -222,7 +222,7 @@ namespace PVPNetConnect
                 fakePlayer.Statistics.Add(Item5);
                 RawStatDTO Item6 = new RawStatDTO();
                 Item6.StatTypeName = "ITEM6";
-                Item6.Value = 0;
+                Item6.Value = 1036;
                 fakePlayer.Statistics.Add(Item6);
                 RawStatDTO GOLDEARNED = new RawStatDTO();
                 GOLDEARNED.StatTypeName = "GOLD_EARNED";
