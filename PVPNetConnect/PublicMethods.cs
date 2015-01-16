@@ -470,7 +470,7 @@ namespace PVPNetConnect
             InvokeWithCallback("summonerTeamService", "findTeamByName", new object[] { TeamName }, cb);
         }
 
-        public async Task<TeamDTO> FindTeamById(string TeamName)
+        public async Task<TeamDTO> FindTeamByName(string TeamName)
         {
             int Id = Invoke("summonerTeamService", "findTeamByName", new object[] { TeamName });
             while (!results.ContainsKey(Id))
