@@ -22,6 +22,9 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Change();
+            if (Client.GameType == "PRACTICE_GAME")
+                QuitButton.Visibility = Visibility.Visible;
+
             if (start)
             {
                 Process[] lol = Process.GetProcessesByName("League of Legends.exe");
@@ -68,6 +71,20 @@ namespace LegendaryClient.Windows
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Client.LaunchGame();
+        }
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.GameStatus = "outOfGame";
+            Client.SetChatHover();
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                Client.ReturnButton.Visibility = Visibility.Hidden;
+                Client.IsInGame = false;
+                Client.PVPNet.OnMessageReceived -= Update_OnMessageReceived;
+                uiLogic.UpdateMainPage();
+                Client.ClearPage(typeof(InGame));
+            }));
         }
     }
 }

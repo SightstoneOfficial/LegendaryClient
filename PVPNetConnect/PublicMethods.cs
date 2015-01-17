@@ -470,7 +470,7 @@ namespace PVPNetConnect
             InvokeWithCallback("summonerTeamService", "findTeamByName", new object[] { TeamName }, cb);
         }
 
-        public async Task<TeamDTO> FindTeamById(string TeamName)
+        public async Task<TeamDTO> FindTeamByName(string TeamName)
         {
             int Id = Invoke("summonerTeamService", "findTeamByName", new object[] { TeamName });
             while (!results.ContainsKey(Id))
@@ -1372,7 +1372,7 @@ namespace PVPNetConnect
 
         public async Task<object> DeclineTeamInvite(TeamId teamId)
         {
-            int Id = Invoke("summonerTeamService", "declineInvite", new object[] { teamId.GetBaseTypedObject() });
+            int Id = Invoke("summonerTeamService", "leaveTeam", new object[] { teamId.GetBaseTypedObject() });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);

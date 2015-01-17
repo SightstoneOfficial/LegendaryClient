@@ -275,6 +275,7 @@ namespace LegendaryClient.Windows
                 await
                     Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
                         Client.ChampSelectDTO.PickTurn);
+            Client.GameType = latestDto.GameType;
             Joinchat(latestDto);
             //Find the game config for timers
             configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDto.GameTypeConfigId);

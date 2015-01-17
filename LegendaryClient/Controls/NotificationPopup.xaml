@@ -28,7 +28,7 @@
         <Button x:Name="AcceptButton" Style="{x:Null}" Content="Accept" HorizontalAlignment="Left" Margin="10,200,0,0"
                 Foreground="Black" VerticalAlignment="Top" Width="130" Click="AcceptButton_Click" />
         <Button x:Name="DeclineButton" Style="{x:Null}" Content="Decline" HorizontalAlignment="Right"
-                Margin="0,200,10,0" Foreground="Black" VerticalAlignment="Top" Width="130" Click="AcceptButton_Click" />
+                Margin="0,200,10,0" Foreground="Black" VerticalAlignment="Top" Width="130" Click="DeclineButton_Click" />
         <Image x:Name="ProfileImage" HorizontalAlignment="Right" Height="64" Margin="0,40,10,0" VerticalAlignment="Top"
                Width="64" />
     </Grid>
