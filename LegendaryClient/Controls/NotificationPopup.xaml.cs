@@ -8,6 +8,7 @@ using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Windows;
+using PVPNetConnect.RiotObjects.Team;
 
 #endregion
 
@@ -25,6 +26,8 @@ namespace LegendaryClient.Controls
         private readonly int _profileIconId;
         private readonly ChatSubjects _subject;
         private readonly string _teamName;
+        private readonly string _teamId;
+        private readonly string _msgType;
         private int _inviteId;
         private int _queueId;
 
@@ -33,7 +36,7 @@ namespace LegendaryClient.Controls
             InitializeComponent();
             _subject = subject;
             _messageData = message;
-            var name = Enum.GetName(typeof (ChatSubjects), subject);
+            var name = Enum.GetName(typeof(ChatSubjects), subject);
             if (name != null)
                 NotificationTypeLabel.Content =
                     Client.TitleCaseString(name.Replace("_", " "));
@@ -82,6 +85,14 @@ namespace LegendaryClient.Controls
                             reader.Read();
                             _teamName = reader.Value;
                             break;
+                        case "teamId":
+                            reader.Read();
+                            _teamId = reader.Value;
+                            break;
+                        case "msgType":
+                            reader.Read();
+                            _msgType = reader.Value;
+                            break;
                     }
 
                     #endregion Parse Popup
@@ -92,22 +103,40 @@ namespace LegendaryClient.Controls
             ProfileImage.Source = Client.GetImage(uriSource);
 
             if (name == "RANKED_TEAM_UPDATE")
-                NotificationTextBox.Text = player.Username + " has invited you to a Ranked Team" + Environment.NewLine
-                                       + "Team Name: " + _teamName + Environment.NewLine
-                                       + "Use official client to accept invite." +
-                                       Environment.NewLine;
+            {
+                switch (_msgType)
+                {
+                    case "invited":
+                        NotificationTextBox.Text = player.Username + " has invited you to a Ranked Team" + Environment.NewLine + "Team Name: " + _teamName + Environment.NewLine;
+                        break;
+                    case "kicked":
+                        NotificationTextBox.Text = "You have been kicked from a ranked team " + _teamName + ".";
+                        break;
+                    default:
+                        NotificationTextBox.Text = "Unhandled msgType in NotificationPopup: " + _msgType + Environment.NewLine + "Please create an issue on github.";
+                        break;
+                }
+            }
             else
-            NotificationTextBox.Text = player.Username + " has invited you to a game" + Environment.NewLine
-                                       + "Hosted on " + BaseMap.GetMap(_mapId).DisplayName + Environment.NewLine
-                                       + "Game Type: " + Client.TitleCaseString(_gameType).Replace("_", " ") +
-                                       Environment.NewLine;
+            {
+                NotificationTextBox.Text = player.Username + " has invited you to a game" + Environment.NewLine
+                                           + "Hosted on " + BaseMap.GetMap(_mapId).DisplayName + Environment.NewLine
+                                           + "Game Type: " + Client.TitleCaseString(_gameType).Replace("_", " ") +
+                                           Environment.NewLine;
+            }
+
+            if (!string.IsNullOrWhiteSpace(_msgType) && _msgType != "invited")
+            {
+                AcceptButton.Visibility = Visibility.Hidden;
+                DeclineButton.Visibility = Visibility.Hidden;
+            }
         }
 
         public NotificationPopup(ChatSubjects subject, string message)
         {
             InitializeComponent();
             _subject = subject;
-            var name = Enum.GetName(typeof (ChatSubjects), subject);
+            var name = Enum.GetName(typeof(ChatSubjects), subject);
             if (name != null)
                 NotificationTypeLabel.Content =
                     Client.TitleCaseString(name.Replace("_", " "));
@@ -122,7 +151,16 @@ namespace LegendaryClient.Controls
 
         private void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_REJECT);
+            switch (_subject)
+            {
+                case ChatSubjects.GAME_INVITE:
+                case ChatSubjects.PRACTICE_GAME_INVITE:
+                    Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_REJECT);
+                    break;
+                case ChatSubjects.RANKED_TEAM_UPDATE:
+                    Client.PVPNet.DeclineTeamInvite(new TeamId { FullId = _teamId });
+                    break;
+            }
             Visibility = Visibility.Hidden;
         }
 
@@ -142,6 +180,10 @@ namespace LegendaryClient.Controls
                     break;
                 case ChatSubjects.GAME_INVITE:
                     Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_ACCEPT);
+                    Visibility = Visibility.Hidden;
+                    break;
+                case ChatSubjects.RANKED_TEAM_UPDATE:
+                    Client.PVPNet.AcceptTeamInvite(new TeamId { FullId = _teamId });
                     Visibility = Visibility.Hidden;
                     break;
             }

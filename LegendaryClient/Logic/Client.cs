@@ -1534,7 +1534,7 @@ namespace LegendaryClient.Logic
                     {
                         if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
                         {
-                            Settings.Default.devKeyLoc = filename ?? dlg.FileName;
+                            Settings.Default.devKeyLoc = string.IsNullOrEmpty(filename) ? dlg.FileName : filename;
                             Settings.Default.Save();
                             return true;
                         }
