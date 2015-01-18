@@ -74,7 +74,7 @@
                         Viewport="0,0,150,150" ViewportUnits="Absolute" Opacity="0.4" />
         </Grid.Background>
         <ContentControl x:Name="FullNotificationOverlayContainer" HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" Panel.ZIndex="999" Margin="101,55,-101,-55" />
+                        VerticalAlignment="Stretch" Panel.ZIndex="999" />
         <Image x:Name="BackImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"
                Opacity="0.4" />
         <MediaElement x:Name="SoundPlayer" Width="0" Height="0" HorizontalAlignment="Left"

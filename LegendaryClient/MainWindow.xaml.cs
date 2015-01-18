@@ -49,7 +49,7 @@ namespace LegendaryClient
             LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
-            if (Client.Authenticate(Settings.Default.devKeyLoc))
+            if (Client.Authenticate(Settings.Default.devKeyLoc, false))
             {
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe")))
                 {
@@ -57,7 +57,6 @@ namespace LegendaryClient
                     AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
                     AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
                     Process.Start(Path.Combine(Client.ExecutingDirectory, "DevWin", "LCDevWindow.exe"));
-                    
                 }
             }
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
