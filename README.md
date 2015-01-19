@@ -19,7 +19,7 @@ Want to donate? Scroll down to the bottom
 https://www.youtube.com/watch?v=ZWYn_vft5Kg&feature=youtu.be
 It come with a metro-like installer [no dlls needed, a stand alone program]
 
-######Thought I would clarify this, eddydavinchi is my laptop account, it still is me eddy5641 though 
+######Thought I would clarify this, eddydavinchi is my laptop's github account, it still is me (eddy5641) though 
 
 IRC
 ===
