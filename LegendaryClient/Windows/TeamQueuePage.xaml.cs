@@ -146,7 +146,7 @@ namespace LegendaryClient.Windows
         {
             LastSender = (Button)sender;
             var stats = (Member)LastSender.Tag;
-            uiLogic.UpdateProfile(stats.SummonerName);
+            uiLogic.Profile.GetSummonerProfile(stats.SummonerName);
             Client.SwitchPage(uiLogic.Profile);
         }
 

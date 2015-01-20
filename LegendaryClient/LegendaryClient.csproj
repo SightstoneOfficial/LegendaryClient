@@ -444,6 +444,9 @@
     <Compile Include="Windows\Profile\MatchHistoryOnline.xaml.cs">
       <DependentUpon>MatchHistoryOnline.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Profile\Teams.xaml.cs">
+      <DependentUpon>Teams.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ReplayPage.xaml.cs">
       <DependentUpon>ReplayPage.xaml</DependentUpon>
     </Compile>
@@ -895,6 +898,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\Profile\Teams.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ReplayPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1104,6 +1111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Notifications\" />
+    <Folder Include="Windows\Profile\Teams\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LCLog\LCLog.csproj">

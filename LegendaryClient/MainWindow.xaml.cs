@@ -170,7 +170,10 @@ namespace LegendaryClient
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
             if (Client.IsLoggedIn)
-                uiLogic.UpdateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+            {
+                uiLogic.Profile.GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+                Client.SwitchPage(uiLogic.Profile);
+            }       
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
