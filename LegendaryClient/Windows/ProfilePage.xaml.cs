@@ -12,6 +12,7 @@ using LegendaryClient.Windows.Profile;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
+using PVPNetConnect.RiotObjects.Team.Dto;
 
 #endregion
 
@@ -30,20 +31,8 @@ namespace LegendaryClient.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     MatchHistoryBetaTab.Visibility = Visibility.Visible;
+                    TeamsHeader.Visibility = Visibility.Visible;
                 }));
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
-        }
-
-        public void ProfileCreate(string name)
-        {
             InGameContainer.Content = new Ingame();
             OverviewContainer.Content = new Overview();
             LeaguesContainer.Content = new Leagues();
@@ -53,8 +42,16 @@ namespace LegendaryClient.Windows
             MasteriesContainer.Content = new Masteries();
             SkinsContainer.Content = new Skins();
             LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline();
+            TeamsContainer.Content = new Teams();
+        }
 
-            GetSummonerProfile(String.IsNullOrEmpty(name) ? Client.LoginPacket.AllSummonerData.Summoner.Name : name);
+        public void Change()
+        {
+            var themeAccent = new ResourceDictionary
+            {
+                Source = new Uri(Settings.Default.Theme)
+            };
+            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -85,9 +82,17 @@ namespace LegendaryClient.Windows
             SummonerLevelLabel.Content = "Level " + summoner.SummonerLevel;
 
             if (summoner.SummonerLevel < 30)
+            {
                 LeagueHeader.Visibility = Visibility.Collapsed;
+                TeamsHeader.Visibility = Visibility.Collapsed;
+            }      
             else
+            {
                 Client.PVPNet.GetAllLeaguesForPlayer(summoner.SummonerId, GotLeaguesForPlayer);
+                PlayerDTO playerTeams = await Client.PVPNet.FindPlayer(summoner.SummonerId);
+                GotPlayerTeams(playerTeams);
+            }
+                
 
             int profileIconId = summoner.ProfileIconId;
             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png");
@@ -151,6 +156,16 @@ namespace LegendaryClient.Windows
                 else
                     LeagueHeader.Visibility = Visibility.Collapsed;
             }));
+        }
+
+        private void GotPlayerTeams(PlayerDTO teams)
+        {
+
+            if(teams.PlayerTeams.Count > 0)
+            {
+                var overview = TeamsContainer.Content as Teams;
+                overview.Update(teams);
+            }
         }
 
 

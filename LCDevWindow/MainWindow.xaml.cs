@@ -142,7 +142,7 @@ namespace LCDevWindow
                     
                     foreach (string xd in xm)
                         splittwo.Add(xd);
-                    if (!x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient"))
+                    if (!x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient") && x.GetType().ToString().Contains("LCDevWindow.Commands"))
                         ((Command)x).ActivateCommand(splittwo.ToArray());
                     else if (x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient"))
                         ((LCCommand)x).ActivateCommand(splittwo.ToArray());

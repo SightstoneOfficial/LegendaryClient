@@ -192,8 +192,7 @@ namespace LegendaryClient.Windows
                                             into str
                                             select str.Split((char)6)
                                                 into firstSplit
-
-                                                select firstSplit[0].Split((char)19))
+                                                select firstSplit[0].Split((char)18))
 
                 try
                 {
@@ -201,7 +200,7 @@ namespace LegendaryClient.Windows
                 }
                 catch
                 {
-                    var thirdSplit = secondSplit[0].Split((char)18);
+                    var thirdSplit = secondSplit[0].Split((char)19);
                     Client.Version = thirdSplit[1];
                 }
 

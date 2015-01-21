@@ -404,7 +404,8 @@ namespace LegendaryClient.Windows
         private void ProfileItem_Click(object sender, RoutedEventArgs e)
         {
             var item = (ChatPlayer)selection.AddedItems[0];
-            uiLogic.UpdateProfile(item.PlayerName.Content.ToString());
+                uiLogic.Profile.GetSummonerProfile(item.PlayerName.Content.ToString());
+                Client.SwitchPage(uiLogic.Profile);
         }
 
 #pragma warning disable 4014

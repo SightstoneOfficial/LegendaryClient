@@ -1510,13 +1510,13 @@ namespace LegendaryClient.Logic
             return buffer;
         }
 
-        public static bool Authenticate(string filename)
+        public static bool Authenticate(string filename, bool ShowDig = true)
         {
             try
             {
                 string filecontent = null;
                 var dlg = new System.Windows.Forms.OpenFileDialog();
-                if (String.IsNullOrEmpty(filename))
+                if (String.IsNullOrEmpty(filename) && ShowDig)
                 {
                     dlg.DefaultExt = ".png";
                     dlg.Filter = @"Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";

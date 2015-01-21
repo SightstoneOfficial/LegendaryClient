@@ -11,19 +11,8 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal class uiLogic
     {
-        public static ProfilePage Profile = new ProfilePage();
+        public static ProfilePage Profile;
         public static MainPage MainPage = new MainPage();
-
-        public static void CreateProfile(string name)
-        {
-            Profile.ProfileCreate(name);
-        }
-
-        internal static void UpdateProfile(string name)
-        {
-            Profile.GetSummonerProfile(name);
-            Client.SwitchPage(Profile);
-        }
 
         internal static void UpdateMainPage()
         {

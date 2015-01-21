@@ -227,6 +227,10 @@ namespace PVPNetConnect.RiotObjects
                                 else if (dataAsTo.type == "com.riotgames.platform.reroll.pojo.AramPlayerParticipant")
                                     objectList.Add(new PVPNetConnect.RiotObjects.Platform.Reroll.Pojo.AramPlayerParticipant(dataAsTo));
                             }
+                            else if (elementType == typeof(object))
+                            {
+                                objectList.Add((object)data);
+                            }
                             else
                             {
                                 objectList.Add(Activator.CreateInstance(elementType, data));

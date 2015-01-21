@@ -59,7 +59,7 @@ namespace LegendaryClient.Windows
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.Region.RegionName;
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
-            uiLogic.CreateProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+            uiLogic.Profile = new ProfilePage();
             ChangeSpectatorRegion(region);
             GetNews(region);
             var update = new Timer

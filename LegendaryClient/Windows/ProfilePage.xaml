@@ -79,6 +79,9 @@
             <TabItem x:Name="LeagueHeader" Header="Leagues">
                 <Frame x:Name="LeaguesContainer" />
             </TabItem>
+            <TabItem x:Name="TeamsHeader" Header="Teams" Visibility="Collapsed">
+                <Frame x:Name="TeamsContainer" />
+            </TabItem>
             <TabItem Header="Match History">
                 <Frame x:Name="MatchHistoryContainer" />
             </TabItem>
@@ -94,7 +97,7 @@
             <TabItem x:Name="SkinsTab" Header="Skins">
                 <Frame x:Name="SkinsContainer" />
             </TabItem>
-            <TabItem x:Name="MatchHistoryBetaTab" Header="Match History Beta" Visibility="Hidden">
+            <TabItem x:Name="MatchHistoryBetaTab" Header="Match History Beta" Visibility="Collapsed">
                 <Frame x:Name="LeagueMatchHistoryBetaContainer" />
             </TabItem>
         </TabControl>
