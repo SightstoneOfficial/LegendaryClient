@@ -28,5 +28,10 @@ namespace LegendaryClient.Windows
             };
             Resources.MergedDictionaries.Add(themeAccent);
         }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverOverlayContainer.Visibility = Visibility.Hidden;
+        }
     }
 }

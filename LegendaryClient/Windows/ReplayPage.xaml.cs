@@ -438,7 +438,7 @@ namespace LegendaryClient.Windows
                 icon.Tag = playerItem;
             }
 
-            if (playerItem.ActualHeight == 0 || playerItem.ActualWidth == 0)
+            if (playerItem == null || playerItem.ActualHeight == 0 || playerItem.ActualWidth == 0)
                 return;
 
             double yMargin = (Client.MainGrid.ActualHeight / 2) - (playerItem.ActualHeight / 2);

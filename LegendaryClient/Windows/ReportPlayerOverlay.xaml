@@ -54,6 +54,8 @@
 
     <Grid Background="#7F000000">
         <Grid Width="600" Height="500" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-              Background="#E56C6C6C"/>
+              Background="#FF6C6C6C">
+            <Button Name="ExitButton" Content="X" HorizontalAlignment="Left" Margin="554,10,0,0" VerticalAlignment="Top" Width="36" Height="36" Click="ExitButton_Click"/>
+        </Grid>
     </Grid>
 </Page>

@@ -339,7 +339,7 @@ namespace LegendaryClient.Windows
                 Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
                 Chatroom.Join(latestDto.RoomPassword);
             }
-            else
+            else if(latestDto.RoomName != null)
             {
                 string jid = Client.GetChatroomJID(latestDto.RoomName.Replace("@sec", ""), string.Empty, false);
                 Chatroom = Client.ConfManager.GetRoom(new JID(jid));
@@ -347,6 +347,10 @@ namespace LegendaryClient.Windows
                 Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
                 Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
                 Chatroom.Join(string.Empty);
+            }
+            else
+            {
+                //wtf riot?
             }
         }
 
