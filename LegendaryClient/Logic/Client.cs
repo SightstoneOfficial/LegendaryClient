@@ -1376,6 +1376,9 @@ namespace LegendaryClient.Logic
         public static void Log(String lines, String type = "LOG")
         {
             WriteToLog.Log(lines, type);
+
+            if (Client.Pipe)
+                return;
             try
             {
                 if (SendPIPE == null)
@@ -1509,7 +1512,7 @@ namespace LegendaryClient.Logic
 
             return buffer;
         }
-
+        public static bool Pipe = false;
         public static bool Authenticate(string filename, bool ShowDig = true)
         {
             try
