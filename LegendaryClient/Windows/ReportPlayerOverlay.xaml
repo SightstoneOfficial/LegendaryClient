@@ -9,6 +9,9 @@
 
     <Page.Resources>
         <ResourceDictionary>
+            <Style x:Key="Underline">
+                <Setter Property="TextBlock.TextDecorations" Value="Underline" />
+            </Style>
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="#FF474747" />
                 <Setter Property="BorderBrush" Value="{x:Null}" />
@@ -53,9 +56,24 @@
     </Page.Resources>
 
     <Grid Background="#7F000000">
-        <Grid Width="600" Height="500" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
-              Background="#FF6C6C6C">
-            <Button Name="ExitButton" Content="X" HorizontalAlignment="Left" Margin="554,10,0,0" VerticalAlignment="Top" Width="36" Height="36" Click="ExitButton_Click"/>
-        </Grid>
+        <Border BorderBrush="Black" BorderThickness="2" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <Grid Width="450" Height="450" HorizontalAlignment="Center" VerticalAlignment="Center"
+              Background="#FF211F1F" Margin="410,159,416,155">
+                <Button Name="ExitButton" Content="X" HorizontalAlignment="Left" Margin="404,10,0,0" VerticalAlignment="Top" Width="36" Height="36" Click="ExitButton_Click"/>
+                <Label HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top">
+                    <TextBlock Style="{StaticResource Underline}" FontSize="15">
+                    Player to be reported:
+                    </TextBlock>
+                </Label>
+                <Label x:Name="PlayerNameLabel" Content="PlayerName" HorizontalAlignment="Left" Margin="10,96,0,0" VerticalAlignment="Top" FontSize="15"/>
+                <Label HorizontalAlignment="Left" Margin="10,127,0,0" VerticalAlignment="Top">
+                    <TextBlock Style="{StaticResource Underline}" FontSize="15">
+                    Select offense:
+                    </TextBlock>
+                </Label>
+                <ComboBox HorizontalAlignment="Center" Margin="25,167,25,246" VerticalAlignment="Center" Width="400" FontSize="15" Height="37" ItemsSource="{DynamicResource ReportTypes}"/>
+                <Label Content="Report Player" HorizontalAlignment="Center" Margin="0,0,0,400" VerticalAlignment="Center" FontSize="15"/>
+            </Grid>
+        </Border>
     </Grid>
 </Page>

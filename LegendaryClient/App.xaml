@@ -193,6 +193,21 @@
             <sys:String>Blind Draft</sys:String>
             -->
         </x:Array>
+        
+        <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="ReportTypes" Type="sys:String">
+            <sys:String>Select a Report Category...</sys:String>
+            <sys:String>Griefing: Assisting Enemy Team</sys:String>
+            <sys:String>Griefing: Intentionally Feeding</sys:String>
+            <sys:String>Harassment: Offensive Language</sys:String>
+            <sys:String>Harassment: Verbal Abuse</sys:String>
+            <sys:String>Inappropriate Name</sys:String>
+            <sys:String>Leaving the Game/AFK</sys:String>
+            <sys:String>Negative Attitude</sys:String>
+            <sys:String>Refusing to Communicate with Team</sys:String>
+            <sys:String>Spamming</sys:String>
+            <sys:String>Unskilled Player</sys:String>
+        </x:Array>
+        
         <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="RankedTypes"
                  Type="sys:String">
             <sys:String>Unranked</sys:String>
