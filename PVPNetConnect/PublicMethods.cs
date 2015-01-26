@@ -1482,7 +1482,7 @@ namespace PVPNetConnect
 
         public async Task<object> ReportPlayer(HarassmentReport report)
         {
-            int Id = Invoke("clientFacadeService", "reportPlayer", new object[] { report });
+            int Id = Invoke("clientFacadeService", "reportPlayer", new object[] { report.GetBaseTypedObject() });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);

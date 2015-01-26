@@ -43,19 +43,19 @@ namespace PVPNetConnect.RiotObjects.Platform.Harassment
         /// The person you're reporting summoner id
         /// </summary>
         [InternalName("reportedSummonerId")]
-        public Int64 SummonerID { get; set; }
+        public Double SummonerID { get; set; }
 
         /// <summary>
         /// The fuck is this?
         /// </summary>
         [InternalName("ipAddress")]
-        public Int64 IPAddress { get; set; }
+        public Double IPAddress { get; set; }
 
         /// <summary>
         /// GameID in lobby
         /// </summary>
         [InternalName("gameId")]
-        public Int64 GameID { get; set; }
+        public Double GameID { get; set; }
 
         /// <summary>
         /// Usually "GAME"
@@ -73,7 +73,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Harassment
         /// Your Summoner ID
         /// </summary>
         [InternalName("reportingSummonerId")]
-        public Int64 ReportingSummonerID { get; set; }
+        public Double ReportingSummonerID { get; set; }
 
         /// <summary>
         /// Their offense (E.G. UNSKILLED_PLAYER)
