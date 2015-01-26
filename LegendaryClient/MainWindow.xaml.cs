@@ -21,6 +21,7 @@ using System.Text;
 using LegendaryClient.Properties;
 using System.Security.Principal;
 using System.Windows.Threading;
+using Microsoft.Win32;
 
 namespace LegendaryClient
 {
@@ -37,15 +38,21 @@ namespace LegendaryClient
 
         public MainWindow()
         {
-            System.Diagnostics.PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
-            System.Diagnostics.PresentationTraceSources.ResourceDictionarySource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
+            PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
+            PresentationTraceSources.ResourceDictionarySource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
             InitializeComponent();
             ReturnToPage.Visibility = Visibility.Hidden;
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             //Keep this this way that way the auto updator knows what to update
-            var ExecutingDirectory = System.IO.Directory.GetParent(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location));
+            var ExecutingDirectory = Directory.GetParent(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
             Client.ExecutingDirectory = ExecutingDirectory.ToString().Replace("file:\\", "");
+            var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("LegendaryClient");
+            if (key != null)
+            {
+                key.SetValue("LCLocation", Client.ExecutingDirectory);
+                key.Close();
+            }
             LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
             LCLog.WriteToLog.LogfileName = "LegendaryClient.Log";
             LCLog.WriteToLog.CreateLogFile();
