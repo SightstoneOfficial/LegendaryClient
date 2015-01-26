@@ -57,20 +57,20 @@ namespace LegendaryClient.Windows
                 HideGrid.Background = (Brush)bc.ConvertFrom("#B24F4F4F");
                 LoggingInProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
-            //#B2C8C8C8
-
-            switch (Client.UpdateRegion)
+            if (Client.UpdateRegion == "Garena")
+                LoadGarena();
+            switch(Client.UpdateRegion)
             {
-                case "PBE": RegionComboBox.ItemsSource = new string[] { "PBE" };
+                case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
                     break;
 
-                case "Live": RegionComboBox.ItemsSource = new string[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
+                case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
                     break;
 
-                case "Korea": RegionComboBox.ItemsSource = new string[] { "KR" };
+                case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
                     break;
 
-                case "Garena": RegionComboBox.ItemsSource = new string[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
                     break;
             }
 
@@ -600,10 +600,21 @@ namespace LegendaryClient.Windows
             }
         }
 
+        private void LoadGarena()
+        {
+            var result = MessageBox.Show("Garena was selected. Would you like to inject MLaunch and reload LegendaryClient?", "Garena", MessageBoxButton.YesNo);
+            if (result != MessageBoxResult.Yes)
+                return;
+            MessageBox.Show("LegendaryClient will now exit. Start league of legends from the Garena Launcher to use LegendaryClient. Once you do that you will be asked to input your region and you can use LegendaryClient on Garena", "Garena", MessageBoxButton.OK);
+            Environment.Exit(0);
+        }
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (UpdateRegionComboBox.SelectedValue != null)
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
+
+            if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
+                LoadGarena();
 
             Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
             if (!RegionComboBox.Items.IsInUse)
@@ -613,16 +624,16 @@ namespace LegendaryClient.Windows
             }
             switch (Client.UpdateRegion)
             {
-                case "PBE": RegionComboBox.ItemsSource = new string[] { "PBE" };
+                case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
                     break;
 
-                case "Live": RegionComboBox.ItemsSource = new string[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
+                case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
                     break;
 
-                case "Korea": RegionComboBox.ItemsSource = new string[] { "KR" };
+                case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
                     break;
 
-                case "Garena": RegionComboBox.ItemsSource = new string[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
                     break;
             }
         }
