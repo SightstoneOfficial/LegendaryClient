@@ -24,6 +24,7 @@ using LegendaryClient.Logic.UpdateRegion;
 using LegendaryClient.Properties;
 using Microsoft.Win32;
 using RAFlibPlus;
+using System.Xml;
 
 #endregion
 
@@ -325,8 +326,49 @@ namespace LegendaryClient.Windows
                     LogTextBox("Checking if League of Legends is Up-To-Date");
 
                     bool toExit = false;
-
-                    if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
+                    if (Client.UpdateRegion == "Garena")
+                    {
+                        XmlReader reader = XmlReader.Create("http://updateres.garenanow.com/im/versions.xml");
+                        string garenaVersion = "";
+                        while (reader.Read())
+                        {
+                            if (reader.GetAttribute("name") == "lol")
+                            {
+                                garenaVersion = reader.GetAttribute("latest_version");
+                                break;
+                            }
+                        }
+                        try
+                        {
+                            if (garenaVersion == File.ReadAllText(Path.Combine(lolRootPath, "lol.version")))
+                            {
+                                LogTextBox("League of Legends is Up-To-Date");
+                                Client.Location = Path.Combine(lolRootPath, "Game");
+                                Client.RootLocation = lolRootPath;
+                            }
+                            else
+                            {
+                                LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
+                                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                                {
+                                    SkipPatchButton.IsEnabled = true;
+                                    FindClientButton.Visibility = Visibility.Visible;
+                                }));
+                                toExit = true;
+                            }
+                        }
+                        catch
+                        {
+                            LogTextBox("Can't find League of Legends version file. Make sure you select correct update region.");
+                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            {
+                                SkipPatchButton.IsEnabled = true;
+                                FindClientButton.Visibility = Visibility.Visible;
+                            }));
+                            toExit = true;
+                        }
+                    }
+                    else if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
                     {
                         LogTextBox("League of Legends is Up-To-Date");
                         Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
