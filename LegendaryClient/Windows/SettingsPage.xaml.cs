@@ -175,13 +175,20 @@ A code signing license (So you know that you are using LegendaryClient)
         /// </summary>
         private void UpdateStats()
         {
-            Dictionary<String, String> val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
-            if (val.Any(x => x.Key == "MusicVolume"))
-                MusicVolumeSlider.Value = (Convert.ToInt32(val["MusicVolume"]) * 100);
-            if (val.Any(x => x.Key == "VoiceVolume"))
-                VoiceVolumeSlider.Value = (Convert.ToInt32(val["VoiceVolume"]) * 100);
-            if (val.Any(x => x.Key == "AnnouncerVolume"))
-                AnnouncerVolumeSlider.Value = (Convert.ToInt32(val["AnnouncerVolume"]) * 100);
+            try
+            {
+                Dictionary<String, String> val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
+                if (val.Any(x => x.Key == "MusicVolume"))
+                    MusicVolumeSlider.Value = (Convert.ToInt32(val["MusicVolume"]) * 100);
+                if (val.Any(x => x.Key == "VoiceVolume"))
+                    VoiceVolumeSlider.Value = (Convert.ToInt32(val["VoiceVolume"]) * 100);
+                if (val.Any(x => x.Key == "AnnouncerVolume"))
+                    AnnouncerVolumeSlider.Value = (Convert.ToInt32(val["AnnouncerVolume"]) * 100);
+            }
+            catch
+            {
+                Client.Log("Can't load settings from config file.", "ERROR");
+            }
         }
 
         public void Addtheme(string text, string value)

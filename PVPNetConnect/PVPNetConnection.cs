@@ -28,7 +28,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
 using System.Web.Script.Serialization;
-using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using System.Diagnostics;

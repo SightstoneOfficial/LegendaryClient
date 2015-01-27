@@ -2,7 +2,7 @@
 
 using System;
 using LegendaryClient.Controls;
-using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 
 #endregion
 

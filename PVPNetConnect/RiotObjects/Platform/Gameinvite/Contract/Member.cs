@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Member
+namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
 {
     public class Member : RiotGamesObject
     {

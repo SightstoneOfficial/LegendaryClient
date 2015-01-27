@@ -34,7 +34,7 @@ using LegendaryClient.Properties;
 using LegendaryClient.Windows;
 using MahApps.Metro;
 using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;

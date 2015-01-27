@@ -1,9 +1,8 @@
 ﻿using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Member;
 using System;
 using System.Collections.Generic;
 
-namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
+namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
 {
     public class InvitationRequest : RiotGamesObject
     {
@@ -54,7 +53,9 @@ namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
         public Inviter Inviter { get; set; }
 
         [InternalName("owner")]
-        public List<Member> Owner { get; set; }
+        public Player Owner { get; set; }
+
+
 
     }
 }
