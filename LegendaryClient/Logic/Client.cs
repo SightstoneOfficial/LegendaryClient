@@ -1307,6 +1307,7 @@ namespace LegendaryClient.Logic
         internal static bool PlayerChatIsShown;
         internal static Page TrueCurrentPage;
         internal static bool Garena = false;
+        internal static string[] args;
 
         #region Public Helper Methods
 

@@ -54,6 +54,7 @@ namespace LegendaryClientMLaunch
             };
             Process.Start(start);
             key.Close();
+            Environment.Exit(0);
         }
     }
 }

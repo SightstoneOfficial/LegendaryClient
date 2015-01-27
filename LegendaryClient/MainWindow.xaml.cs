@@ -59,11 +59,12 @@ namespace LegendaryClient
             {
                 var regKey = Registry.CurrentUser.CreateSubKey("LegendaryClient");
                 var val = regKey.GetValue("GarenaLocation").ToString();
-
+                var garenaLocation = Path.Combine(Path.GetDirectoryName(val), "Air");
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "GarenaClient", "LolClient.exe.real")))
                 {
-                    File.Delete(Path.Combine(val, "LolClient.exe"));
-                    File.Move(Path.Combine(Client.ExecutingDirectory, "GarenaClient", "LolClient.exe.real"), Path.Combine(val, "LolClient.exe"));
+                    if (File.Exists(Path.Combine(garenaLocation, "LolClient.exe")))
+                        File.Delete(Path.Combine(garenaLocation, "LolClient.exe"));
+                    File.Move(Path.Combine(Client.ExecutingDirectory, "GarenaClient", "LolClient.exe.real"), Path.Combine(garenaLocation, "LolClient.exe"));
                 }
                 Directory.Delete(Path.Combine(Client.ExecutingDirectory, "GarenaClient"));
             }
@@ -135,10 +136,7 @@ namespace LegendaryClient
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
-            if (!Client.Garena)
-                Client.SwitchPage(new PatcherPage());
-            else if (Client.Garena)
-                Client.SwitchPage(new LoginPage());
+            Client.SwitchPage(new PatcherPage());
 
             if (!String.IsNullOrEmpty(Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
             {

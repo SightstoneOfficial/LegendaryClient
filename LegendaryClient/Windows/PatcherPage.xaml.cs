@@ -338,7 +338,7 @@ namespace LegendaryClient.Windows
                         }
                         try
                         {
-                            if (garenaVersion == File.ReadAllText(Path.Combine(lolRootPath, "lol.version")))
+                            if (garenaVersion == File.ReadAllText(Path.Combine(Path.GetDirectoryName(lolRootPath), "lol.version")))
                             {
                                 LogTextBox("League of Legends is Up-To-Date");
                                 Client.Location = Path.Combine(lolRootPath, "Game");

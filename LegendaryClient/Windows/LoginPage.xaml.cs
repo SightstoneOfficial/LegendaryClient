@@ -224,9 +224,9 @@ namespace LegendaryClient.Windows
             {
                 Client.PVPNet = null;
                 Client.PVPNet = new PVPNetConnection();
-                BaseRegion Garenaregion = BaseRegion.GetRegion(Environment.GetCommandLineArgs()[1]);
-                Client.PVPNet.garenaToken = Environment.GetCommandLineArgs()[2];
-                Client.PVPNet.Connect(null, null, Garenaregion.PVPRegion, Client.Version);
+                BaseRegion Garenaregion = BaseRegion.GetRegion(Client.args[1]);
+                Client.PVPNet.garenaToken = Client.args[2];
+                Client.PVPNet.Connect("", "", Garenaregion.PVPRegion, Client.Version);
                 Client.Region = Garenaregion;
                 HideGrid.Visibility = Visibility.Hidden;
                 ErrorTextBox.Visibility = Visibility.Hidden;
@@ -641,13 +641,15 @@ namespace LegendaryClient.Windows
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "GarenaClient")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "GarenaClient"));
             File.Move(Path.Combine(garenaLocation, "LolClient.exe"), Path.Combine(Client.ExecutingDirectory, "GarenaClient", "LolClient.exe.real"));
-            var files = Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCMLaunch"));
+            var files = Directory.EnumerateFiles(Path.Combine(Client.ExecutingDirectory, "LCMLaunch"), "*", SearchOption.AllDirectories).Select(Path.GetFileName);
             foreach (var file in files)
             {
-                var filename = file.Split('/')[(file.Split('/').Count() - 1)];
-                if (filename == "LegendaryClientMLaunch.exe")
-                    filename = "LolClient.exe";
-                File.Move(file, Path.Combine(garenaLocation, filename));
+                if (!File.Exists(Path.Combine(garenaLocation, file)))
+                File.Copy(
+                    Path.Combine(Client.ExecutingDirectory, "LCMLaunch", file),
+                    file != "LegendaryClientMLaunch.exe"
+                        ? Path.Combine(garenaLocation, file)
+                        : Path.Combine(garenaLocation, "LolClient.exe"));
             }
         }
 
@@ -664,17 +666,17 @@ namespace LegendaryClient.Windows
             try
             {
                 var val = regKey.GetValue("GarenaLocation").ToString();
-                if (String.IsNullOrEmpty(val))
-                    throw new NullReferenceException("GarenaLocation is empty! Set it right now.");
                 ReplaceGarena(val);
             }
             catch
             {
                 if (regKey != null)
                 {
-                    var dlg = new System.Windows.Forms.OpenFileDialog();
-                    dlg.DefaultExt = ".png";
-                    dlg.Filter = @"league of legends exe (lol.exe)|lol.exe";
+                    var dlg = new System.Windows.Forms.OpenFileDialog
+                    {
+                        DefaultExt = ".png",
+                        Filter = @"league of legends exe (lol.exe)|lol.exe"
+                    };
                     System.Windows.Forms.DialogResult dialogResult = dlg.ShowDialog();
                     if (dialogResult == System.Windows.Forms.DialogResult.OK)
                     {
