@@ -350,7 +350,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                //wtf riot?
+                //Doesn't really need to be handled I guess?
             }
         }
 

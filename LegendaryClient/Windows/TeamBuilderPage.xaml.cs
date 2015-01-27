@@ -216,7 +216,7 @@ namespace LegendaryClient.Windows
         }
 
         /// <summary>
-        ///     Used to start queuing For SOLO [yay riot]
+        ///     Used to start queuing For SOLO
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1063,7 +1063,6 @@ namespace LegendaryClient.Windows
 
         //....................................................................................................................
         //Riot why. WHY CAN'T I USE THE NORMAL WAY WITH THE POPUP. WHY DO YOU HAVE TO SEND ALL THE DATA WITH QUEUEING
-        //This is the smartest thing riot has done.
         private void SummonerSpellListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SummonerSpellListView.SelectedIndex != -1)

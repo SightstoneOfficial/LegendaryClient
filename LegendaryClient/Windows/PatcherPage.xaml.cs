@@ -221,7 +221,7 @@ namespace LegendaryClient.Windows
                             catch
                             {
                                 Client.Log(
-                                    "Probably updated version number without actually uploading the files. Thanks riot.");
+                                    "Probably updated version number without actually uploading the files.");
                             }
                         }
                     }

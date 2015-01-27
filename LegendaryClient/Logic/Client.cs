@@ -742,7 +742,6 @@ namespace LegendaryClient.Logic
             ChatClient.Write(msg);
         }
 
-        //Why do you even have to do this, riot?
         internal static string GetObfuscatedChatroomName(string Subject, string Type)
         {
             byte[] data = Encoding.UTF8.GetBytes(Subject);
