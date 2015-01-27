@@ -149,8 +149,11 @@ namespace LegendaryClient.Windows
             Client.OverlayContainer.Content = null;
             this.previousPage = previousPage;
             StartChampSelect();
-            string sound = AmbientChampSelect.CurrentQueueToSoundFile(Client.QueueId);
-            AmbientChampSelect.PlayAmbientChampSelectSound(sound);
+            if (!Properties.Settings.Default.DisableClientSound)
+            {
+                string sound = AmbientChampSelect.CurrentQueueToSoundFile(Client.QueueId);
+                AmbientChampSelect.PlayAmbientChampSelectSound(sound);
+            }
             Client.LastPageContent = Content;
             Client.runonce = true;
 
@@ -780,7 +783,10 @@ namespace LegendaryClient.Windows
 
                     InGame();
                     Client.ReturnButton.Visibility = Visibility.Hidden;
-                    Client.AmbientSoundPlayer.Stop();
+                    if (!Properties.Settings.Default.DisableClientSound)
+                    {
+                        Client.AmbientSoundPlayer.Stop();
+                    }
                 }));
 
                 #endregion Launching Game
