@@ -28,6 +28,7 @@ using LegendaryClient.Logic.SWF.SWFTypes;
 using LegendaryClient.Logic.UpdateRegion;
 using LegendaryClient.Properties;
 using LegendaryClient.Logic.Patcher;
+using Microsoft.Win32;
 using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
@@ -58,7 +59,7 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Foreground = (Brush) bc.ConvertFrom("#FFFFFFFF");
             }
             //#B2C8C8C8
-            if (Client.UpdateRegion == "Garena")
+            if (Client.UpdateRegion == "Garena" && !Client.Garena)
                 LoadGarena();
             switch(Client.UpdateRegion)
             {
@@ -634,6 +635,22 @@ namespace LegendaryClient.Windows
             }
         }
 
+        private void ReplaceGarena(string location)
+        {
+            var garenaLocation = Path.Combine(Path.GetDirectoryName(location), "Air");
+            if (!Directory.Exists(Path.Combine(Client.Location, "GarenaClient")))
+                Directory.CreateDirectory(Path.Combine(Client.Location, "GarenaClient"));
+            File.Move(Path.Combine(garenaLocation, "LolClient.exe"), Path.Combine(Client.Location, "GarenaClient", "LolClient.exe.real"));
+            var files = Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCMLaunch"));
+            foreach (var file in files)
+            {
+                var filename = file.Split('/')[(file.Split('/').Count() - 1)];
+                if (filename == "LegendaryClientMLaunch.exe")
+                    filename = "LolClient.exe";
+                File.Move(file, Path.Combine(garenaLocation, filename));
+            }
+        }
+
         private void LoadGarena()
         {
             var result = MessageBox.Show("Garena was selected. Would you like to inject MLaunch and reload LegendaryClient? (REQUIRED TO USE GARENA WITH LEGENDARYCLIENT)", "LegendaryClient + Garena", MessageBoxButton.YesNo);
@@ -642,6 +659,32 @@ namespace LegendaryClient.Windows
                 UpdateRegionComboBox.SelectedValue = "Live";
                 UpdateRegionComboBox_SelectionChanged(null, null);
                 return;
+            }
+            var regKey = Registry.CurrentUser.CreateSubKey("LegendaryClient");
+            try
+            {
+                var val = regKey.GetValue("GarenaLocation").ToString();
+                if (String.IsNullOrEmpty(val))
+                    throw new NullReferenceException("GarenaLocation is empty! Set it right now.");
+                ReplaceGarena(val);
+            }
+            catch
+            {
+                if (regKey != null)
+                {
+                    var dlg = new System.Windows.Forms.OpenFileDialog();
+                    dlg.DefaultExt = ".png";
+                    dlg.Filter = @"league of legends exe (lol.exe)|lol.exe";
+                    System.Windows.Forms.DialogResult dialogResult = dlg.ShowDialog();
+                    if (dialogResult == System.Windows.Forms.DialogResult.OK)
+                    {
+                        regKey.SetValue("GarenaLocation", dlg.FileName);
+                        ReplaceGarena(dlg.FileName);
+                    }
+                    else
+                        MessageBox.Show("You did not specify the location of lol.exe", "LegendaryClient + Garena (ERROR)");
+                    regKey.Close();
+                }
             }
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LOLClient")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LOLClient"));

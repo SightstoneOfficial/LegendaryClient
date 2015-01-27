@@ -457,12 +457,21 @@ namespace LegendaryClient.Windows
                     string valueName = tuple.Item2;
                     try
                     {
-                        object value = Registry.GetValue(path, valueName, string.Empty);
+                        var value = Registry.GetValue(path, valueName, string.Empty);
                         if (value != null && value.ToString() != string.Empty)
+                        {
+                            var regKey = Registry.CurrentUser.CreateSubKey("LegendaryClient");
+                            if (regKey != null)
+                            {
+                                regKey.SetValue(
+                                    value.ToString().Contains("lol.exe") ? "GarenaLocation" : "LoLLocation",
+                                    value.ToString());
+                                regKey.Close();
+                            }
                             return value.ToString();
+                        }
                     }
-                    catch
-                    {
+                    catch {
                     }
                 }
             }
