@@ -686,9 +686,6 @@ namespace LegendaryClient.Windows
                     regKey.Close();
                 }
             }
-            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LOLClient")))
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LOLClient"));
-            File.Move(Path.Combine(), Path.Combine());
             MessageBox.Show(@"MLaunch has been placed where lolclient.exe is. 
 LegendaryClient will now exit. 
 To launch LegendaryClient, launch the Garena+ and start league of legends, but MLaunch will start instead of lol. 
