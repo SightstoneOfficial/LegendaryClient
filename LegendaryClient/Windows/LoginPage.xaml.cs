@@ -638,9 +638,9 @@ namespace LegendaryClient.Windows
         private void ReplaceGarena(string location)
         {
             var garenaLocation = Path.Combine(Path.GetDirectoryName(location), "Air");
-            if (!Directory.Exists(Path.Combine(Client.Location, "GarenaClient")))
-                Directory.CreateDirectory(Path.Combine(Client.Location, "GarenaClient"));
-            File.Move(Path.Combine(garenaLocation, "LolClient.exe"), Path.Combine(Client.Location, "GarenaClient", "LolClient.exe.real"));
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "GarenaClient")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "GarenaClient"));
+            File.Move(Path.Combine(garenaLocation, "LolClient.exe"), Path.Combine(Client.ExecutingDirectory, "GarenaClient", "LolClient.exe.real"));
             var files = Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCMLaunch"));
             foreach (var file in files)
             {

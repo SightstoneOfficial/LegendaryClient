@@ -55,17 +55,17 @@ namespace LegendaryClient
                 key.SetValue("LCLocation", Client.ExecutingDirectory);
                 key.Close();
             }
-            if (Directory.Exists(Path.Combine(Client.Location, "GarenaClient")))
+            if (Directory.Exists(Path.Combine(Client.ExecutingDirectory, "GarenaClient")))
             {
                 var regKey = Registry.CurrentUser.CreateSubKey("LegendaryClient");
                 var val = regKey.GetValue("GarenaLocation").ToString();
 
-                if (File.Exists(Path.Combine(Client.Location, "GarenaClient", "LolClient.exe.real")))
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "GarenaClient", "LolClient.exe.real")))
                 {
                     File.Delete(Path.Combine(val, "LolClient.exe"));
-                    File.Move(Path.Combine(Client.Location, "GarenaClient", "LolClient.exe.real"), Path.Combine(val, "LolClient.exe"));
+                    File.Move(Path.Combine(Client.ExecutingDirectory, "GarenaClient", "LolClient.exe.real"), Path.Combine(val, "LolClient.exe"));
                 }
-                Directory.Delete(Path.Combine(Client.Location, "GarenaClient"));
+                Directory.Delete(Path.Combine(Client.ExecutingDirectory, "GarenaClient"));
             }
 
             LCLog.WriteToLog.ExecutingDirectory = Client.ExecutingDirectory;
