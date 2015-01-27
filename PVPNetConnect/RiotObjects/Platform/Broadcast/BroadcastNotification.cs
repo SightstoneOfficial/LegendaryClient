@@ -34,6 +34,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Broadcast
         }
 
         [InternalName("broadcastMessages")]
-        public object[] BroadcastMessages { get; set; }
+        public BroadcastMessage[] BroadcastMessages { get; set; }
     }
 }

@@ -14,16 +14,16 @@
                FontWeight="Bold" VerticalAlignment="Bottom" />
         <Label x:Name="ChampLabel" Content="Sejuani" HorizontalAlignment="Left" Margin="70,0,0,0" FontSize="14"
                FontWeight="SemiBold" VerticalAlignment="Bottom" />
-        <Label x:Name="ScoreLabel" Content="30/30/30" HorizontalAlignment="Left" Margin="285,0,0,0" FontSize="24"
+        <Label x:Name="ScoreLabel" Content="30/30/30" HorizontalAlignment="Left" Margin="213,4,0,9" FontSize="24"
                FontWeight="ExtraLight" VerticalAlignment="Center" />
-        <Image x:Name="Spell1Image" HorizontalAlignment="Left" Height="32" Margin="400,0,0,0"
+        <Image x:Name="Spell1Image" HorizontalAlignment="Left" Height="32" Margin="320,12,0,11"
                VerticalAlignment="Center" Width="32" Source="/LegendaryClient;component/NONE.png" />
-        <Image x:Name="Spell2Image" HorizontalAlignment="Left" Height="32" Margin="435,0,0,0"
+        <Image x:Name="Spell2Image" HorizontalAlignment="Left" Height="32" Margin="355,12,0,11"
                VerticalAlignment="Center" Width="32" Source="/LegendaryClient;component/NONE.png" />
 
-        <ListView x:Name="ItemsListView" HorizontalAlignment="Left" Height="32" Margin="480,0,0,0"
+        <ListView x:Name="ItemsListView" HorizontalAlignment="Left" Height="32" Margin="392,12,0,11"
                   VerticalAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="265" Background="#66505050"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="205" Background="#66505050"
                   BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -32,11 +32,12 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Grid HorizontalAlignment="Left" Height="50" Margin="740,0,0,0" VerticalAlignment="Top" Width="100">
+        <Grid HorizontalAlignment="Left" Height="50" Margin="597,2,0,0" VerticalAlignment="Top" Width="66">
             <Label x:Name="GoldLabel" Content="0k" HorizontalAlignment="Center" Margin="0,0,0,0" FontSize="24"
                    FontWeight="ExtraLight" VerticalAlignment="Center" />
         </Grid>
-        <Label x:Name="CsLabel" Content="400" HorizontalAlignment="Left" Margin="840,0,0,0" FontSize="24"
+        <Label x:Name="CsLabel" Content="400" HorizontalAlignment="Left" Margin="668,6,0,7" FontSize="24"
                FontWeight="ExtraLight" VerticalAlignment="Center" />
+        <Button x:Name="ReportButton" Content="R" HorizontalAlignment="Left" Margin="720,12,0,0" VerticalAlignment="Top" Width="38" Height="32" Click="ReportButton_Click"/>
     </Grid>
 </UserControl>

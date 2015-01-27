@@ -217,7 +217,7 @@ namespace LegendaryClient.Windows
                         ChatListView.Children.Add(groupControl);
                     else Client.Log("Removed a group");
                 }
-                if(ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup && loaded)
+                if (ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup && loaded)
                 {
                     //Stop droping 100 times
                     (ChatListView.Children[0] as ChatGroup).GroupGrid_MouseDown(null, null);
@@ -289,13 +289,12 @@ namespace LegendaryClient.Windows
                 Client.MainGrid.Children.Add(PlayerItem);
                 Panel.SetZIndex(PlayerItem, 5);
                 PlayerItem.Tag = playerItem;
-                try
+                if (Client.PlayerNote.Any(x => x.Key == playerItem.Username))
                 {
                     PlayerItem.Note.Text = Client.PlayerNote[playerItem.Username];
                     PlayerItem.Note.Foreground = Brushes.Green;
                     PlayerItem.Note.Visibility = Visibility.Visible;
                 }
-                catch { }
                 PlayerItem.PlayerName.Content = playerItem.Username;
                 PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;
                 PlayerItem.PlayerStatus.Text = playerItem.Status;

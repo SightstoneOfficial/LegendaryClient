@@ -56,7 +56,7 @@ namespace LegendaryClient.Logic.Player
             ChampID = Champ.id;
             LoadName(playerName);
         }
-        
+
         public ChampStats(string champName, int playerName)
         {
             Champ = champions.GetChampion(champName);
@@ -132,7 +132,7 @@ namespace LegendaryClient.Logic.Player
             WinLossRatio = (Wins / AGamesPlayed) * 100;
             try
             {
-                WinLossChampRatio = (ChampWins / ChampGamesPlayed) * 100;
+                WinLossChampRatio = (ChampGamesPlayed != 0 && ChampGamesPlayed != 0 ? ChampWins / ChampGamesPlayed : 1) * 100;
             }
             catch { }
 
@@ -144,9 +144,9 @@ namespace LegendaryClient.Logic.Player
             try
             {
                 ChampKDAString = string.Format("{0}/{1}/{2}",
-                (ChampKills / ChampGamesPlayed),
-                (ChampDeaths / ChampGamesPlayed),
-                (ChampAssists / ChampGamesPlayed));
+                    (ChampKills != 0 && ChampGamesPlayed != 0 ? ChampKills / ChampGamesPlayed : 0),
+                    (ChampDeaths != 0 && ChampGamesPlayed != 0 ? ChampDeaths / ChampGamesPlayed : 0),
+                    (ChampAssists != 0 && ChampGamesPlayed != 0 ? ChampAssists / ChampGamesPlayed : 0));
 
             }
             catch

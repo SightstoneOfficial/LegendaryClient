@@ -22,11 +22,12 @@ using System.Text;
 using LegendaryClient.Properties;
 using System.Security.Principal;
 using System.Windows.Threading;
+using System.Net;
 using Microsoft.Win32;
 
 namespace LegendaryClient
 {
-    
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -125,6 +126,7 @@ namespace LegendaryClient
             Client.MainWin = this;
             Client.Container = Container;
             Client.OverlayContainer = OverlayContainer;
+            Client.OverOverlayContainer = OverOverlayContainer;
             Client.NotificationContainer = NotificationContainer;
             Client.ChatContainer = ChatContainer;
             Client.StatusContainer = StatusContainer;
@@ -326,6 +328,7 @@ namespace LegendaryClient
         }
 
         private static int numThreads = 4;
+
         public void StartPipe()
         {
             int i = 0;
@@ -341,67 +344,51 @@ namespace LegendaryClient
                 new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, numThreads);
             int threadId = Thread.CurrentThread.ManagedThreadId;
             pipeServer.WaitForConnection();
-            try
+            Client.SendPIPE = new StreamString(pipeServer);
+            Client.SendPIPE.WriteString("Logger started. All errors will be logged from now on");
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+            Client.SendPIPE.WriteString("LegendaryClient Version: " + version);
+
+            Client.SendPIPE.WriteString("AwaitStart");
+
+
+            NamedPipeClientStream output = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifjidafdOUTPUT", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            output.Connect();
+            StreamString ss = new StreamString(output);
+            Client.InPIPE = ss;
+            started = true;
+            while (started)
             {
-                Client.SendPIPE = new StreamString(pipeServer);
-                Client.SendPIPE.WriteString("Logger started. All errors will be logged from now on");
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-                string version = fvi.FileVersion;
-                Client.SendPIPE.WriteString("LegendaryClient Version: " + version);
-
-                Client.SendPIPE.WriteString("AwaitStart");
-
-                
-                NamedPipeClientStream output = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifjidafdOUTPUT", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
-                output.Connect();
-                StreamString ss = new StreamString(output);
-                Client.InPIPE = ss;
-                started = true;
-                while (started)
+                string x = ss.ReadString();
+                if (x.Contains("SendOVERLAY"))
                 {
-                    string x = ss.ReadString();
-                    if (x.Contains("SendOVERLAY"))
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        try
+                        string[] mmm = x.Split('|');
+                        var messageOver = new MessageOverlay { MessageTitle = { Content = mmm[1] }, MessageTextBox = { Text = mmm[2] } };
+                        if (!x.ToLower().Contains("fullover"))
                         {
-                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                            {
-                                string[] mmm = x.Split('|');
-                                var messageOver = new MessageOverlay { MessageTitle = { Content = mmm[1] }, MessageTextBox = { Text = mmm[2] } };
-                                if (!x.ToLower().Contains("fullover"))
-                                {
-                                    Client.OverlayContainer.Content = messageOver.Content;
-                                    Client.OverlayContainer.Visibility = Visibility.Visible;
-                                }
-                                else
-                                {
-                                    Client.FullNotificationOverlayContainer.Content = messageOver.Content;
-                                    Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
-                                }
-                                Client.SendPIPE.WriteString("Overlay received!");
-                            }));
-
+                            Client.OverlayContainer.Content = messageOver.Content;
+                            Client.OverlayContainer.Visibility = Visibility.Visible;
                         }
-                        catch
+                        else
                         {
-                            Client.SendPIPE.WriteString("Unable to show the overlay :(");
+                            Client.FullNotificationOverlayContainer.Content = messageOver.Content;
+                            Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
                         }
-                    }
-                    else if (x == "Server_STOPPED")
-                    {
-                        started = false;
-                    }
+                        Client.SendPIPE.WriteString("Overlay received!");
+                    }));
                 }
-            }
-            catch (IOException e)
-            {
-                Client.Log(e.Message, "IOException");
-                Client.Log(e.StackTrace, "IOException");
-                Client.Log(e.Source, "IOException");
+                else if (x == "Server_STOPPED")
+                {
+                    started = false;
+                }
             }
         }
     }
+
     public class StreamString
     {
         private Stream ioStream;
@@ -415,21 +402,19 @@ namespace LegendaryClient
 
         public string ReadString()
         {
-            try
+            int len = 0;
+            len = ioStream.ReadByte() * 256;
+            len += ioStream.ReadByte();
+            if (len > 0)
             {
-                int len = 0;
-
-                len = ioStream.ReadByte() * 256;
-                len += ioStream.ReadByte();
                 byte[] inBuffer = new byte[len];
                 ioStream.Read(inBuffer, 0, len);
 
                 return streamEncoding.GetString(inBuffer);
             }
-            catch
-            {
-                return "Server_STOPPED";
-            }
+            else
+                return string.Empty;
+
         }
 
         public int WriteString(string outString)

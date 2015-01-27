@@ -3,16 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      Title="MatchHistory"
-      mc:Ignorable="d" d:DesignHeight="548"
-      d:DesignWidth="1280">
+      mc:Ignorable="d"
+      d:DesignHeight="548" d:DesignWidth="1280"
+	Title="MatchHistory">
 
     <Page.Resources>
         <ResourceDictionary>
             <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
                 <Setter Property="Visibility" Value="Collapsed" />
             </Style>
-
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource MetroScrollBar}" />
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="#FF474747" />
                 <Setter Property="BorderBrush" Value="{x:Null}" />
@@ -44,9 +44,10 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Scrollbars.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ListView.xaml" />
                 <ResourceDictionary
                     Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
                 <ResourceDictionary
@@ -56,35 +57,32 @@
         </ResourceDictionary>
     </Page.Resources>
 
+
     <Grid>
-        <ListView x:Name="GamesListView" Width="300" Margin="10,10,0,10" HorizontalAlignment="Left"
+        <ListView x:Name="GamesListView" HorizontalAlignment="Left" Margin="10,10,0,10" Width="300"
                   VerticalAlignment="Stretch" Foreground="White" Background="#66505050"
-                  SelectionChanged="GamesListView_SelectionChanged" BorderBrush="{x:Null}"
+                  SelectionChanged="GamesListView_SelectionChanged"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn />
                 </GridView>
             </ListView.View>
         </ListView>
-        <ListView x:Name="BlueListView" Width="60" Height="294" Margin="320,10,0,0"
-                  HorizontalAlignment="Left" VerticalAlignment="Top"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#66505050"
-                  BorderBrush="{x:Null}">
+        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Height="296" Margin="320,10,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Width="66" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Label Height="65" Margin="0,67,-330,0" HorizontalAlignment="Center" VerticalAlignment="Top"
-               Content="VS." FontWeight="ExtraLight" FontSize="50" Foreground="White" />
-        <ListView x:Name="PurpleListView" Width="60" Height="294" Margin="0,10,10,0"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  Background="#66505050" BorderBrush="{x:Null}">
+        <Label Content="VS." HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,67,-330,0" FontWeight="ExtraLight" FontSize="50" Foreground="White" Height="65" />
+        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Height="296" Margin="0,10,10,0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalAlignment="Top" Width="66" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -92,19 +90,14 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <ListView x:Name="ItemsListView" Width="426" Height="64" Margin="0,10,-330,0"
-                  HorizontalAlignment="Center" VerticalAlignment="Top"
-                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050"
-                  BorderBrush="{x:Null}">
+        <ListView x:Name="ItemsListView" HorizontalAlignment="Center" Height="64" Margin="0,10,-330,0" VerticalAlignment="Top" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="426" Background="#66505050">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <ListView x:Name="GameStatsListView" Margin="391,139,81,29" HorizontalAlignment="Stretch"
-                  VerticalAlignment="Stretch" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
+        <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="391,139,81,29" VerticalAlignment="Stretch" Foreground="White" Background="#66505050">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn x:Name="GameKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}" />

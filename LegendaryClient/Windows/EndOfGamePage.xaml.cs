@@ -137,7 +137,7 @@ namespace LegendaryClient.Windows
             allParticipants.AddRange(statistics.OtherTeamPlayerParticipantStats);
             foreach (PlayerParticipantStatsSummary summary in allParticipants)
             {
-                var playerStats = new EndOfGamePlayer();
+                var playerStats = new EndOfGamePlayer(summary.UserId, summary.GameId, summary.SummonerName);
                 champions champ = champions.GetChampion(summary.SkinName); //Misleading variable name
                 playerStats.ChampImage.Source = champ.icon;
                 playerStats.ChampLabel.Content = champ.name;

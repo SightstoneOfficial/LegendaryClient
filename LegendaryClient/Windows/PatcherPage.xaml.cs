@@ -221,7 +221,7 @@ namespace LegendaryClient.Windows
                             catch
                             {
                                 Client.Log(
-                                    "Probably updated version number without actually uploading the files. Thanks riot.");
+                                    "Probably updated version number without actually uploading the files.");
                             }
                         }
                     }
@@ -276,9 +276,7 @@ namespace LegendaryClient.Windows
                                 i++;
                             }
 
-                            updateClient.DownloadFile(
-                                new Uri(updateRegion.BaseLink + allFiles[i].Split(',')[0]),
-                                Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                            updateClient.DownloadFile(new Uri(updateRegion.BaseLink + allFiles[i].Split(',')[0]), Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
                             GetAllPngs(allFiles);
                             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))

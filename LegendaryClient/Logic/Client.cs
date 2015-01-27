@@ -452,7 +452,6 @@ namespace LegendaryClient.Logic
                     var xmlDocument = new XmlDocument();
                     xmlDocument.LoadXml(temp);
                     string PlayerJson = JsonConvert.SerializeXmlNode(xmlDocument).Replace("#", "").Replace("@", "");
-                    Debugger.Log(0, "JSON Status", "Player Json loaded: " + PlayerJson);
                     try
                     {
                         if (PlayerJson.Contains(":{\"priority\":"))
@@ -743,7 +742,6 @@ namespace LegendaryClient.Logic
             ChatClient.Write(msg);
         }
 
-        //Why do you even have to do this, riot?
         internal static string GetObfuscatedChatroomName(string Subject, string Type)
         {
             byte[] data = Encoding.UTF8.GetBytes(Subject);
@@ -796,6 +794,7 @@ namespace LegendaryClient.Logic
         internal static Label StatusLabel;
         internal static Label InfoLabel;
         internal static ContentControl OverlayContainer;
+        internal static ContentControl OverOverlayContainer;
         internal static Button PlayButton;
         internal static ContentControl ChatContainer;
         internal static ContentControl StatusContainer;
@@ -1217,13 +1216,13 @@ namespace LegendaryClient.Logic
                 Interval = 5000,
             };
             t.Tick += (o, m) =>
-                {
-                    GameScouter scouter = new GameScouter();
-                    scouter.LoadScouter(LoginPacket.AllSummonerData.Summoner.Name);
-                    scouter.Show();
-                    scouter.Activate();
-                    t.Stop();
-                };
+            {
+                GameScouter scouter = new GameScouter();
+                scouter.LoadScouter(LoginPacket.AllSummonerData.Summoner.Name);
+                scouter.Show();
+                scouter.Activate();
+                t.Stop();
+            };
             t.Start();
         }
 

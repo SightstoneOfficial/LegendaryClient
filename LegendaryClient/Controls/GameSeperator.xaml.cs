@@ -18,73 +18,73 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class GameSeperator
     {
-        private readonly List<JoinQueue> _myItems = new List<JoinQueue>();
-        private readonly ListBox _myQueueBox;
-        private readonly List<object> _tempList = new List<object>();
-        private bool _rotated;
+        private readonly List<JoinQueue> myItems = new List<JoinQueue>();
+        private readonly ListBox myQueueBox;
+        private readonly List<object> tempList = new List<object>();
+        private bool rotated;
 
         public GameSeperator(ListBox myQueueBox)
         {
             InitializeComponent();
-            _myQueueBox = myQueueBox;
+            this.myQueueBox = myQueueBox;
         }
 
         //Kinda gross, will prob think of a better way to do later.
         private void Polygon_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            _myQueueBox.SelectedIndex = _myQueueBox.Items.IndexOf(this);
-            if (!_rotated && PlayPage.DoneLoading)
+            myQueueBox.SelectedIndex = myQueueBox.Items.IndexOf(this);
+            if (!rotated && PlayPage.DoneLoading)
             {
                 var transform = new RotateTransform(90, 25, 40);
                 Triangle.RenderTransform = transform;
 
-                _rotated = !_rotated;
-                for (var i = _myQueueBox.SelectedIndex + 1; i < _myQueueBox.Items.Count; i++)
-                    _tempList.Add(_myQueueBox.Items.GetItemAt(i));
+                rotated = !rotated;
+                for (var i = myQueueBox.SelectedIndex + 1; i < myQueueBox.Items.Count; i++)
+                    tempList.Add(myQueueBox.Items.GetItemAt(i));
 
-                foreach (var t in _tempList)
-                    _myQueueBox.Items.Remove(t);
+                foreach (var t in tempList)
+                    myQueueBox.Items.Remove(t);
 
-                foreach (var t in _myItems)
-                    _myQueueBox.Items.Add(t);
+                foreach (var t in myItems)
+                    myQueueBox.Items.Add(t);
 
-                foreach (var t in _tempList)
-                    _myQueueBox.Items.Add(t);
+                foreach (var t in tempList)
+                    myQueueBox.Items.Add(t);
 
-                _tempList.Clear();
+                tempList.Clear();
             }
             else if (PlayPage.DoneLoading)
             {
                 var transform = new RotateTransform(0, 25, 40);
                 Triangle.RenderTransform = transform;
-                _rotated = !_rotated;
-                foreach (var t in _myItems)
-                    _myQueueBox.Items.Remove(t);
+                rotated = !rotated;
+                foreach (var t in myItems)
+                    myQueueBox.Items.Remove(t);
             }
         }
 
         public void Add(JoinQueue item)
         {
-            _myItems.Add(item);
+            myItems.Add(item);
         }
 
         public List<JoinQueue> GetItems()
         {
-            return _myItems;
+            return myItems;
         }
 
         internal async void UpdateLabels()
         {
             try
             {
-                foreach (var item in _myItems.Where(item => item != null && Client.IsOnPlayPage))
+                foreach (var item in myItems.Where(item => item != null && Client.IsOnPlayPage))
                 {
                     var t = await Client.PVPNet.GetQueueInformation(item.QueueId);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                 }
 
                 var amount =
-                    _myItems.Sum(
+                    myItems.Sum(
                         t =>
                             t.AmountInQueueLabel != null
                                 ? int.Parse(Regex.Match(t.AmountInQueueLabel.Content as string, "\\d+").Value)

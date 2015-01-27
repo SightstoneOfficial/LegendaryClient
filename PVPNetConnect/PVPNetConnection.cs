@@ -31,6 +31,8 @@ using System.Web.Script.Serialization;
 using PVPNetConnect.RiotObjects.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
+using System.Diagnostics;
+using PVPNetConnect.RiotObjects.Platform.Harassment;
 
 namespace PVPNetConnect
 {
@@ -209,7 +211,7 @@ namespace PVPNetConnect
                 //*
                 //GET OUR USER ID
                 List<byte> userIdRequestBytes = new List<byte>();
-               
+
                 userIdRequestBytes.AddRange(junk);
                 userIdRequestBytes.AddRange(encoding.GetBytes(user));
                 for (int i = 0; i < 16; i++)
@@ -242,7 +244,7 @@ namespace PVPNetConnect
 
                 int id = 0;
                 for (int i = 0; i < 4; i++)
-                    id += client.GetStream().ReadByte() * (1 << (8 * i));                
+                    id += client.GetStream().ReadByte() * (1 << (8 * i));
                 userID = Convert.ToString(id);
                 //*/
                 //GET TOKEN
@@ -340,6 +342,8 @@ namespace PVPNetConnect
             s1 = s1.Replace("=", "%3D");
             return s1;
         }
+
+        [DebuggerHidden]
         private bool GetAuthKey()
         {
             try
@@ -400,8 +404,6 @@ namespace PVPNetConnect
                         sb.Clear();
                         if (OnLoginQueueUpdate != null)
                             OnLoginQueueUpdate(this, id - cur);
-
-                        Thread.Sleep(delay);
                         con = WebRequest.Create(loginQueue + "login-queue/rest/queue/ticker/" + champ);
                         con.Method = "GET";
                         webresponse = con.GetResponse();
@@ -424,34 +426,48 @@ namespace PVPNetConnect
 
                     while (sb.ToString() == null || !result.ContainsKey("token"))
                     {
+                        sb.Clear();
+                        if (id - cur < 0)
+                            if (OnLoginQueueUpdate != null)
+                                OnLoginQueueUpdate(this, 0);
+                            else if (OnLoginQueueUpdate != null)
+                                OnLoginQueueUpdate(this, id - cur);
+
+                        con = WebRequest.Create(loginQueue + "login-queue/rest/queue/authToken/" + user.ToLower());
+                        con.Method = "GET";
                         try
                         {
-                            sb.Clear();
+                            using (WebResponse nWebresponse = con.GetResponse())
+                            {
+                                using (Stream nInputStream = nWebresponse.GetResponseStream())
+                                {
 
-                            if (id - cur < 0)
-                                if (OnLoginQueueUpdate != null)
-                                    OnLoginQueueUpdate(this, 0);
-                                else if (OnLoginQueueUpdate != null)
-                                    OnLoginQueueUpdate(this, id - cur);
+                                    int f;
+                                    while ((f = nInputStream.ReadByte()) != -1)
+                                        sb.Append((char)f);
 
-                            Thread.Sleep(delay / 10);
-                            con = WebRequest.Create(loginQueue + "login-queue/rest/queue/authToken/" + user.ToLower());
-                            con.Method = "GET";
-                            webresponse = con.GetResponse();
-                            inputStream = webresponse.GetResponseStream();
-
-                            int f;
-                            while ((f = inputStream.ReadByte()) != -1)
-                                sb.Append((char)f);
-
-                            result = serializer.Deserialize<TypedObject>(sb.ToString());
-
-                            inputStream.Close();
-                            con.Abort();
+                                    result = serializer.Deserialize<TypedObject>(sb.ToString());
+                                }
+                            }
                         }
-                        catch
+                        catch (WebException e)
                         {
+                            if (e.Status == WebExceptionStatus.ProtocolError && e.Response != null)
+                            {
+                                var response = (HttpWebResponse)e.Response;
+                                if (response.StatusCode == HttpStatusCode.NotFound)
+                                {
+                                    Thread.Sleep(50);
+                                    continue;
+                                }
+                                else
+                                {
+                                    Debug.WriteLine(e.Message);
+                                }
+                            }
                         }
+                        inputStream.Close();
+                        con.Abort();
                     }
                 }
                 if (OnLoginQueueUpdate != null)
@@ -486,6 +502,7 @@ namespace PVPNetConnect
                 return false;
             }
         }
+
 
         private int HexToInt(string hex)
         {
@@ -1193,19 +1210,27 @@ namespace PVPNetConnect
                                                 MessageReceived(new StoreAccountBalanceNotification(body));
                                             else if (
                                                 body.type.Equals(
+                                                    "com.riotgames.platform.broadcast.BroadcastMessage"))
+                                                MessageReceived(new BroadcastMessage(body));
+                                            else if (
+                                                body.type.Equals(
                                                     "com.riotgames.platform.messaging.persistence.SimpleDialogMessage"))
                                                 MessageReceived(new SimpleDialogMessage(body));
                                             else if (
                                                 body.type.Equals(
-                                                "com.riotgames.platform.trade.api.contract.TradeContractDTO"))
+                                                    "com.riotgames.platform.trade.api.contract.TradeContractDTO"))
                                                 MessageReceived(new TradeContractDTO(body));
                                             else if (
                                                 body.type.Equals(
-                                                "com.riotgames.platform.statistics.EndOfGameStats"))
+                                                    "com.riotgames.platform.statistics.EndOfGameStats"))
                                                 MessageReceived(new EndOfGameStats(body));
                                             else if (
                                                 body.type.Equals(
-                                                "com.riotgames.platform.gameinvite.contract.LobbyStatus"))
+                                                    "com.riotgames.platform.harassment.HarassmentReport"))
+                                                MessageReceived(new HarassmentReport(body));
+                                            else if (
+                                                body.type.Equals(
+                                                    "com.riotgames.platform.gameinvite.contract.LobbyStatus"))
                                                 MessageReceived(new LobbyStatus(body));
 
                                             //MessageReceived(to["body"]);

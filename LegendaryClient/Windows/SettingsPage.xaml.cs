@@ -43,7 +43,8 @@ namespace LegendaryClient.Windows
             //private const int CCHDEVICENAME = 0x20;
             //private const int CCHFORMNAME = 0x20;
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)] public string dmDeviceName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
+            public string dmDeviceName;
 
             public short dmSpecVersion;
             public short dmDriverVersion;
@@ -60,7 +61,8 @@ namespace LegendaryClient.Windows
             public short dmTTOption;
             public short dmCollate;
 
-            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)] public string dmFormName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 0x20)]
+            public string dmFormName;
 
             public short dmLogPixels;
             public int dmBitsPerPel;
@@ -172,18 +174,13 @@ A code signing license (So you know that you are using LegendaryClient)
         /// </summary>
         private void UpdateStats()
         {
-            Dictionary<String, String> val =
-                Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
-            try
-            {
-                MusicVolumeSlider.Value = (Convert.ToInt32(val["MusicVolume"])*100);
-                VoiceVolumeSlider.Value = (Convert.ToInt32(val["VoiceVolume"])*100);
-                AnnouncerVolumeSlider.Value = (Convert.ToInt32(val["AnnouncerVolume"])*100);
-            }
-            catch (Exception e)
-            {
-                Client.Log("Unable to read game config files. Error message: " + e.Message, "ConfigError");
-            }
+            Dictionary<String, String> val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
+            if (val.Any(x => x.Key == "MusicVolume"))
+                MusicVolumeSlider.Value = (Convert.ToInt32(val["MusicVolume"]) * 100);
+            if (val.Any(x => x.Key == "VoiceVolume"))
+                VoiceVolumeSlider.Value = (Convert.ToInt32(val["VoiceVolume"]) * 100);
+            if (val.Any(x => x.Key == "AnnouncerVolume"))
+                AnnouncerVolumeSlider.Value = (Convert.ToInt32(val["AnnouncerVolume"]) * 100);
         }
 
         public void Addtheme(string text, string value)
@@ -224,9 +221,9 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void warnExitCheckbox_Checked(object sender, RoutedEventArgs e)
         {
-            var cb = (CheckBox) sender;
+            var cb = (CheckBox)sender;
             if (cb.IsChecked != null)
-                Settings.Default.warnClose = (bool) cb.IsChecked;
+                Settings.Default.warnClose = (bool)cb.IsChecked;
 
             Settings.Default.Save();
         }
@@ -234,7 +231,7 @@ A code signing license (So you know that you are using LegendaryClient)
         private void StatsCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             if (StatsCheckbox.IsChecked != null)
-                Settings.Default.GatherStatistics = (bool) StatsCheckbox.IsChecked;
+                Settings.Default.GatherStatistics = (bool)StatsCheckbox.IsChecked;
 
             Settings.Default.Save();
         }
@@ -242,7 +239,7 @@ A code signing license (So you know that you are using LegendaryClient)
         private void ErrorCheckbox_Checked(object sender, RoutedEventArgs e)
         {
             if (ErrorCheckbox.IsChecked != null)
-                Settings.Default.SendErrors = (bool) ErrorCheckbox.IsChecked;
+                Settings.Default.SendErrors = (bool)ErrorCheckbox.IsChecked;
 
             Settings.Default.Save();
         }
@@ -251,7 +248,7 @@ A code signing license (So you know that you are using LegendaryClient)
         {
             Settings.Default.LoginPageImage = LoginImageBox.Text;
 
-            if (UseAsBackground.IsChecked != null && (UseAsBackground.HasContent && (bool) UseAsBackground.IsChecked &&
+            if (UseAsBackground.IsChecked != null && (UseAsBackground.HasContent && (bool)UseAsBackground.IsChecked &&
                                                       File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets",
                                                           "champions",
                                                           Settings.Default.LoginPageImage.Replace("\r\n", "")))))
@@ -267,7 +264,7 @@ A code signing license (So you know that you are using LegendaryClient)
             string temp = Settings.Default.LoginPageImage;
             LoginImageBox.Items.Clear();
             LoginImageBox.Text = temp;
-            if (UseAsBackground.IsChecked != null && (UseAsBackground.HasContent && (bool) UseAsBackground.IsChecked &&
+            if (UseAsBackground.IsChecked != null && (UseAsBackground.HasContent && (bool)UseAsBackground.IsChecked &&
                                                       File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets",
                                                           "champions",
                                                           Settings.Default.LoginPageImage.Replace("\r\n", "")))))
@@ -296,7 +293,7 @@ A code signing license (So you know that you are using LegendaryClient)
             if (winThemes != null)
             {
                 Settings.Default.DarkTheme = winThemes.Text.Contains("Dark");
-                Settings.Default.Theme = (string) winThemes.Value;
+                Settings.Default.Theme = (string)winThemes.Value;
             }
 
             mainWindow.ChangeTheme();
@@ -313,10 +310,10 @@ A code signing license (So you know that you are using LegendaryClient)
             if (UseAsBackground.IsChecked == null)
                 return;
 
-            Settings.Default.UseAsBackgroundImage = (bool) UseAsBackground.IsChecked;
+            Settings.Default.UseAsBackgroundImage = (bool)UseAsBackground.IsChecked;
             if (Settings.Default.UseAsBackgroundImage)
             {
-                if (!UseAsBackground.HasContent || !(bool) UseAsBackground.IsChecked ||
+                if (!UseAsBackground.HasContent || !(bool)UseAsBackground.IsChecked ||
                     !File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                         Settings.Default.LoginPageImage.Replace("\r\n", ""))))
                     return;
@@ -428,7 +425,7 @@ A code signing license (So you know that you are using LegendaryClient)
                         ZipFile.ExtractToDirectory(Path.Combine(dir, filesindir), dir);
                         File.Delete(Path.Combine(dir, filesindir));
                     }
-                        //Use SharpCompres to read .rar files
+                    //Use SharpCompres to read .rar files
                     else if (filesindir.EndsWith(".rar"))
                     {
                         using (Stream stream = File.OpenRead(Path.Combine(dir, filesindir)))
@@ -441,7 +438,7 @@ A code signing license (So you know that you are using LegendaryClient)
                         }
                         File.Delete(Path.Combine(dir, filesindir));
                     }
-                        //File has been extracted. No point of trying to extract it anymore
+                    //File has been extracted. No point of trying to extract it anymore
                     else if (filesindir.EndsWith(".dds"))
                         return true;
                     else if (filesindir.EndsWith(".tga"))
@@ -470,9 +467,9 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void AutoRecordCheckbox_Changed(object sender, RoutedEventArgs e)
         {
-            var cb = (CheckBox) sender;
+            var cb = (CheckBox)sender;
             if (cb.IsChecked != null)
-                Settings.Default.AutoRecordGames = (bool) cb.IsChecked;
+                Settings.Default.AutoRecordGames = (bool)cb.IsChecked;
 
             Settings.Default.Save();
         }
@@ -484,7 +481,7 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void ChampSelectVolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            Client.AmbientSoundPlayer.Volume = ChampSelectVolumeSlider.Value/100;
+            Client.AmbientSoundPlayer.Volume = ChampSelectVolumeSlider.Value / 100;
         }
 
         private void PickBanCheckBox_Checked(object sender, RoutedEventArgs e)

@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
+using System.Diagnostics;
 
 #endregion
 
@@ -69,12 +70,12 @@ namespace LegendaryClient.Controls
                     var innerChatItem = new InnerChatItem();
                     if (message[0] == tempItem.Username)
                     {
-                        innerChatItem.SummonerLabel.Content = tempItem.Username;
+                        innerChatItem.SummonerLabel.Content = tempItem.Username + ":";
                         innerChatItem.SummonerLabel.Foreground = Brushes.Gold;
                     }
                     else
                     {
-                        innerChatItem.SummonerLabel.Content = message[0];
+                        innerChatItem.SummonerLabel.Content = message[0] + ":";
                         innerChatItem.SummonerLabel.Foreground = Brushes.SteelBlue;
                     }
                     innerChatItem.MessageLabel.Content = x.Replace(message[0] + "|", string.Empty);
@@ -85,10 +86,9 @@ namespace LegendaryClient.Controls
                     innerChatItem.Background = (ChatText.Items.Count%2 == 0)
                         ? new SolidColorBrush(Color.FromArgb(255, 37, 37, 37))
                         : new SolidColorBrush(Color.FromArgb(0, 77, 77, 77));
-
-                    if (ChatText.Items.Count != 0 &&
-                        ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).SummonerLabel.Content ==
-                        innerChatItem.SummonerLabel.Content)
+                    if (ChatText.Items.Count > 0 &&
+                        ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).SummonerLabel.Content.ToString() ==
+                        innerChatItem.SummonerLabel.Content.ToString())
                     {
                         ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).MessageLabel.Content +=
                             Environment.NewLine + innerChatItem.MessageLabel.Content;
@@ -116,7 +116,7 @@ namespace LegendaryClient.Controls
             {
                 SummonerLabel =
                 {
-                    Content = Client.LoginPacket.AllSummonerData.Summoner.Name,
+                    Content = Client.LoginPacket.AllSummonerData.Summoner.Name + ":",
                     Foreground = Brushes.SteelBlue
                 },
                 MessageLabel =
@@ -136,8 +136,8 @@ namespace LegendaryClient.Controls
             };
 
             if (ChatText.Items.Count != 0 &&
-                ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).SummonerLabel.Content ==
-                innerChatItem.SummonerLabel.Content)
+                ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).SummonerLabel.Content.ToString() ==
+                innerChatItem.SummonerLabel.Content.ToString())
             {
                 ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).MessageLabel.Content +=
                     Environment.NewLine + innerChatItem.MessageLabel.Content;

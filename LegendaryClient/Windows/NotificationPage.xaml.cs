@@ -84,7 +84,6 @@ namespace LegendaryClient.Windows
                     TextInfo textInfo = cultureInfo.TextInfo;
                     string gameModeLower = textInfo.ToTitleCase(string.Format(m.gameMode.ToLower()));
                     string gameTypeLower = textInfo.ToTitleCase(string.Format(m.gameType.ToLower()));
-                    //Why do I have to do this Riot?
                     string gameTypeRemove = gameTypeLower.Replace("_game", "");
                     string removeAllUnder = gameTypeRemove.Replace("_", " ");
 

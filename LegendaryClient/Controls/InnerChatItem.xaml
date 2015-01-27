@@ -2,8 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="86"
-             d:DesignWidth="330">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d"
+             d:DesignWidth="330" d:DesignHeight="50">
     <UserControl.Resources>
         <ResourceDictionary>
             <Style TargetType="{x:Type Label}">
@@ -20,11 +20,11 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid
-        Width="{Binding (ListView.ActualWidth), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}">
-        <Label x:Name="SummonerLabel" Content="Summoner Name" Margin="8,8,0,0" HorizontalAlignment="Left" FontSize="13"
-               FontWeight="Bold" Foreground="#FFD770" Height="27" VerticalAlignment="Top" />
-        <Label x:Name="MessageLabel" Content="Message" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Margin="8,32,0,0" Width="312" FontWeight="Light" Foreground="White" />
+        Width="{Binding (ListView.ActualWidth), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}" VerticalAlignment="Stretch">
+        <Label x:Name="SummonerLabel" Content="Summoner Name" Margin="5,4,0,0" HorizontalAlignment="Left" FontSize="13"
+               FontWeight="Bold" Foreground="#FFD770" VerticalAlignment="Top" />
+        <Label x:Name="MessageLabel" Content="Message" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+               Margin="5,20,4,7" FontWeight="Light" Foreground="White" />
         <Label x:Name="TimeLabel" Content="Time" HorizontalAlignment="Left" Margin="287,8,0,0" FontSize="11"
                VerticalAlignment="Top" Height="24" Foreground="#555D70" Width="33" />
     </Grid>
