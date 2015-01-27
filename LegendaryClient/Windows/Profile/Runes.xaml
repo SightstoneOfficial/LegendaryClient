@@ -7,12 +7,80 @@
       mc:Ignorable="d" d:DesignHeight="548"
       d:DesignWidth="1280">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+            <Style TargetType="ScrollBar" BasedOn="{StaticResource MetroScrollBar}" />
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Background" Value="#FF474747" />
+                <Setter Property="BorderBrush" Value="{x:Null}" />
+                <Setter Property="Foreground" Value="#FFCFCFCF" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Height" Value="30" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#FF333333" />
+                    </Trigger>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Opacity" Value="2" />
+                        <Setter Property="Background" Value="#FF707070" />
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#222222" />
+                        <Setter Property="Foreground" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.Scrollbars.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.ListView.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="87*"/>
+            <ColumnDefinition Width="73*"/>
+        </Grid.ColumnDefinitions>
         <ListBox x:Name="RunePageListBox" Grid.ColumnSpan="2" Height="28" Margin="10,10,40,0"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
                  BorderBrush="{x:Null}" Background="#19000000" SelectionChanged="RunePageListBox_SelectionChanged"
                  Foreground="White">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Width">
+                        <Setter.Value>
+                            Auto
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Margin">
+                        <Setter.Value>
+                            0,0,2,0
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -34,32 +102,32 @@
         <ListBox x:Name="RedListBox" Width="300" Height="196" Margin="524,42,0,0"
                  HorizontalAlignment="Left" VerticalAlignment="Top"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 Foreground="White" Background="#66505050" BorderBrush="{x:Null}" />
-        <ListBox x:Name="YellowListBox" Width="300" Height="196" Margin="829,42,0,0"
+                 Foreground="White" Background="#66505050" BorderBrush="{x:Null}" Grid.ColumnSpan="2" />
+        <ListBox x:Name="YellowListBox" Width="300" Height="196" Margin="133.149,42,0,0"
                  HorizontalAlignment="Left" VerticalAlignment="Top"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 Foreground="White" Background="#66505050" BorderBrush="{x:Null}" />
+                 Foreground="White" Background="#66505050" BorderBrush="{x:Null}" Grid.Column="1" />
         <ListBox x:Name="BlueListBox" Width="300" Height="196" Margin="524,286,0,0"
                  HorizontalAlignment="Left" VerticalAlignment="Top"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 Foreground="White" Background="#66505050" BorderBrush="{x:Null}" />
-        <ListBox x:Name="BlackListBox" Width="300" Height="196" Margin="829,286,0,0"
+                 Foreground="White" Background="#66505050" BorderBrush="{x:Null}" Grid.ColumnSpan="2" />
+        <ListBox x:Name="BlackListBox" Width="300" Height="196" Margin="133.149,286,0,0"
                  HorizontalAlignment="Left" VerticalAlignment="Top"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 Foreground="White" Background="#66505050" BorderBrush="{x:Null}" />
+                 Foreground="White" Background="#66505050" BorderBrush="{x:Null}" Grid.Column="1" />
 
         <Label x:Name="MarksLabel" Margin="524,238,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Marks"
                Foreground="White" FontSize="25" FontWeight="ExtraLight" />
-        <Label x:Name="SealsLabel" Margin="829,238,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <Label x:Name="SealsLabel" Margin="133.149,238,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Seals"
-               Foreground="White" FontSize="25" FontWeight="ExtraLight" />
+               Foreground="White" FontSize="25" FontWeight="ExtraLight" Grid.Column="1" />
         <Label x:Name="GlyphsLabel" Margin="524,492,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Glyphs"
                Foreground="White" FontSize="25" FontWeight="ExtraLight" />
-        <Label x:Name="QuintsLabel" Margin="829,492,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+        <Label x:Name="QuintsLabel" Margin="133.149,492,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Quintessences"
-               Foreground="White" FontSize="25" FontWeight="ExtraLight" />
+               Foreground="White" FontSize="25" FontWeight="ExtraLight" Grid.Column="1" />
         <ComboBox x:Name="RuneFilterComboBox" Width="200" Margin="10,73,0,0" HorizontalAlignment="Left"
                   VerticalAlignment="Top" SelectionChanged="RuneFilterComboBox_SelectionChanged">
             <Label Content="All" />
@@ -75,7 +143,7 @@
                   Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Rune" />
+                    <GridViewColumn Header="Rune" Width="80"/>
                     <GridViewColumn Width="40" Header="#">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -90,7 +158,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Width="300" Header="Name And Effect">
+                    <GridViewColumn Width="371" Header="Name And Effect">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock>
@@ -108,11 +176,11 @@
             </ListView.View>
             <Grid Width="100" Height="100" />
         </ListView>
-        <Label x:Name="StatsLabel" Margin="1134,45,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content=""
-               Foreground="White" FontWeight="ExtraLight" />
-        <Button x:Name="SaveRunes" Width="200" Margin="264,45,0,0" HorizontalAlignment="Left"
+        <Label x:Name="StatsLabel" Margin="438.149,45,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content=""
+               Foreground="White" FontWeight="ExtraLight" Grid.Column="1" />
+        <Button x:Name="SaveRunes" Width="200" Margin="264,38,0,0" HorizontalAlignment="Left"
                 VerticalAlignment="Top" Content="Save Rune Page" Click="SaveRunes_Click" />
-        <Button x:Name="ClearRunes" Width="200" Margin="264,73,0,0" HorizontalAlignment="Left"
+        <Button x:Name="ClearRunes" Width="200" Margin="264,66,0,0" HorizontalAlignment="Left"
                 VerticalAlignment="Top" Content="Clear Rune Page" Click="ClearRunes_Click" />
 
     </Grid>
