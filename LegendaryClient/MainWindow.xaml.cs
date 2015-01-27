@@ -17,6 +17,7 @@ using System.Threading;
 using System.IO.Pipes;
 using System.Reflection;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using LegendaryClient.Properties;
 using System.Security.Principal;
@@ -70,13 +71,12 @@ namespace LegendaryClient
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
 
             Client.InfoLabel = InfoLabel;
-            Client.PVPNet = new PVPNetConnection();
-            Client.PVPNet.KeepDelegatesOnLogout = false;
+            Client.PVPNet = new PVPNetConnection { KeepDelegatesOnLogout = false };
             Client.PVPNet.OnError += Client.PVPNet_OnError;
-            if (String.IsNullOrEmpty(Properties.Settings.Default.Theme))
+            if (String.IsNullOrEmpty(Settings.Default.Theme))
                 Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
-            myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
-            ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
+            myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
+            ThemeManager.ChangeTheme(this, myAccent, (Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
 
             Client.ChatClient = new JabberClient();
             Client.FriendList = new FriendList();
@@ -100,13 +100,8 @@ namespace LegendaryClient
             NotificationOverlayContainer.Content = new FakePage().Content;
 
             Grid NotificationTempGrid = null;
-            foreach (var x in NotificationOverlayContainer.GetChildObjects())
-            {
-                if (x is Grid)
-                {
-                    NotificationTempGrid = x as Grid;
-                }
-            }
+            foreach (var x in NotificationOverlayContainer.GetChildObjects().OfType<Grid>())
+                NotificationTempGrid = x;
 
             Client.FullNotificationOverlayContainer = FullNotificationOverlayContainer;
             Client.PlayButton = PlayButton;
@@ -130,7 +125,7 @@ namespace LegendaryClient
             else if (Client.Garena)
                 Client.SwitchPage(new LoginPage());
 
-            if (!String.IsNullOrEmpty(Properties.Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
+            if (!String.IsNullOrEmpty(Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
             {
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
                     Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
@@ -240,7 +235,7 @@ namespace LegendaryClient
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoLogin = false;
-            if (Client.IsLoggedIn && Client.GameStatus.ToLower() != "championSelect".ToLower())
+            if (Client.IsLoggedIn && !String.Equals(Client.GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
@@ -260,9 +255,11 @@ namespace LegendaryClient
             }
             else if (Properties.Settings.Default.warnClose && Client.IsInGame)
             {
-                Warn = new Warning();
-                Warn.Title.Content = "Logout while in Game";
-                Warn.MessageText.Text = "Are You Sure You Want To Quit? This will result in a dodge.";
+                Warn = new Warning
+                {
+                    Title = { Content = "Logout while in Game" },
+                    MessageText = { Text = "Are You Sure You Want To Quit? This will result in a dodge." }
+                };
                 Warn.backtochampselect.Click += HideWarning;
                 Warn.AcceptButton.Click += Quit;
                 Warn.hide.Click += HideWarning;
