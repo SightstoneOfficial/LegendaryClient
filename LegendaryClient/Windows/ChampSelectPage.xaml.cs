@@ -1194,7 +1194,10 @@ namespace LegendaryClient.Windows
                 ChangeSelectedChampionSkins((int)item.Tag);
             }
             else if (item.Tag != null)
+            {
+                SearchTextBox.Text = string.Empty;
                 await Client.PVPNet.BanChampion((int)item.Tag);
+            }
         }
 
         private async void SkinSelectListView_PreviewMouseDown(object sender, MouseButtonEventArgs e)

@@ -79,10 +79,11 @@
                 HorizontalAlignment="Right" VerticalAlignment="Top" Content="ê" FontFamily="Wingdings"
                 Click="DownTierButton_Click" />
 
-        <ListView x:Name="LeaguesListView" Width="800"
-                  Margin="10,100,10,10" HorizontalAlignment="Left"
+        <ListView x:Name="LeaguesListView" Width="975"
+                  Margin="10,100,295,10"
                   VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
                   Background="#66505050"
+                  HorizontalAlignment="Stretch"
                   BorderBrush="{x:Null}" SelectionChanged="LeaguesListView_SelectionChanged">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

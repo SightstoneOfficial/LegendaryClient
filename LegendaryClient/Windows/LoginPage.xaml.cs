@@ -296,24 +296,29 @@ namespace LegendaryClient.Windows
 
         private void DisableVideo_Click(object sender, RoutedEventArgs e)
         {
-            if (_playingVideo)
+            if (Settings.Default.LoginPageImage == "")
             {
-                Video.IsChecked = true;
-                _playingVideo = false;
-                try
+                if (_playingVideo)
                 {
-                    LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
+                    Video.IsChecked = true;
+                    _playingVideo = false;
+                    try
+                    {
+                        LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
+                    }
+                    catch
+                    {
+                    }
                 }
-                catch
+                else
                 {
+                    LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
+                    LoginPic.LoadedBehavior = MediaState.Manual;
+                    LoginPic.MediaEnded += LoginPic_MediaEnded;
+                    LoginPic.Play();
+                    Video.IsChecked = false;
+                    _playingVideo = true;
                 }
-            }
-            else
-            {
-                LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Login.mp4"));
-                LoginPic.Play();
-                Video.IsChecked = false;
-                _playingVideo = true;
             }
         }
 
