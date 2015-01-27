@@ -357,5 +357,19 @@ namespace LegendaryClient.Properties {
                 this["ReplayServer"] = value;
             }
         }
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DisableClientSound
+        {
+            get
+            {
+                return ((bool)(this["DisableClientSound"]));
+            }
+            set
+            {
+                this["DisableClientSound"] = value;
+            }
+        }
     }
 }

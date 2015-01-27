@@ -102,6 +102,7 @@ namespace LegendaryClient.Windows
             AutoRecordCheckbox.IsChecked = Settings.Default.AutoRecordGames;
             PickBanCheckBox.IsChecked = Settings.Default.PickBanFocus;
             PickBanCheckBoxFlash.IsChecked = Settings.Default.PickBanFlash;
+            MuteAllSoundCheckBox.IsChecked = Settings.Default.DisableClientSound;
 
             #region AboutTextbox
 
@@ -508,6 +509,17 @@ A code signing license (So you know that you are using LegendaryClient)
             {
                 Settings.Default.ReplayServer = (bool)(sender as CheckBox).IsChecked;
                 Settings.Default.Save();
+            }
+        }
+
+        private void MuteAllSoundCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if ((sender as CheckBox).IsChecked != null)
+            {
+                Settings.Default.DisableClientSound = (bool)(sender as CheckBox).IsChecked;
+                Settings.Default.Save();
+                if ((bool)(sender as CheckBox).IsChecked && Client.AmbientSoundPlayer != null)
+                    Client.AmbientSoundPlayer.Stop();
             }
         }
     }

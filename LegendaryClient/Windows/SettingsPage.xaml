@@ -106,7 +106,7 @@
             <TabItem Header="Audio">
                 <Grid>
                     <CheckBox x:Name="MuteAllSoundCheckBox" Margin="10,10,0,0" HorizontalAlignment="Left"
-                              VerticalAlignment="Top" Content="Mute All Sounds" FontWeight="SemiBold" />
+                              VerticalAlignment="Top" Content="Mute All Sounds" FontWeight="SemiBold" Checked="MuteAllSoundCheckBox_Checked"/>
                     <Label Margin="10,38,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                            Content="Master Volume"
                            FontSize="16" FontWeight="ExtraLight" />

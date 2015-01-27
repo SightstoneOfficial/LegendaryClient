@@ -47,7 +47,8 @@ namespace LegendaryClient.Windows
             QueueTimer.Elapsed += QueueElapsed;
             QueueTimer.Enabled = true;
             Client.MainWin.FlashWindow();
-            QueuePopSound.PlayQueuePopSound();
+            if (!Properties.Settings.Default.DisableClientSound)
+                QueuePopSound.PlayQueuePopSound();
         }
 
         internal void QueueElapsed(object sender, ElapsedEventArgs e)

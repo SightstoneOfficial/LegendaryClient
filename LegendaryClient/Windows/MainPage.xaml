@@ -86,16 +86,16 @@
                  Foreground="White"
                  BorderThickness="0" />
 
-        <TabControl Width="1000" Margin="150,111,130,10" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TabControl Width="1000" Margin="0, 110, 0, 30" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <TabItem Header="Featured Games">
-                <Grid x:Name="SpectatorRegionGrid" Background="Black">
+                <Grid x:Name="SpectatorRegionGrid" Background="Black" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                     <Border BorderBrush="Black" BorderThickness="1" CornerRadius="1">
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="10" ShadowDepth="5" />
                         </Border.Effect>
                     </Border>
 
-                    <Grid x:Name="ImageGrid" Margin="0,-10,0,10" Background="Black" />
+                    <Grid x:Name="ImageGrid" Margin="0,-10,0,10" Background="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     <ListView x:Name="BlueListView" Width="125" Margin="10,10,0,10"
                               HorizontalAlignment="Left" VerticalAlignment="Stretch"
                               ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}"
