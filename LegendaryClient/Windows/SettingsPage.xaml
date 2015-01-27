@@ -85,6 +85,9 @@
                     <CheckBox x:Name="PickBanCheckBoxFlash" Margin="10,97,0,0"
                     	HorizontalAlignment="Left" VerticalAlignment="Top"
                     	Content="Flash window when picking/baning" Checked="PickBanCheckBoxFlash_Checked" />
+                    <CheckBox x:Name="ServerReplayCheckbox" Margin="10,119,0,0"
+                    	HorizontalAlignment="Left" VerticalAlignment="Top"
+                    	Content="Allow all of my games to be recorded by eddy's replay server" Checked="ServerReplayCheckbox_Checked" />
                 </Grid>
             </TabItem>
             <TabItem Header="Video">

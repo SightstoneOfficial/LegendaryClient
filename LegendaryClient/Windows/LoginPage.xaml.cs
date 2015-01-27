@@ -219,6 +219,22 @@ namespace LegendaryClient.Windows
                     Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                         champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
             LoginImage.Source = new BitmapImage(uriSource);*/
+            if (Client.Garena)
+            {
+                Client.PVPNet = null;
+                Client.PVPNet = new PVPNetConnection();
+                BaseRegion Garenaregion = BaseRegion.GetRegion(Environment.GetCommandLineArgs()[1]);
+                Client.PVPNet.garenaToken = Environment.GetCommandLineArgs()[2];
+                Client.PVPNet.Connect(null, null, Garenaregion.PVPRegion, Client.Version);
+                Client.Region = Garenaregion;
+                HideGrid.Visibility = Visibility.Hidden;
+                ErrorTextBox.Visibility = Visibility.Hidden;
+                LoggingInLabel.Visibility = Visibility.Visible;
+                LoggingInProgressRing.Visibility = Visibility.Visible;
+                Client.PVPNet.OnError += PVPNet_OnError;
+                Client.PVPNet.OnLogin += PVPNet_OnLogin;
+                Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
+            }
 
             if (String.IsNullOrWhiteSpace(Settings.Default.SavedPassword) ||
                 String.IsNullOrWhiteSpace(Settings.Default.Region) || !Settings.Default.AutoLogin)
@@ -450,21 +466,42 @@ namespace LegendaryClient.Windows
                 Client.PlayerSession = login;
 
                 //Setup chat
-                Client.ChatClient.AutoReconnect = 30;
-                Client.ChatClient.KeepAlive = 10;
-                Client.ChatClient.NetworkHost = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
-                Client.ChatClient.Port = 5223;
-                Client.ChatClient.Server = "pvp.net";
-                Client.ChatClient.SSL = true;
-                Client.ChatClient.User = LoginUsernameBox.Text;
-                Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
-                Client.userpass = new KeyValuePair<String, String>(LoginUsernameBox.Text,
-                    "AIR_" + LoginPasswordBox.Password);
-                Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
-                Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
-                Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
-                Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
-                Client.ChatClient.Connect();
+                if (!Client.Garena)
+                {
+                    Client.ChatClient.AutoReconnect = 30;
+                    Client.ChatClient.KeepAlive = 10;
+                    Client.ChatClient.NetworkHost = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
+                    Client.ChatClient.Port = 5223;
+                    Client.ChatClient.Server = "pvp.net";
+                    Client.ChatClient.SSL = true;
+                    Client.ChatClient.User = LoginUsernameBox.Text;
+                    Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
+                    Client.userpass = new KeyValuePair<String, String>(LoginUsernameBox.Text,
+                        "AIR_" + LoginPasswordBox.Password);
+                    Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
+                    Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
+                    Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
+                    Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
+                    Client.ChatClient.Connect();
+                }
+                else
+                {
+                    Client.ChatClient.AutoReconnect = 30;
+                    Client.ChatClient.KeepAlive = 10;
+                    Client.ChatClient.NetworkHost = Client.Region.ChatName;
+                    Client.ChatClient.Port = 5223;
+                    Client.ChatClient.Server = "pvp.net";
+                    Client.ChatClient.SSL = true;
+                    Client.ChatClient.User = packet.AllSummonerData.Summoner.AcctId.ToString();
+                    Client.ChatClient.Password = "AIR_pass" + GetLast(packet.AllSummonerData.Summoner.AcctId.ToString(), 5);
+                    Client.userpass = new KeyValuePair<String, String>(packet.AllSummonerData.Summoner.AcctId.ToString(),
+                        "AIR_pass" + GetLast(packet.AllSummonerData.Summoner.AcctId.ToString(), 5));
+                    Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
+                    Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
+                    Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
+                    Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
+                    Client.ChatClient.Connect();
+                }
 
                 Client.RostManager = new RosterManager
                 {
@@ -504,6 +541,13 @@ namespace LegendaryClient.Windows
 
                 Client.ClearPage(typeof (LoginPage));
             }));
+        }
+
+        public string GetLast(string source, int tail_length)
+        {
+            if (tail_length >= source.Length)
+                return source;
+            return source.Substring(source.Length - tail_length);
         }
 
         public static string GetNewIpAddress()
@@ -592,10 +636,20 @@ namespace LegendaryClient.Windows
 
         private void LoadGarena()
         {
-            var result = MessageBox.Show("Garena was selected. Would you like to inject MLaunch and reload LegendaryClient?", "Garena", MessageBoxButton.YesNo);
+            var result = MessageBox.Show("Garena was selected. Would you like to inject MLaunch and reload LegendaryClient? (REQUIRED TO USE GARENA WITH LEGENDARYCLIENT)", "LegendaryClient + Garena", MessageBoxButton.YesNo);
             if (result != MessageBoxResult.Yes)
+            {
+                UpdateRegionComboBox.SelectedValue = "Live";
+                UpdateRegionComboBox_SelectionChanged(null, null);
                 return;
-            MessageBox.Show("LegendaryClient will now exit. Start league of legends from the Garena Launcher to use LegendaryClient. Once you do that you will be asked to input your region and you can use LegendaryClient on Garena", "Garena", MessageBoxButton.OK);
+            }
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LOLClient")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LOLClient"));
+            File.Move(Path.Combine(), Path.Combine());
+            MessageBox.Show(@"MLaunch has been placed where lolclient.exe is. 
+LegendaryClient will now exit. 
+To launch LegendaryClient, launch the Garena+ and start league of legends, but MLaunch will start instead of lol. 
+Once you do that you will be asked to input your region and you can use LegendaryClient on Garena", "LegendaryClient + Garena", MessageBoxButton.OK);
             Environment.Exit(0);
         }
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

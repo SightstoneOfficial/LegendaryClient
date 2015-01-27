@@ -36,7 +36,7 @@ namespace LegendaryClient
         public static bool started = false;
         private static readonly ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
-        public MainWindow()
+        public MainWindow(StartupEventArgs e)
         {
             PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
             PresentationTraceSources.ResourceDictionarySource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
@@ -125,7 +125,10 @@ namespace LegendaryClient
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
-            Client.SwitchPage(new PatcherPage());
+            if (!Client.Garena)
+                Client.SwitchPage(new PatcherPage());
+            else if (Client.Garena)
+                Client.SwitchPage(new LoginPage());
 
             if (!String.IsNullOrEmpty(Properties.Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
             {
