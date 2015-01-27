@@ -501,6 +501,15 @@ A code signing license (So you know that you are using LegendaryClient)
 
             Settings.Default.Save();
         }
+
+        private void ServerReplayCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            if ((sender as CheckBox).IsChecked != null)
+            {
+                Settings.Default.ReplayServer = (bool)(sender as CheckBox).IsChecked;
+                Settings.Default.Save();
+            }
+        }
     }
 
     public class WinThemes

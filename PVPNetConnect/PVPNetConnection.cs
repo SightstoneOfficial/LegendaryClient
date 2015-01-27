@@ -65,7 +65,7 @@ namespace PVPNetConnect
 
         /** Garena information */
         private bool useGarena = false;
-        private string garenaToken;
+        public string garenaToken;
         public string userID;
 
         //Invoke Variables
@@ -153,10 +153,11 @@ namespace PVPNetConnect
 
                     //Check for riot webserver status
                     //along with gettin out Auth Key that we need for the login process.
+                    /*
                     if (useGarena)
                         if (!GetGarenaToken(RegionInfo.GetGarenaAuthServerValue(region)))
                             return;
-
+                    //*/
 
                     if (!GetAuthKey())
                         return;

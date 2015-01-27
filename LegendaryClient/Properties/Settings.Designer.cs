@@ -345,5 +345,17 @@ namespace LegendaryClient.Properties {
                 this["PickBanFlash"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ReplayServer {
+            get {
+                return ((bool)(this["ReplayServer"]));
+            }
+            set {
+                this["ReplayServer"] = value;
+            }
+        }
     }
 }

@@ -50,8 +50,9 @@ namespace LegendaryClientMLaunch
             var start = new ProcessStartInfo
             {
                 FileName = Path.Combine(fileLocation, "Client", "LegendaryClient.exe"),
-                Arguments = "\"" + regionComboBox.SelectedItem + "\"" + " \"" + arg + "\""
+                Arguments = "\"EnableGarena=true\" \"" + regionComboBox.SelectedItem + "\" \"" + arg + "\""
             };
+            Process.Start(start);
             key.Close();
         }
     }
