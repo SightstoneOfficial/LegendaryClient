@@ -1076,10 +1076,10 @@ namespace LegendaryClient.Logic
                     return "Ranked 5v5";
 
                 case "matching-queue-RANKED_TEAM-3x3-game-queue":
-                    return "Ranked Team 5v5";
+                    return "Ranked Team 3v3";
 
                 case "matching-queue-RANKED_TEAM-5x5-game-queue":
-                    return "Ranked Team 3v3";
+                    return "Ranked Team 5v5";
 
                 case "matching-queue-ODIN-5x5-game-queue":
                     return "Dominion 5v5";

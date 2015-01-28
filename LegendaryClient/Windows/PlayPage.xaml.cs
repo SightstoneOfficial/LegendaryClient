@@ -221,7 +221,19 @@ namespace LegendaryClient.Windows
             LastSender = (Button) sender;
             var config = (GameQueueConfig) LastSender.Tag;
             //Make Teambuilder work for duo
-            if (config.Id != 61 && config.TypeString != "BOT")
+            if (config.Id == 41 || config.Id == 42)
+            {
+                if (Queues.Contains(config.Id))
+                    return;
+
+                Queues.Add(config.Id);
+                Client.QueueId = config.Id;
+                TeamSelect teamSelectWindow = new TeamSelect();
+
+                Client.FullNotificationOverlayContainer.Content = teamSelectWindow.Content;
+                Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
+            }
+            else if (config.Id != 61 && config.TypeString != "BOT")
             {
                 if (Queues.Contains(config.Id))
                     return;
