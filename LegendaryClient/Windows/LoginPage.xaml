@@ -99,7 +99,7 @@
                           VerticalAlignment="Top" Content="Sign-in invisible" Foreground="White" />
                 <ComboBox x:Name="UpdateRegionComboBox" Width="120" Margin="220,10,0,0"
                 	HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}"
-                	SelectedIndex="2" SelectionChanged="UpdateRegionComboBox_SelectionChanged"/>
+                	SelectionChanged="UpdateRegionComboBox_SelectionChanged"/>
             </Grid>
             <TextBox x:Name="Version" Width="283" Height="24"
                      Margin="0,301,57,0" HorizontalAlignment="Right"

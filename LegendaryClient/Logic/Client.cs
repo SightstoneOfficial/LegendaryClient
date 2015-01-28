@@ -1132,7 +1132,11 @@ namespace LegendaryClient.Logic
                 case "matching-queue-KINGPORO-5x5-game-queue":
                     return "King Poro 5v5";
 
+                case "matching-queue-COUNTERPICK-5x5-game-queue":
+                    return "Nemesis Draft 5v5";
+
                 default:
+                    Client.Log(internalQueue);
                     return internalQueue;
             }
         }

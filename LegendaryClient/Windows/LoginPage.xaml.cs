@@ -59,6 +59,7 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
             //#B2C8C8C8
+            UpdateRegionComboBox.SelectedValue = Client.UpdateRegion;
             if (Client.UpdateRegion == "Garena" && !Client.Garena)
                 LoadGarena();
             switch (Client.UpdateRegion)
@@ -701,31 +702,32 @@ Once you do that you will be asked to input your region and you can use Legendar
         }
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (UpdateRegionComboBox.SelectedValue != null)
+            if (e.RemovedItems.Count != 0)
+            {
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
+                if ((string)UpdateRegionComboBox.SelectedValue == "Garena")
+                    LoadGarena();
 
-            if ((string)UpdateRegionComboBox.SelectedValue == "Garena")
-                LoadGarena();
+                Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
+                if (!RegionComboBox.Items.IsInUse)
+                {
+                    RegionComboBox.Items.Clear();
+                    Thread.Sleep(100);
+                }
+                switch (Client.UpdateRegion)
+                {
+                    case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
+                        break;
 
-            Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
-            if (!RegionComboBox.Items.IsInUse)
-            {
-                RegionComboBox.Items.Clear();
-                Thread.Sleep(100);
-            }
-            switch (Client.UpdateRegion)
-            {
-                case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
-                    break;
+                    case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
+                        break;
 
-                case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
-                    break;
+                    case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
+                        break;
 
-                case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
-                    break;
-
-                case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
-                    break;
+                    case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                        break;
+                }
             }
         }
     }

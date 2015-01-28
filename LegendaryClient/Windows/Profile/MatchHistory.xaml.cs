@@ -132,6 +132,9 @@ namespace LegendaryClient.Windows.Profile
                         case "KING_PORO":
                             item.ScoreLabel.Content += "(King Poro)";
                             break;
+                        case "COUNTER_PICK":
+                            item.ScoreLabel.Content += "(Nemesis Draft)";
+                            break;
                         default:
                             Client.Log(stats.Game.QueueType);
                             item.ScoreLabel.Content += "Please upload this log to github.";
