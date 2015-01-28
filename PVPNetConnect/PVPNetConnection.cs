@@ -203,6 +203,7 @@ namespace PVPNetConnect
             string s1 = s.Replace("/", "%2F");
             s1 = s1.Replace("+", "%2B");
             s1 = s1.Replace("=", "%3D");
+
             return s1;
         }
 
@@ -336,6 +337,8 @@ namespace PVPNetConnect
                 if (OnLoginQueueUpdate != null)
                     OnLoginQueueUpdate(this, 0);
                 authToken = result.GetString("token");
+                if (useGarena)
+                    userID = result.GetString("token");
 
                 return true;
             }

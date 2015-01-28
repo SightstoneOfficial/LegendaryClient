@@ -933,6 +933,7 @@ namespace LegendaryClient.Windows
             {
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
                 ClientRegionLocation(Settings.Default.updateRegion);
+                Settings.Default.Save();
             }
         }
 
