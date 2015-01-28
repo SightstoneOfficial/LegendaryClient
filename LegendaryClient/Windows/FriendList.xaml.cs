@@ -468,5 +468,24 @@ namespace LegendaryClient.Windows
                 Client.SetChatHover();
             }
         }
+
+        private void BlockFriend_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private async void RemoveFriend_Click(object sender, RoutedEventArgs e)
+        {
+            if (LastPlayerItem != null)
+            {
+                PublicSummoner JID = await Client.PVPNet.GetSummonerByName(LastPlayerItem.Username);
+                var jid = new JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
+                Client.ChatClient.RemoveRosterItem(jid);
+                Client.RostManager.Remove(jid);
+                Client.AllPlayers.Remove(jid.User);
+                Client.UpdatePlayers = true;
+                UpdateChat(null, null);
+            }
+        }
     }
 }

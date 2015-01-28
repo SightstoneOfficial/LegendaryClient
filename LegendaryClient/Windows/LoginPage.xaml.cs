@@ -513,7 +513,6 @@ namespace LegendaryClient.Windows
                 Client.RostManager = new RosterManager
                 {
                     Stream = Client.ChatClient,
-                    AutoSubscribe = true,
                     AutoAllow = AutoSubscriptionHanding.AllowAll
                 };
                 Client.RostManager.OnRosterItem += Client.RostManager_OnRosterItem;

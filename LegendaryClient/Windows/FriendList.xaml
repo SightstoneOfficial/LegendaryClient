@@ -51,8 +51,8 @@
                 <MenuItem x:Name="Invite" Header="Invite to Game" Click="Invite_Click" />
                 <MenuItem x:Name="ProfileItem" Header="View Profile" Click="ProfileItem_Click" />
                 <MenuItem Header="Invite to Chat" />
-                <MenuItem Header="Remove Friend" />
-                <MenuItem Header="Ignore Friend" />
+                <MenuItem Header="Remove Friend" Click="RemoveFriend_Click"/>
+                <MenuItem Header="Block Friend" Click="BlockFriend_Click"/>
                 <MenuItem Header="Spectate Game" Click="SpectateGame_Click"/>
             </ContextMenu>
 
