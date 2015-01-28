@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PVPNetConnect.RiotObjects.Gameinvite.Contract
+namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
 {
     public class Inviter : RiotGamesObject
     {

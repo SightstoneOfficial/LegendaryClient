@@ -25,7 +25,6 @@ using Newtonsoft.Json;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Member;
 using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
@@ -707,6 +706,9 @@ namespace LegendaryClient.Windows
                                 break;
                             case "RANKED_RESTRICTED":
                                 messageOver.MessageTextBox.Text += " - You are not currently able to queue for ranked for: " + x.PenaltyRemainingTime + " games. If this is inaccurate please report it as an issue on the github page. Thanks!";
+                                break;
+                            case "RANKED_MIN_LEVEL":
+                                messageOver.MessageTextBox.Text += " - Level 30 is required to played ranked games.";
                                 break;
                             default:
                                 messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";

@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -74,7 +75,12 @@ namespace LegendaryClient.Windows
                         Client.InviteData.Remove(data2.stats.InvitationId);
                     };
                     notification.TitleLabel.Content = "Game Invite";
-                    notification.BodyTextbox.Text = data2.stats.Inviter + " has invited you to a game";
+                    string _name;
+                    if (data2.stats.Inviter != null)
+                        _name = data2.stats.Inviter.SummonerName;
+                    else
+                        _name = data2.stats.Owner.SummonerName;
+                    notification.BodyTextbox.Text = _name + " has invited you to a game" + Environment.NewLine;
 
                     var m = JsonConvert.DeserializeObject<invitationRequest>(data2.stats.GameMetaData);
 
@@ -87,7 +93,7 @@ namespace LegendaryClient.Windows
                     string gameTypeRemove = gameTypeLower.Replace("_game", "");
                     string removeAllUnder = gameTypeRemove.Replace("_", " ");
 
-                    notification.BodyTextbox.Text += "Mode: " + gameModeLower;
+                    notification.BodyTextbox.Text += "Mode: " + gameModeLower + Environment.NewLine;
                     switch (m.mapId)
                     {
                         case 1:
@@ -106,7 +112,7 @@ namespace LegendaryClient.Windows
                             mapName = "Unknown Map";
                             break;
                     }
-                    notification.BodyTextbox.Text += "Map: " + mapName;
+                    notification.BodyTextbox.Text += "Map: " + mapName + Environment.NewLine;
                     notification.BodyTextbox.Text += "Type: " + removeAllUnder;
                     ChatListView.Items.Add(notification);
                 }));

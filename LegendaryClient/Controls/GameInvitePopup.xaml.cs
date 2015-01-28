@@ -8,7 +8,7 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using Newtonsoft.Json;
-using PVPNetConnect.RiotObjects.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Game;
 
 #endregion
@@ -53,7 +53,7 @@ namespace LegendaryClient.Controls
                 PVPNet_OnMessageReceived(this, stats);
 
                 //This should be hidden
-                Visibility = Visibility.Hidden;
+                //Visibility = Visibility.Hidden;
             }
             catch
             {
@@ -150,7 +150,10 @@ namespace LegendaryClient.Controls
             _invitationStateAsString = stats.InvitationStateAsString;
             _gameMetaData = stats.GameMetaData;
             _invitationState = stats.InvitationState;
-            _inviter = stats.Inviter.SummonerName;
+            if (stats.Inviter != null)
+                _inviter = stats.Inviter.SummonerName;
+            else
+                _inviter = stats.Owner.SummonerName;
             _invitationId = stats.InvitationId;
             if (_invitationId != null)
                 NoGame.Visibility = Visibility.Hidden;

@@ -47,7 +47,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         //public Player Owner { get; set; }
 
         [InternalName("members")]
-        public List<Member.Member> Members { get; set; }
+        public List<Member> Members { get; set; }
 
         [InternalName("invitees")]
         public List<Invitee> Invitees { get; set; }

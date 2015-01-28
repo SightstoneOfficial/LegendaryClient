@@ -63,6 +63,17 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <EventSetter Event="PreviewMouseDown" Handler="ListViewItem_PreviewMouseDown" />
+                    <Style.Triggers>
+                        <Trigger Property="Visibility" Value="Visible">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0.0" To="1.0" Duration="0:0:0.5"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
@@ -113,7 +124,7 @@
             </RichTextBox.Resources>
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="150,0,285,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Button x:Name="ChatButton" Content="Send" Margin="0,0,150,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" />
+        <Button x:Name="ChatButton" Content="Send" Margin="0,0,152,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" Height="26" />
         <ToggleButton x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,49,150,0" Checked="Switch_Click" Unchecked="Switch_Click"/>
     </Grid>
 </Page>

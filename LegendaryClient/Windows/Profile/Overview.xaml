@@ -54,7 +54,7 @@
 
     <Grid>
         <ListView x:Name="KudosListView" Width="280"
-                  Height="220" Margin="10,40,10,0" HorizontalAlignment="Right"
+                  Height="Auto" Margin="10,40,10,0" HorizontalAlignment="Right"
                   VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
@@ -67,7 +67,7 @@
                VerticalAlignment="Top" Content="Top Champions (0 Ranked Games)" FontSize="18" FontWeight="ExtraLight"
                Foreground="White" />
         <ListView x:Name="TopChampionsListView" Width="280"
-                  Height="170" Margin="10,300,10,0" HorizontalAlignment="Right"
+                  Height="Auto" Margin="10,300,10,0" HorizontalAlignment="Right"
                   VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
                   Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>

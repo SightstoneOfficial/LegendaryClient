@@ -29,6 +29,7 @@ using LegendaryClient.Logic.SQLite;
 using Newtonsoft.Json;
 using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Broadcast;
 using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
@@ -62,6 +63,7 @@ namespace LegendaryClient.Windows
             uiLogic.Profile = new ProfilePage();
             ChangeSpectatorRegion(region);
             GetNews(region);
+            GetPendingInvites();
             var update = new Timer
             {
                 Interval = 5000
@@ -100,6 +102,27 @@ namespace LegendaryClient.Windows
                 fakeend.Visibility = Visibility.Visible;
                 testChat.Visibility = Visibility.Visible;
                 testInvite.Visibility = Visibility.Visible;
+            }
+        }
+
+        public async void GetPendingInvites()
+        {
+            object[] asd = await Client.PVPNet.getPendingInvitations();
+            foreach (var item in asd)
+            {
+
+                InvitationRequest qwer = new InvitationRequest((TypedObject)item);
+                Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    var pop = new GameInvitePopup(qwer)
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Bottom,
+                        Height = 230
+                    };
+
+                    Client.NotificationGrid.Children.Add(pop);
+                }));
             }
         }
 

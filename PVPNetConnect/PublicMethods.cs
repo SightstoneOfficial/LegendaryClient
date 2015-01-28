@@ -1104,12 +1104,12 @@ namespace PVPNetConnect
 
 
 
-        public async Task<object> getPendingInvitations()
+        public async Task<object[]> getPendingInvitations()
         {
             int Id = Invoke("lcdsGameInvitationService", "getPendingInvitations", new object[] { });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            LobbyStatus result = new LobbyStatus();
+             var result = results[Id].GetTO("data").GetArray("body");
             results.Remove(Id);
             return result;
         }
