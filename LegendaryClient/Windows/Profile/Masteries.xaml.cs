@@ -439,5 +439,27 @@ namespace LegendaryClient.Windows.Profile
                 }
             }
         }
+
+        private async void AddPageButton_Click(object sender, RoutedEventArgs e)
+        {
+            double pageId = 0;
+            foreach (var item in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
+            {
+                if (pageId <= item.PageId)
+                {
+                    pageId = item.PageId;
+                    pageId++;
+                }
+            }
+            MasteryBookPageDTO newPage = new MasteryBookPageDTO();
+            newPage.SummonerId = Client.LoginPacket.AllSummonerData.Summoner.SumId;
+            newPage.Name = "@@!PaG3!@@" + pageId;
+            newPage.PageId = pageId;
+            newPage.TalentEntries = new List<TalentEntry>();
+            Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Add(newPage);
+            await Client.PVPNet.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
+            _masteryPageOrder.Add(pageId);
+            MasteryPageListView.Items.Add(Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count + " ");
+        }
     }
 }
