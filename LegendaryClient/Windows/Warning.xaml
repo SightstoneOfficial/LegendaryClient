@@ -55,7 +55,7 @@
     <Grid Background="#B2000000">
         <Grid Width="450" Height="400" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
               Background="#FF2B2B2B">
-            <Label x:Name="Title" Width="225" Margin="10,10,0,0" HorizontalAlignment="Left"
+            <Label x:Name="Title" Width="430" Margin="10,10,0,0" HorizontalAlignment="Left"
                    VerticalAlignment="Top" Content="Warning" FontWeight="ExtraLight" FontSize="30" />
             <Button x:Name="AcceptButton" Height="30" Margin="10,0,10,10" HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom" Content="Exit" />

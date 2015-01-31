@@ -145,6 +145,7 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(Page previousPage)
         {
             InitializeComponent();
+            Client.ClearPage(typeof(QueuePopOverlay));
             Client.inQueueTimer.Visibility = Visibility.Hidden;
             Client.OverlayContainer.Content = null;
             this.previousPage = previousPage;
@@ -156,10 +157,19 @@ namespace LegendaryClient.Windows
             }
             Client.LastPageContent = Content;
             Client.runonce = true;
+            GetLocalRunePages();
 
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Champion Select";
+        }
+
+        private void GetLocalRunePages()
+        {
+            foreach (var item in Client.LocalRunePages)
+            {
+                LocalRuneComboBox.Items.Add(item.Key);
+            }
         }
 
         private bool BanningPhase
@@ -587,6 +597,7 @@ namespace LegendaryClient.Windows
                         Client.SetChatHover();
                         Client.SwitchPage(previousPage);
                         Client.ClearPage(typeof(ChampSelectPage));
+
                     }
 
                     #region Display players
@@ -1249,6 +1260,7 @@ namespace LegendaryClient.Windows
                 Warn.AcceptButton.Click += (o, m) =>
                 {
                     QuitCurrentGame();
+                    Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 };
                 Warn.hide.Click += (o, m) =>
                 {
@@ -1545,6 +1557,22 @@ namespace LegendaryClient.Windows
                 ChampionSelectListView.Visibility = Visibility.Visible;
                 AfterChampionSelectGrid.Visibility = Visibility.Hidden;
             }
+        }
+
+        private async void LocalRuneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!QuickLoad) //Make loading quicker
+                return;
+
+            int i = 0;
+            string[] runeIds = Client.LocalRunePages[LocalRuneComboBox.SelectedItem.ToString()].Split(',');
+            
+            foreach(string item in runeIds)
+            {
+                Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RuneComboBox.SelectedIndex].SlotEntries[i].RuneId = Convert.ToInt32(item);
+                i++;
+            }
+            await Client.PVPNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
         }
     }
 }

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -55,6 +56,7 @@ namespace LegendaryClient.Windows.Profile
 
             Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Sort((x, y) => x.PageId.CompareTo(y.PageId));
             GetAvailableRunes();
+            Client.LocalRunePages = Client.LeagueSettingsReader(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
         public void Change()
@@ -454,6 +456,29 @@ namespace LegendaryClient.Windows.Profile
             }
             UpdateStatList();
             AvailableRuneList.Items.Refresh();
+        }
+
+        private void LocalSaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (LocalName.Text == string.Empty)
+                return;
+            List<string> local = new List<string>();
+            foreach(var id in GetCurrentSlotEntries())
+            {
+                local.Add(id.RuneId.ToString());
+            }
+            if (Client.LocalRunePages.ContainsKey(LocalName.Text))
+                Client.LocalRunePages.Remove(LocalName.Text);
+
+            Client.LocalRunePages.Add(LocalName.Text, string.Join(",", local)); //Make to League setting like string
+            List<string> saveString = new List<string>();
+
+            foreach(var item in Client.LocalRunePages)
+            {
+                saveString.Add(item.Key + "=" + item.Value);
+            }
+
+            File.WriteAllLines(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name, saveString);
         }
     }
 }

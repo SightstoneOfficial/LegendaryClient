@@ -245,12 +245,13 @@ namespace LegendaryClient
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
-        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        public void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Properties.Settings.Default.AutoLogin = false;
             if (Client.IsLoggedIn && !String.Equals(Client.GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
+                Client.MainWin.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
                 Client.PVPNet.QuitGame();

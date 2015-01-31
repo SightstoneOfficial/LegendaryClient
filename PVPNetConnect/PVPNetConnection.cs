@@ -1097,7 +1097,10 @@ namespace PVPNetConnect
                                                 body.type.Equals(
                                                     "com.riotgames.platform.gameinvite.contract.LobbyStatus"))
                                                 MessageReceived(new LobbyStatus(body));
-
+                                            else if (
+                                                body.type.Equals(
+                                                    "com.riotgames.platform.messaging.ClientLoginKickNotification"))
+                                                MessageReceived(new ClientLoginKickNotification(body));
                                             //MessageReceived(to["body"]);
                                         })).Start();
                                     }

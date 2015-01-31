@@ -1055,9 +1055,37 @@ namespace LegendaryClient.Logic
                             NotificationGrid.Children.Add(pop);
                         }));
                     }
+                    else if (message is ClientLoginKickNotification)
+                    {
+                        Warning Warn = new Warning
+                        {
+                            Title = { Content = "Kicked from server" },
+                            MessageText = { Text = "This account has been logged in from another location" }
+                        };
+                        Warn.backtochampselect.Click += Client.MainWin.LogoutButton_Click;
+                        Warn.AcceptButton.Click += QuitClient;
+                        Warn.hide.Visibility = Visibility.Hidden;
+                        Warn.backtochampselect.Content = "Logout(Work in progress)";
+                        Warn.AcceptButton.Content = "Quit";
+                        Client.FullNotificationOverlayContainer.Content = Warn.Content;
+                        Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
+                    }
                 }
             }));
         }
+
+        private static void QuitClient(object sender, RoutedEventArgs e)
+        {
+ 	        if (Client.IsLoggedIn)
+            {
+                Client.PVPNet.PurgeFromQueues();
+                Client.PVPNet.Leave();
+                Client.PVPNet.Disconnect();
+            }
+            Environment.Exit(0);
+
+        }
+
 
         internal static string InternalQueueToPretty(string internalQueue)
         {
@@ -1573,6 +1601,8 @@ namespace LegendaryClient.Logic
         public static string UpdateRegion { get; set; }
 
         public static string GameType { get; set; }
+
+        public static Dictionary<string, string> LocalRunePages = new Dictionary<string, string>();
     }
 
 

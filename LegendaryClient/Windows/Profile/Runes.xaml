@@ -178,10 +178,11 @@
         </ListView>
         <Label x:Name="StatsLabel" Margin="438.149,45,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content=""
                Foreground="White" FontWeight="ExtraLight" Grid.Column="1" />
-        <Button x:Name="SaveRunes" Width="200" Margin="264,38,0,0" HorizontalAlignment="Left"
+        <Button x:Name="SaveRunes" Width="140" Margin="215,43,0,0" HorizontalAlignment="Left"
                 VerticalAlignment="Top" Content="Save Rune Page" Click="SaveRunes_Click" />
-        <Button x:Name="ClearRunes" Width="200" Margin="264,66,0,0" HorizontalAlignment="Left"
+        <Button x:Name="ClearRunes" Width="140" Margin="215,70,0,0" HorizontalAlignment="Left"
                 VerticalAlignment="Top" Content="Clear Rune Page" Click="ClearRunes_Click" />
-
+        <Button Content="Save Locally(WIP)" HorizontalAlignment="Left" VerticalAlignment="Top" Width="135" Margin="375,70,0,0" Click="LocalSaveButton_Click"/>
+        <TextBox x:Name="LocalName" HorizontalAlignment="Left" Height="23" Margin="375,47,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="135"/>
     </Grid>
 </Page>
