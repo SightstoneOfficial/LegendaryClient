@@ -22,6 +22,7 @@ using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using PVPNetConnect.RiotObjects.Team;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
@@ -45,6 +46,7 @@ namespace LegendaryClient.Windows
         private Button LastSender;
         private int i;
         private static Timer PingTimer;
+        private TeamId selectedTeamId;
 
         //gamemetadata
         private int queueId, mapId, gameTypeConfigId;
@@ -58,7 +60,7 @@ namespace LegendaryClient.Windows
         /// <summary>
         ///     When invited to a team
         /// </summary>
-        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false)
+        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, TeamId SelectedTeam = null)
         {
             InitializeComponent();
             if (Client.Dev)
@@ -83,6 +85,7 @@ namespace LegendaryClient.Windows
             //Opps
             Invite = Invid;
             CurrentLobby = NewLobby;
+            selectedTeamId = SelectedTeam;
             if (!IsReturningToLobby)
             {
                 LoadStats();
@@ -656,6 +659,7 @@ namespace LegendaryClient.Windows
                     InviteList.Add(GameInvitePlayerList);
                 }
                 parameters.Team = InviteList;
+                parameters.TeamId = selectedTeamId;
                 Client.PVPNet.AttachTeamToQueue(parameters, EnteredQueue);
             }
             else
@@ -709,6 +713,9 @@ namespace LegendaryClient.Windows
                                 break;
                             case "RANKED_MIN_LEVEL":
                                 messageOver.MessageTextBox.Text += " - Level 30 is required to played ranked games.";
+                                break;
+                            case "QUEUE_PARTICIPANTS":
+                                messageOver.MessageTextBox.Text += " - Not enough players for this queue type.";
                                 break;
                             default:
                                 messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";

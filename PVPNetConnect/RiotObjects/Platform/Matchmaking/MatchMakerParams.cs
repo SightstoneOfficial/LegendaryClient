@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using PVPNetConnect.RiotObjects.Team;
 
 namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
 {
@@ -40,7 +41,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public object LastMaestroMessage { get; set; }
 
         [InternalName("teamId")]
-        public object TeamId { get; set; }
+        public TeamId TeamId { get; set; }
 
         [InternalName("languages")]
         public object Languages { get; set; }

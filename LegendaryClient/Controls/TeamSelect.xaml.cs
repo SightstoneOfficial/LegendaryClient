@@ -1,9 +1,11 @@
 ﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows;
 using PVPNetConnect.RiotObjects.Team.Dto;
+using PVPNetConnect.RiotObjects.Team;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect;
 using System.Windows;
+using System.Collections.Generic;
 
 
 namespace LegendaryClient.Controls
@@ -13,6 +15,7 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class TeamSelect
     {
+        List<TeamId> TeamIdList = new List<TeamId>();
         public TeamSelect()
         {
             InitializeComponent();
@@ -25,6 +28,7 @@ namespace LegendaryClient.Controls
             {
                 TeamDTO qwe = new PVPNetConnect.RiotObjects.Team.Dto.TeamDTO((TypedObject)item);
                 TeamList.Items.Add(qwe.Name);
+                TeamIdList.Add(qwe.TeamId);
             }
         }
 
@@ -32,8 +36,9 @@ namespace LegendaryClient.Controls
         {
             LobbyStatus lobby = await Client.PVPNet.createArrangedRankedTeamLobby(Client.QueueId, TeamList.SelectedItem.ToString());
 
+            TeamId SelectedTeamId = TeamIdList[TeamList.SelectedIndex];
             Client.ClearPage(typeof(TeamQueuePage));
-            Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby));
+            Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby, false, SelectedTeamId));
             Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
         }
 
