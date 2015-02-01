@@ -39,5 +39,6 @@
         <Label x:Name="CsLabel" Content="400" HorizontalAlignment="Left" Margin="668,6,0,7" FontSize="24"
                FontWeight="ExtraLight" VerticalAlignment="Center" />
         <Button x:Name="ReportButton" Content="R" HorizontalAlignment="Left" Margin="720,12,0,0" VerticalAlignment="Top" Width="38" Height="32" Click="ReportButton_Click"/>
+        <Button x:Name="KudosButton" Content="H" HorizontalAlignment="Left" Margin="763,12,0,0" VerticalAlignment="Top" Width="38" Height="32" Click="KudosButton_Click"/>
     </Grid>
 </UserControl>

@@ -379,6 +379,9 @@
     <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
       <DependentUpon>ChampionDetailsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\KudosPlayerOverlay.xaml.cs">
+      <DependentUpon>KudosPlayerOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ReportPlayerOverlay.xaml.cs">
       <DependentUpon>ReportPlayerOverlay.xaml</DependentUpon>
     </Compile>
@@ -784,6 +787,10 @@
     <Page Include="Windows\ChampionDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\KudosPlayerOverlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\ReportPlayerOverlay.xaml">
       <Generator>MSBuild:Compile</Generator>
