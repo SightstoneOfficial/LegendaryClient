@@ -107,20 +107,18 @@ namespace LegendaryClient.Windows
 
         public async void GetPendingInvites()
         {
-            object[] asd = await Client.PVPNet.getPendingInvitations();
-            foreach (var item in asd)
+            object[] allInvites = await Client.PVPNet.getPendingInvitations();
+            foreach (var item in allInvites)
             {
-
-                InvitationRequest qwer = new InvitationRequest((TypedObject)item);
+                InvitationRequest invite = new InvitationRequest((TypedObject)item);
                 Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    var pop = new GameInvitePopup(qwer)
+                    var pop = new GameInvitePopup(invite)
                     {
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Bottom,
                         Height = 230
                     };
-
                     Client.NotificationGrid.Children.Add(pop);
                 }));
             }
