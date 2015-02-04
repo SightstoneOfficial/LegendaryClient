@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              d:DesignHeight="70" d:DesignWidth="264">
     <Grid>
-        <Label x:Name="PlayerLabel" Content="Snowl" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="23"
+        <Label x:Name="PlayerLabel" Content="Bot" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="23"
                FontWeight="ExtraLight" VerticalAlignment="Top" />
         <Label x:Name="RankLabel" Content="Diamond I" HorizontalAlignment="Left" FontSize="18" FontWeight="SemiBold"
                VerticalAlignment="Bottom" />

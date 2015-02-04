@@ -157,15 +157,26 @@ namespace LegendaryClient.Windows
                             String.Compare(config.CacheName, config2.CacheName, StringComparison.Ordinal));
                     foreach (GameQueueConfig config in openQueues)
                     {
+                        QueueButtonConfig settings = new QueueButtonConfig();
+                        settings.GameQueueConfig = config;
+
+                        if(config.CacheName.Contains("INTRO"))
+                            settings.BotLevel = "INTRO";
+                        else if (config.CacheName.Contains("EASY") || config.Id == 25 || config.Id == 52)
+                            settings.BotLevel = "EASY";
+                        else if (config.CacheName.Contains("MEDIUM"))
+                            settings.BotLevel = "MEDIUM";
+
                         var item = new JoinQueue
                         {
                             Height = 80,
-                            QueueButton = {Tag = config}
+                            QueueButton = {Tag = settings}
                         };
+                        
                         item.QueueButton.Click += QueueButton_Click;
                         //item.QueueButton.IsEnabled = false;
                         item.QueueButton.Content = "Queue (Beta)";
-                        item.TeamQueueButton.Tag = config;
+                        item.TeamQueueButton.Tag = settings;
                         item.TeamQueueButton.Click += TeamQueueButton_Click;
                         item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
                         item.QueueId = config.Id;
@@ -194,6 +205,31 @@ namespace LegendaryClient.Windows
                                 item.QueueButton.IsEnabled = false;
                                 break;
                         }
+                        if (!Client.Dev && config.TypeString.Contains("BOT"))
+                            item.QueueButton.IsEnabled = false;
+
+                        if (item.QueueId == 25 || item.QueueId == 52)   //TT and Dominion: easy and medium bots have the same QueueId
+                        {
+                            settings.BotLevel = "MEDIUM";
+                            var item2 = new JoinQueue
+                            {
+                                Height = 80,
+                                QueueButton = { Tag = settings }
+                            };
+                            item2.QueueButton.Click += QueueButton_Click;
+                            item2.QueueButton.Content = "Queue (Beta)";
+                            item2.TeamQueueButton.Tag = settings;
+                            item2.TeamQueueButton.Click += TeamQueueButton_Click;
+                            item2.QueueLabel.Content = item.QueueLabel.Content.ToString().Replace("Easy", "Medium");
+                            item2.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
+                            item2.WaitTimeLabel.Content = "Avg Wait Time: " + answer;
+
+                            seperators[0].Add(item2);
+
+                            if(!Client.Dev)
+                                item2.QueueButton.IsEnabled = false;
+                        }
+                        
                         currentAmount++;
                         if (currentAmount != openQueues.Length)
                             continue;
@@ -219,7 +255,8 @@ namespace LegendaryClient.Windows
             await LeaveAllQueues();
             InQueue = false;
             LastSender = (Button) sender;
-            var config = (GameQueueConfig) LastSender.Tag;
+            var settings = (QueueButtonConfig) LastSender.Tag;
+            var config = (GameQueueConfig) settings.GameQueueConfig;
             //Make Teambuilder work for duo
             if (config.Id == 41 || config.Id == 42)
             {
@@ -233,7 +270,7 @@ namespace LegendaryClient.Windows
                 Client.FullNotificationOverlayContainer.Content = teamSelectWindow.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
-            else if (config.Id != 61 && config.TypeString != "BOT")
+            else if (config.Id != 61 && !config.TypeString.Contains("BOT"))
             {
                 if (Queues.Contains(config.Id))
                     return;
@@ -245,8 +282,13 @@ namespace LegendaryClient.Windows
                 Client.ClearPage(typeof (TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby));
             }
-            else if (config.TypeString == "BOT")
+            else if (config.TypeString.Contains("BOT"))
             {
+                Queues.Add(config.Id);
+                LobbyStatus lobby = await Client.PVPNet.createArrangedBotTeamLobby(config.Id, settings.BotLevel);
+
+                Client.ClearPage(typeof(TeamQueuePage));
+                Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby, false, null, settings.BotLevel));
             }
             else
             {
@@ -262,10 +304,28 @@ namespace LegendaryClient.Windows
             //to queue
             if (InQueue == false)
             {
-                LastSender = (Button) sender;
-                var config = (GameQueueConfig) LastSender.Tag;
+                LastSender = (Button)sender; 
+                var settings = (QueueButtonConfig)LastSender.Tag;
+                var config = (GameQueueConfig)settings.GameQueueConfig;
                 //Make TeamBuilder Work for solo
-                if (config.Id != 61)
+                if(config.TypeString.Contains("BOT"))
+                {
+                    if (Queues.Contains(config.Id))
+                        return;
+
+                    Queues.Add(config.Id);
+                    var parameters = new MatchMakerParams
+                    {
+                        QueueIds = new[]
+                        {
+                            Convert.ToInt32(config.Id)
+                        },
+                        BotDifficulty = settings.BotLevel
+                    };
+                    Client.QueueId = config.Id;
+                    Client.PVPNet.AttachToQueue(parameters, EnteredQueue);
+                }
+                else if (config.Id != 61)
                 {
                     if (Queues.Contains(config.Id))
                         return;
@@ -304,7 +364,8 @@ namespace LegendaryClient.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     Button item = LastSender;
-                    var config = (GameQueueConfig) item.Tag;
+                    var settings = (QueueButtonConfig)LastSender.Tag;
+                    var config = (GameQueueConfig)settings.GameQueueConfig;
                     Queues.Remove(config.Id);
                     var message = new MessageOverlay
                     {

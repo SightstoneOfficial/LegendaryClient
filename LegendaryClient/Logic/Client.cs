@@ -1122,7 +1122,7 @@ namespace LegendaryClient.Logic
                     return "Dominion Draft 5v5";
 
                 case "matching-queue-BOT_TT-3x3-game-queue":
-                    return "Bot 3v3 Beginner";
+                    return "Bot 3v3 Easy";
 
                 case "matching-queue-BOT_EASY-5x5-game-queue":
                     return "Bot 5v5 Easy";
@@ -1131,7 +1131,7 @@ namespace LegendaryClient.Logic
                     return "Bot 5v5 Medium";
 
                 case "matching-queue-ODINBOT-5x5-game-queue":
-                    return "Dominion Bot 5v5 Beginner";
+                    return "Dominion Bot 5v5 Easy";
 
                 case "matching-queue-ONEFORALL-5x5-game-queue":
                     return "One For All 5v5";

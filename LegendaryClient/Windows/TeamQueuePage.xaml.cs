@@ -51,7 +51,7 @@ namespace LegendaryClient.Windows
         //gamemetadata
         private int queueId, mapId, gameTypeConfigId;
         private bool isRanked;
-        private string rankedTeamName, gameMode, gameType;
+        private string rankedTeamName, gameMode, gameType, botDifficulty;
 
         private string Invite;
 
@@ -60,7 +60,7 @@ namespace LegendaryClient.Windows
         /// <summary>
         ///     When invited to a team
         /// </summary>
-        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, TeamId SelectedTeam = null)
+        public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, TeamId SelectedTeam = null, string BotDifficulty = null)
         {
             InitializeComponent();
             if (Client.Dev)
@@ -86,6 +86,7 @@ namespace LegendaryClient.Windows
             Invite = Invid;
             CurrentLobby = NewLobby;
             selectedTeamId = SelectedTeam;
+            botDifficulty = BotDifficulty;
             if (!IsReturningToLobby)
             {
                 LoadStats();
@@ -660,6 +661,7 @@ namespace LegendaryClient.Windows
                 }
                 parameters.Team = InviteList;
                 parameters.TeamId = selectedTeamId;
+                parameters.BotDifficulty = botDifficulty;
                 Client.PVPNet.AttachTeamToQueue(parameters, EnteredQueue);
             }
             else

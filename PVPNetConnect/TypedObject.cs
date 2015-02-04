@@ -51,13 +51,19 @@ namespace PVPNetConnect
 
         public int? GetInt(string key)
         {
-            object val = this[key];
-            if (val == null)
-                return null;
-            else if (val is int)
-                return (int)val;
+            if (this.ContainsKey(key))
+            {
+                object val = this[key];
+                if (val == null)
+                    return null;
+                else if (val is int)
+                    return (int)val;
+                else
+                    return Convert.ToInt32((double)val);
+            }
             else
-                return Convert.ToInt32((double)val);
+                return null;
+
         }
 
         public double? GetDouble(string key)

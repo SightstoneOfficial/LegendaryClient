@@ -23,12 +23,20 @@ namespace LegendaryClient.Controls
         }
         private async void GetTeams()
         {
-            PlayerDTO asd = await Client.PVPNet.FindPlayer(Client.LoginPacket.AllSummonerData.Summoner.SumId);
-            foreach (var item in asd.TeamsSummary)
+            PlayerDTO allTeams = await Client.PVPNet.FindPlayer(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+            if (allTeams.TeamsSummary != null)
             {
-                TeamDTO qwe = new PVPNetConnect.RiotObjects.Team.Dto.TeamDTO((TypedObject)item);
-                TeamList.Items.Add(qwe.Name);
-                TeamIdList.Add(qwe.TeamId);
+                foreach (var item in allTeams.TeamsSummary)
+                {
+                    TeamDTO teams = new PVPNetConnect.RiotObjects.Team.Dto.TeamDTO((TypedObject)item);
+                    TeamList.Items.Add(teams.Name);
+                    TeamIdList.Add(teams.TeamId);
+                }
+            }
+            else
+            {
+                Title.Content = "Join a team first";
+                SelectTeam.IsEnabled = false;
             }
         }
 

@@ -1134,6 +1134,17 @@ namespace PVPNetConnect
             return result;
         }
 
+        public async Task<LobbyStatus> createArrangedBotTeamLobby(double QueueId, string Difficulty)
+        {
+            int Id = Invoke("lcdsGameInvitationService", "createArrangedBotTeamLobby", new object[] { QueueId, Difficulty});
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            LobbyStatus result = new LobbyStatus(messageBody);
+            results.Remove(Id);
+            return result;
+        }
+
         public async Task<LobbyStatus> createArrangedRankedTeamLobby(double QueueId, string TeamName)
         {
             int Id = Invoke("lcdsGameInvitationService", "createArrangedRankedTeamLobby", new object[] { QueueId , TeamName});
