@@ -61,13 +61,14 @@ namespace LegendaryClient.Windows
 
         private async void GiveButton_Click(object sender, RoutedEventArgs e)
         {
+            int kudoId = KudosList.SelectedIndex + 1;
             GiveButton.IsEnabled = false;
             if (sameTeam)
                 await Client.PVPNet.CallKudos(
                     "{\"gameId\":" + gameID +
                     ",\"commandName\":\"GIVE\"" +
                     ",\"giverId\":" + Client.LoginPacket.AllSummonerData.Summoner.SumId +
-                    ",\"kudosType\":" + KudosList.SelectedIndex++ + 
+                    ",\"kudosType\":" + kudoId + 
                     ",\"receiverId\": " + summonerID + "}");
             else
                 await Client.PVPNet.CallKudos(
