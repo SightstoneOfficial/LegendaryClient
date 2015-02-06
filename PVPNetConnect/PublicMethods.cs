@@ -1453,7 +1453,7 @@ namespace PVPNetConnect
         public void AttachTeamToQueue(MatchMakerParams matchMakerParams, SearchingForMatchNotification.Callback callback)
         {
             SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
-            InvokeWithCallback("matchmakerService", "attachTeamToQueue",
+             InvokeWithCallback("matchmakerService", "attachTeamToQueue",
                 new object[] { matchMakerParams.GetBaseTypedObject() }, cb);
         }
 
