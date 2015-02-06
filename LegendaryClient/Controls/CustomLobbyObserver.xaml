@@ -1,0 +1,14 @@
+﻿<UserControl x:Class="LegendaryClient.Controls.CustomLobbyObserver"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="65" Width="245">
+    <Grid Height="65">
+        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="64" VerticalAlignment="Top" Width="64" />
+        <Label x:Name="PlayerName" Content="Snowl" HorizontalAlignment="Left" Margin="70,0,0,0" FontSize="20" FontWeight="ExtraLight" VerticalAlignment="Top" />
+        <Button x:Name="ProfileButton" Content="Profile" HorizontalAlignment="Left" Margin="70,40,0,0" VerticalAlignment="Top" Width="75" />
+        <Button x:Name="BanButton" Content="Kick &amp; Ban" HorizontalAlignment="Left" Margin="150,40,0,0" VerticalAlignment="Top" Width="85" />
+    </Grid>
+</UserControl>

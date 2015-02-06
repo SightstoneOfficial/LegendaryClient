@@ -143,7 +143,7 @@
             </ListView.ItemsPanel>
         </ListView>
         <Button Width="245" Height="24" Margin="570,0,0,10" HorizontalAlignment="Left"
-                VerticalAlignment="Bottom" Content="Switch to Spectator" />
+                VerticalAlignment="Bottom" Content="Switch to Spectator" Click="SpectatorButton_Click" />
         <Label x:Name="MapLabel" Margin="0,0,10,150" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                Content="Summoners Rift"
                FontSize="22" FontWeight="ExtraLight" />
@@ -162,5 +162,12 @@
         <Button x:Name="AddBotPurpleTeam" Width="400" Margin="415,430,0,0" HorizontalAlignment="Left"
                 VerticalAlignment="Top" Content="Add Bot" Style="{DynamicResource Square}" IsEnabled="False"
                 Click="AddBotPurpleTeam_Click" />
+        <Button x:Name="JoinBlueTeamFromSpectator" Width="400" Margin="10,430,0,0" HorizontalAlignment="Left"
+        	VerticalAlignment="Top" Content="Join Blue Team" Style="{DynamicResource Square}" IsEnabled="True"
+        	Click="JoinBlueTeamFromSpectator_Click" />
+        <Button x:Name="JoinPurpleTeamFromSpectator" Width="400" Margin="415,430,0,0" HorizontalAlignment="Left"
+        	VerticalAlignment="Top" Content="Join Purple Team" Style="{DynamicResource Square}" IsEnabled="True"
+        	Click="JoinPurpleTeamFromSpectator_Click" />
+
     </Grid>
 </Page>

@@ -162,6 +162,9 @@
     <Compile Include="Controls\ChatItem.xaml.cs">
       <DependentUpon>ChatItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomLobbyObserver.xaml.cs">
+      <DependentUpon>CustomLobbyObserver.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GameScouter\ChatScouuterPlayer.xaml.cs">
       <DependentUpon>ChatScouuterPlayer.xaml</DependentUpon>
     </Compile>
@@ -536,6 +539,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ChatItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomLobbyObserver.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
