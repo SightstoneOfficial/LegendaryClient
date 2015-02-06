@@ -295,6 +295,8 @@ namespace LegendaryClient.Windows
             botPlayer.cmbSelectDificulty.Visibility = IsOwner ? Visibility.Visible : Visibility.Hidden;
             botPlayer.cmbSelectDificulty.Items.Add("Beginner");
             botPlayer.cmbSelectDificulty.Items.Add("Intermediate");
+            botPlayer.cmbSelectDificulty.Items.Add("Doom");
+            botPlayer.cmbSelectDificulty.Items.Add("Intro");
             botPlayer.cmbSelectDificulty.SelectedIndex = BotPlayer.BotSkillLevel;
             foreach (int bot in bots)
                 botPlayer.cmbSelectChamp.Items.Add(champions.GetChampion(bot).name);
@@ -460,6 +462,14 @@ namespace LegendaryClient.Windows
                     break;
                 case 1:
                     par.botSkillLevelName = "Intermediate";
+                    par.BotSkillLevel = difficulty;
+                    break;
+                case 2:
+                    par.botSkillLevelName = "Doom";
+                    par.BotSkillLevel = difficulty;
+                    break;
+                case 3:
+                    par.botSkillLevelName = "Intro";
                     par.BotSkillLevel = difficulty;
                     break;
             }
