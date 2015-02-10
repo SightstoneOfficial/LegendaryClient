@@ -675,7 +675,7 @@ namespace LegendaryClient.Windows
                                 //If we have locked in render skin select
                                 if (!HasLockedIn ||
                                     selection.SummonerInternalName !=
-                                    Client.LoginPacket.AllSummonerData.Summoner.InternalName || Client.Dev)
+                                    Client.LoginPacket.AllSummonerData.Summoner.InternalName || (Client.Dev && champDto.MapId != 12))
                                     continue;
 
                                 if (purpleSide)

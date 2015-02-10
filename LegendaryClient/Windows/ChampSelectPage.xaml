@@ -112,7 +112,6 @@
         </Button>
         <ComboBox x:Name="MasteryComboBox" HorizontalAlignment="Right" Margin="0,478,380,0" VerticalAlignment="Top" Width="180" Height="30" SelectionChanged="MasteryComboBox_SelectionChanged" />
         <Button x:Name="EditRunesButton" Content="Edit Runes" HorizontalAlignment="Right" Margin="0,478,565,0" VerticalAlignment="Top" Width="75" Height="30" Click="EditRunesButton_Click" />
-        <ComboBox x:Name="RuneComboBox" Margin="240,478,850,0" VerticalAlignment="Top" Height="30" SelectionChanged="RuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" />
         <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Right" Margin="0,478,275,0" VerticalAlignment="Top" Width="100" Height="30" Click="EditMasteriesButton_Click" />
         <Button x:Name="LockInButton" Content="Lock In" Margin="0,478,150,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" Height="30" Click="LockInButton_Click" />
 
@@ -126,6 +125,9 @@
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="150,0,285,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
         <Button x:Name="ChatButton" Content="Send" Margin="0,0,152,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" Height="26" />
         <ToggleButton x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,49,150,0" Checked="Switch_Click" Unchecked="Switch_Click"/>
-        <ComboBox x:Name="LocalRuneComboBox" Margin="445,478,645,0" VerticalAlignment="Top" Height="30" SelectionChanged="LocalRuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" ToolTip="First select rune page to be replaced with local one" />
+        <UniformGrid Margin="240,478,645,230">
+            <ComboBox x:Name="RuneComboBox" Margin="0,0,2,-15" VerticalAlignment="Top" Height="30" SelectionChanged="RuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" />
+            <ComboBox x:Name="LocalRuneComboBox" Margin="3,0,-1,-15" VerticalAlignment="Top" Height="30" SelectionChanged="LocalRuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" ToolTip="First select rune page to be replaced with local one" />
+        </UniformGrid>
     </Grid>
 </Page>
