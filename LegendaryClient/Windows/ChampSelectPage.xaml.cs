@@ -411,6 +411,11 @@ namespace LegendaryClient.Windows
 
                     int t = 1;
 
+                    if (LatestDto.QueueTypeName == "COUNTER_PICK") //fix for nemesis draft, get your champ from GameDTO
+                    {
+                        var selectedChamp = champDto.PlayerChampionSelections.Find(item => item.SummonerInternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName);
+                        ChangeSelectedChampionSkins(selectedChamp.ChampionId);
+                    }
                     foreach (PlayerParticipant participant in allParticipants.Select(p => p as PlayerParticipant))
                     {
                         if (participant != null)
@@ -1018,8 +1023,9 @@ namespace LegendaryClient.Windows
                             }
                         }
                     }
-                    if ((!champ.Owned && !champ.FreeToPlay) ||
-                        !getChamp.displayName.ToLower().Contains(SearchTextBox.Text.ToLower()))
+                    if (((!champ.Owned && !champ.FreeToPlay) ||
+                        !getChamp.displayName.ToLower().Contains(SearchTextBox.Text.ToLower())) &&
+                        LatestDto.QueueTypeName != "COUNTER_PICK")
                         continue;
 
                     //Add to ListView

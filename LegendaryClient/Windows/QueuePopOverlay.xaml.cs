@@ -159,21 +159,7 @@ namespace LegendaryClient.Windows
                     {
                         player.PlayerLabel.Content = playerPart.SummonerName;
                         player.RankLabel.Content = "";
-
-                        await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
-                        {
-                            SummonerLeaguesDTO playerLeagues =
-                                await Client.PVPNet.GetAllLeaguesForPlayer(playerPart.SummonerId);
-
-                            foreach (
-                                LeagueListDTO x in
-                                    playerLeagues.SummonerLeagues.Where(x => x.Queue == "RANKED_SOLO_5x5"))
-                                player.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
-
-                            if (String.IsNullOrEmpty(player.RankLabel.Content.ToString()))
-                                player.RankLabel.Content = "Unranked";
-                        }));
-
+                        player.Tag = part;
                         Team1ListBox.Items.Add(player);
                     }
                     else
@@ -195,11 +181,34 @@ namespace LegendaryClient.Windows
                     Team2ListBox.Items.Add(player);
                 }
             }
+            GetPlayerLeagues();
             if (!Client.AutoAcceptQueue)
                 return;
 
             await Client.PVPNet.AcceptPoppedGame(true);
             accepted = true;
+            
+        }
+
+        private async void GetPlayerLeagues()
+        {
+            foreach (QueuePopPlayer item in Team1ListBox.Items)
+            {
+                var playerInfo = item.Tag as PlayerParticipant;
+                await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
+                {
+                    SummonerLeaguesDTO playerLeagues =
+                        await Client.PVPNet.GetAllLeaguesForPlayer(playerInfo.SummonerId);
+
+                    foreach (
+                        LeagueListDTO x in
+                            playerLeagues.SummonerLeagues.Where(x => x.Queue == "RANKED_SOLO_5x5"))
+                        item.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
+
+                    if (String.IsNullOrEmpty(item.RankLabel.Content.ToString()))
+                        item.RankLabel.Content = "Unranked";
+                }));
+            }
         }
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)

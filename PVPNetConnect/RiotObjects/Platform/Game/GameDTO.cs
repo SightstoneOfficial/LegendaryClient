@@ -143,5 +143,8 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
 
         [InternalName("passbackDataPacket")]
         public object PassbackDataPacket { get; set; }
+
+        [InternalName("gameMutators")]
+        public List<string> GameMutators { get; set; }
     }
 }
