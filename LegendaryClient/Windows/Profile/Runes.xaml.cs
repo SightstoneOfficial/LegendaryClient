@@ -56,6 +56,8 @@ namespace LegendaryClient.Windows.Profile
 
             Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Sort((x, y) => x.PageId.CompareTo(y.PageId));
             GetAvailableRunes();
+            if (!Directory.Exists(Client.ExecutingDirectory + "\\RunePages\\"))
+                Directory.CreateDirectory(Client.ExecutingDirectory + "\\RunePages\\");
             Client.LocalRunePages = Client.LeagueSettingsReader(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
@@ -462,6 +464,16 @@ namespace LegendaryClient.Windows.Profile
         {
             if (LocalName.Text == string.Empty)
                 return;
+            else if (LocalName.Text.Contains('='))
+            {
+                var pop = new NotifyPlayerPopup("Error", "Local rune page name can't contain = .")
+                {
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Bottom
+                };
+                Client.NotificationGrid.Children.Add(pop);
+                return;
+            }
             List<string> local = new List<string>();
             foreach(var id in GetCurrentSlotEntries())
             {
@@ -477,8 +489,20 @@ namespace LegendaryClient.Windows.Profile
             {
                 saveString.Add(item.Key + "=" + item.Value);
             }
-
-            File.WriteAllLines(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name, saveString);
+            try
+            {
+                File.WriteAllLines(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name, saveString);
+            }
+            catch
+            {
+                Client.LocalRunePages.Remove(LocalName.Text);
+                var pop = new NotifyPlayerPopup("Error", "Unable to save local rune pages.")
+                        {
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Bottom
+                        };
+                Client.NotificationGrid.Children.Add(pop);
+            }
         }
     }
 }
