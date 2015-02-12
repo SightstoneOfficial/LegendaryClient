@@ -205,8 +205,6 @@ namespace LegendaryClient.Windows
                                 item.QueueButton.IsEnabled = false;
                                 break;
                         }
-                        if (!Client.Dev && config.TypeString.Contains("BOT"))
-                            item.QueueButton.IsEnabled = false;
 
                         if (item.QueueId == 25 || item.QueueId == 52)   //TT and Dominion: easy and medium bots have the same QueueId
                         {
@@ -425,7 +423,7 @@ namespace LegendaryClient.Windows
                 return;
 
             var queue = message as GameDTO;
-            if (!Client.HasPopped)
+            if (Client.HasPopped)
                 return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
