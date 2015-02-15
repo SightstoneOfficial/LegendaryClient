@@ -474,21 +474,13 @@ namespace LegendaryClient.Windows.Profile
                 Client.NotificationGrid.Children.Add(pop);
                 return;
             }
-            List<string> local = new List<string>();
-            foreach(var id in GetCurrentSlotEntries())
-            {
-                local.Add(id.RuneId.ToString());
-            }
+            List<string> local = GetCurrentSlotEntries().Select(id => id.RuneId.ToString()).ToList();
             if (Client.LocalRunePages.ContainsKey(LocalName.Text))
                 Client.LocalRunePages.Remove(LocalName.Text);
 
             Client.LocalRunePages.Add(LocalName.Text, string.Join(",", local)); //Make to League setting like string
-            List<string> saveString = new List<string>();
+            List<string> saveString = Client.LocalRunePages.Select(item => item.Key + "=" + item.Value).ToList();
 
-            foreach(var item in Client.LocalRunePages)
-            {
-                saveString.Add(item.Key + "=" + item.Value);
-            }
             try
             {
                 File.WriteAllLines(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name, saveString);
