@@ -40,9 +40,7 @@ namespace LegendaryClient.Windows
                 KudosList.Items.Add("Teamwork");
             }
             else
-            {
                 KudosList.Items.Add("Honorable Opponent");
-            }
         }
 
         public void Change()

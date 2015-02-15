@@ -35,6 +35,8 @@ namespace LegendaryClient
     {
         string GSUsername;
         Point mouseLocation;
+        KeyValuePair<bool, TinyRuneMasteryData> mouseEntered;
+
         public GameScouter()
         {
             InitializeComponent();
@@ -324,7 +326,8 @@ namespace LegendaryClient
                                 control.QueueTeamColor.Visibility = Visibility.Visible;
                             }
                         }
-                        control.MouseMove += controlMouseEnter;
+                        //control.MouseMove += controlMouseEnter;
+                        control.MouseEnter += controlMouseEnter;
                         control.MouseLeave += control_MouseLeave;
                         control.MouseDown += control_MouseDown;
                         TinyRuneMasteryData smallData = new TinyRuneMasteryData();
@@ -377,12 +380,13 @@ namespace LegendaryClient
             {
                 smallData = new TinyRuneMasteryData();
             }
+            if (mouseEntered.Key && mouseEntered.Value == smallData)
+                return;
             try
             {
                 Mousegrid.Children.Remove(smallData);
             }
             catch { }
-            Mousegrid.Children.Remove(smallData);
         }
 
         void controlMouseEnter(object sender, MouseEventArgs e)
@@ -397,7 +401,16 @@ namespace LegendaryClient
             else
             {
                 smallData = new TinyRuneMasteryData();
+                ((Dictionary<String, Object>)control.Tag).Add("MasteryDataControl", smallData);
             }
+            smallData.MouseEnter += (o, g) =>
+                {
+                    mouseEntered = new KeyValuePair<bool, TinyRuneMasteryData>(true, smallData);
+                };
+            smallData.MouseLeave += (o, g) =>
+                {
+                    mouseEntered = new KeyValuePair<bool, TinyRuneMasteryData>(false, smallData);
+                };
             control.Tooltip.Content = "Click for even more info";
             mouseLocation = e.GetPosition(Mousegrid);
             smallData.HorizontalAlignment = HorizontalAlignment.Left;

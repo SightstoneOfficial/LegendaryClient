@@ -61,7 +61,7 @@ namespace LegendaryClient.Windows
             //#B2C8C8C8
             UpdateRegionComboBox.SelectedValue = Client.UpdateRegion;
             if (Client.UpdateRegion == "Garena" && !Client.Garena)
-                LoadGarena();
+                SniffGarena();
             switch (Client.UpdateRegion)
             {
                 case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
@@ -640,72 +640,29 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void ReplaceGarena(string location)
+        //This is to avoid replacing Garena, this is a better method
+        private void SniffGarena()
         {
-            var garenaLocation = Path.Combine(Path.GetDirectoryName(location), "Air");
-            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "GarenaClient")))
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "GarenaClient"));
-            File.Move(Path.Combine(garenaLocation, "LolClient.exe"), Path.Combine(Client.ExecutingDirectory, "GarenaClient", "LolClient.exe.real"));
-            var files = Directory.EnumerateFiles(Path.Combine(Client.ExecutingDirectory, "LCMLaunch"), "*", SearchOption.AllDirectories).Select(Path.GetFileName);
-            foreach (var file in files)
+            LoggingInLabel.Content = "Waiting for user to launch League from garena";
+            MahApps.Metro.Controls.TextboxHelper.SetWatermark(LoginUsernameBox, "Launch LOL from garena plus");
+            MahApps.Metro.Controls.TextboxHelper.SetWatermark(LoginPasswordBox, "Launch LOL from garena plus");
+            LoginUsernameBox.IsEnabled = false;
+            LoginPasswordBox.IsEnabled = false;
+            var gotToken = false;
+            while (!gotToken)
             {
-                if (!File.Exists(Path.Combine(garenaLocation, file)))
-                File.Copy(
-                    Path.Combine(Client.ExecutingDirectory, "LCMLaunch", file),
-                    file != "LegendaryClientMLaunch.exe"
-                        ? Path.Combine(garenaLocation, file)
-                        : Path.Combine(garenaLocation, "LolClient.exe"));
+                var processes = Process.GetProcessesByName("lol.exe").ToList();
+                processes.AddRange(Process.GetProcessesByName("leagueoflegends.exe").ToList());
             }
         }
 
-        private void LoadGarena()
-        {
-            var result = MessageBox.Show("Garena was selected. Would you like to inject MLaunch and reload LegendaryClient? (REQUIRED TO USE GARENA WITH LEGENDARYCLIENT)", "LegendaryClient + Garena", MessageBoxButton.YesNo);
-            if (result != MessageBoxResult.Yes)
-            {
-                UpdateRegionComboBox.SelectedValue = "Live";
-                UpdateRegionComboBox_SelectionChanged(null, null);
-                return;
-            }
-            var regKey = Registry.CurrentUser.CreateSubKey("LegendaryClient");
-            try
-            {
-                var val = regKey.GetValue("GarenaLocation").ToString();
-                ReplaceGarena(val);
-            }
-            catch
-            {
-                if (regKey != null)
-                {
-                    var dlg = new System.Windows.Forms.OpenFileDialog
-                    {
-                        DefaultExt = ".png",
-                        Filter = @"league of legends exe (lol.exe)|lol.exe"
-                    };
-                    System.Windows.Forms.DialogResult dialogResult = dlg.ShowDialog();
-                    if (dialogResult == System.Windows.Forms.DialogResult.OK)
-                    {
-                        regKey.SetValue("GarenaLocation", dlg.FileName);
-                        ReplaceGarena(dlg.FileName);
-                    }
-                    else
-                        MessageBox.Show("You did not specify the location of lol.exe", "LegendaryClient + Garena (ERROR)");
-                    regKey.Close();
-                }
-            }
-            MessageBox.Show(@"MLaunch has been placed where lolclient.exe is. 
-LegendaryClient will now exit. 
-To launch LegendaryClient, launch the Garena+ and start league of legends, but MLaunch will start instead of lol. 
-Once you do that you will be asked to input your region and you can use LegendaryClient on Garena", "LegendaryClient + Garena", MessageBoxButton.OK);
-            Environment.Exit(0);
-        }
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.RemovedItems.Count != 0)
             {
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
                 if ((string)UpdateRegionComboBox.SelectedValue == "Garena")
-                    LoadGarena();
+                    SniffGarena();
 
                 Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
                 if (!RegionComboBox.Items.IsInUse)

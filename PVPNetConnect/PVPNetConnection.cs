@@ -116,25 +116,28 @@ namespace PVPNetConnect
 
         public void Connect(string user, string password, Region region, string clientVersion, bool cs = false, string Server = null, string Loginqueue = null, string Locales = null)
         {
-            if (!isConnected)
+            if (isConnected)
             {
-                Thread t = new Thread(() =>
+                return;
+            }
+            var t = new Thread(
+                () =>
                 {
                     this.user = user;
                     this.password = password;
                     this.clientVersion = clientVersion;
                     //this.server = "127.0.0.1";
-                    this.server = RegionInfo.GetServerValue(region);
-                    this.loginQueue = RegionInfo.GetLoginQueueValue(region);
-                    this.locale = RegionInfo.GetLocaleValue(region);
-                    this.useGarena = RegionInfo.GetUseGarenaValue(region);
+                    server = RegionInfo.GetServerValue(region);
+                    loginQueue = RegionInfo.GetLoginQueueValue(region);
+                    locale = RegionInfo.GetLocaleValue(region);
+                    useGarena = RegionInfo.GetUseGarenaValue(region);
 
-                    if (cs == true && Server != null && Loginqueue != null && Locales != null)
+                    if (cs && Server != null && Loginqueue != null && Locales != null)
                     {
-                        this.server = Server;
-                        this.loginQueue = Loginqueue;
-                        this.locale = Locales;
-                        this.useGarena = false;
+                        server = Server;
+                        loginQueue = Loginqueue;
+                        locale = Locales;
+                        useGarena = false;
                     }
 
 
@@ -159,10 +162,14 @@ namespace PVPNetConnect
                     //*/
 
                     if (!GetAuthKey())
+                    {
                         return;
+                    }
 
                     if (!GetIpAddress())
+                    {
                         return;
+                    }
 
                     sslStream = new SslStream(client.GetStream(), false, AcceptAllCertificates);
                     var ar = sslStream.BeginAuthenticateAsClient(server, null, null);
@@ -175,31 +182,35 @@ namespace PVPNetConnect
                     }
 
                     if (!Handshake())
+                    {
                         return;
+                    }
 
                     BeginReceive();
 
                     if (!SendConnect())
+                    {
                         return;
+                    }
 
                     if (!Login())
+                    {
                         return;
+                    }
 
                     StartHeartbeat();
-                });
-                t.IsBackground = true;
-                t.Start();
-            }
+                }) { IsBackground = true };
+            t.Start();
         }
 
-        private bool AcceptAllCertificates(object sender, X509Certificate certificate, X509Chain chain,
+        private static bool AcceptAllCertificates(object sender, X509Certificate certificate, X509Chain chain,
             SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }
-        private string reToken(string s)
+        private static string reToken(string s)
         {
-            string s1 = s.Replace("/", "%2F");
+            var s1 = s.Replace("/", "%2F");
             s1 = s1.Replace("+", "%2B");
             s1 = s1.Replace("=", "%3D");
 
