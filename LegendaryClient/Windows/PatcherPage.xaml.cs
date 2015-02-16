@@ -320,6 +320,7 @@ namespace LegendaryClient.Windows
                             updateRegion.SolutionListing);
 
                     string solutionVersion = solutionListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+                    Client.GameClientVersion = solutionVersion;
                     LogTextBox("Latest League of Legends GameClient: " + solutionVersion);
                     LogTextBox("Checking if League of Legends is Up-To-Date");
 

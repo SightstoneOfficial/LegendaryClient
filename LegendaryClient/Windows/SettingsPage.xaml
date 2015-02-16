@@ -166,6 +166,7 @@
                     <CheckBox x:Name="AutoRecordCheckbox" Margin="10,10,0,0" HorizontalAlignment="Left"
                               VerticalAlignment="Top" Content="Auto record games" Checked="AutoRecordCheckbox_Changed"
                               Unchecked="AutoRecordCheckbox_Changed" />
+                    <Button x:Name="BoostButton" Click="BoostButton_OnClick" Content="Boost my gameclient" HorizontalAlignment="Left" VerticalAlignment="Top" Width="254" Margin="10,32,0,0"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Advanced">

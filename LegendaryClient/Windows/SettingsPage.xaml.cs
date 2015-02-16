@@ -8,6 +8,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
@@ -528,6 +529,85 @@ A code signing license (So you know that you are using LegendaryClient)
                 if ((bool)(sender as CheckBox).IsChecked && Client.AmbientSoundPlayer != null)
                     Client.AmbientSoundPlayer.Stop();
             }
+        }
+
+        private void BoostButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            var reboosting = false;
+            var version = "";
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "BoostedVersion")))
+                version = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "BoostedVersion"));
+            if (
+                System.Windows.MessageBox.Show("This can make your client less stable. Are you sure?", "Boost warning",
+                    MessageBoxButton.YesNo) == MessageBoxResult.No)
+                return;
+            if (version == Client.GameClientVersion)
+            {
+                var reboost = System.Windows.MessageBox.Show(
+                    "You already have boosted lol to the latest version. Would you like to reboost?", "Boost error", MessageBoxButton.YesNo);
+                if (reboost == MessageBoxResult.No)
+                    return;
+                reboosting = true;
+            }
+            try
+            {
+
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "BoostedVersion")))
+                    File.Delete(Path.Combine(Client.ExecutingDirectory));
+
+                var fileboost = File.Create(Path.Combine(Client.ExecutingDirectory, "BoostedVersion"));
+                var encoding = new ASCIIEncoding().GetBytes(Client.GameClientVersion);
+                fileboost.Write(encoding, 0, encoding.Length);
+                fileboost.Close();
+            }
+            catch
+            {
+                // ignored
+            }
+            //Backup Lol
+            if (!reboosting)
+                DirectoryCopy(Client.Location);
+
+            //Boost by replacing dlls
+            var filesToReplaceList = new List<String>()
+            {
+                "cg.dll",
+                "cgD3D9.dll",
+                "cgGL.dll",
+                "msvcp120.dll",
+                "msvcr120.dll",
+                "tbb.dll"
+            };
+            foreach (var fileToReplace in filesToReplaceList)
+            {
+                File.Delete(Path.Combine(Client.Location, fileToReplace));
+                File.Move(Path.Combine(Client.ExecutingDirectory, "BoostDlls", fileToReplace), Path.Combine(Client.Location, fileToReplace));
+            }
+
+        }
+
+        private static void DirectoryCopy(string sourceDirName, string destDirName = null)
+        {
+            var dir = new DirectoryInfo(sourceDirName);
+            var dirs = dir.GetDirectories();
+            if (destDirName == null)
+                destDirName = Path.Combine(Client.ExecutingDirectory, "LOLGameClientBoostBackup");
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+            var files = dir.GetFiles();
+            foreach (var file in files)
+            {
+                var temppath = Path.Combine(destDirName, file.Name);
+                file.CopyTo(temppath, false);
+            }
+            foreach (var subdir in dirs)
+            {
+                var temppath = Path.Combine(destDirName, subdir.Name);
+                DirectoryCopy(subdir.FullName, temppath);
+            }
+
         }
     }
 

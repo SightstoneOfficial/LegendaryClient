@@ -1102,6 +1102,12 @@
     <Resource Include="joinchat.png" />
     <Resource Include="accepted.png" />
     <Resource Include="declined.png" />
+    <Content Include="BoostDlls\cg.dll" />
+    <Content Include="BoostDlls\cgD3D9.dll" />
+    <Content Include="BoostDlls\cgGL.dll" />
+    <Content Include="BoostDlls\msvcp120.dll" />
+    <Content Include="BoostDlls\msvcr120.dll" />
+    <Content Include="BoostDlls\tbb.dll" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
