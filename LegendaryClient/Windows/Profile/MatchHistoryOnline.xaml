@@ -1,7 +1,6 @@
 <Page x:Class="LegendaryClient.Windows.Profile.MatchHistoryOnline"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:my="http://schemas.awesomium.com/winfx"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       Title="MatchHistoryOnline"
@@ -58,7 +57,7 @@
     </Page.Resources>
 
     <Grid>
-        <my:WebControl x:Name="Browser" Width="955"
+        <WebBrowser x:Name="Browser" Width="955" 
                        Margin="0,10,10,10" HorizontalAlignment="Right" VerticalAlignment="Stretch" />
         <ListView x:Name="GamesListView" Width="300" Margin="10,10,0,10"
                   HorizontalAlignment="Left" VerticalAlignment="Stretch"
