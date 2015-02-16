@@ -352,6 +352,7 @@ A code signing license (So you know that you are using LegendaryClient)
                 ResultTextbox.Content =
                     "Invalid Uri. Please try a different Uri. Be sure that the Uri is from LeagueCraft.com (Easy hud only works with Leaguecraft currently)";
                 ResultTextbox.Visibility = Visibility.Visible;
+                return;
             }
             x = x.Replace("http://leaguecraft.com/uimods/", "");
             string y = x.Split('-')[0];
@@ -581,7 +582,7 @@ A code signing license (So you know that you are using LegendaryClient)
             foreach (var fileToReplace in filesToReplaceList)
             {
                 File.Delete(Path.Combine(Client.Location, fileToReplace));
-                File.Move(Path.Combine(Client.ExecutingDirectory, "BoostDlls", fileToReplace), Path.Combine(Client.Location, fileToReplace));
+                File.Copy(Path.Combine(Client.ExecutingDirectory, "BoostDlls", fileToReplace), Path.Combine(Client.Location, fileToReplace));
             }
 
         }

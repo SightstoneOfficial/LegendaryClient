@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -163,8 +164,10 @@ namespace LegendaryClient.Windows.Profile
 
             var stats = _gameStats[GamesListView.SelectedIndex];
             Browser.Source =
-                new Uri("http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName +
-                        "/" + (int) Math.Round(stats.Game.GameId) + "/" + stats.Game.UserId + "?tab=overview");
+                new Uri(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}", 
+                    Client.Region.InternalName,
+                    (int)Math.Round(stats.Game.GameId),
+                    stats.Game.UserId));
         }
     }
 }

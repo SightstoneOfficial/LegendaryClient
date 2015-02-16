@@ -528,19 +528,20 @@ namespace LegendaryClient.Windows
                 return;
             }
 
-            var Replay = new ProcessStartInfo();
-            Replay.FileName = Path.Combine(Client.ExecutingDirectory, "ReplayHandler.exe");
-            Replay.Verb = "runas";
-            Replay.Arguments = selectedStats.Difficulty.Replace('-', ' ');
-            Process.Start(Replay);
+            var replay = new ProcessStartInfo
+            {
+                FileName = Path.Combine(Client.ExecutingDirectory, "ReplayHandler.exe"),
+                Verb = "runas",
+                Arguments = selectedStats.Difficulty.Replace('-', ' ')
+            };
+            Process.Start(replay);
 
             //string Directory = Path.Combine(@"RADS/projects/lol_game_client/releases");
 
             var dInfo = new DirectoryInfo(directory);
-            DirectoryInfo[] subdirs = null;
             try
             {
-                subdirs = dInfo.GetDirectories();
+                dInfo.GetDirectories();
             }
             catch
             {
@@ -553,13 +554,13 @@ namespace LegendaryClient.Windows
 
             if (!File.Exists(Path.Combine(directory, "League of Legends.exe")))
             {
-                MessageBoxResult result = MessageBox.Show("Could not find League of Legends", "Error",
+                MessageBox.Show("Could not find League of Legends", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return;
             }
 
-            string[] details = selectedStats.Difficulty.Split('-');
+            var details = selectedStats.Difficulty.Split('-');
             Client.LaunchSpectatorGame("127.0.0.1:5651",
                 File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", selectedStats.Difficulty, "key")),
                 Convert.ToInt32(details[0]), details[1]);
