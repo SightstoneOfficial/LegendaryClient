@@ -1552,13 +1552,38 @@ namespace LegendaryClient.Windows
 
             int i = 0;
             string[] runeIds = Client.LocalRunePages[LocalRuneComboBox.SelectedItem.ToString()].Split(',');
-            
-            foreach(string item in runeIds)
+
+            var failsafe = Client.LoginPacket.AllSummonerData.SpellBook;
+            try
             {
-                Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RuneComboBox.SelectedIndex].SlotEntries[i].RuneId = Convert.ToInt32(item);
-                i++;
+                foreach (string item in runeIds)
+                {
+                    Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RuneComboBox.SelectedIndex].SlotEntries[i].RuneId = Convert.ToInt32(item);
+                    i++;
+                }
+
+
+                if ((await Client.PVPNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook)).DefaultPage == null)
+                {
+                    Client.LoginPacket.AllSummonerData.SpellBook = failsafe;
+                    var pop = new NotifyPlayerPopup("Save failed", "Failed to use local rune page.")
+                    {
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Bottom
+                    };
+                    Client.NotificationGrid.Children.Add(pop);
+                }
             }
-            await Client.PVPNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
+            catch
+            {
+                Client.LoginPacket.AllSummonerData.SpellBook = failsafe;
+                var pop = new NotifyPlayerPopup("Save failed", "Failed to use local rune page.")
+                {
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Bottom
+                };
+                Client.NotificationGrid.Children.Add(pop);
+            }
         }
     }
 }

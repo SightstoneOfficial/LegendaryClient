@@ -1422,7 +1422,7 @@ namespace PVPNetConnect
 
         //gameService tradeChampion exists... not sure if in use though
 
-        public async Task<object> SaveSpellBook(SpellBookDTO Spellbook)
+        public async Task<SpellBookDTO> SaveSpellBook(SpellBookDTO Spellbook)
         {
             int Id = Invoke("spellBookService", "saveSpellBook",
                 new object[] { Spellbook.GetBaseTypedObject() });

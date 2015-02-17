@@ -36,6 +36,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook
             callback(this);
         }
 
+        [InternalName("defaultPage")]
+        public SpellBookPageDTO DefaultPage { get; set; }
+
         [InternalName("bookPagesJson")]
         public object BookPagesJson { get; set; }
 
