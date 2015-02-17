@@ -218,16 +218,6 @@
             <sys:String>Diamond</sys:String>
             <sys:String>Master</sys:String>
             <sys:String>Challenger</sys:String>
-            <!--
-            <sys:String>One for All</sys:String>
-             Modes unavailable to the public
-            <sys:String>Open Pick</sys:String>
-            <sys:String>Infinite Time Blind Pick</sys:String>
-            <sys:String>Infinite Time Blind PickTest</sys:String>
-            <sys:String>Captain Pick</sys:String>
-            <sys:String>No Ban Draft</sys:String>
-            <sys:String>Blind Draft</sys:String>
-            -->
         </x:Array>
 
         <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="FactionTeamTypes"

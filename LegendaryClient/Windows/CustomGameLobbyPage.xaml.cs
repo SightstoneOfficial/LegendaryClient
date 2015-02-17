@@ -212,7 +212,7 @@ namespace LegendaryClient.Windows
                         {
                             Client.ChampSelectDTO = dto;
                             Client.LastPageContent = Client.Container.Content;
-                            Client.SwitchPage(new ChampSelectPage(this));
+                            Client.SwitchPage(new ChampSelectPage(dto.RoomName, dto.RoomPassword).Load(this));
                             Client.GameStatus = "championSelect";
                             Client.SetChatHover();
                             LaunchedTeamSelect = true;

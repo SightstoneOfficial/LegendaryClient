@@ -28,7 +28,8 @@ namespace LegendaryClient.Windows
     {
         private static Timer QueueTimer;
         private readonly Page previousPage;
-        public bool ReverseString = false;
+        private ChampSelectPage page;
+        public bool ReverseString;
         public int TimeLeft = 12;
         private bool accepted;
 
@@ -41,6 +42,7 @@ namespace LegendaryClient.Windows
             Client.FocusClient();
             InitializePop(InitialDTO);
             this.previousPage = previousPage;
+            page = new ChampSelectPage(InitialDTO.RoomName, InitialDTO.RoomPassword);
             TimeLeft = InitialDTO.JoinTimerDuration;
             Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             QueueTimer = new Timer(1000);
@@ -86,7 +88,7 @@ namespace LegendaryClient.Windows
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
                         Client.GameStatus = "championSelect";
                         Client.SetChatHover();
-                        Client.SwitchPage(new ChampSelectPage(previousPage));
+                        Client.SwitchPage(page.Load(this));
                         Client.SendAccept(accepted);
                         Client.HasPopped = false;
                     }

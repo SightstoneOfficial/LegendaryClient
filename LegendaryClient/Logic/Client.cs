@@ -416,8 +416,11 @@ namespace LegendaryClient.Logic
             if (!AllPlayers.ContainsKey(msg.From.User) || String.IsNullOrWhiteSpace(msg.Body))
                 return;
 
-            ChatPlayerItem chatItem = AllPlayers[msg.From.User];
-            chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
+            var chatItem = AllPlayers[msg.From.User];
+            if (Filter)
+                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body.Filter());
+            else
+                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
             MainWin.FlashWindow();
         }
 
@@ -611,7 +614,6 @@ namespace LegendaryClient.Logic
                 }
             }
             player.Username = ri.Nickname;
-            bool PlayerPresence = PresManager.IsAvailable(ri.JID);
             AllPlayers.Add(ri.JID.User, player);
         }
 

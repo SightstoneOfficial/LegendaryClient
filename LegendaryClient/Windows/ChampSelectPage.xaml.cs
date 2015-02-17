@@ -48,7 +48,7 @@ namespace LegendaryClient.Windows
     {
         internal static object LobbyContent = new object();
         private readonly List<string> PreviousPlayers = new List<string>(); //Needs to be initialized!
-        private readonly Page previousPage;
+        private Page previousPage;
 
         private bool AreWePurpleSide;
         private PotentialTradersDTO CanTradeWith;
@@ -142,17 +142,28 @@ namespace LegendaryClient.Windows
 
         #endregion champs
 
-        public ChampSelectPage(Page previousPage)
+        public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
+
+            var jid = Client.GetChatroomJID(RoomName.Replace("@sec", ""), RoomPassword, false);
+            Chatroom = Client.ConfManager.GetRoom(new JID(jid));
+            Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
+            Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
+            Chatroom.Join(RoomPassword);
+        }
+
+        public ChampSelectPage Load(Page previousPage)
+        {
             Client.ClearPage(typeof(QueuePopOverlay));
             Client.inQueueTimer.Visibility = Visibility.Hidden;
             Client.OverlayContainer.Content = null;
             this.previousPage = previousPage;
             StartChampSelect();
-            if (!Properties.Settings.Default.DisableClientSound)
+            if (!Settings.Default.DisableClientSound)
             {
-                string sound = AmbientChampSelect.CurrentQueueToSoundFile(Client.QueueId);
+                var sound = AmbientChampSelect.CurrentQueueToSoundFile(Client.QueueId);
                 AmbientChampSelect.PlayAmbientChampSelectSound(sound);
             }
             Client.LastPageContent = Content;
@@ -162,6 +173,7 @@ namespace LegendaryClient.Windows
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Champion Select";
+            return this;
         }
 
         private void GetLocalRunePages()
@@ -289,7 +301,6 @@ namespace LegendaryClient.Windows
                 await
                     Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
                         Client.ChampSelectDTO.PickTurn);
-            Joinchat(latestDto);
             //Find the game config for timers
             configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDto.GameTypeConfigId);
             if (configType == null) //Invalid config... abort!
@@ -337,36 +348,6 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void Joinchat(GameDTO latestDto)
-        {
-            if (connected)
-                return;
-
-            //Join champion select chatroom
-            if (!String.IsNullOrEmpty(latestDto.RoomPassword))
-            {
-                string jid = Client.GetChatroomJID(latestDto.RoomName.Replace("@sec", ""), latestDto.RoomPassword, false);
-                Chatroom = Client.ConfManager.GetRoom(new JID(jid));
-                Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-                Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
-                Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
-                Chatroom.Join(latestDto.RoomPassword);
-            }
-            else if(latestDto.RoomName != null)
-            {
-                string jid = Client.GetChatroomJID(latestDto.RoomName.Replace("@sec", ""), string.Empty, false);
-                Chatroom = Client.ConfManager.GetRoom(new JID(jid));
-                Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-                Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
-                Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
-                Chatroom.Join(string.Empty);
-            }
-            else
-            {
-                //Doesn't really need to be handled I guess?
-            }
-        }
-
         private void CountdownTimer_Tick(object sender, EventArgs e)
         {
             counter--;
@@ -389,7 +370,6 @@ namespace LegendaryClient.Windows
 
                 var champDto = message as GameDTO;
                 //Sometimes chat doesn't work so spam this until it does
-                Joinchat(champDto);
                 LatestDto = champDto;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
