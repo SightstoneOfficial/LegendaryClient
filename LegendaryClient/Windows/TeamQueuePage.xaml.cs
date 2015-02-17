@@ -578,6 +578,18 @@ namespace LegendaryClient.Windows
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
             }
+            else if (message is GameNotification && (message as GameNotification).Type == "PLAYER_QUIT")
+            {
+                setStartButtonText("Start Game");
+                inQueue = false;
+                Client.GameStatus = "outOfGame";
+                Client.SetChatHover();
+                Dispatcher.Invoke(() =>
+                {
+                    Client.inQueueTimer.Visibility = Visibility.Hidden;
+                    TeamListView.Opacity = 1D;
+                });
+            }
         }
         private void RestartDodgePop(object sender, object message)
         {

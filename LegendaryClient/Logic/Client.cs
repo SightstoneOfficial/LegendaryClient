@@ -1001,7 +1001,11 @@ namespace LegendaryClient.Logic
                                 messageOver.MessageTitle.Content = "Banned from custom game";
                                 messageOver.MessageTextBox.Text = "You have been banned from this custom game!";
                                 break;
-
+                            case "PLAYER_QUIT":
+                                messageOver.MessageTitle.Content = "Player quit";
+                                var name = await PVPNet.GetSummonerNames(new double[] { Convert.ToDouble(notification.MessageArgument) });
+                                messageOver.MessageTextBox.Text = name[0] + " quit from queue!";
+                                break;
                             default:
                                 messageOver.MessageTextBox.Text = notification.MessageCode + Environment.NewLine;
                                 messageOver.MessageTextBox.Text = System.Convert.ToString(notification.MessageArgument);
@@ -1010,7 +1014,7 @@ namespace LegendaryClient.Logic
                         OverlayContainer.Content = messageOver.Content;
                         OverlayContainer.Visibility = Visibility.Visible;
                         ClearPage(typeof(CustomGameLobbyPage));
-                        if (messageOver.MessageTitle.Content.ToString() != "PLAYER_QUIT")
+                        if (notification.Type != "PLAYER_QUIT")
                             SwitchPage(new MainPage());
                     }
                     else if (message is EndOfGameStats)
@@ -1169,35 +1173,6 @@ namespace LegendaryClient.Logic
                     Client.Log(internalQueue);
                     return internalQueue;
             }
-        }
-
-        /// <summary>
-        ///     Super complex method to get the queue name when it is unknown
-        /// </summary>
-        /// <param name="queueName"></param>
-        /// <returns></returns>
-        private static string Convert(string queueName)
-        {
-            string result = string.Empty;
-            string queueinternal = string.Empty;
-            string bots = string.Empty;
-            const string players = "";
-            const string extra = "";
-            string start = queueName.Replace("matching-queue-", string.Empty).Replace("-game-queue", string.Empty);
-            string[] x = start.Split('_');
-            if (x[1].ToLower() == "bot")
-            {
-                bots = " Bots";
-                string[] m = x[3].Split('-');
-            }
-            else if (x[0].ToLower() == "bot" && x[1].ToLower() == "intro")
-            {
-                queueinternal = "Intro";
-                bots = "Bots";
-            }
-
-            result = string.Format("{0}{1} {2} {3}", queueinternal, bots, players, extra);
-            return result;
         }
 
         internal static string GetGameDirectory()
