@@ -686,15 +686,23 @@ namespace LegendaryClient.Windows
                         else if (tempParticipant is BotParticipant)
                         {
                             var bot = tempParticipant as BotParticipant;
-                            string botChamp = bot.SummonerInternalName.Split('_')[1]; //Why is this internal name rito?
-                            champions botSelectedChamp = champions.GetChampion(botChamp);
-                            var part = new PlayerParticipant();
-                            var selection = new PlayerChampionSelectionDTO
+                            if (bot.SummonerInternalName.Contains('_'))
                             {
-                                ChampionId = botSelectedChamp.id
-                            };
-                            part.SummonerName = botSelectedChamp.displayName + " bot";
-                            control = RenderPlayer(selection, part);
+                                string botChamp = bot.SummonerInternalName.Split('_')[1]; //Why is this internal name rito?
+                                champions botSelectedChamp = champions.GetChampion(botChamp);
+                                var part = new PlayerParticipant();
+                                var selection = new PlayerChampionSelectionDTO
+                                {
+                                    ChampionId = botSelectedChamp.id
+                                };
+                                part.SummonerName = botSelectedChamp.displayName + " bot";
+                                control = RenderPlayer(selection, part);
+                            }
+                            else
+                            {
+                                control.PlayerName.Content = "Bot";
+                                control._sumName = "Bot";
+                            }
                         }
                         else
                             control.PlayerName.Content = "Unknown Summoner";

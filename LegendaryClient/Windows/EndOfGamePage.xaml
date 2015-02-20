@@ -62,7 +62,7 @@
             <Image x:Name="SkinImage" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                    Opacity="0.3" Stretch="UniformToFill" />
             <Label x:Name="GameResultLabel" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                   FontSize="40" FontWeight="ExtraLight" Content="Victory" Foreground="White" />
+                   FontSize="40" FontWeight="ExtraLight" Content="Defeat" Foreground="White" />
             <Label x:Name="TimeLabel" Margin="10,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                    FontSize="18"
                    FontWeight="ExtraLight" Content="20:00" Foreground="White" />

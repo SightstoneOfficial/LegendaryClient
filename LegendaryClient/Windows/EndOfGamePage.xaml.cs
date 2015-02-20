@@ -161,7 +161,14 @@ namespace LegendaryClient.Windows
                 double deaths = 0;
                 bool victory = false;
                 foreach (RawStatDTO stat in summary.Statistics.Where(stat => stat.StatTypeName.ToLower() == "win"))
-                    victory = true;
+                {
+                    if (summary.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                    {
+                        victory = true;
+                        GameResultLabel.Content = "Victory";
+                    }
+                        
+                }
 
                 if (statistics.Ranked)
                 {
@@ -171,8 +178,16 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    GainedXP.Content = "+" + statistics.ExperienceEarned + game;
-                    TotalXP.Content = statistics.ExperienceTotal + game;
+                    if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
+                    {
+                        GainedXP.Content = "+" + statistics.ExperienceEarned + game;
+                        TotalXP.Content = statistics.ExperienceTotal + game;
+                    }
+                    else
+                    {
+                        GainedXP.Visibility = Visibility.Hidden;
+                        TotalXP.Visibility = Visibility.Hidden;
+                    }
                 }
 
                 foreach (RawStatDTO stat in summary.Statistics)

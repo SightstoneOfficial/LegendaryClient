@@ -582,7 +582,7 @@ A code signing license (So you know that you are using LegendaryClient)
             foreach (var fileToReplace in filesToReplaceList)
             {
                 File.Delete(Path.Combine(Client.Location, fileToReplace));
-                File.Copy(Path.Combine(Client.ExecutingDirectory, "BoostDlls", fileToReplace), Path.Combine(Client.Location, fileToReplace));
+                File.Copy(Path.Combine(Client.ExecutingDirectory, "Client", "BoostDlls", fileToReplace), Path.Combine(Client.Location, fileToReplace));
             }
 
         }

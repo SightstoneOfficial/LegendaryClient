@@ -52,28 +52,28 @@ namespace LegendaryClient.Logic.PlayerSpell
             switch (spellId)
             {
                 case 1:
-                    return level >= 2;
+                    return level >= 6;
 
                 case 2:
-                    return level >= 10;
+                    return level >= 8;
 
                 case 3:
-                    return level >= 8;
+                    return level >= 4;
 
                 case 4:
-                    return level >= 12;
-
-                case 11:
-                    return level >= 3;
-
-                case 12:
-                    return level >= 2;
-
-                case 14:
                     return level >= 8;
 
-                case 21:
+                case 11:
+                    return level >= 10;
+
+                case 12:
                     return level >= 6;
+
+                case 14:
+                    return level >= 10;
+
+                case 21:    
+                    return level >= 4;
 
                 default:
                     return true;
@@ -94,6 +94,7 @@ namespace LegendaryClient.Logic.PlayerSpell
         Teleport = 12,
         Mana = 13,
         Dot = 14,
+        OdinGarrison = 17,
         Barrier = 21
     }
 
@@ -111,6 +112,7 @@ namespace LegendaryClient.Logic.PlayerSpell
         Teleport = 12,
         Clarity = 13,
         Ignite = 14,
+        Garrison = 17,
         Barrier = 21
     }
 }
