@@ -51,7 +51,7 @@ namespace LegendaryClient.Windows.Profile
             RenderKudos(totalKudos);
             var topChampions = await Client.PVPNet.RetrieveTopPlayedChampions(accountId, "CLASSIC");
             RenderTopPlayedChampions(topChampions);
-            Client.PVPNet.RetrievePlayerStatsByAccountId(accountId, "3", GotPlayerStats);
+            Client.PVPNet.RetrievePlayerStatsByAccountId(accountId, "5", GotPlayerStats);
         }
 
         public void RenderKudos(LcdsResponseString totalKudos)
@@ -132,7 +132,10 @@ namespace LegendaryClient.Windows.Profile
                 {
                     Client.Log("Error when loading player stats.");
                 }
-                StatsComboBox.SelectedItem = "Ranked Solo5v5";
+                if (StatsComboBox.Items.Contains("Ranked Solo5v5"))
+                    StatsComboBox.SelectedItem = "Ranked Solo5v5";
+                else
+                    StatsComboBox.SelectedItem = "Unranked";
             }));
         }
 
