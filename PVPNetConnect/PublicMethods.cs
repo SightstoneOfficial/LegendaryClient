@@ -713,9 +713,27 @@ namespace PVPNetConnect
                 new object[] { matchMakerParams.GetBaseTypedObject() }, cb);
         }
 
+        public void AttachToQueue(MatchMakerParams matchMakerParams, String token, SearchingForMatchNotification.Callback callback)
+        {
+            SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
+            InvokeWithCallback("matchmakerService", "attachToQueue",
+                new object[] { matchMakerParams.GetBaseTypedObject(), token }, cb);
+        }
+
         public async Task<SearchingForMatchNotification> AttachToQueue(MatchMakerParams matchMakerParams)
         {
             int Id = Invoke("matchmakerService", "attachToQueue", new object[] { matchMakerParams.GetBaseTypedObject() });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
+            SearchingForMatchNotification result = new SearchingForMatchNotification(messageBody);
+            results.Remove(Id);
+            return result;
+        }
+
+        public async Task<SearchingForMatchNotification> AttachToQueue(MatchMakerParams matchMakerParams, String token)
+        {
+            int Id = Invoke("matchmakerService", "attachToQueue", new object[] { matchMakerParams.GetBaseTypedObject(), token });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             TypedObject messageBody = results[Id].GetTO("data").GetTO("body");
@@ -1455,6 +1473,13 @@ namespace PVPNetConnect
             SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
              InvokeWithCallback("matchmakerService", "attachTeamToQueue",
                 new object[] { matchMakerParams.GetBaseTypedObject() }, cb);
+        }
+
+        public void AttachTeamToQueue(MatchMakerParams matchMakerParams, String token, SearchingForMatchNotification.Callback callback)
+        {
+            SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
+            InvokeWithCallback("matchmakerService", "attachTeamToQueue",
+               new object[] { matchMakerParams.GetBaseTypedObject(), token }, cb);
         }
 
         public async Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParamsForTeam matchMakerParams)
