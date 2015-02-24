@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         }
 
         [InternalName("playerJoinFailures")]
-        public List<QueueDodger> PlayerJoinFailures { get; set; }
+        public List<object> PlayerJoinFailures { get; set; }
 
         [InternalName("ghostGameSummoners")]
         public object GhostGameSummoners { get; set; }

@@ -30,6 +30,7 @@ using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using Timer = System.Timers.Timer;
+using PVPNetConnect;
 
 #endregion
 
@@ -47,6 +48,7 @@ namespace LegendaryClient.Windows
         private int i;
         private static Timer PingTimer;
         private TeamId selectedTeamId;
+        private MatchMakerParams parameters;
 
         //gamemetadata
         private int queueId, mapId, gameTypeConfigId;
@@ -657,7 +659,7 @@ namespace LegendaryClient.Windows
         {
             if (!inQueue)
             {
-                var parameters = new MatchMakerParams();
+                parameters = new MatchMakerParams();
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
@@ -705,8 +707,9 @@ namespace LegendaryClient.Windows
                     Client.HasPopped = false;
                     var messageOver = new MessageOverlay();
                     messageOver.MessageTitle.Content = "Could not join the queue";
-                    foreach (QueueDodger x in result.PlayerJoinFailures)
+                    foreach (var item in result.PlayerJoinFailures)
                     {
+                        var x = new QueueDodger(item as TypedObject);
                         TimeSpan time = TimeSpan.FromMilliseconds(x.PenaltyRemainingTime);
                         switch (x.ReasonFailed)
                         {
@@ -730,6 +733,10 @@ namespace LegendaryClient.Windows
                                 break;
                             case "QUEUE_PARTICIPANTS":
                                 messageOver.MessageTextBox.Text += " - Not enough players for this queue type.";
+                                break;
+                            case "LEAVER_BUSTED":
+                                var leaver = new BustedLeaver(item as TypedObject);
+                                Client.PVPNet.AttachTeamToQueue(parameters, leaver.AccessToken, EnteredQueue);
                                 break;
                             default:
                                 messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
