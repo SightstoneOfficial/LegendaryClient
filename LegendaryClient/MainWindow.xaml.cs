@@ -189,6 +189,14 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
+                Client.SwitchPage(uiLogic.Profile);
+            }       
+        }
+
+        private void ProfileButton_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (Client.IsLoggedIn)
+            {
                 uiLogic.Profile.GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
                 Client.SwitchPage(uiLogic.Profile);
             }       

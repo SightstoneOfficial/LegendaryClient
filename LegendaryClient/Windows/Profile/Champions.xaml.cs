@@ -130,5 +130,17 @@ namespace LegendaryClient.Windows.Profile
                 ChampionSelectListView.Items.Add(championImage);
             }
         }
+
+        private void ChampionSelectListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            var champList = (ListView)sender;
+            var champImage = champList.SelectedItem as ProfileChampionImage;
+            if (champImage != null)
+            {
+                int id = Convert.ToInt32(champImage.Tag);
+                Client.OverlayContainer.Content = new ChampionDetailsPage(id).Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+            }
+        }
     }
 }
