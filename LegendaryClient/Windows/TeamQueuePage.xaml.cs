@@ -63,18 +63,6 @@ namespace LegendaryClient.Windows
         public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, TeamId SelectedTeam = null, string BotDifficulty = null)
         {
             InitializeComponent();
-            if (Client.Dev)
-            {
-                CreateRankedCheckBox.Visibility = Visibility.Visible;
-                SelectChamp.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                AutoAcceptCheckBox.Margin = new Thickness(0, 0, 657, 202);
-                InstaCall.Margin = new Thickness(0, 0, 572, 200);
-                CreateRankedCheckBox.Visibility = Visibility.Hidden;
-                SelectChamp.Visibility = Visibility.Hidden;
-            }
             Change();
 
             Client.InviteListView = InviteListView;
@@ -614,8 +602,6 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.OnMessageReceived += RestartDodgePop;
         }
 
-        private bool makeRanked = false;
-
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
             if (ChatTextBox.Text == "!~dev")
@@ -661,7 +647,7 @@ namespace LegendaryClient.Windows
                 parameters.Languages = null;
                 QueueIds = new List<int>();
                 QueueIds.Add(queueId);
-                parameters.QueueIds = (makeRanked ? new[] { 4 } : QueueIds.ToArray());
+                parameters.QueueIds = (QueueIds.ToArray());
                 parameters.InvitationId = CurrentLobby.InvitationID;
                 parameters.TeamId = null;
                 parameters.LastMaestroMessage = null;
@@ -761,14 +747,6 @@ namespace LegendaryClient.Windows
             Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
         }
 
-        private void CreateRankedCheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if (Client.Dev)
-                makeRanked = CreateRankedCheckBox.IsChecked.Value;
-            else
-                makeRanked = false;
-        }
-
         private void SelectChamp_Click(object sender, RoutedEventArgs e)
         {
             Client.OverlayContainer.Content = new SelectChampOverlay(this).Content;
@@ -788,7 +766,7 @@ namespace LegendaryClient.Windows
             public double commonFriendId { get; set; }
             public string summonerName { get; set; }
             public string commonFriendName { get; set; }
-            public string SuggestedPlayerType { get; set; }
+            //public string SuggestedPlayerType { get; set; }
         }
 
         private void InstaCall_Click(object sender, RoutedEventArgs e)

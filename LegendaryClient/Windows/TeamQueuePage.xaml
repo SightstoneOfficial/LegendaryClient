@@ -90,9 +90,6 @@
         <Button x:Name="ChatButton" Width="90" Height="24" Margin="0,0,420,9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send" IsDefault="True" Click="ChatButton_Click" />
         <Rectangle x:Name="PingRectangle" Width="70" Height="25" Margin="0,18,13,0" HorizontalAlignment="Right" VerticalAlignment="Top" Fill="Red" Stroke="Black" />
         <TextBlock x:Name="PingLabel" Width="68" Height="23" Margin="0,18,15,0" HorizontalAlignment="Right" VerticalAlignment="Top" TextWrapping="Wrap" Text="Pinging" Foreground="White" FontSize="16" TextAlignment="Center" RenderTransformOrigin="0.159,-0.961" />
-        <CheckBox x:Name="CreateRankedCheckBox" Margin="153,0,0,202" HorizontalAlignment="Left" VerticalAlignment="Bottom" Visibility="Visible" Checked="CreateRankedCheckBox_Checked" Unchecked="CreateRankedCheckBox_Checked">
-            <TextBlock Text="Make Ranked" Margin="0,-2,0,0"/>
-        </CheckBox>
         <ListView x:Name="FriendsOfFriendsView" Width="395" Height="263" Margin="0,0,15,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>

@@ -76,13 +76,13 @@
                    Foreground="White" />
             <Grid x:Name="LoginGrid" Width="350" Height="230" Margin="0,50,0,0" HorizontalAlignment="Left"
                   VerticalAlignment="Top">
-                <TextBlock Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
+                <TextBlock x:Name="LoginUsername"  Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
                            Text="Username" Foreground="White" FontSize="18" FontWeight="Bold" />
                 <TextBox x:Name="LoginUsernameBox" Width="330" Margin="10,40,0,0" HorizontalAlignment="Left"
                          VerticalAlignment="Top" TextWrapping="NoWrap" FontSize="16" controls:TextboxHelper.Watermark="Enter your username here"/>
                 <CheckBox x:Name="RememberUsernameCheckbox" Margin="0,80,10,0" HorizontalAlignment="Right"
                           VerticalAlignment="Top" Content="Remember Username" Foreground="White" IsChecked="True" />
-                <TextBlock Margin="10,90,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
+                <TextBlock x:Name="LoginPassword"  Margin="10,90,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
                            Text="Password" Foreground="White" FontSize="18" FontWeight="Bold" />
                 <PasswordBox x:Name="LoginPasswordBox" Width="330" Margin="10,120,0,0" HorizontalAlignment="Left"
                              VerticalAlignment="Top" FontSize="16" controls:TextboxHelper.Watermark="Enter your password here"/>

@@ -32,6 +32,7 @@ using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using System.Diagnostics;
 using PVPNetConnect.RiotObjects.Platform.Harassment;
+using System.Web;
 
 namespace PVPNetConnect
 {
@@ -66,6 +67,7 @@ namespace PVPNetConnect
         private bool useGarena = false;
         public string garenaToken;
         public string userID;
+        public string Gas;
 
         //Invoke Variables
         private Random rand = new Random();
@@ -113,6 +115,27 @@ namespace PVPNetConnect
         #endregion Event Handlers
 
         #region Connect, Login, and Heartbeat Methods
+        public string getGas()
+        {
+
+            string begin = "{\"signature\":\"";
+            string end = "}";
+
+            int beginIndex = Gas.IndexOf(begin, StringComparison.Ordinal);
+            int endIndex = Gas.LastIndexOf(end, StringComparison.Ordinal);
+
+            string output = Gas.Substring(beginIndex, endIndex - beginIndex);
+
+            byte[] encbuff = Encoding.UTF8.GetBytes(output);
+            output = HttpServerUtility.UrlTokenEncode(encbuff);
+
+            return output;
+        }
+
+        public string getUID()
+        {
+            return userID;
+        }
 
         public void Connect(string user, string password, Region region, string clientVersion, bool cs = false, string Server = null, string Loginqueue = null, string Locales = null)
         {
@@ -249,7 +272,7 @@ namespace PVPNetConnect
                 inputStream.Close();
                 con.Abort();
 
-                if (!result.ContainsKey("token"))
+                if (!result.ContainsKey("token") && !useGarena)
                 {
                     int node = (int)result.GetInt("node");
                     string champ = result.GetString("champ");
@@ -346,9 +369,12 @@ namespace PVPNetConnect
                 }
                 if (OnLoginQueueUpdate != null)
                     OnLoginQueueUpdate(this, 0);
-                authToken = result.GetString("token");
+                    authToken = result.GetString("token");
                 if (useGarena)
-                    userID = result.GetString("token");
+                {
+                    userID = result.GetString("user");
+                    Gas = sb.ToString();
+                }
 
                 return true;
             }

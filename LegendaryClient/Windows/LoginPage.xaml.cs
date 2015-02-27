@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Management;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -60,20 +61,34 @@ namespace LegendaryClient.Windows
             }
             //#B2C8C8C8
             UpdateRegionComboBox.SelectedValue = Client.UpdateRegion;
-            if (Client.UpdateRegion == "Garena" && !Client.Garena)
-                SniffGarena();
             switch (Client.UpdateRegion)
             {
                 case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
+                    LoginUsernameBox.Visibility = Visibility.Visible;
+                    LoginUsername.Visibility = Visibility.Visible;
+                    RememberUsernameCheckbox.Visibility = Visibility.Visible;
+                    LoginPassword.Visibility = Visibility.Visible;
                     break;
 
                 case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
+                    LoginUsernameBox.Visibility = Visibility.Visible;
+                    LoginUsername.Visibility = Visibility.Visible;
+                    RememberUsernameCheckbox.Visibility = Visibility.Visible;
+                    LoginPassword.Visibility = Visibility.Visible;
                     break;
 
                 case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
+                    LoginUsernameBox.Visibility = Visibility.Visible;
+                    LoginUsername.Visibility = Visibility.Visible;
+                    RememberUsernameCheckbox.Visibility = Visibility.Visible;
+                    LoginPassword.Visibility = Visibility.Visible;
                     break;
 
                 case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                    LoginUsernameBox.Visibility = Visibility.Hidden;
+                    LoginUsername.Visibility = Visibility.Hidden;
+                    RememberUsernameCheckbox.Visibility = Visibility.Hidden;
+                    LoginPassword.Visibility = Visibility.Hidden;
                     break;
             }
 
@@ -221,22 +236,6 @@ namespace LegendaryClient.Windows
                     Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                         champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
             LoginImage.Source = new BitmapImage(uriSource);*/
-            if (Client.Garena)
-            {
-                Client.PVPNet = null;
-                Client.PVPNet = new PVPNetConnection();
-                BaseRegion Garenaregion = BaseRegion.GetRegion(Client.args[1]);
-                Client.PVPNet.garenaToken = Client.args[2];
-                Client.PVPNet.Connect("", "", Garenaregion.PVPRegion, Client.Version);
-                Client.Region = Garenaregion;
-                HideGrid.Visibility = Visibility.Hidden;
-                ErrorTextBox.Visibility = Visibility.Hidden;
-                LoggingInLabel.Visibility = Visibility.Visible;
-                LoggingInProgressRing.Visibility = Visibility.Visible;
-                Client.PVPNet.OnError += PVPNet_OnError;
-                Client.PVPNet.OnLogin += PVPNet_OnLogin;
-                Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
-            }
 
             if (String.IsNullOrWhiteSpace(Settings.Default.SavedPassword) ||
                 String.IsNullOrWhiteSpace(Settings.Default.Region) || !Settings.Default.AutoLogin)
@@ -325,9 +324,14 @@ namespace LegendaryClient.Windows
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
+            {
+                SniffGarena();
+                return;
+            }
             Client.PVPNet = null;
             Client.PVPNet = new PVPNetConnection();
-
+            LoggingInLabel.Content = "Logging in...";
             if (string.IsNullOrEmpty(Settings.Default.Guid))
                 Settings.Default.Guid = Guid.NewGuid().ToString();
 
@@ -361,7 +365,6 @@ namespace LegendaryClient.Windows
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
             Client.Region = selectedRegion;
-            //Client.Version = "4.18.14";
             if (selectedRegion.PVPRegion != Region.CS)
                 Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.PVPRegion,
                     Client.Version);
@@ -499,10 +502,11 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.Port = 5223;
                     Client.ChatClient.Server = "pvp.net";
                     Client.ChatClient.SSL = true;
-                    Client.ChatClient.User = packet.AllSummonerData.Summoner.AcctId.ToString();
-                    Client.ChatClient.Password = "AIR_pass" + GetLast(packet.AllSummonerData.Summoner.AcctId.ToString(), 5);
-                    Client.userpass = new KeyValuePair<String, String>(packet.AllSummonerData.Summoner.AcctId.ToString(),
-                        "AIR_pass" + GetLast(packet.AllSummonerData.Summoner.AcctId.ToString(), 5));
+                    Client.ChatClient.User = Client.PVPNet.getUID();
+                    var gas = Client.PVPNet.getGas();
+                    Client.ChatClient.Password = "AIR_" + gas;
+                    Client.userpass = new KeyValuePair<String, String>(Client.PVPNet.getUID(),
+                        "AIR_" + gas);
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                     Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
@@ -644,25 +648,75 @@ namespace LegendaryClient.Windows
         private void SniffGarena()
         {
             LoggingInLabel.Content = "Waiting for user to launch League from garena";
-            MahApps.Metro.Controls.TextboxHelper.SetWatermark(LoginUsernameBox, "Launch LOL from garena plus");
-            MahApps.Metro.Controls.TextboxHelper.SetWatermark(LoginPasswordBox, "Launch LOL from garena plus");
-            LoginUsernameBox.IsEnabled = false;
-            LoginPasswordBox.IsEnabled = false;
+            HideGrid.Visibility = Visibility.Hidden;
+            ErrorTextBox.Visibility = Visibility.Hidden;
+            LoggingInLabel.Visibility = Visibility.Visible;
+            LoggingInProgressRing.Visibility = Visibility.Visible;
             var gotToken = false;
-            while (!gotToken)
-            {
-                var processes = Process.GetProcessesByName("lol.exe").ToList();
-                processes.AddRange(Process.GetProcessesByName("leagueoflegends.exe").ToList());
-            }
-        }
+            var getTokenThread = new Thread(() =>
+                {
+                    while (!gotToken)
+                    {
+                        foreach (var process in Process.GetProcessesByName("lol"))
+                        {
+                            try
+                            {
+                                var s1 = GetCommandLine(process);
+                                foreach (var p1 in Process.GetProcessesByName("lolclient"))
+                                {
+                                    p1.Kill();
+                                }
+                                process.Kill();
+                                gotToken = true;
 
+                                s1 = s1.Substring(1);
+                                if (!gotToken)
+                                {
+                                    continue;
+                                }
+                                gotToken = !gotToken;
+                                Client.PVPNet = null;
+                                Client.PVPNet = new PVPNetConnection();
+                                var garenaregion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+                                Client.PVPNet.garenaToken = s1;
+                                Client.PVPNet.Connect("", "", garenaregion.PVPRegion, Client.Version);
+                                Client.Region = garenaregion;
+                                HideGrid.Visibility = Visibility.Hidden;
+                                ErrorTextBox.Visibility = Visibility.Hidden;
+                                LoggingInLabel.Visibility = Visibility.Visible;
+                                LoggingInLabel.Content = "Logging in...";
+                                LoggingInProgressRing.Visibility = Visibility.Visible;
+                                Client.PVPNet.OnError += PVPNet_OnError;
+                                Client.PVPNet.OnLogin += PVPNet_OnLogin;
+                                Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
+                            }
+                            catch { }
+                        }
+                    }
+                });
+            getTokenThread.Start();
+
+        }
+        private static string GetCommandLine(Process process)
+        {
+            var commandLine = new StringBuilder("");
+
+            using (var searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + process.Id))
+            {
+                foreach (var @object in searcher.Get())
+                {
+                    commandLine.Append(@object["CommandLine"]);
+                }
+            }
+
+            return commandLine.ToString();
+        }
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.RemovedItems.Count != 0)
             {
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
-                if ((string)UpdateRegionComboBox.SelectedValue == "Garena")
-                    SniffGarena();
+                
 
                 Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
                 if (!RegionComboBox.Items.IsInUse)
@@ -673,15 +727,28 @@ namespace LegendaryClient.Windows
                 switch (Client.UpdateRegion)
                 {
                     case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
+                        LoginUsernameBox.Visibility = Visibility.Visible;
+                        LoginUsername.Visibility = Visibility.Visible;
+                        RememberUsernameCheckbox.Visibility = Visibility.Visible;
                         break;
 
                     case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
+                        LoginUsernameBox.Visibility = Visibility.Visible;
+                        LoginUsername.Visibility = Visibility.Visible;
+                        RememberUsernameCheckbox.Visibility = Visibility.Visible;
                         break;
 
                     case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
+                        LoginUsernameBox.Visibility = Visibility.Visible;
+                        LoginUsername.Visibility = Visibility.Visible;
+                        RememberUsernameCheckbox.Visibility = Visibility.Visible;
                         break;
 
                     case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                        LoginUsernameBox.Visibility = Visibility.Hidden;
+                        LoginUsername.Visibility = Visibility.Hidden;
+                        RememberUsernameCheckbox.Visibility = Visibility.Hidden;
+                        LoginPassword.Text = "Garena Token";
                         break;
                 }
             }
