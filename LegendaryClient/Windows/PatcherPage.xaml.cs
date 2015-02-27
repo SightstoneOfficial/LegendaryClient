@@ -11,13 +11,12 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ComponentAce.Compression.Libs.zlib;
-using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Patcher;
 using LegendaryClient.Logic.UpdateRegion;
@@ -25,6 +24,8 @@ using LegendaryClient.Properties;
 using Microsoft.Win32;
 using RAFlibPlus;
 using System.Xml;
+using SharpCompress.Reader;
+using SharpCompress.Common;
 
 #endregion
 
@@ -39,6 +40,7 @@ namespace LegendaryClient.Windows
         internal static bool LoLDataIsUpToDate;
         internal static string LatestLolDataVersion = string.Empty;
         internal static string LolDataVersion = string.Empty;
+        private RiotPatcher patcher = new RiotPatcher();
 
         public PatcherPage()
         {
@@ -55,6 +57,7 @@ namespace LegendaryClient.Windows
                 PatchTextBox.Background = (Brush) bc.ConvertFrom("#FFECECEC");
                 DevKey.Background = (Brush) bc.ConvertFrom("#FFECECEC");
                 PatchTextBox.Foreground = (Brush) bc.ConvertFrom("#FF1B1919");
+                ExtractingProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
             //DevKey.TextChanged += DevKey_TextChanged;
 #if !DEBUG
@@ -96,145 +99,182 @@ namespace LegendaryClient.Windows
             }
         }
 #endif
-        private void StartPatcher()
+        private async void StartPatcher()
+        {
+            var client = new WebClient();
+            client.DownloadProgressChanged +=
+                (o, e) => Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    double bytesIn = double.Parse(e.BytesReceived.ToString(CultureInfo.InvariantCulture));
+                    double totalBytes =
+                        double.Parse(e.TotalBytesToReceive.ToString(CultureInfo.InvariantCulture));
+                    double percentage = bytesIn / totalBytes * 100;
+
+                    CurrentProgressLabel.Content = string.Format("Downloaded {0} MBs of {1} MBs",
+                                                   (e.BytesReceived / 1024d / 1024d).ToString("0.00"),
+                                                   (e.TotalBytesToReceive / 1024d / 1024d).ToString("0.00"));
+                    CurrentProgressBar.Value =
+                        int.Parse(Math.Truncate(percentage).ToString(CultureInfo.InvariantCulture));
+                }));
+
+            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                TotalProgressLabel.Content = "20%";
+                TotalProgessBar.Value = 20;
+            }));
+
+            #region idk
+
+            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3")))
+                client.DownloadFile(
+                    new Uri(
+                        "https://s12.solidfilesusercontent.com/MDE1MWYxZGJmYWFhNzJmNGQ2N2ZhOWE0NzU4Yjk2ZDYwZjY3MGU2OToxWHp3OTk6dUllemo3WDM0RnlScUgxZk1YWXpKYmN0RXBn/7a0671ed14/Login.mp3"),
+                    Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
+
+            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4")))
+                client.DownloadFile(
+                    new Uri(
+                        "https://s8.solidfilesusercontent.com/MzkxMTBjOTllZDczMTBjZDUwNzgwOTc1NTYwZmY1Nzg2YThkZDI5MzoxWHp2eE86alBDQXBkU1FuNmt6R3dsTzcycEtoOXpGdVZr/a38bbf759c/Login.mp4"),
+                    Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
+
+            #endregion idk
+
+            #region DDragon
+
+            var encoding = new ASCIIEncoding();
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets"));
+
+            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon")))
+            {
+                FileStream versionLol =
+                    File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
+                versionLol.Write(encoding.GetBytes("0.0.0"), 0, encoding.GetBytes("0.0.0").Length);
+
+                versionLol.Close();
+            }
+
+            string dDragonDownloadUrl = patcher.GetDragon();
+            if (!String.IsNullOrEmpty(dDragonDownloadUrl))
+            {
+                LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
+                string dDragonVersion =
+                    File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
+                LogTextBox("Current DataDragon Version: " + dDragonVersion);
+
+                Client.Log("DDragon Version (LOL Version) = " + dDragonVersion);
+
+                if (patcher.DDragonVersion != dDragonVersion)
+                {
+                    try
+                    {
+                        if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "temp")))
+                            Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
+
+                        await Dispatcher.BeginInvoke(DispatcherPriority.Input,
+                            new ThreadStart(() => { CurrentProgressLabel.Content = "Downloading DataDragon"; }));
+
+                        string ddragonLocation = Path.Combine(Client.ExecutingDirectory, "Assets",
+                                "dragontail-" + patcher.DDragonVersion + ".tgz");
+                        if (File.Exists(ddragonLocation))
+                        {
+                            client.OpenRead(dDragonDownloadUrl);
+                            var asd = new FileInfo(ddragonLocation);
+                            if (asd.Length != Convert.ToInt64(client.ResponseHeaders["Content-Length"]))
+                            {
+                                await client.DownloadFileTaskAsync(dDragonDownloadUrl,
+                                    Path.Combine(Client.ExecutingDirectory, "Assets",
+                                        "dragontail-" + patcher.DDragonVersion + ".tgz"));
+                            }
+                            else
+                            {
+                                await Task.Run(() => DDragonDownloaded());
+                            }
+                        }
+                        else
+                        {
+                            await client.DownloadFileTaskAsync(dDragonDownloadUrl,
+                                Path.Combine(Client.ExecutingDirectory, "Assets",
+                                    "dragontail-" + patcher.DDragonVersion + ".tgz"));
+                            await Task.Run(() => DDragonDownloaded());
+                        }
+
+                    }
+                    catch
+                    {
+                        Client.Log(
+                            "Probably updated version number without actually uploading the files.");
+                    }
+                }
+                else
+                {
+                    AirPatcher();
+                }
+            }
+            else
+            {
+                LogTextBox(
+                    "Failed to get DDragon version. Either not able to be found or unknown error (most likely the website is in maitenance, please try again in an hour or so)");
+                LogTextBox(
+                    "Continuing could cause errors. Report this as an issue if it occurs again in a few hours.");
+            }
+        }
+
+        private async void DDragonDownloaded()
+        {
+            await Dispatcher.BeginInvoke(DispatcherPriority.Input,
+                new ThreadStart(() => { 
+                    CurrentProgressLabel.Content = "Extracting DataDragon";
+                    ExtractingLabel.Visibility = Visibility.Visible;
+                    ExtractingProgressRing.Visibility = Visibility.Visible;
+                }));
+
+            Stream inStream =
+                        File.OpenRead(Path.Combine(Client.ExecutingDirectory, "Assets",
+                            "dragontail-" + patcher.DDragonVersion + ".tgz"));
+            using (var reader = ReaderFactory.Open(inStream))
+            {
+                while (reader.MoveToNextEntry())
+                {
+                    if (!reader.Entry.IsDirectory)
+                    {
+                        reader.WriteAllToDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"), ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                    }
+                }
+            }
+            inStream.Close();
+
+            Copy(
+                Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion,
+                    "data"), Path.Combine(Client.ExecutingDirectory, "Assets", "data"));
+            Copy(
+                Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion,
+                    "img"), Path.Combine(Client.ExecutingDirectory, "Assets"));
+            DeleteDirectoryRecursive(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
+
+
+            var encoding = new ASCIIEncoding();
+            FileStream versionDDragon =
+                File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
+            versionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0,
+                encoding.GetBytes(patcher.DDragonVersion).Length);
+
+            versionDDragon.Close();
+            await Dispatcher.BeginInvoke(DispatcherPriority.Input,
+                new ThreadStart(() => { 
+                    ExtractingLabel.Visibility = Visibility.Hidden;
+                    ExtractingProgressRing.Visibility = Visibility.Hidden;
+                }));
+            AirPatcher();
+        }
+        #endregion DDragon
+
+        private void AirPatcher()
         {
             try
             {
                 var bgThead = new Thread(() =>
                 {
-                    LogTextBox("Starting Patcher");
-
-                    var client = new WebClient();
-                    client.DownloadProgressChanged += client_DownloadProgressChanged;
-                    client.DownloadFileCompleted += client_DownloadDDragon;
-                    client.DownloadProgressChanged +=
-                        (o, e) => Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                        {
-                            double bytesIn = double.Parse(e.BytesReceived.ToString(CultureInfo.InvariantCulture));
-                            double totalBytes =
-                                double.Parse(e.TotalBytesToReceive.ToString(CultureInfo.InvariantCulture));
-                            double percentage = bytesIn/totalBytes*100;
-                            CurrentProgressLabel.Content = "Downloaded " + e.BytesReceived + " of " +
-                                                           e.TotalBytesToReceive;
-                            CurrentProgressBar.Value =
-                                int.Parse(Math.Truncate(percentage).ToString(CultureInfo.InvariantCulture));
-                        }));
-
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        TotalProgressLabel.Content = "20%";
-                        TotalProgessBar.Value = 20;
-                    }));
-
-                    #region idk
-
-                    client = new WebClient();
-                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3")))
-                        client.DownloadFile(
-                            new Uri(
-                                "https://s12.solidfilesusercontent.com/MDE1MWYxZGJmYWFhNzJmNGQ2N2ZhOWE0NzU4Yjk2ZDYwZjY3MGU2OToxWHp3OTk6dUllemo3WDM0RnlScUgxZk1YWXpKYmN0RXBn/7a0671ed14/Login.mp3"),
-                            Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
-
-                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4")))
-                        client.DownloadFile(
-                            new Uri(
-                                "https://s8.solidfilesusercontent.com/MzkxMTBjOTllZDczMTBjZDUwNzgwOTc1NTYwZmY1Nzg2YThkZDI5MzoxWHp2eE86alBDQXBkU1FuNmt6R3dsTzcycEtoOXpGdVZr/a38bbf759c/Login.mp4"),
-                            Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
-
-                    #endregion idk
-
-                    #region DDragon
-
-                    var encoding = new ASCIIEncoding();
-                    if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets")))
-                        Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets"));
-
-                    if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon")))
-                    {
-                        FileStream versionLol =
-                            File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
-                        versionLol.Write(encoding.GetBytes("0.0.0"), 0, encoding.GetBytes("0.0.0").Length);
-
-                        versionLol.Close();
-                    }
-
-
-                    var patcher = new RiotPatcher();
-                    string dDragonDownloadUrl = patcher.GetDragon();
-                    if (!String.IsNullOrEmpty(dDragonDownloadUrl))
-                    {
-                        LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
-                        string dDragonVersion =
-                            File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
-                        LogTextBox("Current DataDragon Version: " + dDragonVersion);
-
-                        Client.Version = dDragonVersion;
-                        Client.Log("DDragon Version (LOL Version) = " + dDragonVersion);
-
-                        LogTextBox("Client Version: " + Client.Version);
-
-                        if (patcher.DDragonVersion != dDragonVersion)
-                        {
-                            try
-                            {
-                                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "temp")))
-                                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
-
-                                Dispatcher.BeginInvoke(DispatcherPriority.Input,
-                                    new ThreadStart(() => { CurrentProgressLabel.Content = "Downloading DataDragon"; }));
-                                client.DownloadFile(dDragonDownloadUrl,
-                                    Path.Combine(Client.ExecutingDirectory, "Assets",
-                                        "dragontail-" + patcher.DDragonVersion + ".tgz"));
-
-
-                                Dispatcher.BeginInvoke(DispatcherPriority.Input,
-                                    new ThreadStart(() => { CurrentProgressLabel.Content = "Extracting DataDragon"; }));
-
-                                Stream inStream =
-                                    File.OpenRead(Path.Combine(Client.ExecutingDirectory, "Assets",
-                                        "dragontail-" + patcher.DDragonVersion + ".tgz"));
-
-                                using (var gzipStream = new GZipInputStream(inStream))
-                                {
-                                    TarArchive tarArchive = TarArchive.CreateInputTarArchive(gzipStream);
-                                    tarArchive.ExtractContents(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
-                                    //tarArchive.Close();
-                                }
-                                inStream.Close();
-
-                                Copy(
-                                    Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion,
-                                        "data"), Path.Combine(Client.ExecutingDirectory, "Assets", "data"));
-                                Copy(
-                                    Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion,
-                                        "img"), Path.Combine(Client.ExecutingDirectory, "Assets"));
-                                DeleteDirectoryRecursive(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"));
-
-                                FileStream versionDDragon =
-                                    File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDRagon"));
-                                versionDDragon.Write(encoding.GetBytes(patcher.DDragonVersion), 0,
-                                    encoding.GetBytes(patcher.DDragonVersion).Length);
-
-                                Client.Version = dDragonVersion;
-                                versionDDragon.Close();
-                            }
-                            catch
-                            {
-                                Client.Log(
-                                    "Probably updated version number without actually uploading the files.");
-                            }
-                        }
-                    }
-                    else
-                    {
-                        LogTextBox(
-                            "Failed to get DDragon version. Either not able to be found or unknown error (most likely the website is in maitenance, please try again in an hour or so)");
-                        LogTextBox(
-                            "Continuing could cause errors. Report this as an issue if it occurs again in a few hours.");
-                    }
-
-                    #endregion DDragon
-
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         TotalProgressLabel.Content = "40%";
@@ -247,7 +287,7 @@ namespace LegendaryClient.Windows
                     string lolRootPath = GetLolRootPath(false);
 
                     #region lol_air_client
-
+                    var encoding = new ASCIIEncoding();
                     if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR")))
                     {
                         FileStream versionAir =
