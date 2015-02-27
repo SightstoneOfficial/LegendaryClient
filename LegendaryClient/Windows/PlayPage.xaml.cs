@@ -19,6 +19,7 @@ using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using Timer = System.Timers.Timer;
+using PVPNetConnect;
 
 #endregion
 
@@ -365,19 +366,20 @@ namespace LegendaryClient.Windows
                     var settings = (QueueButtonConfig)LastSender.Tag;
                     var config = (GameQueueConfig)settings.GameQueueConfig;
                     Queues.Remove(config.Id);
+                    var failure = new QueueDodger(result.PlayerJoinFailures[0] as TypedObject);
                     var message = new MessageOverlay
                     {
                         MessageTitle = {Content = "Failed to join queue"},
-                        MessageTextBox = {Text = result.PlayerJoinFailures[0].ReasonFailed}
+                        MessageTextBox = {Text = failure.ReasonFailed}
                     };
-                    switch (result.PlayerJoinFailures[0].ReasonFailed)
+                    switch (failure.ReasonFailed)
                     {
                         case "QUEUE_DODGER":
                         {
                             message.MessageTextBox.Text =
                                 "Unable to join the queue due to you recently dodging a game." +
                                 Environment.NewLine;
-                            TimeSpan time = TimeSpan.FromMilliseconds(result.PlayerJoinFailures[0].PenaltyRemainingTime);
+                            TimeSpan time = TimeSpan.FromMilliseconds(failure.PenaltyRemainingTime);
                             message.MessageTextBox.Text = "You have " +
                                                           string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) +
                                                           " remaining until you may queue again";

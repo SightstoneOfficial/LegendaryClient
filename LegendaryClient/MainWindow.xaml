@@ -14,7 +14,7 @@
             <Label x:Name="InfoLabel" Content="Not Logged In" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" />
             <Button x:Name="HomeButton" Content="home" Click="HomeButton_Click" />
             <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" />
-            <Button x:Name="ProfileButton" Content="profile" Click="ProfileButton_Click" />
+            <Button x:Name="ProfileButton" Content="profile" Click="ProfileButton_Click" MouseDoubleClick="ProfileButton_MouseDoubleClick"/>
             <Button x:Name="ShopButton" Content="shop" Click="ShopButton_Click" />
             <Button x:Name="ReplayButton" Content="replays" Click="ReplayButton_Click" />
             <Button x:Name="SettingsButton" Content="settings" Click="SettingsButton_Click" />

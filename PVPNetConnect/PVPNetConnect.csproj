@@ -115,6 +115,7 @@
     <Compile Include="RiotObjects\Platform\Leagues\Client\Dto\SummonerLeaguesDTO.cs" />
     <Compile Include="RiotObjects\Platform\Login\AuthenticationCredentials.cs" />
     <Compile Include="RiotObjects\Platform\Login\Session.cs" />
+    <Compile Include="RiotObjects\Platform\Matchmaking\BustedLeaver.cs" />
     <Compile Include="RiotObjects\Platform\Matchmaking\GameQueueConfig.cs" />
     <Compile Include="RiotObjects\Platform\Matchmaking\MatchingThrottleConfig.cs" />
     <Compile Include="RiotObjects\Platform\Matchmaking\MatchMakerParams.cs" />
