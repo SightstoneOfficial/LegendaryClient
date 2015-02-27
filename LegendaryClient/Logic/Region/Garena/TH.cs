@@ -11,7 +11,7 @@ namespace LegendaryClient.Logic.Region.Garena
     {
         public override string RegionName
         {
-            get { return "prod.lol.garenanow.com"; }
+            get { return "th"; }
         }
 
         public override string Location
@@ -31,7 +31,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string ChatName
         {
-            get { return "chat.lol.garenanow.com"; }
+            get { return "th"; }
         }
 
         public override Uri NewsAddress
@@ -42,7 +42,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string Locale
         {
-            get { return "en_TH"; }
+            get { return "en_US"; }
         }
 
         public override PVPNetConnect.Region PVPRegion
@@ -54,21 +54,22 @@ namespace LegendaryClient.Logic.Region.Garena
         {
             get
             {
-                return new IPAddress[]
+                return new[]
                 {
-                    //No known IP address
+                    IPAddress.Parse("112.121.158.28"),
+                    IPAddress.Parse("112.121.157.15")
                 };
             }
         }
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://203.116.112.222:8088/observer-mode/rest/"); }
+            get { return new Uri("http://112.121.157.15:8088/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress
         {
-            get { return ""; }
+            get { return "112.121.157.15:8088"; }
             set { }
         }
     }

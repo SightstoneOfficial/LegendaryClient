@@ -11,7 +11,7 @@ namespace LegendaryClient.Logic.Region.Garena
     {
         public override string RegionName
         {
-            get { return "prodph.lol.garenanow.com"; }
+            get { return "ph"; }
         }
 
         public override string Location
@@ -31,7 +31,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string ChatName
         {
-            get { return "chatph.lol.garenanow.com"; }
+            get { return "ph"; }
         }
 
         public override Uri NewsAddress
@@ -42,7 +42,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string Locale
         {
-            get { return "en_PH"; }
+            get { return "en_US"; }
         }
 
         public override PVPNetConnect.Region PVPRegion
