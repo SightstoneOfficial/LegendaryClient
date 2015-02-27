@@ -498,7 +498,7 @@ namespace LegendaryClient.Windows
                 {
                     Client.ChatClient.AutoReconnect = 30;
                     Client.ChatClient.KeepAlive = 10;
-                    Client.ChatClient.NetworkHost = Client.Region.ChatName;
+                    Client.ChatClient.NetworkHost = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
                     Client.ChatClient.Port = 5223;
                     Client.ChatClient.Server = "pvp.net";
                     Client.ChatClient.SSL = true;
