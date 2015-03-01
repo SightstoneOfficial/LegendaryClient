@@ -459,80 +459,90 @@ namespace LegendaryClient.Windows
 
         private void downloadTheme(string[] manifest)
         {
-            string[] fileMetaData = manifest.Skip(1).ToArray();
-            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
-
-            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes")))
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes"));
-
-            foreach (string s in fileMetaData)
+            try
             {
-                if (String.IsNullOrEmpty(s))
-                    continue;
+                string[] fileMetaData = manifest.Skip(1).ToArray();
+                BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
 
-                string location = s.Split(',')[0];
-                string savePlace = location.Split(new[] { "/files/" }, StringSplitOptions.None)[1];
-                if (savePlace.Contains("theme.properties"))
+                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes")))
+                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes"));
+
+                foreach (string s in fileMetaData)
                 {
-                    using (var newClient = new WebClient())
+                    if (String.IsNullOrEmpty(s))
+                        continue;
+
+                    string location = s.Split(',')[0];
+                    string savePlace = location.Split(new[] { "/files/" }, StringSplitOptions.None)[1];
+                    if (savePlace.Contains("theme.properties"))
                     {
-                        LogTextBox("Checking Theme...");
-                        newClient.DownloadFile(updateRegion.BaseLink + location,
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties"));
-                    }
-                }
-            }
-
-            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties")))
-                return;
-
-            string[] file = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties"));
-            string theme = "";
-
-            foreach (string s in file)
-                if (s.StartsWith("themeConfig="))
-                    theme = s.Split('=')[1].Split(',')[0];
-
-            if (theme == "")
-                return;
-
-            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme)))
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme));
-            else
-                return;
-
-            foreach (string s in fileMetaData)
-            {
-                if (String.IsNullOrEmpty(s))
-                    continue;
-
-                string location = s.Split(',')[0];
-                string savePlace = location.Split(new[] { "/files/" }, StringSplitOptions.None)[1];
-
-                if (savePlace.Contains("/themes/" + theme + "/"))
-                {
-                    using (var newClient = new WebClient())
-                    {
-                        string saveName = location.Split(new[] { "/" + theme + "/" }, StringSplitOptions.None)[1];
-                        if (saveName.Contains("/"))
+                        using (var newClient = new WebClient())
                         {
-                            string[] dir = saveName.Split('/');
-                            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, dir[0])))
-                                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, dir[0]));
-                            LogTextBox("Downloading " + dir[1] + " from http://l3cdn.riotgames.com");
+                            LogTextBox("Checking Theme...");
                             newClient.DownloadFile(updateRegion.BaseLink + location,
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, dir[0], dir[1]));
-                        }
-                        else
-                        {
-                            LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
-                            newClient.DownloadFile(updateRegion.BaseLink + location,
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, saveName));
+                                Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties"));
                         }
                     }
                 }
+
+                if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties")))
+                    return;
+
+                string[] file =
+                    File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties"));
+                string theme = "";
+
+                foreach (string s in file)
+                    if (s.StartsWith("themeConfig="))
+                        theme = s.Split('=')[1].Split(',')[0];
+
+                if (theme == "")
+                    return;
+
+                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme)))
+                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme));
+                else
+                    return;
+
+                foreach (string s in fileMetaData)
+                {
+                    if (String.IsNullOrEmpty(s))
+                        continue;
+
+                    string location = s.Split(',')[0];
+                    string savePlace = location.Split(new[] { "/files/" }, StringSplitOptions.None)[1];
+
+                    if (savePlace.Contains("/themes/" + theme + "/"))
+                    {
+                        using (var newClient = new WebClient())
+                        {
+                            string saveName = location.Split(new[] { "/" + theme + "/" }, StringSplitOptions.None)[1];
+                            if (saveName.Contains("/"))
+                            {
+                                string[] dir = saveName.Split('/');
+                                if (
+                                    !Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme,
+                                        dir[0])))
+                                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes",
+                                        theme, dir[0]));
+                                LogTextBox("Downloading " + dir[1] + " from http://l3cdn.riotgames.com");
+                                newClient.DownloadFile(updateRegion.BaseLink + location,
+                                    Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, dir[0], dir[1]));
+                            }
+                            else
+                            {
+                                LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
+                                newClient.DownloadFile(updateRegion.BaseLink + location,
+                                    Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, saveName));
+                            }
+                        }
+                    }
+                }
+                Client.Theme = theme;
             }
-            Client.Theme = theme;
+            catch
+            {
+            }
         }
 
         private string GetLolRootPath(bool restart)
