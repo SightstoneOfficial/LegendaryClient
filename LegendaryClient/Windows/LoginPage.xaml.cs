@@ -326,7 +326,14 @@ namespace LegendaryClient.Windows
         {
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
             {
-                SniffGarena();
+                if(String.IsNullOrEmpty(LoginPasswordBox.Password))
+                {
+                    SniffGarena((string)RegionComboBox.SelectedValue);
+                }
+                else
+                {
+                    LoginGarena(LoginPasswordBox.Password, (string)RegionComboBox.SelectedValue);
+                }
                 return;
             }
             Client.PVPNet = null;
@@ -645,7 +652,7 @@ namespace LegendaryClient.Windows
         }
 
         //This is to avoid replacing Garena, this is a better method
-        private void SniffGarena()
+        private void SniffGarena(String region)
         {
             LoggingInLabel.Content = "Waiting for user to launch League from garena";
             HideGrid.Visibility = Visibility.Hidden;
@@ -677,15 +684,11 @@ namespace LegendaryClient.Windows
                                 gotToken = !gotToken;
                                 Client.PVPNet = null;
                                 Client.PVPNet = new PVPNetConnection();
-                                var garenaregion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+                                var garenaregion = BaseRegion.GetRegion(region);
                                 Client.PVPNet.garenaToken = s1;
                                 Client.PVPNet.Connect("", "", garenaregion.PVPRegion, Client.Version);
                                 Client.Region = garenaregion;
-                                HideGrid.Visibility = Visibility.Hidden;
-                                ErrorTextBox.Visibility = Visibility.Hidden;
-                                LoggingInLabel.Visibility = Visibility.Visible;
-                                LoggingInLabel.Content = "Logging in...";
-                                LoggingInProgressRing.Visibility = Visibility.Visible;
+                                LoggingInLabel.Dispatcher.Invoke(new Action(() => LoggingInLabel.Content = "Logging in..."));
                                 Client.PVPNet.OnError += PVPNet_OnError;
                                 Client.PVPNet.OnLogin += PVPNet_OnLogin;
                                 Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
@@ -696,6 +699,31 @@ namespace LegendaryClient.Windows
                 });
             getTokenThread.Start();
 
+        }
+
+        //Garena login with custom token
+        private void LoginGarena(String token, String region)
+        {
+            LoggingInLabel.Content = "Logging in using entered token...";
+            HideGrid.Visibility = Visibility.Hidden;
+            ErrorTextBox.Visibility = Visibility.Hidden;
+            LoggingInLabel.Visibility = Visibility.Visible;
+            LoggingInProgressRing.Visibility = Visibility.Visible;
+            var LoginThread = new Thread(() =>
+            {
+     
+                            token = token.Substring(1);
+                            Client.PVPNet = null;
+                            Client.PVPNet = new PVPNetConnection();
+                            var garenaregion = BaseRegion.GetRegion(region);
+                            Client.PVPNet.garenaToken = token;
+                            Client.PVPNet.Connect("", "", garenaregion.PVPRegion, Client.Version);
+                            Client.Region = garenaregion;
+                            Client.PVPNet.OnError += PVPNet_OnError;
+                            Client.PVPNet.OnLogin += PVPNet_OnLogin;
+                            Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
+            });
+            LoginThread.Start();
         }
         private static string GetCommandLine(Process process)
         {
