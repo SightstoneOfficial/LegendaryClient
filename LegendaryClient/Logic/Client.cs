@@ -330,6 +330,8 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static List<keybindingEvents> Keybinds;
 
+        internal static string Theme;
+
         internal static ChampionDTO[] PlayerChampions;
 
         internal static ReplayRecorder Autorecorder;
