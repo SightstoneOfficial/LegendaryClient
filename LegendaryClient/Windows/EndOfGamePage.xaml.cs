@@ -43,7 +43,6 @@ namespace LegendaryClient.Windows
             uiLogic.UpdateMainPage();
             Client.runonce = false;
 
-            //string obfuscatedName = Client.GetObfuscatedChatroomName(statistics.RoomName, ChatPrefixes.Post_Game);
             string jid = Client.GetChatroomJID(statistics.RoomName, statistics.RoomPassword, false);
             _newRoom = Client.ConfManager.GetRoom(new JID(jid));
             _newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
