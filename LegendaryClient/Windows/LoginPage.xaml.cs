@@ -645,27 +645,22 @@ namespace LegendaryClient.Windows
         {
             try
             {
-                var windowsIdentity = WindowsIdentity.GetCurrent();
-                if (windowsIdentity != null && windowsIdentity.User == new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null))
-                {
-                    var info = new ProcessStartInfo(
+                Directory.CreateDirectory(@"C:\Program Files\LCAdminTest");
+                Directory.Delete(@"C:\Program Files\LCAdminTest", true);
+            }
+            catch
+            {
+                var info = new ProcessStartInfo(
                         Path.Combine(Client.ExecutingDirectory, "Client", "LegendaryClient.exe"))
-                    {
-                        UseShellExecute = true,
-                        Verb = "runas"
-                    };
-                    try
-                    {
-
-                        Process.Start(info);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("LegenadryClient must be run as admin to work on Garena servers", "Garena Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    Environment.Exit(0);
-                }
-
+                {
+                    UseShellExecute = true,
+                    Verb = "runas"
+                };
+                Process.Start(info);
+                Environment.Exit(0);
+            }
+            try
+            {
                 LoggingInLabel.Content = "Waiting for user to launch League from garena";
                 HideGrid.Visibility = Visibility.Hidden;
                 ErrorTextBox.Visibility = Visibility.Hidden;
