@@ -373,9 +373,19 @@ namespace LegendaryClient.Windows
                 catch
                 {
                     newsJson = newsXml;
-                }
+                } 
                 var serializer = new JavaScriptSerializer();
-                var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
+                Dictionary<string, object> deserializedJson;
+                try
+                {
+                    deserializedJson = serializer.Deserialize<Dictionary<string, object>>(newsJson);
+                }
+                catch
+                {
+                    deserializedJson = null;
+                    return;
+                }
+
                 var rss = deserializedJson["rss"] as Dictionary<string, object>;
                 if (rss == null)
                     return;
