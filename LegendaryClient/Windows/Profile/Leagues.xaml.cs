@@ -61,6 +61,11 @@ namespace LegendaryClient.Windows.Profile
 
         public void RenderLeague()
         {
+            if (_myLeagues == null)
+            {
+                MessageBox.Show("You are not in League.");
+                return;
+            }
             LeaguesListView.Items.Clear();
             foreach (var leagues in _myLeagues.SummonerLeagues.Where(leagues => leagues.Queue == _queue))
             {
