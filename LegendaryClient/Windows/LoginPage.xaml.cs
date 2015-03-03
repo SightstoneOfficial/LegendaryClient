@@ -674,12 +674,12 @@ namespace LegendaryClient.Windows
                     {
                         while (!gotToken)
                         {
-                            foreach (var process in Process.GetProcessesByName("lolclient"))
+                            foreach (var process in Process.GetProcessesByName("lol"))
                             {
                                 try
                                 {
                                     var s1 = GetCommandLine(process);
-                                    foreach (var p1 in Process.GetProcessesByName("lol"))
+                                    foreach (var p1 in Process.GetProcessesByName("lolclient"))
                                     {
                                         p1.Kill();
                                     }
@@ -687,7 +687,6 @@ namespace LegendaryClient.Windows
                                     gotToken = true;
                                     try
                                     {
-
                                         s1 = s1.Substring(1);
                                     }
                                     catch 
