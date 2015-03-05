@@ -58,7 +58,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             GotPlayerData(Client.LoginPacket);
-            SpectatorComboBox.SelectedValue = Client.Region.RegionName;
+            SpectatorComboBox.SelectedValue = Client.Region.RegionName.ToUpper();
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
             uiLogic.Profile = new ProfilePage();
             ChangeSpectatorRegion(region);
