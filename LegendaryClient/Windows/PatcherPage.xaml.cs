@@ -42,6 +42,9 @@ namespace LegendaryClient.Windows
         internal static string LolDataVersion = string.Empty;
         private RiotPatcher patcher = new RiotPatcher();
 
+        private delegate void FinishedPatchingDelegate();
+        private event FinishedPatchingDelegate FinishedPatchingEvent;
+
         public PatcherPage()
         {
             InitializeComponent();
@@ -59,12 +62,39 @@ namespace LegendaryClient.Windows
                 PatchTextBox.Foreground = (Brush)bc.ConvertFrom("#FF1B1919");
                 ExtractingProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
+
+            // Auto-play checkbox
+            if (Settings.Default.AutoPlay)
+            {
+                checkboxAutoPlay.IsChecked = true;
+                //SkipPatchButton.IsEnabled = false;
+                FinishedPatchingEvent += PatcherPage_FinishedPatchingEvent;
+            }
+            else
+            {
+                checkboxAutoPlay.IsChecked = false;
+                SkipPatchButton.IsEnabled = true;
+                if (FinishedPatchingEvent != null)
+                    FinishedPatchingEvent -= PatcherPage_FinishedPatchingEvent;
+            }
+
             //DevKey.TextChanged += DevKey_TextChanged;
 #if !DEBUG
             UpdateSplash();
 #endif
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
+        }
+
+        void PatcherPage_FinishedPatchingEvent()
+        {
+            if (Settings.Default.AutoPlay)
+            {
+                SkipPatchButton.IsEnabled = false;
+                Client.Log("Auto-play checked. Switching to login page...");
+                LogTextBox("Auto-play checked. Switching to login page...");
+                SkipPatchButton_Click(null, null);
+            }
         }
 
         public void Change()
@@ -444,6 +474,9 @@ namespace LegendaryClient.Windows
                         CurrentStatusLabel.Content = "Ready To Play";
                         SkipPatchButton.IsEnabled = true;
                         //SkipPatchButton_Click(null, null);
+
+                        if (FinishedPatchingEvent != null)
+                            FinishedPatchingEvent();
                     }));
 
                     LogTextBox("LegendaryClient Has Finished Patching");
@@ -1135,6 +1168,21 @@ namespace LegendaryClient.Windows
                     break;
             }
 
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Settings.Default.AutoPlay = true;
+            SkipPatchButton.IsEnabled = false;
+            FinishedPatchingEvent += PatcherPage_FinishedPatchingEvent;
+        }
+
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Settings.Default.AutoPlay = false;
+            SkipPatchButton.IsEnabled = true;
+            if (FinishedPatchingEvent != null)
+                FinishedPatchingEvent -= PatcherPage_FinishedPatchingEvent;
         }
     }
 }

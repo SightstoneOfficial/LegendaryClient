@@ -498,7 +498,8 @@ namespace LegendaryClient.Logic
 
         internal static void SetChatHover()
         {
-            ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
+            if (ChatClient.IsAuthenticated)
+                ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
         }
 
         internal static bool hidelegendaryaddition = false;
