@@ -92,6 +92,8 @@ namespace LegendaryClient.Windows
                     RememberUsernameCheckbox.Visibility = Visibility.Hidden;
                     LoginPassword.Visibility = Visibility.Hidden;
                     LoginPasswordBox.Visibility = Visibility.Hidden;
+                    if (!String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion))
+                        RegionComboBox.SelectedValue = Settings.Default.DefaultGarenaRegion;  // Default Garena Region
                     break;
             }
 
@@ -329,6 +331,7 @@ namespace LegendaryClient.Windows
         {
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
             {
+                Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                 SniffGarena();
                 return;
             }

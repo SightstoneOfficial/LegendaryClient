@@ -86,5 +86,8 @@
     <Setting Name="ReplayServer" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="DefaultGarenaRegion" Type="System.String" Scope="User">
+      <Value Profile="(Default)">PH</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
