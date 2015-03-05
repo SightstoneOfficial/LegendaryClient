@@ -44,7 +44,8 @@ namespace LegendaryClient.Windows
             LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline();
             TeamsContainer.Content = new Teams();
             //Auto get summoner profile when created instance.
-            GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+            if (Client.IsLoggedIn)
+                GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
         public void Change()
