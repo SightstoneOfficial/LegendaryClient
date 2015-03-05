@@ -67,10 +67,16 @@ namespace LegendaryClient.Windows
             if (Settings.Default.AutoPlay)
             {
                 checkboxAutoPlay.IsChecked = true;
+                //SkipPatchButton.IsEnabled = false;
                 FinishedPatchingEvent += PatcherPage_FinishedPatchingEvent;
             }
             else
+            {
                 checkboxAutoPlay.IsChecked = false;
+                SkipPatchButton.IsEnabled = true;
+                if (FinishedPatchingEvent != null)
+                    FinishedPatchingEvent -= PatcherPage_FinishedPatchingEvent;
+            }
 
             //DevKey.TextChanged += DevKey_TextChanged;
 #if !DEBUG
@@ -84,6 +90,7 @@ namespace LegendaryClient.Windows
         {
             if (Settings.Default.AutoPlay)
             {
+                SkipPatchButton.IsEnabled = false;
                 Client.Log("Auto-play checked. Switching to login page...");
                 LogTextBox("Auto-play checked. Switching to login page...");
                 SkipPatchButton_Click(null, null);
@@ -1166,11 +1173,16 @@ namespace LegendaryClient.Windows
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Settings.Default.AutoPlay = true;
+            SkipPatchButton.IsEnabled = false;
+            FinishedPatchingEvent += PatcherPage_FinishedPatchingEvent;
         }
 
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Settings.Default.AutoPlay = false;
+            SkipPatchButton.IsEnabled = true;
+            if (FinishedPatchingEvent != null)
+                FinishedPatchingEvent -= PatcherPage_FinishedPatchingEvent;
         }
     }
 }
