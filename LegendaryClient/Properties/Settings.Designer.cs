@@ -384,5 +384,17 @@ namespace LegendaryClient.Properties {
                 this["DefaultGarenaRegion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoPlay {
+            get {
+                return ((bool)(this["AutoPlay"]));
+            }
+            set {
+                this["AutoPlay"] = value;
+            }
+        }
     }
 }
