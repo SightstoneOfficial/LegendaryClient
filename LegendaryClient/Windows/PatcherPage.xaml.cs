@@ -465,7 +465,6 @@ namespace LegendaryClient.Windows
                     if (toExit)
                         return;
 
-                    Client.GetChampionsFromSQL();
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         TotalProgressLabel.Content = "100%";
@@ -538,20 +537,38 @@ namespace LegendaryClient.Windows
                 else
                     return;
 
-                List<string> themeLink = fileMetaData.Where(
-                    line => (line.Contains("intro") || line.Contains("Intro")) && 
-                        line.Contains(theme)).ToList(); //loop is exacly the same as intro
-                themeLink = themeLink.Select(link => link.Split(',')[0]).ToList();
-
-                using (var newClient = new WebClient())
+                foreach (string s in fileMetaData)
                 {
-                    foreach (var item in themeLink)
+                    if (String.IsNullOrEmpty(s))
+                        continue;
+
+                    string location = s.Split(',')[0];
+                    string savePlace = location.Split(new[] { "/files/" }, StringSplitOptions.None)[1];
+
+                    if (savePlace.Contains("/themes/" + theme + "/"))
                     {
-                        string fileName = item.Split('/').Last();
-                        LogTextBox("Downloading " + fileName + " from http://l3cdn.riotgames.com");
-                        newClient.DownloadFile(updateRegion.BaseLink + item,
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName));
-                        
+                        using (var newClient = new WebClient())
+                        {
+                            string saveName = location.Split(new[] { "/" + theme + "/" }, StringSplitOptions.None)[1];
+                            if (saveName.Contains("/"))
+                            {
+                                string[] dir = saveName.Split('/');
+                                if (
+                                    !Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme,
+                                        dir[0])))
+                                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes",
+                                        theme, dir[0]));
+                                LogTextBox("Downloading " + dir[1] + " from http://l3cdn.riotgames.com");
+                                newClient.DownloadFile(updateRegion.BaseLink + location,
+                                    Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, dir[0], dir[1]));
+                            }
+                            else
+                            {
+                                LogTextBox("Downloading " + saveName + " from http://l3cdn.riotgames.com");
+                                newClient.DownloadFile(updateRegion.BaseLink + location,
+                                    Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, saveName));
+                            }
+                        }
                     }
                 }
                 Client.Theme = theme;

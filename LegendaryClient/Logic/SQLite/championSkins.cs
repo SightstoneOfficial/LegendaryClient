@@ -26,7 +26,6 @@ namespace LegendaryClient.Logic.SQLite
 
         public static championSkins GetSkin(int id)
         {
-            while (!Client.championsLoaded) { }
             return Client.ChampionSkins.FirstOrDefault(c => c.id == id);
         }
     }
