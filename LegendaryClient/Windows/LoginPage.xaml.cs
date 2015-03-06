@@ -647,6 +647,8 @@ namespace LegendaryClient.Windows
         //This is to avoid replacing Garena, this is a better method
         private void SniffGarena()
         {
+            Client.Garena = true;
+
             try
             {
                 Directory.CreateDirectory(@"C:\Program Files\LCAdminTest");
