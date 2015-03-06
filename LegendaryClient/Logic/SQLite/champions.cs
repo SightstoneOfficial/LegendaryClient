@@ -100,11 +100,13 @@ namespace LegendaryClient.Logic.SQLite
 
         public static champions GetChampion(int id)
         {
+            while (!Client.championsLoaded) { }
             return Client.Champions.FirstOrDefault(c => c.id == id);
         }
 
         public static champions GetChampion(string name)
         {
+            while (!Client.championsLoaded) { }
             return Client.Champions.FirstOrDefault(c => c.name == name);
         }
     }

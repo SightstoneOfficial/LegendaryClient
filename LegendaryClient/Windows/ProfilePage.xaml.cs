@@ -41,7 +41,10 @@ namespace LegendaryClient.Windows
             RunesContainer.Content = new Runes();
             MasteriesContainer.Content = new Masteries();
             SkinsContainer.Content = new Skins();
-            LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline();
+            if (!Client.Garena)
+                LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline();
+            else
+                LeagueMatchHistoryBetaContainer.Visibility = Visibility.Collapsed;
             TeamsContainer.Content = new Teams();
             //Auto get summoner profile when created instance.
             if (Client.IsLoggedIn)

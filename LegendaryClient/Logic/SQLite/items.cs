@@ -80,6 +80,7 @@ namespace LegendaryClient.Logic.SQLite
 
         public static items GetItem(int id)
         {
+            while (!Client.championsLoaded) { }
             return Client.Items.FirstOrDefault(c => c.id == id);
         }
     }

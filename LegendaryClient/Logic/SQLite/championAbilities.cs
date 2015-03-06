@@ -35,6 +35,7 @@ namespace LegendaryClient.Logic.SQLite
 
         public static List<championAbilities> GetAbilities(int champId)
         {
+            while (!Client.championsLoaded) { }
             return Client.ChampionAbilities.Where(c => c.championId == champId).ToList();
         }
     }

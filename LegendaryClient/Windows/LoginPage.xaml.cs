@@ -139,48 +139,6 @@ namespace LegendaryClient.Windows
 
             //Get client data after patcher completed
 
-            Client.SQLiteDatabase = new SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
-            Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
-                                orderby s.name
-                                select s).ToList();
-
-            FreeToPlayChampions.GetInstance();
-
-            foreach (champions c in Client.Champions)
-            {
-                var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
-                    UriKind.Absolute);
-                c.icon = new BitmapImage(source);
-                Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
-                Debugger.Log(0, "", Environment.NewLine);
-
-                try
-                {
-                    c.IsFreeToPlay = FreeToPlayChampions.GetInstance().IsFreeToPlay(c);
-                    Champions.InsertExtraChampData(c);
-                    //why was this ever here? all of the needed info is already in the sqlite file
-                }
-                catch
-                {
-                    Client.Log("error, file not found", "NotFound");
-                }
-            }
-            Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
-                                    orderby s.name
-                                    select s).ToList();
-            Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
-                                        //Needs Fixed
-                                        orderby s.name
-                                        select s).ToList();
-            Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
-                                 orderby s.id
-                                 select s).ToList();
-            Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
-                               orderby s.id
-                               select s).ToList();
-            Client.Items = Items.PopulateItems();
-            Client.Masteries = Masteries.PopulateMasteries();
-            Client.Runes = Runes.PopulateRunes();
             BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
             var patcher = new RiotPatcher();
 
