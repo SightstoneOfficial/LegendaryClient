@@ -63,7 +63,17 @@ namespace LegendaryClient.Windows.Profile
         {
             if (_myLeagues == null)
             {
-                MessageBox.Show("You are not in League.");
+                //MessageBox.Show("You are not in League.");
+                var overlay = new MessageOverlay
+                {
+                    MessageTextBox =
+                    {
+                        Text = "You are not in League."
+                    },
+                    MessageTitle = { Content = "Not in League" }
+                };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
                 return;
             }
             LeaguesListView.Items.Clear();

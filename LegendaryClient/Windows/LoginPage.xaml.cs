@@ -93,7 +93,7 @@ namespace LegendaryClient.Windows
                     LoginPassword.Visibility = Visibility.Hidden;
                     LoginPasswordBox.Visibility = Visibility.Hidden;
                     if (!String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion))
-                        RegionComboBox.SelectedValue = Settings.Default.DefaultGarenaRegion;  // Default Garena Region
+                        RegionComboBox.SelectedItem = Settings.Default.DefaultGarenaRegion;  // Default Garena Region
                     break;
             }
 
@@ -331,7 +331,8 @@ namespace LegendaryClient.Windows
         {
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
             {
-                Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
+                if (!String.IsNullOrEmpty(RegionComboBox.SelectedItem.ToString()))
+                    Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedItem.ToString(); // Set default Garena region
                 SniffGarena();
                 return;
             }
@@ -646,6 +647,8 @@ namespace LegendaryClient.Windows
         //This is to avoid replacing Garena, this is a better method
         private void SniffGarena()
         {
+            Client.Garena = true;
+
             try
             {
                 Directory.CreateDirectory(@"C:\Program Files\LCAdminTest");
