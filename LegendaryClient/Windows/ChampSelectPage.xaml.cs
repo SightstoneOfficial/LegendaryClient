@@ -330,12 +330,21 @@ namespace LegendaryClient.Windows
 
                 LatestDto = latestDto;
                 //Get the champions for the other team to ban & sort alpabetically
-                ChampionBanInfoDTO[] champsForBan = await Client.PVPNet.GetChampionsForBan();
-                ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
-                ChampionsForBan.Sort(
-                    (x, y) =>
-                        String.Compare(champions.GetChampion(x.ChampionId)
-                            .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
+
+                // Rank Game ?
+                try
+                {
+                    ChampionBanInfoDTO[] champsForBan = await Client.PVPNet.GetChampionsForBan();
+                    ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
+                    ChampionsForBan.Sort(
+                        (x, y) =>
+                            String.Compare(champions.GetChampion(x.ChampionId)
+                                .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
+                }
+                catch (Exception e)  // Not really
+                {
+                    Client.Log(e.Message + "\r\n\r\n" + e.Source);
+                }
 
 
                 //Render our champions
