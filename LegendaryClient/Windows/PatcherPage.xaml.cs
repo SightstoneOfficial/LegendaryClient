@@ -73,7 +73,8 @@ namespace LegendaryClient.Windows
             else
             {
                 checkboxAutoPlay.IsChecked = false;
-                SkipPatchButton.IsEnabled = true;
+                if (Client.Dev)
+                    SkipPatchButton.IsEnabled = true;
                 if (FinishedPatchingEvent != null)
                     FinishedPatchingEvent -= PatcherPage_FinishedPatchingEvent;
             }
@@ -1162,7 +1163,8 @@ namespace LegendaryClient.Windows
         private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             Settings.Default.AutoPlay = false;
-            SkipPatchButton.IsEnabled = true;
+            if (Client.Dev)
+                SkipPatchButton.IsEnabled = true;
             if (FinishedPatchingEvent != null)
                 FinishedPatchingEvent -= PatcherPage_FinishedPatchingEvent;
         }
