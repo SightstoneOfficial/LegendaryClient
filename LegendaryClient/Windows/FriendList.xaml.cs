@@ -94,6 +94,10 @@ namespace LegendaryClient.Windows
                 Client.UpdatePlayers = false;
 
                 ChatListView.Children.Clear();
+
+                if (Client.Groups == null)
+                    return;
+
                 foreach (Group g in Client.Groups)
                 {
                     var playersListView = new ListView
