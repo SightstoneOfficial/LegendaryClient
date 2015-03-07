@@ -30,7 +30,7 @@
             <TextBlock x:Name="Note" Visibility="Hidden" Text="So Op" TextWrapping="WrapWithOverflow" />
         </Label>
 
-        <Label HorizontalAlignment="Stretch" Margin="0,100,0,0" VerticalAlignment="Bottom" Foreground="White">
+        <Label HorizontalAlignment="Stretch" Margin="0,115,0,0" VerticalAlignment="Bottom" Foreground="White">
             <TextBlock x:Name="InGameStatus" Text="In game as Shyvana" TextWrapping="WrapWithOverflow"
                        Foreground="#FFFFFF99" Visibility="Collapsed" />
         </Label>
