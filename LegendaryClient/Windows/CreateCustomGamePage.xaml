@@ -63,7 +63,7 @@
         <Label Margin="10,-300,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Map" FontSize="14"
                FontWeight="ExtraLight" />
         <ListBox x:Name="MapListBox" Width="250" Height="140" Margin="10,0,0,120" HorizontalAlignment="Left"
-                 VerticalAlignment="Center" Style="{x:Null}" SelectedIndex="1"
+                 VerticalAlignment="Center" Style="{x:Null}" SelectedIndex="0"
                  SelectionChanged="MapListBox_SelectionChanged" Foreground="White"
                  Background="#66505050" BorderBrush="{x:Null}">
             <Label Margin="0,0,0,0" Content="Summoners Rift" />
