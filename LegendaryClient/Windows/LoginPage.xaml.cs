@@ -140,9 +140,27 @@ namespace LegendaryClient.Windows
             //Get client data after patcher completed
 
             Client.SQLiteDatabase = new SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
-            Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
-                                orderby s.name
-                                select s).ToList();
+
+            // Check database error
+            try
+            {
+                Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
+                                    orderby s.name
+                                    select s).ToList();
+            }
+            catch (Exception e) // Database broken?
+            {
+                Client.Log("Database was broken : \r\n" + e.Message + "\r\n" + e.Source);
+                var overlay = new MessageOverlay
+                {
+                    MessageTextBox = { Text = "Database broken. Click OK to exit LegendaryClient." },
+                    MessageTitle = { Content = "Database Error" }
+                };
+                overlay.AcceptButton.Click += (o, i) => { Environment.Exit(0); };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+                return;
+            }
 
             FreeToPlayChampions.GetInstance();
 
