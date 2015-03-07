@@ -576,7 +576,12 @@ namespace LegendaryClient.Windows
                     case "Korea": if (Settings.Default.KRLocation != string.Empty)
                             return Settings.Default.KRLocation;
                         else break;
-                    case "Garena": if (Settings.Default.GarenaLocation != string.Empty)
+                    case "Garena": if (Settings.Default.GarenaLocation != string.Empty && Settings.Default.GarenaLocation.EndsWith("lol.exe"))
+                        {
+                            Settings.Default.GarenaLocation = Settings.Default.GarenaLocation.Replace("lol.exe", "");
+                            return Settings.Default.GarenaLocation;
+                        }
+                        else if (Settings.Default.GarenaLocation != string.Empty)
                             return Settings.Default.GarenaLocation;
                         else break;
                     default:
@@ -1144,7 +1149,7 @@ namespace LegendaryClient.Windows
                             Settings.Default.GarenaLocation = string.Empty;
                             break;
                         }
-                        else Settings.Default.GarenaLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                        else Settings.Default.GarenaLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "").Replace("lol.exe","");
                     }
                     break;
                 default:
