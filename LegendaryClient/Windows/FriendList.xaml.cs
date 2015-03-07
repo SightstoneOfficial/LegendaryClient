@@ -95,129 +95,139 @@ namespace LegendaryClient.Windows
 
                 ChatListView.Children.Clear();
 
-                foreach (Group g in Client.Groups)
+                #region "Groups"
+                try
                 {
-                    var playersListView = new ListView
+                    foreach (Group g in Client.Groups)
                     {
-                        HorizontalAlignment = HorizontalAlignment.Stretch,
-                        VerticalContentAlignment = VerticalAlignment.Stretch
-                    };
-                    playersListView.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty,
-                        ScrollBarVisibility.Disabled);
-                    playersListView.Foreground = Brushes.White;
-                    playersListView.Background = null;
-                    playersListView.BorderBrush = null;
-                    playersListView.MouseDoubleClick += PlayersListView_MouseDoubleClick;
-                    playersListView.SelectionChanged += ChatListView_SelectionChanged;
-                    playersListView.PreviewMouseWheel += PlayersListView_PreviewMouseWheel;
-
-                    int players = 0;
-
-                    foreach (var chatPlayerPair in Client.AllPlayers.ToArray().OrderBy(u => u.Value.Username))
-                    {
-                        var player = new ChatPlayer
+                        var playersListView = new ListView
                         {
-                            Tag = chatPlayerPair.Value,
-                            DataContext = chatPlayerPair.Value,
-                            ContextMenu = (ContextMenu)Resources["PlayerChatMenu"],
-                            PlayerName = { Content = chatPlayerPair.Value.Username },
-                            LevelLabel = { Content = chatPlayerPair.Value.Level }
+                            HorizontalAlignment = HorizontalAlignment.Stretch,
+                            VerticalContentAlignment = VerticalAlignment.Stretch
                         };
+                        playersListView.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty,
+                            ScrollBarVisibility.Disabled);
+                        playersListView.Foreground = Brushes.White;
+                        playersListView.Background = null;
+                        playersListView.BorderBrush = null;
+                        playersListView.MouseDoubleClick += PlayersListView_MouseDoubleClick;
+                        playersListView.SelectionChanged += ChatListView_SelectionChanged;
+                        playersListView.PreviewMouseWheel += PlayersListView_PreviewMouseWheel;
 
-                        var bc = new BrushConverter();
-                        var brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
-                        player.PlayerStatus.Content = chatPlayerPair.Value.Status;
-                        player.PlayerStatus.Foreground = brush;
+                        int players = 0;
 
-                        if (chatPlayerPair.Value.IsOnline && g.GroupName == chatPlayerPair.Value.Group)
+                        foreach (var chatPlayerPair in Client.AllPlayers.ToArray().OrderBy(u => u.Value.Username))
                         {
-                            player.Width = 250;
-                            bc = new BrushConverter();
-                            brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
-                            player.PlayerStatus.Foreground = brush;
-                            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                                chatPlayerPair.Value.ProfileIcon + ".png");
-                            player.ProfileImage.Source = Client.GetImage(uriSource);
-
-                            if (chatPlayerPair.Value.GameStatus != "outOfGame")
+                            var player = new ChatPlayer
                             {
-                                switch (chatPlayerPair.Value.GameStatus)
-                                {
-                                    case "inGame":
-                                        champions inGameChamp = champions.GetChampion(chatPlayerPair.Value.Champion);
-                                        if (inGameChamp != null)
-                                            player.PlayerStatus.Content = "In Game as " + inGameChamp.displayName;
-                                        else
-                                            player.PlayerStatus.Content = "In Game";
-                                        break;
-                                    case "hostingPracticeGame":
-                                        player.PlayerStatus.Content = "Creating Custom Game";
-                                        break;
-                                    case "inQueue":
-                                        player.PlayerStatus.Content = "In Queue";
-                                        break;
-                                    case "spectating":
-                                        player.PlayerStatus.Content = "Spectating";
-                                        break;
-                                    case "championSelect":
-                                        player.PlayerStatus.Content = "In Champion Select";
-                                        break;
-                                    case "hostingRankedGame":
-                                        player.PlayerStatus.Content = "Creating Ranked Game";
-                                        break;
-                                    case "teamSelect":
-                                        player.PlayerStatus.Content = "In Team Select";
-                                        break;
-                                    case "hostingNormalGame":
-                                        player.PlayerStatus.Content = "Creating Normal Game";
-                                        break;
-                                    case "hostingCoopVsAIGame":
-                                        player.PlayerStatus.Content = "Creating Co-op vs. AI Game";
-                                        break;
-                                    case "inTeamBuilder":
-                                        player.PlayerStatus.Content = "In Team Builder";
-                                        break;
-                                    case "tutorial":
-                                        player.PlayerStatus.Content = "In Tutorial";
-                                        break;
-                                }
-                                brush = (Brush)bc.ConvertFrom("#FFFFFF99");
-                                player.PlayerStatus.Foreground = brush;
-                            }
+                                Tag = chatPlayerPair.Value,
+                                DataContext = chatPlayerPair.Value,
+                                ContextMenu = (ContextMenu)Resources["PlayerChatMenu"],
+                                PlayerName = { Content = chatPlayerPair.Value.Username },
+                                LevelLabel = { Content = chatPlayerPair.Value.Level }
+                            };
 
-                            player.MouseRightButtonDown += player_MouseRightButtonDown;
-                            player.MouseMove += ChatPlayerMouseOver;
-                            player.MouseLeave += player_MouseLeave;
-                            playersListView.Items.Add(player);
-                            players++;
+                            var bc = new BrushConverter();
+                            var brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
+                            player.PlayerStatus.Content = chatPlayerPair.Value.Status;
+                            player.PlayerStatus.Foreground = brush;
+
+                            if (chatPlayerPair.Value.IsOnline && g.GroupName == chatPlayerPair.Value.Group)
+                            {
+                                player.Width = 250;
+                                bc = new BrushConverter();
+                                brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
+                                player.PlayerStatus.Foreground = brush;
+                                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                                    chatPlayerPair.Value.ProfileIcon + ".png");
+                                player.ProfileImage.Source = Client.GetImage(uriSource);
+
+                                if (chatPlayerPair.Value.GameStatus != "outOfGame")
+                                {
+                                    switch (chatPlayerPair.Value.GameStatus)
+                                    {
+                                        case "inGame":
+                                            champions inGameChamp = champions.GetChampion(chatPlayerPair.Value.Champion);
+                                            if (inGameChamp != null)
+                                                player.PlayerStatus.Content = "In Game as " + inGameChamp.displayName;
+                                            else
+                                                player.PlayerStatus.Content = "In Game";
+                                            break;
+                                        case "hostingPracticeGame":
+                                            player.PlayerStatus.Content = "Creating Custom Game";
+                                            break;
+                                        case "inQueue":
+                                            player.PlayerStatus.Content = "In Queue";
+                                            break;
+                                        case "spectating":
+                                            player.PlayerStatus.Content = "Spectating";
+                                            break;
+                                        case "championSelect":
+                                            player.PlayerStatus.Content = "In Champion Select";
+                                            break;
+                                        case "hostingRankedGame":
+                                            player.PlayerStatus.Content = "Creating Ranked Game";
+                                            break;
+                                        case "teamSelect":
+                                            player.PlayerStatus.Content = "In Team Select";
+                                            break;
+                                        case "hostingNormalGame":
+                                            player.PlayerStatus.Content = "Creating Normal Game";
+                                            break;
+                                        case "hostingCoopVsAIGame":
+                                            player.PlayerStatus.Content = "Creating Co-op vs. AI Game";
+                                            break;
+                                        case "inTeamBuilder":
+                                            player.PlayerStatus.Content = "In Team Builder";
+                                            break;
+                                        case "tutorial":
+                                            player.PlayerStatus.Content = "In Tutorial";
+                                            break;
+                                    }
+                                    brush = (Brush)bc.ConvertFrom("#FFFFFF99");
+                                    player.PlayerStatus.Foreground = brush;
+                                }
+
+                                player.MouseRightButtonDown += player_MouseRightButtonDown;
+                                player.MouseMove += ChatPlayerMouseOver;
+                                player.MouseLeave += player_MouseLeave;
+                                playersListView.Items.Add(player);
+                                players++;
+                            }
+                            else if (!chatPlayerPair.Value.IsOnline && g.GroupName == "Offline")
+                            {
+                                player.Width = 250;
+                                player.Height = 30;
+                                player.PlayerName.Margin = new Thickness(5, 2.5, 0, 0);
+                                player.LevelLabel.Visibility = Visibility.Hidden;
+                                player.ProfileImage.Visibility = Visibility.Hidden;
+                                playersListView.Items.Add(player);
+                                players++;
+                            }
                         }
-                        else if (!chatPlayerPair.Value.IsOnline && g.GroupName == "Offline")
+                        var groupControl = new ChatGroup
                         {
-                            player.Width = 250;
-                            player.Height = 30;
-                            player.PlayerName.Margin = new Thickness(5, 2.5, 0, 0);
-                            player.LevelLabel.Visibility = Visibility.Hidden;
-                            player.ProfileImage.Visibility = Visibility.Hidden;
-                            playersListView.Items.Add(player);
-                            players++;
+                            Width = 230,
+                            PlayersLabel = { Content = players },
+                            NameLabel = { Content = g.GroupName }
+                        };
+                        groupControl.GroupListView.Children.Add(playersListView);
+                        if (g.IsOpen)
+                        {
+                            groupControl.ExpandLabel.Content = "-";
+                            groupControl.GroupListView.Visibility = Visibility.Visible;
                         }
+                        if (!String.IsNullOrEmpty(g.GroupName))
+                            ChatListView.Children.Add(groupControl);
+                        else Client.Log("Removed a group");
                     }
-                    var groupControl = new ChatGroup
-                    {
-                        Width = 230,
-                        PlayersLabel = { Content = players },
-                        NameLabel = { Content = g.GroupName }
-                    };
-                    groupControl.GroupListView.Children.Add(playersListView);
-                    if (g.IsOpen)
-                    {
-                        groupControl.ExpandLabel.Content = "-";
-                        groupControl.GroupListView.Visibility = Visibility.Visible;
-                    }
-                    if (!String.IsNullOrEmpty(g.GroupName))
-                        ChatListView.Children.Add(groupControl);
-                    else Client.Log("Removed a group");
                 }
+                catch (System.InvalidOperationException ex)
+                {
+                    Client.Log(ex.Message + "\r\n" + ex.Source);
+                }
+                #endregion
+
                 if (ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup && loaded)
                 {
                     //Stop droping 100 times
