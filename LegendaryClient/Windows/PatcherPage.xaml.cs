@@ -536,7 +536,10 @@ namespace LegendaryClient.Windows
                 if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme)))
                     Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme));
                 else
+                {
+                    Client.Theme = theme;
                     return;
+                }
 
                 List<string> themeLink = fileMetaData.Where(
                                    line => (line.Contains("intro") || line.Contains("Intro")) &&

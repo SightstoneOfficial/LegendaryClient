@@ -156,6 +156,8 @@ namespace LegendaryClient.Windows
                     MessageTextBox = { Text = "Database broken. Click OK to exit LegendaryClient." },
                     MessageTitle = { Content = "Database Error" }
                 };
+                Client.SQLiteDatabase.Close();
+                File.Delete(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
                 overlay.AcceptButton.Click += (o, i) => { Environment.Exit(0); };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -196,6 +198,7 @@ namespace LegendaryClient.Windows
             Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
                                orderby s.id
                                select s).ToList();
+            Client.SQLiteDatabase.Close();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
