@@ -349,6 +349,8 @@ namespace LegendaryClient.Windows
         {
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
             {
+                if (RegionComboBox.SelectedIndex == -1)
+                    return;
                 if (!String.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                 SniffGarena();
