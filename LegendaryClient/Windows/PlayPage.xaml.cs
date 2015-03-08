@@ -100,7 +100,6 @@ namespace LegendaryClient.Windows
             if (!Client.IsOnPlayPage)
                 return;
 
-            double pingAverage = HighestPingTime(Client.Region.PingAddresses);
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 if (!RunOnce)
@@ -130,26 +129,38 @@ namespace LegendaryClient.Windows
                         }
                         QueueListView.Items.Add(seperators[b]);
                     }
+
                     //Ping
-                    PingLabel.Content = Math.Round(pingAverage) + "ms";
-                    if (pingAverage == 0)
-                        PingLabel.Content = "Timeout";
-
-                    if (pingAverage == -1)
+                    if (Client.Region.InternalName != "TH" && Client.Region.Garena)
+                    {
                         PingLabel.Content = "Ping not enabled for this region";
-
-                    var bc = new BrushConverter();
-                    var brush = (Brush) bc.ConvertFrom("#FFFF6767");
-                    if (pingAverage > 999 || pingAverage < 1)
+                        var bc = new BrushConverter();
+                        var brush = (Brush)bc.ConvertFrom("#FFFF6767");
                         PingRectangle.Fill = brush;
+                    }
+                    else
+                    {
+                        double pingAverage = HighestPingTime(Client.Region.PingAddresses);
+                        PingLabel.Content = Math.Round(pingAverage) + "ms";
+                        if (pingAverage == 0)
+                            PingLabel.Content = "Timeout";
 
-                    brush = (Brush) bc.ConvertFrom("#FFFFD667");
-                    if (pingAverage > 110 && pingAverage < 999)
-                        PingRectangle.Fill = brush;
+                        if (pingAverage == -1)
+                            PingLabel.Content = "Ping not enabled for this region";
 
-                    brush = (Brush) bc.ConvertFrom("#FF67FF67");
-                    if (pingAverage < 110 && pingAverage > 1)
-                        PingRectangle.Fill = brush;
+                        var bc = new BrushConverter();
+                        var brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                        if (pingAverage > 999 || pingAverage < 1)
+                            PingRectangle.Fill = brush;
+
+                        brush = (Brush)bc.ConvertFrom("#FFFFD667");
+                        if (pingAverage > 110 && pingAverage < 999)
+                            PingRectangle.Fill = brush;
+
+                        brush = (Brush)bc.ConvertFrom("#FF67FF67");
+                        if (pingAverage < 110 && pingAverage > 1)
+                            PingRectangle.Fill = brush;
+                    }
 
                     //Queues
                     GameQueueConfig[] openQueues = await Client.PVPNet.GetAvailableQueues();
