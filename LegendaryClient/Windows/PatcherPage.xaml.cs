@@ -81,7 +81,7 @@ namespace LegendaryClient.Windows
 
             //DevKey.TextChanged += DevKey_TextChanged;
 #if !DEBUG
-            UpdateSplash();
+            //UpdateSplash();  Unused method?
 #endif
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
