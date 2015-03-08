@@ -93,7 +93,7 @@ namespace LegendaryClient.Windows
                     LoginPassword.Visibility = Visibility.Hidden;
                     LoginPasswordBox.Visibility = Visibility.Hidden;
                     if (!String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion))
-                        RegionComboBox.SelectedItem = Settings.Default.DefaultGarenaRegion;  // Default Garena Region
+                        RegionComboBox.SelectedValue = Settings.Default.DefaultGarenaRegion;  // Default Garena Region
                     break;
             }
 
@@ -349,8 +349,8 @@ namespace LegendaryClient.Windows
         {
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
             {
-                if (!String.IsNullOrEmpty(RegionComboBox.SelectedItem.ToString()))
-                    Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedItem.ToString(); // Set default Garena region
+                if (!String.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
+                    Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                 SniffGarena();
                 return;
             }
