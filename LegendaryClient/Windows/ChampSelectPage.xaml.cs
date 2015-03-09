@@ -145,7 +145,6 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
-
             var jid = Client.GetChatroomJID(RoomName.Replace("@sec", ""), RoomPassword, false);
             Chatroom = Client.ConfManager.GetRoom(new JID(jid));
             Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
