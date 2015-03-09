@@ -53,10 +53,7 @@ namespace LegendaryClient.Logic.Region
         {
             get
             {
-                return new IPAddress[]
-                {
-                    //No known IP address
-                };
+                throw new NotImplementedException();
             }
         }
 

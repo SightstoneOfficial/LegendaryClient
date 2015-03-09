@@ -131,14 +131,9 @@ namespace LegendaryClient.Windows
                     }
 
                     //Ping
-                    if (Client.Region.InternalName != "TH" && Client.Region.Garena)
-                    {
-                        PingLabel.Content = "Ping not enabled for this region";
-                        var bc = new BrushConverter();
-                        var brush = (Brush)bc.ConvertFrom("#FFFF6767");
-                        PingRectangle.Fill = brush;
-                    }
-                    else
+                    var bc = new BrushConverter();
+                    Brush brush = null;
+                    try
                     {
                         double pingAverage = HighestPingTime(Client.Region.PingAddresses);
                         PingLabel.Content = Math.Round(pingAverage) + "ms";
@@ -146,22 +141,30 @@ namespace LegendaryClient.Windows
                             PingLabel.Content = "Timeout";
 
                         if (pingAverage == -1)
-                            PingLabel.Content = "Ping not enabled for this region";
-
-                        var bc = new BrushConverter();
-                        var brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                            PingLabel.Content = "Ping not enabled for this region";                        
+                        
                         if (pingAverage > 999 || pingAverage < 1)
-                            PingRectangle.Fill = brush;
-
-                        brush = (Brush)bc.ConvertFrom("#FFFFD667");
+                            brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                        
                         if (pingAverage > 110 && pingAverage < 999)
-                            PingRectangle.Fill = brush;
-
-                        brush = (Brush)bc.ConvertFrom("#FF67FF67");
+                            brush = (Brush)bc.ConvertFrom("#FFFFD667");
+                        
                         if (pingAverage < 110 && pingAverage > 1)
-                            PingRectangle.Fill = brush;
-                    }
+                            brush = (Brush)bc.ConvertFrom("#FF67FF67");
 
+                    } catch(NotImplementedException ex)
+                    {
+                        PingLabel.Content = "Ping not enabled for this region";
+                        brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                    } catch(Exception ex)
+                    {
+                        PingLabel.Content = "Error occured while pinging";
+                        brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                    }
+                    finally
+                    {
+                        PingRectangle.Fill = brush;
+                    }
                     //Queues
                     GameQueueConfig[] openQueues = await Client.PVPNet.GetAvailableQueues();
                     Array.Sort(openQueues,

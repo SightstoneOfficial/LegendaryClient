@@ -54,10 +54,7 @@ namespace LegendaryClient.Logic.Region.Garena
         {
             get
             {
-                return new IPAddress[]
-                {
-                    //No known IP address
-                };
+                throw new NotImplementedException();
             }
         }
 
