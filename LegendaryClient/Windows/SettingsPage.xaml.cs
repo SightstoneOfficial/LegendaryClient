@@ -178,7 +178,15 @@ A code signing license (So you know that you are using LegendaryClient)
         {
             try
             {
-                Dictionary<String, String> val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
+                Dictionary<String, String> val;
+                if (!Client.Garena)
+                {
+                    val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
+                }
+                else
+                {
+                    val = Path.Combine(Client.RootLocation, "Game", "Config", "game.cfg").LeagueSettingsReader();
+                }
                 if (val.Any(x => x.Key == "MusicVolume"))
                     MusicVolumeSlider.Value = (Convert.ToInt32(val["MusicVolume"]) * 100);
                 if (val.Any(x => x.Key == "VoiceVolume"))
@@ -186,7 +194,7 @@ A code signing license (So you know that you are using LegendaryClient)
                 if (val.Any(x => x.Key == "AnnouncerVolume"))
                     AnnouncerVolumeSlider.Value = (Convert.ToInt32(val["AnnouncerVolume"]) * 100);
             }
-            catch
+            catch (Exception e)
             {
                 Client.Log("Can't load settings from config file.", "ERROR");
             }
