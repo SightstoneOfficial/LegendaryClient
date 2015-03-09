@@ -42,7 +42,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         [InternalName("accessToken")]
         public String AccessToken { get; set; }
 
-        [InternalName("leaverPenaltyMilisRemaining")]
+        [InternalName("leaverPenaltyMillisRemaining")]
         public Double LeaverPenaltyMilisRemaining { get; set; }
 
         [InternalName("summoner")]

@@ -712,6 +712,12 @@ namespace PVPNetConnect
             InvokeWithCallback("matchmakerService", "attachToQueue",
                 new object[] { matchMakerParams.GetBaseTypedObject() }, cb);
         }
+        public void AttachToQueue(MatchMakerParams matchMakerParams, ASObject token, SearchingForMatchNotification.Callback callback)
+        {
+            SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
+            InvokeWithCallback("matchmakerService", "attachToQueue",
+                new object[] { matchMakerParams.GetBaseTypedObject(), token.GetBaseTypedObject() }, cb);
+        }
 
         public void AttachToQueue(MatchMakerParams matchMakerParams, String token, SearchingForMatchNotification.Callback callback)
         {
@@ -1480,6 +1486,13 @@ namespace PVPNetConnect
             SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
             InvokeWithCallback("matchmakerService", "attachTeamToQueue",
                new object[] { matchMakerParams.GetBaseTypedObject(), token }, cb);
+        }
+
+        public void AttachTeamToQueue(MatchMakerParams matchMakerParams, ASObject token, SearchingForMatchNotification.Callback callback)
+        {
+            SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
+            InvokeWithCallback("matchmakerService", "attachTeamToQueue",
+               new object[] { matchMakerParams.GetBaseTypedObject(), token.GetBaseTypedObject() }, cb);
         }
 
         public async Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParamsForTeam matchMakerParams)

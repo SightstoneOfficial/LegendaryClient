@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RiotObjects\Platform\Game\ASObject.cs" />
     <Compile Include="Assets\StringEnums.cs" />
     <Compile Include="ClassDefinition.cs" />
     <Compile Include="Error.cs" />

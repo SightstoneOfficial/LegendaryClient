@@ -1112,50 +1112,28 @@ namespace LegendaryClient.Windows
             switch (regionName)
             {
                 case "PBE": if (Settings.Default.PBELocation == string.Empty)
-                    {
-                        bool? result = findLeagueDialog.ShowDialog();
-                        if (result != true)
-                        {
-                            Settings.Default.PBELocation = string.Empty;
-                            break;
-                        }
-                        else Settings.Default.PBELocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
-                    }
+                {
+                    var result = findLeagueDialog.ShowDialog();
+                    Settings.Default.PBELocation = result != true ? string.Empty : findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                }
                     break;
                 case "Live": if (Settings.Default.LiveLocation == string.Empty)
-                    {
-                        bool? result = findLeagueDialog.ShowDialog();
-                        if (result != true)
-                        {
-                            Settings.Default.LiveLocation = string.Empty;
-                            break;
-                        }
-                        else Settings.Default.LiveLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
-                    }
+                {
+                    var result = findLeagueDialog.ShowDialog();
+                    Settings.Default.LiveLocation = result != true ? string.Empty : findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                }
                     break;
                 case "Korea": if (Settings.Default.KRLocation == string.Empty)
-                    {
-                        bool? result = findLeagueDialog.ShowDialog();
-                        if (result != true)
-                        {
-                            Settings.Default.KRLocation = string.Empty;
-                            break;
-                        }
-                        else Settings.Default.KRLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
-                    }
+                {
+                    var result = findLeagueDialog.ShowDialog();
+                    Settings.Default.KRLocation = result != true ? string.Empty : findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "");
+                }
                     break;
                 case "Garena": if (Settings.Default.GarenaLocation == string.Empty)
-                    {
-                        bool? result = findLeagueDialog.ShowDialog();
-                        if (result != true)
-                        {
-                            Settings.Default.GarenaLocation = string.Empty;
-                            break;
-                        }
-                        else Settings.Default.GarenaLocation = findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "").Replace("lol.exe","");
-                    }
-                    break;
-                default:
+                {
+                    var result = findLeagueDialog.ShowDialog();
+                    Settings.Default.GarenaLocation = result != true ? string.Empty : findLeagueDialog.FileName.Replace("lol.launcher.admin.exe", "").Replace("lol.launcher.exe", "").Replace("lol.exe","");
+                }
                     break;
             }
 
@@ -1164,7 +1142,7 @@ namespace LegendaryClient.Windows
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             Settings.Default.AutoPlay = true;
-            SkipPatchButton.IsEnabled = false;
+            //SkipPatchButton.IsEnabled = false;
             FinishedPatchingEvent += PatcherPage_FinishedPatchingEvent;
         }
 
