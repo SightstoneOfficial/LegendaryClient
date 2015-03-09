@@ -482,7 +482,7 @@ namespace LegendaryClient.Windows
 
         private void BlockFriend_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private async void RemoveFriend_Click(object sender, RoutedEventArgs e)

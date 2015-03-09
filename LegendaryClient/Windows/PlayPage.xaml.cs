@@ -381,8 +381,11 @@ namespace LegendaryClient.Windows
                     if (leaver.ReasonFailed == "LEAVER_BUSTED")
                     {
                         Client.Log("LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
-                        var reQueue = new Timer();
-                        reQueue.Interval = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).LeaverPenaltyMilisRemaining;
+                        var reQueue = new Timer
+                        {
+                            Interval =
+                                new BustedLeaver((TypedObject) result.PlayerJoinFailures[0]).LeaverPenaltyMilisRemaining
+                        };
                         reQueue.Elapsed += (x, d) =>
                         {
                             Client.PVPNet.AttachToQueue(
@@ -392,39 +395,42 @@ namespace LegendaryClient.Windows
                                     Token = new BustedLeaver((TypedObject) result.PlayerJoinFailures[0]).AccessToken
                                 },
                                 EnteredQueue);
+
+                            Client.OverlayContainer.Visibility = Visibility.Hidden;
                             reQueue.Stop();
                         };
+                        reQueue.Start();
                         var message = new MessageOverlay
                         {
                             MessageTitle = { Content = "LeaverBuster" },
                             MessageTextBox = { Text = "" }
                         };
-                        Timer t = new Timer { Interval = 1 };
+                        Timer t = new Timer { Interval = 1000 };
                         var timeleft = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).LeaverPenaltyMilisRemaining;
                         t.Elapsed += (messafge, mx) =>
                         {
-                            timeleft--;
+                            timeleft = timeleft - 1000;
                             TimeSpan time = TimeSpan.FromMilliseconds(timeleft);
                             Dispatcher.BeginInvoke(
                                 DispatcherPriority.Input, new ThreadStart(() =>
                                     {
                                         message.MessageTextBox.Text =
-                                            @"Abandoning a match or being AFK results in a negative experience for
-your teammates, and is a punishable offense in League of Legends.
-You've been placed in a lower priority queue
-";
+                                            @"Abandoning a match or being AFK results in a negative experience for your teammates, and is a punishable offense in League of Legends.
+You've been placed in a lower priority queue" + Environment.NewLine;
                                         message.MessageTextBox.Text += "You have " +
                                                                        string.Format(
                                                                            "{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) +
-                                                                       " remaining until you may queue again";
+                                                                       " remaining until you may queue again" + Environment.NewLine;
+
+                                        message.MessageTextBox.Text += "You can close this window and you will still be in queue";
+
+                                        Client.OverlayContainer.Content = message.Content;
                                     }));
-                            if (timeleft == 0)
+                            if (Math.Round(timeleft) < 0)
                             {
                                 t.Stop();
                             }
 
-                            Client.OverlayContainer.Content = message.Content;
-                            Client.OverlayContainer.Visibility = Visibility.Visible;
                         };
                         t.Start();
                         Client.OverlayContainer.Content = message.Content;
