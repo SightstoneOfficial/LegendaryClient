@@ -216,37 +216,37 @@ namespace LegendaryClient
                             {
                                 bc = new BrushConverter();
                                 if (ChampKills < ChampDeaths)
-                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FFFF0000");
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FFC51C1C");
                                 else if (ChampKills == ChampDeaths)
-                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF67FF67");
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF8D8D8D");
                                 else
-                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF00FF3A");
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF1EBF1E");
 
                                 bc = new BrushConverter();
                                 if (Kills < Deaths)
-                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FFFF0000");
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FFC51C1C");
                                 else if (Kills == Deaths)
-                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF67FF67");
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF8D8D8D");
                                 else
-                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF00FF3A");
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF1EBF1E");
                             }
                             else
                             {
                                 bc = new BrushConverter();
                                 if (ChampKills > ChampDeaths)
-                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FFFF0000");
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FFC51C1C");
                                 else if (ChampKills == ChampDeaths)
-                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF67FF67");
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF8D8D8D");
                                 else
-                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF00FF3A");
+                                    control.ChampKDAColor.Fill = (Brush)bc.ConvertFrom("#FF1EBF1E");
 
                                 bc = new BrushConverter();
                                 if (Kills > Deaths)
-                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FFFF0000");
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FFC51C1C");
                                 else if (Kills == Deaths)
-                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF67FF67");
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF8D8D8D");
                                 else
-                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF00FF3A");
+                                    control.GameKDAColor.Fill = (Brush)bc.ConvertFrom("#FF1EBF1E");
                             }
                         }
                         catch
