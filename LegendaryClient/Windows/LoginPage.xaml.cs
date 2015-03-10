@@ -722,7 +722,7 @@ namespace LegendaryClient.Windows
                                     { 
                                         //Ignored
                                     }
-                                    Client.Log("Recieved token, it is: " + s1);
+                                    Client.Log("Received token, it is: " + s1);
                                     if (!gotToken)
                                     {
                                         continue;
