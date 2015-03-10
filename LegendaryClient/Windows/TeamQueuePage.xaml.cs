@@ -1,4 +1,4 @@
-﻿#region
+﻿﻿#region
 
 using System;
 using System.Collections.Generic;
@@ -128,7 +128,7 @@ namespace LegendaryClient.Windows
             else
             {
                 Client.GameStatus = "outOfGame";
-                Client.SetChatHover();                
+                Client.SetChatHover();
                 uiLogic.UpdateMainPage();
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.Log("Failed to join room.");
@@ -722,8 +722,8 @@ namespace LegendaryClient.Windows
                                 break;
                             case "LEAVER_BUSTED":
                                 Client.Log("Busting LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
-                                Client.PVPNet.AttachTeamToQueue(parameters, 
-                                    new ASObject{Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken}, 
+                                Client.PVPNet.AttachTeamToQueue(parameters,
+                                    new ASObject { Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken},
                                     EnteredQueue);
                                 break;
                             default:
