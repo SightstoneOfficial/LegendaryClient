@@ -327,7 +327,7 @@ namespace LegendaryClient.Windows
                                 TeamPlayer.UnInviter.Visibility = Visibility.Visible;
                             }));
                         };
-                        TeamPlayer.UnInviter.Click += async (object sender, RoutedEventArgs e) =>
+                        TeamPlayer.UnInviter.Click += async (sender, e) =>
                         {
                             LastSender = (Button)sender;
                             var s = (Member)LastSender.Tag;
@@ -543,7 +543,7 @@ namespace LegendaryClient.Windows
                 {
                     var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = msg.From.Resource + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (Client.Filter)
                         tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
@@ -721,8 +721,10 @@ namespace LegendaryClient.Windows
                                 messageOver.MessageTextBox.Text += " - Not enough players for this queue type.";
                                 break;
                             case "LEAVER_BUSTED":
-                                var leaver = new BustedLeaver(item as TypedObject);
-                                Client.PVPNet.AttachTeamToQueue(parameters, leaver.AccessToken, EnteredQueue);
+                                Client.Log("Busting LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
+                                Client.PVPNet.AttachTeamToQueue(parameters, 
+                                    new ASObject{Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken}, 
+                                    EnteredQueue);
                                 break;
                             default:
                                 messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
