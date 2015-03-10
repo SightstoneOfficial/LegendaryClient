@@ -348,6 +348,29 @@ namespace LegendaryClient.Windows
             }
         }
 
+        private bool isInArray(string username, string[] userlist)
+        {
+            foreach (string user in userlist)
+            {
+                if (user == username)
+                    return true;
+            }
+            return false;
+        }
+
+        private string GetSHA1HashData(string data) //Copypasta
+        {
+
+            SHA1 sha1 = SHA1.Create();
+            byte[] hashData = sha1.ComputeHash(Encoding.Default.GetBytes(data));
+            StringBuilder returnValue = new StringBuilder();
+            for (int i = 0; i < hashData.Length; i++)
+            {
+                returnValue.Append(hashData[i].ToString());
+            }
+            return returnValue.ToString();
+        }
+
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
@@ -358,6 +381,15 @@ namespace LegendaryClient.Windows
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                 SniffGarena();
                 return;
+            }
+            string UserName = LoginUsernameBox.Text;
+            if (isInArray(GetSHA1HashData(UserName), DevUsers.getDevs()))
+            {
+                Client.Dev = true;
+            }
+            else
+            {
+                Client.Dev = false;
             }
             Client.PVPNet = null;
             Client.PVPNet = new PVPNetConnection();
@@ -384,7 +416,7 @@ namespace LegendaryClient.Windows
 
             Settings.Default.Region = (string)RegionComboBox.SelectedValue;
             Settings.Default.Save();
-
+            
             HideGrid.Visibility = Visibility.Hidden;
             ErrorTextBox.Visibility = Visibility.Hidden;
             LoggingInLabel.Visibility = Visibility.Visible;
