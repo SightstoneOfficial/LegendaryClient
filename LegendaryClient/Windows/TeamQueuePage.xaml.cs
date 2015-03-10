@@ -543,7 +543,7 @@ namespace LegendaryClient.Windows
                 {
                     var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = msg.From.Resource + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (Client.Filter)
                         tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +

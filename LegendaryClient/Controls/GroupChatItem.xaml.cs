@@ -125,7 +125,7 @@ namespace LegendaryClient.Controls
                 {
                     Text = msg.From.Resource + ": "
                 };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
 
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
