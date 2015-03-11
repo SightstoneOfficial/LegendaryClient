@@ -361,16 +361,7 @@ namespace LegendaryClient.Windows
                 return;
             }
             string UserName = LoginUsernameBox.Text;
-            Sha1 sha1 = new Sha1();
-            if (DevUsers.getDevelopers().Contains(sha1.EncodeString(UserName + " " + RegionComboBox.SelectedItem.ToString())))
-            {
-                MessageBox.Show("Welcome back developer ^^");
-                Client.Dev = true;
-            }
-            else
-            {
-                Client.Dev = false;
-            }
+            Client.Dev = false;
             Client.PVPNet = null;
             Client.PVPNet = new PVPNetConnection();
             LoggingInLabel.Content = "Logging in...";
