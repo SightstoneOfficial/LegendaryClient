@@ -145,7 +145,8 @@ namespace LegendaryClient.Windows
             Sha1 sha1 = new Sha1();
             if (!CheckedDev)
             {
-                if (DevUsers.Developers.Contains(sha1.EncodeString(playerData.Summoner.Name/*+  " " + Region*/))) //ADD REGION HASH
+                
+                if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + LegendaryClient.Logic.Client.Region.RegionName))) 
                 {
                     Client.Dev = true;
                 }

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace LegendaryClient.Logic
 {
@@ -24,7 +23,6 @@ namespace LegendaryClient.Logic
             string[] x = content.Split('\n');
             foreach (string Element in x)
             {
-                MessageBox.Show(Element);
                 returnList.Add(Element);
             }
             return returnList;
