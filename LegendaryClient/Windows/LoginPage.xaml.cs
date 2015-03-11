@@ -36,6 +36,7 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Login;
 using SQLite;
+using LegendaryClient.Logic.Crypto;
 
 #endregion
 
@@ -359,6 +360,16 @@ namespace LegendaryClient.Windows
                 SniffGarena();
                 return;
             }
+            string UserName = LoginUsernameBox.Text;
+            Sha1 sha1 = new Sha1();
+            if (DevUsers.getDevelopers().Contains(sha1.EncodeString(UserName + " " + RegionComboBox.SelectedItem.ToString())))
+            {
+                Client.Dev = true;
+            }
+            else
+            {
+                Client.Dev = false;
+            }
             Client.PVPNet = null;
             Client.PVPNet = new PVPNetConnection();
             LoggingInLabel.Content = "Logging in...";
@@ -384,7 +395,7 @@ namespace LegendaryClient.Windows
 
             Settings.Default.Region = (string)RegionComboBox.SelectedValue;
             Settings.Default.Save();
-
+            
             HideGrid.Visibility = Visibility.Hidden;
             ErrorTextBox.Visibility = Visibility.Hidden;
             LoggingInLabel.Visibility = Visibility.Visible;
