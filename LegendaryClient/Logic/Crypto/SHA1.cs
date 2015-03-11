@@ -13,12 +13,8 @@ namespace LegendaryClient.Logic.Crypto
         {
             SHA1 sha1 = SHA1.Create();
             byte[] hashData = sha1.ComputeHash(data);
-            StringBuilder returnValue = new StringBuilder();
-            for (int i = 0; i < hashData.Length; i++)
-            {
-                returnValue.Append(hashData[i].ToString());
-            }
-            return returnValue.ToString();
+            string returnvalue = BitConverter.ToString(hashData).Replace("-","").ToLower();
+            return returnvalue;
         }
     }
 }
