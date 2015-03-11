@@ -148,6 +148,7 @@ namespace LegendaryClient.Windows
                 
                 if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + LegendaryClient.Logic.Client.Region.RegionName))) 
                 {
+                    MessageBox.Show("Welcome back developer ^^");
                     Client.Dev = true;
                 }
                 CheckedDev = true;
