@@ -54,7 +54,7 @@ namespace LegendaryClient.Windows
         internal ArrayList GameList;
         internal ArrayList NewsList;
         internal int SelectedGame = 0;
-
+        internal bool CheckedDev = false;
         public MainPage()
         {
             InitializeComponent();
@@ -143,9 +143,13 @@ namespace LegendaryClient.Windows
                 await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
             SummonerNameLabel.Content = playerData.Summoner.Name;
             Sha1 sha1 = new Sha1();
-            if (DevUsers.Developers.Contains(sha1.EncodeString(playerData.Summoner.Name)))
+            if (!CheckedDev)
             {
-                Client.Dev = true;
+                if (DevUsers.Developers.Contains(sha1.EncodeString(playerData.Summoner.Name)))
+                {
+                    Client.Dev = true;
+                }
+                CheckedDev = true;
             }
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
             {
