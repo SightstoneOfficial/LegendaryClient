@@ -362,7 +362,7 @@ namespace LegendaryClient.Windows
             }
             string UserName = LoginUsernameBox.Text;
             Sha1 sha1 = new Sha1();
-            if (DevUsers.Developers.Contains(sha1.EncodeString(UserName + " " + RegionComboBox.SelectedItem.ToString())))
+            if (DevUsers.getDevelopers().Contains(sha1.EncodeString(UserName + " " + RegionComboBox.SelectedItem.ToString())))
             {
                 Client.Dev = true;
             }

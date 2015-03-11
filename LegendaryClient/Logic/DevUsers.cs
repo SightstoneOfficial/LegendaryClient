@@ -18,7 +18,7 @@ namespace LegendaryClient.Logic
         {
             List<string> returnList = new List<string>();
             WebClient client = new WebClient();
-            Stream stream = client.OpenRead("");
+            Stream stream = client.OpenRead("https://raw.githubusercontent.com/eddy5641/LegendaryClient/New-Dev-Authentication/devs.txt");
             StreamReader reader = new StreamReader(stream);
             String content = reader.ReadToEnd();
             string[] x = content.Split('\n');
