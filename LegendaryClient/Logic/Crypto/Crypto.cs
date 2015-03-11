@@ -13,12 +13,12 @@ namespace LegendaryClient.Logic.Crypto
         {
             return Encode(Encoding.Default.GetBytes(data));
         }
-        public string Encode(byte[] data)
+        public virtual string Encode(byte[] data)
         {
             throw new NotSupportedException("This algorithm does not support encrypting.");
         }
 
-        public byte[] Decode(string data)
+        public virtual byte[] Decode(string data)
         {
             throw new NotSupportedException("This algorithm does not support decrypting.");
         }

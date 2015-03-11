@@ -233,7 +233,9 @@
     <Compile Include="GameScouter.xaml.cs">
       <DependentUpon>GameScouter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Crypto\Sha1.cs" />
     <Compile Include="Logic\DevUsers.cs" />
+    <Compile Include="Logic\Crypto\Crypto.cs" />
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
     <Compile Include="Logic\Player\ChampStats.cs" />
     <Compile Include="Logic\Player\GetKDA.cs" />
