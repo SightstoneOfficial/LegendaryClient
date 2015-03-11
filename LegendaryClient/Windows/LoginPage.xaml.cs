@@ -36,6 +36,7 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Login;
 using SQLite;
+using LegendaryClient.Logic.Crypto;
 
 #endregion
 
@@ -348,29 +349,6 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private bool isInArray(string username, string[] userlist)
-        {
-            foreach (string user in userlist)
-            {
-                if (user == username)
-                    return true;
-            }
-            return false;
-        }
-
-        private string GetSHA1HashData(string data) //Copypasta
-        {
-
-            SHA1 sha1 = SHA1.Create();
-            byte[] hashData = sha1.ComputeHash(Encoding.Default.GetBytes(data));
-            StringBuilder returnValue = new StringBuilder();
-            for (int i = 0; i < hashData.Length; i++)
-            {
-                returnValue.Append(hashData[i].ToString());
-            }
-            return returnValue.ToString();
-        }
-
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
@@ -383,7 +361,8 @@ namespace LegendaryClient.Windows
                 return;
             }
             string UserName = LoginUsernameBox.Text;
-            if (isInArray(GetSHA1HashData(UserName), DevUsers.getDevs()))
+            Sha1 sha1 = new Sha1();
+            if (DevUsers.Developers.Contains(sha1.EncodeString(UserName)))
             {
                 Client.Dev = true;
             }

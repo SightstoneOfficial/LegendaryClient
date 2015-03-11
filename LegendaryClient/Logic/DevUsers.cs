@@ -8,10 +8,6 @@ namespace LegendaryClient.Logic
 {
     class DevUsers
     {
-        private static string[] Developers = { "34e006b49f60bbb25d15e8ee937fdf5a04a4f6c5" }; //add your sha1 hashed usernames here
-        public static string[] getDevs()
-        {
-            return Developers;
-        }
+        public static List<string> Developers = new string[]{ "34e006b49f60bbb25d15e8ee937fdf5a04a4f6c5", "408bca02f44877bdeaef25d685544b6dcb66ab6c" }.OfType<string>().ToList(); //add your sha1 hashed usernames here
     }
 }
