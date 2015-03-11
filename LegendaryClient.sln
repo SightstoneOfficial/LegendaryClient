@@ -15,8 +15,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCLog", "LCLog\LCLog.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiotPatch", "RiotPatch\RiotPatch.csproj", "{FD32D64F-B568-43A1-8C52-7F3DA59781AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClientMLaunch", "LegendaryClientMLaunch\LegendaryClientMLaunch.csproj", "{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCDevWindow", "LCDevWindow\LCDevWindow.csproj", "{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}"
 EndProject
 Global
@@ -74,13 +72,6 @@ Global
 		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.PubRelease|Any CPU.Build.0 = Release|Any CPU
 		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.DispersiaRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.PubRelease|Any CPU.Build.0 = Release|Any CPU
-		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3739A18E-C2DA-4DD9-B51D-67B6DFD7B788}.Release|Any CPU.Build.0 = Release|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.DispersiaRelease|Any CPU.ActiveCfg = Release|Any CPU
