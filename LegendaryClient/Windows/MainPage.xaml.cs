@@ -97,13 +97,6 @@ namespace LegendaryClient.Windows
 
                 timer.Stop();
             }));
-
-            if (Client.Dev)
-            {
-                fakeend.Visibility = Visibility.Visible;
-                testChat.Visibility = Visibility.Visible;
-                testInvite.Visibility = Visibility.Visible;
-            }
         }
 
         public async void GetPendingInvites()
@@ -145,13 +138,19 @@ namespace LegendaryClient.Windows
             Sha1 sha1 = new Sha1();
             if (!CheckedDev)
             {
-                
                 if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + LegendaryClient.Logic.Client.Region.RegionName))) 
                 {
                     MessageBox.Show("Welcome back developer ^^");
                     Client.Dev = true;
                 }
                 CheckedDev = true;
+            }
+
+            if (Client.Dev)
+            {
+                fakeend.Visibility = Visibility.Visible;
+                testChat.Visibility = Visibility.Visible;
+                testInvite.Visibility = Visibility.Visible;
             }
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
             {

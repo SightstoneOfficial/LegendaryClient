@@ -240,6 +240,8 @@
     <Compile Include="Logic\DevUsers.cs" />
     <Compile Include="Logic\Crypto\Crypto.cs" />
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
+    <Compile Include="Logic\JSON\LeaguePromote.cs" />
+    <Compile Include="Logic\JSON\PromoteItem.cs" />
     <Compile Include="Logic\Player\ChampStats.cs" />
     <Compile Include="Logic\Player\GetKDA.cs" />
     <Compile Include="Logic\Player\KDA.cs" />
