@@ -516,6 +516,7 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.NetworkHost = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
                     Client.ChatClient.Port = 5223;
                     Client.ChatClient.Server = "pvp.net";
+                    Client.ChatClient.Resource = "xiff";
                     Client.ChatClient.SSL = true;
                     Client.ChatClient.User = LoginUsernameBox.Text;
                     Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
@@ -534,6 +535,7 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.NetworkHost = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
                     Client.ChatClient.Port = 5223;
                     Client.ChatClient.Server = "pvp.net";
+                    Client.ChatClient.Resource = "xiff";
                     Client.ChatClient.SSL = true;
                     Client.ChatClient.User = Client.PVPNet.getUID();
                     var gas = Client.PVPNet.getGas();
