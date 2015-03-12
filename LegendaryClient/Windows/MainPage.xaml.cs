@@ -39,6 +39,7 @@ using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
+using LegendaryClient.Logic.Crypto;
 
 #endregion
 
@@ -53,7 +54,7 @@ namespace LegendaryClient.Windows
         internal ArrayList GameList;
         internal ArrayList NewsList;
         internal int SelectedGame = 0;
-
+        internal bool CheckedDev = false;
         public MainPage()
         {
             InitializeComponent();
@@ -141,6 +142,17 @@ namespace LegendaryClient.Windows
             AllSummonerData playerData =
                 await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
             SummonerNameLabel.Content = playerData.Summoner.Name;
+            Sha1 sha1 = new Sha1();
+            if (!CheckedDev)
+            {
+                
+                if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + LegendaryClient.Logic.Client.Region.RegionName))) 
+                {
+                    MessageBox.Show("Welcome back developer ^^");
+                    Client.Dev = true;
+                }
+                CheckedDev = true;
+            }
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
             {
                 PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints /
