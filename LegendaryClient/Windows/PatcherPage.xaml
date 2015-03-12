@@ -109,6 +109,8 @@
                 <DropShadowEffect />
             </Label.Effect>
         </Label>
-        <CheckBox x:Name="checkboxAutoPlay" Content="Auto-play" HorizontalAlignment="Right" Margin="0,20,522,0" VerticalAlignment="Top" Height="30" Width="79" RenderTransformOrigin="0.489,0.4" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+        <CheckBox x:Name="autoPlayCheckBox" HorizontalAlignment="Left" VerticalAlignment="Top" Checked="AutoPlay_Changed" Unchecked="AutoPlay_Changed" Margin="394,20,0,0">
+            <TextBlock Text="Skip Patcher Page" Margin="-2,-3,0,0"/>
+        </CheckBox>
     </Grid>
 </Page>

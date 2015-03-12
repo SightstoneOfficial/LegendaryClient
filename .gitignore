@@ -2,6 +2,9 @@
 [Bb]in/
 [Oo]bj/
 
+#test VS2015
+LegendaryClient.sln.ide/
+
 # mstest test results
 TestResults
 
