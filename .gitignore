@@ -38,6 +38,7 @@ x64/
 *.log
 *.vspscc
 *.vssscc
+*.tmp_proj
 .builds
 
 # Visual C++ cache files
