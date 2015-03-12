@@ -26,6 +26,9 @@ using RAFlibPlus;
 using System.Xml;
 using SharpCompress.Reader;
 using SharpCompress.Common;
+using MediaToolkit.Model;
+using MediaToolkit.Options;
+using MediaToolkit;
 
 #endregion
 
@@ -529,7 +532,7 @@ namespace LegendaryClient.Windows
                 }
 
                 List<string> themeLink = fileMetaData.Where(
-                                   line => (line.Contains("intro") || line.Contains("Intro")) &&
+                                   line => (line.Contains("loop") || line.Contains("Loop")) &&
                                        line.Contains(theme)).ToList(); //loop is exacly the same as intro
                 themeLink = themeLink.Select(link => link.Split(',')[0]).ToList();
 
@@ -543,6 +546,30 @@ namespace LegendaryClient.Windows
                             Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName));
 
                     }
+                }
+                string[] flv = Directory.GetFiles(
+                    Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme), "*.flv");
+
+                foreach(var item in flv)
+                {
+                    var inputFile = new MediaFile { Filename = 
+                        Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, item) };
+                    var outputFile = new MediaFile { Filename = 
+                        Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, item).Replace(".flv", ".mp4") };
+
+                    var conversionOptions = new ConversionOptions
+                    {
+                        MaxVideoDuration = TimeSpan.FromSeconds(30),
+                        VideoAspectRatio = VideoAspectRatio.R16_10,
+                        VideoSize = VideoSize.Wxga,
+                        AudioSampleRate = AudioSampleRate.Hz44100
+                    };
+
+                    using (var engine = new Engine())
+                    {
+                        engine.Convert(inputFile, outputFile, conversionOptions);
+                    }
+
                 }
                 Client.Theme = theme;
             }

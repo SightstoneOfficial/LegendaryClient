@@ -98,10 +98,11 @@ namespace LegendaryClient.Windows
                     break;
             }
 
-
+            string themeLocation = Path.Combine(Client.ExecutingDirectory, "assets", "themes", Client.Theme);
             if (!Settings.Default.DisableLoginMusic)
             {
-                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
+                string[] music = Directory.GetFiles(themeLocation, "*.mp3");
+                SoundPlayer.Source = new Uri(Path.Combine(themeLocation, music[0]));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
             }
@@ -118,7 +119,9 @@ namespace LegendaryClient.Windows
 
             if (Settings.Default.LoginPageImage == "")
             {
-                LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
+                
+                string[] videos = Directory.GetFiles(themeLocation, "*.mp4");
+                LoginPic.Source = new Uri(Path.Combine(themeLocation, videos[0]));
                 LoginPic.LoadedBehavior = MediaState.Manual;
                 LoginPic.MediaEnded += LoginPic_MediaEnded;
                 SoundPlayer.MediaEnded += SoundPlayer_MediaEnded;
@@ -411,6 +414,8 @@ namespace LegendaryClient.Windows
 
         private void PVPNet_OnLogin(object sender, string username, string ipAddress)
         {
+            if (Client.Garena && getTokenThread != null)
+                getTokenThread.Abort();
             Client.PVPNet.GetLoginDataPacketForUser(GotLoginPacket);
         }
 
@@ -703,7 +708,7 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Visibility = Visibility.Visible;
                 LoginPasswordBox.Visibility = Visibility.Hidden;
                 var gotToken = false;
-                var getTokenThread = new Thread(
+                getTokenThread = new Thread(
                     () =>
                     {
                         while (!gotToken)
@@ -840,5 +845,6 @@ namespace LegendaryClient.Windows
                 }
             }
         }
+        private Thread getTokenThread;
     }
 }
