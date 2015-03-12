@@ -88,7 +88,8 @@ namespace LegendaryClient.Windows
                 var uriSource =
                     new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summonerIcon + ".png"),
                         UriKind.RelativeOrAbsolute);
-                Client.MainPageProfileImage.Source = new BitmapImage(uriSource);
+                Client.UserTitleBarImage.Source = new BitmapImage(uriSource);
+                Client.MainPageProfileImage.Source = new BitmapImage(uriSource);            
             }
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             Client.done = true;
