@@ -94,6 +94,9 @@
       <HintPath>..\DLLS\MahApps.Metro.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MediaToolkit">
+      <HintPath>..\packages\MediaToolkit.1.0.2.0\lib\net40\MediaToolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>

@@ -60,12 +60,12 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://203.116.112.222:8088/observer-mode/rest/"); }
+            get { return new Uri("http://210.211.119.15:80/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress
         {
-            get { return ""; }
+            get { return "210.211.119.15:80"; }
             set { }
         }
     }
