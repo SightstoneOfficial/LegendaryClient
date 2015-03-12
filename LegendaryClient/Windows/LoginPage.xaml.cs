@@ -121,7 +121,7 @@ namespace LegendaryClient.Windows
             {
                 
                 string[] videos = Directory.GetFiles(themeLocation, "*.mp4");
-                ///LoginPic.Source = new Uri(Path.Combine(themeLocation, videos[0]));
+                LoginPic.Source = new Uri(Path.Combine(themeLocation, videos[0]));
                 LoginPic.LoadedBehavior = MediaState.Manual;
                 LoginPic.MediaEnded += LoginPic_MediaEnded;
                 SoundPlayer.MediaEnded += SoundPlayer_MediaEnded;
