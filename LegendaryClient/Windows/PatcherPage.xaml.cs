@@ -63,11 +63,7 @@ namespace LegendaryClient.Windows
                 ExtractingProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
 
-            // Auto-play checkbox
-            if (Settings.Default.AutoPlay)
-                checkboxAutoPlay.IsChecked = true;
-            else
-                checkboxAutoPlay.IsChecked = false;
+            autoPlayCheckBox.IsChecked = Settings.Default.AutoPlay;
 
             //DevKey.TextChanged += DevKey_TextChanged;
 #if !DEBUG
@@ -466,7 +462,7 @@ namespace LegendaryClient.Windows
                         SkipPatchButton.IsEnabled = true;
                         //SkipPatchButton_Click(null, null);
 
-                        if (checkboxAutoPlay.IsChecked == true)
+                        if (Settings.Default.AutoPlay)
                             SkipPatchButton_Click(null, null);
                     }));
 
@@ -1153,14 +1149,9 @@ namespace LegendaryClient.Windows
 
         }
 
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void AutoPlay_Changed(object sender, RoutedEventArgs e)
         {
-            Settings.Default.AutoPlay = true;
-        }
-
-        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            Settings.Default.AutoPlay = false;
+            Settings.Default.AutoPlay = autoPlayCheckBox.IsChecked.Value;
         }
     }
 }

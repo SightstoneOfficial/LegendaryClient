@@ -58,34 +58,34 @@ namespace LegendaryClient.Windows
             string reportReason = string.Empty;
             switch (ReportCategoryComboBox.SelectedItem as string)
             {
-                case ("Griefing: Assisting Enemy Team"):
-                    reportReason = "";
+                case "Griefing: Assisting Enemy Team":
+                    reportReason = "ASSIST_ENEMY_TEAM";
                     break;
-                case ("Griefing: Intentionally Feeding"):
-                    reportReason = "";
+                case "Griefing: Intentionally Feeding":
+                    reportReason = "INTENT_FEED";
                     break;
-                case ("Harassment: Offensive Language"):
-                    reportReason = "";
+                case "Harassment: Offensive Language":
+                    reportReason = "OFFENSIVE_LANGUAGE";
                     break;
-                case ("Harassment: Verbal Abuse"):
-                    reportReason = "";
+                case "Harassment: Verbal Abuse":
+                    reportReason = "VERBAL_ABUSE";
                     break;
-                case ("Inappropriate Name"):
+                case "Inappropriate Name":
                     reportReason = "INAPPROPRIATE_NAME";
                     break;
-                case ("Leaving the Game/AFK"):
+                case "Leaving the Game/AFK":
+                    reportReason = "LEAVE_OR_AFK";
+                    break;
+                case "Negative Attitude":
+                    reportReason = "NEGATIVE_ATTITUDE";
+                    break;
+                case "Refusing to Communicate with Team":
+                    reportReason = "REFUSE_COMMUNICATE";
+                    break;
+                case "Spamming": //what is this?
                     reportReason = "";
                     break;
-                case ("Negative Attitude"):
-                    reportReason = "";
-                    break;
-                case ("Refusing to Communicate with Team"):
-                    reportReason = "";
-                    break;
-                case ("Spamming"):
-                    reportReason = "";
-                    break;
-                case ("Unskilled Player"):
+                case "Unskilled Player":
                     reportReason = "UNSKILLED_PLAYER";
                     break;
             }

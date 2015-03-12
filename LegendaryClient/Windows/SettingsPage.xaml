@@ -60,17 +60,20 @@
                 <Grid>
                     <CheckBox x:Name="WarnExitCheckbox" Margin="10,10,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Top"
-                              Content="Show exit confirmation"
-                              Checked="warnExitCheckbox_Checked" Unchecked="warnExitCheckbox_Checked" />
+                              Checked="warnExitCheckbox_Checked" Unchecked="warnExitCheckbox_Checked">
+                        <TextBlock Text="Show exit confirmation" Margin="-2,-2,0,0" />
+                    </CheckBox>
                     <CheckBox x:Name="StatsCheckbox" Margin="10,31,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Top"
-                              Content="Gather Statistics to enhance LegendaryClient"
-                              Checked="StatsCheckbox_Checked" IsEnabled="False" />
+                              Checked="StatsCheckbox_Checked" IsEnabled="False">
+                        <TextBlock Text="Gather Statistics to enhance LegendaryClient" Margin="-2,-2,0,0" />
+                    </CheckBox>
                     <CheckBox x:Name="ErrorCheckbox"
                               Margin="10,53,0,0"
                               HorizontalAlignment="Left" VerticalAlignment="Top"
-                              Content="Send Errors to LegendaryClient's developers to help fix bugs"
-                              Checked="ErrorCheckbox_Checked" IsEnabled="False" />
+                              Checked="ErrorCheckbox_Checked" IsEnabled="False">
+                        <TextBlock Text="Send Errors to LegendaryClient's developers to help fix bugs" Margin="-2,-2,0,0" />
+                    </CheckBox>
                     <TextBox x:Name="AboutTextBox" Height="200"
                              HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -80,14 +83,17 @@
                             HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                             Content="Donate to help LegendaryClient's work" Click="Button_Click_1" />
                     <CheckBox x:Name="PickBanCheckBox" Margin="10,75,0,0"
-                    	HorizontalAlignment="Left" VerticalAlignment="Top"
-                    	Content="Move window to front when picking/baning" Checked="PickBanCheckBox_Checked" />
+                    	HorizontalAlignment="Left" VerticalAlignment="Top" Checked="PickBanCheckBox_Checked" Unchecked="PickBanCheckBox_Checked">
+                        <TextBlock Text="Move window to front when picking/baning" Margin="-2, -2, 0, 0"/>
+                    </CheckBox>
                     <CheckBox x:Name="PickBanCheckBoxFlash" Margin="10,97,0,0"
-                    	HorizontalAlignment="Left" VerticalAlignment="Top"
-                    	Content="Flash window when picking/baning" Checked="PickBanCheckBoxFlash_Checked" />
+                    	HorizontalAlignment="Left" VerticalAlignment="Top" Checked="PickBanCheckBoxFlash_Checked" Unchecked="PickBanCheckBoxFlash_Checked">
+                        <TextBlock Text="Flash window when picking/baning" Margin="-2, -2, 0, 0"/>
+                    </CheckBox>
                     <CheckBox x:Name="ServerReplayCheckbox" Margin="10,119,0,0"
-                    	HorizontalAlignment="Left" VerticalAlignment="Top"
-                    	Content="Allow all of my games to be recorded by eddy's replay server" Checked="ServerReplayCheckbox_Checked" />
+                    	HorizontalAlignment="Left" VerticalAlignment="Top" Checked="ServerReplayCheckbox_Checked" Unchecked="ServerReplayCheckbox_Checked">
+                        <TextBlock Text="Allow all of my games to be recorded by eddy's replay server" Margin="-2,-2,0,0" />
+                    </CheckBox>
                 </Grid>
             </TabItem>
             <TabItem Header="Video">
@@ -106,7 +112,9 @@
             <TabItem Header="Audio">
                 <Grid>
                     <CheckBox x:Name="MuteAllSoundCheckBox" Margin="10,10,0,0" HorizontalAlignment="Left"
-                              VerticalAlignment="Top" Content="Mute All Sounds" FontWeight="SemiBold" Checked="MuteAllSoundCheckBox_Checked"/>
+                              VerticalAlignment="Top" FontWeight="SemiBold" Checked="MuteAllSoundCheckBox_Checked">
+                        <TextBlock Text="Mute All Sounds" Margin="-2,-2,0,0" />
+                    </CheckBox>
                     <Label Margin="10,38,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                            Content="Master Volume"
                            FontSize="16" FontWeight="ExtraLight" />
@@ -146,8 +154,10 @@
             <TabItem Header="Interface">
                 <Grid>
                     <CheckBox x:Name="UseAsBackground" Margin="320,20,0,0" HorizontalAlignment="Left"
-                              VerticalAlignment="Top" Content="Use As Background Image" FontWeight="SemiBold"
-                              Checked="UseAsBackground_Changed" Unchecked="UseAsBackground_Changed" />
+                              VerticalAlignment="Top" FontWeight="SemiBold"
+                              Checked="UseAsBackground_Changed" Unchecked="UseAsBackground_Changed">
+                        <TextBlock Text="Use As Background Image" Margin="-2,-2,0,0" />
+                    </CheckBox>
                     <Label Margin="10,7,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Login Image"
                            FontWeight="ExtraLight" FontSize="16" />
                     <ComboBox x:Name="LoginImageBox" Width="200" Margin="108,16,0,0"
@@ -164,8 +174,10 @@
             <TabItem Header="Game">
                 <Grid>
                     <CheckBox x:Name="AutoRecordCheckbox" Margin="10,10,0,0" HorizontalAlignment="Left"
-                              VerticalAlignment="Top" Content="Auto record games" Checked="AutoRecordCheckbox_Changed"
-                              Unchecked="AutoRecordCheckbox_Changed" />
+                              VerticalAlignment="Top" Checked="AutoRecordCheckbox_Changed"
+                              Unchecked="AutoRecordCheckbox_Changed">
+                        <TextBlock Text="Auto record games" Margin="-2,-2,0,0" />
+                    </CheckBox>
                     <Button x:Name="BoostButton" Click="BoostButton_OnClick" Content="Boost my gameclient" HorizontalAlignment="Left" VerticalAlignment="Top" Width="254" Margin="10,32,0,0"/>
                 </Grid>
             </TabItem>
@@ -175,7 +187,7 @@
                         <ColumnDefinition Width="24*" />
                         <ColumnDefinition Width="121*" />
                     </Grid.ColumnDefinitions>
-                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="EasyHud Beta" FontSize="16" />
+                    <Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="EasyHud Beta" FontSize="16" Margin="10,0,0,0" />
                     <TextBox x:Name="HudLink" Grid.ColumnSpan="2" Margin="10,31,5,0"
                              VerticalAlignment="Top"
                              TextWrapping="Wrap"
@@ -190,7 +202,7 @@
                            Visibility="Hidden" FontSize="9" />
                     <Label
                         Grid.ColumnSpan="2"
-                        Margin="111,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                        Margin="116,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                         Content="Ever wanted a hud of LeagueCraft except you didn't know how to do it. Well now just copy the hud. Please note that not all huds work."
                         FontSize="9" />
                     <Button Grid.Column="1" Width="200" Margin="0,58,90,0"
