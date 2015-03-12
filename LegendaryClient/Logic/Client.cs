@@ -794,7 +794,7 @@ namespace LegendaryClient.Logic
         internal static Grid MainGrid;
         internal static Grid NotificationGrid;
         internal static Grid StatusGrid = new Grid();
-        internal static Image BackgroundImage;
+        internal static Image BackgroundImage; 
 
         internal static Label StatusLabel;
         internal static Label InfoLabel;
@@ -813,6 +813,9 @@ namespace LegendaryClient.Logic
 
         internal static ListView InviteListView;
         internal static Image MainPageProfileImage;
+
+        internal static Label UserTitleBarLabel;
+        internal static Image UserTitleBarImage;
 
         #region WPF Tab Change
 

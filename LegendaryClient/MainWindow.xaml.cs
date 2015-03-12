@@ -85,6 +85,8 @@ namespace LegendaryClient
             AppDomain.CurrentDomain.FirstChanceException += LCLog.Log.CurrentDomain_FirstChanceException;
             AppDomain.CurrentDomain.UnhandledException += LCLog.Log.AppDomain_CurrentDomain;
 
+            Client.UserTitleBarLabel = UserTitleBarLabel;
+            Client.UserTitleBarImage = UserTitleBarImage;
             Client.InfoLabel = InfoLabel;
             Client.PVPNet = new PVPNetConnection { KeepDelegatesOnLogout = false };
             Client.PVPNet.OnError += Client.PVPNet_OnError;

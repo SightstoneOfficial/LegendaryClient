@@ -197,6 +197,7 @@ namespace LegendaryClient.Windows
             try
             {
                 ProfileImage.Source = new BitmapImage(uriSource);
+                Client.UserTitleBarImage.Source = new BitmapImage(uriSource);
             }
             catch
             {
@@ -264,6 +265,7 @@ namespace LegendaryClient.Windows
                         currentLp = "0";
 
                     PlayerCurrentProgressLabel.Content = currentLp + "LP";
+                    Client.UserTitleBarLabel.Content = SummonerNameLabel.Content + " ∙ Tier: " + currentTier + " ∙ LP: " + currentLp;
                     PlayerProgressBar.Value = Convert.ToInt32(currentLp);
                 }
             }));
