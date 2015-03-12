@@ -716,6 +716,7 @@ namespace LegendaryClient.Windows
                     {
                         while (!gotToken || shouldExit)
                         {
+                            Thread.Sleep(1000);
                             foreach (var process in Process.GetProcessesByName("lol"))
                             {
                                 try
