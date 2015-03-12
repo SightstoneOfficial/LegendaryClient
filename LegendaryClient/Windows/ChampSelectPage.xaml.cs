@@ -145,7 +145,6 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
-
             var jid = Client.GetChatroomJID(RoomName.Replace("@sec", ""), RoomPassword, false);
             Chatroom = Client.ConfManager.GetRoom(new JID(jid));
             Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
@@ -330,12 +329,21 @@ namespace LegendaryClient.Windows
 
                 LatestDto = latestDto;
                 //Get the champions for the other team to ban & sort alpabetically
-                ChampionBanInfoDTO[] champsForBan = await Client.PVPNet.GetChampionsForBan();
-                ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
-                ChampionsForBan.Sort(
-                    (x, y) =>
-                        String.Compare(champions.GetChampion(x.ChampionId)
-                            .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
+
+                // Rank Game ?
+                try
+                {
+                    ChampionBanInfoDTO[] champsForBan = await Client.PVPNet.GetChampionsForBan();
+                    ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
+                    ChampionsForBan.Sort(
+                        (x, y) =>
+                            String.Compare(champions.GetChampion(x.ChampionId)
+                                .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
+                }
+                catch (Exception e)  // Not really
+                {
+                    Client.Log(e.Message + "\r\n\r\n" + e.Source);
+                }
 
 
                 //Render our champions
@@ -1457,7 +1465,7 @@ namespace LegendaryClient.Windows
                 {
                     Text = msg.From.Resource + ": "
                 };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (Client.Filter)
                     tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +

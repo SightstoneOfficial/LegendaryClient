@@ -211,6 +211,7 @@ namespace PVPNetConnect
                 ret.Add((byte)0x09);
                 WriteAssociativeArray(ret, (Dictionary<string, object>)obj);
             }
+
             else
             {
                 throw new Exception("Unexpected object type: " + obj.GetType().FullName);

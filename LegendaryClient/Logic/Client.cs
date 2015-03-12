@@ -330,6 +330,8 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static List<keybindingEvents> Keybinds;
 
+        internal static string Theme;
+
         internal static ChampionDTO[] PlayerChampions;
 
         internal static ReplayRecorder Autorecorder;
@@ -417,10 +419,8 @@ namespace LegendaryClient.Logic
                 return;
 
             var chatItem = AllPlayers[msg.From.User];
-            if (Filter)
-                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body.Filter());
-            else
-                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
+            var msgbody = Filter ? msg.Body.Filter() : msg.Body;           
+            chatItem.Messages.Add(new KeyValuePair<string,DateTime>(chatItem.Username + "|" + msgbody, DateTime.Now));
             MainWin.FlashWindow();
         }
 
@@ -496,7 +496,8 @@ namespace LegendaryClient.Logic
 
         internal static void SetChatHover()
         {
-            ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
+            if (ChatClient.IsAuthenticated)
+                ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
         }
 
         internal static bool hidelegendaryaddition = false;
@@ -1587,7 +1588,8 @@ namespace LegendaryClient.Logic
 
     public class ChatPlayerItem
     {
-        public List<string> Messages = new List<string>();
+        public List<KeyValuePair<string, DateTime>> Messages = new List<KeyValuePair<string, DateTime>>();
+        //public List<string> Messages = new List<string>();
         public string Group { get; set; }
 
         public bool IsOnline { get; set; }

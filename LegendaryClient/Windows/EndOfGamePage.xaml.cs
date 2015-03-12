@@ -43,7 +43,6 @@ namespace LegendaryClient.Windows
             uiLogic.UpdateMainPage();
             Client.runonce = false;
 
-            //string obfuscatedName = Client.GetObfuscatedChatroomName(statistics.RoomName, ChatPrefixes.Post_Game);
             string jid = Client.GetChatroomJID(statistics.RoomName, statistics.RoomPassword, false);
             _newRoom = Client.ConfManager.GetRoom(new JID(jid));
             _newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
@@ -86,7 +85,7 @@ namespace LegendaryClient.Windows
                 {
                     Text = msg.From.Resource + ": "
                 };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Blue);
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (Client.Filter)
                     tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
@@ -128,7 +127,12 @@ namespace LegendaryClient.Windows
             TimeLabel.Content = string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
             ModeLabel.Content = statistics.GameMode;
             TypeLabel.Content = statistics.GameType;
-            MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + statistics.ReportGameId + "/" + statistics.UserId;
+            // Add Garena TW match history
+            if (Client.Garena && !String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion) && Settings.Default.DefaultGarenaRegion == "TW")
+                MatchStatsOnline = String.Format("http://lol.moa.tw/summoner/show/{0}#tabs-recentgame2", statistics.SummonerName.Replace(" ", "_"));
+            else
+                MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + statistics.ReportGameId + "/" + statistics.UserId;
+
             GainedIP.Content = "+" + statistics.IpEarned + " IP";
             TotalIP.Content = statistics.IpTotal.ToString(CultureInfo.InvariantCulture).Replace(".0", "") + " IP Total";
             string game = " XP";

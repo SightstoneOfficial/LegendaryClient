@@ -10,6 +10,7 @@ using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 #endregion
 
@@ -66,7 +67,7 @@ namespace LegendaryClient.Controls
             {
                 foreach (var x in tempItem.Messages.ToArray())
                 {
-                    var message = x.Split('|');
+                    var message = x.Key.Split('|');
                     var innerChatItem = new InnerChatItem();
                     if (message[0] == tempItem.Username)
                     {
@@ -78,8 +79,8 @@ namespace LegendaryClient.Controls
                         innerChatItem.SummonerLabel.Content = message[0] + ":";
                         innerChatItem.SummonerLabel.Foreground = Brushes.SteelBlue;
                     }
-                    innerChatItem.MessageLabel.Content = x.Replace(message[0] + "|", string.Empty);
-                    innerChatItem.TimeLabel.Content = DateTime.Now.ToString("h:mm");
+                    innerChatItem.MessageLabel.Content = x.Key.Replace(message[0] + "|", string.Empty);
+                    innerChatItem.TimeLabel.Content = x.Value.ToString("h:mm");
                     innerChatItem.TimeLabel.Foreground = (ChatText.Items.Count%2 != 0)
                         ? new SolidColorBrush(Color.FromArgb(255, 37, 37, 37))
                         : new SolidColorBrush(Color.FromArgb(255, 77, 77, 77));
@@ -160,7 +161,7 @@ namespace LegendaryClient.Controls
             }
             if (tempItem != null)
             {
-                tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
+                tempItem.Messages.Add(new KeyValuePair<string,DateTime>(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text,DateTime.Now));
             }
 
             if (ChatText.Items.Count != 0)

@@ -170,7 +170,7 @@ namespace LegendaryClient.Windows.Profile
 
         private async void ViewAggregatedStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = await Client.PVPNet.GetAggregatedStats(_accId, "CLASSIC", "3");
+            var x = await Client.PVPNet.GetAggregatedStats(_accId, "CLASSIC", "5");
             Client.OverlayContainer.Content =
                 new AggregatedStatsOverlay(x, _accId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;

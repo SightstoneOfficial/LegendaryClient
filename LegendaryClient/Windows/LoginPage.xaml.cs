@@ -9,6 +9,7 @@ using System.Linq;
 using System.Management;
 using System.Net;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Web.Script.Serialization;
@@ -35,6 +36,7 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Login;
 using SQLite;
+using LegendaryClient.Logic.Crypto;
 
 #endregion
 
@@ -82,6 +84,7 @@ namespace LegendaryClient.Windows
                     LoginUsername.Visibility = Visibility.Visible;
                     RememberUsernameCheckbox.Visibility = Visibility.Visible;
                     LoginPassword.Visibility = Visibility.Visible;
+                    LoginPasswordBox.Visibility = Visibility.Visible;
                     break;
 
                 case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
@@ -89,6 +92,9 @@ namespace LegendaryClient.Windows
                     LoginUsername.Visibility = Visibility.Hidden;
                     RememberUsernameCheckbox.Visibility = Visibility.Hidden;
                     LoginPassword.Visibility = Visibility.Hidden;
+                    LoginPasswordBox.Visibility = Visibility.Hidden;
+                    if (!String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion))
+                        RegionComboBox.SelectedValue = Settings.Default.DefaultGarenaRegion;  // Default Garena Region
                     break;
             }
 
@@ -135,9 +141,29 @@ namespace LegendaryClient.Windows
             //Get client data after patcher completed
 
             Client.SQLiteDatabase = new SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
-            Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
-                                orderby s.name
-                                select s).ToList();
+
+            // Check database error
+            try
+            {
+                Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
+                                    orderby s.name
+                                    select s).ToList();
+            }
+            catch (Exception e) // Database broken?
+            {
+                Client.Log("Database was broken : \r\n" + e.Message + "\r\n" + e.Source);
+                var overlay = new MessageOverlay
+                {
+                    MessageTextBox = { Text = "Database broken. Click OK to exit LegendaryClient." },
+                    MessageTitle = { Content = "Database Error" }
+                };
+                Client.SQLiteDatabase.Close();
+                File.Delete(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
+                overlay.AcceptButton.Click += (o, i) => { Environment.Exit(0); };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+                return;
+            }
 
             FreeToPlayChampions.GetInstance();
 
@@ -173,6 +199,7 @@ namespace LegendaryClient.Windows
             Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
                                orderby s.id
                                select s).ToList();
+            Client.SQLiteDatabase.Close();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
@@ -326,9 +353,15 @@ namespace LegendaryClient.Windows
         {
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
             {
+                if (RegionComboBox.SelectedIndex == -1)
+                    return;
+                if (!String.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
+                    Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                 SniffGarena();
                 return;
             }
+            string UserName = LoginUsernameBox.Text;
+            Client.Dev = false;
             Client.PVPNet = null;
             Client.PVPNet = new PVPNetConnection();
             LoggingInLabel.Content = "Logging in...";
@@ -354,7 +387,7 @@ namespace LegendaryClient.Windows
 
             Settings.Default.Region = (string)RegionComboBox.SelectedValue;
             Settings.Default.Save();
-
+            
             HideGrid.Visibility = Visibility.Hidden;
             ErrorTextBox.Visibility = Visibility.Hidden;
             LoggingInLabel.Visibility = Visibility.Visible;
@@ -553,13 +586,6 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        public string GetLast(string source, int tail_length)
-        {
-            if (tail_length >= source.Length)
-                return source;
-            return source.Substring(source.Length - tail_length);
-        }
-
         public static string GetNewIpAddress()
         {
             var sb = new StringBuilder();
@@ -647,54 +673,108 @@ namespace LegendaryClient.Windows
         //This is to avoid replacing Garena, this is a better method
         private void SniffGarena()
         {
-            LoggingInLabel.Content = "Waiting for user to launch League from garena";
-            HideGrid.Visibility = Visibility.Hidden;
-            ErrorTextBox.Visibility = Visibility.Hidden;
-            LoggingInLabel.Visibility = Visibility.Visible;
-            LoggingInProgressRing.Visibility = Visibility.Visible;
-            var gotToken = false;
-            var getTokenThread = new Thread(() =>
-                {
-                    while (!gotToken)
-                    {
-                        foreach (var process in Process.GetProcessesByName("lol"))
-                        {
-                            try
-                            {
-                                var s1 = GetCommandLine(process);
-                                foreach (var p1 in Process.GetProcessesByName("lolclient"))
-                                {
-                                    p1.Kill();
-                                }
-                                process.Kill();
-                                gotToken = true;
+            Client.Garena = true;
 
-                                s1 = s1.Substring(1);
-                                if (!gotToken)
+            try
+            {
+                Directory.CreateDirectory(@"C:\Program Files\LCAdminTest");
+                Directory.Delete(@"C:\Program Files\LCAdminTest", true);
+            }
+            catch
+            {
+                var info = new ProcessStartInfo(
+                        Path.Combine(Client.ExecutingDirectory, "Client", "LegendaryClient.exe"))
+                {
+                    UseShellExecute = true,
+                    Verb = "runas"
+                };
+                Process.Start(info);
+                Environment.Exit(0);
+            }
+            try
+            {
+                LoggingInLabel.Content = "Waiting for user to launch League from garena";
+                HideGrid.Visibility = Visibility.Hidden;
+                ErrorTextBox.Visibility = Visibility.Hidden;
+                LoggingInLabel.Visibility = Visibility.Visible;
+                var garenaregion = BaseRegion.GetRegion((string) RegionComboBox.SelectedValue);
+                LoggingInProgressRing.Visibility = Visibility.Visible;
+                LoginPasswordBox.Visibility = Visibility.Hidden;
+                var gotToken = false;
+                var getTokenThread = new Thread(
+                    () =>
+                    {
+                        while (!gotToken)
+                        {
+                            foreach (var process in Process.GetProcessesByName("lol"))
+                            {
+                                try
                                 {
-                                    continue;
+                                    var s1 = GetCommandLine(process);
+                                    foreach (var p1 in Process.GetProcessesByName("lolclient"))
+                                    {
+                                        p1.Kill();
+                                    }
+                                    process.Kill();
+                                    gotToken = true;
+                                    try
+                                    {
+                                        s1 = s1.Substring(1);
+                                    }
+                                    catch 
+                                    { 
+                                        //Ignored
+                                    }
+                                    Client.Log("Received token, it is: " + s1);
+                                    if (!gotToken)
+                                    {
+                                        continue;
+                                    }
+                                    gotToken = !gotToken;
+                                    Client.PVPNet = null;
+                                    Client.PVPNet = new PVPNetConnection { garenaToken = s1 };
+                                    Client.PVPNet.Connect("", "", garenaregion.PVPRegion, Client.Version);
+                                    Client.Region = garenaregion;
+                                    Dispatcher.BeginInvoke(
+                                        DispatcherPriority.Input, new ThreadStart(
+                                            () =>
+                                            {
+                                                HideGrid.Visibility = Visibility.Hidden;
+                                                ErrorTextBox.Visibility = Visibility.Hidden;
+                                                LoggingInLabel.Visibility = Visibility.Visible;
+                                                LoggingInLabel.Content = "Logging in...";
+                                                LoggingInProgressRing.Visibility = Visibility.Visible;
+                                            }));
+                                    Client.PVPNet.OnError += PVPNet_OnError;
+                                    Client.PVPNet.OnLogin += PVPNet_OnLogin;
+                                    Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
                                 }
-                                gotToken = !gotToken;
-                                Client.PVPNet = null;
-                                Client.PVPNet = new PVPNetConnection();
-                                var garenaregion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
-                                Client.PVPNet.garenaToken = s1;
-                                Client.PVPNet.Connect("", "", garenaregion.PVPRegion, Client.Version);
-                                Client.Region = garenaregion;
-                                HideGrid.Visibility = Visibility.Hidden;
-                                ErrorTextBox.Visibility = Visibility.Hidden;
-                                LoggingInLabel.Visibility = Visibility.Visible;
-                                LoggingInLabel.Content = "Logging in...";
-                                LoggingInProgressRing.Visibility = Visibility.Visible;
-                                Client.PVPNet.OnError += PVPNet_OnError;
-                                Client.PVPNet.OnLogin += PVPNet_OnLogin;
-                                Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
+                                catch (Exception ex)
+                                {
+                                    Client.Log(ex.Message, "GarenaLoginError");
+                                    Dispatcher.BeginInvoke(
+                                        DispatcherPriority.Input, new ThreadStart(
+                                            () =>
+                                            {
+                                                HideGrid.Visibility = Visibility.Visible;
+                                                ErrorTextBox.Visibility = Visibility.Visible;
+                                                LoggingInProgressRing.Visibility = Visibility.Hidden;
+                                                LoggingInLabel.Visibility = Visibility.Hidden;
+                                                ErrorTextBox.Text = ex.Message;
+                                            }));
+                                    Client.PVPNet.OnMessageReceived -= Client.OnMessageReceived;
+                                    Client.PVPNet.OnError -= PVPNet_OnError;
+                                    Client.PVPNet.OnLogin -= PVPNet_OnLogin;
+                                }
                             }
-                            catch { }
                         }
-                    }
-                });
-            getTokenThread.Start();
+                    });
+                getTokenThread.Start();
+            }
+            catch
+            {
+                Client.Log("User did not run LC as admin");
+            }
 
         }
         private static string GetCommandLine(Process process)
@@ -730,25 +810,30 @@ namespace LegendaryClient.Windows
                         LoginUsernameBox.Visibility = Visibility.Visible;
                         LoginUsername.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
+                        LoginPassword.Visibility = Visibility.Visible;
                         break;
 
                     case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
                         LoginUsernameBox.Visibility = Visibility.Visible;
                         LoginUsername.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
+                        LoginPassword.Visibility = Visibility.Visible;
                         break;
 
                     case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
                         LoginUsernameBox.Visibility = Visibility.Visible;
                         LoginUsername.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
+                        LoginPassword.Visibility = Visibility.Visible;
+                        LoginPasswordBox.Visibility = Visibility.Visible;
                         break;
 
                     case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
                         LoginUsernameBox.Visibility = Visibility.Hidden;
                         LoginUsername.Visibility = Visibility.Hidden;
                         RememberUsernameCheckbox.Visibility = Visibility.Hidden;
-                        LoginPassword.Text = "Garena Token";
+                        LoginPassword.Visibility = Visibility.Hidden;
+                        LoginPasswordBox.Visibility = Visibility.Hidden;
                         break;
                 }
             }

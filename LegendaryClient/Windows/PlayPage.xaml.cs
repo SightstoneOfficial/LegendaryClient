@@ -100,7 +100,6 @@ namespace LegendaryClient.Windows
             if (!Client.IsOnPlayPage)
                 return;
 
-            double pingAverage = HighestPingTime(Client.Region.PingAddresses);
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 if (!RunOnce)
@@ -130,27 +129,42 @@ namespace LegendaryClient.Windows
                         }
                         QueueListView.Items.Add(seperators[b]);
                     }
+
                     //Ping
-                    PingLabel.Content = Math.Round(pingAverage) + "ms";
-                    if (pingAverage == 0)
-                        PingLabel.Content = "Timeout";
-
-                    if (pingAverage == -1)
-                        PingLabel.Content = "Ping not enabled for this region";
-
                     var bc = new BrushConverter();
-                    var brush = (Brush) bc.ConvertFrom("#FFFF6767");
-                    if (pingAverage > 999 || pingAverage < 1)
-                        PingRectangle.Fill = brush;
+                    Brush brush = null;
+                    try
+                    {
+                        double pingAverage = HighestPingTime(Client.Region.PingAddresses);
+                        PingLabel.Content = Math.Round(pingAverage) + "ms";
+                        if (pingAverage == 0)
+                            PingLabel.Content = "Timeout";
 
-                    brush = (Brush) bc.ConvertFrom("#FFFFD667");
-                    if (pingAverage > 110 && pingAverage < 999)
-                        PingRectangle.Fill = brush;
+                        if (pingAverage == -1)
+                            PingLabel.Content = "Ping not enabled for this region";                        
+                        
+                        if (pingAverage > 999 || pingAverage < 1)
+                            brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                        
+                        if (pingAverage > 110 && pingAverage < 999)
+                            brush = (Brush)bc.ConvertFrom("#FFFFD667");
+                        
+                        if (pingAverage < 110 && pingAverage > 1)
+                            brush = (Brush)bc.ConvertFrom("#FF67FF67");
 
-                    brush = (Brush) bc.ConvertFrom("#FF67FF67");
-                    if (pingAverage < 110 && pingAverage > 1)
+                    } catch(NotImplementedException ex)
+                    {
+                        PingLabel.Content = "Ping not enabled for this region";
+                        brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                    } catch(Exception ex)
+                    {
+                        PingLabel.Content = "Error occured while pinging";
+                        brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                    }
+                    finally
+                    {
                         PingRectangle.Fill = brush;
-
+                    }
                     //Queues
                     GameQueueConfig[] openQueues = await Client.PVPNet.GetAvailableQueues();
                     Array.Sort(openQueues,
@@ -255,7 +269,7 @@ namespace LegendaryClient.Windows
             InQueue = false;
             LastSender = (Button) sender;
             var settings = (QueueButtonConfig) LastSender.Tag;
-            var config = (GameQueueConfig) settings.GameQueueConfig;
+            var config = settings.GameQueueConfig;
             //Make Teambuilder work for duo
             if (config.Id == 41 || config.Id == 42)
             {
@@ -296,6 +310,7 @@ namespace LegendaryClient.Windows
             }
         }
 
+        private MatchMakerParams param;
         private async void QueueButton_Click(object sender, RoutedEventArgs e)
         {
             if (IsInGame())
@@ -322,6 +337,8 @@ namespace LegendaryClient.Windows
                         BotDifficulty = settings.BotLevel
                     };
                     Client.QueueId = config.Id;
+
+                    param = parameters;
                     Client.PVPNet.AttachToQueue(parameters, EnteredQueue);
                 }
                 else if (config.Id != 61)
@@ -338,6 +355,7 @@ namespace LegendaryClient.Windows
                         }
                     };
                     Client.QueueId = config.Id;
+                    param = parameters;
                     Client.PVPNet.AttachToQueue(parameters, EnteredQueue);
                 }
                 else if (config.Id == 61)
@@ -362,61 +380,126 @@ namespace LegendaryClient.Windows
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    Button item = LastSender;
-                    var settings = (QueueButtonConfig)LastSender.Tag;
-                    var config = (GameQueueConfig)settings.GameQueueConfig;
-                    Queues.Remove(config.Id);
-                    var failure = new QueueDodger(result.PlayerJoinFailures[0] as TypedObject);
-                    var message = new MessageOverlay
+                    var leaver = new QueueDodger(result.PlayerJoinFailures[0] as TypedObject);
+                    if (leaver.ReasonFailed == "LEAVER_BUSTED")
                     {
-                        MessageTitle = {Content = "Failed to join queue"},
-                        MessageTextBox = {Text = failure.ReasonFailed}
-                    };
-                    switch (failure.ReasonFailed)
-                    {
-                        case "QUEUE_DODGER":
+                        Client.Log("LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
+                        var reQueue = new Timer
                         {
-                            message.MessageTextBox.Text =
-                                "Unable to join the queue due to you recently dodging a game." +
-                                Environment.NewLine;
-                            TimeSpan time = TimeSpan.FromMilliseconds(failure.PenaltyRemainingTime);
-                            message.MessageTextBox.Text = "You have " +
-                                                          string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) +
-                                                          " remaining until you may queue again";
-                        }
-                            break;
-                        case "RANKED_MIN_LEVEL":
-                            message.MessageTextBox.Text = "You do not meet the requirements for this queue." +
-                                                          Environment.NewLine;
-                            break;
-                        case "QUEUE_PARTICIPANTS":
-                            message.MessageTextBox.Text =
-                                "This queue is in dev. Please use this queue on the real league of legends client." +
-                                Environment.NewLine;
-                            break;
-                    }
-                    Client.OverlayContainer.Content = message.Content;
-                    Client.OverlayContainer.Visibility = Visibility.Visible;
-                }));
-                return;
-            }
+                            Interval =
+                                new BustedLeaver((TypedObject) result.PlayerJoinFailures[0]).LeaverPenaltyMilisRemaining
+                        };
+                        reQueue.Elapsed += (x, d) =>
+                        {
+                            Client.PVPNet.AttachToQueue(
+                                param,
+                                new ASObject
+                                {
+                                    Token = new BustedLeaver((TypedObject) result.PlayerJoinFailures[0]).AccessToken
+                                },
+                                EnteredQueue);
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            Client.OverlayContainer.Visibility = Visibility.Hidden;
+                            reQueue.Stop();
+                        };
+                        reQueue.Start();
+                        var message = new MessageOverlay
+                        {
+                            MessageTitle = { Content = "LeaverBuster" },
+                            MessageTextBox = { Text = "" }
+                        };
+                        Timer t = new Timer { Interval = 1000 };
+                        var timeleft = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).LeaverPenaltyMilisRemaining;
+                        t.Elapsed += (messafge, mx) =>
+                        {
+                            timeleft = timeleft - 1000;
+                            TimeSpan time = TimeSpan.FromMilliseconds(timeleft);
+                            Dispatcher.BeginInvoke(
+                                DispatcherPriority.Input, new ThreadStart(() =>
+                                    {
+                                        message.MessageTextBox.Text =
+                                            @"Abandoning a match or being AFK results in a negative experience for your teammates, and is a punishable offense in League of Legends.
+You've been placed in a lower priority queue" + Environment.NewLine;
+                                        message.MessageTextBox.Text += "You have " +
+                                                                       string.Format(
+                                                                           "{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) +
+                                                                       " remaining until you may queue again" + Environment.NewLine;
+
+                                        message.MessageTextBox.Text += "You can close this window and you will still be in queue";
+
+                                        Client.OverlayContainer.Content = message.Content;
+                                    }));
+                            if (Math.Round(timeleft) < 0)
+                            {
+                                t.Stop();
+                            }
+
+                        };
+                        t.Start();
+                        Client.OverlayContainer.Content = message.Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        Button item = LastSender;
+                        var settings = (QueueButtonConfig) LastSender.Tag;
+                        var config = settings.GameQueueConfig;
+                        Queues.Remove(config.Id);
+                        var failure = new QueueDodger(result.PlayerJoinFailures[0] as TypedObject);
+                        var message = new MessageOverlay
+                        {
+                            MessageTitle = { Content = "Failed to join queue" },
+                            MessageTextBox = { Text = failure.ReasonFailed }
+                        };
+                        switch (failure.ReasonFailed)
+                        {
+                            case "QUEUE_DODGER":
+                                {
+                                    message.MessageTextBox.Text =
+                                    "Unable to join the queue due to you recently dodging a game." +
+                                        Environment.NewLine;
+                                        TimeSpan time = TimeSpan.FromMilliseconds(failure.PenaltyRemainingTime);
+                                        message.MessageTextBox.Text = "You have " +
+                                                                      string.Format(
+                                                                          "{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) +
+                                                                      " remaining until you may queue again";
+                                }
+                                    break;
+                            case "RANKED_MIN_LEVEL":
+                                    message.MessageTextBox.Text =
+                                        "You do not meet the requirements for this queue." + Environment.NewLine;
+                                    break;
+                            case "QUEUE_PARTICIPANTS":
+                                    message.MessageTextBox.Text =
+                                        "This queue is in dev. Please use this queue on the real league of legends client." +
+                                        Environment.NewLine;
+                                    break;
+                                }
+                        Client.OverlayContainer.Content = message.Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                    }
+                }));
+            }
+            else if (result.JoinedQueues != null)
             {
-                Button item = LastSender;
-                var fakeButton = new Button
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    Tag = item
-                }; //We require a unique button to add to the dictionary
-                item.Content = "00:00";
-                ButtonTimers.Add(fakeButton, 0);
-            }));
-            InQueue = true;
-            Client.GameStatus = "inQueue";
-            Client.timeStampSince =
-                (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
-            Client.SetChatHover();
-            Client.PVPNet.OnMessageReceived += GotQueuePop;
+                    Button item = LastSender;
+                    var fakeButton = new Button
+                    {
+                        Tag = item
+                    }; //We require a unique button to add to the dictionary
+                    item.Content = "00:00";
+                    ButtonTimers.Add(fakeButton, 0);
+                }));
+                InQueue = true;
+                Client.GameStatus = "inQueue";
+                Client.timeStampSince =
+                    (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+                Client.SetChatHover();
+                Client.PVPNet.OnMessageReceived += GotQueuePop;
+                Client.Log("Now in Queue");
+            }
         }
 
         private void GotQueuePop(object sender, object message)
