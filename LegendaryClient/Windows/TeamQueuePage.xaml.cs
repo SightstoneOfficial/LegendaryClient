@@ -181,28 +181,39 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Ping
-                PingLabel.Text = Math.Round(PingAverage) + "ms";
-                if (PingAverage == 0)
+                var bc = new BrushConverter();
+                Brush brush = null;
+                try
                 {
-                    PingLabel.Text = "Timeout";
+                    double pingAverage = HighestPingTime(Client.Region.PingAddresses);
+                    PingLabel.Text = Math.Round(pingAverage) + "ms";
+                    if (pingAverage == 0)
+                        PingLabel.Text = "Timeout";
+
+                    if (pingAverage == -1)
+                        PingLabel.Text = "Ping not enabled for this region";
+
+                    if (pingAverage > 999 || pingAverage < 1)
+                        brush = (Brush)bc.ConvertFrom("#FFFF6767");
+
+                    if (pingAverage > 110 && pingAverage < 999)
+                        brush = (Brush)bc.ConvertFrom("#FFFFD667");
+
+                    if (pingAverage < 110 && pingAverage > 1)
+                        brush = (Brush)bc.ConvertFrom("#FF67FF67");
+
                 }
-                if (PingAverage == -1)
+                catch (NotImplementedException ex)
                 {
                     PingLabel.Text = "Ping not enabled for this region";
+                    brush = (Brush)bc.ConvertFrom("#FFFF6767");
                 }
-                var bc = new BrushConverter();
-                var brush = (Brush)bc.ConvertFrom("#FFFF6767");
-                if (PingAverage > 999 || PingAverage < 1)
+                catch (Exception ex)
                 {
-                    PingRectangle.Fill = brush;
+                    PingLabel.Text = "Error occured while pinging";
+                    brush = (Brush)bc.ConvertFrom("#FFFF6767");
                 }
-                brush = (Brush)bc.ConvertFrom("#FFFFD667");
-                if (PingAverage > 110 && PingAverage < 999)
-                {
-                    PingRectangle.Fill = brush;
-                }
-                brush = (Brush)bc.ConvertFrom("#FF67FF67");
-                if (PingAverage < 110 && PingAverage > 1)
+                finally
                 {
                     PingRectangle.Fill = brush;
                 }
