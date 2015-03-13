@@ -97,6 +97,24 @@ namespace LegendaryClient.Windows
 
                 timer.Stop();
             }));
+
+            //Update featured games every minute.
+            var featuredUpdateTimer = new Timer
+            {
+                Interval = 60000
+            };
+            featuredUpdateTimer.Elapsed += (o, e) =>
+            {
+                if (SpectatorComboBox.SelectedIndex == -1 || SpectatorComboBox.SelectedValue == null)
+                {
+                    ChangeSpectatorRegion(region);
+                }
+                else
+                {
+                    ChangeSpectatorRegion(BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue));
+                }
+            };
+            featuredUpdateTimer.Start();
         }
 
         public async void GetPendingInvites()
