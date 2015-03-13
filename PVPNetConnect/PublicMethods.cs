@@ -8,6 +8,7 @@ using PVPNetConnect.RiotObjects.Platform.Harassment;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Login;
 using PVPNetConnect.RiotObjects.Platform.Matchmaking;
+using PVPNetConnect.RiotObjects.Platform.Messaging.Persistence;
 using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using PVPNetConnect.RiotObjects.Platform.Statistics.Team;
@@ -1544,6 +1545,15 @@ namespace PVPNetConnect
         public async Task<object> ReportPlayer(HarassmentReport report)
         {
             int Id = Invoke("clientFacadeService", "reportPlayer", new object[] { report.GetBaseTypedObject() });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            results.Remove(Id);
+            return null;
+        }
+
+        public async Task<object> CallPersistenceMessaging(SimpleDialogMessageResponse response)
+        {
+            int Id = Invoke("clientFacadeService", "callPersistenceMessaging", new object[] { response.GetBaseTypedObject() });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
             results.Remove(Id);

@@ -124,6 +124,8 @@
     <Compile Include="RiotObjects\Platform\Matchmaking\QueueInfo.cs" />
     <Compile Include="RiotObjects\Platform\Matchmaking\SearchingForMatchNotification.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\ClientLoginKickNotification.cs" />
+    <Compile Include="RiotObjects\Platform\Messaging\Persistence\SimpleDialogMessageResponse.cs" />
+    <Compile Include="RiotObjects\Platform\Messaging\Persistence\SimpleDialogMessage.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\SimpleDialogMessage.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\StoreAccountBalanceNotification.cs" />
     <Compile Include="RiotObjects\Platform\Messaging\StoreFulfillmentNotification.cs" />
