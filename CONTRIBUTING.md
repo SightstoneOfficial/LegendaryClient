@@ -6,6 +6,7 @@ Please insure that you are using the latest version before posting. If you are n
 If you are using the Auto-Updater, ensure that you are using the latest verion and replace it if you are not
 
 We will also be in this IRC if you need help: http://kiwiirc.com/client/irc.freenode.net/#LegendaryClient
+
 You can also put this in our forums at http://forums.legendaryclient.net
 
 Please tag issues with appropriate labels
