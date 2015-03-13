@@ -135,13 +135,15 @@ namespace LegendaryClient.Windows
             AllSummonerData playerData =
                 await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
             SummonerNameLabel.Content = playerData.Summoner.Name;
+            Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+
             Sha1 sha1 = new Sha1();
             if (!CheckedDev)
             {
                 if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + LegendaryClient.Logic.Client.Region.RegionName))) 
                 {
-                    MessageBox.Show("Welcome back developer ^^");
                     Client.Dev = true;
+                    Client.UserTitleBarLabel.Content = "Dev ∙ " + Client.UserTitleBarLabel.Content;
                 }
                 CheckedDev = true;
             }
@@ -159,6 +161,7 @@ namespace LegendaryClient.Windows
                 PlayerProgressLabel.Content = String.Format("Level {0}", playerData.SummonerLevel.Level);
                 PlayerCurrentProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevelAndPoints.ExpPoints);
                 PlayerAimProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevel.ExpToNextLevel);
+                Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + String.Format(" ∙ Level: {0}", playerData.SummonerLevel.Level);
             }
             else
                 Client.PVPNet.GetAllLeaguesForPlayer(playerData.Summoner.SumId, GotLeaguesForPlayer);
@@ -265,7 +268,7 @@ namespace LegendaryClient.Windows
                         currentLp = "0";
 
                     PlayerCurrentProgressLabel.Content = currentLp + "LP";
-                    Client.UserTitleBarLabel.Content = SummonerNameLabel.Content + " ∙ Tier: " + currentTier + " ∙ LP: " + currentLp;
+                    Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + " ∙ Tier: " + currentTier + " ∙ LP: " + currentLp;
                     PlayerProgressBar.Value = Convert.ToInt32(currentLp);
                 }
             }));
