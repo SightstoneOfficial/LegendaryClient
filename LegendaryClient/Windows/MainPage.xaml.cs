@@ -104,14 +104,17 @@ namespace LegendaryClient.Windows
             };
             featuredUpdateTimer.Elapsed += (o, e) =>
             {
-                if (SpectatorComboBox.SelectedIndex == -1 || SpectatorComboBox.SelectedValue == null)
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    ChangeSpectatorRegion(region);
-                }
-                else
-                {
-                    ChangeSpectatorRegion(BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue));
-                }
+                    if (SpectatorComboBox.SelectedIndex == -1 || SpectatorComboBox.SelectedValue == null)
+                    {
+                        ChangeSpectatorRegion(region);
+                    }
+                    else
+                    {
+                        ChangeSpectatorRegion(BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue));
+                    }
+                }));
             };
             featuredUpdateTimer.Start();
         }
