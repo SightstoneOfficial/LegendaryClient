@@ -62,7 +62,6 @@ namespace LegendaryClient.Windows
             SpectatorComboBox.SelectedValue = Client.Region.RegionName.ToUpper();
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
             uiLogic.Profile = new ProfilePage();
-            ChangeSpectatorRegion(region);
             GetNews(region);
             GetPendingInvites();
             var update = new Timer
