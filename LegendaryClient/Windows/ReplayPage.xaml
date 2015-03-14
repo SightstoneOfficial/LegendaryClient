@@ -42,7 +42,7 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary
@@ -62,7 +62,7 @@
             <StackPanel x:Name="GamePanel" />
         </ScrollViewer>
         <Button Name="Refresh" Width="100" Margin="425,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Refresh Replays" Click="refresh_Click" />
-        <TextBox x:Name="Command" Width="330" Height="24" Margin="10,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="" TextChanged="Command_TextChanged" TextWrapping="Wrap" controls:TextboxHelper.Watermark="Enter username here" />
+        <TextBox x:Name="Command" Width="330" Height="24" Margin="10,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Text="" TextChanged="Command_TextChanged" TextWrapping="Wrap" controls:TextBoxHelper.Watermark="Enter username here" />
         <Button x:Name="Download" Width="75" Height="24" Margin="345,49,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Hidden" Click="Download_Click" Content="Download" FontSize="11" />
         <Label x:Name="HintLabel" Margin="10,78,604,568" Content="" />
         <Grid x:Name="ReplayOverviewGrid" Width="581" Margin="0,40,0,0" HorizontalAlignment="Right" Opacity="0" Visibility="Hidden">

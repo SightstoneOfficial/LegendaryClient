@@ -42,7 +42,7 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary
@@ -75,7 +75,7 @@
                  IsReadOnly="True" TextWrapping="NoWrap" Background="#FF2E2E2E" BorderBrush="{x:Null}"
                  Foreground="White" />
         <TextBox x:Name="DevKey" Margin="10,0,10,136" HorizontalAlignment="Stretch"
-                 VerticalAlignment="Bottom" controls:TextboxHelper.Watermark="Type Your Dev Key Here"
+                 VerticalAlignment="Bottom" controls:TextBoxHelper.Watermark="Type Your Dev Key Here"
                  TextWrapping="NoWrap"
                  Background="#FF2E2E2E">
             <TextBox.BorderBrush>

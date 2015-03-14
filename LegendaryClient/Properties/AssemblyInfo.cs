@@ -3,7 +3,6 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
-using log4net.Config;
 
 #endregion
 
@@ -57,4 +56,3 @@ using log4net.Config;
 
 [assembly: AssemblyVersion("2.3.0.0")]
 [assembly: AssemblyFileVersion("2.3.0.0")]
-[assembly: XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]

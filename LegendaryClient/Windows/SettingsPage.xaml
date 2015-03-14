@@ -42,7 +42,7 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary
@@ -191,7 +191,7 @@
                     <TextBox x:Name="HudLink" Grid.ColumnSpan="2" Margin="10,31,5,0"
                              VerticalAlignment="Top"
                              TextWrapping="Wrap"
-                             controls:TextboxHelper.Watermark="Enter your LeagueCraft HUD URL here (http://leaguecraft.com/uimods/2433-cloud-9-themed-ui.xhtml) and click install HUD" />
+                             controls:TextBoxHelper.Watermark="Enter your LeagueCraft HUD URL here (http://leaguecraft.com/uimods/2433-cloud-9-themed-ui.xhtml) and click install HUD" />
                     <Button Grid.Column="1" Width="75" Margin="0,58,10,0" HorizontalAlignment="Right"
                             VerticalAlignment="Top" Content="Install HUD" Click="Button_Click" />
                     <Label x:Name="ResultTextbox"
