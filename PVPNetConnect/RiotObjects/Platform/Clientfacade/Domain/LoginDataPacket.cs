@@ -81,6 +81,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
         [InternalName("customMinutesLeftToday")]
         public Int32 CustomMinutesLeftToday { get; set; }
 
+        [InternalName("emailStatus")]
+        public String EmailStatus { get; set; }
+
         [InternalName("platformGameLifecycleDTO")]
         public object PlatformGameLifecycleDTO { get; set; }
 
