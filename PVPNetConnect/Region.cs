@@ -110,6 +110,13 @@ namespace PVPNetConnect
         [GarenaAuthServerValue("")]
         TH,
 
+        [ServerValue("prodid.lol.garenanow.com")]
+        [LoginQueueValue("https://lqid.lol.garenanow.com/")]
+        [LocaleValue("en_US")]
+        [UseGarenaValue(true)]
+        [GarenaAuthServerValue("")]
+        ID,
+
         [ServerValue("prodph.lol.garenanow.com")]
         [LoginQueueValue("https://lqph.lol.garenanow.com/")]
         [LocaleValue("en_US")]
