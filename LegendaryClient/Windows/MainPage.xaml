@@ -45,7 +45,7 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary
@@ -58,27 +58,37 @@
     </Page.Resources>
 
     <Grid>
-        <Border Margin="20,20,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1"
+        <Grid Height="90" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" Panel.ZIndex="1">
+            <Rectangle Fill="#66505050" HorizontalAlignment="Stretch" Height="90"></Rectangle>
+            <Border Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1"
                 BorderBrush="Black">
-            <Image x:Name="ProfileImage" Width="100" Height="100" Margin="0,0,0,0"
+                <Image x:Name="ProfileImage" Width="69" Height="69" Margin="0,0,0,0"
                    HorizontalAlignment="Left" VerticalAlignment="Top" Source="/LegendaryClient;component/NONE.png" />
-        </Border>
-        <local:HoverOverLabel x:Name="HoverLabel" Width="100" Height="100" Margin="20,20,0,0"
-                              HorizontalAlignment="Left" VerticalAlignment="Top" MouseDown="HoverLabel_MouseDown"
-                              MouseEnter="HoverLabel_MouseEnter" MouseLeave="HoverLabel_MouseLeave" Opacity="0" />
-        <Label x:Name="SummonerNameLabel" Margin="158,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            </Border>
+            <local:HoverOverLabel x:Name="HoverLabel" Width="70" Height="70" Margin="10,0,0,10"
+                              HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseDown="HoverLabel_MouseDown"
+                              MouseEnter="HoverLabel_MouseEnter" MouseLeave="HoverLabel_MouseLeave" Opacity="0" FontSize="14" />
+            <Label x:Name="SummonerNameLabel" Margin="100,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Summoner Name" FontSize="22" />
 
-        <ProgressBar x:Name="PlayerProgressBar" Width="250" Height="23" Margin="163,70,0,0"
-                     HorizontalAlignment="Left" VerticalAlignment="Top" Value="75" />
+            <ProgressBar x:Name="PlayerProgressBar" Width="250" Height="28" Margin="0,0,35,33"
+                     HorizontalAlignment="Right" VerticalAlignment="Bottom" Value="75" />
 
-        <Label x:Name="PlayerCurrentProgressLabel" Margin="163,65,0,0" HorizontalAlignment="Left"
+            <Label x:Name="PlayerCurrentProgressLabel" Margin="0,27,239,0" HorizontalAlignment="Right"
                VerticalAlignment="Top"
                Style="{x:Null}" Content="75LP" Foreground="Black" FontSize="16" />
-        <Label x:Name="PlayerProgressLabel" Margin="258,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <Label x:Name="PlayerProgressLabel" Margin="0,27,125,0" HorizontalAlignment="Right" VerticalAlignment="Top"
                Style="{x:Null}" Content="Silver II" Foreground="Black" FontSize="16" />
-        <Label x:Name="PlayerAimProgressLabel" Margin="358,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <Label x:Name="PlayerAimProgressLabel" Margin="0,27,35,0" HorizontalAlignment="Right" VerticalAlignment="Top"
                Style="{x:Null}" Content="100LP" Foreground="Black" FontSize="16" />
+
+            <Button x:Name="fakeend" Margin="0,28,300,0"
+                VerticalAlignment="Top" Visibility="Visible" Content="Fake end of game" Click="fakeend_Click" HorizontalAlignment="Right" Width="125" />
+            <Button x:Name="testInvite" Width="75" Margin="0,28,441,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestInvite"
+                Visibility="Visible" Click="InviteTest_Click" />
+            <Button x:Name="testChat" Width="75" Margin="0,28,530,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestChat"
+                Visibility="Visible" Click="ChatTest_Click" />
+        </Grid>
 
         <TextBox x:Name="BroadcastMessage" Height="70" Margin="500,52,300,0" HorizontalAlignment="Stretch"
                  VerticalAlignment="Top" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight"
@@ -180,11 +190,5 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="fakeend" Margin="0,10,170,0"
-                VerticalAlignment="Top" Visibility="Hidden" Content="Fake end of game" Click="fakeend_Click" HorizontalAlignment="Right" Width="125" />
-        <Button x:Name="testInvite" Width="75" Margin="0,10,90,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestInvite"
-                Visibility="Hidden" Click="InviteTest_Click" />
-        <Button x:Name="testChat" Width="75" Margin="0,10,10,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestChat"
-                Visibility="Hidden" Click="ChatTest_Click" />
     </Grid>
 </Page>
