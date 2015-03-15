@@ -8,13 +8,37 @@
       d:DesignHeight="738" d:DesignWidth="1280"
 	Title="ChampSelectPage">
 
-    <Grid Margin="0,0,10,0">
-        <Image x:Name="BackgroundSplash" Stretch="UniformToFill" Opacity=".40" />
-        <Label x:Name="GameStatusLabel" Content="Loading Champ Select..." HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <Label x:Name="LobbyTimeLabel" Content="Inf." HorizontalAlignment="Right" Margin="0,5,120,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <Button x:Name="DodgeButton" Content="Dodge" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Height="35" Width="100" Click="DodgeButton_Click" />
-        <Label x:Name="LeftTeamLabel" Content="Blue Team" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Margin="5,80,0,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="500" Width="140" Background="Transparent" BorderBrush="{x:Null}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="255"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="255"/>
+            <ColumnDefinition Width="10"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Background Image and Blur -->
+        <Image x:Name="BackgroundSplash" Stretch="UniformToFill" Opacity=".40" Grid.ColumnSpan="7" Margin="-15,0,-15,-15" Panel.ZIndex="-10">
+            <Image.BitmapEffect>
+                <BlurBitmapEffect Radius="15" KernelType="Gaussian" />
+            </Image.BitmapEffect>
+        </Image>
+
+        <!-- -->
+        <Label x:Name="LeftTeamLabel" Content="Blue Team" HorizontalAlignment="Center" Margin="0,49,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="12" Grid.Column="1" Foreground="#FF419dff"/>
+        <Button x:Name="DodgeButton" Content="Dodge" HorizontalAlignment="Left" VerticalAlignment="Top" Height="35" Width="100" Click="DodgeButton_Click" Grid.Column="3"/>
+
+        <!-- -->
+        <Grid Grid.Column="3" Height="45" VerticalAlignment="Top" Width="400" Margin="0,80,0,0">
+            <Label x:Name="GameStatusLabel" Content="Loading Champ Select" HorizontalAlignment="Center" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Grid.Column="3" Foreground="WhiteSmoke" Height="45" Panel.ZIndex="1"/>
+            <Label x:Name="LobbyTimeLabel" Content="Inf." HorizontalAlignment="Right" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Foreground="WhiteSmoke" Height="45" Panel.ZIndex="1"/>
+            <Rectangle Height="45" Width="400" Grid.Column="3" VerticalAlignment="Top" HorizontalAlignment="Center" Fill="#CC505050"/>
+        </Grid>
+
+
+        <ListView x:Name="BlueListView" HorizontalAlignment="Left" Margin="0,80,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="490" Width="255" Background="Transparent" BorderBrush="{x:Null}" Grid.Column="1">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -22,8 +46,18 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label x:Name="BlueBansLabel" Content="Blue Bans" HorizontalAlignment="Left" Margin="28,474,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
-        <ListView x:Name="BlueBanListView" HorizontalAlignment="Left" Margin="5,513,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="225" Width="58" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
+        <Label x:Name="BlueBansLabel" Content="Blue Bans" HorizontalAlignment="Center" Margin="0,579,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="15" Visibility="Hidden" Grid.Column="1" />
+        <ListView x:Name="BlueBanListView" HorizontalAlignment="Center" Margin="15,610,15,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="58" Width="225" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden" Grid.Column="1">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="25" Margin="0,182,89,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" Grid.Column="3" BorderThickness="0" Panel.ZIndex="1" />
+
+        <Label x:Name="RightTeamLabel" Content="Purple Team" HorizontalAlignment="Center" Margin="0,49,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="12" Grid.Column="5" Foreground="#FF9e32ff" />
+        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,80,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="490" Width="255" Background="Transparent" BorderBrush="{x:Null}" Grid.Column="5">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -31,11 +65,8 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label Content="Search" HorizontalAlignment="Left" Margin="150,40,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="23" Margin="240,50,230,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" />
-
-        <Label x:Name="RightTeamLabel" Content="Purple Team" HorizontalAlignment="Right" Margin="0,38,2,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" />
-        <ListView x:Name="PurpleListView" HorizontalAlignment="Right" Margin="0,80,5,10" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="500" Width="140" Background="Transparent" BorderBrush="{x:Null}">
+        <Label x:Name="PurpleBansLabel" Content="Purple Bans" HorizontalAlignment="Center" Margin="0,579,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="14" Visibility="Hidden" Grid.Column="5" />
+        <ListView x:Name="PurpleBanListView" HorizontalAlignment="Center" Margin="0,610,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="58" Width="225" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden" Grid.Column="5">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -43,18 +74,9 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Label x:Name="PurpleBansLabel" Content="Purple Bans" HorizontalAlignment="Right" Margin="0,474,15,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
-        <ListView x:Name="PurpleBanListView" HorizontalAlignment="Right" Margin="0,513,10,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Height="225" Width="58" Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
+        <local:TradeControl x:Name="PlayerTradeControl" HorizontalAlignment="Left" Margin="144,85,0,0" Height="200" Width="300" Panel.ZIndex="1" VerticalAlignment="Top" Visibility="Hidden" Grid.ColumnSpan="3" Grid.Column="1" />
 
-        <local:TradeControl x:Name="PlayerTradeControl" HorizontalAlignment="Left" Margin="150,85,0,0" Height="200" Width="300" Panel.ZIndex="1" VerticalAlignment="Top" Visibility="Hidden" />
-
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="150,80,150,0" Height="388" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050">
+        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="0,205,0,0" Height="267" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" Grid.Column="3" BorderThickness="0">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -78,7 +100,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
 
-        <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="150,80,150,0" Height="388" VerticalAlignment="Top" Background="#66505050" Visibility="Hidden">
+        <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="0,205,0,0" Height="267" VerticalAlignment="Top" Background="#66505050" Visibility="Hidden" Grid.Column="3">
             <ListView x:Name="AbilityListView" HorizontalAlignment="Left" Width="390" Margin="5,5,00,5" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" BorderBrush="{x:Null}">
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -100,34 +122,46 @@
             </ListView>
         </Grid>
 
-        <Button x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="40" Margin="150,473,0,0" VerticalAlignment="Top" Width="40" Click="SummonerSpell_Click">
-            <StackPanel>
-                <Image x:Name="SummonerSpell1Image" Height="32" Width="32" />
-            </StackPanel>
-        </Button>
-        <Button x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="40" Margin="195,473,0,0" VerticalAlignment="Top" Width="40" Click="SummonerSpell_Click">
-            <StackPanel>
-                <Image x:Name="SummonerSpell2Image" Height="32" Width="32" />
-            </StackPanel>
-        </Button>
-        <ComboBox x:Name="MasteryComboBox" HorizontalAlignment="Right" Margin="0,478,380,0" VerticalAlignment="Top" Width="180" Height="30" SelectionChanged="MasteryComboBox_SelectionChanged" />
-        <Button x:Name="EditRunesButton" Content="Edit Runes" HorizontalAlignment="Right" Margin="0,478,565,0" VerticalAlignment="Top" Width="75" Height="30" Click="EditRunesButton_Click" />
-        <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Right" Margin="0,478,275,0" VerticalAlignment="Top" Width="100" Height="30" Click="EditMasteriesButton_Click" />
-        <Button x:Name="LockInButton" Content="Lock In" Margin="0,478,150,0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="120" Height="30" Click="LockInButton_Click" />
-        <UniformGrid Margin="240,478,645,0" Height="30" VerticalAlignment="Top">
-            <ComboBox x:Name="RuneComboBox" Margin="0,0,2,-15" VerticalAlignment="Top" Height="30" SelectionChanged="RuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" />
-            <ComboBox x:Name="LocalRuneComboBox" Margin="3,0,-1,-15" VerticalAlignment="Top" Height="30" SelectionChanged="LocalRuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" ToolTip="First select rune page to be replaced with local one" />
-        </UniformGrid>
-        
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="150,518,150,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
+        <Grid VerticalAlignment="Top" Height="87" Margin="0,482,0,0" Grid.Column="3" Panel.ZIndex="100">
+            <Label Content="Masteries and Runes" Foreground="WhiteSmoke" FontWeight="ExtraLight" FontSize="12" Margin="0,-3,550,58" Width="180" Height="30" Panel.ZIndex="1" HorizontalAlignment="Left"/>
+            <Rectangle Fill="#66505050" Width="291" Margin="0,0,439,0" HorizontalAlignment="Left"/>
+
+            <ComboBox x:Name="MasteryComboBox" Margin="5,0,0,9" Width="191" Height="26" SelectionChanged="MasteryComboBox_SelectionChanged" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+            <Button x:Name="EditRunesButton" Content="Edit Runes" HorizontalAlignment="Left" Margin="204,0,0,39" Width="82" Height="26" Click="EditRunesButton_Click" VerticalAlignment="Bottom" />
+            <Button x:Name="EditMasteriesButton" Content="Edit Masteries" HorizontalAlignment="Left" Margin="204,0,0,9" Width="82" Height="26" Click="EditMasteriesButton_Click" VerticalAlignment="Bottom" />
+            <UniformGrid Margin="5,22,535,38" Height="26" Width="190" HorizontalAlignment="Left">
+                <ComboBox x:Name="RuneComboBox" Margin="0,0,2,-13" Height="26" SelectionChanged="RuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" />
+                <ComboBox x:Name="LocalRuneComboBox" Margin="3,0,-1,-13" Height="26" SelectionChanged="LocalRuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" ToolTip="First select rune page to be replaced with local one" />
+            </UniformGrid>
+
+            <Rectangle Fill="#66505050" Width="130" Margin="302,0,298,0" HorizontalAlignment="Left" />
+            <Label Content="Summoner Spells" Foreground="WhiteSmoke" FontWeight="ExtraLight" FontSize="12" Height="30" Margin="303,-2,0,59" Panel.ZIndex="1" HorizontalAlignment="Left"/>
+            <Button x:Name="SummonerSpell1" Height="55" Margin="309,0,0,9" Width="55" Click="SummonerSpell_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <StackPanel>
+                    <Image x:Name="SummonerSpell1Image" Height="55" Width="55" />
+                </StackPanel>
+            </Button>
+            <Button x:Name="SummonerSpell2" Height="55" Margin="370,0,0,9" Width="55" Click="SummonerSpell_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                <StackPanel>
+                    <Image x:Name="SummonerSpell2Image" Height="55" Width="55" />
+                </StackPanel>
+            </Button>
+
+            <Rectangle Fill="#66505050" Margin="442,0,0,0" />
+            <Button x:Name="LockInButton" Content="Lock In" Margin="452,0,10,21" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Height="45" Click="LockInButton_Click" />
+
+        </Grid>
+        <!-- <Rectangle Fill="#FFffffff" Margin="273,758,257,-30" Grid.Column="3" Height="10" Width="200" /> -->
+
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,579,0,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}" Grid.Column="3" BorderThickness="0">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
-        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="23" Margin="150,0,285,10" TextWrapping="Wrap" VerticalAlignment="Bottom" />
-        <Button x:Name="ChatButton" Content="Send" Margin="0,0,152,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" Height="26" />
-        <ToggleButton x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="75" Margin="0,49,150,0" Checked="Switch_Click" Unchecked="Switch_Click"/>
+        <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="26" Margin="0,0,130,14" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Column="3" BorderThickness="0" />
+        <Button x:Name="ChatButton" Content="Send" Margin="0,0,0,14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" Height="26" Grid.Column="3" BorderThickness="0"/>
+        <ToggleButton x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="89" Margin="0,182,0,0" Checked="Switch_Click" Unchecked="Switch_Click" Height="21" Grid.Column="3" BorderThickness="0" />
     </Grid>
 </Page>

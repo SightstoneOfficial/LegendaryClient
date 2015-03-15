@@ -5,25 +5,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="80" d:DesignWidth="135"
+             d:DesignHeight="100" d:DesignWidth="255"
              MouseDown="ChampPlayer_MouseOver" MouseLeave="ChampPlayer_MouseLeave">
-    <Grid Background="#194B4B4B">
-        <Rectangle x:Name="TeamRectangle" Fill="#FF535353" Width="4" HorizontalAlignment="Left" Visibility="Hidden" />
-        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="48" Margin="10,10,0,0" VerticalAlignment="Top"
-               Width="48" Source="/LegendaryClient;component/NONE.png" />
-        <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="22" Margin="65,10,0,0"
-               VerticalAlignment="Top" Width="22" />
-        <Image x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="22" Margin="65,35,0,0"
-               VerticalAlignment="Top" Width="22" />
-        <Button x:Name="TradeButton" HorizontalAlignment="Left" Height="22" Margin="95,10,0,0" VerticalAlignment="Top"
-                Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Hidden">
-            <StackPanel>
-                <Image Source="/LegendaryClient;component/trade.png" />
-            </StackPanel>
+    <Grid>
+        <Rectangle x:Name="ChampSelectPlayerBackground" Fill="#CC505050" Width="255" HorizontalAlignment="Left" Visibility="Visible" Height="90" Margin="0,0,0,10" />
+        <Rectangle x:Name="TeamRectangle" Fill="#FF535353" Width="1" HorizontalAlignment="Left" Visibility="Hidden" />
+        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="70" Margin="10,10,0,0" VerticalAlignment="Top"
+               Width="70" Source="/LegendaryClient;component/NONE.png" />
+        <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="30" Margin="90,50,0,0"
+               VerticalAlignment="Top" Width="30" />
+        <Image x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="30" Margin="130,50,0,0"
+               VerticalAlignment="Top" Width="30" />
+        <Button x:Name="TradeButton" HorizontalAlignment="Left" Height="22" Margin="226,33,0,0" VerticalAlignment="Top"
+                Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Visible">
+            <StackPanel/>
         </Button>
-        <Image x:Name="LockedInIcon" HorizontalAlignment="Left" Height="22" Margin="95,35,0,0" VerticalAlignment="Top"
-               Width="22" Visibility="Visible" />
-        <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="4,55,0,0" VerticalAlignment="Top"
-               Width="131" Foreground="White" FontSize="11" />
+        <Image x:Name="LockedInIcon" HorizontalAlignment="Left" Height="22" Margin="225,53,0,0" VerticalAlignment="Top"
+               Width="22" Visibility="Hidden" />
+        <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="85,10,0,0" VerticalAlignment="Top"
+               Width="131" Foreground="White" FontSize="12" />
+        <Image Source="/LegendaryClient;component/trade.png" Margin="227,10,10,57" Visibility="Hidden" />
+        <Button x:Name="TradeButton_Copy" HorizontalAlignment="Left" Height="22" Margin="225,7,0,0" VerticalAlignment="Top"
+        	Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Hidden">
+            <StackPanel/>
+        </Button>
     </Grid>
 </UserControl>
