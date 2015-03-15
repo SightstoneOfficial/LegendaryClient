@@ -162,6 +162,7 @@ namespace LegendaryClient
         {
             Accent myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
             ThemeManager.ChangeAppStyle(this, myAccent, (Properties.Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
+            ThemeManager.ChangeAppTheme(this, Settings.Default.Theme);
             Client.CurrentAccent = myAccent;
         }
 
