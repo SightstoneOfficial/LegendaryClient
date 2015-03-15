@@ -14,8 +14,16 @@ configuration: Release
 before_build:
 - nuget restore
 
+# sigh *zip*
+after_build:
+- 7z a LegendaryClient.zip LegendaryClient\bin\Release
+
 # define solution file
 build:
   project: LegendaryClient.sln
   # shut up
   verbosity: minimal
+
+artifacts:
+  - path: LegendaryClient.zip
+    name: LegendaryClient
