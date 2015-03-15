@@ -60,7 +60,7 @@
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
 
         <MediaElement x:Name="LoginPic" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1" />
-        <Grid x:Name="HideGrid" Width="350" Height="331" Margin="20,0,0,50"
+        <Grid x:Name="HideGrid" Width="363" Height="331" Margin="20,0,0,50"
               HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseDown="Grid_MouseDown"
               MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp"
               Background="#B2000000">
@@ -78,34 +78,34 @@
                   VerticalAlignment="Top">
                 <TextBlock x:Name="LoginUsername"  Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
                            Text="Username" Foreground="White" FontSize="18" FontWeight="Bold" />
-                <TextBox x:Name="LoginUsernameBox" Width="330" Margin="10,40,0,0" HorizontalAlignment="Left"
+                <TextBox x:Name="LoginUsernameBox" Width="340" Margin="10,40,0,0" HorizontalAlignment="Left"
                          VerticalAlignment="Top" TextWrapping="NoWrap" FontSize="16" controls:TextBoxHelper.Watermark="Enter your username here"/>
                 <CheckBox x:Name="RememberUsernameCheckbox" Margin="0,80,10,0" HorizontalAlignment="Right"
                           VerticalAlignment="Top" Content="Remember Username" Foreground="White" IsChecked="True" />
-                <TextBlock x:Name="LoginPassword"  Margin="10,90,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
+                <TextBlock x:Name="LoginPassword"  Margin="10,84,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
                            Text="Password" Foreground="White" FontSize="18" FontWeight="Bold" />
-                <PasswordBox x:Name="LoginPasswordBox" Width="330" Margin="10,120,0,0" HorizontalAlignment="Left"
+                <PasswordBox x:Name="LoginPasswordBox" Width="340" Margin="10,114,0,0" HorizontalAlignment="Left"
                              VerticalAlignment="Top" FontSize="16" controls:TextBoxHelper.Watermark="Enter your password here"/>
-                <CheckBox x:Name="RememberPasswordCheckbox" Margin="0,160,10,0" HorizontalAlignment="Right"
+                <CheckBox x:Name="RememberPasswordCheckbox" Margin="0,154,4,0" HorizontalAlignment="Right"
                           VerticalAlignment="Top" Content="Remember Password" Foreground="White" />
-                <Button x:Name="LoginButton" Height="41" Margin="10,180,10,0" HorizontalAlignment="Stretch"
+                <Button x:Name="LoginButton" Height="41" Margin="10,180,0,0" HorizontalAlignment="Stretch"
                         VerticalAlignment="Top" Content="Login" Click="LoginButton_Click" IsDefault="True" />
-                <ComboBox x:Name="RegionComboBox" Width="65" Margin="139,10,0,0"
+                <ComboBox x:Name="RegionComboBox" Width="65" Margin="160,10,0,0"
                           HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource LiveRegions}"
                           SelectedIndex="3" />
-                <CheckBox x:Name="AutoLoginCheckBox" Margin="10,160,0,0" HorizontalAlignment="Left"
+                <CheckBox x:Name="AutoLoginCheckBox" Margin="10,154,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Auto-Login" Foreground="White" />
-                <CheckBox x:Name="invisibleLoginCheckBox" Margin="100,160,0,0" HorizontalAlignment="Left"
+                <CheckBox x:Name="invisibleLoginCheckBox" Margin="98,154,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Sign-in invisible" Foreground="White" />
-                <ComboBox x:Name="UpdateRegionComboBox" Width="120" Margin="220,10,0,0"
+                <ComboBox x:Name="UpdateRegionComboBox" Width="120" Margin="230,10,0,0"
                 	HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}"
                 	SelectionChanged="UpdateRegionComboBox_SelectionChanged"/>
             </Grid>
-            <TextBox x:Name="Version" Width="283" Height="24"
+            <TextBox x:Name="Version" Width="296" Height="24"
                      Margin="0,301,57,0" HorizontalAlignment="Right"
                      VerticalAlignment="Top" TextWrapping="Wrap"
                      controls:TextBoxHelper.Watermark="Client Version Override" />
-            <Label x:Name="devKeyLabel" Content="User" FontSize="16" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,0" MouseDoubleClick="devKeyLabel_MouseDoubleClick" />
+            <Label x:Name="devKeyLabel" Content="User" FontSize="16" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,2" MouseDoubleClick="devKeyLabel_MouseDoubleClick" />
             <CheckBox x:Name="Sound" Margin="10,280,0,0" HorizontalAlignment="Left"
                       VerticalAlignment="Top" Click="DisableSound_Click" Content="Disable Login Music"
                       Foreground="White"

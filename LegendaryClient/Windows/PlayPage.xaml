@@ -72,7 +72,7 @@
         <Button x:Name="JoinCustomGameButton" Width="140" Height="42"
                 Margin="155,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Join Custom Games"
                 Click="JoinCustomGameButton_Click" />
-        <ListBox x:Name="QueueListView" Margin="0,0,0,90" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <ListBox x:Name="QueueListView" Margin="0,0,0,90" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" />
         <Button x:Name="LeaveQueuesButton" Width="96" Height="28" Margin="0,0,150,57"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Leave Queues"
                 Click="LeaveQueuesButton_Click" />
