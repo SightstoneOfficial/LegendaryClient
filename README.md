@@ -1,8 +1,8 @@
 #LegendaryClient
 ###Status : 
+[![Build status](https://ci.appveyor.com/api/projects/status/jgx2ivtkhooalp4h/branch/master?svg=true)](https://ci.appveyor.com/project/EddyV/legendaryclient/branch/master)
 [![Issues](https://img.shields.io/github/issues/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/issues)
 [![Releases](https://img.shields.io/github/release/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
-[![Build status](https://ci.appveyor.com/api/projects/status/jgx2ivtkhooalp4h/branch/master?svg=true)](https://ci.appveyor.com/project/EddyV/legendaryclient/branch/master)
 
 #Introduction
 
