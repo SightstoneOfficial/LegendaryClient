@@ -83,11 +83,11 @@
                Style="{x:Null}" Content="100LP" Foreground="Black" FontSize="16" />
 
             <Button x:Name="fakeend" Margin="0,28,300,0"
-                VerticalAlignment="Top" Visibility="Visible" Content="Fake end of game" Click="fakeend_Click" HorizontalAlignment="Right" Width="125" />
+                VerticalAlignment="Top" Visibility="Hidden" Content="Fake end of game" Click="fakeend_Click" HorizontalAlignment="Right" Width="125" />
             <Button x:Name="testInvite" Width="75" Margin="0,28,441,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestInvite"
-                Visibility="Visible" Click="InviteTest_Click" />
+                Visibility="Hidden" Click="InviteTest_Click" />
             <Button x:Name="testChat" Width="75" Margin="0,28,530,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestChat"
-                Visibility="Visible" Click="ChatTest_Click" />
+                Visibility="Hidden" Click="ChatTest_Click" />
         </Grid>
 
         <TextBox x:Name="BroadcastMessage" Height="70" Margin="500,52,300,0" HorizontalAlignment="Stretch"
