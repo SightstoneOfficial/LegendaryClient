@@ -53,6 +53,8 @@ using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
 using System.Net;
 using Newtonsoft.Json;
+using PVPNetConnect.RiotObjects.Platform.Messaging.Persistence;
+using LegendaryClient.Logic.JSON;
 
 #endregion
 
@@ -792,7 +794,7 @@ namespace LegendaryClient.Logic
         internal static Grid MainGrid;
         internal static Grid NotificationGrid;
         internal static Grid StatusGrid = new Grid();
-        internal static Image BackgroundImage;
+        internal static Image BackgroundImage; 
 
         internal static Label StatusLabel;
         internal static Label InfoLabel;
@@ -811,6 +813,9 @@ namespace LegendaryClient.Logic
 
         internal static ListView InviteListView;
         internal static Image MainPageProfileImage;
+
+        internal static Label UserTitleBarLabel;
+        internal static Image UserTitleBarImage;
 
         #region WPF Tab Change
 
@@ -1076,6 +1081,24 @@ namespace LegendaryClient.Logic
                         Warn.AcceptButton.Content = "Quit";
                         Client.FullNotificationOverlayContainer.Content = Warn.Content;
                         Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
+                    }
+                    else if (message is PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage)
+                    {
+                        var leagueInfo  = message as PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage;
+                        if (leagueInfo.Type == "leagues")
+                        {
+                            var promote = LeaguePromote.LeaguesPromote(leagueInfo.Params.ToString());
+                            var messageOver = new MessageOverlay();
+                            messageOver.MessageTitle.Content = "Leagues updated";
+                            messageOver.MessageTextBox.Text = promote.leagueItem.PlayerOrTeamName + " have been promoted to " + promote.leagueItem.Rank;
+                            var response = new SimpleDialogMessageResponse
+                            {
+                                Command = "ack",
+                                AccountId = leagueInfo.AccountId,
+                                MessageId = leagueInfo.MessageId
+                            };
+                            messageOver.AcceptButton.Click += (o, e) => { Client.PVPNet.CallPersistenceMessaging(response); };
+                        }
                     }
                 }
             }));

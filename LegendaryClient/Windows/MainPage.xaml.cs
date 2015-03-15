@@ -62,7 +62,6 @@ namespace LegendaryClient.Windows
             SpectatorComboBox.SelectedValue = Client.Region.RegionName.ToUpper();
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
             uiLogic.Profile = new ProfilePage();
-            ChangeSpectatorRegion(region);
             GetNews(region);
             GetPendingInvites();
             var update = new Timer
@@ -98,12 +97,26 @@ namespace LegendaryClient.Windows
                 timer.Stop();
             }));
 
-            if (Client.Dev)
+            //Update featured games every minute.
+            var featuredUpdateTimer = new Timer
             {
-                fakeend.Visibility = Visibility.Visible;
-                testChat.Visibility = Visibility.Visible;
-                testInvite.Visibility = Visibility.Visible;
-            }
+                Interval = 60000
+            };
+            featuredUpdateTimer.Elapsed += (o, e) =>
+            {
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    if (SpectatorComboBox.SelectedIndex == -1 || SpectatorComboBox.SelectedValue == null)
+                    {
+                        ChangeSpectatorRegion(region);
+                    }
+                    else
+                    {
+                        ChangeSpectatorRegion(BaseRegion.GetRegion((string)SpectatorComboBox.SelectedValue));
+                    }
+                }));
+            };
+            featuredUpdateTimer.Start();
         }
 
         public async void GetPendingInvites()
@@ -142,16 +155,24 @@ namespace LegendaryClient.Windows
             AllSummonerData playerData =
                 await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
             SummonerNameLabel.Content = playerData.Summoner.Name;
+            Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+
             Sha1 sha1 = new Sha1();
             if (!CheckedDev)
             {
-                
                 if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + LegendaryClient.Logic.Client.Region.RegionName))) 
                 {
-                    MessageBox.Show("Welcome back developer ^^");
                     Client.Dev = true;
+                    Client.UserTitleBarLabel.Content = "Dev ∙ " + Client.UserTitleBarLabel.Content;
                 }
                 CheckedDev = true;
+            }
+
+            if (Client.Dev)
+            {
+                fakeend.Visibility = Visibility.Visible;
+                testChat.Visibility = Visibility.Visible;
+                testInvite.Visibility = Visibility.Visible;
             }
             if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
             {
@@ -160,6 +181,7 @@ namespace LegendaryClient.Windows
                 PlayerProgressLabel.Content = String.Format("Level {0}", playerData.SummonerLevel.Level);
                 PlayerCurrentProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevelAndPoints.ExpPoints);
                 PlayerAimProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevel.ExpToNextLevel);
+                Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + String.Format(" ∙ Level: {0}", playerData.SummonerLevel.Level);
             }
             else
                 Client.PVPNet.GetAllLeaguesForPlayer(playerData.Summoner.SumId, GotLeaguesForPlayer);
@@ -198,6 +220,7 @@ namespace LegendaryClient.Windows
             try
             {
                 ProfileImage.Source = new BitmapImage(uriSource);
+                Client.UserTitleBarImage.Source = new BitmapImage(uriSource);
             }
             catch
             {
@@ -265,6 +288,7 @@ namespace LegendaryClient.Windows
                         currentLp = "0";
 
                     PlayerCurrentProgressLabel.Content = currentLp + "LP";
+                    Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + " ∙ Tier: " + currentTier + " ∙ LP: " + currentLp;
                     PlayerProgressBar.Value = Convert.ToInt32(currentLp);
                 }
             }));

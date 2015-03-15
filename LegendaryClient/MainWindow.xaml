@@ -2,12 +2,13 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       x:Name="LegendaryWindow"
-                      Title="LegendaryClient" Width="1280" Height="768" MinWidth="1024" MinHeight="550"
+                      Title="LegendaryClient" Width="1280" Height="768" MinWidth="1280" MinHeight="768"
                       SaveWindowPosition="True" TitleCaps="False"
                       WindowStartupLocation="CenterScreen"
+                      TitleForeground="Transparent"
                       Closing="MainWindow_Closing">
 
-    <Controls:MetroWindow.WindowCommands>
+    <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Label x:Name="inQueueTimer" Content="00:00" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" Visibility="Hidden"/>
             <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click"/>
@@ -20,7 +21,7 @@
             <Button x:Name="SettingsButton" Content="settings" Click="SettingsButton_Click" />
             <Button x:Name="LogoutButton" Content="logout" Click="LogoutButton_Click" />
         </Controls:WindowCommands>
-    </Controls:MetroWindow.WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
 
     <Window.Resources>
         <ResourceDictionary>
@@ -55,7 +56,7 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="Controls/Steel.xaml" />
@@ -73,6 +74,10 @@
             <ImageBrush ImageSource="BackTex.png" TileMode="FlipY" Stretch="Uniform" AlignmentY="Top"
                         Viewport="0,0,150,150" ViewportUnits="Absolute" Opacity="0.4" />
         </Grid.Background>
+
+        <Image x:Name="UserTitleBarImage" Source="/LegendaryClient;component/NONE.png" Width="30px" Margin="0,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" />
+        <Label x:Name="UserTitleBarLabel" Content="Username" FontWeight="Light" Margin="33,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" FontSize="15" Foreground="WhiteSmoke" />
+
         <ContentControl x:Name="FullNotificationOverlayContainer" HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch" Panel.ZIndex="999" />
         <Image x:Name="BackImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"
@@ -93,7 +98,7 @@
                         VerticalAlignment="Stretch" Panel.ZIndex="3" Visibility="Hidden" />
         <ContentControl x:Name="NotificationOverlayContainer" Margin="0,0,10,50" HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch" Panel.ZIndex="1" />
-        
+
         <ContentControl x:Name="Container" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
     </Grid>

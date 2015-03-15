@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -83,16 +83,19 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\awesomium.windows.controls.dll</HintPath>
     </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="jabber-net">
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro">
-      <HintPath>..\DLLS\MahApps.Metro.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MediaToolkit">
+      <HintPath>..\packages\MediaToolkit.1.0.2.0\lib\net40\MediaToolkit.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.7\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -106,10 +109,6 @@
     <Reference Include="SharpCompress">
       <HintPath>..\packages\sharpcompress.0.10.3\lib\net40\SharpCompress.dll</HintPath>
     </Reference>
-    <Reference Include="SharpZipLib, Version=0.81.0.1407, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLS\SharpZipLib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -119,8 +118,8 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\DLLS\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -135,7 +134,7 @@
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=924c5b18328d6f09, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Users\Edward_2\Desktop\Coding\Kyoku-master\Kyoku\zlib.net.dll</HintPath>
+      <HintPath>..\DLLS\zlib.net.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -166,8 +165,8 @@
     <Compile Include="Controls\CustomLobbyObserver.xaml.cs">
       <DependentUpon>CustomLobbyObserver.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\GameScouter\ChatScouuterPlayer.xaml.cs">
-      <DependentUpon>ChatScouuterPlayer.xaml</DependentUpon>
+    <Compile Include="Controls\GameScouter\ChatScouterPlayer.xaml.cs">
+      <DependentUpon>ChatScouterPlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\GameScouter\GameScouterPlayer.xaml.cs">
       <DependentUpon>GameScouterPlayer.xaml</DependentUpon>
@@ -237,6 +236,8 @@
     <Compile Include="Logic\DevUsers.cs" />
     <Compile Include="Logic\Crypto\Crypto.cs" />
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
+    <Compile Include="Logic\JSON\LeaguePromote.cs" />
+    <Compile Include="Logic\JSON\PromoteItem.cs" />
     <Compile Include="Logic\Player\ChampStats.cs" />
     <Compile Include="Logic\Player\GetKDA.cs" />
     <Compile Include="Logic\Player\KDA.cs" />
@@ -286,7 +287,7 @@
     <Compile Include="Logic\UpdateRegion\Korea.cs" />
     <Compile Include="Logic\UpdateRegion\Live.cs" />
     <Compile Include="Logic\UpdateRegion\PBE.cs" />
-    <Compile Include="ReplayElements\ChampionItem.xaml.cs">
+    <Compile Include="Controls\ReplayControls\ChampionItem.xaml.cs">
       <DependentUpon>ChampionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ChatPlayer.xaml.cs">
@@ -338,10 +339,10 @@
       <DependentUpon>RuneItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AccessKeyScoper.cs" />
-    <Compile Include="ReplayElements\PlayerItemReplay.xaml.cs">
+    <Compile Include="Controls\ReplayControls\PlayerItemReplay.xaml.cs">
       <DependentUpon>PlayerItemReplay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ReplayElements\SmallChampionItem.xaml.cs">
+    <Compile Include="Controls\ReplayControls\SmallChampionItem.xaml.cs">
       <DependentUpon>SmallChampionItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\ChatPrefixes.cs" />
@@ -381,7 +382,7 @@
     <Compile Include="Logic\SWF\SWFTypes\Rect.cs" />
     <Compile Include="Logic\SWF\SWFTypes\Tag.cs" />
     <Compile Include="Logic\SWF\SWFTypes\TagCodes.cs" />
-    <Compile Include="ReplayElements\ReplayItem.xaml.cs">
+    <Compile Include="Controls\ReplayControls\ReplayItem.xaml.cs">
       <DependentUpon>ReplayItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
@@ -550,7 +551,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\GameScouter\ChatScouuterPlayer.xaml">
+    <Page Include="Controls\GameScouter\ChatScouterPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -656,7 +657,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ReplayElements\ChampionItem.xaml">
+    <Page Include="Controls\ReplayControls\ChampionItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
@@ -758,13 +759,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ReplayElements\PlayerItemReplay.xaml">
+    <Page Include="Controls\ReplayControls\PlayerItemReplay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ReplayElements\SmallChampionItem.xaml">
+    <Page Include="Controls\ReplayControls\SmallChampionItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
@@ -790,7 +791,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ReplayElements\ReplayItem.xaml">
+    <Page Include="Controls\ReplayControls\ReplayItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
@@ -1128,7 +1129,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="NONE.png" />
-    <Resource Include="ReplayControls\noise.png" />
     <Resource Include="noise.png" />
     <Content Include="PVPNetConnect.csproj" />
     <Content Include="sqlite3.dll">

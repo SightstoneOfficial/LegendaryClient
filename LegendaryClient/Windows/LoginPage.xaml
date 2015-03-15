@@ -42,7 +42,7 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary
@@ -79,13 +79,13 @@
                 <TextBlock x:Name="LoginUsername"  Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
                            Text="Username" Foreground="White" FontSize="18" FontWeight="Bold" />
                 <TextBox x:Name="LoginUsernameBox" Width="330" Margin="10,40,0,0" HorizontalAlignment="Left"
-                         VerticalAlignment="Top" TextWrapping="NoWrap" FontSize="16" controls:TextboxHelper.Watermark="Enter your username here"/>
+                         VerticalAlignment="Top" TextWrapping="NoWrap" FontSize="16" controls:TextBoxHelper.Watermark="Enter your username here"/>
                 <CheckBox x:Name="RememberUsernameCheckbox" Margin="0,80,10,0" HorizontalAlignment="Right"
                           VerticalAlignment="Top" Content="Remember Username" Foreground="White" IsChecked="True" />
                 <TextBlock x:Name="LoginPassword"  Margin="10,90,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" TextWrapping="Wrap"
                            Text="Password" Foreground="White" FontSize="18" FontWeight="Bold" />
                 <PasswordBox x:Name="LoginPasswordBox" Width="330" Margin="10,120,0,0" HorizontalAlignment="Left"
-                             VerticalAlignment="Top" FontSize="16" controls:TextboxHelper.Watermark="Enter your password here"/>
+                             VerticalAlignment="Top" FontSize="16" controls:TextBoxHelper.Watermark="Enter your password here"/>
                 <CheckBox x:Name="RememberPasswordCheckbox" Margin="0,160,10,0" HorizontalAlignment="Right"
                           VerticalAlignment="Top" Content="Remember Password" Foreground="White" />
                 <Button x:Name="LoginButton" Height="41" Margin="10,180,10,0" HorizontalAlignment="Stretch"
@@ -104,7 +104,7 @@
             <TextBox x:Name="Version" Width="283" Height="24"
                      Margin="0,301,57,0" HorizontalAlignment="Right"
                      VerticalAlignment="Top" TextWrapping="Wrap"
-                     controls:TextboxHelper.Watermark="Client Version Override" />
+                     controls:TextBoxHelper.Watermark="Client Version Override" />
             <Label x:Name="devKeyLabel" Content="User" FontSize="16" Foreground="White" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,0" MouseDoubleClick="devKeyLabel_MouseDoubleClick" />
             <CheckBox x:Name="Sound" Margin="10,280,0,0" HorizontalAlignment="Left"
                       VerticalAlignment="Top" Click="DisableSound_Click" Content="Disable Login Music"
@@ -117,7 +117,7 @@
         </Grid>
 
         <controls:ProgressRing x:Name="LoggingInProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center"
-                               VerticalAlignment="Center" IsActive="True" Visibility="Hidden">
+                               VerticalAlignment="Center" IsActive="True" Visibility="Collapsed">
             <controls:ProgressRing.Effect>
                 <DropShadowEffect />
             </controls:ProgressRing.Effect>
