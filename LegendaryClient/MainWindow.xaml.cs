@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using log4net;
 using System.Windows.Media.Imaging;
 using jabber.protocol.client;
 using System.Threading;
@@ -36,7 +35,6 @@ namespace LegendaryClient
         private Accent myAccent = null;
         Warning Warn = new Warning();
         public static bool started = false;
-        private static readonly ILog log = log4net.LogManager.GetLogger(typeof(MainWindow));
 
         public MainWindow(StartupEventArgs e)
         {
@@ -93,7 +91,8 @@ namespace LegendaryClient
             if (String.IsNullOrEmpty(Settings.Default.Theme))
                 Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
             myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
-            ThemeManager.ChangeTheme(this, myAccent, (Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
+            ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));//,
+
 
             Client.ChatClient = new JabberClient();
             Client.FriendList = new FriendList();
@@ -162,7 +161,7 @@ namespace LegendaryClient
         public void ChangeTheme()
         {
             Accent myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
-            ThemeManager.ChangeTheme(this, myAccent, (Properties.Settings.Default.DarkTheme) ? Theme.Dark : Theme.Light);
+            ThemeManager.ChangeAppStyle(this, myAccent, (Properties.Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
             Client.CurrentAccent = myAccent;
         }
 

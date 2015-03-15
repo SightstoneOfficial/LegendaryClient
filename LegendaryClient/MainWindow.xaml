@@ -8,7 +8,7 @@
                       TitleForeground="Transparent"
                       Closing="MainWindow_Closing">
 
-    <Controls:MetroWindow.WindowCommands>
+    <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Label x:Name="inQueueTimer" Content="00:00" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" Visibility="Hidden"/>
             <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click"/>
@@ -21,7 +21,7 @@
             <Button x:Name="SettingsButton" Content="settings" Click="SettingsButton_Click" />
             <Button x:Name="LogoutButton" Content="logout" Click="LogoutButton_Click" />
         </Controls:WindowCommands>
-    </Controls:MetroWindow.WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
 
     <Window.Resources>
         <ResourceDictionary>
@@ -56,7 +56,7 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="Controls/Steel.xaml" />

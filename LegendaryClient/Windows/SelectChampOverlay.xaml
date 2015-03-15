@@ -41,7 +41,7 @@
             </Style>
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary
@@ -68,7 +68,7 @@
             </ListView.ItemContainerStyle>
         </ListView>
         <TextBox x:Name="SearchTextBox" Width="120" Height="22" Margin="10,-440,0,0"
-                 HorizontalAlignment="Left" VerticalAlignment="Center" controls:TextboxHelper.Watermark="Search"
+                 HorizontalAlignment="Left" VerticalAlignment="Center" controls:TextBoxHelper.Watermark="Search"
                  TextWrapping="Wrap"
                  TextChanged="SearchBox_TextChanged" />
 
