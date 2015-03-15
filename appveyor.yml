@@ -1,0 +1,29 @@
+# version format
+version: 2.3.0.{build}
+
+# branches to build
+branches:
+  # only build master
+  only:
+    - master
+
+# build Release	
+configuration: Release
+
+# restore NuGet packages before building
+before_build:
+- nuget restore
+
+# sigh *zip*
+after_build:
+- 7z a LegendaryClient.zip LegendaryClient\bin\Release
+
+# define solution file
+build:
+  project: LegendaryClient.sln
+  # shut up
+  verbosity: minimal
+
+artifacts:
+  - path: LegendaryClient.zip
+    name: LegendaryClient
