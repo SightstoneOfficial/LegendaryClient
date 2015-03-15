@@ -2,7 +2,8 @@
 ###Status : 
 [![Issues](https://img.shields.io/github/issues/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/issues)
 [![Releases](https://img.shields.io/github/release/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
-===============
+
+##Introduction
 
 Beautiful, fully-featured League of Legends client.
 
