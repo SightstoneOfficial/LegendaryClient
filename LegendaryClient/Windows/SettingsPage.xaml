@@ -83,7 +83,7 @@
                             HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
                             Content="Donate to help LegendaryClient's work" Click="Button_Click_1" />
                     <CheckBox x:Name="PickBanCheckBox" Margin="10,75,0,0"
-                    	HorizontalAlignment="Left" VerticalAlignment="Top" Checked="PickBanCheckBox_Checked" Unchecked="PickBanCheckBox_Checked">
+                    	HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False">
                         <TextBlock Text="Move window to front when picking/baning" Margin="-2, -2, 0, 0"/>
                     </CheckBox>
                     <CheckBox x:Name="PickBanCheckBoxFlash" Margin="10,97,0,0"
