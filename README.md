@@ -21,6 +21,14 @@ It come with a metro-like installer [no dlls needed, a stand alone program]
 
 ######Thought I would clarify this, eddydavinchi is my laptop's github account, it still is me (eddy5641) though 
 
+##Development Builds
+You can get the in-development bleeding edge builds from the link below.
+These builds are provided as-is and it might break, burn your computer or drag you down in elohell.
+We aren't responsible for whatever happens to your account or even your home-sweet-home.
+Use these builds at your risk.
+
+https://ci.appveyor.com/project/EddyV/legendaryclient/build/artifacts
+
 IRC
 ===
 Most of us will be in this irc
