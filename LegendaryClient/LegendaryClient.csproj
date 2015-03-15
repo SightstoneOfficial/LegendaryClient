@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -242,6 +242,7 @@
     <Compile Include="Logic\Player\GetKDA.cs" />
     <Compile Include="Logic\Player\KDA.cs" />
     <Compile Include="Logic\QueueButtonConfig.cs" />
+    <Compile Include="Logic\Region\Garena\ID.cs" />
     <Compile Include="Logic\Region\PBE.cs" />
     <Compile Include="Logic\SoundLogic\QueuePopSound.cs" />
     <Compile Include="Logic\uiLogic.cs" />
