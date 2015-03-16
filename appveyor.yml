@@ -26,4 +26,6 @@ build:
 
 artifacts:
   - path: LegendaryClient.zip
-    name: LegendaryClient
+    name: LegendaryClient-Full
+  - path: LegendaryClient\bin\Release\Client\LegendaryClient.exe
+    name: LegendaryClient-Executable
