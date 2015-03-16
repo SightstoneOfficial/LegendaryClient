@@ -6,6 +6,12 @@
              d:DesignWidth="330" d:DesignHeight="50">
     <UserControl.Resources>
         <ResourceDictionary>
+            <Style TargetType="{x:Type TextBox}">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="{x:Null}"/>
+                <Setter Property="BorderThickness" Value="4"/>
+                <Setter Property="IsTabStop" Value="False"/>
+            </Style>
             <Style TargetType="{x:Type Label}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -23,9 +29,8 @@
         Width="{Binding (ListView.ActualWidth), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}" VerticalAlignment="Stretch">
         <Label x:Name="SummonerLabel" Content="Summoner Name" Margin="5,4,0,0" HorizontalAlignment="Left" FontSize="13"
                FontWeight="Bold" Foreground="#FFD770" VerticalAlignment="Top" />
-        <Label x:Name="MessageLabel" Content="Message" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-               Margin="5,20,4,7" FontWeight="Light" Foreground="White" />
         <Label x:Name="TimeLabel" Content="Time" HorizontalAlignment="Left" Margin="287,8,0,0" FontSize="11"
                VerticalAlignment="Top" Height="24" Foreground="#555D70" Width="33" />
+        <TextBox x:Name="MessageLabel" HorizontalAlignment="Left" Height="Auto" Margin="5,19,0,0" TextWrapping="Wrap" Text="Message" VerticalAlignment="Top" Width="315" Background="{x:Null}" Foreground="White" IsReadOnly="True"/>
     </Grid>
 </UserControl>

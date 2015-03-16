@@ -79,7 +79,7 @@ namespace LegendaryClient.Controls
                         innerChatItem.SummonerLabel.Content = message[0] + ":";
                         innerChatItem.SummonerLabel.Foreground = Brushes.SteelBlue;
                     }
-                    innerChatItem.MessageLabel.Content = x.Key.Replace(message[0] + "|", string.Empty);
+                    innerChatItem.MessageLabel.Text = x.Key.Replace(message[0] + "|", string.Empty);
                     innerChatItem.TimeLabel.Content = x.Value.ToString("h:mm");
                     innerChatItem.TimeLabel.Foreground = (ChatText.Items.Count%2 != 0)
                         ? new SolidColorBrush(Color.FromArgb(255, 37, 37, 37))
@@ -91,8 +91,8 @@ namespace LegendaryClient.Controls
                         ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).SummonerLabel.Content.ToString() ==
                         innerChatItem.SummonerLabel.Content.ToString())
                     {
-                        ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).MessageLabel.Content +=
-                            Environment.NewLine + innerChatItem.MessageLabel.Content;
+                        ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).MessageLabel.Text +=
+                            Environment.NewLine + innerChatItem.MessageLabel.Text;
                     }
                     else
                     {
@@ -122,7 +122,7 @@ namespace LegendaryClient.Controls
                 },
                 MessageLabel =
                 {
-                    Content = ChatTextBox.Text
+                    Text = ChatTextBox.Text
                 },
                 TimeLabel =
                 {
@@ -140,8 +140,8 @@ namespace LegendaryClient.Controls
                 ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).SummonerLabel.Content.ToString() ==
                 innerChatItem.SummonerLabel.Content.ToString())
             {
-                ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).MessageLabel.Content +=
-                    Environment.NewLine + innerChatItem.MessageLabel.Content;
+                ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).MessageLabel.Text +=
+                    Environment.NewLine + innerChatItem.MessageLabel.Text;
             }
             else
             {
