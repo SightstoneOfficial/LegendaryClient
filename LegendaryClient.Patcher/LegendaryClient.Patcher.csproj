@@ -45,6 +45,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
     <Reference Include="PVPNetConnect">
       <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
     </Reference>
