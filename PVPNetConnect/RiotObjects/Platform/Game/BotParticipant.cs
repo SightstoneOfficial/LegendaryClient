@@ -54,14 +54,8 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         [InternalName("isMe")]
         public Boolean IsMe { get; set; }
 
-        [InternalName("summonerName")]
-        public string SummonerName { get; set; }
-
         [InternalName("team")]
         public Int32 Team { get; set; }
-
-        [InternalName("summonerInternalName")]
-        public String SummonerInternalName { get; set; }
 
         [InternalName("pickTurn")]
         public Int32 PickTurn { get; set; }
