@@ -130,6 +130,7 @@
             <sys:String>TH</sys:String>
             <sys:String>TW</sys:String>
             <sys:String>VN</sys:String>
+            <sys:String>ID</sys:String>
         </x:Array>
         
         <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GarenaRegions"
@@ -139,6 +140,7 @@
             <sys:String>SGMY</sys:String>
             <sys:String>TH</sys:String>
             <sys:String>TW</sys:String>
+            <sys:String>ID</sys:String>
             <sys:String>VN</sys:String> -->
         </x:Array>
 

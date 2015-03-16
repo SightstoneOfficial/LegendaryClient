@@ -244,6 +244,7 @@
     <Compile Include="Logic\Player\GetKDA.cs" />
     <Compile Include="Logic\Player\KDA.cs" />
     <Compile Include="Logic\QueueButtonConfig.cs" />
+    <Compile Include="Logic\Region\Garena\ID.cs" />
     <Compile Include="Logic\Region\PBE.cs" />
     <Compile Include="Logic\SoundLogic\QueuePopSound.cs" />
     <Compile Include="Logic\uiLogic.cs" />
