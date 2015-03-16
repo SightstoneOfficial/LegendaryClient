@@ -108,6 +108,9 @@ namespace LegendaryClient.Windows.Profile
                         case "NORMAL_3x3":
                             item.ScoreLabel.Content += "(Normal 3v3)";
                             break;
+                        case "ODIN_UNRANKED":
+                            item.ScoreLabel.Content += "(Dominion)";
+                            break;
                         case "ARAM_UNRANKED_5x5":
                             item.ScoreLabel.Content += "(ARAM)";
                             break;
