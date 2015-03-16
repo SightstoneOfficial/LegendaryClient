@@ -115,7 +115,7 @@ namespace LegendaryClient.Controls
                 tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
 
             ChatText.ScrollToEnd();
-            Client.ChatClient.Message(jid, Environment.NewLine + ChatTextBox.Text);
+            Client.ChatClient.Message(jid, ChatTextBox.Text);
             ChatTextBox.Text = string.Empty;
         }
     }
