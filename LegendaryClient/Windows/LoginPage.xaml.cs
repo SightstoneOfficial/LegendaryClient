@@ -90,7 +90,7 @@ namespace LegendaryClient.Windows
                     LoginPasswordBox.Visibility = Visibility.Visible;
                     break;
 
-                case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN", "ID" };
                     LoginUsernameBox.Visibility = Visibility.Hidden;
                     LoginUsername.Visibility = Visibility.Hidden;
                     RememberUsernameCheckbox.Visibility = Visibility.Hidden;
@@ -839,7 +839,7 @@ namespace LegendaryClient.Windows
                         LoginPasswordBox.Visibility = Visibility.Visible;
                         break;
 
-                    case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                    case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN", "ID" };
                         LoginUsernameBox.Visibility = Visibility.Hidden;
                         LoginUsername.Visibility = Visibility.Hidden;
                         RememberUsernameCheckbox.Visibility = Visibility.Hidden;
