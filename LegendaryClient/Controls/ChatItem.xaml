@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:LegendaryClient.Controls"
-             Width="350"
+             Width="275"
              Height="350" mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -67,16 +67,17 @@
         <Label x:Name="PlayerLabelName" Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Eddy5641"
                Foreground="White" FontWeight="ExtraLight" FontSize="16" />
-        <RichTextBox x:Name="ChatText" Width="330" Margin="10,35,0,40" HorizontalAlignment="Left"
+       
+        <RichTextBox x:Name="ChatText" Width="273" Margin="1,41,1,27" HorizontalAlignment="Left"
                      VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{x:Null}" Background="#E5505050"
-                     BorderBrush="{x:Null}" />
+                     BorderThickness="0" Padding="0,3,0,3" Panel.ZIndex="1" />
 
-        <TextBox x:Name="ChatTextBox" Width="250" Height="23" Margin="10,0,0,10" HorizontalAlignment="Left"
-                 VerticalAlignment="Bottom" TextWrapping="Wrap" />
-        <Button x:Name="SendButton" Width="76" Height="26" Margin="0,0,11,10"
+        <TextBox x:Name="ChatTextBox" Width="222" Height="23" Margin="1,0,0,1" HorizontalAlignment="Left"
+                 VerticalAlignment="Bottom" TextWrapping="Wrap" BorderThickness="0" />
+        <Button x:Name="SendButton" Width="76" Height="26"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send"
-                Click="SendButton_Click"
+                Click="SendButton_Click" Margin="0,0,1,1"
                 IsDefault="True" />
     </Grid>
 </UserControl>

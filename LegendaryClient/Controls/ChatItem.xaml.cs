@@ -65,13 +65,13 @@ namespace LegendaryClient.Controls
                     var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (message[0] == tempItem.Username)
                     {
-                        tr.Text = tempItem.Username + ": ";
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Gold);
+                        tr.Text = DateTime.Now.ToString("[HH:mm] ") + tempItem.Username + ": ";
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     }
                     else
                     {
-                        tr.Text = message[0] + ": ";
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.SteelBlue);
+                        tr.Text = DateTime.Now.ToString("[HH:mm] ") + message[0] + ": ";
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                     }
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                     {
@@ -90,9 +90,9 @@ namespace LegendaryClient.Controls
 
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
-                Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
+                Text = DateTime.Now.ToString("[HH:mm] ") + Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
             };
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.SteelBlue);
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
 
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {

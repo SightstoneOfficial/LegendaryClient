@@ -71,23 +71,22 @@
             <Label x:Name="SummonerNameLabel" Margin="100,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Summoner Name" FontSize="22" />
 
-            <ProgressBar x:Name="PlayerProgressBar" Width="250" Height="28" Margin="0,0,35,33"
-                     HorizontalAlignment="Right" VerticalAlignment="Bottom" Value="75" />
-
-            <Label x:Name="PlayerCurrentProgressLabel" Margin="0,27,239,0" HorizontalAlignment="Right"
-               VerticalAlignment="Top"
-               Style="{x:Null}" Content="75LP" Foreground="Black" FontSize="16" />
-            <Label x:Name="PlayerProgressLabel" Margin="0,27,125,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-               Style="{x:Null}" Content="Silver II" Foreground="Black" FontSize="16" />
-            <Label x:Name="PlayerAimProgressLabel" Margin="0,27,35,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-               Style="{x:Null}" Content="100LP" Foreground="Black" FontSize="16" />
-
-            <Button x:Name="fakeend" Margin="0,28,300,0"
-                VerticalAlignment="Top" Visibility="Hidden" Content="Fake end of game" Click="fakeend_Click" HorizontalAlignment="Right" Width="125" />
-            <Button x:Name="testInvite" Width="75" Margin="0,28,441,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestInvite"
-                Visibility="Hidden" Click="InviteTest_Click" />
-            <Button x:Name="testChat" Width="75" Margin="0,28,530,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestChat"
-                Visibility="Hidden" Click="ChatTest_Click" />
+            <Grid Width="250" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,30,0">
+                <ProgressBar x:Name="PlayerProgressBar" Width="250" Height="28"
+                         HorizontalAlignment="Right" VerticalAlignment="Bottom" Value="0" />
+                <Label x:Name="PlayerCurrentProgressLabel" HorizontalAlignment="Left"
+                   VerticalAlignment="Center" Style="{x:Null}" Content="0LP" Foreground="Black" FontSize="16" />
+                <Label x:Name="PlayerProgressLabel" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Style="{x:Null}" Content="Tier" Foreground="Black" FontSize="16" />
+                <Label x:Name="PlayerAimProgressLabel" HorizontalAlignment="Right" VerticalAlignment="Center"
+                   Style="{x:Null}" Content="100LP" Foreground="Black" FontSize="16" />
+                <Button x:Name="fakeend" Margin="0,28,300,0"
+                    VerticalAlignment="Top" Visibility="Hidden" Content="Fake end of game" Click="fakeend_Click" HorizontalAlignment="Right" Width="125" />
+                <Button x:Name="testInvite" Width="75" Margin="0,28,441,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestInvite"
+                    Visibility="Hidden" Click="InviteTest_Click" />
+                <Button x:Name="testChat" Width="75" Margin="0,28,530,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestChat"
+                    Visibility="Hidden" Click="ChatTest_Click" />
+            </Grid>
         </Grid>
 
         <TextBox x:Name="BroadcastMessage" Height="70" Margin="500,52,300,0" HorizontalAlignment="Stretch"
