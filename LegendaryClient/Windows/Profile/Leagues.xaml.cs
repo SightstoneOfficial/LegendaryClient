@@ -197,7 +197,7 @@ namespace LegendaryClient.Windows.Profile
             PlayerLabel.Content = item.PlayerLabel.Content;
 
             var x = await Client.PVPNet.GetSummonerByName((string) item.PlayerLabel.Content);
-            Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "3", GotStats);
+            Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "5", GotStats);
         }
 
         private void GotStats(AggregatedStats stats)
