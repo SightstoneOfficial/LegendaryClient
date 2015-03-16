@@ -158,6 +158,7 @@
     <Compile Include="RiotObjects\Platform\Summoner\AllSummonerData.cs" />
     <Compile Include="RiotObjects\Platform\Summoner\BasePublicSummonerDTO.cs" />
     <Compile Include="RiotObjects\Platform\Summoner\Boost\SummonerActiveBoostsDTO.cs" />
+    <Compile Include="RiotObjects\Platform\Summoner\ChampionMastery.cs" />
     <Compile Include="RiotObjects\Platform\Summoner\Icon\SummonerIconInventoryDTO.cs" />
     <Compile Include="RiotObjects\Platform\Summoner\Masterybook\MasteryBookDTO.cs" />
     <Compile Include="RiotObjects\Platform\Summoner\Masterybook\MasteryBookPageDTO.cs" />
