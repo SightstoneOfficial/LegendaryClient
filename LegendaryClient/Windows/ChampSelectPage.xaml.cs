@@ -1041,8 +1041,8 @@ namespace LegendaryClient.Windows
                         championImage.FreeToPlayLabel.FontSize = 11;
                     }
 
-                    championImage.Width = 64;
-                    championImage.Height = 64;
+                    championImage.Width = 60;
+                    championImage.Height = 60;
                     item.Tag = champ.ChampionId;
                     item.Content = championImage.Content;
                     ChampionSelectListView.Items.Add(item);
@@ -1061,8 +1061,8 @@ namespace LegendaryClient.Windows
                     var championImage = new ChampionImage
                     {
                         ChampImage = { Source = champions.GetChampion(champ.ChampionId).icon },
-                        Width = 64,
-                        Height = 64
+                        Width = 60,
+                        Height = 60
                     };
                     item.Tag = champ.ChampionId;
                     item.Content = championImage.Content;

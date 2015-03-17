@@ -55,7 +55,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-	<DebugSymbols>false</DebugSymbols>
+    <DebugSymbols>false</DebugSymbols>
     <DebugType>None</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\Client\</OutputPath>
@@ -1122,6 +1122,7 @@
     <Content Include="BoostDlls\tbb.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Resource Include="champselectbg3.jpg" />
     <Content Include="netlib.Dns.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

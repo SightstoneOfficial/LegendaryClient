@@ -12,7 +12,7 @@
         <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="87,14,0,0" VerticalAlignment="Top"
                        Width="136" Foreground="White" FontSize="14" FontWeight="ExtraLight" />
         <Rectangle Fill="#CC505050" Width="255" HorizontalAlignment="Left" Visibility="Visible" Height="90" Margin="0,0,0,10" Panel.ZIndex="-1" />
-        <Rectangle x:Name="TeamRectangle" Fill="#FF535353" Width="1" HorizontalAlignment="Left" Visibility="Hidden" Height="90" VerticalAlignment="Top" Margin="0,0,0,10" />
+        <Rectangle x:Name="TeamRectangle" Fill="#FF535353" Width="2" HorizontalAlignment="Left" Visibility="Hidden" Height="90" VerticalAlignment="Top" Margin="0,0,0,10" />
         <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="70" Margin="10,10,0,0" VerticalAlignment="Top"
                Width="70" Source="/LegendaryClient;component/NONE.png" />
         <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="30" Margin="90,50,0,0"
