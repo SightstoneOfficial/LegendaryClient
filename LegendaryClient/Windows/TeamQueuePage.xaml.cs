@@ -177,7 +177,7 @@ namespace LegendaryClient.Windows
                 return;
             }
             i = 0;
-            double PingAverage = HighestPingTime(Client.Region.PingAddresses);
+
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Ping

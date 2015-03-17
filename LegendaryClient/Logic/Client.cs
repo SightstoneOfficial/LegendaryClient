@@ -420,8 +420,10 @@ namespace LegendaryClient.Logic
                 return;
 
             var chatItem = AllPlayers[msg.From.User];
-            var msgbody = Filter ? msg.Body.Filter() : msg.Body;           
-            chatItem.Messages.Add(new KeyValuePair<string,DateTime>(chatItem.Username + "|" + msgbody, DateTime.Now));
+            if (Filter)
+                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body.Filter());
+            else
+                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);           
             MainWin.FlashWindow();
         }
 
@@ -1610,7 +1612,7 @@ namespace LegendaryClient.Logic
 
     public class ChatPlayerItem
     {
-        public List<KeyValuePair<string, DateTime>> Messages = new List<KeyValuePair<string, DateTime>>();
+        public List<string> Messages = new List<string>();
         //public List<string> Messages = new List<string>();
         public string Group { get; set; }
 

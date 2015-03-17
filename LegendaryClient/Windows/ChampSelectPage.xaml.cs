@@ -360,8 +360,9 @@ namespace LegendaryClient.Windows
             counter--;
             if (counter <= 0)
                 return;
-
+            //TODO: Show an arrow to which side is picking/banning for draft
             LobbyTimeLabel.Content = counter;
+            LobbyTimeLabel2.Content = counter;
         }
 
         /// <summary>

@@ -58,7 +58,26 @@ namespace LegendaryClient.Windows.Profile
             GetAvailableRunes();
             if (!Directory.Exists(Client.ExecutingDirectory + "\\RunePages\\"))
                 Directory.CreateDirectory(Client.ExecutingDirectory + "\\RunePages\\");
-            Client.LocalRunePages = Client.LeagueSettingsReader(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name);
+            if (!Directory.Exists(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name))
+                Directory.CreateDirectory(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name);
+            try
+            {
+                foreach (
+                    var file in
+                        Directory.GetFiles(
+                            Path.Combine(
+                                Client.ExecutingDirectory,
+                                "RunePages" + Client.LoginPacket.AllSummonerData.Summoner.Name)))
+                {
+                    //Fix this later, it is very bad (for more than one rune page)
+                    foreach (var x in file.LeagueSettingsReader())
+                        Client.LocalRunePages.Add(x.Key, x.Value);
+                }
+            }
+            catch
+            {
+                //ignored
+            }
         }
 
         public void Change()
@@ -462,11 +481,9 @@ namespace LegendaryClient.Windows.Profile
 
         private void LocalSaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (LocalName.Text == string.Empty)
-                return;
-            else if (LocalName.Text.Contains('='))
+            if (string.IsNullOrEmpty(LocalName.Text))
             {
-                var pop = new NotifyPlayerPopup("Error", "Local rune page name can't contain = .")
+                var pop = new NotifyPlayerPopup("Error", "Local rune page name can't be empty.")
                 {
                     HorizontalAlignment = HorizontalAlignment.Right,
                     VerticalAlignment = VerticalAlignment.Bottom
@@ -478,12 +495,12 @@ namespace LegendaryClient.Windows.Profile
             if (Client.LocalRunePages.ContainsKey(LocalName.Text))
                 Client.LocalRunePages.Remove(LocalName.Text);
 
-            Client.LocalRunePages.Add(LocalName.Text, string.Join(",", local)); //Make to League setting like string
+            //Client.LocalRunePages.Add(LocalName.Text, string.Join(",", local)); //Make to League setting like string
             List<string> saveString = Client.LocalRunePages.Select(item => item.Key + "=" + item.Value).ToList();
 
             try
             {
-                File.WriteAllLines(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name, saveString);
+                File.WriteAllLines(Path.Combine(Client.ExecutingDirectory,"RunePages",Client.LoginPacket.AllSummonerData.Summoner.Name, LocalName.Text), saveString);
             }
             catch
             {
