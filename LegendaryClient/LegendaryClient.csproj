@@ -55,7 +55,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+	<DebugSymbols>false</DebugSymbols>
+    <DebugType>None</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\Client\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -175,9 +176,6 @@
     </Compile>
     <Compile Include="Controls\GameScouter\TinyRuneMasteryData.xaml.cs">
       <DependentUpon>TinyRuneMasteryData.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\InnerChatItem.xaml.cs">
-      <DependentUpon>InnerChatItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PlayerStatisticsChampSelect.xaml.cs">
       <DependentUpon>PlayerStatisticsChampSelect.xaml</DependentUpon>
@@ -563,10 +561,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\GameScouter\TinyRuneMasteryData.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\InnerChatItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

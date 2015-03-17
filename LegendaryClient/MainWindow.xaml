@@ -2,7 +2,7 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       x:Name="LegendaryWindow"
-                      Title="LegendaryClient" Width="1280" Height="768" MinWidth="1280" MinHeight="768"
+                      Title="LegendaryClient" Width="1200" Height="850" MinWidth="900" MinHeight="650"
                       SaveWindowPosition="True" TitleCaps="False"
                       WindowStartupLocation="CenterScreen"
                       TitleForeground="Transparent"

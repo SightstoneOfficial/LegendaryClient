@@ -1,7 +1,7 @@
-﻿<controls:MetroWindow x:Class="LegendaryClient.Patcher.MainWindow"
+﻿<Controls:MetroWindow x:Class="LegendaryClient.Patcher.MainWindow"
                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       Title="LegendaryClient Patcher"
                       Width="1360" Height="768" ResizeMode="CanMinimize">
     <Window.Resources>
@@ -17,12 +17,12 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <controls:MetroWindow.WindowCommands>
-        <controls:WindowCommands>
+    <Controls:MetroWindow.LeftWindowCommands>
+        <Controls:WindowCommands>
             <Label x:Name="RegionLabel" Content="Connected to: NA" FontWeight="Light" FontSize="15" />
             <Button x:Name="Settings" Content="Patcher Settings" Click="SlideGrid" />
-        </controls:WindowCommands>
-    </controls:MetroWindow.WindowCommands>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.LeftWindowCommands>
 
     <Grid Background="#ecf0f1">
         <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" />
@@ -33,4 +33,4 @@
             <ContentControl x:Name="OverlayContainer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" />
         </Grid>
     </Grid>
-</controls:MetroWindow>
+</Controls:MetroWindow>

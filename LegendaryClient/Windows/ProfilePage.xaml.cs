@@ -13,6 +13,10 @@ using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using PVPNetConnect.RiotObjects.Team.Dto;
+using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
+using System.Web.Script.Serialization;
+using PVPNetConnect;
+using System.Collections.Generic;
 
 #endregion
 
@@ -43,6 +47,8 @@ namespace LegendaryClient.Windows
             SkinsContainer.Content = new Skins();
             LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline();
             TeamsContainer.Content = new Teams();
+
+            //Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
             //Auto get summoner profile when created instance.
             if (Client.IsLoggedIn)
                 GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
@@ -142,6 +148,17 @@ namespace LegendaryClient.Windows
             var overview = OverviewContainer.Content as Overview;
             if (overview != null)
                 overview.Update(summoner.SummonerId, summoner.AcctId);
+
+            //Client.PVPNet.Call(Guid.NewGuid().ToString(), "championMastery", "getAllChampionMasteries", "[" + summoner.SummonerId + "]");
+        }
+        private void PVPNet_OnMessageReceived(object sender, object message)
+        {
+
+            if (message.GetType() == typeof(LcdsServiceProxyResponse))
+            {
+                var serializer = new JavaScriptSerializer();
+                var deserializedJson = serializer.Deserialize<List<ChampionMastery>>((message as LcdsServiceProxyResponse).Payload);
+            }
         }
 
         private void GotLeaguesForPlayer(SummonerLeaguesDTO result)

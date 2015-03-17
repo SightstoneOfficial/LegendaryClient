@@ -8,7 +8,7 @@
     <!--Hi-->
     <Grid>
         <Image x:Name="ProfileIcon" HorizontalAlignment="Left" Height="75" VerticalAlignment="Top" Width="75" />
-        <Label x:Name="Name" Content="Eddy5641" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,0,0,0"
+        <Label x:Name="SummonerName" Content="Eddy5641" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="80,0,0,0"
                FontSize="20" />
         <Button x:Name="Kick" Style="{DynamicResource Square}" Content="Kick" HorizontalAlignment="Left"
                 VerticalAlignment="Top" Width="90" Margin="277,35,0,0" />

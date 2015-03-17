@@ -35,7 +35,7 @@ namespace LegendaryClient.Controls
             }
             else
             {
-                Title.Content = "Join a team first";
+                Header.Content = "Join a team first";
                 SelectTeam.IsEnabled = false;
             }
         }

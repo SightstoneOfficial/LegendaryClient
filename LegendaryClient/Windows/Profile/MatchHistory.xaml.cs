@@ -36,6 +36,9 @@ namespace LegendaryClient.Windows.Profile
         public MatchHistory()
         {
             InitializeComponent();
+            //#CCCD1A1A
+            gameRecordedEllipse.Fill = (Brush)new BrushConverter().ConvertFrom("#CC444444");
+            ReplayLabel.Content = "game not recorded";
             Change();
         }
 
@@ -107,6 +110,9 @@ namespace LegendaryClient.Windows.Profile
                             break;
                         case "NORMAL_3x3":
                             item.ScoreLabel.Content += "(Normal 3v3)";
+                            break;
+                        case "ODIN_UNRANKED":
+                            item.ScoreLabel.Content += "(Dominion)";
                             break;
                         case "ARAM_UNRANKED_5x5":
                             item.ScoreLabel.Content += "(ARAM)";
@@ -336,6 +342,11 @@ namespace LegendaryClient.Windows.Profile
             }
 
             _playerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
+        }
+
+        private void ClickGrid_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
         }
     }
 

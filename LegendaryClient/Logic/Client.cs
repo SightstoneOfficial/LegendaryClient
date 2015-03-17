@@ -153,12 +153,12 @@ namespace LegendaryClient.Logic
 
         internal static Dictionary<String, PVPNetConnection> pvpnetlist = new Dictionary<String, PVPNetConnection>();
 
-        internal static async Task<LoginDataPacket> AddAccount()
+        internal static LoginDataPacket AddAccount()
         {
             return new LoginDataPacket();
         }
 
-        internal static async Task<LoginDataPacket> AddAccount(LoginDataPacket packet)
+        internal static LoginDataPacket AddAccount(LoginDataPacket packet)
         {
             if (packet == null)
                 return new LoginDataPacket();
@@ -168,7 +168,7 @@ namespace LegendaryClient.Logic
             return packet;
         }
 
-        internal static async Task<LoginDataPacket> AddAccount(string username, string password)
+        internal static async Task<LoginDataPacket> AddAccount(string username, string password) //needs finished haha
         {
             var pvp = new PVPNetConnection();
             var credentials = new AuthenticationCredentials
@@ -178,7 +178,7 @@ namespace LegendaryClient.Logic
                 Password = password,
                 IpAddress = string.Empty
             };
-            //pvp.Login();
+            await pvp.Login(credentials);
             return new LoginDataPacket();
         }
 
@@ -336,7 +336,6 @@ namespace LegendaryClient.Logic
 
         internal static ChampionDTO[] PlayerChampions;
 
-        internal static ReplayRecorder Autorecorder;
         internal static List<int> curentlyRecording = new List<int>();
 
         internal static List<string> Whitelist = new List<string>();
@@ -421,8 +420,10 @@ namespace LegendaryClient.Logic
                 return;
 
             var chatItem = AllPlayers[msg.From.User];
-            var msgbody = Filter ? msg.Body.Filter() : msg.Body;           
-            chatItem.Messages.Add(new KeyValuePair<string,DateTime>(chatItem.Username + "|" + msgbody, DateTime.Now));
+            if (Filter)
+                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body.Filter());
+            else
+                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);           
             MainWin.FlashWindow();
         }
 
@@ -1071,7 +1072,7 @@ namespace LegendaryClient.Logic
                     {
                         Warning Warn = new Warning
                         {
-                            Title = { Content = "Kicked from server" },
+                            Header = { Content = "Kicked from server" },
                             MessageText = { Text = "This account has been logged in from another location" }
                         };
                         Warn.backtochampselect.Click += Client.MainWin.LogoutButton_Click;
@@ -1611,7 +1612,7 @@ namespace LegendaryClient.Logic
 
     public class ChatPlayerItem
     {
-        public List<KeyValuePair<string, DateTime>> Messages = new List<KeyValuePair<string, DateTime>>();
+        public List<string> Messages = new List<string>();
         //public List<string> Messages = new List<string>();
         public string Group { get; set; }
 

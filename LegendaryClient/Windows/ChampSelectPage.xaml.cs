@@ -66,7 +66,6 @@ namespace LegendaryClient.Windows
         private int _LastPickTurn;
         private double _MyChampId;
         private GameTypeConfigDTO configType;
-        private bool connected;
         private int counter;
         private List<int> disabledCharacters = new List<int>();
 
@@ -361,8 +360,9 @@ namespace LegendaryClient.Windows
             counter--;
             if (counter <= 0)
                 return;
-
+            //TODO: Show an arrow to which side is picking/banning for draft
             LobbyTimeLabel.Content = counter;
+            LobbyTimeLabel2.Content = counter;
         }
 
         /// <summary>
@@ -1250,10 +1250,10 @@ namespace LegendaryClient.Windows
 
         private void DodgeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Properties.Settings.Default.warnClose)
+            if (Settings.Default.warnClose)
             {
                 Warning Warn = new Warning();
-                Warn.Title.Content = "Dodge Game";
+                Warn.Header.Content = "Dodge Game";
                 Warn.MessageText.Text = "Are You Sure You Want To Dodge? You will still have to spend the time penalty";
                 Warn.backtochampselect.Click += (o, m) =>
                 {
@@ -1481,7 +1481,6 @@ namespace LegendaryClient.Windows
         string firstPlayer = null;
         private void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
-            connected = true;
             if (Client.InstaCall)
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
