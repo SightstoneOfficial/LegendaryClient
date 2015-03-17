@@ -106,8 +106,8 @@ namespace LegendaryClient.Windows
             if (Settings.Default.LoginPageImage == "")
             {
                 string[] videos = Directory.GetFiles(themeLocation, "*.mp4");
-                if (videos.Length > 0 && File.Exists(themeLocation + videos[0]))
-                    LoginPic.Source = new Uri(Path.Combine(themeLocation, videos[0]));
+                if (videos.Length > 0 && File.Exists(videos[0]))
+                    LoginPic.Source = new Uri(videos[0]);
                 LoginPic.LoadedBehavior = MediaState.Manual;
                 LoginPic.MediaEnded += LoginPic_MediaEnded;
                 SoundPlayer.MediaEnded += SoundPlayer_MediaEnded;
@@ -340,6 +340,9 @@ namespace LegendaryClient.Windows
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            if (RegionComboBox.SelectedIndex == -1)
+                return;
+
             if ((string) UpdateRegionComboBox.SelectedValue == "Garena")
             {
                 if (RegionComboBox.SelectedIndex == -1)

@@ -202,6 +202,7 @@ namespace LegendaryClient.Windows
                                 await client.DownloadFileTaskAsync(dDragonDownloadUrl,
                                     Path.Combine(Client.ExecutingDirectory, "Assets",
                                         "dragontail-" + patcher.DDragonVersion + ".tgz"));
+                                await Task.Run(() => DDragonDownloaded());
                             }
                             else
                             {
