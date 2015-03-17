@@ -900,7 +900,7 @@ namespace LegendaryClient.Windows
                 string location = s.Split(',')[0];
                 //Get save position
                 var version = new Version(location.Split(new[] { "/releases/", "/files/" }, StringSplitOptions.None)[1]);
-                if (version <= currentVersion)
+                if (version <= currentVersion && currentVersion != new Version("0.0.0.0"))
                     continue;
                 BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
 
