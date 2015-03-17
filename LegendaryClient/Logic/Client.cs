@@ -74,8 +74,6 @@ namespace LegendaryClient.Logic
         public static StreamString SendPIPE;
         public static StreamString InPIPE;
 
-        public const string VersionString = Environment.GetEnvironmentVariable("APPVEYOR_BUILD_VERSION");
-
         public static void SendAccept(bool accept)
         {
             if (PlayerAccepedQueue != null)

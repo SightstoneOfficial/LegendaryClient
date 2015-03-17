@@ -46,7 +46,6 @@ namespace LegendaryClient
             //Keep this this way that way the auto updator knows what to update
             var ExecutingDirectory = Directory.GetParent(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
-            Client.Log("Now running version" + Client.VersionString, "DEBUG");
             Client.ExecutingDirectory = ExecutingDirectory.ToString().Replace("file:\\", "");
             var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("LegendaryClient");
             if (key != null)
