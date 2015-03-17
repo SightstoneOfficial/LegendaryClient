@@ -5,7 +5,7 @@
 [![Build status](https://img.shields.io/appveyor/ci/EddyV/legendaryclient.svg?style=flat-square)](https://ci.appveyor.com/project/EddyV/legendaryclient/branch/master)
 [![Issues](https://img.shields.io/github/issues/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/issues)
 [![Releases](https://img.shields.io/github/release/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
-[![Join the chat at https://gitter.im/eddy5641/LegendaryClient](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/eddy5641/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/eddy5641/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Beautiful, fully-featured League of Legends client.
 
@@ -42,7 +42,7 @@ http://kiwiirc.com/client/irc.freenode.net/#LegendaryClient
 
 Gitter Chat
 ===========
-[![Join the chat at https://gitter.im/eddy5641/LegendaryClient](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/eddy5641/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/eddy5641/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Known Issues / TODO
 ===================
