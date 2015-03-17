@@ -71,16 +71,14 @@
             <Label x:Name="SummonerNameLabel" Margin="100,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Summoner Name" FontSize="22" />
 
-            <ProgressBar x:Name="PlayerProgressBar" Width="250" Height="28" Margin="0,0,35,33"
-                     HorizontalAlignment="Right" VerticalAlignment="Bottom" Value="75" />
+            <Grid Width="250" VerticalAlignment="Top" HorizontalAlignment="Right" Height="25" Margin="0,30,40,0">
+                <ProgressBar x:Name="PlayerProgressBar" Height="Auto" Value="75"/>
 
-            <Label x:Name="PlayerCurrentProgressLabel" Margin="0,27,239,0" HorizontalAlignment="Right"
-               VerticalAlignment="Top"
-               Style="{x:Null}" Content="75LP" Foreground="Black" FontSize="16" />
-            <Label x:Name="PlayerProgressLabel" Margin="0,27,125,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-               Style="{x:Null}" Content="Silver II" Foreground="Black" FontSize="16" />
-            <Label x:Name="PlayerAimProgressLabel" Margin="0,27,35,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-               Style="{x:Null}" Content="100LP" Foreground="Black" FontSize="16" />
+                <Label x:Name="PlayerCurrentProgressLabel" VerticalAlignment="Center" HorizontalAlignment="Right" Content="75LP" Foreground="Black" FontSize="16" Padding="0" Margin="0,0,5,0"/>
+
+                <Label x:Name="PlayerProgressLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Silver II" Foreground="Black" FontSize="16" Padding="0" />
+                <Label x:Name="PlayerAimProgressLabel" HorizontalAlignment="Left" VerticalAlignment="Center" Content="100LP" Foreground="Black" FontSize="16" Padding="0" Margin="5,0,0,0"/>
+            </Grid>
 
             <Button x:Name="fakeend" Margin="0,28,300,0"
                 VerticalAlignment="Top" Visibility="Hidden" Content="Fake end of game" Click="fakeend_Click" HorizontalAlignment="Right" Width="125" />

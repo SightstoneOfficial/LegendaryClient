@@ -281,7 +281,7 @@ namespace LegendaryClient
             {
                 Warn = new Warning
                 {
-                    Title = { Content = "Logout while in Game" },
+                    Header = { Content = "Logout while in Game" },
                     MessageText = { Text = "Are You Sure You Want To Quit? This will result in a dodge." }
                 };
                 Warn.backtochampselect.Click += HideWarning;
@@ -299,7 +299,7 @@ namespace LegendaryClient
             {
                 Warn = new Warning();
                 e.Cancel = true;
-                Warn.Title.Content = "Quit";
+                Warn.Header.Content = "Quit";
                 Warn.MessageText.Text = "Are You Sure You Want To Quit?";
                 Warn.backtochampselect.Click += HideWarning;
                 Warn.AcceptButton.Click += Quit;

@@ -16,12 +16,14 @@ namespace LegendaryClient.Controls.GameScouter
             InitializeComponent();
         }
 
-        private void MouseEnter(object sender, MouseEventArgs e)
+        private new void MouseEnter(object sender, MouseEventArgs e)
         {
+
         }
 
-        private void MouseLeave(object sender, MouseEventArgs e)
+        private new void MouseLeave(object sender, MouseEventArgs e)
         {
+
         }
     }
 }

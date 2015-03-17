@@ -196,7 +196,7 @@ A code signing license (So you know that you are using LegendaryClient)
             }
             catch (Exception e)
             {
-                Client.Log("Can't load settings from config file.", "ERROR");
+                Client.Log("Can't load settings from config file.", "ERROR" + Environment.NewLine + e.Message);
             }
         }
 

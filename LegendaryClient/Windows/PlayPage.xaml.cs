@@ -156,10 +156,12 @@ namespace LegendaryClient.Windows
                     {
                         PingLabel.Content = "Ping not enabled for this region";
                         brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                        Client.Log(ex.Message);
                     } catch(Exception ex)
                     {
                         PingLabel.Content = "Error occured while pinging";
                         brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                        Client.Log(ex.Message);
                     }
                     finally
                     {
