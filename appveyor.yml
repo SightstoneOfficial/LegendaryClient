@@ -30,3 +30,7 @@ artifacts:
     name: LegendaryClient-Full
   - path: LegendaryClient.exe
     name: LegendaryClient-Executable
+
+notifications:
+  - provider: Gitter
+    url: https://webhooks.gitter.im/e/bda62727b7b80a130d60
