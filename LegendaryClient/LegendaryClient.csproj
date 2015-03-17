@@ -55,7 +55,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
+	<DebugSymbols>false</DebugSymbols>
+    <DebugType>None</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\Client\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
