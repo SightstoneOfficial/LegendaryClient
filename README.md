@@ -1,6 +1,8 @@
 ﻿LegendaryClient
 ===============
 ###Current Status: 
+
+[![Join the chat at https://gitter.im/eddy5641/LegendaryClient](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/eddy5641/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build status](https://img.shields.io/appveyor/ci/EddyV/legendaryclient.svg?style=flat-square)](https://ci.appveyor.com/project/EddyV/legendaryclient/branch/master)
 [![Issues](https://img.shields.io/github/issues/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/issues)
 [![Releases](https://img.shields.io/github/release/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
