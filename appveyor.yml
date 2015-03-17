@@ -32,5 +32,5 @@ artifacts:
     name: LegendaryClient-Executable
 
 notifications:
-  - provider: Gitter
+  - provider: Webhook
     url: https://webhooks.gitter.im/e/bda62727b7b80a130d60
