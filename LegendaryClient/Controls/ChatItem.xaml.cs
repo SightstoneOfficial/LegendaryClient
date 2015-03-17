@@ -4,13 +4,12 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
 using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
-using System.Diagnostics;
-using System.Collections.Generic;
 
 #endregion
 
@@ -41,118 +40,71 @@ namespace LegendaryClient.Controls
         public void ChatClient_OnMessage(object sender, Message msg)
         {
             if (!Client.AllPlayers.ContainsKey(msg.From.User) || String.IsNullOrWhiteSpace(msg.Body))
-            {
                 return;
-            }
 
             var chatItem = Client.AllPlayers[msg.From.User];
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                if ((string) Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
-                {
+                if ((string)Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
                     Update();
-                }
             }));
         }
 
         public void Update()
         {
-            ChatText.Items.Clear();
+            ChatText.Document.Blocks.Clear();
             var tempItem =
                 (from x in Client.AllPlayers
-                    where x.Value.Username == (string) Client.ChatItem.PlayerLabelName.Content
-                    select x.Value).FirstOrDefault();
+                 where x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content
+                 select x.Value).FirstOrDefault();
 
             if (tempItem != null)
-            {
                 foreach (var x in tempItem.Messages.ToArray())
                 {
-                    var message = x.Key.Split('|');
-                    var innerChatItem = new InnerChatItem();
+                    var message = x.Split('|');
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (message[0] == tempItem.Username)
                     {
-                        innerChatItem.SummonerLabel.Content = tempItem.Username + ":";
-                        innerChatItem.SummonerLabel.Foreground = Brushes.Gold;
+                        tr.Text = DateTime.Now.ToString("[HH:mm] ") + tempItem.Username + ": ";
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     }
                     else
                     {
-                        innerChatItem.SummonerLabel.Content = message[0] + ":";
-                        innerChatItem.SummonerLabel.Foreground = Brushes.SteelBlue;
+                        tr.Text = DateTime.Now.ToString("[HH:mm] ") + message[0] + ": ";
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                     }
-                    innerChatItem.MessageLabel.Content = x.Key.Replace(message[0] + "|", string.Empty);
-                    innerChatItem.TimeLabel.Content = x.Value.ToString("h:mm");
-                    innerChatItem.TimeLabel.Foreground = (ChatText.Items.Count%2 != 0)
-                        ? new SolidColorBrush(Color.FromArgb(255, 37, 37, 37))
-                        : new SolidColorBrush(Color.FromArgb(255, 77, 77, 77));
-                    innerChatItem.Background = (ChatText.Items.Count%2 == 0)
-                        ? new SolidColorBrush(Color.FromArgb(255, 37, 37, 37))
-                        : new SolidColorBrush(Color.FromArgb(0, 77, 77, 77));
-                    if (ChatText.Items.Count > 0 &&
-                        ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).SummonerLabel.Content.ToString() ==
-                        innerChatItem.SummonerLabel.Content.ToString())
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                     {
-                        ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).MessageLabel.Content +=
-                            Environment.NewLine + innerChatItem.MessageLabel.Content;
-                    }
-                    else
-                    {
-                        ChatText.Items.Add(innerChatItem);
-                    }
+                        Text = x.Replace(message[0] + "|", string.Empty) + Environment.NewLine
+                    };
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 }
-            }
-            if (ChatText.Items.Count != 0)
-            {
-                ChatText.ScrollIntoView(ChatText.Items[ChatText.Items.Count - 1]);
-            }
+
+            ChatText.ScrollToEnd();
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             if (String.IsNullOrWhiteSpace(ChatTextBox.Text))
-            {
                 return;
-            }
 
-            var innerChatItem = new InnerChatItem
+            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
-                SummonerLabel =
-                {
-                    Content = Client.LoginPacket.AllSummonerData.Summoner.Name + ":",
-                    Foreground = Brushes.SteelBlue
-                },
-                MessageLabel =
-                {
-                    Content = ChatTextBox.Text
-                },
-                TimeLabel =
-                {
-                    Content = DateTime.Now.ToString("h:mm"),
-                    Foreground = (ChatText.Items.Count%2 != 0)
-                        ? new SolidColorBrush(Color.FromArgb(255, 37, 37, 37))
-                        : new SolidColorBrush(Color.FromArgb(255, 77, 77, 77))
-                },
-                Background = (ChatText.Items.Count%2 == 0)
-                    ? new SolidColorBrush(Color.FromArgb(255, 37, 37, 37))
-                    : new SolidColorBrush(Color.FromArgb(0, 77, 77, 77))
+                Text = DateTime.Now.ToString("[HH:mm] ") + Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
             };
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
 
-            if (ChatText.Items.Count != 0 &&
-                ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).SummonerLabel.Content.ToString() ==
-                innerChatItem.SummonerLabel.Content.ToString())
+            tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
-                ((InnerChatItem) ChatText.Items[ChatText.Items.Count - 1]).MessageLabel.Content +=
-                    Environment.NewLine + innerChatItem.MessageLabel.Content;
-            }
-            else
-            {
-                ChatText.Items.Add(innerChatItem);
-            }
+                Text = ChatTextBox.Text + Environment.NewLine
+            };
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
             ChatPlayerItem tempItem = null;
             var jid = string.Empty;
             foreach (
                 var x in
-                    Client.AllPlayers.Where(x => x.Value.Username == (string) Client.ChatItem.PlayerLabelName.Content))
+                    Client.AllPlayers.Where(x => x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content))
             {
                 tempItem = x.Value;
                 jid = x.Key + "@pvp.net";
@@ -160,16 +112,10 @@ namespace LegendaryClient.Controls
                 break;
             }
             if (tempItem != null)
-            {
-                tempItem.Messages.Add(new KeyValuePair<string,DateTime>(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text,DateTime.Now));
-            }
+                tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
 
-            if (ChatText.Items.Count != 0)
-            {
-                ChatText.ScrollIntoView(ChatText.Items[ChatText.Items.Count - 1]);
-            }
-
-            Client.ChatClient.Message(jid, Environment.NewLine + ChatTextBox.Text);
+            ChatText.ScrollToEnd();
+            Client.ChatClient.Message(jid, ChatTextBox.Text);
             ChatTextBox.Text = string.Empty;
         }
     }

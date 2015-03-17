@@ -70,31 +70,23 @@ namespace LegendaryClient.Windows
             {
                 case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
                     LoginUsernameBox.Visibility = Visibility.Visible;
-                    LoginUsername.Visibility = Visibility.Visible;
                     RememberUsernameCheckbox.Visibility = Visibility.Visible;
-                    LoginPassword.Visibility = Visibility.Visible;
                     break;
 
                 case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
                     LoginUsernameBox.Visibility = Visibility.Visible;
-                    LoginUsername.Visibility = Visibility.Visible;
                     RememberUsernameCheckbox.Visibility = Visibility.Visible;
-                    LoginPassword.Visibility = Visibility.Visible;
                     break;
 
                 case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
                     LoginUsernameBox.Visibility = Visibility.Visible;
-                    LoginUsername.Visibility = Visibility.Visible;
                     RememberUsernameCheckbox.Visibility = Visibility.Visible;
-                    LoginPassword.Visibility = Visibility.Visible;
                     LoginPasswordBox.Visibility = Visibility.Visible;
                     break;
 
-                case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN", "ID" };
                     LoginUsernameBox.Visibility = Visibility.Hidden;
-                    LoginUsername.Visibility = Visibility.Hidden;
                     RememberUsernameCheckbox.Visibility = Visibility.Hidden;
-                    LoginPassword.Visibility = Visibility.Hidden;
                     LoginPasswordBox.Visibility = Visibility.Hidden;
                     if (!String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion))
                         RegionComboBox.SelectedValue = Settings.Default.DefaultGarenaRegion;  // Default Garena Region
@@ -110,15 +102,6 @@ namespace LegendaryClient.Windows
                 Sound.IsChecked = false;
             }
             else Sound.IsChecked = true;
-
-            if (!String.IsNullOrEmpty(Settings.Default.devKeyLoc))
-            {
-                if (Client.Authenticate(Settings.Default.devKeyLoc))
-                {
-                    Client.Dev = true;
-                    devKeyLabel.Content = "Dev";
-                }
-            }
 
             if (Settings.Default.LoginPageImage == "")
             {
@@ -658,28 +641,6 @@ namespace LegendaryClient.Windows
             HideGrid.ReleaseMouseCapture();
         }
 
-        private void devKeyLabel_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            if (Client.Authenticate(null))
-            {
-                Client.Dev = true;
-                devKeyLabel.Content = "Dev";
-                MessageBox.Show("Dev mode activated.",
-                    "LC Notification",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            }
-            else
-            {
-                Client.Dev = false;
-                devKeyLabel.Content = "User";
-                MessageBox.Show("Failed to approve key",
-                    "LC Notification",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Error);
-            }
-        }
-
         //This is to avoid replacing Garena, this is a better method
         private void SniffGarena()
         {
@@ -819,31 +780,23 @@ namespace LegendaryClient.Windows
                 {
                     case "PBE": RegionComboBox.ItemsSource = new[] { "PBE" };
                         LoginUsernameBox.Visibility = Visibility.Visible;
-                        LoginUsername.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
-                        LoginPassword.Visibility = Visibility.Visible;
                         break;
 
                     case "Live": RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
                         LoginUsernameBox.Visibility = Visibility.Visible;
-                        LoginUsername.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
-                        LoginPassword.Visibility = Visibility.Visible;
                         break;
 
                     case "Korea": RegionComboBox.ItemsSource = new[] { "KR" };
                         LoginUsernameBox.Visibility = Visibility.Visible;
-                        LoginUsername.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
-                        LoginPassword.Visibility = Visibility.Visible;
                         LoginPasswordBox.Visibility = Visibility.Visible;
                         break;
 
-                    case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN" };
+                    case "Garena": RegionComboBox.ItemsSource = new[] { "PH", "SG", "SGMY", "TH", "TW", "VN", "ID" };
                         LoginUsernameBox.Visibility = Visibility.Hidden;
-                        LoginUsername.Visibility = Visibility.Hidden;
                         RememberUsernameCheckbox.Visibility = Visibility.Hidden;
-                        LoginPassword.Visibility = Visibility.Hidden;
                         LoginPasswordBox.Visibility = Visibility.Hidden;
                         break;
                 }

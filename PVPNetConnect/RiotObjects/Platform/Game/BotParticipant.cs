@@ -68,5 +68,8 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
 
         [InternalName("isGameOwner")]
         public Boolean IsGameOwner { get; set; }
+
+        [InternalName("summonerInternalName")]
+        public String SummonerInternalName { get; set; }
     }
 }

@@ -17,6 +17,7 @@ before_build:
 # sigh *zip*
 after_build:
 - 7z a LegendaryClient.zip LegendaryClient\bin\Release
+- move LegendaryClient\bin\Release\Client\LegendaryClient.exe LegendaryClient.exe
 
 # define solution file
 build:
@@ -26,4 +27,6 @@ build:
 
 artifacts:
   - path: LegendaryClient.zip
-    name: LegendaryClient
+    name: LegendaryClient-Full
+  - path: LegendaryClient.exe
+    name: LegendaryClient-Executable

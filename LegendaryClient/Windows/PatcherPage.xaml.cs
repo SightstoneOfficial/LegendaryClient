@@ -553,17 +553,9 @@ namespace LegendaryClient.Windows
                     var outputFile = new MediaFile { Filename = 
                         Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, item).Replace(".flv", ".mp4") };
 
-                    var conversionOptions = new ConversionOptions
-                    {
-                        MaxVideoDuration = TimeSpan.FromSeconds(30),
-                        VideoAspectRatio = VideoAspectRatio.R16_10,
-                        VideoSize = VideoSize.Wxga,
-                        AudioSampleRate = AudioSampleRate.Hz44100
-                    };
-
                     using (var engine = new Engine())
                     {
-                        engine.Convert(inputFile, outputFile, conversionOptions);
+                        engine.Convert(inputFile, outputFile);
                     }
 
                 }
