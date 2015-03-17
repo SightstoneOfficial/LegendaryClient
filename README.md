@@ -40,6 +40,10 @@ IRC
 Most of us will be in this irc
 http://kiwiirc.com/client/irc.freenode.net/#LegendaryClient
 
+Gitter Chat
+===========
+[![Join the chat at https://gitter.im/eddy5641/LegendaryClient](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/eddy5641/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Known Issues / TODO
 ===================
 * Team Builder is not implemented / superbuggy
