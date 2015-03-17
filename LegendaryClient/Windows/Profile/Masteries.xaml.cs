@@ -28,7 +28,6 @@ namespace LegendaryClient.Windows.Profile
         private int _usedPoints;
         private int _utilityUsedPoints;
         private readonly List<double> _masteryPageOrder = new List<double>();
-        //private static readonly ILog Log = LogManager.GetLogger(typeof(Masteries));
         public Masteries()
         {
             InitializeComponent();
