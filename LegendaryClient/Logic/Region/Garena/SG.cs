@@ -11,7 +11,7 @@ namespace LegendaryClient.Logic.Region
     {
         public override string RegionName
         {
-            get { return "sea"; }
+            get { return "SG"; }
         }
 
         public override string Location
