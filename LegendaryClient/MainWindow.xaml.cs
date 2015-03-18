@@ -259,11 +259,11 @@ namespace LegendaryClient
 #pragma warning disable 4014 //Code does not need to be awaited
         public void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.AutoLogin = false;
+            Settings.Default.AutoLogin = false;
             if (Client.IsLoggedIn && !String.Equals(Client.GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
-                Client.MainWin.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
+                (Client.MainWin as MainWindow).FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
                 Client.PVPNet.QuitGame();
@@ -279,7 +279,7 @@ namespace LegendaryClient
                 Client.SwitchPage(new LoginPage());
                 Client.ClearPage(typeof(MainPage));
             }
-            else if (Properties.Settings.Default.warnClose && Client.IsInGame)
+            else if (Settings.Default.warnClose && Client.IsInGame)
             {
                 Warn = new Warning
                 {

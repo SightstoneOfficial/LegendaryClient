@@ -174,7 +174,7 @@ namespace LegendaryClient.Windows
             string dDragonDownloadUrl = patcher.GetDragon();
             if (!String.IsNullOrEmpty(dDragonDownloadUrl))
             {
-                LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
+                LogTextBox("Newest DataDragon Version: " + patcher.DDragonVersion);
                 string dDragonVersion =
                     File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
                 LogTextBox("Current DataDragon Version: " + dDragonVersion);
@@ -318,7 +318,7 @@ namespace LegendaryClient.Windows
 
                     BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
                     string latestAir = patcher.GetListing(updateRegion.AirListing);
-                    LogTextBox("Air Assets Version: " + latestAir);
+                    LogTextBox("Newest Air Assets Version: " + latestAir);
                     string airVersion =
                         File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                     LogTextBox("Current Air Assets Version: " + airVersion);

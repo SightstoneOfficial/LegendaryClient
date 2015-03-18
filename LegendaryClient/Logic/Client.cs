@@ -55,6 +55,7 @@ using System.Net;
 using Newtonsoft.Json;
 using PVPNetConnect.RiotObjects.Platform.Messaging.Persistence;
 using LegendaryClient.Logic.JSON;
+using MahApps.Metro.Controls;
 
 #endregion
 
@@ -1075,13 +1076,13 @@ namespace LegendaryClient.Logic
                             Header = { Content = "Kicked from server" },
                             MessageText = { Text = "This account has been logged in from another location" }
                         };
-                        Warn.backtochampselect.Click += Client.MainWin.LogoutButton_Click;
+                        Warn.backtochampselect.Click += (MainWin as MainWindow).LogoutButton_Click;
                         Warn.AcceptButton.Click += QuitClient;
                         Warn.hide.Visibility = Visibility.Hidden;
                         Warn.backtochampselect.Content = "Logout(Work in progress)";
                         Warn.AcceptButton.Content = "Quit";
-                        Client.FullNotificationOverlayContainer.Content = Warn.Content;
-                        Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
+                        FullNotificationOverlayContainer.Content = Warn.Content;
+                        FullNotificationOverlayContainer.Visibility = Visibility.Visible;
                     }
                     else if (message is PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage)
                     {
@@ -1336,7 +1337,7 @@ namespace LegendaryClient.Logic
         internal static StatusPage statusPage;
         internal static FriendList FriendList;
         internal static NotificationPage notificationPage;
-        internal static MainWindow MainWin;
+        internal static MetroWindow MainWin;
         internal static bool GroupIsShown;
         internal static bool PlayerChatIsShown;
         internal static Page TrueCurrentPage;

@@ -57,22 +57,20 @@ namespace LegendaryClient.Logic.Player
             LoadName(playerName);
         }
 
+#pragma warning disable CS4014
+
         public ChampStats(string champName, int playerName)
         {
             Champ = champions.GetChampion(champName);
             ChampID = Champ.id;
-#pragma warning disable CS4014
             Load(playerName);
-#pragma warning restore CS4014
         }
 
         public ChampStats(int champName, int playerName)
         {
             Champ = champions.GetChampion(champName);
             ChampID = Champ.id;
-#pragma warning disable CS4014
             Load(playerName);
-#pragma warning restore CS4014
         }
 
         async void LoadName(string Name)

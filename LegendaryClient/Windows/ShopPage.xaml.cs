@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using Awesomium.Core;
 using LegendaryClient.Logic;
+using System.Diagnostics;
 using LegendaryClient.Properties;
 
 #endregion
@@ -33,6 +34,7 @@ namespace LegendaryClient.Windows
         public async void RefreshBrowser()
         {
             ShopBrowser.Source = new Uri(await Client.PVPNet.GetStoreUrl());
+            Debug.WriteLine(await Client.PVPNet.GetStoreUrl());
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
@@ -49,7 +51,7 @@ namespace LegendaryClient.Windows
         private void ShopBrowser_NativeViewInitialized(object sender, WebViewEventArgs e)
         {
             JSObject jsHook = ShopBrowser.CreateGlobalJavascriptObject("parentSandboxBridge");
-            foreach (String x in jsHook.GetMethodNames())
+            foreach (string x in jsHook.GetMethodNames())
                 Client.Log(x, "JSHook");
 
             jsHook.Bind("openInventoryBrowser", false, OnItemClick);
