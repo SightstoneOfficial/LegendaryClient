@@ -390,6 +390,7 @@ namespace LegendaryClient.Windows
                     bool toExit = false;
                     if (Client.UpdateRegion == "Garena")
                     {
+                        /*
                         XmlReader reader = XmlReader.Create("http://updateres.garenanow.com/im/versions.xml");
                         string garenaVersion = "";
                         while (reader.Read())
@@ -400,22 +401,10 @@ namespace LegendaryClient.Windows
                                 break;
                             }
                         }
-                        try
-                        {
-                            LogTextBox("League of Legends is Up-To-Date");
-                            Client.Location = Path.Combine(lolRootPath, "Game");
-                            Client.RootLocation = lolRootPath;
-                        }
-                        catch
-                        {
-                            LogTextBox("Can't find League of Legends version file. Make sure you select correct update region.");
-                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                            {
-                                SkipPatchButton.IsEnabled = true;
-                                FindClientButton.Visibility = Visibility.Visible;
-                            }));
-                            toExit = true;
-                        }
+                        */
+                        LogTextBox("League of Legends is Up-To-Date");
+                        Client.Location = Path.Combine(lolRootPath, "Game");
+                        Client.RootLocation = lolRootPath;
                     }
                     else if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
                     {
