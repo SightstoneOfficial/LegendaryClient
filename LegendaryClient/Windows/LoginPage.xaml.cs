@@ -48,6 +48,7 @@ namespace LegendaryClient.Windows
     public partial class LoginPage
     {
         private Thread getTokenThread;
+        private bool shouldExit = false;
 
         public LoginPage()
         {
@@ -402,6 +403,8 @@ namespace LegendaryClient.Windows
 
         private void PVPNet_OnLogin(object sender, string username, string ipAddress)
         {
+            if (Client.Garena && getTokenThread != null)
+                shouldExit = true;
             Client.PVPNet.GetLoginDataPacketForUser(GotLoginPacket);
         }
 
@@ -675,7 +678,7 @@ namespace LegendaryClient.Windows
                 getTokenThread = new Thread(
                     () =>
                     {
-                        while (!gotToken)
+                        while (!gotToken || shouldExit)
                         {
                             Thread.Sleep(1000);
                             foreach (var process in Process.GetProcessesByName("lol"))
@@ -719,7 +722,6 @@ namespace LegendaryClient.Windows
                                     Client.PVPNet.OnError += PVPNet_OnError;
                                     Client.PVPNet.OnLogin += PVPNet_OnLogin;
                                     Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
-                                    break;
                                 }
                                 catch (Exception ex)
                                 {
@@ -739,7 +741,6 @@ namespace LegendaryClient.Windows
                                     Client.PVPNet.OnLogin -= PVPNet_OnLogin;
                                 }
                             }
-                            break;
                         }
                     });
                 getTokenThread.Start();
