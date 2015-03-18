@@ -705,7 +705,6 @@ namespace LegendaryClient.Windows
                                     {
                                         continue;
                                     }
-                                    gotToken = !gotToken;
                                     Client.PVPNet = null;
                                     Client.PVPNet = new PVPNetConnection { garenaToken = s1 };
                                     Client.PVPNet.Connect("", "", garenaregion.PVPRegion, Client.Version);
