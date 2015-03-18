@@ -1,6 +1,8 @@
 ﻿namespace LegendaryClient.Patcher.Logic.Region
 {
-    internal class NA
+    // ReSharper disable once InconsistentNaming
+    internal class NA : MainRegion
     {
+
     }
 }

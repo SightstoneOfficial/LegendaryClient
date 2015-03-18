@@ -672,8 +672,7 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Visibility = Visibility.Visible;
                 LoginPasswordBox.Visibility = Visibility.Hidden;
                 var gotToken = false;
-                getTokenThread = new Thread(
-                    () =>
+                getTokenThread = new Thread(() =>
                     {
                         while (!gotToken || shouldExit)
                         {
