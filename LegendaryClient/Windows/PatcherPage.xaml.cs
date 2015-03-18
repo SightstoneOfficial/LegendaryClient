@@ -402,26 +402,9 @@ namespace LegendaryClient.Windows
                         }
                         try
                         {
-                            var garenaVer = File.ReadAllText(Path.Combine(Path.GetDirectoryName(lolRootPath), "lol.version"));
-                            var twVer = Convert.ToInt32(garenaVer) + 1;
-                            if (garenaVersion == garenaVer || garenaVersion == twVer)
-                            {
-                                LogTextBox("League of Legends is Up-To-Date");
-                                Client.Location = Path.Combine(lolRootPath, "Game");
-                                Client.RootLocation = lolRootPath;
-                            }
-                            else
-                            {
-                                LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
-                                Client.Location = Path.Combine(lolRootPath, "Game");
-                                Client.RootLocation = lolRootPath;
-                                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                                {
-                                    SkipPatchButton.IsEnabled = true;
-                                    FindClientButton.Visibility = Visibility.Visible;
-                                }));
-                                toExit = true;
-                            }
+                            LogTextBox("League of Legends is Up-To-Date");
+                            Client.Location = Path.Combine(lolRootPath, "Game");
+                            Client.RootLocation = lolRootPath;
                         }
                         catch
                         {
