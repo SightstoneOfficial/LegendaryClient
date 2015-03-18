@@ -413,6 +413,8 @@ namespace LegendaryClient.Windows
                             else
                             {
                                 LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
+                                Client.Location = Path.Combine(lolRootPath, "Game");
+                                Client.RootLocation = lolRootPath;
                                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                                 {
                                     SkipPatchButton.IsEnabled = true;
