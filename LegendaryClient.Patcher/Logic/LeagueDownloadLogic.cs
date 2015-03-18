@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using ComponentAce.Compression.Libs.zlib;
 
 #endregion
@@ -30,6 +31,18 @@ namespace LegendaryClient.Patcher.Logic
             }
 
             return ReleaseListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
+        }
+
+        // ReSharper disable once InconsistentNaming
+        public string GetLatestLCLOLVersion()
+        {
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")))
+            {
+                return File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")).Split( new []{Environment.NewLine}, StringSplitOptions.None)[0];
+            }
+            var encoding = new ASCIIEncoding();
+            File.Create(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
+            return "0.0.0.0";
         }
 
         /// <summary>

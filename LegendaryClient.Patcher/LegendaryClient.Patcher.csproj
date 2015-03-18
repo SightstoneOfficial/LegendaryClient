@@ -48,10 +48,12 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\DLLS\MahApps.Metro.dll</HintPath>
     </Reference>
-    <Reference Include="PVPNetConnect">
-      <HintPath>..\DLLS\PVPNetConnect.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -82,6 +84,7 @@
     <Compile Include="Logic\Client.cs" />
     <Compile Include="Logic\Data\FreeChamps.cs" />
     <Compile Include="Logic\Data\ServerStatus.cs" />
+    <Compile Include="Logic\GarenaDownloadLogic.cs" />
     <Compile Include="Logic\LeagueDownloadLogic.cs" />
     <Compile Include="Logic\Region\MainRegion.cs" />
     <Compile Include="Logic\Region\NA.cs" />
@@ -142,7 +145,9 @@
   <ItemGroup>
     <Resource Include="TopBar.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Logic\Region\Garena\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
