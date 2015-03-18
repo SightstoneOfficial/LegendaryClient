@@ -160,9 +160,11 @@ namespace LegendaryClient
 
         public void ChangeTheme()
         {
-            Accent myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
-            ThemeManager.ChangeAppStyle(this, myAccent, (Properties.Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
-            ThemeManager.ChangeAppTheme(this, Settings.Default.Theme);
+            Accent myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
+            ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
+            var random = new Random().Next(-9000, 9000);
+            myAccent = new Accent(random.ToString(), new Uri(Settings.Default.Theme));
+            ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
             Client.CurrentAccent = myAccent;
         }
 

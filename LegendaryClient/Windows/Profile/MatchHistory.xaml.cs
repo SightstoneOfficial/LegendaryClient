@@ -36,6 +36,9 @@ namespace LegendaryClient.Windows.Profile
         public MatchHistory()
         {
             InitializeComponent();
+            //#CCCD1A1A
+            gameRecordedEllipse.Fill = (Brush)new BrushConverter().ConvertFrom("#CC444444");
+            ReplayLabel.Content = "game not recorded";
             Change();
         }
 
@@ -339,6 +342,11 @@ namespace LegendaryClient.Windows.Profile
             }
 
             _playerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
+        }
+
+        private void ClickGrid_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
         }
     }
 
