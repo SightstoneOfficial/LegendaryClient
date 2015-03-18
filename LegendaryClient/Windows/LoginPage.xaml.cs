@@ -695,8 +695,7 @@ namespace LegendaryClient.Windows
                     Client.PVPNet.Connect("", "", garenaregion.PVPRegion, Client.Version);
                     Client.Region = garenaregion;
                     Dispatcher.BeginInvoke(
-                        DispatcherPriority.Input, new ThreadStart(
-                            () =>
+                        DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 HideGrid.Visibility = Visibility.Hidden;
                                 ErrorTextBox.Visibility = Visibility.Hidden;
