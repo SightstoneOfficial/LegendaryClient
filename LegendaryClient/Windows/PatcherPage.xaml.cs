@@ -140,22 +140,6 @@ namespace LegendaryClient.Windows
                 TotalProgessBar.Value = 20;
             }));
 
-            #region idk
-
-            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3")))
-                client.DownloadFile(
-                    new Uri(
-                        "https://s12.solidfilesusercontent.com/MDE1MWYxZGJmYWFhNzJmNGQ2N2ZhOWE0NzU4Yjk2ZDYwZjY3MGU2OToxWHp3OTk6dUllemo3WDM0RnlScUgxZk1YWXpKYmN0RXBn/7a0671ed14/Login.mp3"),
-                    Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
-
-            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4")))
-                client.DownloadFile(
-                    new Uri(
-                        "https://s8.solidfilesusercontent.com/MzkxMTBjOTllZDczMTBjZDUwNzgwOTc1NTYwZmY1Nzg2YThkZDI5MzoxWHp2eE86alBDQXBkU1FuNmt6R3dsTzcycEtoOXpGdVZr/a38bbf759c/Login.mp4"),
-                    Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
-
-            #endregion idk
-
             #region DDragon
 
             var encoding = new ASCIIEncoding();
