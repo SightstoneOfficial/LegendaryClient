@@ -39,6 +39,7 @@ using SQLite;
 using LegendaryClient.Logic.Crypto;
 using System.Threading.Tasks;
 using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.Controls;
 
 #endregion
 
@@ -355,7 +356,6 @@ namespace LegendaryClient.Windows
                 if (!String.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                 await garenaLogin();
-                //SniffGarena();
                 return;
             }
             string UserName = LoginUsernameBox.Text;
@@ -660,7 +660,7 @@ namespace LegendaryClient.Windows
             WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
             if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
             {
-                if (await Client.MainWin.ShowMessageAsync("Insufficent Privledges.", "Press OK to restart as admin.") == MessageDialogResult.Affirmative)
+                if (await ((MetroWindow) Application.Current.MainWindow).ShowMessageAsync("Insufficent Privledges.", "Press OK to restart as admin.") == MessageDialogResult.Affirmative)
                 {
                     var info = new ProcessStartInfo(Path.Combine(Client.ExecutingDirectory, "Client", "LegendaryClient.exe"))
                     {
@@ -743,12 +743,14 @@ namespace LegendaryClient.Windows
                     case "PBE":
                         RegionComboBox.ItemsSource = new[] { "PBE" };
                         LoginUsernameBox.Visibility = Visibility.Visible;
+                        LoginPasswordBox.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
                         break;
 
                     case "Live":
                         RegionComboBox.ItemsSource = new[] { "BR", "EUNE", "EUW", "NA", "OCE", "RU", "LAS", "LAN", "TR", "CS" };
                         LoginUsernameBox.Visibility = Visibility.Visible;
+                        LoginPasswordBox.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
                         break;
 

@@ -38,8 +38,8 @@ namespace LegendaryClient
 
         public MainWindow(StartupEventArgs e)
         {
-            PresentationTraceSources.DataBindingSource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
-            PresentationTraceSources.ResourceDictionarySource.Switch.Level = System.Diagnostics.SourceLevels.Critical;
+            PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Critical;
+            PresentationTraceSources.ResourceDictionarySource.Switch.Level = SourceLevels.Critical;
             InitializeComponent();
             ReturnToPage.Visibility = Visibility.Hidden;
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
@@ -119,6 +119,8 @@ namespace LegendaryClient
             foreach (var x in NotificationOverlayContainer.GetChildObjects().OfType<Grid>())
                 NotificationTempGrid = x;
 
+            ChangeTheme();
+
             Client.FullNotificationOverlayContainer = FullNotificationOverlayContainer;
             Client.PlayButton = PlayButton;
             Client.Pages = new List<Page>();
@@ -161,10 +163,10 @@ namespace LegendaryClient
         public void ChangeTheme()
         {
             Accent myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
-            ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
+            ThemeManager.ChangeAppStyle(Application.Current, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
             var random = new Random().Next(-9000, 9000);
             myAccent = new Accent(random.ToString(), new Uri(Settings.Default.Theme));
-            ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
+            ThemeManager.ChangeAppStyle(Application.Current, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
             Client.CurrentAccent = myAccent;
         }
 
