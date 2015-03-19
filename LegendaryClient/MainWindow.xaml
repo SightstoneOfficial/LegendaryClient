@@ -23,40 +23,6 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
-    <Window.Resources>
-        <ResourceDictionary>
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="Background" Value="#FF474747" />
-                <Setter Property="BorderBrush" Value="{x:Null}" />
-                <Setter Property="Foreground" Value="#FFCFCFCF" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="Height" Value="30" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#FF333333" />
-                    </Trigger>
-                    <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Opacity" Value="2" />
-                        <Setter Property="Background" Value="#FF707070" />
-                    </Trigger>
-                    <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Background" Value="#222222" />
-                        <Setter Property="Foreground" Value="White" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-        </ResourceDictionary>
-    </Window.Resources>
-
     <Grid x:Name="MainGrid">
         <Grid.Background>
             <ImageBrush ImageSource="BackTex.png" TileMode="FlipY" Stretch="Uniform" AlignmentY="Top"

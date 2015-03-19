@@ -8,66 +8,6 @@
       mc:Ignorable="d" d:DesignHeight="640"
       d:DesignWidth="250">
 
-    <Page.Resources>
-        <ResourceDictionary>
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="Background" Value="#FF474747" />
-                <Setter Property="BorderBrush" Value="{x:Null}" />
-                <Setter Property="Foreground" Value="#FFCFCFCF" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="Height" Value="30" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#FF333333" />
-                    </Trigger>
-                    <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Opacity" Value="2" />
-                        <Setter Property="Background" Value="#FF707070" />
-                    </Trigger>
-                    <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Background" Value="#222222" />
-                        <Setter Property="Foreground" Value="White" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-
-            <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
-                <Setter Property="Visibility" Value="Collapsed" />
-            </Style>
-            <Style x:Key="NoFocus" TargetType="{x:Type ListView}">
-                <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-            </Style>
-            <ContextMenu x:Key="PlayerChatMenu">
-                <MenuItem x:Name="Invite" Header="Invite to Game" Click="Invite_Click" />
-                <MenuItem x:Name="ProfileItem" Header="View Profile" Click="ProfileItem_Click" />
-                <MenuItem Header="Invite to Chat" />
-                <MenuItem Header="Remove Friend" Click="RemoveFriend_Click"/>
-                <MenuItem Header="Block Friend" Click="BlockFriend_Click"/>
-                <MenuItem Header="Spectate Game" Click="SpectateGame_Click"/>
-            </ContextMenu>
-
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
-
     <Grid x:Name="TheGrid" Background="#E5000000">
         <ComboBox x:Name="PresenceChanger" Margin="5,5,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{DynamicResource ChatStates}" SelectedIndex="0" SelectionChanged="PresenceChanger_SelectionChanged" />
         <TextBox x:Name="StatusBox" Height="23" Margin="5,35,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" TextWrapping="NoWrap" controls:TextBoxHelper.Watermark="Set your status message" MaxLength="25" />

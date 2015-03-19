@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              MinHeight="20" Width="400">
+    
     <Grid Background="#66505050">
         <Label x:Name="PlayerLabel" Content="Eddy5641" FontSize="16" FontWeight="ExtraLight" HorizontalAlignment="Left"
                Margin="5,0,0,0" VerticalAlignment="Center" Foreground="White" />
-        <Button x:Name="InviteButton" Style="{DynamicResource Square}" Content="Invite" HorizontalAlignment="Right"
+        <Button x:Name="InviteButton" Content="Invite" HorizontalAlignment="Right"
                 VerticalAlignment="Stretch" Width="90" />
     </Grid>
 </UserControl>

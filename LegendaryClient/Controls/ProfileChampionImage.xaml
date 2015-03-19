@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              Height="84" Width="96">
+    
     <Grid>
         <Rectangle Fill="#02000000" Width="96" Height="84" />
         <Image x:Name="ChampImage" HorizontalAlignment="Center" Height="64" Margin="0,0,0,0" VerticalAlignment="Top"

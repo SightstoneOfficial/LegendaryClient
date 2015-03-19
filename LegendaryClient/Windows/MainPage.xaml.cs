@@ -151,81 +151,84 @@ namespace LegendaryClient.Windows
 
         internal async void UpdateSummonerInformation()
         {
-            AllSummonerData playerData =
-                await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
-            SummonerNameLabel.Content = playerData.Summoner.Name;
-            Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
-
-            Sha1 sha1 = new Sha1();
-            if (!CheckedDev)
+            if (Client.IsLoggedIn)
             {
-                if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + Client.Region.RegionName)))
+                AllSummonerData playerData =
+                    await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
+                SummonerNameLabel.Content = playerData.Summoner.Name;
+                Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+
+                Sha1 sha1 = new Sha1();
+                if (!CheckedDev)
                 {
-                    Client.Dev = true;
-                    Client.UserTitleBarLabel.Content = "Dev ∙ " + Client.UserTitleBarLabel.Content;
+                    if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + Client.Region.RegionName)))
+                    {
+                        Client.Dev = true;
+                        Client.UserTitleBarLabel.Content = "Dev ∙ " + Client.UserTitleBarLabel.Content;
+                    }
+                    CheckedDev = true;
                 }
-                CheckedDev = true;
-            }
 
-            if (Client.Dev)
-            {
-                fakeend.Visibility = Visibility.Visible;
-                testChat.Visibility = Visibility.Visible;
-                testInvite.Visibility = Visibility.Visible;
-            }
-            if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
-            {
-                PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints /
-                                           playerData.SummonerLevel.ExpToNextLevel) * 100;
-                PlayerProgressLabel.Content = String.Format("Level {0}", playerData.SummonerLevel.Level);
-                PlayerCurrentProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevelAndPoints.ExpPoints);
-                PlayerAimProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevel.ExpToNextLevel);
-                Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + String.Format(" ∙ Level: {0}", playerData.SummonerLevel.Level);
-            }
-            else
-                Client.PVPNet.GetAllLeaguesForPlayer(playerData.Summoner.SumId, GotLeaguesForPlayer);
-
-            if (Client.LoginPacket.BroadcastNotification.BroadcastMessages != null)
-            {
-                var message = Client.LoginPacket.BroadcastNotification.BroadcastMessages[0];
-                if (message != null)
-                    BroadcastMessage.Text =
-                        message.Content;
-            }
-
-            foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
-            {
-                if (x.PlayerStatSummaryTypeString == "Unranked")
+                if (Client.Dev)
                 {
-                    Client.IsRanked = false;
-                    Client.AmountOfWins = x.Wins;
+                    fakeend.Visibility = Visibility.Visible;
+                    testChat.Visibility = Visibility.Visible;
+                    testInvite.Visibility = Visibility.Visible;
                 }
-                if (x.PlayerStatSummaryTypeString != "RankedSolo5x5")
-                    continue;
-
-                if (x.Rating != 0)
+                if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
                 {
-                    Client.IsRanked = true;
-                    Client.AmountOfWins = x.Wins;
+                    PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints /
+                                               playerData.SummonerLevel.ExpToNextLevel) * 100;
+                    PlayerProgressLabel.Content = String.Format("Level {0}", playerData.SummonerLevel.Level);
+                    PlayerCurrentProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevelAndPoints.ExpPoints);
+                    PlayerAimProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevel.ExpToNextLevel);
+                    Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + String.Format(" ∙ Level: {0}", playerData.SummonerLevel.Level);
                 }
-                break;
-            }
+                else
+                    Client.PVPNet.GetAllLeaguesForPlayer(playerData.Summoner.SumId, GotLeaguesForPlayer);
 
-            Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
-            int profileIconId = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
-            var uriSource =
-                new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png"),
-                UriKind.RelativeOrAbsolute);
-            try
-            {
-                ProfileImage.Source = new BitmapImage(uriSource);
-                Client.UserTitleBarImage.Source = new BitmapImage(uriSource);
+                if (Client.LoginPacket.BroadcastNotification.BroadcastMessages != null)
+                {
+                    var message = Client.LoginPacket.BroadcastNotification.BroadcastMessages[0];
+                    if (message != null)
+                        BroadcastMessage.Text =
+                            message.Content;
+                }
+
+                foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
+                {
+                    if (x.PlayerStatSummaryTypeString == "Unranked")
+                    {
+                        Client.IsRanked = false;
+                        Client.AmountOfWins = x.Wins;
+                    }
+                    if (x.PlayerStatSummaryTypeString != "RankedSolo5x5")
+                        continue;
+
+                    if (x.Rating != 0)
+                    {
+                        Client.IsRanked = true;
+                        Client.AmountOfWins = x.Wins;
+                    }
+                    break;
+                }
+
+                Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
+                int profileIconId = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
+                var uriSource =
+                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png"),
+                    UriKind.RelativeOrAbsolute);
+                try
+                {
+                    ProfileImage.Source = new BitmapImage(uriSource);
+                    Client.UserTitleBarImage.Source = new BitmapImage(uriSource);
+                }
+                catch
+                {
+                    Client.Log("Can't load profile image.", "ERROR");
+                }
+                Client.MainPageProfileImage = ProfileImage;
             }
-            catch
-            {
-                Client.Log("Can't load profile image.", "ERROR");
-            }
-            Client.MainPageProfileImage = ProfileImage;
         }
 
         private void GotLeaguesForPlayer(SummonerLeaguesDTO result)

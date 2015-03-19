@@ -6,8 +6,6 @@
              mc:Ignorable="d"
              Height="230" Width="300">
 
-    <!-- Height 200 for Ok Only, Height 230 for Accept/Decline -->
-
     <Grid>
         <Rectangle Fill="#99505050" Stroke="#FF646464">
             <Rectangle.Effect>
