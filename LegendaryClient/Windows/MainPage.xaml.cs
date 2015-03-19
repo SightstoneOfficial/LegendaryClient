@@ -125,16 +125,13 @@ namespace LegendaryClient.Windows
             foreach (var item in allInvites)
             {
                 InvitationRequest invite = new InvitationRequest((TypedObject)item);
-                Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                var pop = new GameInvitePopup(invite)
                 {
-                    var pop = new GameInvitePopup(invite)
-                    {
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Bottom,
-                        Height = 230
-                    };
-                    Client.NotificationGrid.Children.Add(pop);
-                }));
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    Height = 230
+                };
+                Client.NotificationGrid.Children.Add(pop);
             }
         }
 
@@ -160,7 +157,7 @@ namespace LegendaryClient.Windows
             Sha1 sha1 = new Sha1();
             if (!CheckedDev)
             {
-                if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + Client.Region.RegionName))) 
+                if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + Client.Region.RegionName)))
                 {
                     Client.Dev = true;
                     Client.UserTitleBarLabel.Content = "Dev ∙ " + Client.UserTitleBarLabel.Content;
@@ -409,7 +406,7 @@ namespace LegendaryClient.Windows
                 catch
                 {
                     newsJson = newsXml;
-                } 
+                }
                 var serializer = new JavaScriptSerializer();
                 Dictionary<string, object> deserializedJson;
                 try

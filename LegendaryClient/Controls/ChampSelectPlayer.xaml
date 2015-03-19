@@ -9,26 +9,23 @@
              MouseDown="ChampPlayer_MouseOver" MouseLeave="ChampPlayer_MouseLeave">
 
     <Grid>
-        <Rectangle x:Name="ChampSelectPlayerBackground" Fill="#CC505050" Width="255" HorizontalAlignment="Left" Visibility="Visible" Height="90" Margin="0,0,0,10" />
-        <Rectangle x:Name="TeamRectangle" Fill="#FF535353" Width="1" HorizontalAlignment="Left" Visibility="Hidden" />
+        <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="87,14,0,0" VerticalAlignment="Top"
+                       Width="136" Foreground="White" FontSize="14" FontWeight="ExtraLight" />
+        <Rectangle Fill="#CC505050" Width="255" HorizontalAlignment="Left" Visibility="Visible" Height="90" Margin="0,0,0,10" Panel.ZIndex="-1" />
+        <Rectangle x:Name="TeamRectangle" Fill="#FF535353" Width="2" HorizontalAlignment="Left" Visibility="Hidden" Height="90" VerticalAlignment="Top" Margin="0,0,0,10" />
         <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="70" Margin="10,10,0,0" VerticalAlignment="Top"
                Width="70" Source="/LegendaryClient;component/NONE.png" />
         <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="30" Margin="90,50,0,0"
                VerticalAlignment="Top" Width="30" />
         <Image x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="30" Margin="130,50,0,0"
                VerticalAlignment="Top" Width="30" />
-        <Button x:Name="TradeButton" HorizontalAlignment="Left" Height="22" Margin="226,33,0,0" VerticalAlignment="Top"
-                Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Visible">
-            <StackPanel/>
+        <Button x:Name="TradeButton" HorizontalAlignment="Right" Height="22" Margin="0,20,10,0" VerticalAlignment="Top"
+                Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Hidden">
+            <StackPanel>
+                <Image Source="/LegendaryClient;component/trade.png" />
+            </StackPanel>
         </Button>
-        <Image x:Name="LockedInIcon" HorizontalAlignment="Left" Height="22" Margin="225,53,0,0" VerticalAlignment="Top"
+        <Image x:Name="LockedInIcon" HorizontalAlignment="Right" Height="22" Margin="0,45,10,0" VerticalAlignment="Top"
                Width="22" Visibility="Hidden" />
-        <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="87,14,0,0" VerticalAlignment="Top"
-               Width="131" Foreground="White" FontSize="14" FontWeight="ExtraLight" />
-        <Image Source="/LegendaryClient;component/trade.png" Margin="227,10,10,57" Visibility="Hidden" />
-        <Button x:Name="TradeButton_Copy" HorizontalAlignment="Left" Height="22" Margin="225,7,0,0" VerticalAlignment="Top"
-        	Width="22" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}" Visibility="Hidden">
-            <StackPanel/>
-        </Button>
     </Grid>
 </UserControl>

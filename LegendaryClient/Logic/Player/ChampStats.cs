@@ -57,6 +57,8 @@ namespace LegendaryClient.Logic.Player
             LoadName(playerName);
         }
 
+#pragma warning disable CS4014
+
         public ChampStats(string champName, int playerName)
         {
             Champ = champions.GetChampion(champName);

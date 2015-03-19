@@ -55,6 +55,7 @@ using System.Net;
 using Newtonsoft.Json;
 using PVPNetConnect.RiotObjects.Platform.Messaging.Persistence;
 using LegendaryClient.Logic.JSON;
+using MahApps.Metro.Controls;
 
 #endregion
 
@@ -153,12 +154,12 @@ namespace LegendaryClient.Logic
 
         internal static Dictionary<String, PVPNetConnection> pvpnetlist = new Dictionary<String, PVPNetConnection>();
 
-        internal static async Task<LoginDataPacket> AddAccount()
+        internal static LoginDataPacket AddAccount()
         {
             return new LoginDataPacket();
         }
 
-        internal static async Task<LoginDataPacket> AddAccount(LoginDataPacket packet)
+        internal static LoginDataPacket AddAccount(LoginDataPacket packet)
         {
             if (packet == null)
                 return new LoginDataPacket();
@@ -168,7 +169,7 @@ namespace LegendaryClient.Logic
             return packet;
         }
 
-        internal static async Task<LoginDataPacket> AddAccount(string username, string password)
+        internal static async Task<LoginDataPacket> AddAccount(string username, string password) //needs finished haha
         {
             var pvp = new PVPNetConnection();
             var credentials = new AuthenticationCredentials
@@ -178,7 +179,7 @@ namespace LegendaryClient.Logic
                 Password = password,
                 IpAddress = string.Empty
             };
-            //pvp.Login();
+            await pvp.Login(credentials);
             return new LoginDataPacket();
         }
 
@@ -336,7 +337,6 @@ namespace LegendaryClient.Logic
 
         internal static ChampionDTO[] PlayerChampions;
 
-        internal static ReplayRecorder Autorecorder;
         internal static List<int> curentlyRecording = new List<int>();
 
         internal static List<string> Whitelist = new List<string>();
@@ -1073,16 +1073,16 @@ namespace LegendaryClient.Logic
                     {
                         Warning Warn = new Warning
                         {
-                            Title = { Content = "Kicked from server" },
+                            Header = { Content = "Kicked from server" },
                             MessageText = { Text = "This account has been logged in from another location" }
                         };
-                        Warn.backtochampselect.Click += Client.MainWin.LogoutButton_Click;
+                        Warn.backtochampselect.Click += (MainWin as MainWindow).LogoutButton_Click;
                         Warn.AcceptButton.Click += QuitClient;
                         Warn.hide.Visibility = Visibility.Hidden;
                         Warn.backtochampselect.Content = "Logout(Work in progress)";
                         Warn.AcceptButton.Content = "Quit";
-                        Client.FullNotificationOverlayContainer.Content = Warn.Content;
-                        Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
+                        FullNotificationOverlayContainer.Content = Warn.Content;
+                        FullNotificationOverlayContainer.Visibility = Visibility.Visible;
                     }
                     else if (message is PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage)
                     {
@@ -1337,7 +1337,7 @@ namespace LegendaryClient.Logic
         internal static StatusPage statusPage;
         internal static FriendList FriendList;
         internal static NotificationPage notificationPage;
-        internal static MainWindow MainWin;
+        internal static MetroWindow MainWin;
         internal static bool GroupIsShown;
         internal static bool PlayerChatIsShown;
         internal static Page TrueCurrentPage;

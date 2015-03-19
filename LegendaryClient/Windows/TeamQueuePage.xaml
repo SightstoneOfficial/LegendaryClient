@@ -76,7 +76,7 @@
         </ListView>
         <Button x:Name="InviteButton" Width="395" Height="27" Margin="0,0,15,278"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Invite Players" Click="Invite_Click" />
-        <CheckBox x:Name="AutoAcceptCheckBox" Width="89" Margin="0,0,777,202" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked" >
+        <CheckBox x:Name="AutoAcceptCheckBox" Width="89" Margin="0,0,785,202" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked" >
             <TextBlock Text="Auto Accept" Margin="0,-2,0,0"/>
         </CheckBox>
         <RichTextBox x:Name="ChatText" Height="155" Margin="10,0,420,40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">

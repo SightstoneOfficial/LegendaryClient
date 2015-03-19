@@ -160,9 +160,11 @@ namespace LegendaryClient
 
         public void ChangeTheme()
         {
-            Accent myAccent = new Accent("AccentName", new Uri(Properties.Settings.Default.Theme));
-            ThemeManager.ChangeAppStyle(this, myAccent, (Properties.Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
-            ThemeManager.ChangeAppTheme(this, Settings.Default.Theme);
+            Accent myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
+            ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
+            var random = new Random().Next(-9000, 9000);
+            myAccent = new Accent(random.ToString(), new Uri(Settings.Default.Theme));
+            ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
             Client.CurrentAccent = myAccent;
         }
 
@@ -257,11 +259,11 @@ namespace LegendaryClient
 #pragma warning disable 4014 //Code does not need to be awaited
         public void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.AutoLogin = false;
+            Settings.Default.AutoLogin = false;
             if (Client.IsLoggedIn && !String.Equals(Client.GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
-                Client.MainWin.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
+                (Client.MainWin as MainWindow).FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
                 Client.PVPNet.QuitGame();
@@ -277,11 +279,11 @@ namespace LegendaryClient
                 Client.SwitchPage(new LoginPage());
                 Client.ClearPage(typeof(MainPage));
             }
-            else if (Properties.Settings.Default.warnClose && Client.IsInGame)
+            else if (Settings.Default.warnClose && Client.IsInGame)
             {
                 Warn = new Warning
                 {
-                    Title = { Content = "Logout while in Game" },
+                    Header = { Content = "Logout while in Game" },
                     MessageText = { Text = "Are You Sure You Want To Quit? This will result in a dodge." }
                 };
                 Warn.backtochampselect.Click += HideWarning;
@@ -299,7 +301,7 @@ namespace LegendaryClient
             {
                 Warn = new Warning();
                 e.Cancel = true;
-                Warn.Title.Content = "Quit";
+                Warn.Header.Content = "Quit";
                 Warn.MessageText.Text = "Are You Sure You Want To Quit?";
                 Warn.backtochampselect.Click += HideWarning;
                 Warn.AcceptButton.Click += Quit;

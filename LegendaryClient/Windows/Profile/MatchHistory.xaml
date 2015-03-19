@@ -97,7 +97,7 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="391,139,81,29" VerticalAlignment="Stretch" Foreground="White" Background="#66505050">
+        <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="391,139,81,41" VerticalAlignment="Stretch" Foreground="White" Background="#66505050">
             <ListView.View>
                 <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
                     <GridViewColumn x:Name="GameKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}" />
@@ -105,5 +105,19 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Grid Margin="0,0,81,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" ZIndex="99" Width="263">
+            <Ellipse x:Name="gameRecordedEllipse" Fill="#CCCD1A1A" HorizontalAlignment="Left" Width="24" RenderTransformOrigin="0.5,0.5" Margin="1,1,0,1">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleY="-1" ScaleX="-1"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+            <Label x:Name="ReplayLabel" Content="click to watch recorded replay" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="29,0,0,0" Foreground="White" Width="215"/>
+            <Grid x:Name="ClickGrid" MouseDown="ClickGrid_OnMouseDown"/>
+        </Grid>
     </Grid>
 </Page>

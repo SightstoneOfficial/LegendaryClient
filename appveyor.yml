@@ -10,6 +10,9 @@ branches:
 # build Release	
 configuration: Release
 
+skip_commits:
+  message: /Update.*\.(md|txt|mp3|png|jpg|jpeg|bmp|gif)/
+
 # restore NuGet packages before building
 before_build:
 - nuget restore
@@ -30,3 +33,7 @@ artifacts:
     name: LegendaryClient-Full
   - path: LegendaryClient.exe
     name: LegendaryClient-Executable
+
+notifications:
+  - provider: Webhook
+    url: https://webhooks.gitter.im/e/bda62727b7b80a130d60
