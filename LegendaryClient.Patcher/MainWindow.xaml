@@ -3,12 +3,13 @@
                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       Title="LegendaryClient Patcher"
+                      WindowStartupLocation="CenterScreen"
                       Width="1360" Height="768" ResizeMode="CanMinimize">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
                 <ResourceDictionary
@@ -20,11 +21,12 @@
     <Controls:MetroWindow.LeftWindowCommands>
         <Controls:WindowCommands>
             <Label x:Name="RegionLabel" Content="Connected to: NA" FontWeight="Light" FontSize="15" />
+            <Button x:Name="Switch" Content="Patcher Settings"/>
             <Button x:Name="Settings" Content="Patcher Settings" Click="SlideGrid" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.LeftWindowCommands>
 
-    <Grid Background="#ecf0f1">
+    <Grid Background="#ecf0f1" ClipToBounds="True">
         <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" />
         <Grid x:Name="OverlayGrid" Panel.ZIndex="999" Visibility="Hidden">
             <Grid.RenderTransform>

@@ -1,6 +1,6 @@
 ﻿namespace LegendaryClient.Patcher.Logic.Region
 {
-    internal class MainRegion
+    internal abstract class MainRegion
     {
     }
 }

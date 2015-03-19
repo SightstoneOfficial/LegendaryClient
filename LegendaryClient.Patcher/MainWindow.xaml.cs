@@ -29,12 +29,11 @@ namespace LegendaryClient.Patcher
             Client.OverlayGrid = OverlayGrid;
             OverlayContainer.Content = new PatcherSettingsPage().Content;
 
-
-            //Wait half a second before starting, makes it look sleek. This is a hack tho (but it's pretty!)
             var waitAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
             waitAnimation.Completed += (o, e) => { Container.Content = new PatcherPage().Content; };
             Container.BeginAnimation(OpacityProperty, waitAnimation);
         }
+
 
         //Contains a progress for the future
         public void SlideGrid(object sender, RoutedEventArgs e)

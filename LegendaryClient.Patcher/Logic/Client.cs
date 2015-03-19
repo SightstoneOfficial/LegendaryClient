@@ -66,8 +66,8 @@ namespace LegendaryClient.Patcher.Logic
             CurrentPage = typeof (T);
 
             {
-                bool foundPage = false;
-                foreach (Page p in CachedPages.Where(p => p.GetType() == typeof (T)))
+                var foundPage = false;
+                foreach (var p in CachedPages.Where(p => p.GetType() == typeof (T)))
                 {
                     instance = p;
                     foundPage = true;

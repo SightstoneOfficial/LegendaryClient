@@ -1,15 +1,24 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using LegendaryClient.Patcher.Logic;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+using LegendaryClient.Patcher.PatcherElements;
+using Newtonsoft.Json;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Linq;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
+using Brush = System.Windows.Media.Brush;
+using Image = System.Drawing.Image;
 
 #endregion
 
@@ -54,11 +63,53 @@ namespace LegendaryClient.Patcher.Pages
             //LogTextBox(CreateConfigurationmanifest());
         }
 
-        private static async void Load()
+        private void Load()
         {
-            PVPNetConnection connection = new PVPNetConnection();
-            ChampionDTO[] champs = await connection.GetAvailableChampions();
-            throw new Exception(champs[0].SkinName);
+            using (var client = new WebClient())
+            {
+                var freeToPlayChamps = client.DownloadString(
+                    "http://cdn.leagueoflegends.com/patcher/data/regions/na/champData/freeToPlayChamps.json");
+                var champsAsJson = JsonConvert.DeserializeObject<Champions>(freeToPlayChamps);
+                foreach (var champs in champsAsJson.champions)
+                {
+                    var champItem = new FreeWeekChampion();
+                    var champDataJson =
+                        client.DownloadString(
+                            string.Format("http://cdn.leagueoflegends.com/patcher/data/locales/en_US/champData/champData{0}.json", champs.id));
+                    var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, Object>>(champDataJson);
+                    champItem.ChampName.Content = champsDataAsJson["key"];
+                    var latestAir =
+                        client.DownloadString(
+                            "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA").Split(
+                            new[] {Environment.NewLine}, StringSplitOptions.None)[0];
+                    var pkgManifest =
+                        client.DownloadString(
+                            string.Format(
+                                "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
+                                latestAir)).Split(new []{Environment.NewLine}, StringSplitOptions.None);
+                    foreach (var stream in from data in pkgManifest where data.Contains("square") && data.Contains((string) champsDataAsJson["name"]) select (HttpWebRequest)HttpWebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream()) {
+                        champItem.Img.Source = ToWpfBitmap(Image.FromStream(stream));
+                    }
+                    champView.Items.Add(champItem);
+                }
+            }
+        }
+        public static BitmapSource ToWpfBitmap(Image bitmap)
+        {
+            using (var stream = new MemoryStream())
+            {
+                bitmap.Save(stream, ImageFormat.Bmp);
+
+                stream.Position = 0;
+                var result = new BitmapImage();
+                result.BeginInit();
+                result.CacheOption = BitmapCacheOption.OnLoad;
+                result.StreamSource = stream;
+                result.EndInit();
+                result.Freeze();
+
+                return result;
+            }
         }
 
         /// <summary>
@@ -165,5 +216,19 @@ namespace LegendaryClient.Patcher.Pages
         {
             Logbox.Text += s + Environment.NewLine;
         }
+    }
+    public class Champion
+    {
+        public int id { get; set; }
+        public bool active { get; set; }
+        public bool botEnabled { get; set; }
+        public bool freeToPlay { get; set; }
+        public bool botMmEnabled { get; set; }
+        public bool rankedPlayEnabled { get; set; }
+    }
+
+    public class Champions
+    {
+        public List<Champion> champions { get; set; }
     }
 }
