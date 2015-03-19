@@ -1068,6 +1068,7 @@ namespace LegendaryClient.Logic
 
                             NotificationGrid.Children.Add(pop);
                         }));
+                        Client.MainWin.FlashWindow();
                     }
                     else if (message is ClientLoginKickNotification)
                     {

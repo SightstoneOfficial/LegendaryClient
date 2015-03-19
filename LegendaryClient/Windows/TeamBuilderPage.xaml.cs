@@ -438,9 +438,9 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
-#pragma warning disable CS4014
+#pragma warning disable 4014
                 Client.PVPNet.Leave();
-#pragma warning restore CS4014
+#pragma warning restore 4014
 
                 //temp, what other reasons are there?
                 var response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);

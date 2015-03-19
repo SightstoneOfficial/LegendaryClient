@@ -133,6 +133,8 @@ namespace LegendaryClient.Windows
                 };
                 Client.NotificationGrid.Children.Add(pop);
             }
+            if (allInvites.Length != 0)
+                Client.MainWin.FlashWindow();
         }
 
         [STAThread]
