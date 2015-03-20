@@ -12,10 +12,9 @@ using System.Windows.Media;
 using LegendaryClient.Patcher.Logic;
 using LegendaryClient.Patcher.PatcherElements;
 using Newtonsoft.Json;
-using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using System.Windows.Controls;
+using System.Threading;
 using System.Windows.Media.Imaging;
 using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
@@ -39,16 +38,6 @@ namespace LegendaryClient.Patcher.Pages
             InitializeComponent();
             _executingDirectory = Client.ExecutingDirectory;
             _isLogVisible = false;
-            //Finds where the patcher was started
-            if (!File.Exists(Path.Combine(_executingDirectory, "Patcher.settings")))
-            {
-                FileStream x = File.Create(Path.Combine(_executingDirectory, "Patcher.settings"));
-                //Client.OverlayGrid.Content
-                x.Close();
-            }
-            else
-                File.ReadAllText(Path.Combine(_executingDirectory, "Patcher.settings"));
-
 
             _executingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
@@ -65,35 +54,133 @@ namespace LegendaryClient.Patcher.Pages
 
         private void Load()
         {
-            using (var client = new WebClient())
-            {
-                var freeToPlayChamps = client.DownloadString(
-                    "http://cdn.leagueoflegends.com/patcher/data/regions/na/champData/freeToPlayChamps.json");
-                var champsAsJson = JsonConvert.DeserializeObject<Champions>(freeToPlayChamps);
-                foreach (var champs in champsAsJson.champions)
+            //Load server status
+            Status();
+            //Load Champions with this thread
+            var x = new Thread(() =>
                 {
-                    var champItem = new FreeWeekChampion();
-                    var champDataJson =
-                        client.DownloadString(
-                            string.Format("http://cdn.leagueoflegends.com/patcher/data/locales/en_US/champData/champData{0}.json", champs.id));
-                    var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, Object>>(champDataJson);
-                    champItem.ChampName.Content = champsDataAsJson["key"];
-                    var latestAir =
-                        client.DownloadString(
-                            "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA").Split(
-                            new[] {Environment.NewLine}, StringSplitOptions.None)[0];
-                    var pkgManifest =
-                        client.DownloadString(
-                            string.Format(
-                                "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
-                                latestAir)).Split(new []{Environment.NewLine}, StringSplitOptions.None);
-                    foreach (var stream in from data in pkgManifest where data.Contains("square") && data.Contains((string) champsDataAsJson["name"]) select (HttpWebRequest)HttpWebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream()) {
-                        champItem.Img.Source = ToWpfBitmap(Image.FromStream(stream));
+                    using (var client = new WebClient())
+                    {
+                        var freeToPlayChamps = client.DownloadString(
+                            "http://cdn.leagueoflegends.com/patcher/data/regions/na/champData/freeToPlayChamps.json");
+                        var champsAsJson = JsonConvert.DeserializeObject<Champions>(freeToPlayChamps);
+                        foreach (var champs in champsAsJson.champions)
+                        {
+                            FreeWeekChampion champItem = null;
+                            Client.RunAsyncOnUIThread(() => champItem = new FreeWeekChampion());
+                            var champDataJson =
+                                client.DownloadString(
+                                    string.Format("http://cdn.leagueoflegends.com/patcher/data/locales/en_US/champData/champData{0}.json", champs.id));
+                            var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, Object>>(champDataJson);
+                            Client.RunAsyncOnUIThread(() => champItem.ChampName.Content = champsDataAsJson["key"]);
+                            var latestAir =
+                                client.DownloadString(
+                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA").Split(
+                                    new[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                            var pkgManifest =
+                                client.DownloadString(
+                                    string.Format(
+                                        "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
+                                        latestAir)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                            foreach (var stream in from data in pkgManifest where data.Contains((string)champsDataAsJson["key"] + "_0.") select (HttpWebRequest)HttpWebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream())
+                            {
+                                Client.RunAsyncOnUIThread(() => champItem.Img.Source = ToWpfBitmap(Image.FromStream(stream)));
+                            }
+
+                            Client.RunOnUIThread(() => champView.Items.Add(champItem));
+                        }
                     }
-                    champView.Items.Add(champItem);
-                }
-            }
+                });
+            x.Start();
         }
+
+        private bool loaded;
+
+        private void Status()
+        {
+            var t = new Thread(() =>
+                {
+                    using (var client = new WebClient())
+                    {
+                        var news = client.DownloadString("http://ll.leagueoflegends.com/pages/launcher/na").
+                            Replace("refreshContent(", "").Replace(");", "");
+                        var NewsJson = JsonConvert.DeserializeObject<RootObject>(news);
+                        Client.RunOnUIThread(() =>
+                            {
+                                var item = new CurrentStatus { StatusLabel = { Content = "LOLServers" } };
+                                item.UpdateStatus(
+                                    NewsJson.status ? PatcherElements.Status.Down : PatcherElements.Status.Up);
+                                StatusView.Items.Add(item);
+                            });
+                        WebRequest request = WebRequest.Create("http://legendaryclient.net");
+                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                        Client.RunOnUIThread(() =>
+                        {
+                            var item = new CurrentStatus { StatusLabel = { Content = "LegendaryClient website" } };
+                            item.UpdateStatus(
+                                response.StatusCode != HttpStatusCode.OK
+                                    ? PatcherElements.Status.Down
+                                    : PatcherElements.Status.Up);
+                            StatusView.Items.Add(item);
+                        });
+                        request = WebRequest.Create("http://forums.legendaryclient.net");
+                        response = (HttpWebResponse)request.GetResponse();
+                        Client.RunOnUIThread(() =>
+                        {
+                            var item = new CurrentStatus { StatusLabel = { Content = "LegendaryClient forums" } };
+                            item.UpdateStatus(
+                                response.StatusCode != HttpStatusCode.OK
+                                    ? PatcherElements.Status.Down
+                                    : PatcherElements.Status.Up);
+                            StatusView.Items.Add(item);
+                        });
+                        if (loaded)
+                            return;
+                        //Might as well load news
+                        foreach (var n in NewsJson.news)
+                        {
+                            Client.RunOnUIThread(() =>
+                                {
+                                    var item = new NewsItem
+                                    {
+                                        TitleLabel = { Content = n.title },
+                                        TimeLabel = { Content = n.date },
+                                        ContentBox = { Visibility = Visibility.Hidden },
+                                        Height = 26,
+                                        Tag = n.url.Replace(@"\/", @"/"),
+                                        Width = 300
+                                    };
+                                    NewsBox.Items.Add(item);
+                                });
+                        }
+                        foreach (var x in NewsJson.community)
+                        {
+                            Client.RunOnUIThread(() =>
+                            {
+                                var item = new NewsItem { TitleLabel = { Content = x.title }, Width = 300 };
+                                item.ContentBox.AppendText(x.promoText);
+                                item.TimeLabel.Visibility = Visibility.Hidden;
+                                item.Tag = new Dictionary<string, object>
+                                {
+                                    { "imgUrl", x.imageUrl },
+                                    { "thumbUrl", x.thumbUrl },
+                                    { "linkUrl", x.linkUrl }
+                                };
+                                NewsBox.Items.Add(item);
+                            });
+                        }
+                        loaded = true;
+                    }
+                });
+            t.Start();
+        }
+
+        private void Update_OnClick(object sender, RoutedEventArgs e)
+        {
+            StatusView.Items.Clear();
+            Status();
+        }
+
         public static BitmapSource ToWpfBitmap(Image bitmap)
         {
             using (var stream = new MemoryStream())
@@ -230,5 +317,30 @@ namespace LegendaryClient.Patcher.Pages
     public class Champions
     {
         public List<Champion> champions { get; set; }
+    }
+
+    //News
+    public class News
+    {
+        public string title { get; set; }
+        public string url { get; set; }
+        public string date { get; set; }
+    }
+
+    public class Community
+    {
+        public string title { get; set; }
+        public string promoText { get; set; }
+        public string imageUrl { get; set; }
+        public string thumbUrl { get; set; }
+        public string linkUrl { get; set; }
+    }
+
+    public class RootObject
+    {
+        public bool status { get; set; }
+        public int serverStatus { get; set; }
+        public List<News> news { get; set; }
+        public List<Community> community { get; set; }
     }
 }

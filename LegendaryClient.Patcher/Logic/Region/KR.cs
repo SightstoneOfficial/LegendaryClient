@@ -2,8 +2,7 @@
 
 namespace LegendaryClient.Patcher.Logic.Region
 {
-    // ReSharper disable once InconsistentNaming
-    internal class NA : MainRegion
+    class KR : MainRegion
     {
         public override string RegionName
         {
@@ -19,7 +18,7 @@ namespace LegendaryClient.Patcher.Logic.Region
         {
             get
             {
-                return RegionType.Riot;
+                return RegionType.KR;
             }
         }
 

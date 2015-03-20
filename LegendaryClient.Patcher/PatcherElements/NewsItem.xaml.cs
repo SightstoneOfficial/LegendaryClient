@@ -1,11 +1,11 @@
 ﻿namespace LegendaryClient.Patcher.PatcherElements
 {
     /// <summary>
-    ///     Interaction logic for FreeWeekChampion.xaml
+    /// Interaction logic for NewsItem.xaml
     /// </summary>
-    public partial class FreeWeekChampion
+    public partial class NewsItem
     {
-        public FreeWeekChampion()
+        public NewsItem()
         {
             InitializeComponent();
         }

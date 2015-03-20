@@ -1,4 +1,5 @@
-﻿#region
+﻿// ReSharper disable InconsistentNaming
+#region
 
 using System;
 using System.IO;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using ComponentAce.Compression.Libs.zlib;
+using LegendaryClient.Patcher.Logic.Region;
 
 #endregion
 
@@ -20,20 +22,17 @@ namespace LegendaryClient.Patcher.Logic
         /// <summary>
         ///     Gets the Latest LeagueOfLegends lol_game_client_sln version
         /// </summary>
-        public string[] GetLolClientSlnVersion()
+        public string[] GetLolClientSlnVersion(MainRegion Region)
         {
             //Get the GameClientSln version
             using (new WebClient())
             {
-                ReleaseListing =
-                    new WebClient().DownloadString(
-                        "http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_NA");
+                ReleaseListing = new WebClient().DownloadString(Region.GameReleaseListingUri);
             }
 
             return ReleaseListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
         }
 
-        // ReSharper disable once InconsistentNaming
         public string GetLatestLCLOLVersion()
         {
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")))
@@ -51,9 +50,9 @@ namespace LegendaryClient.Patcher.Logic
         /// <returns>
         ///     The SolutionManifest file from riot
         /// </returns>
-        public string CreateConfigurationManifest()
+        public string CreateConfigurationManifest(MainRegion Region)
         {
-            string latestSlnVersion = Convert.ToString(GetLolClientSlnVersion());
+            string latestSlnVersion = Convert.ToString(GetLolClientSlnVersion(Region));
             //Get GameClient Language files
             using (new WebClient())
             {

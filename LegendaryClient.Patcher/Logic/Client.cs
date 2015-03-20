@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 #endregion
 
@@ -36,7 +37,7 @@ namespace LegendaryClient.Patcher.Logic
         /// <summary>
         ///     MainWindow
         /// </summary>
-        internal static Window Win;
+        internal static MainWindow Win;
 
         /// <summary>
         ///     Used to swich pages
@@ -56,6 +57,18 @@ namespace LegendaryClient.Patcher.Logic
 
         internal static Type CurrentPage; //Stop changing to same page
         internal static List<Page> CachedPages = new List<Page>();
+
+        // ReSharper disable once InconsistentNaming
+        internal static void RunOnUIThread(Action function)
+        {
+            MainHolder.Dispatcher.BeginInvoke(DispatcherPriority.Input, function);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        internal static async void RunAsyncOnUIThread(Action function)
+        {
+            await MainHolder.Dispatcher.BeginInvoke(DispatcherPriority.Input, function);
+        }
 
         internal static void SwitchPage<T>(bool fade = false, params object[] args)
         {

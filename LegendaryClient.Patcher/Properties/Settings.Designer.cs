@@ -22,5 +22,65 @@ namespace LegendaryClient.Patcher.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("NA")]
+        public string Region {
+            get {
+                return ((string)(this["Region"]));
+            }
+            set {
+                this["Region"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.0.0.0")]
+        public string CurrentGCVersion {
+            get {
+                return ((string)(this["CurrentGCVersion"]));
+            }
+            set {
+                this["CurrentGCVersion"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UpdateRiotClient {
+            get {
+                return ((bool)(this["UpdateRiotClient"]));
+            }
+            set {
+                this["UpdateRiotClient"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0.0.0.0")]
+        public string CurrentRCVersino {
+            get {
+                return ((string)(this["CurrentRCVersino"]));
+            }
+            set {
+                this["CurrentRCVersino"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseP2P {
+            get {
+                return ((bool)(this["UseP2P"]));
+            }
+            set {
+                this["UseP2P"] = value;
+            }
+        }
     }
 }

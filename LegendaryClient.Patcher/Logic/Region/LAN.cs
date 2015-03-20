@@ -2,8 +2,7 @@
 
 namespace LegendaryClient.Patcher.Logic.Region
 {
-    // ReSharper disable once InconsistentNaming
-    internal class NA : MainRegion
+    class LAN : MainRegion
     {
         public override string RegionName
         {

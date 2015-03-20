@@ -2,12 +2,11 @@
 
 namespace LegendaryClient.Patcher.Logic.Region
 {
-    // ReSharper disable once InconsistentNaming
-    internal class NA : MainRegion
+    class BR : MainRegion
     {
         public override string RegionName
         {
-            get { return ""; }
+            get { return "BR"; }
         }
 
         public override string[] Locals
@@ -27,7 +26,7 @@ namespace LegendaryClient.Patcher.Logic.Region
         {
             get
             {
-                return new Uri("");
+                return new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/{0}/solutionmanifest");
             }
         }
 
@@ -35,7 +34,7 @@ namespace LegendaryClient.Patcher.Logic.Region
         {
             get
             {
-                return new Uri("");
+                return new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_BR");
             }
         }
 
