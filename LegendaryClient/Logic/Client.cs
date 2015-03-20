@@ -550,7 +550,7 @@ namespace LegendaryClient.Logic
             sb.Append("</wins><leaves>0</leaves><odinWins>0</odinWins><odinLeaves>0</odinLeaves>"); // TODO
             sb.Append("<queueType />");
             sb.Append("<rankedLosses>0</rankedLosses><rankedRating>0</rankedRating>"); // unused for now
-            if (IsRanked)
+            if (!IsRanked)
                 sb.Append("<tier>UNRANKED</tier>");
             else
                 sb.Append("<tier>" + TierName + "</tier>");
