@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Net;
 
-#endregion
-
-namespace RiotPatch.RADS.projects.lol_air_client
+namespace LegendaryClient.Logic.Patcher
 {
     public class DownloadAir
     {
@@ -31,7 +27,7 @@ namespace RiotPatch.RADS.projects.lol_air_client
             string latestAirList =
                 new WebClient().DownloadString(
                     "http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_NA");
-            string[] latestAir = latestAirList.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+            string[] latestAir = latestAirList.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             return latestAir[0];
         }
 
@@ -47,7 +43,7 @@ namespace RiotPatch.RADS.projects.lol_air_client
                     "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" + latestVersion +
                     "/packages/files/packagemanifest");
             string[] fileMetaData =
-                package.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
+                package.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
             return fileMetaData;
         }
 
