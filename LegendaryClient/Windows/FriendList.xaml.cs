@@ -1,9 +1,14 @@
-﻿#region
-
+﻿using jabber;
+using jabber.protocol.client;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
 using System.Linq;
 using System.Threading;
 using System.Timers;
@@ -12,18 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using jabber;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 using Timer = System.Timers.Timer;
-using System.Diagnostics;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -42,7 +36,6 @@ namespace LegendaryClient.Windows
         {
 
             InitializeComponent();
-            loaded = false;
             if (Settings.Default.StatusMsg != "Set your status message")
                 StatusBox.Text = Settings.Default.StatusMsg;
             UpdateTimer = new Timer(5000);
@@ -106,7 +99,7 @@ namespace LegendaryClient.Windows
                     playersListView.Foreground = Brushes.White;
                     playersListView.Background = null;
                     playersListView.BorderBrush = null;
-                    playersListView.MouseDoubleClick += PlayersListView_MouseDoubleClick;
+                    playersListView.MouseDoubleClick += PlayersListView_MousedoubleClick;
                     playersListView.SelectionChanged += ChatListView_SelectionChanged;
                     playersListView.PreviewMouseWheel += PlayersListView_PreviewMouseWheel;
 
@@ -213,7 +206,7 @@ namespace LegendaryClient.Windows
                         groupControl.ExpandLabel.Content = "-";
                         groupControl.GroupListView.Visibility = Visibility.Visible;
                     }
-                    if (!String.IsNullOrEmpty(g.GroupName))
+                    if (!string.IsNullOrEmpty(g.GroupName))
                         ChatListView.Children.Add(groupControl);
                     else Client.Log("Removed a group");
                 }
@@ -235,7 +228,7 @@ namespace LegendaryClient.Windows
             LastPlayerItem = playerItem;
         }
 
-        private void PlayersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void PlayersListView_MousedoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (selection.AddedItems.Count <= 0)
                 return;

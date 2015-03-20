@@ -40,18 +40,18 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook
         public List<TalentEntry> TalentEntries { get; set; }
 
         [InternalName("pageId")]
-        public Double PageId { get; set; }
+        public double PageId { get; set; }
 
         [InternalName("name")]
         public string Name { get; set; }
 
         [InternalName("current")]
-        public Boolean Current { get; set; }
+        public bool Current { get; set; }
 
         [InternalName("createDate")]
         public object CreateDate { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

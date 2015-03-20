@@ -36,12 +36,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         }
 
         [InternalName("championId")]
-        public Double ChampionId { get; set; }
+        public double ChampionId { get; set; }
 
         [InternalName("teamId")]
         public int TeamId { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

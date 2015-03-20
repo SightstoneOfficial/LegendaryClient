@@ -1,14 +1,5 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Logic;
 using System.Windows;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Harassment;
-using System.Windows.Documents;
-using System.Windows.Controls;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {

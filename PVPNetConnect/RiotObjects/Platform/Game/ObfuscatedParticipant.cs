@@ -42,7 +42,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int Index { get; set; }
 
         [InternalName("clientInSynch")]
-        public Boolean ClientInSynch { get; set; }
+        public bool ClientInSynch { get; set; }
 
         [InternalName("gameUniqueId")]
         public int GameUniqueId { get; set; }

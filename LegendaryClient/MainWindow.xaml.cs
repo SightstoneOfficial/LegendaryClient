@@ -113,7 +113,6 @@ namespace LegendaryClient
             NotificationContainer.Content = Client.notificationPage.Content;
             Client.statusPage = new StatusPage();
             StatusContainer.Content = Client.statusPage.Content;
-            NotificationOverlayContainer.Content = new FakePage().Content;
 
             Grid NotificationTempGrid = null;
             foreach (var x in NotificationOverlayContainer.GetChildObjects().OfType<Grid>())
@@ -141,7 +140,7 @@ namespace LegendaryClient
             Client.AmbientSoundPlayer = ASoundPlayer;
             Client.SwitchPage(new PatcherPage());
 
-            if (!String.IsNullOrEmpty(Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
+            if (!string.IsNullOrEmpty(Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
             {
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
                     Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
@@ -199,7 +198,7 @@ namespace LegendaryClient
             }       
         }
 
-        private void ProfileButton_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ProfileButton_MousedoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (Client.IsLoggedIn)
             {
@@ -262,7 +261,7 @@ namespace LegendaryClient
         public void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Settings.Default.AutoLogin = false;
-            if (Client.IsLoggedIn && !String.Equals(Client.GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
+            if (Client.IsLoggedIn && !string.Equals(Client.GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 (Client.MainWin as MainWindow).FullNotificationOverlayContainer.Visibility = Visibility.Hidden;

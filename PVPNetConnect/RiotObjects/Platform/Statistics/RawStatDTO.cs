@@ -36,12 +36,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         }
 
         [InternalName("value")]
-        public Double Value { get; set; }
+        public double Value { get; set; }
 
         [InternalName("statTypeName")]
         public string StatTypeName { get; set; }
 
         [InternalName("futureData")]
-        public new Boolean FutureData { get; set; }
+        public new bool FutureData { get; set; }
     }
 }

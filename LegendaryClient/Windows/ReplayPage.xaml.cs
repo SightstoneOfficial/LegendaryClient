@@ -149,7 +149,7 @@ namespace LegendaryClient.Windows
                     item.TeamTwoPanel.Children.Add(image);
 
                 item.MouseDown += item_MouseDown;
-                item.GameId.MouseDoubleClick += GameId_MouseDoubleClick;
+                item.GameId.MouseDoubleClick += GameId_MousedoubleClick;
                 item.GameId.MouseLeave += GameId_MouseLeave;
                 item.KeyDown += item_KeyDown;
 
@@ -343,7 +343,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void GameId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void GameId_MousedoubleClick(object sender, MouseButtonEventArgs e)
         {
             var item = (TextBox)sender;
             if (!item.IsReadOnly)

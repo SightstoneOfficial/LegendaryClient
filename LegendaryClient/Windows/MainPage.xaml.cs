@@ -484,7 +484,7 @@ namespace LegendaryClient.Windows
                         item.Tag = kvPair.Value;
 
                     // Image
-                    if (!String.IsNullOrEmpty(imageUri))
+                    if (!string.IsNullOrEmpty(imageUri))
                     {
                         var promoImage = new BitmapImage(new Uri("http://" + region.RegionName + ".leagueoflegends.com/" + imageUri, UriKind.Absolute));
                         item.PromoImage.Stretch = Stretch.Fill;

@@ -37,7 +37,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         }
 
         [InternalName("limit")]
-        public Double Limit { get; set; }
+        public double Limit { get; set; }
 
         [InternalName("matchingThrottleProperties")]
         public List<object> MatchingThrottleProperties { get; set; }

@@ -14,10 +14,10 @@
     <Setting Name="LoginPageImage" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="DisableLoginMusic" Type="System.Boolean" Scope="User">
+    <Setting Name="DisableLoginMusic" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DarkTheme" Type="System.Boolean" Scope="User">
+    <Setting Name="DarkTheme" Type="System.bool" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="StatusMsg" Type="System.String" Scope="User">
@@ -26,13 +26,13 @@
     <Setting Name="ChatStatus" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="GatherStatistics" Type="System.Boolean" Scope="User">
+    <Setting Name="GatherStatistics" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="SendErrors" Type="System.Boolean" Scope="User">
+    <Setting Name="SendErrors" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="AutoLogin" Type="System.Boolean" Scope="User">
+    <Setting Name="AutoLogin" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DevVersion" Type="System.String" Scope="User">
@@ -47,16 +47,16 @@
     <Setting Name="Guid" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="UseAsBackgroundImage" Type="System.Boolean" Scope="User">
+    <Setting Name="UseAsBackgroundImage" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="AutoRecordGames" Type="System.Boolean" Scope="User">
+    <Setting Name="AutoRecordGames" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="warnClose" Type="System.Boolean" Scope="User">
+    <Setting Name="warnClose" Type="System.bool" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="incognitoLogin" Type="System.Boolean" Scope="User">
+    <Setting Name="incognitoLogin" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="devKeyLoc" Type="System.String" Scope="User">
@@ -77,19 +77,19 @@
     <Setting Name="GarenaLocation" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="PickBanFocus" Type="System.Boolean" Scope="User">
+    <Setting Name="PickBanFocus" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="PickBanFlash" Type="System.Boolean" Scope="User">
+    <Setting Name="PickBanFlash" Type="System.bool" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="ReplayServer" Type="System.Boolean" Scope="User">
+    <Setting Name="ReplayServer" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DefaultGarenaRegion" Type="System.String" Scope="User">
       <Value Profile="(Default)">PH</Value>
     </Setting>
-    <Setting Name="AutoPlay" Type="System.Boolean" Scope="User">
+    <Setting Name="AutoPlay" Type="System.bool" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>

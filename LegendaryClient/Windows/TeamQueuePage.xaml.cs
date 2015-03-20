@@ -632,7 +632,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        internal List<Int32> QueueIds;
+        internal List<int> QueueIds;
 
         private bool inQueue;
 

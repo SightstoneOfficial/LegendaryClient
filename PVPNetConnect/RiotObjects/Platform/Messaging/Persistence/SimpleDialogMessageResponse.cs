@@ -39,10 +39,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Messaging.Persistence
         public string Command { get; set; }
 
         [InternalName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [InternalName("msgId")]
-        public Double MessageId { get; set; }
+        public double MessageId { get; set; }
 
     }
 }

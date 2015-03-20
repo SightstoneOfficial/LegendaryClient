@@ -1,13 +1,7 @@
-﻿#region
-
-using PVPNetConnect;
+﻿using PVPNetConnect;
 using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Web.Script.Serialization;
-
-#endregion
 
 namespace LegendaryClient.Logic.JSON
 {

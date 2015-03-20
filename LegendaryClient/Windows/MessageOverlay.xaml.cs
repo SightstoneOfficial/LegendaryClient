@@ -1,11 +1,5 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Logic;
 using System.Windows;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {

@@ -1,15 +1,14 @@
-﻿using System;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 
 namespace LegendaryClient.Windows
 {
@@ -24,7 +23,7 @@ namespace LegendaryClient.Windows
         public SelectChampOverlay(TeamQueuePage tqp)
         {
             InitializeComponent();
-            this.teamQueuePage = tqp;
+            teamQueuePage = tqp;
             ChampionSelectListView.Items.Clear();
             if (true)
             {
@@ -107,7 +106,7 @@ namespace LegendaryClient.Windows
 
             List<ChampionDTO> tempList = ChampList.ToList();
 
-            if (SearchTextBox.Text != "Search" && !String.IsNullOrEmpty(SearchTextBox.Text))
+            if (SearchTextBox.Text != "Search" && !string.IsNullOrEmpty(SearchTextBox.Text))
             {
                 tempList =
                     tempList.Where(

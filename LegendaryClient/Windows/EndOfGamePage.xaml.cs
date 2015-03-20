@@ -1,5 +1,12 @@
-﻿#region
-
+﻿using jabber;
+using jabber.connection;
+using jabber.protocol.client;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.PlayerSpell;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,17 +19,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.PlayerSpell;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -117,7 +113,7 @@ namespace LegendaryClient.Windows
             ModeLabel.Content = statistics.GameMode;
             TypeLabel.Content = statistics.GameType;
             // Add Garena TW match history
-            if (Client.Garena && !String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion) && Settings.Default.DefaultGarenaRegion == "TW")
+            if (Client.Garena && !string.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion) && Settings.Default.DefaultGarenaRegion == "TW")
                 MatchStatsOnline = string.Format("http://lol.moa.tw/summoner/show/{0}#tabs-recentgame2", statistics.SummonerName.Replace(" ", "_"));
             else
                 MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + statistics.ReportGameId + "/" + statistics.UserId;

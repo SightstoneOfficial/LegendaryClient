@@ -1,16 +1,11 @@
-﻿#region
-
+﻿using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Icon;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Icon;
 using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Icon;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Icon;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {

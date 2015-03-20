@@ -48,6 +48,6 @@ namespace PVPNetConnect.RiotObjects.Team.Dto
         public string Status { get; set; }
 
         [InternalName("playerId")]
-        public Double PlayerId { get; set; }
+        public double PlayerId { get; set; }
     }
 }

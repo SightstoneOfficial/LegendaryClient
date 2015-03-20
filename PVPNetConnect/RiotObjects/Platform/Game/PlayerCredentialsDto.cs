@@ -39,7 +39,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public string EncryptionKey { get; set; }
 
         [InternalName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [InternalName("lastSelectedSkinIndex")]
         public int LastSelectedSkinIndex { get; set; }
@@ -51,13 +51,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public string ServerIp { get; set; }
 
         [InternalName("observer")]
-        public Boolean Observer { get; set; }
+        public bool Observer { get; set; }
 
         [InternalName("futureData")]
-        public new Boolean FutureData { get; set; }
+        public new bool FutureData { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [InternalName("observerServerIp")]
         public string ObserverServerIp { get; set; }
@@ -66,7 +66,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public string HandshakeToken { get; set; }
 
         [InternalName("playerId")]
-        public Double PlayerId { get; set; }
+        public double PlayerId { get; set; }
 
         [InternalName("serverPort")]
         public int ServerPort { get; set; }

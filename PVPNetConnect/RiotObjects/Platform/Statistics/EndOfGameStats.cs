@@ -41,10 +41,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public int TalentPointsGained { get; set; }
 
         [InternalName("ranked")]
-        public Boolean Ranked { get; set; }
+        public bool Ranked { get; set; }
 
         [InternalName("leveledUp")]
-        public Boolean LeveledUp { get; set; }
+        public bool LeveledUp { get; set; }
 
         [InternalName("skinIndex")]
         public int SkinIndex { get; set; }
@@ -56,10 +56,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public string GameType { get; set; }
 
         [InternalName("experienceEarned")]
-        public Double ExperienceEarned { get; set; }
+        public double ExperienceEarned { get; set; }
 
         [InternalName("imbalancedTeamsNoPoints")]
-        public Boolean ImbalancedTeamsNoPoints { get; set; }
+        public bool ImbalancedTeamsNoPoints { get; set; }
 
         [InternalName("teamPlayerParticipantStats")]
         public List<PlayerParticipantStatsSummary> TeamPlayerParticipantStats { get; set; }
@@ -74,13 +74,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public string Difficulty { get; set; }
 
         [InternalName("gameLength")]
-        public Double GameLength { get; set; }
+        public double GameLength { get; set; }
 
         [InternalName("boostXpEarned")]
-        public Double BoostXpEarned { get; set; }
+        public double BoostXpEarned { get; set; }
 
         [InternalName("invalid")]
-        public Boolean Invalid { get; set; }
+        public bool Invalid { get; set; }
 
         [InternalName("otherTeamInfo")]
         public TeamInfo OtherTeamInfo { get; set; }
@@ -104,34 +104,34 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public List<PlayerParticipantStatsSummary> OtherTeamPlayerParticipantStats { get; set; }
 
         [InternalName("loyaltyBoostIpEarned")]
-        public Double LoyaltyBoostIpEarned { get; set; }
+        public double LoyaltyBoostIpEarned { get; set; }
 
         [InternalName("rpEarned")]
-        public Double RpEarned { get; set; }
+        public double RpEarned { get; set; }
 
         [InternalName("completionBonusPoints")]
         public int CompletionBonusPoints { get; set; }
 
         [InternalName("coOpVsAiMsecsUntilReset")]
-        public Double CoOpVsAiMsecsUntilReset { get; set; }
+        public double CoOpVsAiMsecsUntilReset { get; set; }
 
         [InternalName("boostIpEarned")]
-        public Double BoostIpEarned { get; set; }
+        public double BoostIpEarned { get; set; }
 
         [InternalName("newSpells")]
         public List<object> NewSpells { get; set; }
 
         [InternalName("experienceTotal")]
-        public Double ExperienceTotal { get; set; }
+        public double ExperienceTotal { get; set; }
 
         [InternalName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [InternalName("timeUntilNextFirstWinBonus")]
-        public Double TimeUntilNextFirstWinBonus { get; set; }
+        public double TimeUntilNextFirstWinBonus { get; set; }
 
         [InternalName("loyaltyBoostXpEarned")]
-        public Double LoyaltyBoostXpEarned { get; set; }
+        public double LoyaltyBoostXpEarned { get; set; }
 
         [InternalName("roomPassword")]
         public string RoomPassword { get; set; }
@@ -140,13 +140,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public int Elo { get; set; }
 
         [InternalName("ipEarned")]
-        public Double IpEarned { get; set; }
+        public double IpEarned { get; set; }
 
         [InternalName("firstWinBonus")]
-        public Double FirstWinBonus { get; set; }
+        public double FirstWinBonus { get; set; }
 
         [InternalName("sendStatsToTournamentProvider")]
-        public Boolean SendStatsToTournamentProvider { get; set; }
+        public bool SendStatsToTournamentProvider { get; set; }
 
         [InternalName("eloChange")]
         public int EloChange { get; set; }
@@ -167,15 +167,15 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public string MyTeamStatus { get; set; }
 
         [InternalName("ipTotal")]
-        public Double IpTotal { get; set; }
+        public double IpTotal { get; set; }
 
         [InternalName("summonerName")]
         public string SummonerName { get; set; }
 
         [InternalName("customMsecsUntilReset")]
-        public Double CustomMsecsUntilReset { get; set; }
+        public double CustomMsecsUntilReset { get; set; }
 
         [InternalName("rerollEarned")]
-        public Double RerollPointsEarned { get; set; }
+        public double RerollPointsEarned { get; set; }
     }
 }

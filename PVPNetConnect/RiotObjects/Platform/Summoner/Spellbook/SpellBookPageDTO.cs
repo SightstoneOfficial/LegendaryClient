@@ -52,6 +52,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook
         public int PageId { get; set; }
 
         [InternalName("current")]
-        public Boolean Current { get; set; }
+        public bool Current { get; set; }
     }
 }

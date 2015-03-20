@@ -45,7 +45,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public DateTime PreviousFirstWinOfDay { get; set; }
 
         [InternalName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [InternalName("dodgeStreak")]
         public int DodgeStreak { get; set; }

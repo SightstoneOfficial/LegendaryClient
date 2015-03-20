@@ -39,7 +39,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         public string InternalName { get; set; }
 
         [InternalName("acctId")]
-        public Double AcctId { get; set; }
+        public double AcctId { get; set; }
 
         [InternalName("name")]
         public string Name { get; set; }
@@ -51,12 +51,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         public DateTime RevisionDate { get; set; }
 
         [InternalName("revisionId")]
-        public Double RevisionId { get; set; }
+        public double RevisionId { get; set; }
 
         [InternalName("summonerLevel")]
-        public Double SummonerLevel { get; set; }
+        public double SummonerLevel { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

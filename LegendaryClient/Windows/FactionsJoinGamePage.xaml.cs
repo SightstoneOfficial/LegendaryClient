@@ -66,7 +66,7 @@ namespace LegendaryClient.Windows
 
         private void PasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            JoinGameButton.IsEnabled = !String.IsNullOrEmpty("factions");
+            JoinGameButton.IsEnabled = !string.IsNullOrEmpty("factions");
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
@@ -79,7 +79,7 @@ namespace LegendaryClient.Windows
                 gameId = item.Id;
                 gameName = item.GameName;
             }
-            if (!String.IsNullOrEmpty("factions"))
+            if (!string.IsNullOrEmpty("factions"))
                 Client.PVPNet.JoinGame(gameId, "factions");
             else
                 Client.PVPNet.JoinGame(gameId);
@@ -105,7 +105,7 @@ namespace LegendaryClient.Windows
                 )
                 isPrivate = true;
 
-            if ((!isPrivate) || (isPrivate && !String.IsNullOrEmpty("factions")))
+            if ((!isPrivate) || (isPrivate && !string.IsNullOrEmpty("factions")))
                 JoinGameButton.IsEnabled = true;
         }
 

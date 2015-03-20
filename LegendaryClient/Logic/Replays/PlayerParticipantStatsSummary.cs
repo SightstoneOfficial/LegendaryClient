@@ -1,10 +1,6 @@
-﻿#region
-
+﻿using RtmpSharp.IO;
 using System;
 using System.Collections.Generic;
-using RtmpSharp.IO;
-
-#endregion
 
 namespace LegendaryClient.Logic.Replays
 {
@@ -16,7 +12,7 @@ namespace LegendaryClient.Logic.Replays
         public string SkinName { get; set; }
 
         [SerializedName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [SerializedName("profileIconId")]
         public int ProfileIconId { get; set; }
@@ -25,13 +21,13 @@ namespace LegendaryClient.Logic.Replays
         public int Elo { get; set; }
 
         [SerializedName("leaver")]
-        public Boolean Leaver { get; set; }
+        public bool Leaver { get; set; }
 
         [SerializedName("leaves")]
-        public Double Leaves { get; set; }
+        public double Leaves { get; set; }
 
         [SerializedName("teamId")]
-        public Double TeamId { get; set; }
+        public double TeamId { get; set; }
 
         [SerializedName("eloChange")]
         public int EloChange { get; set; }
@@ -40,42 +36,42 @@ namespace LegendaryClient.Logic.Replays
         public List<RawStatDTO> Statistics { get; set; }
 
         [SerializedName("level")]
-        public Double Level { get; set; }
+        public double Level { get; set; }
 
         [SerializedName("botPlayer")]
-        public Boolean BotPlayer { get; set; }
+        public bool BotPlayer { get; set; }
 
         [SerializedName("isMe")]
-        public Boolean IsMe { get; set; }
+        public bool IsMe { get; set; }
 
         [SerializedName("inChat")]
-        public Boolean InChat { get; set; }
+        public bool InChat { get; set; }
 
         [SerializedName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [SerializedName("spell2Id")]
-        public Double Spell2Id { get; set; }
+        public double Spell2Id { get; set; }
 
         [SerializedName("losses")]
-        public Double Losses { get; set; }
+        public double Losses { get; set; }
 
         [SerializedName("summonerName")]
         public string SummonerName { get; set; }
 
         [SerializedName("wins")]
-        public Double Wins { get; set; }
+        public double Wins { get; set; }
 
         [SerializedName("spell1Id")]
-        public Double Spell1Id { get; set; }
+        public double Spell1Id { get; set; }
 
         [SerializedName("teamInfo")]
         public TeamInfo TeamInfo { get; set; }
 
         [SerializedName("reportEnabled")]
-        public Boolean ReportEnabled { get; set; }
+        public bool ReportEnabled { get; set; }
 
         [SerializedName("kudosEnabled")]
-        public Boolean KudosEnabled { get; set; }
+        public bool KudosEnabled { get; set; }
     }
 }

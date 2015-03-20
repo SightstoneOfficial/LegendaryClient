@@ -48,22 +48,22 @@ namespace PVPNetConnect.RiotObjects.Team.Stats
         public string OpposingTeamName { get; set; }
 
         [InternalName("invalid")]
-        public Boolean Invalid { get; set; }
+        public bool Invalid { get; set; }
 
         [InternalName("deaths")]
         public int Deaths { get; set; }
 
         [InternalName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [InternalName("kills")]
         public int Kills { get; set; }
 
         [InternalName("win")]
-        public Boolean Win { get; set; }
+        public bool Win { get; set; }
 
         [InternalName("date")]
-        public Double Date { get; set; }
+        public double Date { get; set; }
 
         [InternalName("opposingTeamKills")]
         public int OpposingTeamKills { get; set; }

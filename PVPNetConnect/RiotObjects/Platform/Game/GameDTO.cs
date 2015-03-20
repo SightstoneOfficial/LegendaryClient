@@ -40,7 +40,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public string SpectatorsAllowed { get; set; }
 
         [InternalName("passwordSet")]
-        public Boolean PasswordSet { get; set; }
+        public bool PasswordSet { get; set; }
 
         [InternalName("gameType")]
         public string GameType { get; set; }
@@ -67,7 +67,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int GlmSecurePort { get; set; }
 
         [InternalName("id")]
-        public Double Id { get; set; }
+        public double Id { get; set; }
 
         [InternalName("ownerSummary")]
         public PlayerParticipant OwnerSummary { get; set; }
@@ -109,7 +109,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public string RoomPassword { get; set; }
 
         [InternalName("optimisticLock")]
-        public Double OptimisticLock { get; set; }
+        public double OptimisticLock { get; set; }
 
         [InternalName("maxNumPlayers")]
         public int MaxNumPlayers { get; set; }
@@ -121,13 +121,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public string GameMode { get; set; }
 
         [InternalName("expiryTime")]
-        public Double ExpiryTime { get; set; }
+        public double ExpiryTime { get; set; }
 
         [InternalName("mapId")]
         public int MapId { get; set; }
 
         [InternalName("banOrder")]
-        public List<Int32> BanOrder { get; set; }
+        public List<int> BanOrder { get; set; }
 
         [InternalName("pickTurn")]
         public int PickTurn { get; set; }

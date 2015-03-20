@@ -1,5 +1,7 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,12 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -26,7 +22,6 @@ namespace LegendaryClient.Windows
         internal champions TheChamp;
         private Point currentLocation;
         private Vector moveOffset;
-
 
         public ChampionDetailsPage(int championId)
         {

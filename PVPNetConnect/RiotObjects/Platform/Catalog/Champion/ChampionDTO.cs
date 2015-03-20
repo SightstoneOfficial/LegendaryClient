@@ -43,13 +43,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         public string[] secondarySearchTags { get; set; }
 
         [InternalName("ownedByYourTeam")]
-        public Boolean OwnedByYourTeam { get; set; }
+        public bool OwnedByYourTeam { get; set; }
 
         [InternalName("botEnabled")]
-        public Boolean BotEnabled { get; set; }
+        public bool BotEnabled { get; set; }
 
         [InternalName("banned")]
-        public Boolean Banned { get; set; }
+        public bool Banned { get; set; }
 
         [InternalName("skinName")]
         public string SkinName { get; set; }
@@ -61,22 +61,22 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         public TypedObject ChampionData { get; set; }
 
         [InternalName("owned")]
-        public Boolean Owned { get; set; }
+        public bool Owned { get; set; }
 
         [InternalName("championId")]
         public int ChampionId { get; set; }
 
         [InternalName("freeToPlayReward")]
-        public Boolean FreeToPlayReward { get; set; }
+        public bool FreeToPlayReward { get; set; }
 
         [InternalName("freeToPlay")]
-        public Boolean FreeToPlay { get; set; }
+        public bool FreeToPlay { get; set; }
 
         [InternalName("ownedByEnemyTeam")]
-        public Boolean OwnedByEnemyTeam { get; set; }
+        public bool OwnedByEnemyTeam { get; set; }
 
         [InternalName("active")]
-        public Boolean Active { get; set; }
+        public bool Active { get; set; }
 
         [InternalName("championSkins")]
         public List<ChampionSkinDTO> ChampionSkins { get; set; }
@@ -88,7 +88,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         public int WinCountRemaining { get; set; }
 
         [InternalName("purchaseDate")]
-        public Double PurchaseDate { get; set; }
+        public double PurchaseDate { get; set; }
 
         [InternalName("endDate")]
         public int EndDate { get; set; }

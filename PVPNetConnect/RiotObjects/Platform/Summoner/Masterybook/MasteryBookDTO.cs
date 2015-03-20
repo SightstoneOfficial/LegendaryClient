@@ -46,6 +46,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook
         public string DateString { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

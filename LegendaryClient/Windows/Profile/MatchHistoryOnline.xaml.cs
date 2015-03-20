@@ -1,16 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Threading;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Windows.Profile
 {

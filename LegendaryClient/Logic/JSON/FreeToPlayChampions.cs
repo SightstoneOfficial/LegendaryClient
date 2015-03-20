@@ -1,33 +1,29 @@
-﻿#region
-
+﻿using LegendaryClient.Logic.SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Script.Serialization;
-using LegendaryClient.Logic.SQLite;
-
-#endregion
 
 namespace LegendaryClient.Logic.JSON
 {
     internal class FreeToPlayChampions
     {
-        private static FreeToPlayChampions _instance;
-        private readonly bool _isLoaded;
-        private List<FreeToPlayChampion> _champions;
+        private static FreeToPlayChampions instance;
+        private readonly bool isLoaded;
+        private List<FreeToPlayChampion> champions;
 
         private FreeToPlayChampions()
         {
-            _isLoaded = Load();
+            isLoaded = Load();
         }
 
         public static FreeToPlayChampions GetInstance()
         {
-            if (_instance == null)
-                _instance = new FreeToPlayChampions();
+            if (instance == null)
+                instance = new FreeToPlayChampions();
 
-            return _instance._champions == null ? null : _instance;
+            return instance.champions == null ? null : instance;
         }
 
         private bool Load()
@@ -38,7 +34,7 @@ namespace LegendaryClient.Logic.JSON
                 var json =
                     client.DownloadString(
                         "http://cdn.leagueoflegends.com/patcher/data/regions/na/champData/freeToPlayChamps.json");
-                _champions = new JavaScriptSerializer().Deserialize<Response>(json).champions.ToList();
+                champions = new JavaScriptSerializer().Deserialize<Response>(json).champions.ToList();
 
                 return true;
             }
@@ -53,20 +49,20 @@ namespace LegendaryClient.Logic.JSON
 
         public bool ReloadChamps(bool force)
         {
-            if (_champions == null || force)
+            if (champions == null || force)
                 return Load();
 
-            return _champions != null;
+            return champions != null;
         }
 
         public bool IsLoaded()
         {
-            return _isLoaded;
+            return isLoaded;
         }
 
         public bool IsFreeToPlay(int id)
         {
-            return _champions.FirstOrDefault(x => x.id == id) != null;
+            return champions.FirstOrDefault(x => x.id == id) != null;
         }
 
         public bool IsFreeToPlay(champions champion)

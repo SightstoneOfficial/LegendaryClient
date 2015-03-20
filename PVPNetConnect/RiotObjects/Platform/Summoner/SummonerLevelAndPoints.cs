@@ -36,15 +36,15 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("infPoints")]
-        public Double InfPoints { get; set; }
+        public double InfPoints { get; set; }
 
         [InternalName("expPoints")]
-        public Double ExpPoints { get; set; }
+        public double ExpPoints { get; set; }
 
         [InternalName("summonerLevel")]
-        public Double SummonerLevel { get; set; }
+        public double SummonerLevel { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

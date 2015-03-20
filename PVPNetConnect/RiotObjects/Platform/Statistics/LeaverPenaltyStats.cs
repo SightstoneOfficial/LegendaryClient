@@ -45,7 +45,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public DateTime LastDecay { get; set; }
 
         [InternalName("userInformed")]
-        public Boolean UserInformed { get; set; }
+        public bool UserInformed { get; set; }
 
         [InternalName("points")]
         public int Points { get; set; }

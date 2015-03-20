@@ -37,7 +37,7 @@ namespace PVPNetConnect.RiotObjects.Team.Dto
         }
 
         [InternalName("ownerId")]
-        public Double OwnerId { get; set; }
+        public double OwnerId { get; set; }
 
         [InternalName("memberList")]
         public List<TeamMemberInfoDTO> MemberList { get; set; }

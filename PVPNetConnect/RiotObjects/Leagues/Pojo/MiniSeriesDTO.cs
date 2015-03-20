@@ -45,7 +45,7 @@ namespace PVPNetConnect.RiotObjects.Leagues.Pojo
         public int Losses { get; set; }
 
         [InternalName("timeLeftToPlayMillis")]
-        public Double TimeLeftToPlayMillis { get; set; }
+        public double TimeLeftToPlayMillis { get; set; }
 
         [InternalName("wins")]
         public int Wins { get; set; }

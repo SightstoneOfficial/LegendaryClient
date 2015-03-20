@@ -45,6 +45,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         public DateTime CreateDate { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

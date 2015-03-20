@@ -37,7 +37,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Icon
         }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [InternalName("summonerIcons")]
         public List<Platform.Catalog.Icon.Icon> SummonerIcons { get; set; }

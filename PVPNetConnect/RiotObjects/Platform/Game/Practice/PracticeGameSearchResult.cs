@@ -66,13 +66,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Game.Practice
         public string GameMode { get; set; }
 
         [InternalName("id")]
-        public Double Id { get; set; }
+        public double Id { get; set; }
 
         [InternalName("name")]
         public string Name { get; set; }
 
         [InternalName("privateGame")]
-        public Boolean PrivateGame { get; set; }
+        public bool PrivateGame { get; set; }
 
         [InternalName("owner")]
         public PlayerParticipant Owner { get; set; }

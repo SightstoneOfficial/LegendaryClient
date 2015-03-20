@@ -37,7 +37,7 @@ namespace PVPNetConnect.RiotObjects.Team.Dto
         }
 
         [InternalName("playerId")]
-        public Double PlayerId { get; set; }
+        public double PlayerId { get; set; }
 
         [InternalName("teamsSummary")]
         public List<object> TeamsSummary { get; set; }

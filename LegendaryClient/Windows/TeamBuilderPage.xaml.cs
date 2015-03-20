@@ -528,7 +528,7 @@ namespace LegendaryClient.Windows
                 PlayerListView.Items.Insert(slot.slotId, tbc);
             }
             //just for now, need2know what other statuses are there
-            if (!String.IsNullOrEmpty(slot.status) && !String.IsNullOrWhiteSpace(slot.status) &&
+            if (!string.IsNullOrEmpty(slot.status) && !string.IsNullOrWhiteSpace(slot.status) &&
                 slot.status != "POPULATED" && slot.status != "CANDIDATE_FOUND")
                 Debug.WriteLine("groupUpdatedV3 - new status found! : " + slot.status);
         }

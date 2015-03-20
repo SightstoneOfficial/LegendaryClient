@@ -1,15 +1,9 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using System.Diagnostics;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {

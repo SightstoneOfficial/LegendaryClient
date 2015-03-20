@@ -36,10 +36,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         }
 
         [InternalName("waitTime")]
-        public Double WaitTime { get; set; }
+        public double WaitTime { get; set; }
 
         [InternalName("queueId")]
-        public Double QueueId { get; set; }
+        public double QueueId { get; set; }
 
         [InternalName("queueLength")]
         public int QueueLength { get; set; }

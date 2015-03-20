@@ -88,8 +88,8 @@
         </ComboBox>
         <ListView x:Name="AvailableRuneList" Width="501" Height="435" Margin="10,100,0,0"
                   HorizontalAlignment="Left" VerticalAlignment="Top"
-                  MouseDoubleClick="AvailableRuneList_DoubleClickOrRightClick"
-                  MouseRightButtonUp="AvailableRuneList_DoubleClickOrRightClick" FontSize="16"
+                  MouseDoubleClick="AvailableRuneList_doubleClickOrRightClick"
+                  MouseRightButtonUp="AvailableRuneList_doubleClickOrRightClick" FontSize="16"
                   Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.View>
                 <GridView>

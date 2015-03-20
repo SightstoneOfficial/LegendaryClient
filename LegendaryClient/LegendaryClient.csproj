@@ -279,9 +279,6 @@
     <Compile Include="Logic\SQLite\invitationRequest.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\UpdateData.cs" />
-    <Compile Include="Logic\TempRunes\LCRunePages.cs" />
-    <Compile Include="Logic\TempRunes\LcRunes\Rune.cs" />
-    <Compile Include="Logic\TempRunes\LcRunes\RuneStats.cs" />
     <Compile Include="Logic\UpdateRegion\BaseUpdateRegion.cs" />
     <Compile Include="Logic\UpdateRegion\China.cs" />
     <Compile Include="Logic\UpdateRegion\Garena.cs" />
@@ -445,9 +442,6 @@
     </Compile>
     <Compile Include="Windows\EndOfGamePage.xaml.cs">
       <DependentUpon>EndOfGamePage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Windows\FakePage.xaml.cs">
-      <DependentUpon>FakePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -896,12 +890,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Windows\FakePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Windows\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1160,7 +1148,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Notifications\" />
     <Folder Include="Windows\Profile\Teams\" />
   </ItemGroup>
   <ItemGroup>

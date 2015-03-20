@@ -2,7 +2,6 @@
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
