@@ -8,6 +8,19 @@
       mc:Ignorable="d" d:DesignHeight="640"
       d:DesignWidth="250">
 
+    <Page.Resources>
+        <ResourceDictionary>
+            <ContextMenu x:Key="PlayerChatMenu">
+                <MenuItem x:Name="Invite" Header="Invite to Game" Click="Invite_Click" />
+                <MenuItem x:Name="ProfileItem" Header="View Profile" Click="ProfileItem_Click" />
+                <MenuItem Header="Invite to Chat" />
+                <MenuItem Header="Remove Friend" Click="RemoveFriend_Click"/>
+                <MenuItem Header="Block Friend" Click="BlockFriend_Click"/>
+                <MenuItem Header="Spectate Game" Click="SpectateGame_Click"/>
+            </ContextMenu>
+        </ResourceDictionary>
+    </Page.Resources>
+    
     <Grid x:Name="TheGrid" Background="#E5000000">
         <ComboBox x:Name="PresenceChanger" Margin="5,5,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{DynamicResource ChatStates}" SelectedIndex="0" SelectionChanged="PresenceChanger_SelectionChanged" />
         <TextBox x:Name="StatusBox" Height="23" Margin="5,35,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" TextWrapping="NoWrap" controls:TextBoxHelper.Watermark="Set your status message" MaxLength="25" />
