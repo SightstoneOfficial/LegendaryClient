@@ -39,7 +39,7 @@
 			VerticalAlignment="Top" Width="267" Margin="1093,0,0,0" Height="100"
 			Style="{DynamicResource HideSquare}" />
 
-        <Grid Margin="0,105,0,0" x:Name="NewsGrid">
+        <Grid Margin="0,105,0,0" x:Name="NewsGrid" Visibility="Visible">
             <ListBox x:Name="NewsBox"  HorizontalAlignment="Left" Height="394" Margin="995,0,0,0" VerticalAlignment="Top" Width="350" />
             <ListView x:Name="champView" HorizontalAlignment="Left" Height="210" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="1168" 
                       ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
@@ -59,8 +59,8 @@
             <Button Click="Update_OnClick" Style="{DynamicResource HideSquare}" HorizontalAlignment="Right" Content="Update status" VerticalAlignment="Bottom" Margin="0,0,10,185" Height="35" Width="162"/>
 
         </Grid>
-        <Grid Margin="0,155,0,200" x:Name="LogGrid" Visibility="Hidden">
-            <TextBox x:Name="Logbox" HorizontalAlignment="Left" Height="393" TextWrapping="Wrap" Text=""
+        <Grid Margin="0,155,0,0" x:Name="LogGrid" Visibility="Hidden">
+            <TextBox x:Name="Logbox" HorizontalAlignment="Left" Height="550" TextWrapping="Wrap" Text=""
 				VerticalAlignment="Top" Width="1340" Margin="10,10,0,0" />
 
         </Grid>
