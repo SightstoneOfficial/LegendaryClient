@@ -33,15 +33,13 @@
         </Grid>
         <Button x:Name="OverButtonLeft" MouseEnter="OverButtonLeft_MouseEnter"
 			MouseLeave="ReturnButtonsToNumbers_MouseLeage" Content="Show Log TextBox" HorizontalAlignment="Left"
-			VerticalAlignment="Top" Width="266" Height="100" Style="{DynamicResource HideSquare}" />
+			VerticalAlignment="Top" Width="266" Height="100" Style="{DynamicResource HideSquare}" Click="OverButtonLeft_OnClick"/>
         <Button x:Name="OverButtonRight" MouseEnter="OverButtonRight_MouseEnter"
 			MouseLeave="ReturnButtonsToNumbers_MouseLeage" Content="Play" HorizontalAlignment="Left"
 			VerticalAlignment="Top" Width="267" Margin="1093,0,0,0" Height="100"
 			Style="{DynamicResource HideSquare}" />
 
         <Grid Margin="0,105,0,0" x:Name="NewsGrid">
-
-            <!--<awe:WebControl HorizontalAlignment="Left" VerticalAlignment="Top" Height="600" Width="900" Margin="200,0,0,0" />-->
             <ListBox x:Name="NewsBox"  HorizontalAlignment="Left" Height="394" Margin="995,0,0,0" VerticalAlignment="Top" Width="350" />
             <ListView x:Name="champView" HorizontalAlignment="Left" Height="210" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="1168" 
                       ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled">

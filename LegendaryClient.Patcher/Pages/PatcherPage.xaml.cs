@@ -46,8 +46,23 @@ namespace LegendaryClient.Patcher.Pages
             {
                 File.Delete(Path.Combine(_executingDirectory, "LegendaryClientPatcher.log"));
             }
+            LogTextBox("You must have The following license below to use LegendaryClient.Patcher");
+            LogTextBox(Environment.NewLine);
+            LogTextBox(@"Legendaryclient.Patcher, League of Legendary Custom Patcher
+    Copyright (C) 2015  eddy5641
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.");
             Load();
             //LogTextBox(CreateConfigurationmanifest());
         }
@@ -302,6 +317,22 @@ namespace LegendaryClient.Patcher.Pages
         public void LogTextBox(string s)
         {
             Logbox.Text += s + Environment.NewLine;
+        }
+
+        private void OverButtonLeft_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (NewsGrid.Visibility == Visibility.Visible)
+            {
+                LogGrid.Visibility = Visibility.Visible;
+                NewsBox.Visibility = Visibility.Hidden;
+                OverButtonLeft.Content = "Show News";
+            }
+            else
+            {
+                OverButtonLeft.Content = "Show Log TextBox";
+                LogGrid.Visibility = Visibility.Hidden;
+                NewsBox.Visibility = Visibility.Visible;
+            }
         }
     }
     public class Champion
