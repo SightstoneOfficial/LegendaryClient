@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClient.Patcher", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCLog", "LCLog\LCLog.csproj", "{B9ACF25E-89AE-4CC8-9041-1E74822DAC2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiotPatch", "RiotPatch\RiotPatch.csproj", "{FD32D64F-B568-43A1-8C52-7F3DA59781AA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCDevWindow", "LCDevWindow\LCDevWindow.csproj", "{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}"
 EndProject
 Global
@@ -64,14 +62,6 @@ Global
 		{B9ACF25E-89AE-4CC8-9041-1E74822DAC2D}.PubRelease|Any CPU.Build.0 = Release|Any CPU
 		{B9ACF25E-89AE-4CC8-9041-1E74822DAC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9ACF25E-89AE-4CC8-9041-1E74822DAC2D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.DispersiaRelease|Any CPU.ActiveCfg = DispersiaRelease|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.DispersiaRelease|Any CPU.Build.0 = DispersiaRelease|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.PubRelease|Any CPU.Build.0 = Release|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.DispersiaRelease|Any CPU.ActiveCfg = Release|Any CPU
