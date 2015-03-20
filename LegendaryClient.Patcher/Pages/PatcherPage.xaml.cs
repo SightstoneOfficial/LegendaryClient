@@ -324,14 +324,14 @@ namespace LegendaryClient.Patcher.Pages
             if (NewsGrid.Visibility == Visibility.Visible)
             {
                 LogGrid.Visibility = Visibility.Visible;
-                NewsBox.Visibility = Visibility.Hidden;
+                NewsGrid.Visibility = Visibility.Hidden;
                 OverButtonLeft.Content = "Show News";
             }
             else
             {
                 OverButtonLeft.Content = "Show Log TextBox";
                 LogGrid.Visibility = Visibility.Hidden;
-                NewsBox.Visibility = Visibility.Visible;
+                NewsGrid.Visibility = Visibility.Visible;
             }
         }
     }
