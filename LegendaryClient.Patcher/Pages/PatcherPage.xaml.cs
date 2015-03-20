@@ -30,8 +30,8 @@ namespace LegendaryClient.Patcher.Pages
     /// </summary>
     public partial class PatcherPage
     {
-        private readonly String _executingDirectory;
-        private Boolean _isLogVisible;
+        private readonly string _executingDirectory;
+        private bool _isLogVisible;
 
         public PatcherPage()
         {
@@ -291,7 +291,7 @@ namespace LegendaryClient.Patcher.Pages
         /// </summary>
         /// <param name="lines"></param>
         /// <param name="type"></param>
-        public void Log(String lines, String type = "LOG")
+        public void Log(string lines, string type = "LOG")
         {
             var file = new StreamWriter(Path.Combine(_executingDirectory, "LegendaryClientPatcher.log"), true);
             file.WriteLine("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),
