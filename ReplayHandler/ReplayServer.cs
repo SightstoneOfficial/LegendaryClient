@@ -62,7 +62,7 @@ namespace ReplayHandler
                         .Where(keyId => keyId < latestKeyframe))
                 latestKeyframe = keyId;
 
-            String token = File.ReadAllText(Path.Combine(gameFolder, "token"));
+            string token = File.ReadAllText(Path.Combine(gameFolder, "token"));
             var serializer = new JavaScriptSerializer();
             var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(token);
             endStartupChunkId = Convert.ToInt32(deserializedJson["endStartupChunkId"]);
@@ -141,7 +141,7 @@ namespace ReplayHandler
                     if (Convert.ToInt32(Params[3]) == (lastChunk - 1))
                         Params[3] = lastChunk.ToString(CultureInfo.InvariantCulture);
 
-                    String file = Path.Combine(gameFolder, "chunk-" + Params[3]);
+                    string file = Path.Combine(gameFolder, "chunk-" + Params[3]);
 
                     buffer = File.Exists(file) ? File.ReadAllBytes(file) : new byte[0];
 
@@ -161,7 +161,7 @@ namespace ReplayHandler
                 }
                 else if (Params[0] == "getKeyFrame")
                 {
-                    String file = Path.Combine(gameFolder, "key-" + Params[3]);
+                    string file = Path.Combine(gameFolder, "key-" + Params[3]);
 
                     buffer = File.Exists(file) ? File.ReadAllBytes(file) : new byte[0];
                 }

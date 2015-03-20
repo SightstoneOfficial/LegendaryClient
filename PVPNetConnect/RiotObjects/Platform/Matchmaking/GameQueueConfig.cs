@@ -37,73 +37,73 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         }
 
         [InternalName("blockedMinutesThreshold")]
-        public Int32 BlockedMinutesThreshold { get; set; }
+        public int BlockedMinutesThreshold { get; set; }
 
         [InternalName("minimumParticipantListSize")]
-        public Int32 MinimumParticipantListSize { get; set; }
+        public int MinimumParticipantListSize { get; set; }
 
         [InternalName("ranked")]
         public Boolean Ranked { get; set; }
 
         [InternalName("maxLevel")]
-        public Int32 MaxLevel { get; set; }
+        public int MaxLevel { get; set; }
 
         [InternalName("minLevel")]
-        public Int32 MinLevel { get; set; }
+        public int MinLevel { get; set; }
 
         [InternalName("gameTypeConfigId")]
-        public Int32 GameTypeConfigId { get; set; }
+        public int GameTypeConfigId { get; set; }
 
         [InternalName("thresholdEnabled")]
         public Boolean ThresholdEnabled { get; set; }
 
         [InternalName("queueState")]
-        public String QueueState { get; set; }
+        public string QueueState { get; set; }
 
         [InternalName("type")]
-        public String Type { get; set; }
+        public string Type { get; set; }
 
         [InternalName("cacheName")]
-        public String CacheName { get; set; }
+        public string CacheName { get; set; }
 
         [InternalName("id")]
         public Double Id { get; set; }
 
         [InternalName("queueBonusKey")]
-        public String QueueBonusKey { get; set; }
+        public string QueueBonusKey { get; set; }
 
         [InternalName("queueStateString")]
-        public String QueueStateString { get; set; }
+        public string QueueStateString { get; set; }
 
         [InternalName("pointsConfigKey")]
-        public String PointsConfigKey { get; set; }
+        public string PointsConfigKey { get; set; }
 
         [InternalName("teamOnly")]
         public Boolean TeamOnly { get; set; }
 
         [InternalName("minimumQueueDodgeDelayTime")]
-        public Int32 MinimumQueueDodgeDelayTime { get; set; }
+        public int MinimumQueueDodgeDelayTime { get; set; }
 
         [InternalName("supportedMapIds")]
         public List<Int32> SupportedMapIds { get; set; }
 
         [InternalName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [InternalName("typeString")]
-        public String TypeString { get; set; }
+        public string TypeString { get; set; }
 
         [InternalName("numPlayersPerTeam")]
-        public Int32 NumPlayersPerTeam { get; set; }
+        public int NumPlayersPerTeam { get; set; }
 
         [InternalName("maximumParticipantListSize")]
-        public Int32 MaximumParticipantListSize { get; set; }
+        public int MaximumParticipantListSize { get; set; }
 
         [InternalName("disallowFreeChampions")]
         public Boolean DisallowFreeChampions { get; set; }
 
         [InternalName("mapSelectionAlgorithm")]
-        public String MapSelectionAlgorithm { get; set; }
+        public string MapSelectionAlgorithm { get; set; }
 
         [InternalName("thresholdSize")]
         public Double ThresholdSize { get; set; }

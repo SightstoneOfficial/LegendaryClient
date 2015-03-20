@@ -1,5 +1,21 @@
-﻿#region
-
+﻿using jabber.client;
+using jabber.connection;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.JSON;
+using LegendaryClient.Logic.Patcher;
+using LegendaryClient.Logic.Region;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Logic.SWF;
+using LegendaryClient.Logic.SWF.SWFTypes;
+using LegendaryClient.Logic.UpdateRegion;
+using LegendaryClient.Properties;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Login;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +28,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,29 +36,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using jabber.client;
-using jabber.connection;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.JSON;
-using LegendaryClient.Logic.Region;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Logic.SWF;
-using LegendaryClient.Logic.SWF.SWFTypes;
-using LegendaryClient.Logic.UpdateRegion;
-using LegendaryClient.Properties;
-using LegendaryClient.Logic.Patcher;
-using Microsoft.Win32;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Login;
-using SQLite;
-using LegendaryClient.Logic.Crypto;
-using System.Threading.Tasks;
-using MahApps.Metro.Controls.Dialogs;
-using MahApps.Metro.Controls;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -55,7 +49,6 @@ namespace LegendaryClient.Windows
         public LoginPage()
         {
             InitializeComponent();
-            Change();
             Client.donepatch = true;
             Client.patching = false;
             Version.TextChanged += WaterTextbox_TextChanged;
@@ -94,7 +87,7 @@ namespace LegendaryClient.Windows
                     LoginUsernameBox.Visibility = Visibility.Hidden;
                     RememberUsernameCheckbox.Visibility = Visibility.Hidden;
                     LoginPasswordBox.Visibility = Visibility.Hidden;
-                    if (!String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion))
+                    if (!string.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion))
                         RegionComboBox.SelectedValue = Settings.Default.DefaultGarenaRegion;  // Default Garena Region
                     break;
             }
@@ -167,33 +160,18 @@ namespace LegendaryClient.Windows
                 var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
                     UriKind.Absolute);
                 c.icon = new BitmapImage(source);
-                Debugger.Log(0, "Log", "Requesting :" + c.name + " champ");
-                Debugger.Log(0, "", Environment.NewLine);
 
-                try
-                {
-                    c.IsFreeToPlay = FreeToPlayChampions.GetInstance().IsFreeToPlay(c);
-                    Champions.InsertExtraChampData(c);
-                    //why was this ever here? all of the needed info is already in the sqlite file
-                }
-                catch
-                {
-                    Client.Log("error, file not found", "NotFound");
-                }
+                c.IsFreeToPlay = FreeToPlayChampions.GetInstance().IsFreeToPlay(c);
+                Champions.InsertExtraChampData(c);
             }
+
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
                                     orderby s.name
                                     select s).ToList();
             Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
-                                            //Needs Fixed
                                         orderby s.name
                                         select s).ToList();
-            Client.SearchTags = (from s in Client.SQLiteDatabase.Table<championSearchTags>()
-                                 orderby s.id
-                                 select s).ToList();
-            Client.Keybinds = (from s in Client.SQLiteDatabase.Table<keybindingEvents>()
-                               orderby s.id
-                               select s).ToList();
+
             Client.SQLiteDatabase.Close();
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
@@ -235,12 +213,12 @@ namespace LegendaryClient.Windows
 
             Version.Text = Client.Version;
 
-            if (!String.IsNullOrWhiteSpace(Settings.Default.SavedUsername))
+            if (!string.IsNullOrWhiteSpace(Settings.Default.SavedUsername))
             {
                 RememberUsernameCheckbox.IsChecked = true;
                 LoginUsernameBox.Text = Settings.Default.SavedUsername;
             }
-            if (!String.IsNullOrWhiteSpace(Settings.Default.SavedPassword))
+            if (!string.IsNullOrWhiteSpace(Settings.Default.SavedPassword))
             {
                 SHA1 sha = new SHA1CryptoServiceProvider();
                 RememberPasswordCheckbox.IsChecked = true;
@@ -248,32 +226,17 @@ namespace LegendaryClient.Windows
                     Settings.Default.SavedPassword.DecryptStringAES(
                         sha.ComputeHash(Encoding.UTF8.GetBytes(Settings.Default.Guid)).ToString());
             }
-            if (!String.IsNullOrWhiteSpace(Settings.Default.Region))
+            if (!string.IsNullOrWhiteSpace(Settings.Default.Region))
                 RegionComboBox.SelectedValue = Settings.Default.Region;
 
             invisibleLoginCheckBox.IsChecked = Settings.Default.incognitoLogin;
 
-            /*var uriSource =
-                new Uri(
-                    Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                        champions.GetChampion(Client.LatestChamp).splashPath), UriKind.Absolute);
-            LoginImage.Source = new BitmapImage(uriSource);*/
-
-            if (String.IsNullOrWhiteSpace(Settings.Default.SavedPassword) ||
-                String.IsNullOrWhiteSpace(Settings.Default.Region) || !Settings.Default.AutoLogin)
+            if (string.IsNullOrWhiteSpace(Settings.Default.SavedPassword) ||
+                string.IsNullOrWhiteSpace(Settings.Default.Region) || !Settings.Default.AutoLogin)
                 return;
 
             AutoLoginCheckBox.IsChecked = true;
             LoginButton_Click(null, null);
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void LoginPic_MediaEnded(object sender, RoutedEventArgs e)
@@ -287,22 +250,22 @@ namespace LegendaryClient.Windows
             Client.Version = Version.Text;
         }
 
-        private bool _playingSound = true;
+        private bool playingSound = true;
 
         private void DisableSound_Click(object sender, RoutedEventArgs e)
         {
-            if (_playingSound)
+            if (playingSound)
             {
                 SoundPlayer.Pause();
                 Sound.IsChecked = true;
-                _playingSound = false;
+                playingSound = false;
             }
             else
             {
                 SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
-                _playingSound = true;
+                playingSound = true;
             }
 
             Settings.Default.DisableLoginMusic = Sound.IsChecked.Value;
@@ -314,23 +277,17 @@ namespace LegendaryClient.Windows
             SoundPlayer.Play();
         }
 
-        private bool _playingVideo = true;
+        private bool playingVideo = true;
 
         private void DisableVideo_Click(object sender, RoutedEventArgs e)
         {
             if (Settings.Default.LoginPageImage == "")
             {
-                if (_playingVideo)
+                if (playingVideo)
                 {
                     Video.IsChecked = true;
-                    _playingVideo = false;
-                    try
-                    {
-                        LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
-                    }
-                    catch
-                    {
-                    }
+                    playingVideo = false;
+                    LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
                 }
                 else
                 {
@@ -339,7 +296,7 @@ namespace LegendaryClient.Windows
                     LoginPic.MediaEnded += LoginPic_MediaEnded;
                     LoginPic.Play();
                     Video.IsChecked = false;
-                    _playingVideo = true;
+                    playingVideo = true;
                 }
             }
         }
@@ -353,7 +310,7 @@ namespace LegendaryClient.Windows
             {
                 if (RegionComboBox.SelectedIndex == -1)
                     return;
-                if (!String.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
+                if (!string.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                 await garenaLogin();
                 return;
@@ -401,7 +358,7 @@ namespace LegendaryClient.Windows
                     Client.Version);
             else
             {
-                Dictionary<String, String> settings = selectedRegion.Location.LeagueSettingsReader();
+                Dictionary<string, string> settings = selectedRegion.Location.LeagueSettingsReader();
                 Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.PVPRegion,
                     Client.Version, true, settings["host"], settings["lq_uri"], selectedRegion.Locale);
             }
@@ -523,7 +480,7 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.SSL = true;
                     Client.ChatClient.User = LoginUsernameBox.Text;
                     Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
-                    Client.userpass = new KeyValuePair<String, String>(LoginUsernameBox.Text,
+                    Client.userpass = new KeyValuePair<string, string>(LoginUsernameBox.Text,
                         "AIR_" + LoginPasswordBox.Password);
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
@@ -543,7 +500,7 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.User = Client.PVPNet.getUID();
                     var gas = Client.PVPNet.getGas();
                     Client.ChatClient.Password = "AIR_" + gas;
-                    Client.userpass = new KeyValuePair<String, String>(Client.PVPNet.getUID(),
+                    Client.userpass = new KeyValuePair<string, string>(Client.PVPNet.getUID(),
                         "AIR_" + gas);
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
@@ -625,7 +582,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private Vector _moveOffset;
+        private Vector moveOffset;
         private Point _currentLocation;
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
@@ -634,7 +591,7 @@ namespace LegendaryClient.Windows
                 return;
 
             _currentLocation = Mouse.GetPosition(MouseGrid);
-            _moveOffset = new Vector(Tt.X, Tt.Y);
+            moveOffset = new Vector(Tt.X, Tt.Y);
             HideGrid.CaptureMouse();
         }
 
@@ -644,8 +601,8 @@ namespace LegendaryClient.Windows
                 return;
 
             Vector offset = Point.Subtract(e.GetPosition(MouseGrid), _currentLocation);
-            Tt.X = _moveOffset.X + offset.X;
-            Tt.Y = _moveOffset.Y + offset.Y;
+            Tt.X = moveOffset.X + offset.X;
+            Tt.Y = moveOffset.Y + offset.Y;
         }
 
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
@@ -660,7 +617,7 @@ namespace LegendaryClient.Windows
             WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
             if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
             {
-                if (await ((MetroWindow) Application.Current.MainWindow).ShowMessageAsync("Insufficent Privledges.", "Press OK to restart as admin.") == MessageDialogResult.Affirmative)
+                if (await ((MetroWindow)Application.Current.MainWindow).ShowMessageAsync("Insufficent Privledges.", "Press OK to restart as admin.") == MessageDialogResult.Affirmative)
                 {
                     var info = new ProcessStartInfo(Path.Combine(Client.ExecutingDirectory, "Client", "LegendaryClient.exe"))
                     {

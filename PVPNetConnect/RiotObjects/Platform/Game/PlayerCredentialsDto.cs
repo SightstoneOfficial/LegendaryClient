@@ -36,19 +36,19 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("encryptionKey")]
-        public String EncryptionKey { get; set; }
+        public string EncryptionKey { get; set; }
 
         [InternalName("gameId")]
         public Double GameId { get; set; }
 
         [InternalName("lastSelectedSkinIndex")]
-        public Int32 LastSelectedSkinIndex { get; set; }
+        public int LastSelectedSkinIndex { get; set; }
 
         [InternalName("dataVersion")]
-        public new Int32 DataVersion { get; set; }
+        public new int DataVersion { get; set; }
 
         [InternalName("serverIp")]
-        public String ServerIp { get; set; }
+        public string ServerIp { get; set; }
 
         [InternalName("observer")]
         public Boolean Observer { get; set; }
@@ -60,27 +60,27 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public Double SummonerId { get; set; }
 
         [InternalName("observerServerIp")]
-        public String ObserverServerIp { get; set; }
+        public string ObserverServerIp { get; set; }
 
         [InternalName("handshakeToken")]
-        public String HandshakeToken { get; set; }
+        public string HandshakeToken { get; set; }
 
         [InternalName("playerId")]
         public Double PlayerId { get; set; }
 
         [InternalName("serverPort")]
-        public Int32 ServerPort { get; set; }
+        public int ServerPort { get; set; }
 
         [InternalName("observerServerPort")]
-        public Int32 ObserverServerPort { get; set; }
+        public int ObserverServerPort { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [InternalName("observerEncryptionKey")]
-        public String ObserverEncryptionKey { get; set; }
+        public string ObserverEncryptionKey { get; set; }
 
         [InternalName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
     }
 }

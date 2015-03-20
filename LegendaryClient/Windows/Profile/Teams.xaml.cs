@@ -1,21 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Team.Dto;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Harassment;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using PVPNetConnect.RiotObjects.Team.Dto;
-using PVPNetConnect.RiotObjects.Team.Stats;
-using PVPNetConnect;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -27,21 +15,6 @@ namespace LegendaryClient.Windows.Profile
         public Teams()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
-        }
-
-        private void TabContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
 
         public void Update(PVPNetConnect.RiotObjects.Team.Dto.PlayerDTO result)
@@ -79,11 +52,6 @@ namespace LegendaryClient.Windows.Profile
                 }
 
             }));
-        }
-
-        private void GamesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

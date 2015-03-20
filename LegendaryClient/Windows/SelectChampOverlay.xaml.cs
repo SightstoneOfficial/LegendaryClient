@@ -19,21 +19,19 @@ namespace LegendaryClient.Windows
     public partial class SelectChampOverlay
     {
         private readonly List<ChampionDTO> ChampList;
-        private readonly TeamQueuePage tqp;
+        private readonly TeamQueuePage teamQueuePage;
 
         public SelectChampOverlay(TeamQueuePage tqp)
         {
             InitializeComponent();
-            Change();
-
-            this.tqp = tqp;
+            this.teamQueuePage = tqp;
             ChampionSelectListView.Items.Clear();
             if (true)
             {
                 ChampList = new List<ChampionDTO>(Client.PlayerChampions);
                 ChampList.Sort(
                     (x, y) =>
-                        String.Compare(champions.GetChampion(x.ChampionId)
+                        string.Compare(champions.GetChampion(x.ChampionId)
                             .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
                 foreach (ChampionDTO champ in ChampList)
@@ -69,15 +67,6 @@ namespace LegendaryClient.Windows
             }
         }
 
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
-        }
-
         private void ListViewItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = sender as ListViewItem;
@@ -87,13 +76,13 @@ namespace LegendaryClient.Windows
                 Client.usingInstaPick = false;
                 try
                 {
-                    tqp.CreateText(
+                    teamQueuePage.CreateText(
                         "You will no longer attempt to auto select: " +
                         champions.GetChampion(Client.SelectChamp).displayName, Brushes.OrangeRed);
                 }
                 catch
                 {
-                    tqp.CreateText(
+                    teamQueuePage.CreateText(
                            "You will not try to auto select any champ you didn't even pick one to instalock. This is not the random button... yet", Brushes.OrangeRed);
                 }
                 Client.SelectChamp = 0;
@@ -104,7 +93,7 @@ namespace LegendaryClient.Windows
                 Client.SelectChamp = ((int) item.Tag);
                 Client.usingInstaPick = true;
 
-                tqp.CreateText("You will attempt to auto select: " + champions.GetChampion((int) item.Tag).displayName,
+                teamQueuePage.CreateText("You will attempt to auto select: " + champions.GetChampion((int) item.Tag).displayName,
                     Brushes.OrangeRed);
             }
 

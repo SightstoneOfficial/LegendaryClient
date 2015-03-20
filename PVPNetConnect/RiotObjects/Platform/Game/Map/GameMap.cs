@@ -36,22 +36,22 @@ namespace PVPNetConnect.RiotObjects.Platform.Game.Map
         }
 
         [InternalName("displayName")]
-        public String DisplayName { get; set; }
+        public string DisplayName { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("mapId")]
-        public Int32 MapId { get; set; }
+        public int MapId { get; set; }
 
         [InternalName("minCustomPlayers")]
-        public Int32 MinCustomPlayers { get; set; }
+        public int MinCustomPlayers { get; set; }
 
         [InternalName("totalPlayers")]
-        public Int32 TotalPlayers { get; set; }
+        public int TotalPlayers { get; set; }
 
         [InternalName("description")]
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         public static GameMap SummonersRift = new GameMap()
         {

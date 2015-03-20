@@ -37,6 +37,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Trade
         }
 
         [InternalName("potentialTraders")]
-        public List<String> PotentialTraders { get; set; }
+        public List<string> PotentialTraders { get; set; }
     }
 }

@@ -23,7 +23,6 @@ namespace LegendaryClient.Windows
         public KudosPlayerOverlay(double summonerID, double gameID, string summonerName, bool sameTeam)
         {
             InitializeComponent();
-            Change();
             this.summonerID = summonerID;
             this.gameID = gameID;
             this.sameTeam = sameTeam;
@@ -41,15 +40,6 @@ namespace LegendaryClient.Windows
             }
             else
                 KudosList.Items.Add("Honorable Opponent");
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)

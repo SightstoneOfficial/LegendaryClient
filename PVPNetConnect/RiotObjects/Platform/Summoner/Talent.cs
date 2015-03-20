@@ -36,48 +36,48 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("index")]
-        public Int32 Index { get; set; }
+        public int Index { get; set; }
 
         [InternalName("level5Desc")]
-        public String Level5Desc { get; set; }
+        public string Level5Desc { get; set; }
 
         [InternalName("minLevel")]
-        public Int32 MinLevel { get; set; }
+        public int MinLevel { get; set; }
 
         [InternalName("maxRank")]
-        public Int32 MaxRank { get; set; }
+        public int MaxRank { get; set; }
 
         [InternalName("level4Desc")]
-        public String Level4Desc { get; set; }
+        public string Level4Desc { get; set; }
 
         [InternalName("tltId")]
-        public Int32 TltId { get; set; }
+        public int TltId { get; set; }
 
         [InternalName("level3Desc")]
-        public String Level3Desc { get; set; }
+        public string Level3Desc { get; set; }
 
         [InternalName("talentGroupId")]
-        public Int32 TalentGroupId { get; set; }
+        public int TalentGroupId { get; set; }
 
         [InternalName("gameCode")]
-        public Int32 GameCode { get; set; }
+        public int GameCode { get; set; }
 
         [InternalName("minTier")]
-        public Int32 MinTier { get; set; }
+        public int MinTier { get; set; }
 
         [InternalName("prereqTalentGameCode")]
         public object PrereqTalentGameCode { get; set; }
 
         [InternalName("level2Desc")]
-        public String Level2Desc { get; set; }
+        public string Level2Desc { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("talentRowId")]
-        public Int32 TalentRowId { get; set; }
+        public int TalentRowId { get; set; }
 
         [InternalName("level1Desc")]
-        public String Level1Desc { get; set; }
+        public string Level1Desc { get; set; }
     }
 }

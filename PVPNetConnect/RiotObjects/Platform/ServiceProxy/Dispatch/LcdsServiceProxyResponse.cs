@@ -40,18 +40,18 @@ namespace PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch
         }
 
         [InternalName("status")]
-        public String Status { get; set; }
+        public string Status { get; set; }
 
         [InternalName("payload")]
-        public String Payload { get; set; }
+        public string Payload { get; set; }
 
         [InternalName("messageId")]
-        public String messageId { get; set; }
+        public string messageId { get; set; }
 
         [InternalName("methodName")]
-        public String MethodName { get; set; }
+        public string MethodName { get; set; }
 
         [InternalName("serviceName")]
-        public String ServiceName { get; set; }
+        public string ServiceName { get; set; }
     }
 }

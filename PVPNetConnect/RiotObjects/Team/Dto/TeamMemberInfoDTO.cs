@@ -39,13 +39,13 @@ namespace PVPNetConnect.RiotObjects.Team.Dto
         public DateTime JoinDate { get; set; }
 
         [InternalName("playerName")]
-        public String PlayerName { get; set; }
+        public string PlayerName { get; set; }
 
         [InternalName("inviteDate")]
         public DateTime InviteDate { get; set; }
 
         [InternalName("status")]
-        public String Status { get; set; }
+        public string Status { get; set; }
 
         [InternalName("playerId")]
         public Double PlayerId { get; set; }

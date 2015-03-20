@@ -31,7 +31,7 @@ namespace LegendaryClient.Patcher.Logic
         /// <summary>
         ///     Where LegendaryClient Was Launched, Used for the Patcher
         /// </summary>
-        internal static String ExecutingDirectory = "";
+        internal static string ExecutingDirectory = "";
 
         /// <summary>
         ///     MainWindow

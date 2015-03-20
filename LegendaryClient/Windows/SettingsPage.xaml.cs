@@ -1,5 +1,7 @@
-﻿#region
-
+﻿using LegendaryClient.Logic;
+using LegendaryClient.Properties;
+using SharpCompress.Common;
+using SharpCompress.Reader;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,13 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-using SharpCompress.Common;
-using SharpCompress.Reader;
 using CheckBox = System.Windows.Controls.CheckBox;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -88,13 +84,11 @@ namespace LegendaryClient.Windows
         private readonly Dictionary<string, WinThemes> list = new Dictionary<string, WinThemes>();
         private readonly Dictionary<WinThemes, string> list2 = new Dictionary<WinThemes, string>();
         private readonly Dictionary<string, string> list3 = new Dictionary<string, string>();
-        private readonly MainWindow mainWindow;
 
-        public SettingsPage(MainWindow window)
+        public SettingsPage()
         {
             InitializeComponent();
             InsertDefaultValues();
-            mainWindow = window;
             HudLink.Text = "";
             WarnExitCheckbox.IsChecked = Settings.Default.warnClose;
             StatsCheckbox.IsChecked = Settings.Default.GatherStatistics;
@@ -178,7 +172,7 @@ A code signing license (So you know that you are using LegendaryClient)
         {
             try
             {
-                Dictionary<String, String> val;
+                Dictionary<string, string> val;
                 if (!Client.Garena)
                 {
                     val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
@@ -221,11 +215,11 @@ A code signing license (So you know that you are using LegendaryClient)
 
             while (EnumDisplaySettings(null, i, ref vDevMode))
             {
-                if (!Resolutions.Contains(String.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight)) &&
+                if (!Resolutions.Contains(string.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight)) &&
                     vDevMode.dmPelsWidth >= 1000)
                 {
-                    Resolutions.Add(String.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight));
-                    ResolutionComboBox.Items.Add(String.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight));
+                    Resolutions.Add(string.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight));
+                    ResolutionComboBox.Items.Add(string.Format("{0}x{1}", vDevMode.dmPelsWidth, vDevMode.dmPelsHeight));
                 }
                 i++;
             }
@@ -312,11 +306,9 @@ A code signing license (So you know that you are using LegendaryClient)
                 Settings.Default.DarkTheme = winThemes.Text.Contains("Dark");
                 Settings.Default.Theme = (string)winThemes.Value;
             }
-
-            mainWindow.ChangeTheme();
+            var mainWin = Client.MainWin as MainWindow;
+            mainWin.ChangeTheme();
             Client.statusPage.Change();
-            Client.FriendList.Change();
-            Client.notificationPage.Change();
         }
 
         private void UseAsBackground_Changed(object sender, RoutedEventArgs e)
@@ -578,7 +570,7 @@ A code signing license (So you know that you are using LegendaryClient)
                 DirectoryCopy(Client.Location);
 
             //Boost by replacing dlls
-            var filesToReplaceList = new List<String>()
+            var filesToReplaceList = new List<string>()
             {
                 "cg.dll",
                 "cgD3D9.dll",

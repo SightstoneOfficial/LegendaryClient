@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Windows;
 using Awesomium.Core;
 using LegendaryClient.Logic;
 using System.Diagnostics;
 using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -19,16 +15,6 @@ namespace LegendaryClient.Windows
         public ShopPage()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void RefreshBrowser()

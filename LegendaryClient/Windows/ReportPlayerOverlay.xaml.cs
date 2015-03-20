@@ -1,14 +1,8 @@
-﻿#region
-
-using System;
-using System.Windows;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
+﻿using LegendaryClient.Logic;
 using PVPNetConnect.RiotObjects.Platform.Harassment;
-using System.Windows.Documents;
+using System.Windows;
 using System.Windows.Controls;
-
-#endregion
+using System.Windows.Documents;
 
 namespace LegendaryClient.Windows
 {
@@ -23,20 +17,10 @@ namespace LegendaryClient.Windows
         public ReportPlayerOverlay(double summonerID, double gameID, string summonerName, Button reportButton)
         {
             InitializeComponent();
-            Change();
             this.summonerID = summonerID;
             this.gameID = gameID;
             this.reportButton = reportButton;
             PlayerNameLabel.Content = summonerName;
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)

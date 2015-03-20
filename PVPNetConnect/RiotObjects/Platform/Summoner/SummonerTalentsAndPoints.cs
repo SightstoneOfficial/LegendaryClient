@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("talentPoints")]
-        public Int32 TalentPoints { get; set; }
+        public int TalentPoints { get; set; }
 
         [InternalName("modifyDate")]
         public DateTime ModifyDate { get; set; }

@@ -88,7 +88,7 @@ namespace LegendaryClient
             Client.InfoLabel = InfoLabel;
             Client.PVPNet = new PVPNetConnection { KeepDelegatesOnLogout = false };
             Client.PVPNet.OnError += Client.PVPNet_OnError;
-            if (String.IsNullOrEmpty(Settings.Default.Theme))
+            if (string.IsNullOrEmpty(Settings.Default.Theme))
                 Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
             myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
             ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));//,
@@ -230,7 +230,7 @@ namespace LegendaryClient
         {
             if (!Client.patching)
             {
-                SettingsPage SettingsPage = new SettingsPage(this);
+                SettingsPage SettingsPage = new SettingsPage();
                 Client.SwitchPage(SettingsPage);
             }
         }

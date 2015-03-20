@@ -32,12 +32,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("pickTurn")]
-        public Int32 PickTurn { get; set; }
+        public int PickTurn { get; set; }
 
         [InternalName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [InternalName("teamId")]
-        public Int32 TeamId { get; set; }
+        public int TeamId { get; set; }
     }
 }

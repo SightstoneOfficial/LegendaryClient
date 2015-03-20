@@ -36,13 +36,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         }
 
         [InternalName("previousSeasonHighestTier")]
-        public String PreviousSeasonHighestTier { get; set; }
+        public string PreviousSeasonHighestTier { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [InternalName("summonerId")]
-        public Int32 SummonerId { get; set; }
+        public int SummonerId { get; set; }
 
     }
 }

@@ -32,7 +32,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         }
 
         [InternalName("statType")]
-        public String StatType { get; set; }
+        public string StatType { get; set; }
 
         [InternalName("count")]
         public Double Count { get; set; }

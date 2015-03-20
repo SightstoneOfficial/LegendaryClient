@@ -43,13 +43,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public Boolean Ranked { get; set; }
 
         [InternalName("skinIndex")]
-        public Int32 SkinIndex { get; set; }
+        public int SkinIndex { get; set; }
 
         [InternalName("fellowPlayers")]
         public List<FellowPlayerInfo> FellowPlayers { get; set; }
 
         [InternalName("gameType")]
-        public String GameType { get; set; }
+        public string GameType { get; set; }
 
         [InternalName("experienceEarned")]
         public Double ExperienceEarned { get; set; }
@@ -64,7 +64,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public object Difficulty { get; set; }
 
         [InternalName("gameMapId")]
-        public Int32 GameMapId { get; set; }
+        public int GameMapId { get; set; }
 
         [InternalName("leaver")]
         public Boolean Leaver { get; set; }
@@ -73,7 +73,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public Double Spell1 { get; set; }
 
         [InternalName("gameTypeEnum")]
-        public String GameTypeEnum { get; set; }
+        public string GameTypeEnum { get; set; }
 
         [InternalName("teamId")]
         public Double TeamId { get; set; }
@@ -109,13 +109,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public DateTime CreateDate { get; set; }
 
         [InternalName("userServerPing")]
-        public Int32 UserServerPing { get; set; }
+        public int UserServerPing { get; set; }
 
         [InternalName("adjustedRating")]
-        public Int32 AdjustedRating { get; set; }
+        public int AdjustedRating { get; set; }
 
         [InternalName("premadeSize")]
-        public Int32 PremadeSize { get; set; }
+        public int PremadeSize { get; set; }
 
         [InternalName("boostIpEarned")]
         public Double BoostIpEarned { get; set; }
@@ -124,16 +124,16 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public Double GameId { get; set; }
 
         [InternalName("timeInQueue")]
-        public Int32 TimeInQueue { get; set; }
+        public int TimeInQueue { get; set; }
 
         [InternalName("ipEarned")]
         public Double IpEarned { get; set; }
 
         [InternalName("eloChange")]
-        public Int32 EloChange { get; set; }
+        public int EloChange { get; set; }
 
         [InternalName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [InternalName("difficultyString")]
         public object DifficultyString { get; set; }
@@ -142,13 +142,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public Double KCoefficient { get; set; }
 
         [InternalName("teamRating")]
-        public Int32 TeamRating { get; set; }
+        public int TeamRating { get; set; }
 
         [InternalName("subType")]
-        public String SubType { get; set; }
+        public string SubType { get; set; }
 
         [InternalName("queueType")]
-        public String QueueType { get; set; }
+        public string QueueType { get; set; }
 
         [InternalName("premadeTeam")]
         public Boolean PremadeTeam { get; set; }

@@ -18,18 +18,7 @@ namespace LegendaryClient.Windows
         public MasteriesOverlay()
         {
             InitializeComponent();
-            Change();
-
             Container.Content = new Masteries().Content;
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

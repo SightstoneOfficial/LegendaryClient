@@ -39,7 +39,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public object GameSpecificLoyaltyRewards { get; set; }
 
         [InternalName("reconnectDelay")]
-        public Int32 ReconnectDelay { get; set; }
+        public int ReconnectDelay { get; set; }
 
         [InternalName("lastModifiedDate")]
         public object LastModifiedDate { get; set; }
@@ -51,7 +51,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public PlayerCredentialsDto PlayerCredentials { get; set; }
 
         [InternalName("gameName")]
-        public String GameName { get; set; }
+        public string GameName { get; set; }
 
         [InternalName("connectivityStateEnum")]
         public object ConnectivityStateEnum { get; set; }

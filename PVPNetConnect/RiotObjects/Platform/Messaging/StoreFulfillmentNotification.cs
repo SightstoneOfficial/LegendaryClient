@@ -42,7 +42,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Messaging
         public Double Ip { get; set; }
 
         [InternalName("inventoryType")]
-        public String InventoryType { get; set; }
+        public string InventoryType { get; set; }
 
         [InternalName("data")]
         public object Data { get; set; }

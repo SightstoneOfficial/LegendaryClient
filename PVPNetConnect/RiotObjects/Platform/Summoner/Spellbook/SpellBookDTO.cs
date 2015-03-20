@@ -46,7 +46,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook
         public List<SpellBookPageDTO> BookPages { get; set; }
 
         [InternalName("dateString")]
-        public String DateString { get; set; }
+        public string DateString { get; set; }
 
         [InternalName("summonerId")]
         public Double SummonerId { get; set; }

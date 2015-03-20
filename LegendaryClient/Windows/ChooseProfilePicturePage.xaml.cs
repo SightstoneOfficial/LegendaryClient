@@ -22,18 +22,7 @@ namespace LegendaryClient.Windows
         public ChooseProfilePicturePage()
         {
             InitializeComponent();
-            Change();
-
             GetIcons();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private async void GetIcons()

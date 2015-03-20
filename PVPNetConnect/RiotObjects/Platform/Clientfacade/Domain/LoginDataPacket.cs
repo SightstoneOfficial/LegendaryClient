@@ -43,22 +43,22 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
         }
 
         [InternalName("restrictedGamesRemainingForRanked")]
-        public Int32 restrictedGamesRemainingForRanked { get; set; }
+        public int restrictedGamesRemainingForRanked { get; set; }
 
         [InternalName("playerStatSummaries")]
         public PlayerStatSummaries PlayerStatSummaries { get; set; }
 
         [InternalName("restrictedChatGamesRemaining")]
-        public Int32 RestrictedChatGamesRemaining { get; set; }
+        public int RestrictedChatGamesRemaining { get; set; }
 
         [InternalName("minutesUntilShutdown")]
-        public Int32 MinutesUntilShutdown { get; set; }
+        public int MinutesUntilShutdown { get; set; }
 
         [InternalName("minor")]
         public Boolean Minor { get; set; }
 
         [InternalName("maxPracticeGameSize")]
-        public Int32 MaxPracticeGameSize { get; set; }
+        public int MaxPracticeGameSize { get; set; }
 
         [InternalName("summonerCatalog")]
         public SummonerCatalog SummonerCatalog { get; set; }
@@ -70,7 +70,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
         public PlatformGameLifecycleDTO ReconnectInfo { get; set; }
 
         [InternalName("languages")]
-        public List<String> Languages { get; set; }
+        public List<string> Languages { get; set; }
 
         [InternalName("simpleMessages")]
         public List<object> SimpleMessages { get; set; }
@@ -79,13 +79,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
         public AllSummonerData AllSummonerData { get; set; }
 
         [InternalName("customMinutesLeftToday")]
-        public Int32 CustomMinutesLeftToday { get; set; }
+        public int CustomMinutesLeftToday { get; set; }
 
         [InternalName("platformGameLifecycleDTO")]
         public object PlatformGameLifecycleDTO { get; set; }
 
         [InternalName("coOpVsAiMinutesLeftToday")]
-        public Int32 CoOpVsAiMinutesLeftToday { get; set; }
+        public int CoOpVsAiMinutesLeftToday { get; set; }
 
         [InternalName("bingeData")]
         public object BingeData { get; set; }
@@ -94,19 +94,19 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
         public Boolean InGhostGame { get; set; }
 
         [InternalName("leaverPenaltyLevel")]
-        public Int32 LeaverPenaltyLevel { get; set; }
+        public int LeaverPenaltyLevel { get; set; }
 
         [InternalName("bingePreventionSystemEnabledForClient")]
         public Boolean BingePreventionSystemEnabledForClient { get; set; }
 
         [InternalName("pendingBadges")]
-        public Int32 PendingBadges { get; set; }
+        public int PendingBadges { get; set; }
 
         [InternalName("broadcastNotification")]
         public BroadcastNotification BroadcastNotification { get; set; }
 
         [InternalName("minutesUntilMidnight")]
-        public Int32 MinutesUntilMidnight { get; set; }
+        public int MinutesUntilMidnight { get; set; }
 
         [InternalName("timeUntilFirstWinOfDay")]
         public Double TimeUntilFirstWinOfDay { get; set; }
@@ -124,10 +124,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
         public PendingKudosDTO PendingKudosDTO { get; set; }
 
         [InternalName("leaverBusterPenaltyTime")]
-        public Int32 LeaverBusterPenaltyTime { get; set; }
+        public int LeaverBusterPenaltyTime { get; set; }
 
         [InternalName("platformId")]
-        public String PlatformId { get; set; }
+        public string PlatformId { get; set; }
 
         [InternalName("matchMakingEnabled")]
         public Boolean MatchMakingEnabled { get; set; }
@@ -148,7 +148,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain
         public Boolean MinorShutdownEnforced { get; set; }
 
         [InternalName("competitiveRegion")]
-        public String CompetitiveRegion { get; set; }
+        public string CompetitiveRegion { get; set; }
 
         [InternalName("customMsecsUntilReset")]
         public Double CustomMsecsUntilReset { get; set; }

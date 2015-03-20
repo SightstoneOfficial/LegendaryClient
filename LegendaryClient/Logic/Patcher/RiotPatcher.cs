@@ -33,8 +33,8 @@ namespace LegendaryClient.Logic.Patcher
             dragonJson = dragonJson.Replace("Riot.DDragon.m=", "").Replace(";", "");
             var serializer = new JavaScriptSerializer();
 
-            if (String.IsNullOrEmpty(dragonJson))
-                return String.Empty;
+            if (string.IsNullOrEmpty(dragonJson))
+                return string.Empty;
 
             var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(dragonJson);
             var version = (string) deserializedJson["v"];

@@ -207,7 +207,7 @@ namespace LegendaryClient.Windows
                             playerLeagues.SummonerLeagues.Where(x => x.Queue == "RANKED_SOLO_5x5"))
                         item.RankLabel.Content = x.Tier + " " + x.RequestorsRank;
 
-                    if (String.IsNullOrEmpty(item.RankLabel.Content.ToString()))
+                    if (string.IsNullOrEmpty(item.RankLabel.Content.ToString()))
                         item.RankLabel.Content = "Unranked";
                 }));
             }

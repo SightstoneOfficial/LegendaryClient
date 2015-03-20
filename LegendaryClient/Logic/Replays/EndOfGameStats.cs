@@ -13,7 +13,7 @@ namespace LegendaryClient.Logic.Replays
     public class EndOfGameStats
     {
         [SerializedName("talentPointsGained")]
-        public Int32 TalentPointsGained { get; set; }
+        public int TalentPointsGained { get; set; }
 
         [SerializedName("ranked")]
         public Boolean Ranked { get; set; }
@@ -22,13 +22,13 @@ namespace LegendaryClient.Logic.Replays
         public Boolean LeveledUp { get; set; }
 
         [SerializedName("skinIndex")]
-        public Int32 SkinIndex { get; set; }
+        public int SkinIndex { get; set; }
 
         [SerializedName("queueBonusEarned")]
-        public Int32 QueueBonusEarned { get; set; }
+        public int QueueBonusEarned { get; set; }
 
         [SerializedName("gameType")]
-        public String GameType { get; set; }
+        public string GameType { get; set; }
 
         [SerializedName("experienceEarned")]
         public Double ExperienceEarned { get; set; }
@@ -40,13 +40,13 @@ namespace LegendaryClient.Logic.Replays
         public List<PlayerParticipantStatsSummary> TeamPlayerParticipantStats { get; set; }
 
         [SerializedName("basePoints")]
-        public Int32 BasePoints { get; set; }
+        public int BasePoints { get; set; }
 
         [SerializedName("reportGameId")]
-        public Int32 ReportGameId { get; set; }
+        public int ReportGameId { get; set; }
 
         [SerializedName("difficulty")]
-        public String Difficulty { get; set; }
+        public string Difficulty { get; set; }
 
         [SerializedName("gameLength")]
         public Double GameLength { get; set; }
@@ -61,19 +61,19 @@ namespace LegendaryClient.Logic.Replays
         public TeamInfo OtherTeamInfo { get; set; }
 
         [SerializedName("roomName")]
-        public String RoomName { get; set; }
+        public string RoomName { get; set; }
 
         [SerializedName("customMinutesLeftToday")]
-        public Int32 CustomMinutesLeftToday { get; set; }
+        public int CustomMinutesLeftToday { get; set; }
 
         [SerializedName("userId")]
-        public Int32 UserId { get; set; }
+        public int UserId { get; set; }
 
         [SerializedName("pointsPenalties")]
         public List<object> PointsPenalties { get; set; }
 
         [SerializedName("coOpVsAiMinutesLeftToday")]
-        public Int32 CoOpVsAiMinutesLeftToday { get; set; }
+        public int CoOpVsAiMinutesLeftToday { get; set; }
 
         [SerializedName("otherTeamPlayerParticipantStats")]
         public List<PlayerParticipantStatsSummary> OtherTeamPlayerParticipantStats { get; set; }
@@ -85,7 +85,7 @@ namespace LegendaryClient.Logic.Replays
         public Double RpEarned { get; set; }
 
         [SerializedName("completionBonusPoints")]
-        public Int32 CompletionBonusPoints { get; set; }
+        public int CompletionBonusPoints { get; set; }
 
         [SerializedName("coOpVsAiMsecsUntilReset")]
         public Double CoOpVsAiMsecsUntilReset { get; set; }
@@ -109,10 +109,10 @@ namespace LegendaryClient.Logic.Replays
         public Double LoyaltyBoostXpEarned { get; set; }
 
         [SerializedName("roomPassword")]
-        public String RoomPassword { get; set; }
+        public string RoomPassword { get; set; }
 
         [SerializedName("elo")]
-        public Int32 Elo { get; set; }
+        public int Elo { get; set; }
 
         [SerializedName("ipEarned")]
         public Double IpEarned { get; set; }
@@ -124,28 +124,28 @@ namespace LegendaryClient.Logic.Replays
         public Boolean SendStatsToTournamentProvider { get; set; }
 
         [SerializedName("eloChange")]
-        public Int32 EloChange { get; set; }
+        public int EloChange { get; set; }
 
         [SerializedName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [SerializedName("myTeamInfo")]
         public TeamInfo MyTeamInfo { get; set; }
 
         [SerializedName("queueType")]
-        public String QueueType { get; set; }
+        public string QueueType { get; set; }
 
         [SerializedName("odinBonusIp")]
-        public Int32 OdinBonusIp { get; set; }
+        public int OdinBonusIp { get; set; }
 
         [SerializedName("myTeamStatus")]
-        public String MyTeamStatus { get; set; }
+        public string MyTeamStatus { get; set; }
 
         [SerializedName("ipTotal")]
         public Double IpTotal { get; set; }
 
         [SerializedName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [SerializedName("customMsecsUntilReset")]
         public Double CustomMsecsUntilReset { get; set; }

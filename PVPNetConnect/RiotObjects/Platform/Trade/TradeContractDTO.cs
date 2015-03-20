@@ -40,18 +40,18 @@ namespace PVPNetConnect.RiotObjects.Platform.Trade
         }
 
         [InternalName("requesterInternalSummonerName")]
-        public String RequesterInternalSummonerName { get; set; }
+        public string RequesterInternalSummonerName { get; set; }
 
         [InternalName("requesterChampionId")]
         public Double RequesterChampionId { get; set; }
 
         [InternalName("state")]
-        public String State { get; set; }
+        public string State { get; set; }
 
         [InternalName("responderChampionId")]
         public Double ResponderChampionId { get; set; }
 
         [InternalName("responderInternalSummonerName")]
-        public String ResponderInternalSummonerName { get; set; }
+        public string ResponderInternalSummonerName { get; set; }
     }
 }

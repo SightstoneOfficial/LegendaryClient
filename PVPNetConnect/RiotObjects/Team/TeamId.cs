@@ -36,6 +36,6 @@ namespace PVPNetConnect.RiotObjects.Team
         }
 
         [InternalName("fullId")]
-        public String FullId { get; set; }
+        public string FullId { get; set; }
     }
 }

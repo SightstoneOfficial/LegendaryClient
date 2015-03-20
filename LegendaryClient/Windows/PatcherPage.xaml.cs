@@ -1,5 +1,14 @@
-﻿#region
-
+﻿using ComponentAce.Compression.Libs.zlib;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.Patcher;
+using LegendaryClient.Logic.UpdateRegion;
+using LegendaryClient.Properties;
+using MediaToolkit;
+using MediaToolkit.Model;
+using Microsoft.Win32;
+using RAFlibPlus;
+using SharpCompress.Common;
+using SharpCompress.Reader;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,21 +25,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using ComponentAce.Compression.Libs.zlib;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Patcher;
-using LegendaryClient.Logic.UpdateRegion;
-using LegendaryClient.Properties;
-using Microsoft.Win32;
-using RAFlibPlus;
-using System.Xml;
-using SharpCompress.Reader;
-using SharpCompress.Common;
-using MediaToolkit.Model;
-using MediaToolkit.Options;
-using MediaToolkit;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -48,8 +42,6 @@ namespace LegendaryClient.Windows
         public PatcherPage()
         {
             InitializeComponent();
-            Change();
-
             UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion != string.Empty ? Settings.Default.updateRegion : "Live";
             Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
 
@@ -65,10 +57,6 @@ namespace LegendaryClient.Windows
 
             autoPlayCheckBox.IsChecked = Settings.Default.AutoPlay;
 
-            //DevKey.TextChanged += DevKey_TextChanged;
-#if !DEBUG
-            //UpdateSplash();  Unused method?
-#endif
             StartPatcher();
             Client.Log("LegendaryClient Started Up Successfully");
         }
@@ -82,15 +70,6 @@ namespace LegendaryClient.Windows
                 LogTextBox("Auto-play checked. Switching to login page...");
                 SkipPatchButton_Click(null, null);
             }
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void DevSkip_Click(object sender, RoutedEventArgs e)
@@ -450,7 +429,7 @@ namespace LegendaryClient.Windows
 
                 foreach (string s in fileMetaData)
                 {
-                    if (String.IsNullOrEmpty(s))
+                    if (string.IsNullOrEmpty(s))
                         continue;
 
                     string location = s.Split(',')[0];
@@ -808,7 +787,7 @@ namespace LegendaryClient.Windows
                 packageManifest.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
             foreach (string s in FileMetaData)
             {
-                if (String.IsNullOrEmpty(s))
+                if (string.IsNullOrEmpty(s))
                     continue;
 
                 //Remove size and type metadata
@@ -854,7 +833,7 @@ namespace LegendaryClient.Windows
 
             foreach (string s in fileMetaData)
             {
-                if (String.IsNullOrEmpty(s))
+                if (string.IsNullOrEmpty(s))
                     continue;
 
                 //Remove size and type metadata
@@ -941,7 +920,7 @@ namespace LegendaryClient.Windows
                 packageManifest.Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
             foreach (string s in fileMetaData)
             {
-                if (String.IsNullOrEmpty(s))
+                if (string.IsNullOrEmpty(s))
                     continue;
 
                 //Remove size and type metadata

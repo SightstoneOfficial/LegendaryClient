@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("LEAVER_BUSTER_ACCESS_TOKEN")]
-        public String Token { get; set; }
+        public string Token { get; set; }
 
         [InternalName("TypeName")]
         public object Tname { get; set; }

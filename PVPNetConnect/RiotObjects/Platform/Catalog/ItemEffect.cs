@@ -36,18 +36,18 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog
         }
 
         [InternalName("effectId")]
-        public Int32 EffectId { get; set; }
+        public int EffectId { get; set; }
 
         [InternalName("itemEffectId")]
-        public Int32 ItemEffectId { get; set; }
+        public int ItemEffectId { get; set; }
 
         [InternalName("effect")]
         public Effect Effect { get; set; }
 
         [InternalName("value")]
-        public String Value { get; set; }
+        public string Value { get; set; }
 
         [InternalName("itemId")]
-        public Int32 ItemId { get; set; }
+        public int ItemId { get; set; }
     }
 }

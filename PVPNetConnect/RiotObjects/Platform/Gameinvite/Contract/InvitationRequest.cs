@@ -38,16 +38,16 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         }
 
         [InternalName("gameMetaData")]
-        public String GameMetaData { get; set; }
+        public string GameMetaData { get; set; }
 
         [InternalName("invitationStateAsString")]
-        public String InvitationStateAsString { get; set; }
+        public string InvitationStateAsString { get; set; }
 
         [InternalName("invitationState")]
-        public String InvitationState { get; set; }
+        public string InvitationState { get; set; }
 
         [InternalName("invitationId")]
-        public String InvitationId { get; set; }
+        public string InvitationId { get; set; }
 
         [InternalName("inviter")]
         public Inviter Inviter { get; set; }

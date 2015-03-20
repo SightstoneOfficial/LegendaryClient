@@ -39,16 +39,16 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Boost
         public Double XpBoostEndDate { get; set; }
 
         [InternalName("xpBoostPerWinCount")]
-        public Int32 XpBoostPerWinCount { get; set; }
+        public int XpBoostPerWinCount { get; set; }
 
         [InternalName("xpLoyaltyBoost")]
-        public Int32 XpLoyaltyBoost { get; set; }
+        public int XpLoyaltyBoost { get; set; }
 
         [InternalName("ipBoostPerWinCount")]
-        public Int32 IpBoostPerWinCount { get; set; }
+        public int IpBoostPerWinCount { get; set; }
 
         [InternalName("ipLoyaltyBoost")]
-        public Int32 IpLoyaltyBoost { get; set; }
+        public int IpLoyaltyBoost { get; set; }
 
         [InternalName("summonerId")]
         public Double SummonerId { get; set; }

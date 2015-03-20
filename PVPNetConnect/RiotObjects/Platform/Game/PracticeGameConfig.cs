@@ -40,30 +40,30 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public object PassbackUrl { get; set; }
 
         [InternalName("gameName")]
-        public String GameName { get; set; }
+        public string GameName { get; set; }
 
         [InternalName("gameTypeConfig")]
-        public Int32 GameTypeConfig { get; set; }
+        public int GameTypeConfig { get; set; }
 
         [InternalName("passbackDataPacket")]
         public object PassbackDataPacket { get; set; }
 
         [InternalName("gamePassword")]
-        public String GamePassword { get; set; }
+        public string GamePassword { get; set; }
 
         [InternalName("gameMap")]
         public GameMap GameMap { get; set; }
 
         [InternalName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [InternalName("allowSpectators")]
-        public String AllowSpectators { get; set; }
+        public string AllowSpectators { get; set; }
 
         [InternalName("maxNumPlayers")]
-        public Int32 MaxNumPlayers { get; set; }
+        public int MaxNumPlayers { get; set; }
 
         [InternalName("region")]
-        public String Region { get; set; }
+        public string Region { get; set; }
     }
 }

@@ -46,6 +46,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public AggregatedStatsKey Key { get; set; }
 
         [InternalName("aggregatedStatsJson")]
-        public String AggregatedStatsJson { get; set; }
+        public string AggregatedStatsJson { get; set; }
     }
 }

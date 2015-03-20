@@ -1,11 +1,7 @@
-﻿#region
-
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using LegendaryClient.Logic;
-
-#endregion
 
 namespace LegendaryClient.Controls
 {

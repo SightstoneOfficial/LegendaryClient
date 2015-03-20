@@ -1,21 +1,4 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Timers;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-using jabber;
+﻿using jabber;
 using jabber.connection;
 using jabber.protocol.client;
 using LegendaryClient.Controls;
@@ -32,9 +15,22 @@ using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Timers;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Timer = System.Timers.Timer;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -99,7 +95,6 @@ namespace LegendaryClient.Windows
         public TeamBuilderPage(bool iscreater, LobbyStatus myLobby)
         {
             InitializeComponent();
-            Change();
 
             if (iscreater == false)
                 Invite.IsEnabled = false;
@@ -122,15 +117,6 @@ namespace LegendaryClient.Windows
 
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveFeatureToggles", "{}");
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveInfoV1", "{\"queueId\":61}");
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         /// <summary>
@@ -199,7 +185,7 @@ namespace LegendaryClient.Windows
                                 string IP = n.PlayerCredentials.ObserverServerIp + ":" +
                                             n.PlayerCredentials.ObserverServerPort;
                                 string Key = n.PlayerCredentials.ObserverEncryptionKey;
-                                var GameID = (Int32)n.PlayerCredentials.GameId;
+                                var GameID = (int)n.PlayerCredentials.GameId;
                                 new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
                             }
                         });
@@ -288,7 +274,7 @@ namespace LegendaryClient.Windows
                         TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
                         if (Client.inQueueTimer.Visibility == Visibility.Hidden)
                             Client.inQueueTimer.Visibility = Visibility.Visible;
-                        Client.inQueueTimer.Content = String.Format("In Queue {0:D2}:{1:D2}", ts.Minutes, ts.Seconds);
+                        Client.inQueueTimer.Content = string.Format("In Queue {0:D2}:{1:D2}", ts.Minutes, ts.Seconds);
                         QueueButton.Content = "Searching for team";
                     }));
                 };
@@ -398,7 +384,7 @@ namespace LegendaryClient.Windows
                         TimeSpan ts = TimeSpan.FromSeconds(inQueueTimer);
                         if (Client.inQueueTimer.Visibility == Visibility.Hidden)
                             Client.inQueueTimer.Visibility = Visibility.Visible;
-                        Client.inQueueTimer.Content = String.Format("In Queue {0:D2}:{1:D2}", ts.Minutes, ts.Seconds);
+                        Client.inQueueTimer.Content = string.Format("In Queue {0:D2}:{1:D2}", ts.Minutes, ts.Seconds);
                         ReadyButton.Content = "Searching for match";
                     }));
                 };
@@ -977,7 +963,7 @@ namespace LegendaryClient.Windows
             ChampAndSkinBackgroundImage.BeginAnimation(OpacityProperty, fadingAnimation);
         }
 
-        public async void CallWithArgs(String UUID, String GameMode, String ProcedureCall, String Parameters)
+        public async void CallWithArgs(String UUID, string GameMode, string ProcedureCall, string Parameters)
         {
             await Client.PVPNet.Call(UUID, GameMode, ProcedureCall, Parameters);
         }
@@ -1127,9 +1113,9 @@ namespace LegendaryClient.Windows
 
         private class Item
         {
-            public Item(string Strings)
+            public Item(string strings)
             {
-                ComboRole = Strings;
+                ComboRole = strings;
             }
 
             public string ComboRole { get; set; }
@@ -1149,7 +1135,7 @@ namespace LegendaryClient.Windows
             /// <summary>
             ///     "role": "SUPPORT", "position": "BOTTOM", "boost": 0
             /// </summary>
-            public Dictionary<String, Object>[] solosInDemand { get; set; }
+            public Dictionary<string, object>[] solosInDemand { get; set; }
         }
 
         private class GroupUpdate

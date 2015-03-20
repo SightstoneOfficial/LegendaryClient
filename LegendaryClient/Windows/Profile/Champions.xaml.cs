@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -10,8 +8,6 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-
-#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -27,16 +23,6 @@ namespace LegendaryClient.Windows.Profile
         public Champions()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void Update()
@@ -47,7 +33,7 @@ namespace LegendaryClient.Windows.Profile
 
             _championList.Sort(
                 (x, y) =>
-                    String.Compare(champions.GetChampion(x.ChampionId)
+                    string.Compare(champions.GetChampion(x.ChampionId)
                         .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
             FilterChampions();

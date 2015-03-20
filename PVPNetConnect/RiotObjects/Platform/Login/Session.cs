@@ -37,10 +37,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Login
         }
 
         [InternalName("token")]
-        public String Token { get; set; }
+        public string Token { get; set; }
 
         [InternalName("password")]
-        public String Password { get; set; }
+        public string Password { get; set; }
 
         [InternalName("accountSummary")]
         public AccountSummary AccountSummary { get; set; }

@@ -39,16 +39,16 @@ namespace PVPNetConnect.RiotObjects.Team
         public Double SecondsUntilEligibleForDeletion { get; set; }
 
         [InternalName("memberStatusString")]
-        public String MemberStatusString { get; set; }
+        public string MemberStatusString { get; set; }
 
         [InternalName("tag")]
-        public String Tag { get; set; }
+        public string Tag { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("memberStatus")]
-        public String MemberStatus { get; set; }
+        public string MemberStatus { get; set; }
 
         [InternalName("teamId")]
         public TeamId TeamId { get; set; }

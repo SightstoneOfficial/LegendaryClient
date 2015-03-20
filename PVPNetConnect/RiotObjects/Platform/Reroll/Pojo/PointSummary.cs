@@ -39,10 +39,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Reroll.Pojo
         public Double PointsToNextRoll { get; set; }
 
         [InternalName("maxRolls")]
-        public Int32 MaxRolls { get; set; }
+        public int MaxRolls { get; set; }
 
         [InternalName("numberOfRolls")]
-        public Int32 NumberOfRolls { get; set; }
+        public int NumberOfRolls { get; set; }
 
         [InternalName("pointsCostToRoll")]
         public Double PointsCostToRoll { get; set; }

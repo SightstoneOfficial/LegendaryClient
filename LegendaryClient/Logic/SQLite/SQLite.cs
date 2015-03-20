@@ -170,7 +170,7 @@ namespace SQLite
             Handle = handle;
             if (r != SQLite3.Result.OK)
             {
-                throw SQLiteException.New(r, String.Format("Could not open database file: {0} ({1})", DatabasePath, r));
+                throw SQLiteException.New(r, string.Format("Could not open database file: {0} ({1})", DatabasePath, r));
             }
             _open = true;
 
@@ -381,7 +381,7 @@ namespace SQLite
             foreach (var indexName in indexes.Keys)
             {
                 var index = indexes[indexName];
-                var columns = String.Join("\",\"", index.Columns.OrderBy(i => i.Order).Select(i => i.ColumnName).ToArray());
+                var columns = string.Join("\",\"", index.Columns.OrderBy(i => i.Order).Select(i => i.ColumnName).ToArray());
                 count += CreateIndex(indexName, index.TableName, columns, index.Unique);
             }
 
@@ -398,7 +398,7 @@ namespace SQLite
         public int CreateIndex(string indexName, string tableName, string columnName, bool unique = false)
         {
             const string sqlFormat = "create {2} index if not exists \"{3}\" on \"{0}\"(\"{1}\")";
-            var sql = String.Format(sqlFormat, tableName, columnName, unique ? "unique" : "", indexName);
+            var sql = string.Format(sqlFormat, tableName, columnName, unique ? "unique" : "", indexName);
             return Execute(sql);
         }
 
@@ -941,7 +941,7 @@ namespace SQLite
             //    and leaves the transaction stack empty.
             try
             {
-                if (String.IsNullOrEmpty(savepoint))
+                if (string.IsNullOrEmpty(savepoint))
                 {
                     if (Interlocked.Exchange(ref _transactionDepth, 0) > 0)
                     {
@@ -1881,7 +1881,7 @@ namespace SQLite
         public static string SqlType(TableMapping.Column p, bool storeDateTimeAsTicks)
         {
             var clrType = p.ColumnType;
-            if (clrType == typeof(Boolean) || clrType == typeof(Byte) || clrType == typeof(UInt16) || clrType == typeof(SByte) || clrType == typeof(Int16) || clrType == typeof(Int32))
+            if (clrType == typeof(Boolean) || clrType == typeof(Byte) || clrType == typeof(UInt16) || clrType == typeof(SByte) || clrType == typeof(Int16) || clrType == typeof(int))
             {
                 return "integer";
             }
@@ -2205,7 +2205,7 @@ namespace SQLite
                 {
                     SQLite3.BindInt(stmt, index, (int)value);
                 }
-                else if (value is String)
+                else if (value is string)
                 {
                     SQLite3.BindText(stmt, index, (string)value, -1, NegativePointer);
                 }
@@ -2280,7 +2280,7 @@ namespace SQLite
                 {
                     return SQLite3.ColumnString(stmt, index);
                 }
-                else if (clrType == typeof(Int32))
+                else if (clrType == typeof(int))
                 {
                     return (int)SQLite3.ColumnInt(stmt, index);
                 }

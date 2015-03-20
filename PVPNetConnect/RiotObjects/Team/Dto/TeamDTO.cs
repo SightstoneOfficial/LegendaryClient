@@ -41,10 +41,10 @@ namespace PVPNetConnect.RiotObjects.Team.Dto
         public TeamStatSummary TeamStatSummary { get; set; }
 
         [InternalName("status")]
-        public String Status { get; set; }
+        public string Status { get; set; }
 
         [InternalName("tag")]
-        public String Tag { get; set; }
+        public string Tag { get; set; }
 
         [InternalName("roster")]
         public RosterDTO Roster { get; set; }
@@ -74,7 +74,7 @@ namespace PVPNetConnect.RiotObjects.Team.Dto
         public List<object> MatchHistory { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("thirdLastJoinDate")]
         public DateTime ThirdLastJoinDate { get; set; }

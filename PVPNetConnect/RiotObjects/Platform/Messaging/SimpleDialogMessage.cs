@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Messaging
         }
 
         [InternalName("titleCode")]
-        public String TitleCode { get; set; }
+        public string TitleCode { get; set; }
 
         [InternalName("accountId")]
         public Double AccountId { get; set; }
@@ -45,6 +45,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Messaging
         public object Params { get; set; }
 
         [InternalName("type")]
-        public String Type { get; set; }
+        public string Type { get; set; }
     }
 }

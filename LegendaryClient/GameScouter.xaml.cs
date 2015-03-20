@@ -1,30 +1,27 @@
-﻿using LegendaryClient.Logic;
+﻿using LegendaryClient.Controls.GameScouter;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.PlayerSpell;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Windows.Profile;
 using MahApps.Metro.Controls;
 using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Runes;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.IO;
-using LegendaryClient.Logic.PlayerSpell;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Controls.GameScouter;
-using LegendaryClient.Windows.Profile;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using System.Reflection;
-using System.Net;
-using System.Web.Script.Serialization;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Runes;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 
 namespace LegendaryClient
 {
@@ -44,7 +41,7 @@ namespace LegendaryClient
         }
         public async void LoadScouter(string User = null)
         {
-            if (String.IsNullOrEmpty(User))
+            if (string.IsNullOrEmpty(User))
                 User = Client.LoginPacket.AllSummonerData.Summoner.Name;
 
             GSUsername = User;
@@ -61,7 +58,7 @@ namespace LegendaryClient
         private static async Task<bool> IsUserValid(string Username)
         {
             PublicSummoner sum = await Client.PVPNet.GetSummonerByName(Username);
-            if (String.IsNullOrEmpty(sum.Name))
+            if (string.IsNullOrEmpty(sum.Name))
                 return false;
             else
                 return true;
@@ -83,7 +80,7 @@ namespace LegendaryClient
         }
         List<MatchStats> GameStats = new List<MatchStats>();
         Dictionary<Double, Brush> color = new Dictionary<Double, Brush>();
-        Int32 ColorId;
+        int ColorId;
         /// <summary>
         /// Loads the particiapants for the game
         /// </summary>
@@ -179,19 +176,19 @@ namespace LegendaryClient
                             foreach (MatchStats stats in GameStats)
                             {
                                 champions gameChamp = champions.GetChampion((int)Math.Round(stats.Game.ChampionId));
-                                Kills = Kills + (Int32)stats.ChampionsKilled;
-                                Deaths = Deaths + (Int32)stats.NumDeaths;
-                                Assists = Assists + (Int32)stats.Assists;
+                                Kills = Kills + (int)stats.ChampionsKilled;
+                                Deaths = Deaths + (int)stats.NumDeaths;
+                                Assists = Assists + (int)stats.Assists;
                                 GamesPlayed++;
                                 if (championSelect.ChampionId == (int)Math.Round(stats.Game.ChampionId))
                                 {
-                                    ChampKills = ChampKills + (Int32)stats.ChampionsKilled;
-                                    ChampDeaths = ChampDeaths + (Int32)stats.NumDeaths;
-                                    ChampAssists = ChampAssists + (Int32)stats.Assists;
+                                    ChampKills = ChampKills + (int)stats.ChampionsKilled;
+                                    ChampDeaths = ChampDeaths + (int)stats.NumDeaths;
+                                    ChampAssists = ChampAssists + (int)stats.Assists;
                                     ChampGamesPlayed++;
                                 }
                             }
-                            //GetKDA String
+                            //GetKDA string
                             string KDAString = string.Format("{0}/{1}/{2}",
                                 (Kills / GamesPlayed),
                                 (Deaths / GamesPlayed),
@@ -332,7 +329,7 @@ namespace LegendaryClient
                         control.MouseDown += control_MouseDown;
                         TinyRuneMasteryData smallData = new TinyRuneMasteryData();
                         //Now store data in the tags so that all of the event handlers work
-                        Dictionary<String, Object> data = new Dictionary<string, object>();
+                        Dictionary<string, object> data = new Dictionary<string, object>();
                         data.Add("MasteryDataControl", smallData);
                         data.Add("RuneData", await GetUserRunesPage(GSUsername));
                         data.Add("MasteryData", await GetUserRunesPage(GSUsername));
@@ -346,7 +343,7 @@ namespace LegendaryClient
         void control_MouseDown(object sender, MouseButtonEventArgs e)
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
-            object m = ((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            object m = ((Dictionary<string, object>)control.Tag)["MasteryDataControl"];
             TinyRuneMasteryData smallData;
             if (m.GetType() == typeof(TinyRuneMasteryData))
             {
@@ -370,7 +367,7 @@ namespace LegendaryClient
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
             control.Tooltip.Content = "Hover over for info";
-            object m = ((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            object m = ((Dictionary<string, object>)control.Tag)["MasteryDataControl"];
             TinyRuneMasteryData smallData;
             if (m.GetType() == typeof(TinyRuneMasteryData))
             {
@@ -392,7 +389,7 @@ namespace LegendaryClient
         void controlMouseEnter(object sender, MouseEventArgs e)
         {
             GameScouterPlayer control = (GameScouterPlayer)sender;
-            object m = ((Dictionary<String, Object>)control.Tag)["MasteryDataControl"];
+            object m = ((Dictionary<string, object>)control.Tag)["MasteryDataControl"];
             TinyRuneMasteryData smallData;
             if (m.GetType() == typeof(TinyRuneMasteryData))
             {
@@ -401,7 +398,7 @@ namespace LegendaryClient
             else
             {
                 smallData = new TinyRuneMasteryData();
-                ((Dictionary<String, Object>)control.Tag).Add("MasteryDataControl", smallData);
+                ((Dictionary<string, object>)control.Tag).Add("MasteryDataControl", smallData);
             }
             smallData.MouseEnter += (o, g) =>
                 {

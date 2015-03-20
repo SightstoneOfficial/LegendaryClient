@@ -36,16 +36,16 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("internalName")]
-        public String InternalName { get; set; }
+        public string InternalName { get; set; }
 
         [InternalName("acctId")]
         public Double AcctId { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("revisionDate")]
         public DateTime RevisionDate { get; set; }

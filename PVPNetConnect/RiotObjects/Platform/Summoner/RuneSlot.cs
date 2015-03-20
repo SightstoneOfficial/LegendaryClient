@@ -37,10 +37,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("id")]
-        public Int32 Id { get; set; }
+        public int Id { get; set; }
 
         [InternalName("minLevel")]
-        public Int32 MinLevel { get; set; }
+        public int MinLevel { get; set; }
 
         [InternalName("runeType")]
         public RuneType RuneType { get; set; }

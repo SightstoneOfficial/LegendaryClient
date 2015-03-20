@@ -43,6 +43,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public List<object> MatchingThrottleProperties { get; set; }
 
         [InternalName("cacheName")]
-        public String CacheName { get; set; }
+        public string CacheName { get; set; }
     }
 }

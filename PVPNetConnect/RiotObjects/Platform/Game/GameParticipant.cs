@@ -41,12 +41,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("pickTurn")]
-        public Int32 TimeAddedToQueue { get; set; }
+        public int TimeAddedToQueue { get; set; }
 
         [InternalName("summonerInternalName")]
-        public String SummonerInternalName { get; set; }
+        public string SummonerInternalName { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
     }
 }

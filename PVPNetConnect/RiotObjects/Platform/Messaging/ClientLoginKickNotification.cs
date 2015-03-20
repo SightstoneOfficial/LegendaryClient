@@ -36,6 +36,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Messaging
         }
 
         [InternalName("sessionToken")]
-        public String seesionToken { get; set; }
+        public string sessionToken { get; set; }
     }
 }

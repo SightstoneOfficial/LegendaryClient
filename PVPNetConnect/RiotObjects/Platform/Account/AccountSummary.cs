@@ -36,10 +36,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Account
         }
 
         [InternalName("groupCount")]
-        public Int32 GroupCount { get; set; }
+        public int GroupCount { get; set; }
 
         [InternalName("username")]
-        public String Username { get; set; }
+        public string Username { get; set; }
 
         [InternalName("accountId")]
         public Double AccountId { get; set; }

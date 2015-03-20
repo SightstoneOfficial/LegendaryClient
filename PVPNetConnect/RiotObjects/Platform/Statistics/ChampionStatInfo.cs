@@ -37,7 +37,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         }
 
         [InternalName("totalGamesPlayed")]
-        public Int32 TotalGamesPlayed { get; set; }
+        public int TotalGamesPlayed { get; set; }
 
         [InternalName("accountId")]
         public Double AccountId { get; set; }

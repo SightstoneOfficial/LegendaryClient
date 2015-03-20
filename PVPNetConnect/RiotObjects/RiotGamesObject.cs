@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +30,7 @@ namespace PVPNetConnect.RiotObjects
         public TypedObject GetBaseTypedObject()
         {
             TypedObject typedObject = new TypedObject(TypeName);
-            Type objectType = this.GetType();
+            Type objectType = GetType();
 
             foreach (var prop in objectType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
             {
@@ -56,7 +58,7 @@ namespace PVPNetConnect.RiotObjects
                     var test = prop.GetValue(this) as string[];
                     if (test != null) value = test.Cast<object>().ToArray();
                 }
-                //List = Array Collection. Object array = object array
+                //List = Array Collection. object array = object array
                 else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
                 {
                     IList listValues = prop.GetValue(this) as IList;
@@ -161,11 +163,11 @@ namespace PVPNetConnect.RiotObjects
                     {
                         value = Convert.ToString(result[intern.Name]);
                     }
-                    else if (type == typeof(Int64))
+                    else if (type == typeof( long))
                     {
                         value = Convert.ToInt64(result[intern.Name]);
                     }
-                    else if (type == typeof(Int32))
+                    else if (type == typeof(int))
                     {
                         value = Convert.ToInt32(result[intern.Name]);
                     }
@@ -205,27 +207,27 @@ namespace PVPNetConnect.RiotObjects
                             {
                                 objectList.Add((string)data);
                             }
-                            else if (elementType == typeof(Int64))
+                            else if (elementType == typeof( long))
                             {
                                 objectList.Add(Convert.ToInt64(data));
                             }
-                            else if (elementType == typeof(Int32))
+                            else if (elementType == typeof(int))
                             {
                                 objectList.Add(Convert.ToInt32(data));
                             }
-                            else if (elementType == typeof(PVPNetConnect.RiotObjects.Platform.Game.Participant))
+                            else if (elementType == typeof(Participant))
                             {
                                 TypedObject dataAsTo = (TypedObject)data;
                                 if (dataAsTo.type == "com.riotgames.platform.game.BotParticipant")
-                                    objectList.Add(new PVPNetConnect.RiotObjects.Platform.Game.BotParticipant(dataAsTo));
+                                    objectList.Add(new BotParticipant(dataAsTo));
                                 else if (dataAsTo.type == "com.riotgames.platform.game.ObfuscatedParticipant")
-                                    objectList.Add(new PVPNetConnect.RiotObjects.Platform.Game.ObfuscatedParticipant(dataAsTo));
+                                    objectList.Add(new ObfuscatedParticipant(dataAsTo));
                                 else if (dataAsTo.type == "com.riotgames.platform.game.PlayerParticipant")
-                                    objectList.Add(new PVPNetConnect.RiotObjects.Platform.Game.PlayerParticipant(dataAsTo));
+                                    objectList.Add(new PlayerParticipant(dataAsTo));
                                 else if (dataAsTo.type == "com.riotgames.platform.game.GameParticipant")
-                                    objectList.Add(new PVPNetConnect.RiotObjects.Platform.Game.GameParticipant(dataAsTo));
+                                    objectList.Add(new GameParticipant(dataAsTo));
                                 else if (dataAsTo.type == "com.riotgames.platform.reroll.pojo.AramPlayerParticipant")
-                                    objectList.Add(new PVPNetConnect.RiotObjects.Platform.Reroll.Pojo.AramPlayerParticipant(dataAsTo));
+                                    objectList.Add(new AramPlayerParticipant(dataAsTo));
                             }
                             else if (elementType == typeof(object))
                             {
@@ -267,13 +269,13 @@ namespace PVPNetConnect.RiotObjects
                         */
                         //value = objectDictionary;
                     }
-                    else if (type == typeof(Int32[]))
+                    else if (type == typeof(int[]))
                     {
                         value = result.GetArray(intern.Name).Cast<Int32>().ToArray();
                     }
-                    else if (type == typeof(String[]))
+                    else if (type == typeof(string[]))
                     {
-                        value = result.GetArray(intern.Name).Cast<String>().ToArray();
+                        value = result.GetArray(intern.Name).Cast<string>().ToArray();
                     }
                     else if (type == typeof(object[]))
                     {

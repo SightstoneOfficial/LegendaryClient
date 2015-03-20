@@ -31,33 +31,22 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class EndOfGamePage
     {
-        private readonly Room _newRoom;
+        private readonly Room newRoom;
         private string MatchStatsOnline;
         
         public EndOfGamePage(EndOfGameStats statistics)
         {
             InitializeComponent();
-            Change();
-
             RenderStats(statistics);
             uiLogic.UpdateMainPage();
             Client.runonce = false;
 
             string jid = Client.GetChatroomJID(statistics.RoomName, statistics.RoomPassword, false);
-            _newRoom = Client.ConfManager.GetRoom(new JID(jid));
-            _newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            _newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-            _newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-            _newRoom.Join(statistics.RoomPassword);
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
+            newRoom = Client.ConfManager.GetRoom(new JID(jid));
+            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+            newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+            newRoom.Join(statistics.RoomPassword);
         }
 
         private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
@@ -113,10 +102,10 @@ namespace LegendaryClient.Windows
                 tr.Text = ChatTextBox.Text + Environment.NewLine;
 
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            if (String.IsNullOrEmpty(ChatTextBox.Text))
+            if (string.IsNullOrEmpty(ChatTextBox.Text))
                 return;
 
-            _newRoom.PublicMessage(ChatTextBox.Text);
+            newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = "";
             ChatText.ScrollToEnd();
         }
@@ -129,7 +118,7 @@ namespace LegendaryClient.Windows
             TypeLabel.Content = statistics.GameType;
             // Add Garena TW match history
             if (Client.Garena && !String.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion) && Settings.Default.DefaultGarenaRegion == "TW")
-                MatchStatsOnline = String.Format("http://lol.moa.tw/summoner/show/{0}#tabs-recentgame2", statistics.SummonerName.Replace(" ", "_"));
+                MatchStatsOnline = string.Format("http://lol.moa.tw/summoner/show/{0}#tabs-recentgame2", statistics.SummonerName.Replace(" ", "_"));
             else
                 MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + statistics.ReportGameId + "/" + statistics.UserId;
 
@@ -260,7 +249,7 @@ namespace LegendaryClient.Windows
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            _newRoom.Leave(null);
+            newRoom.Leave(null);
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             Client.ClearPage(typeof(EndOfGamePage));
         }

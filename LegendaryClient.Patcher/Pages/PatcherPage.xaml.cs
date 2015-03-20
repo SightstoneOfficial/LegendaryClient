@@ -31,7 +31,7 @@ namespace LegendaryClient.Patcher.Pages
     /// </summary>
     public partial class PatcherPage
     {
-        private readonly String _executingDirectory;
+        private readonly string _executingDirectory;
         private Boolean _isLogVisible;
 
         public PatcherPage()
@@ -76,7 +76,7 @@ namespace LegendaryClient.Patcher.Pages
                     var champDataJson =
                         client.DownloadString(
                             string.Format("http://cdn.leagueoflegends.com/patcher/data/locales/en_US/champData/champData{0}.json", champs.id));
-                    var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, Object>>(champDataJson);
+                    var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<string, object>>(champDataJson);
                     champItem.ChampName.Content = champsDataAsJson["key"];
                     var latestAir =
                         client.DownloadString(
@@ -204,7 +204,7 @@ namespace LegendaryClient.Patcher.Pages
         /// </summary>
         /// <param name="lines"></param>
         /// <param name="type"></param>
-        public void Log(String lines, String type = "LOG")
+        public void Log(string lines, string type = "LOG")
         {
             var file = new StreamWriter(Path.Combine(_executingDirectory, "LegendaryClientPatcher.log"), true);
             file.WriteLine("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),

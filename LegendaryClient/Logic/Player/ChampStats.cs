@@ -4,9 +4,7 @@ using PVPNetConnect.RiotObjects.Platform.Statistics;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LegendaryClient.Logic.Player
@@ -115,18 +113,18 @@ namespace LegendaryClient.Logic.Player
                 if (stats.Win == 1)
                     Wins++;
                 champions gameChamp = champions.GetChampion((int)Math.Round(stats.Game.ChampionId));
-                AKills = AKills + (Int32)stats.ChampionsKilled;
-                ADeaths = ADeaths + (Int32)stats.NumDeaths;
-                AAssists = AAssists + (Int32)stats.Assists;
+                AKills = AKills + (int)stats.ChampionsKilled;
+                ADeaths = ADeaths + (int)stats.NumDeaths;
+                AAssists = AAssists + (int)stats.Assists;
                 AGamesPlayed++;
 
                 if (ChampID == (int)Math.Round(stats.Game.ChampionId))
                 {
                     if (stats.Win == 1)
                         ChampWins++;
-                    ChampKills = ChampKills + (Int32)stats.ChampionsKilled;
-                    ChampDeaths = ChampDeaths + (Int32)stats.NumDeaths;
-                    ChampAssists = ChampAssists + (Int32)stats.Assists;
+                    ChampKills = ChampKills + (int)stats.ChampionsKilled;
+                    ChampDeaths = ChampDeaths + (int)stats.NumDeaths;
+                    ChampAssists = ChampAssists + (int)stats.Assists;
                     ChampGamesPlayed++;
                     GamesWithChamp++;
                 }
@@ -153,7 +151,7 @@ namespace LegendaryClient.Logic.Player
             }
             catch
             { ChampKDAString = "NO RECENT GAMES!!!"; }
-            //GetKDA String
+            //GetKDA string
             OverallKDA = new KDA()
             {
                 Kills = AKills,

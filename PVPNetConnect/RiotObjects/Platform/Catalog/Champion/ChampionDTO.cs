@@ -37,10 +37,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         }
 
         [InternalName("searchTags")]
-        public String[] SearchTags { get; set; }
+        public string[] SearchTags { get; set; }
 
         [InternalName("secondarySearchTags")]
-        public String[] secondarySearchTags { get; set; }
+        public string[] secondarySearchTags { get; set; }
 
         [InternalName("ownedByYourTeam")]
         public Boolean OwnedByYourTeam { get; set; }
@@ -52,10 +52,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         public Boolean Banned { get; set; }
 
         [InternalName("skinName")]
-        public String SkinName { get; set; }
+        public string SkinName { get; set; }
 
         [InternalName("displayName")]
-        public String DisplayName { get; set; }
+        public string DisplayName { get; set; }
 
         [InternalName("championData")]
         public TypedObject ChampionData { get; set; }
@@ -64,7 +64,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         public Boolean Owned { get; set; }
 
         [InternalName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [InternalName("freeToPlayReward")]
         public Boolean FreeToPlayReward { get; set; }
@@ -82,15 +82,15 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         public List<ChampionSkinDTO> ChampionSkins { get; set; }
 
         [InternalName("description")]
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         [InternalName("winCountRemaining")]
-        public Int32 WinCountRemaining { get; set; }
+        public int WinCountRemaining { get; set; }
 
         [InternalName("purchaseDate")]
         public Double PurchaseDate { get; set; }
 
         [InternalName("endDate")]
-        public Int32 EndDate { get; set; }
+        public int EndDate { get; set; }
     }
 }

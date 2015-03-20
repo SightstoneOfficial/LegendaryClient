@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -10,8 +8,6 @@ using System.Windows.Threading;
 using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Controls
 {
@@ -23,23 +19,13 @@ namespace LegendaryClient.Controls
         public ChatItem()
         {
             InitializeComponent();
-            Change();
 
             Client.ChatClient.OnMessage += ChatClient_OnMessage;
         }
 
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
-        }
-
         public void ChatClient_OnMessage(object sender, Message msg)
         {
-            if (!Client.AllPlayers.ContainsKey(msg.From.User) || String.IsNullOrWhiteSpace(msg.Body))
+            if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
 
             var chatItem = Client.AllPlayers[msg.From.User];
@@ -85,7 +71,7 @@ namespace LegendaryClient.Controls
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrWhiteSpace(ChatTextBox.Text))
+            if (string.IsNullOrWhiteSpace(ChatTextBox.Text))
                 return;
 
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
