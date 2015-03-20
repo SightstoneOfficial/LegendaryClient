@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Boost
         }
 
         [InternalName("xpBoostEndDate")]
-        public Double XpBoostEndDate { get; set; }
+        public double XpBoostEndDate { get; set; }
 
         [InternalName("xpBoostPerWinCount")]
         public int XpBoostPerWinCount { get; set; }
@@ -51,9 +51,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Boost
         public int IpLoyaltyBoost { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [InternalName("ipBoostEndDate")]
-        public Double IpBoostEndDate { get; set; }
+        public double IpBoostEndDate { get; set; }
     }
 }

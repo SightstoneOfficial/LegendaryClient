@@ -2,7 +2,6 @@
 using PVPNetConnect.RiotObjects.Team.Dto;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Threading;
 
 namespace LegendaryClient.Windows.Profile

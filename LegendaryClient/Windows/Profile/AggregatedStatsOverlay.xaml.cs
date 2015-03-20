@@ -1,7 +1,6 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
@@ -191,7 +190,7 @@ namespace LegendaryClient.Windows.Profile
         public double TotalDamageDealt = 0;
         public double TotalDamageTaken = 0;
         public double TotalDeathsPerSession = 0;
-        public double TotalDoubleKills = 0;
+        public double TotaldoubleKills = 0;
         public double TotalFirstBlood = 0;
         public double TotalGoldEarned = 0;
         public double TotalHeal = 0;

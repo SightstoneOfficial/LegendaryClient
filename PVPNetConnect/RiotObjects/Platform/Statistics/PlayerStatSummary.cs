@@ -54,7 +54,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public string PlayerStatSummaryType { get; set; }
 
         [InternalName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [InternalName("losses")]
         public int Losses { get; set; }

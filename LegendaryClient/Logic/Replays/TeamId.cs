@@ -1,9 +1,5 @@
-﻿#region
-
+﻿using RtmpSharp.IO;
 using System;
-using RtmpSharp.IO;
-
-#endregion
 
 namespace LegendaryClient.Logic.Replays
 {

@@ -1,6 +1,5 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,12 +8,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
 using Timer = System.Timers.Timer;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {

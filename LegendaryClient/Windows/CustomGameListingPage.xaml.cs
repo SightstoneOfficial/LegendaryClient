@@ -1,16 +1,10 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
+using PVPNetConnect.RiotObjects.Platform.Game.Practice;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Maps;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game.Practice;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {

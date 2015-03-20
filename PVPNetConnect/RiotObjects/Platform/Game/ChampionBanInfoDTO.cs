@@ -32,12 +32,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("enemyOwned")]
-        public Boolean EnemyOwned { get; set; }
+        public bool EnemyOwned { get; set; }
 
         [InternalName("championId")]
         public int ChampionId { get; set; }
 
         [InternalName("owned")]
-        public Boolean Owned { get; set; }
+        public bool Owned { get; set; }
     }
 }

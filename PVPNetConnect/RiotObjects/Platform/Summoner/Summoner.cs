@@ -43,19 +43,19 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         public string previousSeasonHighestTier { get; set; }
 
         [InternalName("acctId")]
-        public Double AcctId { get; set; }
+        public double AcctId { get; set; }
 
         [InternalName("helpFlag")]
-        public Boolean HelpFlag { get; set; }
+        public bool HelpFlag { get; set; }
 
         [InternalName("sumId")]
-        public Double SumId { get; set; }
+        public double SumId { get; set; }
 
         [InternalName("profileIconId")]
         public int ProfileIconId { get; set; }
 
         [InternalName("displayEloQuestionaire")]
-        public Boolean DisplayEloQuestionaire { get; set; }
+        public bool DisplayEloQuestionaire { get; set; }
 
         [InternalName("lastGameDate")]
         public DateTime LastGameDate { get; set; }
@@ -67,10 +67,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         public DateTime RevisionDate { get; set; }
 
         [InternalName("advancedTutorialFlag")]
-        public Boolean AdvancedTutorialFlag { get; set; }
+        public bool AdvancedTutorialFlag { get; set; }
 
         [InternalName("revisionId")]
-        public Double RevisionId { get; set; }
+        public double RevisionId { get; set; }
 
         //TODO: find out object type, it seems to be null for now
         [InternalName("futureData")]
@@ -83,9 +83,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         public string Name { get; set; }
 
         [InternalName("nameChangeFlag")]
-        public Boolean NameChangeFlag { get; set; }
+        public bool NameChangeFlag { get; set; }
 
         [InternalName("tutorialFlag")]
-        public Boolean TutorialFlag { get; set; }
+        public bool TutorialFlag { get; set; }
     }
 }

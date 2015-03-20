@@ -1,21 +1,15 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using Newtonsoft.Json;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Timers;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {

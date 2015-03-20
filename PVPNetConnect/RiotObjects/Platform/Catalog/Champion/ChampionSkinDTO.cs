@@ -42,25 +42,25 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         public int SkinId { get; set; }
 
         [InternalName("freeToPlayReward")]
-        public Boolean FreeToPlayReward { get; set; }
+        public bool FreeToPlayReward { get; set; }
 
         [InternalName("stillObtainable")]
-        public Boolean StillObtainable { get; set; }
+        public bool StillObtainable { get; set; }
 
         [InternalName("lastSelected")]
-        public Boolean LastSelected { get; set; }
+        public bool LastSelected { get; set; }
 
         [InternalName("skinIndex")]
         public int SkinIndex { get; set; }
 
         [InternalName("owned")]
-        public Boolean Owned { get; set; }
+        public bool Owned { get; set; }
 
         [InternalName("winCountRemaining")]
         public int WinCountRemaining { get; set; }
 
         [InternalName("purchaseDate")]
-        public Double PurchaseDate { get; set; }
+        public double PurchaseDate { get; set; }
 
         [InternalName("endDate")]
         public int EndDate { get; set; }

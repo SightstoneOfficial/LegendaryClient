@@ -52,7 +52,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int pickMode { get; set; }
 
         [InternalName("isMe")]
-        public Boolean IsMe { get; set; }
+        public bool IsMe { get; set; }
 
         [InternalName("team")]
         public int Team { get; set; }
@@ -67,9 +67,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public object TeamName { get; set; }
 
         [InternalName("isGameOwner")]
-        public Boolean IsGameOwner { get; set; }
+        public bool IsGameOwner { get; set; }
 
         [InternalName("summonerInternalName")]
-        public string SummonerInternalName { get; set; }
+        public new string SummonerInternalName { get; set; }
     }
 }

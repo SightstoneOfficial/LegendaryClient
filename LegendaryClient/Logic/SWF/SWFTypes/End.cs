@@ -1,8 +1,4 @@
-﻿#region
-
-using System.IO;
-
-#endregion
+﻿using System.IO;
 
 namespace LegendaryClient.Logic.SWF.SWFTypes
 {

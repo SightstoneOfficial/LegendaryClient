@@ -43,7 +43,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public int MinimumParticipantListSize { get; set; }
 
         [InternalName("ranked")]
-        public Boolean Ranked { get; set; }
+        public bool Ranked { get; set; }
 
         [InternalName("maxLevel")]
         public int MaxLevel { get; set; }
@@ -55,7 +55,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public int GameTypeConfigId { get; set; }
 
         [InternalName("thresholdEnabled")]
-        public Boolean ThresholdEnabled { get; set; }
+        public bool ThresholdEnabled { get; set; }
 
         [InternalName("queueState")]
         public string QueueState { get; set; }
@@ -67,7 +67,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public string CacheName { get; set; }
 
         [InternalName("id")]
-        public Double Id { get; set; }
+        public double Id { get; set; }
 
         [InternalName("queueBonusKey")]
         public string QueueBonusKey { get; set; }
@@ -79,13 +79,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public string PointsConfigKey { get; set; }
 
         [InternalName("teamOnly")]
-        public Boolean TeamOnly { get; set; }
+        public bool TeamOnly { get; set; }
 
         [InternalName("minimumQueueDodgeDelayTime")]
         public int MinimumQueueDodgeDelayTime { get; set; }
 
         [InternalName("supportedMapIds")]
-        public List<Int32> SupportedMapIds { get; set; }
+        public List<int> SupportedMapIds { get; set; }
 
         [InternalName("gameMode")]
         public string GameMode { get; set; }
@@ -100,13 +100,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public int MaximumParticipantListSize { get; set; }
 
         [InternalName("disallowFreeChampions")]
-        public Boolean DisallowFreeChampions { get; set; }
+        public bool DisallowFreeChampions { get; set; }
 
         [InternalName("mapSelectionAlgorithm")]
         public string MapSelectionAlgorithm { get; set; }
 
         [InternalName("thresholdSize")]
-        public Double ThresholdSize { get; set; }
+        public double ThresholdSize { get; set; }
 
         [InternalName("matchingThrottleConfig")]
         public MatchingThrottleConfig MatchingThrottleConfig { get; set; }

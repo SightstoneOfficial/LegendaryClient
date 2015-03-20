@@ -1,12 +1,8 @@
-﻿#region
-
+﻿using ICSharpCode.SharpZipLib.Zip.Compression;
+using LegendaryClient.Logic.SWF.SWFTypes;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using LegendaryClient.Logic.SWF.SWFTypes;
-
-#endregion
 
 namespace LegendaryClient.Logic.SWF
 {

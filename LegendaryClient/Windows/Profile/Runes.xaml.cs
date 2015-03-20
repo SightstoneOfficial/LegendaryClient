@@ -1,4 +1,9 @@
-﻿using System;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Runes;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -6,12 +11,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Runes;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -334,7 +333,7 @@ namespace LegendaryClient.Windows.Profile
             RenderRunes();
         }
 
-        private void AvailableRuneList_DoubleClickOrRightClick(object sender, MouseButtonEventArgs e)
+        private void AvailableRuneList_doubleClickOrRightClick(object sender, MouseButtonEventArgs e)
         {
             if (((ListBox) sender).SelectedItem == null)
             {

@@ -36,27 +36,27 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("expTierMod")]
-        public Double ExpTierMod { get; set; }
+        public double ExpTierMod { get; set; }
 
         [InternalName("grantRp")]
-        public Double GrantRp { get; set; }
+        public double GrantRp { get; set; }
 
         [InternalName("expForLoss")]
-        public Double ExpForLoss { get; set; }
+        public double ExpForLoss { get; set; }
 
         [InternalName("summonerTier")]
-        public Double SummonerTier { get; set; }
+        public double SummonerTier { get; set; }
 
         [InternalName("infTierMod")]
-        public Double InfTierMod { get; set; }
+        public double InfTierMod { get; set; }
 
         [InternalName("expToNextLevel")]
-        public Double ExpToNextLevel { get; set; }
+        public double ExpToNextLevel { get; set; }
 
         [InternalName("expForWin")]
-        public Double ExpForWin { get; set; }
+        public double ExpForWin { get; set; }
 
         [InternalName("summonerLevel")]
-        public Double Level { get; set; }
+        public double Level { get; set; }
     }
 }

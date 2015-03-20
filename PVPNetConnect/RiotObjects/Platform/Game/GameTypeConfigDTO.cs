@@ -39,7 +39,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int Id { get; set; }
 
         [InternalName("allowTrades")]
-        public Boolean AllowTrades { get; set; }
+        public bool AllowTrades { get; set; }
 
         [InternalName("name")]
         public string Name { get; set; }
@@ -48,16 +48,16 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int MainPickTimerDuration { get; set; }
 
         [InternalName("exclusivePick")]
-        public Boolean ExclusivePick { get; set; }
+        public bool ExclusivePick { get; set; }
 
         [InternalName("duplicatePick")]
-        public Boolean DuplicatePick { get; set; }
+        public bool DuplicatePick { get; set; }
 
         [InternalName("crossTeamChampionPool")]
-        public Boolean CrossTeamChampionPool { get; set; }
+        public bool CrossTeamChampionPool { get; set; }
 
         [InternalName("teamChampionPool")]
-        public Boolean TeamChampionPool { get; set; }
+        public bool TeamChampionPool { get; set; }
 
         [InternalName("pickMode")]
         public string PickMode { get; set; }

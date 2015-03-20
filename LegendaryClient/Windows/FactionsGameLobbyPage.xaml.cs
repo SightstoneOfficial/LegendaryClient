@@ -24,8 +24,8 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class FactionsGameLobbyPage
     {
-        private readonly string leftTeam;
-        private readonly string rightTeam;
+        private string leftTeam;
+        private string rightTeam;
         private bool HasConnectedToChat;
         private bool IsOwner;
         private bool LaunchedTeamSelect;
@@ -319,12 +319,5 @@ namespace LegendaryClient.Windows
         {
             return rightTeam;
         }
-    }
-
-    public class PlayerItem
-    {
-        public string Username { get; set; }
-
-        public PlayerParticipant Participant { get; set; }
     }
 }

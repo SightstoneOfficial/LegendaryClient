@@ -1,8 +1,4 @@
-﻿#region
-
-using System.Linq;
-
-#endregion
+﻿using System.Linq;
 
 namespace LegendaryClient.Logic.SQLite
 {

@@ -1,7 +1,6 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;

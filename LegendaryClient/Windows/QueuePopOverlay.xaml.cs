@@ -1,5 +1,9 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SoundLogic;
+using PVPNetConnect.RiotObjects.Leagues.Pojo;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,15 +13,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SoundLogic;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using Timer = System.Timers.Timer;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -157,7 +153,7 @@ namespace LegendaryClient.Windows
                 if (part != null)
                 {
                     PlayerParticipant playerPart = part;
-                    if (!String.IsNullOrEmpty(playerPart.SummonerName))
+                    if (!string.IsNullOrEmpty(playerPart.SummonerName))
                     {
                         player.PlayerLabel.Content = playerPart.SummonerName;
                         player.RankLabel.Content = "";

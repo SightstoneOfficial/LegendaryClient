@@ -1,13 +1,12 @@
-﻿using System;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -59,7 +58,7 @@ namespace LegendaryClient.Windows.Profile
             ChampionSelectListView.Items.Clear();
 
             var tempList = _championList.ToList();
-            if (!String.IsNullOrEmpty(SearchTextBox.Text))
+            if (!string.IsNullOrEmpty(SearchTextBox.Text))
             {
                 tempList =
                     tempList.Where(
@@ -117,7 +116,7 @@ namespace LegendaryClient.Windows.Profile
             }
         }
 
-        private void ChampionSelectListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ChampionSelectListView_MousedoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var champList = (ListView)sender;
             var champImage = champList.SelectedItem as ProfileChampionImage;

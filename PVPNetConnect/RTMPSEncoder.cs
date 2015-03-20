@@ -176,7 +176,7 @@ namespace PVPNetConnect
             else if (obj is double)
             {
                 ret.Add((byte)0x05);
-                WriteDouble(ret, (double)obj);
+                Writedouble(ret, (double)obj);
             }
             else if (obj is string)
             {
@@ -241,9 +241,9 @@ namespace PVPNetConnect
             }
         }
 
-        private void WriteDouble(List<byte> ret, double val)
+        private void Writedouble(List<byte> ret, double val)
         {
-            if (Double.IsNaN(val))
+            if (double.IsNaN(val))
             {
                 ret.Add((byte)0x7F);
                 ret.Add((byte)0xFF);
@@ -285,7 +285,7 @@ namespace PVPNetConnect
         private void WriteDate(List<Byte> ret, DateTime val)
         {
             ret.Add((byte)0x01);
-            WriteDouble(ret, (double)val.TimeOfDay.TotalMilliseconds);
+            Writedouble(ret, (double)val.TimeOfDay.TotalMilliseconds);
         }
 
         private void WriteArray(List<byte> ret, object[] val)

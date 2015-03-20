@@ -41,11 +41,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
-using Brush = System.Windows.Media.Brush;
 using Button = System.Windows.Controls.Button;
 using EndOfGameStats = PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats;
 using Error = PVPNetConnect.Error;
@@ -794,8 +792,7 @@ namespace LegendaryClient.Logic
                 return;
             }
             Container.Content = page.Content;
-            if (!(page is FakePage))
-                Pages.Add(page);
+            Pages.Add(page);
         }
 
         /// <summary>

@@ -68,7 +68,7 @@ namespace PVPNetConnect.RiotObjects.Team.Dto
         public DateTime SecondLastJoinDate { get; set; }
 
         [InternalName("secondsUntilEligibleForDeletion")]
-        public Double SecondsUntilEligibleForDeletion { get; set; }
+        public double SecondsUntilEligibleForDeletion { get; set; }
 
         [InternalName("matchHistory")]
         public List<object> MatchHistory { get; set; }

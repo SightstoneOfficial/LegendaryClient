@@ -35,9 +35,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public string StatType { get; set; }
 
         [InternalName("count")]
-        public Double Count { get; set; }
+        public double Count { get; set; }
 
         [InternalName("value")]
-        public Double Value { get; set; }
+        public double Value { get; set; }
     }
 }

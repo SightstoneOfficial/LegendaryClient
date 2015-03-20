@@ -37,13 +37,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Systemstate
         }
 
         [InternalName("championTradeThroughLCDS")]
-        public Boolean ChampionTradeThroughLCDS { get; set; }
+        public bool ChampionTradeThroughLCDS { get; set; }
 
         [InternalName("practiceGameEnabled")]
-        public Boolean PracticeGameEnabled { get; set; }
+        public bool PracticeGameEnabled { get; set; }
 
         [InternalName("advancedTutorialEnabled")]
-        public Boolean AdvancedTutorialEnabled { get; set; }
+        public bool AdvancedTutorialEnabled { get; set; }
 
         [InternalName("minNumPlayersForPracticeGame")]
         public int MinNumPlayersForPracticeGame { get; set; }
@@ -79,7 +79,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Systemstate
         public int[] UnobtainableChampionSkinIDList { get; set; }
 
         [InternalName("archivedStatsEnabled")]
-        public Boolean ArchivedStatsEnabled { get; set; }
+        public bool ArchivedStatsEnabled { get; set; }
 
         [InternalName("queueThrottleDTO")]
         public Dictionary<string, object> QueueThrottleDTO { get; set; }
@@ -88,19 +88,19 @@ namespace PVPNetConnect.RiotObjects.Platform.Systemstate
         public List<Dictionary<string, object>> GameMapEnabledDTOList { get; set; }
 
         [InternalName("storeCustomerEnabled")]
-        public Boolean StoreCustomerEnabled { get; set; }
+        public bool StoreCustomerEnabled { get; set; }
 
         [InternalName("socialIntegrationEnabled")]
-        public Boolean SocialIntegrationEnabled { get; set; }
+        public bool SocialIntegrationEnabled { get; set; }
 
         [InternalName("runeUniquePerSpellBook")]
-        public Boolean RuneUniquePerSpellBook { get; set; }
+        public bool RuneUniquePerSpellBook { get; set; }
 
         [InternalName("tribunalEnabled")]
-        public Boolean TribunalEnabled { get; set; }
+        public bool TribunalEnabled { get; set; }
 
         [InternalName("observerModeEnabled")]
-        public Boolean ObserverModeEnabled { get; set; }
+        public bool ObserverModeEnabled { get; set; }
 
         [InternalName("spectatorSlotLimit")]
         public int SpectatorSlotLimit { get; set; }
@@ -115,51 +115,51 @@ namespace PVPNetConnect.RiotObjects.Platform.Systemstate
         public string ObservableCustomGameModes { get; set; }
 
         [InternalName("teamServiceEnabled")]
-        public Boolean TeamServiceEnabled { get; set; }
+        public bool TeamServiceEnabled { get; set; }
 
         [InternalName("leagueServiceEnabled")]
-        public Boolean LeagueServiceEnabled { get; set; }
+        public bool LeagueServiceEnabled { get; set; }
 
         [InternalName("modularGameModeEnabled")]
-        public Boolean ModularGameModeEnabled { get; set; }
+        public bool ModularGameModeEnabled { get; set; }
 
         [InternalName("riotDataServiceDataSendProbability")]
         public int RiotDataServiceDataSendProbability { get; set; }
 
         [InternalName("displayPromoGamesPlayedEnabled")]
-        public Boolean DisplayPromoGamesPlayedEnabled { get; set; }
+        public bool DisplayPromoGamesPlayedEnabled { get; set; }
 
         [InternalName("masteryPageOnServer")]
-        public Boolean MasteryPageOnServer { get; set; }
+        public bool MasteryPageOnServer { get; set; }
 
         [InternalName("maxMasteryPagesOnServer")]
         public int MaxMasteryPagesOnServer { get; set; }
 
         [InternalName("tournamentSendStatsEnabled")]
-        public Boolean TournamentSendStatsEnabled { get; set; }
+        public bool TournamentSendStatsEnabled { get; set; }
 
         [InternalName("replayServiceAddress")]
         public string ReplayServiceAddress { get; set; }
 
         [InternalName("kudosEnabled")]
-        public Boolean KudosEnabled { get; set; }
+        public bool KudosEnabled { get; set; }
 
         [InternalName("buddyNotesEnabled")]
-        public Boolean BuddyNotesEnabled { get; set; }
+        public bool BuddyNotesEnabled { get; set; }
 
         [InternalName("localeSpecificChatRoomsEnabled")]
-        public Boolean LocaleSpecificChatRoomsEnabled { get; set; }
+        public bool LocaleSpecificChatRoomsEnabled { get; set; }
 
         [InternalName("replaySystemStates")]
         public Dictionary<string, object> ReplaySystemStates { get; set; }
 
         [InternalName("sendFeedbackEventsEnabled")]
-        public Boolean SendFeedbackEventsEnabled { get; set; }
+        public bool SendFeedbackEventsEnabled { get; set; }
 
         [InternalName("knownGeographicGameServerRegions")]
         public string[] KnownGeographicGameServerRegions { get; set; }
 
         [InternalName("leaguesDecayMessagingEnabled")]
-        public Boolean LeaguesDecayMessagingEnabled { get; set; }
+        public bool LeaguesDecayMessagingEnabled { get; set; }
     }
 }

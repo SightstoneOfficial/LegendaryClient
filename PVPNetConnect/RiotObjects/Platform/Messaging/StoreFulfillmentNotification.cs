@@ -36,10 +36,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Messaging
         }
 
         [InternalName("rp")]
-        public Double Rp { get; set; }
+        public double Rp { get; set; }
 
         [InternalName("ip")]
-        public Double Ip { get; set; }
+        public double Ip { get; set; }
 
         [InternalName("inventoryType")]
         public string InventoryType { get; set; }

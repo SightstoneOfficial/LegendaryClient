@@ -1,5 +1,12 @@
-﻿#region
-
+﻿using jabber;
+using jabber.connection;
+using jabber.protocol.client;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,18 +18,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Maps;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-using PVPNetConnect.RiotObjects.Platform.Game;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {

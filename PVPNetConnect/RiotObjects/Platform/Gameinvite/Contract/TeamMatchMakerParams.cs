@@ -52,7 +52,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         public List<int> Team { get; set; }
 
         [InternalName("queueIds")]
-        public List<Int32> QueueIds { get; set; }
+        public List<int> QueueIds { get; set; }
 
         [InternalName("invitationId")]
         public object InvitationId { get; set; }

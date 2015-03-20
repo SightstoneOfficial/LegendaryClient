@@ -40,12 +40,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public int TotalGamesPlayed { get; set; }
 
         [InternalName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [InternalName("stats")]
         public List<AggregatedStat> Stats { get; set; }
 
         [InternalName("championId")]
-        public Double ChampionId { get; set; }
+        public double ChampionId { get; set; }
     }
 }

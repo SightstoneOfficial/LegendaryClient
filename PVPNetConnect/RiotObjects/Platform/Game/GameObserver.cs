@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [InternalName("botDifficulty")]
         public string BotDifficulty { get; set; }
@@ -57,7 +57,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int ProfileIconId { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [InternalName("badges")]
         public int Badges { get; set; }
@@ -66,7 +66,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int PickTurn { get; set; }
 
         [InternalName("originalAccountId")]
-        public Double OriginalAccountId { get; set; }
+        public double OriginalAccountId { get; set; }
 
         [InternalName("summonerName")]
         public string SummonerName { get; set; }

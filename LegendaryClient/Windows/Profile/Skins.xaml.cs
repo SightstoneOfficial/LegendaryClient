@@ -1,4 +1,8 @@
-﻿using System;
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,11 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -67,7 +66,7 @@ namespace LegendaryClient.Windows.Profile
                 }
 
                 if (LimitedSkinCheckBox.IsChecked != null &&
-                    (!String.IsNullOrEmpty(SearchTextBox.Text) && !LimitedSkinCheckBox.IsChecked.Value))
+                    (!string.IsNullOrEmpty(SearchTextBox.Text) && !LimitedSkinCheckBox.IsChecked.Value))
                 {
                     skinList =
                         skinList.Where(

@@ -79,7 +79,7 @@ namespace LegendaryClient
             }
         }
         List<MatchStats> GameStats = new List<MatchStats>();
-        Dictionary<Double, Brush> color = new Dictionary<Double, Brush>();
+        Dictionary<double, Brush> color = new Dictionary<double, Brush>();
         int ColorId;
         /// <summary>
         /// Loads the particiapants for the game
@@ -317,7 +317,7 @@ namespace LegendaryClient
                                         brush = (Brush)bc.ConvertFrom("#FFFF0000");
                                         break;
                                 }
-                                color.Add((Double)participant.TeamParticipantId, brush);
+                                color.Add((double)participant.TeamParticipantId, brush);
                                 ColorId++;
                                 control.QueueTeamColor.Fill = brush;
                                 control.QueueTeamColor.Visibility = Visibility.Visible;

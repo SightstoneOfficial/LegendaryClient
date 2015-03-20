@@ -46,19 +46,19 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int QueueRating { get; set; }
 
         [InternalName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [InternalName("botDifficulty")]
         public string BotDifficulty { get; set; }
 
         [InternalName("originalAccountNumber")]
-        public Double OriginalAccountNumber { get; set; }
+        public double OriginalAccountNumber { get; set; }
 
         [InternalName("summonerInternalName")]
         public new string SummonerInternalName { get; set; }
 
         [InternalName("minor")]
-        public Boolean Minor { get; set; }
+        public bool Minor { get; set; }
 
         [InternalName("locale")]
         public object Locale { get; set; }
@@ -73,10 +73,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int ProfileIconId { get; set; }
 
         [InternalName("teamOwner")]
-        public Boolean TeamOwner { get; set; }
+        public bool TeamOwner { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [InternalName("badges")]
         public int Badges { get; set; }
@@ -85,7 +85,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int PickTurn { get; set; }
 
         [InternalName("clientInSynch")]
-        public Boolean ClientInSynch { get; set; }
+        public bool ClientInSynch { get; set; }
 
         [InternalName("summonerName")]
         public new string SummonerName { get; set; }

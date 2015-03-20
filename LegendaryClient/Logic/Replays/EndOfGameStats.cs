@@ -1,10 +1,6 @@
-﻿#region
-
+﻿using RtmpSharp.IO;
 using System;
 using System.Collections.Generic;
-using RtmpSharp.IO;
-
-#endregion
 
 namespace LegendaryClient.Logic.Replays
 {
@@ -16,10 +12,10 @@ namespace LegendaryClient.Logic.Replays
         public int TalentPointsGained { get; set; }
 
         [SerializedName("ranked")]
-        public Boolean Ranked { get; set; }
+        public bool Ranked { get; set; }
 
         [SerializedName("leveledUp")]
-        public Boolean LeveledUp { get; set; }
+        public bool LeveledUp { get; set; }
 
         [SerializedName("skinIndex")]
         public int SkinIndex { get; set; }
@@ -31,10 +27,10 @@ namespace LegendaryClient.Logic.Replays
         public string GameType { get; set; }
 
         [SerializedName("experienceEarned")]
-        public Double ExperienceEarned { get; set; }
+        public double ExperienceEarned { get; set; }
 
         [SerializedName("imbalancedTeamsNoPoints")]
-        public Boolean ImbalancedTeamsNoPoints { get; set; }
+        public bool ImbalancedTeamsNoPoints { get; set; }
 
         [SerializedName("teamPlayerParticipantStats")]
         public List<PlayerParticipantStatsSummary> TeamPlayerParticipantStats { get; set; }
@@ -49,13 +45,13 @@ namespace LegendaryClient.Logic.Replays
         public string Difficulty { get; set; }
 
         [SerializedName("gameLength")]
-        public Double GameLength { get; set; }
+        public double GameLength { get; set; }
 
         [SerializedName("boostXpEarned")]
-        public Double BoostXpEarned { get; set; }
+        public double BoostXpEarned { get; set; }
 
         [SerializedName("invalid")]
-        public Boolean Invalid { get; set; }
+        public bool Invalid { get; set; }
 
         [SerializedName("otherTeamInfo")]
         public TeamInfo OtherTeamInfo { get; set; }
@@ -79,34 +75,34 @@ namespace LegendaryClient.Logic.Replays
         public List<PlayerParticipantStatsSummary> OtherTeamPlayerParticipantStats { get; set; }
 
         [SerializedName("loyaltyBoostIpEarned")]
-        public Double LoyaltyBoostIpEarned { get; set; }
+        public double LoyaltyBoostIpEarned { get; set; }
 
         [SerializedName("rpEarned")]
-        public Double RpEarned { get; set; }
+        public double RpEarned { get; set; }
 
         [SerializedName("completionBonusPoints")]
         public int CompletionBonusPoints { get; set; }
 
         [SerializedName("coOpVsAiMsecsUntilReset")]
-        public Double CoOpVsAiMsecsUntilReset { get; set; }
+        public double CoOpVsAiMsecsUntilReset { get; set; }
 
         [SerializedName("boostIpEarned")]
-        public Double BoostIpEarned { get; set; }
+        public double BoostIpEarned { get; set; }
 
         [SerializedName("newSpells")]
         public List<object> NewSpells { get; set; }
 
         [SerializedName("experienceTotal")]
-        public Double ExperienceTotal { get; set; }
+        public double ExperienceTotal { get; set; }
 
         [SerializedName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [SerializedName("timeUntilNextFirstWinBonus")]
-        public Double TimeUntilNextFirstWinBonus { get; set; }
+        public double TimeUntilNextFirstWinBonus { get; set; }
 
         [SerializedName("loyaltyBoostXpEarned")]
-        public Double LoyaltyBoostXpEarned { get; set; }
+        public double LoyaltyBoostXpEarned { get; set; }
 
         [SerializedName("roomPassword")]
         public string RoomPassword { get; set; }
@@ -115,13 +111,13 @@ namespace LegendaryClient.Logic.Replays
         public int Elo { get; set; }
 
         [SerializedName("ipEarned")]
-        public Double IpEarned { get; set; }
+        public double IpEarned { get; set; }
 
         [SerializedName("firstWinBonus")]
-        public Double FirstWinBonus { get; set; }
+        public double FirstWinBonus { get; set; }
 
         [SerializedName("sendStatsToTournamentProvider")]
-        public Boolean SendStatsToTournamentProvider { get; set; }
+        public bool SendStatsToTournamentProvider { get; set; }
 
         [SerializedName("eloChange")]
         public int EloChange { get; set; }
@@ -142,15 +138,15 @@ namespace LegendaryClient.Logic.Replays
         public string MyTeamStatus { get; set; }
 
         [SerializedName("ipTotal")]
-        public Double IpTotal { get; set; }
+        public double IpTotal { get; set; }
 
         [SerializedName("summonerName")]
         public string SummonerName { get; set; }
 
         [SerializedName("customMsecsUntilReset")]
-        public Double CustomMsecsUntilReset { get; set; }
+        public double CustomMsecsUntilReset { get; set; }
 
         [SerializedName("rerollEarned")]
-        public Double RerollPointsEarned { get; set; }
+        public double RerollPointsEarned { get; set; }
     }
 }

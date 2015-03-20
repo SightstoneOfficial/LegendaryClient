@@ -52,6 +52,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Runes
         public Rune Rune { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

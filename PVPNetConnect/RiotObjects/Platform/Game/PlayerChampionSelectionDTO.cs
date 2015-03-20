@@ -39,7 +39,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public string SummonerInternalName { get; set; }
 
         [InternalName("spell2Id")]
-        public Double Spell2Id { get; set; }
+        public double Spell2Id { get; set; }
 
         [InternalName("selectedSkinIndex")]
         public int SelectedSkinIndex { get; set; }
@@ -48,6 +48,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public int ChampionId { get; set; }
 
         [InternalName("spell1Id")]
-        public Double Spell1Id { get; set; }
+        public double Spell1Id { get; set; }
     }
 }

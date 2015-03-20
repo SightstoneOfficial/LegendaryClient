@@ -66,7 +66,7 @@ namespace PVPNetConnect
 
         }
 
-        public double? GetDouble(string key)
+        public double? Getdouble(string key)
         {
             object val = this[key];
             if (val == null)

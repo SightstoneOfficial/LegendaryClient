@@ -185,7 +185,7 @@ namespace PVPNetConnect.RiotObjects
                     }
                     else if (type == typeof(TypedObject))
                     {
-                        value = (TypedObject)result[intern.Name];
+                        value = result[intern.Name];
                     }
 
                     else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
@@ -271,7 +271,7 @@ namespace PVPNetConnect.RiotObjects
                     }
                     else if (type == typeof(int[]))
                     {
-                        value = result.GetArray(intern.Name).Cast<Int32>().ToArray();
+                        value = result.GetArray(intern.Name).Cast<int>().ToArray();
                     }
                     else if (type == typeof(string[]))
                     {
