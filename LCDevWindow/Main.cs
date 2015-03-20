@@ -25,6 +25,6 @@ namespace LCDevWindow
         public static MainWindow.StreamString inPipeStream;
         public static MainWindow.StreamString SendPIPE;
 
-        public static Dictionary<String, Object> Vars = new Dictionary<String, Object>();
+        public static Dictionary<string, object> Vars = new Dictionary<string, object>();
     }
 }

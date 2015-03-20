@@ -36,10 +36,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Game.Message
         }
 
         [InternalName("messageCode")]
-        public String MessageCode { get; set; }
+        public string MessageCode { get; set; }
 
         [InternalName("type")]
-        public String Type { get; set; }
+        public string Type { get; set; }
 
         [InternalName("messageArgument")]
         public object MessageArgument { get; set; }

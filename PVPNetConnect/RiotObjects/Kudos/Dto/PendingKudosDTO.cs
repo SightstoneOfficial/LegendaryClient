@@ -36,6 +36,6 @@ namespace PVPNetConnect.RiotObjects.Kudos.Dto
         }
 
         [InternalName("pendingCounts")]
-        public Int32[] PendingCounts { get; set; }
+        public int[] PendingCounts { get; set; }
     }
 }

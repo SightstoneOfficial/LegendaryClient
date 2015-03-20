@@ -33,17 +33,6 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             LoadTimer();
             UpdateData();
-            Change();
-        }
-
-        public void Change()
-        {
-            var bc = new BrushConverter();
-            bool x = Settings.Default.DarkTheme;
-            if (x)
-                TheGrid.Background = (Brush) bc.ConvertFrom("#E5000000");
-            else
-                TheGrid.Background = (Brush) bc.ConvertFrom("#E5B4B4B4");
         }
 
         private void LoadTimer()
@@ -52,6 +41,8 @@ namespace LegendaryClient.Windows
             timer.Elapsed += timer_Elapsed;
             timer.Start();
         }
+
+#pragma warning disable 4014
 
         private void UpdateData()
         {

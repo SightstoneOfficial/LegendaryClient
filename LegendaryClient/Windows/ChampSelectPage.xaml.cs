@@ -249,7 +249,7 @@ namespace LegendaryClient.Windows
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort(
                 (x, y) =>
-                    String.Compare(champions.GetChampion(x.ChampionId)
+                    string.Compare(champions.GetChampion(x.ChampionId)
                         .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
             //Retrieve masteries and runes
@@ -336,7 +336,7 @@ namespace LegendaryClient.Windows
                     ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
                     ChampionsForBan.Sort(
                         (x, y) =>
-                            String.Compare(champions.GetChampion(x.ChampionId)
+                            string.Compare(champions.GetChampion(x.ChampionId)
                                 .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
                 }
                 catch (Exception e)  // Not really
@@ -460,7 +460,7 @@ namespace LegendaryClient.Windows
                                     break;
                                 }
                             }
-                            if (String.IsNullOrEmpty(participant.SummonerName))
+                            if (string.IsNullOrEmpty(participant.SummonerName))
                             {
                                 participant.SummonerName = "Summoner " + t;
                                 t++;
@@ -621,7 +621,7 @@ namespace LegendaryClient.Windows
                             if (!String.IsNullOrEmpty(player.SummonerName))
                             {
                                 control.PlayerName.Content = player.SummonerName;
-                                control._sumName = player.SummonerName;
+                                control.sumName = player.SummonerName;
                             }
                             else
                             {
@@ -709,7 +709,7 @@ namespace LegendaryClient.Windows
                             else
                             {
                                 control.PlayerName.Content = "Bot";
-                                control._sumName = "Bot";
+                                control.sumName = "Bot";
                             }
                         }
                         else
@@ -783,7 +783,7 @@ namespace LegendaryClient.Windows
                             string ip = n.PlayerCredentials.ObserverServerIp + ":" +
                                         n.PlayerCredentials.ObserverServerPort;
                             string key = n.PlayerCredentials.ObserverEncryptionKey;
-                            var gameId = (Int32)n.PlayerCredentials.GameId;
+                            var gameId = (int)n.PlayerCredentials.GameId;
                             new ReplayRecorder(ip, gameId, Client.Region.InternalName, key);
                         }
                     });

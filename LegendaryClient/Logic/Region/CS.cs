@@ -10,7 +10,7 @@ namespace LegendaryClient.Logic.Region
     /// </summary>
     internal class CS : BaseRegion
     {
-        private static readonly Dictionary<String, String> vals = getSettings();
+        private static readonly Dictionary<string, string> vals = getSettings();
         private static string location;
 
         public override string Location
@@ -72,9 +72,9 @@ namespace LegendaryClient.Logic.Region
             set { }
         }
 
-        private static Dictionary<String, String> getSettings()
+        private static Dictionary<string, string> getSettings()
         {
-            var result = new Dictionary<String, String>();
+            var result = new Dictionary<string, string>();
             var file = new OpenFileDialog
             {
                 Title = "Find League Of Legends",

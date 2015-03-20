@@ -43,7 +43,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         public bool hasDelegatedInvitePower { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [InternalName("summonerId")]
         public Double SummonerId { get; set; }

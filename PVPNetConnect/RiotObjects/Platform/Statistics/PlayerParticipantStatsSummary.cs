@@ -38,16 +38,16 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         }
 
         [InternalName("skinName")]
-        public String SkinName { get; set; }
+        public string SkinName { get; set; }
 
         [InternalName("gameId")]
         public Double GameId { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("elo")]
-        public Int32 Elo { get; set; }
+        public int Elo { get; set; }
 
         [InternalName("leaver")]
         public Boolean Leaver { get; set; }
@@ -59,7 +59,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public Double TeamId { get; set; }
 
         [InternalName("eloChange")]
-        public Int32 EloChange { get; set; }
+        public int EloChange { get; set; }
 
         [InternalName("statistics")]
         public List<RawStatDTO> Statistics { get; set; }
@@ -86,13 +86,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public Double Losses { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [InternalName("roomName")]
-        public String RoomName { get; set; }
+        public string RoomName { get; set; }
 
         [InternalName("roomPassword")]
-        public String RoomPassword { get; set; }
+        public string RoomPassword { get; set; }
 
         [InternalName("wins")]
         public Double Wins { get; set; }

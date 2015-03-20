@@ -40,22 +40,22 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public new object TimeAddedToQueue { get; set; }
 
         [InternalName("index")]
-        public Int32 Index { get; set; }
+        public int Index { get; set; }
 
         [InternalName("queueRating")]
-        public Int32 QueueRating { get; set; }
+        public int QueueRating { get; set; }
 
         [InternalName("accountId")]
         public Double AccountId { get; set; }
 
         [InternalName("botDifficulty")]
-        public String BotDifficulty { get; set; }
+        public string BotDifficulty { get; set; }
 
         [InternalName("originalAccountNumber")]
         public Double OriginalAccountNumber { get; set; }
 
         [InternalName("summonerInternalName")]
-        public new String SummonerInternalName { get; set; }
+        public new string SummonerInternalName { get; set; }
 
         [InternalName("minor")]
         public Boolean Minor { get; set; }
@@ -64,13 +64,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public object Locale { get; set; }
 
         [InternalName("lastSelectedSkinIndex")]
-        public Int32 LastSelectedSkinIndex { get; set; }
+        public int LastSelectedSkinIndex { get; set; }
 
         [InternalName("partnerId")]
-        public String PartnerId { get; set; }
+        public string PartnerId { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("teamOwner")]
         public Boolean TeamOwner { get; set; }
@@ -79,25 +79,25 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public Double SummonerId { get; set; }
 
         [InternalName("badges")]
-        public Int32 Badges { get; set; }
+        public int Badges { get; set; }
 
         [InternalName("pickTurn")]
-        public Int32 PickTurn { get; set; }
+        public int PickTurn { get; set; }
 
         [InternalName("clientInSynch")]
         public Boolean ClientInSynch { get; set; }
 
         [InternalName("summonerName")]
-        public new String SummonerName { get; set; }
+        public new string SummonerName { get; set; }
 
         [InternalName("pickMode")]
-        public Int32 PickMode { get; set; }
+        public int PickMode { get; set; }
 
         [InternalName("pointSummary")]
         public PointSummary PointSummary { get; set; } 
 
         [InternalName("originalPlatformId")]
-        public String OriginalPlatformId { get; set; }
+        public string OriginalPlatformId { get; set; }
 
         [InternalName("teamParticipantId")]
         public object TeamParticipantId { get; set; }

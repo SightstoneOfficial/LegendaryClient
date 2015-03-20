@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Messaging.Persistence
         }
 
         [InternalName("command")]
-        public String Command { get; set; }
+        public string Command { get; set; }
 
         [InternalName("accountId")]
         public Double AccountId { get; set; }

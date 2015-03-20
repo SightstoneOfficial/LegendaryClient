@@ -39,7 +39,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public object LastLevelIncrease { get; set; }
 
         [InternalName("level")]
-        public Int32 Level { get; set; }
+        public int Level { get; set; }
 
         [InternalName("lastDecay")]
         public DateTime LastDecay { get; set; }
@@ -48,6 +48,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public Boolean UserInformed { get; set; }
 
         [InternalName("points")]
-        public Int32 Points { get; set; }
+        public int Points { get; set; }
     }
 }

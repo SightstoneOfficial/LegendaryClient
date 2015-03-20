@@ -1,6 +1,4 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,8 +13,6 @@ using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 
-#endregion
-
 namespace LegendaryClient.Windows.Profile
 {
     /// <summary>
@@ -24,21 +20,11 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class Skins
     {
-        private List<ChampionDTO> _championList;
+        private List<ChampionDTO> championList;
 
         public Skins()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void Update()
@@ -47,11 +33,11 @@ namespace LegendaryClient.Windows.Profile
             {
                 var champList = await Client.PVPNet.GetAvailableChampions();
 
-                _championList = new List<ChampionDTO>(champList);
+                championList = new List<ChampionDTO>(champList);
 
-                _championList.Sort(
+                championList.Sort(
                     (x, y) =>
-                        String.Compare(champions.GetChampion(x.ChampionId)
+                        string.Compare(champions.GetChampion(x.ChampionId)
                             .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
                 FilterSkins();
@@ -73,7 +59,7 @@ namespace LegendaryClient.Windows.Profile
             {
                 SkinSelectListView.Items.Clear();
 
-                var tempList = _championList.ToList();
+                var tempList = championList.ToList();
                 var skinList = new List<ChampionSkinDTO>();
                 foreach (var champion in tempList)
                 {

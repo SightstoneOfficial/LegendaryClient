@@ -1,16 +1,11 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-
-#endregion
 
 namespace LegendaryClient.Logic
 {
     public static class FilterChat
     {
-        private static readonly List<String> FilteredWords = new List<String>
+        private static readonly List<string> FilteredWords = new List<string>
         {
             "2girls1cup",
             "anal",
@@ -384,7 +379,7 @@ namespace LegendaryClient.Logic
             string filter = input.ToLower();
             foreach (
                 string wordlist in FilteredWords.Where(wordlist => filter.Contains(wordlist) && wordlist.Length != 0))
-                return filter.Replace(wordlist, String.Concat(Enumerable.Repeat("*", wordlist.Length)));
+                return filter.Replace(wordlist, string.Concat(Enumerable.Repeat("*", wordlist.Length)));
 
             return filter;
         }

@@ -1,15 +1,11 @@
-﻿#region
-
+﻿using LegendaryClient.Logic;
+using LegendaryClient.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using LegendaryClient.Logic;
-using LegendaryClient.Windows;
-
-#endregion
 
 namespace LegendaryClient.Controls
 {

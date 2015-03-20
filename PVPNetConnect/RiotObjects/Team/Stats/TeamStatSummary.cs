@@ -40,7 +40,7 @@ namespace PVPNetConnect.RiotObjects.Team.Stats
         public List<TeamStatDetail> TeamStatDetails { get; set; }
 
         [InternalName("teamIdString")]
-        public String TeamIdString { get; set; }
+        public string TeamIdString { get; set; }
 
         [InternalName("teamId")]
         public TeamId TeamId { get; set; }

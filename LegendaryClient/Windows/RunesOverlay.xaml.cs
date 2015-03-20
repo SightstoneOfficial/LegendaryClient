@@ -1,12 +1,6 @@
-﻿#region
-
-using System;
-using System.Windows;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
+﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows.Profile;
-
-#endregion
+using System.Windows;
 
 namespace LegendaryClient.Windows
 {
@@ -18,18 +12,7 @@ namespace LegendaryClient.Windows
         public RunesOverlay()
         {
             InitializeComponent();
-            Change();
-
             Container.Content = new Runes().Content;
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

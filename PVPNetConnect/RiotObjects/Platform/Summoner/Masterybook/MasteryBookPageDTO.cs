@@ -43,7 +43,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook
         public Double PageId { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("current")]
         public Boolean Current { get; set; }

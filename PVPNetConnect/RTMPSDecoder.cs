@@ -244,7 +244,7 @@ namespace PVPNetConnect
                 string str;
                 try
                 {
-                    System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+                    UTF8Encoding enc = new UTF8Encoding();
                     str = enc.GetString(data);
                 }
                 catch (Exception e)
@@ -408,7 +408,7 @@ namespace PVPNetConnect
                     else
                     {
                         //for (int i = dataPos; i < dataBuffer.length; i++)
-                        //System.out.print(String.format("%02X", dataBuffer[i]));
+                        //System.out.print(string.format("%02X", dataBuffer[i]));
                         //System.out.println();
                         throw new NotImplementedException("Externalizable not handled for " + cd.type);
                     }
@@ -417,14 +417,14 @@ namespace PVPNetConnect
                 {
                     for (int i = 0; i < cd.members.Count; i++)
                     {
-                        String key = cd.members[i];
+                        string key = cd.members[i];
                         object value = Decode();
                         ret.Add(key, value);
                     }
 
                     if (cd.dynamic)
                     {
-                        String key;
+                        string key;
                         while ((key = ReadString()).Length != 0)
                         {
                             object value = Decode();
@@ -629,7 +629,7 @@ namespace PVPNetConnect
             string str;
             try
             {
-                System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+                UTF8Encoding enc = new UTF8Encoding();
                 str = enc.GetString(data);
             }
             catch (Exception e)

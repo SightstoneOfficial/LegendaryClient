@@ -36,6 +36,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Harassment
         }
 
         [InternalName("value")]
-        public String Value { get; set; }
+        public string Value { get; set; }
     }
 }

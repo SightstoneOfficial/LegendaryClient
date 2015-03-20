@@ -157,9 +157,9 @@ namespace PVPNetConnect
     }
 
     /// <summary>
-    /// The StringEnum value with GetStringValue method
+    /// The stringEnum value with GetStringValue method
     /// </summary>
-    public static class StringEnum
+    public static class stringEnum
     {
         /// <summary>
         /// Gets the string value from Atrribute.

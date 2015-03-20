@@ -48,7 +48,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public Double UserId { get; set; }
 
         [InternalName("dodgeStreak")]
-        public Int32 DodgeStreak { get; set; }
+        public int DodgeStreak { get; set; }
 
         [InternalName("dodgePenaltyDate")]
         public object DodgePenaltyDate { get; set; }

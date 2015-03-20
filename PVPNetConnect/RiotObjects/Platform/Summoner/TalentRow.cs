@@ -37,18 +37,18 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("index")]
-        public Int32 Index { get; set; }
+        public int Index { get; set; }
 
         [InternalName("talents")]
         public List<Talent> Talents { get; set; }
 
         [InternalName("tltGroupId")]
-        public Int32 TltGroupId { get; set; }
+        public int TltGroupId { get; set; }
 
         [InternalName("pointsToActivate")]
-        public Int32 PointsToActivate { get; set; }
+        public int PointsToActivate { get; set; }
 
         [InternalName("tltRowId")]
-        public Int32 TltRowId { get; set; }
+        public int TltRowId { get; set; }
     }
 }

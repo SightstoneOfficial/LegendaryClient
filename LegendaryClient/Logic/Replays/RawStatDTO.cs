@@ -15,6 +15,6 @@ namespace LegendaryClient.Logic.Replays
         public Double Value { get; set; }
 
         [SerializedName("statTypeName")]
-        public String StatTypeName { get; set; }
+        public string StatTypeName { get; set; }
     }
 }

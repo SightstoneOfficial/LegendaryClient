@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
 using System.Web.Script.Serialization;
-
-#endregion
 
 namespace LegendaryClient.Logic.Replays
 {
@@ -41,11 +37,11 @@ namespace LegendaryClient.Logic.Replays
                 using (var client = new WebClient())
                 {
                     client.DownloadFile(
-                        String.Format("{0}/consumer/version", Server + "/observer-mode/rest"),
+                        string.Format("{0}/consumer/version", Server + "/observer-mode/rest"),
                         Path.Combine(Client.ExecutingDirectory, "cabinet", gameId + "-" + region, "version"));
 
                     string token = client.DownloadString(
-                        String.Format("{0}/consumer/{1}/{2}/{3}/token",
+                        string.Format("{0}/consumer/{1}/{2}/{3}/token",
                             Server + "/observer-mode/rest",
                             "getGameMetaData",
                             region,
@@ -75,7 +71,7 @@ namespace LegendaryClient.Logic.Replays
                             for (int i = 1; i < lastChunk + 1; i++)
                             {
                                 client.DownloadFile(
-                                    String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token",
+                                    string.Format("{0}/consumer/{1}/{2}/{3}/{4}/token",
                                         Server + "/observer-mode/rest",
                                         "getGameDataChunk",
                                         region,
@@ -114,7 +110,7 @@ namespace LegendaryClient.Logic.Replays
             using (var client = new WebClient())
             {
                 string token = client.DownloadString(
-                    String.Format("{0}/consumer/{1}/{2}/{3}/0/token", Server + "/observer-mode/rest",
+                    string.Format("{0}/consumer/{1}/{2}/{3}/0/token", Server + "/observer-mode/rest",
                         "getLastChunkInfo",
                         Region,
                         GameId));
@@ -122,7 +118,7 @@ namespace LegendaryClient.Logic.Replays
                 var serializer = new JavaScriptSerializer();
                 var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(token);
 
-                var chunkId = (Int32) deserializedJson["chunkId"];
+                var chunkId = (int) deserializedJson["chunkId"];
                 if (chunkId == 0)
                 {
                     //Try get chunk once avaliable
@@ -133,7 +129,7 @@ namespace LegendaryClient.Logic.Replays
                 {
                     //Sometimes chunk 1 isn't retrieved so get it again... it's like 7 kb so np
                     client.DownloadFile(
-                        String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
+                        string.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
                             "getGameDataChunk",
                             Region,
                             GameId,
@@ -141,7 +137,7 @@ namespace LegendaryClient.Logic.Replays
                         Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + 1));
 
                     client.DownloadFile(
-                        String.Format("{0}/consumer/{1}/{2}/{3}/token", Server + "/observer-mode/rest",
+                        string.Format("{0}/consumer/{1}/{2}/{3}/token", Server + "/observer-mode/rest",
                             "endOfGameStats",
                             Region,
                             GameId),
@@ -162,7 +158,7 @@ namespace LegendaryClient.Logic.Replays
                     if (keyFrameId != 0)
                     {
                         client.DownloadFile(
-                            String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
+                            string.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
                                 "getKeyFrame",
                                 Region,
                                 GameId,
@@ -173,7 +169,7 @@ namespace LegendaryClient.Logic.Replays
                 }
 
                 client.DownloadFile(
-                    String.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
+                    string.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
                         "getGameDataChunk",
                         Region,
                         GameId,

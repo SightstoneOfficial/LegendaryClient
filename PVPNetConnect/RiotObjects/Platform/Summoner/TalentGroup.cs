@@ -37,15 +37,15 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("index")]
-        public Int32 Index { get; set; }
+        public int Index { get; set; }
 
         [InternalName("talentRows")]
         public List<TalentRow> TalentRows { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("tltGroupId")]
-        public Int32 TltGroupId { get; set; }
+        public int TltGroupId { get; set; }
     }
 }

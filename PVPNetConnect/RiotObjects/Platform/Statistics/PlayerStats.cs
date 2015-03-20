@@ -40,7 +40,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public List<TimeTrackedStat> TimeTrackedStats { get; set; }
 
         [InternalName("promoGamesPlayed")]
-        public Int32 PromoGamesPlayed { get; set; }
+        public int PromoGamesPlayed { get; set; }
 
         [InternalName("promoGamesPlayedLastUpdated")]
         public object PromoGamesPlayedLastUpdated { get; set; }

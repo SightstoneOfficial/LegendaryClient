@@ -17,16 +17,6 @@ namespace LegendaryClient.Windows
         public MessageOverlay()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)

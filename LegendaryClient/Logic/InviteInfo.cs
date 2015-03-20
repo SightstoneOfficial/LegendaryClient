@@ -13,6 +13,6 @@ namespace LegendaryClient.Logic
         internal InvitationRequest stats { get; set; }
         internal GameInvitePopup popup { get; set; }
         internal Boolean PopupVisible { get; set; }
-        internal String Inviter { get; set; }
+        internal string Inviter { get; set; }
     }
 }

@@ -42,6 +42,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public Double QueueId { get; set; }
 
         [InternalName("queueLength")]
-        public Int32 QueueLength { get; set; }
+        public int QueueLength { get; set; }
     }
 }

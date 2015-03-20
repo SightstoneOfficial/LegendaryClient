@@ -10,7 +10,7 @@ namespace LCDevWindow.Commands.LegendaryClient
     {
         public abstract object ActivateCommand(string[] args);
 
-        public abstract List<String> HelpTips();
+        public abstract List<string> HelpTips();
 
         public abstract string CommandName { get; }
 

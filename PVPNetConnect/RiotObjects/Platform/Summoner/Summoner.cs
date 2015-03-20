@@ -37,10 +37,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("internalName")]
-        public String InternalName { get; set; }
+        public string InternalName { get; set; }
 
         [InternalName("previousSeasonHighestTier")]
-        public String previousSeasonHighestTier { get; set; }
+        public string previousSeasonHighestTier { get; set; }
 
         [InternalName("acctId")]
         public Double AcctId { get; set; }
@@ -52,7 +52,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         public Double SumId { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("displayEloQuestionaire")]
         public Boolean DisplayEloQuestionaire { get; set; }
@@ -61,7 +61,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         public DateTime LastGameDate { get; set; }
         
         [InternalName("previousSeasonHighestTeamReward")]
-        public Int32 previousSeasonHighestTeamReward { get; set; }
+        public int previousSeasonHighestTeamReward { get; set; }
 
         [InternalName("revisionDate")]
         public DateTime RevisionDate { get; set; }
@@ -74,13 +74,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
 
         //TODO: find out object type, it seems to be null for now
         [InternalName("futureData")]
-        public Object futureData { get; set; }
+        public object futureData { get; set; }
 
         [InternalName("dataVersion")]
-        public Int32 dataVersion { get; set; }
+        public int dataVersion { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("nameChangeFlag")]
         public Boolean NameChangeFlag { get; set; }

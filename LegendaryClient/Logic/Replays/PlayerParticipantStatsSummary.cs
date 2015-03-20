@@ -13,16 +13,16 @@ namespace LegendaryClient.Logic.Replays
     public class PlayerParticipantStatsSummary
     {
         [SerializedName("skinName")]
-        public String SkinName { get; set; }
+        public string SkinName { get; set; }
 
         [SerializedName("gameId")]
         public Double GameId { get; set; }
 
         [SerializedName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [SerializedName("elo")]
-        public Int32 Elo { get; set; }
+        public int Elo { get; set; }
 
         [SerializedName("leaver")]
         public Boolean Leaver { get; set; }
@@ -34,7 +34,7 @@ namespace LegendaryClient.Logic.Replays
         public Double TeamId { get; set; }
 
         [SerializedName("eloChange")]
-        public Int32 EloChange { get; set; }
+        public int EloChange { get; set; }
 
         [SerializedName("statistics")]
         public List<RawStatDTO> Statistics { get; set; }
@@ -61,7 +61,7 @@ namespace LegendaryClient.Logic.Replays
         public Double Losses { get; set; }
 
         [SerializedName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [SerializedName("wins")]
         public Double Wins { get; set; }

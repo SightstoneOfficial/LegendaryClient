@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Leagues.Pojo
         }
 
         [InternalName("previousDayLeaguePosition")]
-        public Int32 PreviousDayLeaguePosition { get; set; }
+        public int PreviousDayLeaguePosition { get; set; }
 
         [InternalName("timeLastDecayMessageShown")]
         public Double TimeLastDecayMessageShown { get; set; }
@@ -45,13 +45,13 @@ namespace PVPNetConnect.RiotObjects.Leagues.Pojo
         public Boolean HotStreak { get; set; }
 
         [InternalName("leagueName")]
-        public String LeagueName { get; set; }
+        public string LeagueName { get; set; }
 
         [InternalName("miniSeries")]
         public object MiniSeries { get; set; }
 
         [InternalName("tier")]
-        public String Tier { get; set; }
+        public string Tier { get; set; }
 
         [InternalName("freshBlood")]
         public Boolean FreshBlood { get; set; }
@@ -60,33 +60,33 @@ namespace PVPNetConnect.RiotObjects.Leagues.Pojo
         public Double LastPlayed { get; set; }
 
         [InternalName("playerOrTeamId")]
-        public String PlayerOrTeamId { get; set; }
+        public string PlayerOrTeamId { get; set; }
 
         [InternalName("leaguePoints")]
-        public Int32 LeaguePoints { get; set; }
+        public int LeaguePoints { get; set; }
 
         [InternalName("inactive")]
         public Boolean Inactive { get; set; }
 
         [InternalName("rank")]
-        public String Rank { get; set; }
+        public string Rank { get; set; }
 
         [InternalName("veteran")]
         public Boolean Veteran { get; set; }
 
         [InternalName("queueType")]
-        public String QueueType { get; set; }
+        public string QueueType { get; set; }
 
         [InternalName("losses")]
-        public Int32 Losses { get; set; }
+        public int Losses { get; set; }
 
         [InternalName("timeUntilDecay")]
         public Double TimeUntilDecay { get; set; }
 
         [InternalName("playerOrTeamName")]
-        public String PlayerOrTeamName { get; set; }
+        public string PlayerOrTeamName { get; set; }
 
         [InternalName("wins")]
-        public Int32 Wins { get; set; }
+        public int Wins { get; set; }
     }
 }

@@ -37,22 +37,22 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("spectatorsAllowed")]
-        public String SpectatorsAllowed { get; set; }
+        public string SpectatorsAllowed { get; set; }
 
         [InternalName("passwordSet")]
         public Boolean PasswordSet { get; set; }
 
         [InternalName("gameType")]
-        public String GameType { get; set; }
+        public string GameType { get; set; }
 
         [InternalName("gameTypeConfigId")]
-        public Int32 GameTypeConfigId { get; set; }
+        public int GameTypeConfigId { get; set; }
 
         [InternalName("glmGameId")]
         public object GlmGameId { get; set; }
 
         [InternalName("gameState")]
-        public String GameState { get; set; }
+        public string GameState { get; set; }
 
         [InternalName("glmHost")]
         public object GlmHost { get; set; }
@@ -64,7 +64,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public object StatusOfParticipants { get; set; }
 
         [InternalName("glmSecurePort")]
-        public Int32 GlmSecurePort { get; set; }
+        public int GlmSecurePort { get; set; }
 
         [InternalName("id")]
         public Double Id { get; set; }
@@ -79,67 +79,67 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public List<BannedChampion> BannedChampions { get; set; }
 
         [InternalName("roomName")]
-        public String RoomName { get; set; }
+        public string RoomName { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("spectatorDelay")]
-        public Int32 SpectatorDelay { get; set; }
+        public int SpectatorDelay { get; set; }
 
         [InternalName("teamOne")]
         public List<Participant> TeamOne { get; set; }
 
         [InternalName("terminatedCondition")]
-        public String TerminatedCondition { get; set; }
+        public string TerminatedCondition { get; set; }
 
         [InternalName("queueTypeName")]
-        public String QueueTypeName { get; set; }
+        public string QueueTypeName { get; set; }
 
         /*[InternalName("featuredGameInfo")]
         public featuredGameInfo //*/
 
         [InternalName("glmPort")]
-        public Int32 GlmPort { get; set; }
+        public int GlmPort { get; set; }
 
         [InternalName("passbackUrl")]
         public object PassbackUrl { get; set; }
 
         [InternalName("roomPassword")]
-        public String RoomPassword { get; set; }
+        public string RoomPassword { get; set; }
 
         [InternalName("optimisticLock")]
         public Double OptimisticLock { get; set; }
 
         [InternalName("maxNumPlayers")]
-        public Int32 MaxNumPlayers { get; set; }
+        public int MaxNumPlayers { get; set; }
 
         [InternalName("queuePosition")]
-        public Int32 QueuePosition { get; set; }
+        public int QueuePosition { get; set; }
 
         [InternalName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [InternalName("expiryTime")]
         public Double ExpiryTime { get; set; }
 
         [InternalName("mapId")]
-        public Int32 MapId { get; set; }
+        public int MapId { get; set; }
 
         [InternalName("banOrder")]
         public List<Int32> BanOrder { get; set; }
 
         [InternalName("pickTurn")]
-        public Int32 PickTurn { get; set; }
+        public int PickTurn { get; set; }
 
         [InternalName("gameStateString")]
-        public String GameStateString { get; set; }
+        public string GameStateString { get; set; }
 
         [InternalName("playerChampionSelections")]
         public List<PlayerChampionSelectionDTO> PlayerChampionSelections { get; set; }
 
         [InternalName("joinTimerDuration")]
-        public Int32 JoinTimerDuration { get; set; }
+        public int JoinTimerDuration { get; set; }
 
         [InternalName("passbackDataPacket")]
         public object PassbackDataPacket { get; set; }

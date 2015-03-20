@@ -1,5 +1,11 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.Replays;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
+using RtmpSharp.IO;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,17 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Replays;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using RtmpSharp.IO;
 using Color = System.Drawing.Color;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -39,8 +35,6 @@ namespace LegendaryClient.Windows
         public ReplayPage()
         {
             InitializeComponent();
-            Change();
-
             Download.Visibility = Visibility.Hidden;
 
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet")))
@@ -63,15 +57,6 @@ namespace LegendaryClient.Windows
             #endregion Register Context
 
             UpdateReplays();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void Command_TextChanged(object sender, TextChangedEventArgs e)
@@ -453,7 +438,7 @@ namespace LegendaryClient.Windows
             if (User)
             {
                 PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(Command.Text);
-                if (String.IsNullOrWhiteSpace(summoner.Name))
+                if (string.IsNullOrWhiteSpace(summoner.Name))
                 {
                     var overlay = new MessageOverlay
                     {
@@ -474,7 +459,7 @@ namespace LegendaryClient.Windows
                 {
                     string ip = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
                     string key = n.PlayerCredentials.ObserverEncryptionKey;
-                    var gameId = (Int32)n.PlayerCredentials.GameId;
+                    var gameId = (int)n.PlayerCredentials.GameId;
                     recorder = new ReplayRecorder(ip, gameId, Client.Region.InternalName, key);
                     recorder.OnReplayRecorded += recorder_OnReplayRecorded;
                     recorder.OnGotChunk += recorder_OnGotChunk;
@@ -512,15 +497,10 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        private void ExitButton_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            Environment.Exit(0);
-        }
-
         private void WatchReplayButton_Click(object sender, RoutedEventArgs e)
         {
             string directory = Client.Location;
-            if (String.IsNullOrEmpty(directory))
+            if (string.IsNullOrEmpty(directory))
             {
                 MessageBoxResult result =
                     MessageBox.Show("You need to set your League of Legends installation location in settings.", "Error",
@@ -585,16 +565,6 @@ namespace LegendaryClient.Windows
         public static readonly DependencyProperty IsChangedProperty =
             DependencyProperty.RegisterAttached("IsChanged", typeof(bool), typeof(FocusVisualTreeChanger),
                 new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.Inherits, IsChangedCallback));
-
-        public static bool GetIsChanged(DependencyObject obj)
-        {
-            return (bool)obj.GetValue(IsChangedProperty);
-        }
-
-        public static void SetIsChanged(DependencyObject obj, bool value)
-        {
-            obj.SetValue(IsChangedProperty, value);
-        }
 
         private static void IsChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -39,42 +39,42 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         public Double AccountId { get; set; }
 
         [InternalName("botDifficulty")]
-        public String BotDifficulty { get; set; }
+        public string BotDifficulty { get; set; }
 
         [InternalName("summonerInternalName")]
-        public String SummonerInternalName { get; set; }
+        public string SummonerInternalName { get; set; }
 
         [InternalName("locale")]
         public object Locale { get; set; }
 
         [InternalName("lastSelectedSkinIndex")]
-        public Int32 LastSelectedSkinIndex { get; set; }
+        public int LastSelectedSkinIndex { get; set; }
 
         [InternalName("partnerId")]
-        public String PartnerId { get; set; }
+        public string PartnerId { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("summonerId")]
         public Double SummonerId { get; set; }
 
         [InternalName("badges")]
-        public Int32 Badges { get; set; }
+        public int Badges { get; set; }
 
         [InternalName("pickTurn")]
-        public Int32 PickTurn { get; set; }
+        public int PickTurn { get; set; }
 
         [InternalName("originalAccountId")]
         public Double OriginalAccountId { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [InternalName("pickMode")]
-        public Int32 PickMode { get; set; }
+        public int PickMode { get; set; }
 
         [InternalName("originalPlatformId")]
-        public String OriginalPlatformId { get; set; }
+        public string OriginalPlatformId { get; set; }
     }
 }

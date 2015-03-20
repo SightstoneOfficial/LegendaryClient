@@ -135,7 +135,7 @@ namespace PVPNetConnect
             WriteStringAMF0(result, resultType); //Type
             WriteIntAMF0(result, invokeId);
             result.Add((byte)0x05); // Service call of null;
-            result.Add((byte)0x11); //AMF3 Object
+            result.Add((byte)0x11); //AMF3 object
             Encode(result, data);
 
             byte[] ret = result.ToArray();
@@ -188,7 +188,7 @@ namespace PVPNetConnect
                 ret.Add((byte)0x08);
                 WriteDate(ret, (DateTime)obj);
             }
-            // Must precede Object[] check
+            // Must precede object[] check
             else if (obj is byte[])
             {
                 ret.Add((byte)0x0C);
@@ -361,7 +361,7 @@ namespace PVPNetConnect
                 WriteInt(ret, (val.Count << 4) | 3); // Inline + member count
                 WriteString(ret, val.type);
 
-                List<String> keyOrder = new List<String>();
+                List<string> keyOrder = new List<string>();
                 foreach (string key in val.Keys)
                 {
                     WriteString(ret, key);

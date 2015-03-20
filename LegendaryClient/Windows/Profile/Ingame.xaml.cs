@@ -1,5 +1,9 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.PlayerSpell;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -11,19 +15,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.PlayerSpell;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Drawing.Color;
 using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
-
-#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -32,28 +28,18 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class Ingame
     {
-        private PlatformGameLifecycleDTO _game;
-        private string _user;
-        //private static readonly ILog log = LogManager.GetLogger(typeof(InGame));
+        private PlatformGameLifecycleDTO game;
+        private string user;
+
         public Ingame()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public void Update(PlatformGameLifecycleDTO currentGame, string username)
         {
-            _user = username;
-            _game = currentGame;
+            user = username;
+            game = currentGame;
             BlueBansLabel.Visibility = Visibility.Hidden;
             PurpleBansLabel.Visibility = Visibility.Hidden;
             PurpleBanListView.Items.Clear();
@@ -82,8 +68,8 @@ namespace LegendaryClient.Windows.Profile
                                     championSelect.SummonerInternalName == participant.SummonerInternalName))
                     {
                         control.KnownPar = true;
-                        control._sumName = participant.SummonerInternalName;
-                        control._champID = championSelect.ChampionId;
+                        control.sumName = participant.SummonerInternalName;
+                        control.champID = championSelect.ChampionId;
                         control.ChampionImage.Source = champions.GetChampion(championSelect.ChampionId).icon;
                         var uriSource =
                             new Uri(
@@ -97,8 +83,6 @@ namespace LegendaryClient.Windows.Profile
                                     SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))),
                                 UriKind.Absolute);
                         control.SummonerSpell2.Source = new BitmapImage(uriSource);
-
-                        #region Generate Background
 
                         var m = new Image();
                         Panel.SetZIndex(m, -2);
@@ -127,8 +111,6 @@ namespace LegendaryClient.Windows.Profile
 
                         m.Source = Client.ToWpfBitmap(target);
                         ImageGrid.Children.Add(m);
-
-                        #endregion Generate Background
                     }
 
                     control.PlayerName.Content = participant.SummonerName;
@@ -209,16 +191,16 @@ namespace LegendaryClient.Windows.Profile
         private void GameScouter_Click(object sender, RoutedEventArgs e)
         {
             var scouter = new GameScouter();
-            scouter.LoadScouter(_user);
+            scouter.LoadScouter(user);
             scouter.Show();
             scouter.Activate();
         }
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)
         {
-            var ip = _game.PlayerCredentials.ObserverServerIp;
-            var key = _game.PlayerCredentials.ObserverEncryptionKey;
-            var gameId = _game.PlayerCredentials.GameId;
+            var ip = game.PlayerCredentials.ObserverServerIp;
+            var key = game.PlayerCredentials.ObserverEncryptionKey;
+            var gameId = game.PlayerCredentials.GameId;
             Client.LaunchSpectatorGame(ip, key, (int) gameId, Client.Region.InternalName);
         }
     }

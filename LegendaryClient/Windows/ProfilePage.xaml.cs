@@ -1,24 +1,19 @@
-#region
-
-using System;
-using System.IO;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Threading;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
 using LegendaryClient.Windows.Profile;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
 using PVPNetConnect.RiotObjects.Team.Dto;
-using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
-using System.Web.Script.Serialization;
-using PVPNetConnect;
+using System;
 using System.Collections.Generic;
-
-#endregion
+using System.IO;
+using System.Threading;
+using System.Web.Script.Serialization;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Windows
 {
@@ -30,7 +25,6 @@ namespace LegendaryClient.Windows
         public ProfilePage()
         {
             InitializeComponent();
-            Change();
             if (Client.Dev)
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -54,15 +48,6 @@ namespace LegendaryClient.Windows
                 GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
-        }
-
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
             GetSummonerProfile(SearchTextBox.Text);
@@ -72,10 +57,10 @@ namespace LegendaryClient.Windows
         {
             PublicSummoner summoner =
                 await
-                    Client.PVPNet.GetSummonerByName(String.IsNullOrWhiteSpace(s)
+                    Client.PVPNet.GetSummonerByName(string.IsNullOrWhiteSpace(s)
                         ? Client.LoginPacket.AllSummonerData.Summoner.Name
                         : s);
-            if (String.IsNullOrWhiteSpace(summoner.Name))
+            if (string.IsNullOrWhiteSpace(summoner.Name))
             {
                 var overlay = new MessageOverlay
                 {

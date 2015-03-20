@@ -43,31 +43,31 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Runes
         public object ToolTip { get; set; }
 
         [InternalName("tier")]
-        public Int32 Tier { get; set; }
+        public int Tier { get; set; }
 
         [InternalName("itemId")]
-        public Int32 ItemId { get; set; }
+        public int ItemId { get; set; }
 
         [InternalName("runeType")]
         public RuneType RuneType { get; set; }
 
         [InternalName("duration")]
-        public Int32 Duration { get; set; }
+        public int Duration { get; set; }
 
         [InternalName("gameCode")]
-        public Int32 GameCode { get; set; }
+        public int GameCode { get; set; }
 
         [InternalName("itemEffects")]
         public List<ItemEffect> ItemEffects { get; set; }
 
         [InternalName("baseType")]
-        public String BaseType { get; set; }
+        public string BaseType { get; set; }
 
         [InternalName("description")]
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("uses")]
         public object Uses { get; set; }

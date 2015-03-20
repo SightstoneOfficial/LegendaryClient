@@ -13,7 +13,7 @@ namespace LCDevWindow.Commands
     {
         public override List<string> HelpTips()
         {
-            List<String> result = new List<string>();
+            List<string> result = new List<string>();
             result.Add("Displays all commands for LCDevWindow.exe");
             result.Add("Usage: Help() -> No args");
             return result;

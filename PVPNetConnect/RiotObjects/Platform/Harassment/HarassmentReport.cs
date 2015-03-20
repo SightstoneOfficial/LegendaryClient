@@ -61,13 +61,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Harassment
         /// Usually "GAME"
         /// </summary>
         [InternalName("reportSource")]
-        public String ReportSource { get; set; }
+        public string ReportSource { get; set; }
 
         /// <summary>
         /// Comment to send
         /// </summary>
         [InternalName("comment")]
-        public String Comment { get; set; }
+        public string Comment { get; set; }
 
         /// <summary>
         /// Your Summoner ID
@@ -79,7 +79,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Harassment
         /// Their offense (E.G. UNSKILLED_PLAYER)
         /// </summary>
         [InternalName("offense")]
-        public String Offense { get; set; }
+        public string Offense { get; set; }
 
     }
 }

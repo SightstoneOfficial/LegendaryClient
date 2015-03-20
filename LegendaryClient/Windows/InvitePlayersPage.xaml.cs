@@ -29,23 +29,12 @@ namespace LegendaryClient.Windows
         public InvitePlayersPage()
         {
             InitializeComponent();
-            Change();
-
             invitedPlayers = new List<string>();
             UpdateTimer = new Timer(1000);
             UpdateTimer.Elapsed += UpdateChat;
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
             UpdateChat(null, null);
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void UpdateChat(object sender, ElapsedEventArgs e)
@@ -130,12 +119,12 @@ namespace LegendaryClient.Windows
             Client.OverlayContainer.Visibility = Visibility.Hidden;
         }
 
-        private void SendInvitesButton_Click(object sender, RoutedEventArgs e)
+        private async void SendInvitesButton_Click(object sender, RoutedEventArgs e)
         {
             foreach (string player in invitedPlayers)
             {
                 //This invites the player
-                Client.PVPNet.Invite(player.Replace("sum", ""));
+                await Client.PVPNet.Invite(player.Replace("sum", ""));
 
                 ChatPlayerItem playerInfo = Client.AllPlayers[player];
 

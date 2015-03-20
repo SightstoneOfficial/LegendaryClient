@@ -12,6 +12,6 @@ namespace LegendaryClient.Logic.Replays
     public class TeamId
     {
         [SerializedName("fullId")]
-        public String FullId { get; set; }
+        public string FullId { get; set; }
     }
 }

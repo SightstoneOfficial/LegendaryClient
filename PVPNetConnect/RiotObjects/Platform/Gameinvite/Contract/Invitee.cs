@@ -40,13 +40,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         }
 
         [InternalName("inviteeStateAsString")]
-        public String InviteeState { get; set; }
+        public string InviteeState { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [InternalName("inviteeState")]
-        public String inviteeState { get; set; }
+        public string inviteeState { get; set; }
 
         [InternalName("summonerId")]
         public Double SummonerId { get; set; }

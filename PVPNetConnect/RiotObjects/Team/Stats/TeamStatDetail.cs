@@ -36,33 +36,33 @@ namespace PVPNetConnect.RiotObjects.Team.Stats
         }
 
         [InternalName("maxRating")]
-        public Int32 MaxRating { get; set; }
+        public int MaxRating { get; set; }
 
         [InternalName("teamIdString")]
-        public String TeamIdString { get; set; }
+        public string TeamIdString { get; set; }
 
         [InternalName("seedRating")]
-        public Int32 SeedRating { get; set; }
+        public int SeedRating { get; set; }
 
         [InternalName("losses")]
-        public Int32 Losses { get; set; }
+        public int Losses { get; set; }
 
         [InternalName("rating")]
-        public Int32 Rating { get; set; }
+        public int Rating { get; set; }
 
         [InternalName("teamStatTypeString")]
-        public String TeamStatTypeString { get; set; }
+        public string TeamStatTypeString { get; set; }
 
         [InternalName("averageGamesPlayed")]
-        public Int32 AverageGamesPlayed { get; set; }
+        public int AverageGamesPlayed { get; set; }
 
         [InternalName("teamId")]
         public TeamId TeamId { get; set; }
 
         [InternalName("wins")]
-        public Int32 Wins { get; set; }
+        public int Wins { get; set; }
 
         [InternalName("teamStatType")]
-        public String TeamStatType { get; set; }
+        public string TeamStatType { get; set; }
     }
 }

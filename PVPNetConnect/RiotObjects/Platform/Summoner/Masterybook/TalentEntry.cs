@@ -36,10 +36,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook
         }
 
         [InternalName("rank")]
-        public Int32 Rank { get; set; }
+        public int Rank { get; set; }
 
         [InternalName("talentId")]
-        public Int32 TalentId { get; set; }
+        public int TalentId { get; set; }
 
         [InternalName("talent")]
         public Talent Talent { get; set; }

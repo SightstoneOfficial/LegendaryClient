@@ -21,7 +21,6 @@ namespace LegendaryClient.Windows
         public InGame(bool start = false)
         {
             InitializeComponent();
-            Change();
             if (Client.GameType == "PRACTICE_GAME")
                 QuitButton.Visibility = Visibility.Visible;
 
@@ -37,15 +36,6 @@ namespace LegendaryClient.Windows
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Reconnect Page";
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void Update_OnMessageReceived(object sender, object message)

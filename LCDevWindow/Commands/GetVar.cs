@@ -25,7 +25,7 @@ namespace LCDevWindow.Commands
         }
         public override List<string> HelpTips()
         {
-            List<String> tips = new List<String>();
+            List<string> tips = new List<string>();
             tips.Add("Sees if a var contains a certain value");
             tips.Add("Usage: GetVar(string) -> The Var name");
             return tips;

@@ -37,13 +37,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog
         }
 
         [InternalName("effectId")]
-        public Int32 EffectId { get; set; }
+        public int EffectId { get; set; }
 
         [InternalName("gameCode")]
-        public String GameCode { get; set; }
+        public string GameCode { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("categoryId")]
         public object CategoryId { get; set; }
