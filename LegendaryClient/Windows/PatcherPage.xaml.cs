@@ -140,22 +140,6 @@ namespace LegendaryClient.Windows
                 TotalProgessBar.Value = 20;
             }));
 
-            #region idk
-
-            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3")))
-                client.DownloadFile(
-                    new Uri(
-                        "https://s12.solidfilesusercontent.com/MDE1MWYxZGJmYWFhNzJmNGQ2N2ZhOWE0NzU4Yjk2ZDYwZjY3MGU2OToxWHp3OTk6dUllemo3WDM0RnlScUgxZk1YWXpKYmN0RXBn/7a0671ed14/Login.mp3"),
-                    Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
-
-            if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4")))
-                client.DownloadFile(
-                    new Uri(
-                        "https://s8.solidfilesusercontent.com/MzkxMTBjOTllZDczMTBjZDUwNzgwOTc1NTYwZmY1Nzg2YThkZDI5MzoxWHp2eE86alBDQXBkU1FuNmt6R3dsTzcycEtoOXpGdVZr/a38bbf759c/Login.mp4"),
-                    Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
-
-            #endregion idk
-
             #region DDragon
 
             var encoding = new ASCIIEncoding();
@@ -174,7 +158,7 @@ namespace LegendaryClient.Windows
             string dDragonDownloadUrl = patcher.GetDragon();
             if (!String.IsNullOrEmpty(dDragonDownloadUrl))
             {
-                LogTextBox("DataDragon Version: " + patcher.DDragonVersion);
+                LogTextBox("Newest DataDragon Version: " + patcher.DDragonVersion);
                 string dDragonVersion =
                     File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_DDragon"));
                 LogTextBox("Current DataDragon Version: " + dDragonVersion);
@@ -202,6 +186,7 @@ namespace LegendaryClient.Windows
                                 await client.DownloadFileTaskAsync(dDragonDownloadUrl,
                                     Path.Combine(Client.ExecutingDirectory, "Assets",
                                         "dragontail-" + patcher.DDragonVersion + ".tgz"));
+                                await Task.Run(() => DDragonDownloaded());
                             }
                             else
                             {
@@ -317,7 +302,7 @@ namespace LegendaryClient.Windows
 
                     BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
                     string latestAir = patcher.GetListing(updateRegion.AirListing);
-                    LogTextBox("Air Assets Version: " + latestAir);
+                    LogTextBox("Newest Air Assets Version: " + latestAir);
                     string airVersion =
                         File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "VERSION_AIR"));
                     LogTextBox("Current Air Assets Version: " + airVersion);
@@ -389,6 +374,7 @@ namespace LegendaryClient.Windows
                     bool toExit = false;
                     if (Client.UpdateRegion == "Garena")
                     {
+                        /*
                         XmlReader reader = XmlReader.Create("http://updateres.garenanow.com/im/versions.xml");
                         string garenaVersion = "";
                         while (reader.Read())
@@ -399,35 +385,10 @@ namespace LegendaryClient.Windows
                                 break;
                             }
                         }
-                        try
-                        {
-                            if (garenaVersion == File.ReadAllText(Path.Combine(Path.GetDirectoryName(lolRootPath), "lol.version")))
-                            {
-                                LogTextBox("League of Legends is Up-To-Date");
-                                Client.Location = Path.Combine(lolRootPath, "Game");
-                                Client.RootLocation = lolRootPath;
-                            }
-                            else
-                            {
-                                LogTextBox("League of Legends is not Up-To-Date. Please Update League Of Legends");
-                                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                                {
-                                    SkipPatchButton.IsEnabled = true;
-                                    FindClientButton.Visibility = Visibility.Visible;
-                                }));
-                                toExit = true;
-                            }
-                        }
-                        catch
-                        {
-                            LogTextBox("Can't find League of Legends version file. Make sure you select correct update region.");
-                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                            {
-                                SkipPatchButton.IsEnabled = true;
-                                FindClientButton.Visibility = Visibility.Visible;
-                            }));
-                            toExit = true;
-                        }
+                        */
+                        LogTextBox("League of Legends is Up-To-Date");
+                        Client.Location = Path.Combine(lolRootPath, "Game");
+                        Client.RootLocation = lolRootPath;
                     }
                     else if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
                     {
@@ -900,7 +861,7 @@ namespace LegendaryClient.Windows
                 string location = s.Split(',')[0];
                 //Get save position
                 var version = new Version(location.Split(new[] { "/releases/", "/files/" }, StringSplitOptions.None)[1]);
-                if (version <= currentVersion)
+                if (version <= currentVersion && currentVersion != new Version("0.0.0.0"))
                     continue;
                 BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
 

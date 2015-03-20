@@ -167,7 +167,7 @@ namespace LegendaryClient.Windows
             if (message.GetType() == typeof(GameDTO))
             {
                 var ChampDTO = message as GameDTO;
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     if (ChampDTO.GameState == "START_REQUESTED")
                     {
@@ -438,7 +438,9 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
+#pragma warning disable 4014
                 Client.PVPNet.Leave();
+#pragma warning restore 4014
 
                 //temp, what other reasons are there?
                 var response = JsonConvert.DeserializeObject<QuitReason>(Response.Payload);
@@ -548,7 +550,7 @@ namespace LegendaryClient.Windows
         private void ReadyButton_Click(object sender, RoutedEventArgs e)
         {
             var readyButton = sender as Button;
-            if (readyButton.Content == "Ready")
+            if ((string) readyButton.Content == "Ready")
             {
                 TeamPlayer.EditMasteries.IsEnabled = false;
                 TeamPlayer.EditRunes.IsEnabled = false;

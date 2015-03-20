@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="70" d:DesignWidth="264">
+    
     <Grid>
         <Label x:Name="PlayerLabel" Content="Bot" HorizontalAlignment="Left" Margin="0,0,0,0" FontSize="23"
                FontWeight="ExtraLight" VerticalAlignment="Top" />

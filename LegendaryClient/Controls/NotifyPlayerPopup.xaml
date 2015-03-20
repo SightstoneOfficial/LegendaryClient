@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              Height="191.923" Width="300">
+    
     <Grid Margin="0,0,0,-10">
         <Rectangle Fill="#99505050" Stroke="#FF646464">
             <Rectangle.Effect>

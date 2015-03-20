@@ -6,20 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              Height="120" Width="250">
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
+
     <Grid Background="#D8000000">
         <Image x:Name="MostPlayed" HorizontalAlignment="Left" Height="40" Margin="4,26,0,0" VerticalAlignment="Top"
                Width="40" Source="/LegendaryClient;component/Icon.ico" />

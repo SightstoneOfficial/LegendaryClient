@@ -1,6 +1,10 @@
 ﻿using LegendaryClient.Logic;
+using LegendaryClient.Properties;
+using MahApps.Metro;
+using System;
 using System.Linq;
 using System.Threading;
+using System.Windows;
 
 namespace LegendaryClient
 {
@@ -9,9 +13,8 @@ namespace LegendaryClient
     /// </summary>
     public partial class App
     {
-        private void Application_Startup(object sender, System.Windows.StartupEventArgs e)
+        private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Thread.Sleep(100);
             if (e.Args.Any())
             {
                 if (e.Args[0] == "EnableGarena=true")

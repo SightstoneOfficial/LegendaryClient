@@ -240,7 +240,6 @@ namespace PVPNetConnect
             return s1;
         }
 
-        [DebuggerHidden]
         private bool GetAuthKey()
         {
             try

@@ -52,7 +52,6 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Client.PlayerAccepedQueue += Client_PlayerAccepedQueue;
-            Change();
 
             Client.IsOnPlayPage = true;
             i = 10;
@@ -68,14 +67,6 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.OnMessageReceived += RestartDodgePop;
             else
                 await LeaveAllQueues();
-        }
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         internal void PingElapsed(object sender, ElapsedEventArgs e)
@@ -156,10 +147,12 @@ namespace LegendaryClient.Windows
                     {
                         PingLabel.Content = "Ping not enabled for this region";
                         brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                        Client.Log(ex.Message);
                     } catch(Exception ex)
                     {
                         PingLabel.Content = "Error occured while pinging";
                         brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                        Client.Log(ex.Message);
                     }
                     finally
                     {
@@ -490,7 +483,6 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                         Tag = item
                     }; //We require a unique button to add to the dictionary
                     item.Content = "00:00";
-                    ButtonTimers.Add(fakeButton, 0);
                 }));
                 InQueue = true;
                 Client.GameStatus = "inQueue";

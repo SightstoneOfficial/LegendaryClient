@@ -8,51 +8,6 @@
     mc:Ignorable="d" d:DesignHeight="568"
     d:DesignWidth="1280">
 
-    <Page.Resources>
-        <ResourceDictionary>
-            <Style TargetType="{x:Type Button}">
-                <Setter Property="Background" Value="#FF474747" />
-                <Setter Property="BorderBrush" Value="{x:Null}" />
-                <Setter Property="Foreground" Value="#FFCFCFCF" />
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="Height" Value="30" />
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Border Background="{TemplateBinding Background}">
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                            </Border>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="#FF333333" />
-                    </Trigger>
-                    <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Opacity" Value="2" />
-                        <Setter Property="Background" Value="#FF707070" />
-                    </Trigger>
-                    <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Background" Value="#222222" />
-                        <Setter Property="Foreground" Value="White" />
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
-
     <Grid>
         <Label Margin="0,10,266,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Invite Friends" FontWeight="SemiBold" FontSize="22" />
         <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Your Team" FontWeight="SemiBold" FontSize="22" />
@@ -76,7 +31,7 @@
         </ListView>
         <Button x:Name="InviteButton" Width="395" Height="27" Margin="0,0,15,278"
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Invite Players" Click="Invite_Click" />
-        <CheckBox x:Name="AutoAcceptCheckBox" Width="89" Margin="0,0,777,202" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked" >
+        <CheckBox x:Name="AutoAcceptCheckBox" Width="89" Margin="0,0,785,202" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked" >
             <TextBlock Text="Auto Accept" Margin="0,-2,0,0"/>
         </CheckBox>
         <RichTextBox x:Name="ChatText" Height="155" Margin="10,0,420,40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">

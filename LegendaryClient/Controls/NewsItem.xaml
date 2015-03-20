@@ -6,21 +6,6 @@
              mc:Ignorable="d"
              d:DesignHeight="110" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </UserControl.Resources>
-
     <Grid Background="#66505050">
         <Image x:Name="PromoImage" Width="160" Height="90" Margin="10,10,0,0" HorizontalAlignment="Left"
                VerticalAlignment="Top" Stretch="UniformToFill" />

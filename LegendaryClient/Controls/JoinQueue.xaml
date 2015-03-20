@@ -13,10 +13,6 @@
                FontSize="18" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
         <Label x:Name="WaitTimeLabel" Content="Avg Wait Time: 1:00" HorizontalAlignment="Right" Margin="0,0,5,5"
                FontSize="16" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
-        <Button x:Name="TbCreateBotton" Content="Create Team Builder Team" HorizontalAlignment="Right"
-                VerticalAlignment="Top" Width="200" Margin="0,10,10,0" Height="34" />
-        <Button x:Name="TbSearchButton" Content="Team Builder Solo" HorizontalAlignment="Right" VerticalAlignment="Top"
-                Width="200" Margin="0,10,215,0" Height="34" />
         <Button x:Name="TeamQueueButton" Content="Team Queue" HorizontalAlignment="Right" VerticalAlignment="Top"
                 Width="200" Margin="0,10,215,0" Height="34" />
         <Button x:Name="QueueButton" Content="Solo Queue" HorizontalAlignment="Right" Margin="0,10,10,0"

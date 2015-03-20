@@ -128,7 +128,7 @@ namespace LegendaryClient.Windows
             else
             {
                 Client.GameStatus = "outOfGame";
-                Client.SetChatHover();                
+                Client.SetChatHover();
                 uiLogic.UpdateMainPage();
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.Log("Failed to join room.");
@@ -207,11 +207,13 @@ namespace LegendaryClient.Windows
                 {
                     PingLabel.Text = "Ping not enabled for this region";
                     brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                    Client.Log(ex.Message);
                 }
                 catch (Exception ex)
                 {
                     PingLabel.Text = "Error occured while pinging";
                     brush = (Brush)bc.ConvertFrom("#FFFF6767");
+                    Client.Log(ex.Message);
                 }
                 finally
                 {
@@ -316,7 +318,7 @@ namespace LegendaryClient.Windows
                         //Your kidding me right
                         var TeamPlayer = new TeamControl();
                         TeamPlayerStats = TeamPlayer;
-                        TeamPlayer.Name.Content = stats.SummonerName;
+                        TeamPlayer.SummonerName.Content = stats.SummonerName;
                         TeamPlayer.SumId.Content = stats.SummonerName;
                         TeamPlayer.Kick.Tag = stats;
                         TeamPlayer.Inviter.Tag = stats;
@@ -398,7 +400,7 @@ namespace LegendaryClient.Windows
                     }
                     if (IsOwner)
                     {
-                        Client.PVPNet.Call(Guid.NewGuid().ToString(), "suggestedPlayers",
+                        await Client.PVPNet.Call(Guid.NewGuid().ToString(), "suggestedPlayers",
                             "retrieveOnlineFriendsOfFriends", "{\"queueId\":" + queueId + "}");
                     }
                 }));
@@ -481,32 +483,29 @@ namespace LegendaryClient.Windows
                     {
                         var invitePlayer = new SuggestedPlayerItem();
                         invitePlayer.PlayerLabel.Content = s.summonerName;
-                        invitePlayer.InviteButton.Click += (object obj, RoutedEventArgs e) =>
+                        invitePlayer.InviteButton.Click += async (object obj, RoutedEventArgs e) =>
                         {
-                            Client.PVPNet.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
-                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            await Client.PVPNet.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
+                            foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
                             {
-                                foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
+                                if ((string)item.PlayerLabel.Content == s.summonerName)
                                 {
-                                    if ((string)item.PlayerLabel.Content == s.summonerName)
+                                    item.InviteButton.IsEnabled = false;
+                                    item.InviteButton.Content = "Invited";
+                                    var t = new Timer();
+                                    t.AutoReset = false;
+                                    t.Elapsed += (object source, ElapsedEventArgs args) =>
                                     {
-                                        item.InviteButton.IsEnabled = false;
-                                        item.InviteButton.Content = "Invited";
-                                        var t = new Timer();
-                                        t.AutoReset = false;
-                                        t.Elapsed += (object source, ElapsedEventArgs args) =>
+                                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                                         {
-                                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                                            {
-                                                item.InviteButton.IsEnabled = true;
-                                                item.InviteButton.Content = "Invite";
-                                            }));
-                                        };
-                                        t.Interval = 5000;
-                                        t.Start();
-                                    }
+                                            item.InviteButton.IsEnabled = true;
+                                            item.InviteButton.Content = "Invite";
+                                        }));
+                                    };
+                                    t.Interval = 5000;
+                                    t.Start();
                                 }
-                            }));
+                            }
                         };
                         FriendsOfFriendsView.Items.Add(invitePlayer);
                     }
@@ -525,7 +524,9 @@ namespace LegendaryClient.Windows
             await Client.PVPNet.Leave();
             await Client.PVPNet.PurgeFromQueues();
             inQueue = false;
+#pragma warning disable CS4014
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+#pragma warning restore CS4014
                 Client.inQueueTimer.Visibility = Visibility.Hidden));
             PingTimer.Stop();
             Client.GameStatus = "outOfGame";
@@ -733,9 +734,12 @@ namespace LegendaryClient.Windows
                                 break;
                             case "LEAVER_BUSTED":
                                 Client.Log("Busting LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
-                                Client.PVPNet.AttachTeamToQueue(parameters, 
-                                    new ASObject{Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken}, 
+                                Client.PVPNet.AttachTeamToQueue(parameters,
+                                    new ASObject { Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken },
                                     EnteredQueue);
+                                break;
+                            case "RANKED_NUM_CHAMPS":
+                                messageOver.MessageTextBox.Text += " - You require at least 16 owned champions to play a Normal Draft / Ranked game.";
                                 break;
                             default:
                                 messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
