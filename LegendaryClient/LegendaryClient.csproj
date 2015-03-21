@@ -238,6 +238,7 @@
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
     <Compile Include="Logic\JSON\LeaguePromote.cs" />
     <Compile Include="Logic\JSON\PromoteItem.cs" />
+    <Compile Include="Logic\Patcher\DownloadAir.cs" />
     <Compile Include="Logic\Player\ChampStats.cs" />
     <Compile Include="Logic\Player\GetKDA.cs" />
     <Compile Include="Logic\Player\KDA.cs" />

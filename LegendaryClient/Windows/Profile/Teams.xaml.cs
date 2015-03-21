@@ -16,7 +16,7 @@ namespace LegendaryClient.Windows.Profile
             InitializeComponent();
         }
 
-        public void Update(PVPNetConnect.RiotObjects.Team.Dto.PlayerDTO result)
+        public void Update(PlayerDTO result)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
