@@ -339,7 +339,7 @@ namespace LegendaryClient.Windows
         /// <param name="message"></param>
         private void ChampSelect_OnMessageReceived(object sender, object message)
         {
-            if (message.GetType() == typeof(GameDTO))
+            if (message is GameDTO)
             {
                 #region In Champion Select
 
@@ -718,7 +718,7 @@ namespace LegendaryClient.Windows
 
                 #endregion In Champion Select
             }
-            else if (message.GetType() == typeof(PlayerCredentialsDto))
+            else if (message is PlayerCredentialsDto)
             {
                 Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
 
@@ -766,7 +766,7 @@ namespace LegendaryClient.Windows
 
                 #endregion Launching Game
             }
-            else if (message.GetType() == typeof(TradeContractDTO))
+            else if (message is TradeContractDTO)
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
