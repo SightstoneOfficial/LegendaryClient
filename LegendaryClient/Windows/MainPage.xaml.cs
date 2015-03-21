@@ -62,7 +62,7 @@ namespace LegendaryClient.Windows
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.Region.RegionName.ToUpper();
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
-            uiLogic.Profile = new ProfilePage();
+            Client.Profile = new ProfilePage();
             GetNews(region);
             GetPendingInvites();
             var update = new Timer
@@ -160,22 +160,40 @@ namespace LegendaryClient.Windows
                 Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
 
                 SummonerActiveBoostsDTO activeBoost = await Client.PVPNet.GetSummonerActiveBoosts();
-                if (activeBoost.XpBoostPerWinCount > 0)
+
+                if (activeBoost.XpBoostPerWinCount > 0 && activeBoost.XpBoostEndDate > 0)
                 {
                     XPBoost.Content = "XP Boost " + ConvertBoostTime(activeBoost.XpBoostEndDate) + ". " + activeBoost.XpBoostPerWinCount + " Win.";
-                }else{
+                }
+                else if (activeBoost.XpBoostEndDate > 0)
+                {
                     XPBoost.Content = "XP Boost " + ConvertBoostTime(activeBoost.XpBoostEndDate) + ".";
                 }
-
-                if (activeBoost.IpBoostPerWinCount > 0)
+                else if (activeBoost.XpBoostPerWinCount > 0)
                 {
-                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ". " + activeBoost.IpBoostPerWinCount + " Win.";
+                    XPBoost.Content = "XP Boost " + activeBoost.XpBoostPerWinCount + ".";
                 }
                 else
                 {
-                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ".";
+                    XPBoost.Visibility = Visibility.Hidden;
                 }
 
+                if (activeBoost.IpBoostPerWinCount > 0 && activeBoost.IpBoostEndDate > 0)
+                {
+                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ". " + activeBoost.IpBoostPerWinCount + " Win.";
+                }
+                else if (activeBoost.IpBoostEndDate > 0)
+                {
+                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ".";
+                }
+                else if (activeBoost.IpBoostPerWinCount > 0)
+                {
+                    IPBoost.Content = "IP Boost " + activeBoost.IpBoostPerWinCount + ".";
+                }
+                else
+                {
+                    IPBoost.Visibility = Visibility.Hidden;
+                }
 
                 Sha1 sha1 = new Sha1();
                 if (!CheckedDev)
@@ -250,16 +268,20 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private string ConvertBoostTime(double unixTimeStamp)
+        private string ConvertBoostTime(double millisTimeStamp)
         {
-            string realtimestamp = unixTimeStamp.ToString();
-            realtimestamp = realtimestamp.Substring(0, realtimestamp.Length - 3);            
-            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
-            dtDateTime = dtDateTime.AddSeconds(double.Parse(realtimestamp));
-            TimeSpan diff2 = dtDateTime.Subtract(DateTime.Now);
-            string time = diff2.Days.ToString() + " Days ";
-            time += diff2.Hours.ToString() + " Hours";
-            return time;
+            string unixTimeStamp = millisTimeStamp.ToString();
+            if (unixTimeStamp != "0")
+            {
+                unixTimeStamp = unixTimeStamp.Substring(0, unixTimeStamp.Length - 3);
+                DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
+                dtDateTime = dtDateTime.AddSeconds(double.Parse(unixTimeStamp));
+                TimeSpan diff2 = dtDateTime.Subtract(DateTime.Now);
+                string time = diff2.Days.ToString() + " Days ";
+                time += diff2.Hours.ToString() + " Hours";
+                return time;
+            }
+            return string.Empty;
         }
 
 

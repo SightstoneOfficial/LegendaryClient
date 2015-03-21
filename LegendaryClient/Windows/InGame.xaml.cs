@@ -47,7 +47,7 @@ namespace LegendaryClient.Windows
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 Client.IsInGame = false;
                 Client.PVPNet.OnMessageReceived -= Update_OnMessageReceived;
-                uiLogic.UpdateMainPage();
+                Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(InGame));
             }));
         }
@@ -66,7 +66,7 @@ namespace LegendaryClient.Windows
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 Client.IsInGame = false;
                 Client.PVPNet.OnMessageReceived -= Update_OnMessageReceived;
-                uiLogic.UpdateMainPage();
+                Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(InGame));
             }));
         }

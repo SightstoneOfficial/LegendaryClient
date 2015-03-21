@@ -1538,6 +1538,10 @@ namespace LegendaryClient.Logic
         public static Dictionary<string, string> LocalRunePages = new Dictionary<string, string>();
 
         public static string GameClientVersion;
+
+        public static ProfilePage Profile;
+
+        public static MainPage MainPage;
     }
 
 

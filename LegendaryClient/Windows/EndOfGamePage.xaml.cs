@@ -34,7 +34,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             RenderStats(statistics);
-            uiLogic.UpdateMainPage();
+            Client.SwitchPage(Client.MainPage);
             Client.runonce = false;
 
             string jid = Client.GetChatroomJID(statistics.RoomName, statistics.RoomPassword, false);

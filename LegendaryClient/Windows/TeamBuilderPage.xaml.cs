@@ -597,7 +597,7 @@ namespace LegendaryClient.Windows
                 CountdownTimer.Stop();
                 MatchFoundGrid.Visibility = Visibility.Hidden;
                 CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
-                uiLogic.UpdateMainPage();
+                Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(TeamBuilderPage));
             }));
         }
@@ -752,7 +752,7 @@ namespace LegendaryClient.Windows
             string LastArg = string.Format("\"acceptance\":{0},\"slotId\":{1},\"groupId\":\"{2}\"", false,
                 teambuilderSlotId, teambuilderGroupId);
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "indicateGroupAcceptanceAsCandidateV1", "{" + LastArg + "}");
-            uiLogic.UpdateMainPage();
+            Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(TeamBuilderPage));
         }
 
@@ -1101,7 +1101,7 @@ namespace LegendaryClient.Windows
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "quitV2", "{}");
-            uiLogic.UpdateMainPage();
+            Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(TeamBuilderPage));
         }
 

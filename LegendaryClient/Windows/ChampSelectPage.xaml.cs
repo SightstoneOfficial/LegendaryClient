@@ -1252,7 +1252,7 @@ namespace LegendaryClient.Windows
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             Client.ReturnButton.Visibility = Visibility.Hidden;
-            uiLogic.UpdateMainPage();
+            Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(ChampSelectPage));
         }
 

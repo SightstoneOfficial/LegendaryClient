@@ -399,8 +399,8 @@ namespace LegendaryClient.Windows
         private void ProfileItem_Click(object sender, RoutedEventArgs e)
         {
             var item = (ChatPlayer)selection.AddedItems[0];
-            uiLogic.Profile.GetSummonerProfile(item.PlayerName.Content.ToString());
-            Client.SwitchPage(uiLogic.Profile);
+            Client.Profile.GetSummonerProfile(item.PlayerName.Content.ToString());
+            Client.SwitchPage(Client.Profile);
         }
 
         private async void Invite_Click(object sender, RoutedEventArgs e)

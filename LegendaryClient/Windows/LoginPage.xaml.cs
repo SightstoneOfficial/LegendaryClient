@@ -534,6 +534,7 @@ namespace LegendaryClient.Windows
                 //Gather data and convert it that way that it does not cause errors
                 PlatformGameLifecycleDTO data = Client.LoginPacket.ReconnectInfo;
 
+                Client.MainPage = new MainPage();
                 if (data != null && data.Game != null)
                 {
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
@@ -542,7 +543,7 @@ namespace LegendaryClient.Windows
                     Client.SwitchPage(new InGame());
                 }
                 else
-                    uiLogic.UpdateMainPage();
+                    Client.SwitchPage(Client.MainPage);
 
                 Client.ClearPage(typeof(LoginPage));
             }));

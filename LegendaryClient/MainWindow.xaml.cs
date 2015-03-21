@@ -194,7 +194,7 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
-                Client.SwitchPage(uiLogic.Profile);
+                Client.SwitchPage(Client.Profile);
             }       
         }
 
@@ -202,8 +202,8 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
-                uiLogic.Profile.GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
-                Client.SwitchPage(uiLogic.Profile);
+                Client.Profile.GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+                Client.SwitchPage(Client.Profile);
             }       
         }
 
@@ -238,7 +238,7 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
-                uiLogic.UpdateMainPage();
+                Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(SettingsPage));
             }
             else if (Client.donepatch)

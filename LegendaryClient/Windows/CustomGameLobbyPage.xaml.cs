@@ -363,7 +363,7 @@ namespace LegendaryClient.Windows
         {
             await Client.PVPNet.QuitGame();
             Client.ReturnButton.Visibility = Visibility.Hidden;
-            uiLogic.UpdateMainPage();
+            Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
             Client.ClearPage(typeof(CreateCustomGamePage));
         }

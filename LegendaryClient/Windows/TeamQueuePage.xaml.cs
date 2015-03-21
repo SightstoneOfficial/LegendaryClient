@@ -114,7 +114,7 @@ namespace LegendaryClient.Windows
             {
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
-                uiLogic.UpdateMainPage();
+                Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.Log("Failed to join room.");
             }
@@ -124,8 +124,8 @@ namespace LegendaryClient.Windows
         {
             LastSender = (Button)sender;
             var stats = (Member)LastSender.Tag;
-            uiLogic.Profile.GetSummonerProfile(stats.SummonerName);
-            Client.SwitchPage(uiLogic.Profile);
+            Client.Profile.GetSummonerProfile(stats.SummonerName);
+            Client.SwitchPage(Client.Profile);
         }
 
         private async void Kick_Click(object sender, RoutedEventArgs e)
@@ -516,7 +516,7 @@ namespace LegendaryClient.Windows
             PingTimer.Stop();
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
-            uiLogic.UpdateMainPage();
+            Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(TeamQueuePage));
             Client.ReturnButton.Visibility = Visibility.Hidden;
         }
