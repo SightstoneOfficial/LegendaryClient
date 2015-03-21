@@ -60,7 +60,7 @@ namespace LegendaryClient.Windows.Profile
                         Directory.GetFiles(
                             Path.Combine(
                                 Client.ExecutingDirectory,
-                                "RunePages" + Client.LoginPacket.AllSummonerData.Summoner.Name)))
+                                "RunePages", Client.LoginPacket.AllSummonerData.Summoner.Name)))
                 {
                     //Fix this later, it is very bad (for more than one rune page)
                     foreach (var x in file.LeagueSettingsReader())
