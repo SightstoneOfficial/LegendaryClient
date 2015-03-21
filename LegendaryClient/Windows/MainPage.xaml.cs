@@ -169,11 +169,11 @@ namespace LegendaryClient.Windows
 
                 if (activeBoost.IpBoostPerWinCount > 0)
                 {
-                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ". " + activeBoost.XpBoostPerWinCount + " Win.";
+                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ". " + activeBoost.IpBoostPerWinCount + " Win.";
                 }
                 else
                 {
-                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.XpBoostEndDate) + ".";
+                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ".";
                 }
 
 
