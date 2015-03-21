@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media.Imaging;
@@ -101,6 +102,8 @@ namespace LegendaryClient.Logic.SQLite
 
         public static champions GetChampion(string name)
         {
+            if ((DateTime.Now.Month == 4) && (DateTime.Now.Day == 1) && name == "bard")
+                name = "tard";
             return Client.Champions.FirstOrDefault(c => c.name == name);
         }
     }

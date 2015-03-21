@@ -889,7 +889,10 @@ namespace LegendaryClient.Windows
                             break;
                     }
                     championAbility.AbilityName.Content = ability.name;
-                    championAbility.AbilityDescription.Text = ability.description;
+                    if ((DateTime.Now.Month == 4) && (DateTime.Now.Day == 1))
+                        championAbility.AbilityDescription.Text = ability.description.Replace("bard", "tard").Replace("Bard", "Tard");
+                    else
+                        championAbility.AbilityDescription.Text = ability.description;
                     championAbility.Width = 375;
                     championAbility.Height = 75;
                     abilities.Add(championAbility);
