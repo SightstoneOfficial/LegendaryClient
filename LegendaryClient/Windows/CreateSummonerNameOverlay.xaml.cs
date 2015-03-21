@@ -1,11 +1,5 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Logic;
 using System.Windows;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -17,19 +11,8 @@ namespace LegendaryClient.Windows
         public CreateSummonerNameOverlay()
         {
             InitializeComponent();
-            Change();
-
             MessageTextBox.Text =
                 "Your Summoner Name is how other players will know you.\n   * Must be 3-16 characters in length\n   * Letters, numbers and spaces are allowed\n   * Must not contain profanity\n   * Must not include the word \"Riot\" (reserved for Riot employees)";
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)

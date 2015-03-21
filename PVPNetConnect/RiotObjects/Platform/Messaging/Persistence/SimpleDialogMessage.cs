@@ -36,21 +36,21 @@ namespace PVPNetConnect.RiotObjects.Platform.Messaging.Persistence
         }
 
         [InternalName("titleCode")]
-        public String TitleCode { get; set; }
+        public string TitleCode { get; set; }
 
         [InternalName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [InternalName("params")]
         public object Params { get; set; }
 
         [InternalName("msgId")]
-        public Double MessageId { get; set; }
+        public double MessageId { get; set; }
 
         [InternalName("type")]
-        public String Type { get; set; }
+        public string Type { get; set; }
 
         [InternalName("bodyCode")]
-        public String BodyCode { get; set; }
+        public string BodyCode { get; set; }
     }
 }

@@ -1,9 +1,5 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
-
-#endregion
 
 namespace LegendaryClient.Logic.PlayerSpell
 {

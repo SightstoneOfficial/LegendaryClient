@@ -54,7 +54,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml">
@@ -86,8 +88,26 @@
     <Compile Include="Logic\Data\ServerStatus.cs" />
     <Compile Include="Logic\GarenaDownloadLogic.cs" />
     <Compile Include="Logic\LeagueDownloadLogic.cs" />
+    <Compile Include="Logic\Region\BR.cs" />
+    <Compile Include="Logic\Region\EUNE.cs" />
+    <Compile Include="Logic\Region\EUW.cs" />
+    <Compile Include="Logic\Region\Garena\ID.cs" />
+    <Compile Include="Logic\Region\Garena\MY.cs" />
+    <Compile Include="Logic\Region\Garena\PH.cs" />
+    <Compile Include="Logic\Region\Garena\SG.cs" />
+    <Compile Include="Logic\Region\Garena\SGMY.cs" />
+    <Compile Include="Logic\Region\Garena\TH.cs" />
+    <Compile Include="Logic\Region\Garena\TW.cs" />
+    <Compile Include="Logic\Region\Garena\VN.cs" />
+    <Compile Include="Logic\Region\KR.cs" />
+    <Compile Include="Logic\Region\LAN.cs" />
+    <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\MainRegion.cs" />
     <Compile Include="Logic\Region\NA.cs" />
+    <Compile Include="Logic\Region\OCE.cs" />
+    <Compile Include="Logic\Region\PBE.cs" />
+    <Compile Include="Logic\Region\RU.cs" />
+    <Compile Include="Logic\Region\TR.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -100,7 +120,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="PatcherElements\CurrentStatus.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PatcherElements\FreeWeekChampion.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PatcherElements\NewsItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -112,8 +140,14 @@
     <Compile Include="Pages\PatcherSettingsPage.xaml.cs">
       <DependentUpon>PatcherSettingsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PatcherElements\CurrentStatus.xaml.cs">
+      <DependentUpon>CurrentStatus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PatcherElements\FreeWeekChampion.xaml.cs">
       <DependentUpon>FreeWeekChampion.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PatcherElements\NewsItem.xaml.cs">
+      <DependentUpon>NewsItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -145,9 +179,7 @@
   <ItemGroup>
     <Resource Include="TopBar.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logic\Region\Garena\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

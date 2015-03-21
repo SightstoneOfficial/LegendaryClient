@@ -36,9 +36,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Runes
         }
 
         [InternalName("runeTypeId")]
-        public Int32 RuneTypeId { get; set; }
+        public int RuneTypeId { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
     }
 }

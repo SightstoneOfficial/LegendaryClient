@@ -1,10 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.IO;
 using LegendaryClient.Logic.SQLite;
-
-#endregion
 
 namespace LegendaryClient.Logic.SoundLogic
 {

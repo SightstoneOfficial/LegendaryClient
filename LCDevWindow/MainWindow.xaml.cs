@@ -136,7 +136,7 @@ namespace LCDevWindow
                 object x = Command.GetCommand(tempsplit[0]);
                 if (x != null)
                 {
-                    List<String> splittwo = new List<String>();
+                    List<string> splittwo = new List<string>();
 
                     string[] xm = tempsplit[1].Replace(")", "").Split(',');
                     

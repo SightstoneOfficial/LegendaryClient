@@ -1,9 +1,5 @@
-﻿#region
-
-using System;
+﻿using System;
 using RtmpSharp.IO;
-
-#endregion
 
 namespace LegendaryClient.Logic.Replays
 {
@@ -12,9 +8,9 @@ namespace LegendaryClient.Logic.Replays
     public class RawStatDTO
     {
         [SerializedName("value")]
-        public Double Value { get; set; }
+        public double Value { get; set; }
 
         [SerializedName("statTypeName")]
-        public String StatTypeName { get; set; }
+        public string StatTypeName { get; set; }
     }
 }

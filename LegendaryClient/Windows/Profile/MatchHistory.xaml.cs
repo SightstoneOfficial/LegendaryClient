@@ -1,5 +1,7 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,13 +15,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-
-#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -29,26 +24,15 @@ namespace LegendaryClient.Windows.Profile
     public partial class MatchHistory
     {
         //private string _matchLinkOnline;
-        private LargeChatPlayer _playerItem;
+        private LargeChatPlayer playerItem;
         //private static readonly ILog Log = LogManager.GetLogger(typeof (MatchHistory));
-        private readonly List<MatchStats> _gameStats = new List<MatchStats>();
+        private readonly List<MatchStats> gameStats = new List<MatchStats>();
 
         public MatchHistory()
         {
             InitializeComponent();
-            //#CCCD1A1A
             gameRecordedEllipse.Fill = (Brush)new BrushConverter().ConvertFrom("#CC444444");
             ReplayLabel.Content = "game not recorded";
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public void Update(double accountId)
@@ -63,7 +47,7 @@ namespace LegendaryClient.Windows.Profile
                 return;
             }
 
-            _gameStats.Clear();
+            gameStats.Clear();
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
             foreach (var game in result.GameStatistics)
             {
@@ -81,7 +65,7 @@ namespace LegendaryClient.Windows.Profile
 
                 match.Game = game;
 
-                _gameStats.Add(match);
+                gameStats.Add(match);
             }
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -91,7 +75,7 @@ namespace LegendaryClient.Windows.Profile
                 ItemsListView.Items.Clear();
                 PurpleListView.Items.Clear();
                 GameStatsListView.Items.Clear();
-                foreach (var stats in _gameStats)
+                foreach (var stats in gameStats)
                 {
                     var item = new RecentGameOverview();
                     var gameChamp = champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
@@ -179,7 +163,7 @@ namespace LegendaryClient.Windows.Profile
         {
             if (GamesListView.SelectedIndex != -1)
             {
-                var stats = _gameStats[GamesListView.SelectedIndex];
+                var stats = gameStats[GamesListView.SelectedIndex];
                 GameStatsListView.Items.Clear();
                 PurpleListView.Items.Clear();
                 BlueListView.Items.Clear();
@@ -286,49 +270,49 @@ namespace LegendaryClient.Windows.Profile
 
         private void img_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (_playerItem == null)
+            if (playerItem == null)
             {
                 return;
             }
 
-            Client.MainGrid.Children.Remove(_playerItem);
-            _playerItem = null;
+            Client.MainGrid.Children.Remove(playerItem);
+            playerItem = null;
         }
 
         private void img_MouseMove(object sender, MouseEventArgs e)
         {
             var item = (Image) sender;
             var playerItem = (ProfilePage.KeyValueItem) item.Tag;
-            if (_playerItem == null)
+            if (this.playerItem == null)
             {
                 var Item = items.GetItem(Convert.ToInt32(playerItem.Value));
-                _playerItem = new LargeChatPlayer();
-                Client.MainGrid.Children.Add(_playerItem);
+                this.playerItem = new LargeChatPlayer();
+                Client.MainGrid.Children.Add(this.playerItem);
 
 
-                _playerItem.PlayerName.Content = Item.name;
+                this.playerItem.PlayerName.Content = Item.name;
 
-                _playerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                _playerItem.Width = _playerItem.PlayerName.DesiredSize.Width > 250
-                    ? _playerItem.PlayerName.DesiredSize.Width
+                this.playerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                this.playerItem.Width = this.playerItem.PlayerName.DesiredSize.Width > 250
+                    ? this.playerItem.PlayerName.DesiredSize.Width
                     : 250;
 
-                _playerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
-                _playerItem.PlayerLeague.Content = "Item ID " + Item.id;
-                _playerItem.LevelLabel.Content = string.Empty;
-                _playerItem.UsingLegendary.Visibility = Visibility.Hidden;
+                this.playerItem.PlayerWins.Content = Item.price + " gold (" + Item.sellprice + " sell)";
+                this.playerItem.PlayerLeague.Content = "Item ID " + Item.id;
+                this.playerItem.LevelLabel.Content = string.Empty;
+                this.playerItem.UsingLegendary.Visibility = Visibility.Hidden;
 
                 var parsedDescription = Item.description;
                 parsedDescription = parsedDescription.Replace("<br>", Environment.NewLine);
                 parsedDescription = Regex.Replace(parsedDescription, "<.*?>", string.Empty);
-                _playerItem.PlayerStatus.Text = parsedDescription;
+                this.playerItem.PlayerStatus.Text = parsedDescription;
 
                 var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"),
                     UriKind.RelativeOrAbsolute);
-                _playerItem.ProfileImage.Source = new BitmapImage(uriSource);
+                this.playerItem.ProfileImage.Source = new BitmapImage(uriSource);
 
-                _playerItem.HorizontalAlignment = HorizontalAlignment.Left;
-                _playerItem.VerticalAlignment = VerticalAlignment.Top;
+                this.playerItem.HorizontalAlignment = HorizontalAlignment.Left;
+                this.playerItem.VerticalAlignment = VerticalAlignment.Top;
             }
 
             var mouseLocation = e.GetPosition(Client.MainGrid);
@@ -336,12 +320,12 @@ namespace LegendaryClient.Windows.Profile
             var yMargin = mouseLocation.Y;
 
             var xMargin = mouseLocation.X;
-            if (xMargin + _playerItem.Width + 10 > Client.MainGrid.ActualWidth)
+            if (xMargin + this.playerItem.Width + 10 > Client.MainGrid.ActualWidth)
             {
-                xMargin = Client.MainGrid.ActualWidth - _playerItem.Width - 10;
+                xMargin = Client.MainGrid.ActualWidth - this.playerItem.Width - 10;
             }
 
-            _playerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
+            this.playerItem.Margin = new Thickness(xMargin + 5, yMargin + 5, 0, 0);
         }
 
         private void ClickGrid_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -382,7 +366,7 @@ namespace LegendaryClient.Windows.Profile
         public double NodeNeutralize = 0;
         public double NodeNeutralizeAssist = 0;
         public double NumDeaths = 0;
-        public double ObjectivePlayerScore = 0;
+        public double objectivePlayerScore = 0;
         public double PhysicalDamageDealtPlayer = 0;
         public double PhysicalDamageDealtToChampions = 0;
         public double PhysicalDamageTaken = 0;

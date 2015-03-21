@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Game.Practice
         }
 
         [InternalName("spectatorCount")]
-        public Int32 SpectatorCount { get; set; }
+        public int SpectatorCount { get; set; }
 
         [InternalName("glmGameId")]
         public object GlmGameId { get; set; }
@@ -45,42 +45,42 @@ namespace PVPNetConnect.RiotObjects.Platform.Game.Practice
         public object GlmHost { get; set; }
 
         [InternalName("glmPort")]
-        public Int32 GlmPort { get; set; }
+        public int GlmPort { get; set; }
 
         [InternalName("gameModeString")]
-        public String GameModeString { get; set; }
+        public string GameModeString { get; set; }
 
         [InternalName("allowSpectators")]
-        public String AllowSpectators { get; set; }
+        public string AllowSpectators { get; set; }
 
         [InternalName("gameMapId")]
-        public Int32 GameMapId { get; set; }
+        public int GameMapId { get; set; }
 
         [InternalName("maxNumPlayers")]
-        public Int32 MaxNumPlayers { get; set; }
+        public int MaxNumPlayers { get; set; }
 
         [InternalName("glmSecurePort")]
-        public Int32 GlmSecurePort { get; set; }
+        public int GlmSecurePort { get; set; }
 
         [InternalName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [InternalName("id")]
-        public Double Id { get; set; }
+        public double Id { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("privateGame")]
-        public Boolean PrivateGame { get; set; }
+        public bool PrivateGame { get; set; }
 
         [InternalName("owner")]
         public PlayerParticipant Owner { get; set; }
 
         [InternalName("team1Count")]
-        public Int32 Team1Count { get; set; }
+        public int Team1Count { get; set; }
 
         [InternalName("team2Count")]
-        public Int32 Team2Count { get; set; }
+        public int Team2Count { get; set; }
     }
 }

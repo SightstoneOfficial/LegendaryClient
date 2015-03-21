@@ -36,18 +36,18 @@ namespace PVPNetConnect.RiotObjects.Leagues.Pojo
         }
 
         [InternalName("progress")]
-        public String Progress { get; set; }
+        public string Progress { get; set; }
 
         [InternalName("target")]
-        public Int32 Target { get; set; }
+        public int Target { get; set; }
 
         [InternalName("losses")]
-        public Int32 Losses { get; set; }
+        public int Losses { get; set; }
 
         [InternalName("timeLeftToPlayMillis")]
-        public Double TimeLeftToPlayMillis { get; set; }
+        public double TimeLeftToPlayMillis { get; set; }
 
         [InternalName("wins")]
-        public Int32 Wins { get; set; }
+        public int Wins { get; set; }
     }
 }

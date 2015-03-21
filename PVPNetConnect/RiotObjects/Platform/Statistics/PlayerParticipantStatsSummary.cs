@@ -38,75 +38,75 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         }
 
         [InternalName("skinName")]
-        public String SkinName { get; set; }
+        public string SkinName { get; set; }
 
         [InternalName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("elo")]
-        public Int32 Elo { get; set; }
+        public int Elo { get; set; }
 
         [InternalName("leaver")]
-        public Boolean Leaver { get; set; }
+        public bool Leaver { get; set; }
 
         [InternalName("leaves")]
-        public Double Leaves { get; set; }
+        public double Leaves { get; set; }
 
         [InternalName("teamId")]
-        public Double TeamId { get; set; }
+        public double TeamId { get; set; }
 
         [InternalName("eloChange")]
-        public Int32 EloChange { get; set; }
+        public int EloChange { get; set; }
 
         [InternalName("statistics")]
         public List<RawStatDTO> Statistics { get; set; }
 
         [InternalName("level")]
-        public Double Level { get; set; }
+        public double Level { get; set; }
 
         [InternalName("botPlayer")]
-        public Boolean BotPlayer { get; set; }
+        public bool BotPlayer { get; set; }
 
         [InternalName("isMe")]
-        public Boolean IsMe { get; set; }
+        public bool IsMe { get; set; }
 
         [InternalName("inChat")]
-        public Boolean InChat { get; set; }
+        public bool InChat { get; set; }
 
         [InternalName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [InternalName("spell2Id")]
-        public Double Spell2Id { get; set; }
+        public double Spell2Id { get; set; }
 
         [InternalName("losses")]
-        public Double Losses { get; set; }
+        public double Losses { get; set; }
 
         [InternalName("summonerName")]
-        public String SummonerName { get; set; }
+        public string SummonerName { get; set; }
 
         [InternalName("roomName")]
-        public String RoomName { get; set; }
+        public string RoomName { get; set; }
 
         [InternalName("roomPassword")]
-        public String RoomPassword { get; set; }
+        public string RoomPassword { get; set; }
 
         [InternalName("wins")]
-        public Double Wins { get; set; }
+        public double Wins { get; set; }
 
         [InternalName("spell1Id")]
-        public Double Spell1Id { get; set; }
+        public double Spell1Id { get; set; }
 
         [InternalName("teamInfo")]
         public TeamInfo TeamInfo { get; set; }
 
         [InternalName("reportEnabled")]
-        public Boolean ReportEnabled { get; set; }
+        public bool ReportEnabled { get; set; }
 
         [InternalName("kudosEnabled")]
-        public Boolean KudosEnabled { get; set; }
+        public bool KudosEnabled { get; set; }
     }
 }

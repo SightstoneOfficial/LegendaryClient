@@ -36,12 +36,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         }
 
         [InternalName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [InternalName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [InternalName("gameModeString")]
-        public String GameModeString { get; set; }
+        public string GameModeString { get; set; }
     }
 }

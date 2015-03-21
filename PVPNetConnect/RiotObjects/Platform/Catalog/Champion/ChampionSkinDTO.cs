@@ -36,33 +36,33 @@ namespace PVPNetConnect.RiotObjects.Platform.Catalog.Champion
         }
 
         [InternalName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [InternalName("skinId")]
-        public Int32 SkinId { get; set; }
+        public int SkinId { get; set; }
 
         [InternalName("freeToPlayReward")]
-        public Boolean FreeToPlayReward { get; set; }
+        public bool FreeToPlayReward { get; set; }
 
         [InternalName("stillObtainable")]
-        public Boolean StillObtainable { get; set; }
+        public bool StillObtainable { get; set; }
 
         [InternalName("lastSelected")]
-        public Boolean LastSelected { get; set; }
+        public bool LastSelected { get; set; }
 
         [InternalName("skinIndex")]
-        public Int32 SkinIndex { get; set; }
+        public int SkinIndex { get; set; }
 
         [InternalName("owned")]
-        public Boolean Owned { get; set; }
+        public bool Owned { get; set; }
 
         [InternalName("winCountRemaining")]
-        public Int32 WinCountRemaining { get; set; }
+        public int WinCountRemaining { get; set; }
 
         [InternalName("purchaseDate")]
-        public Double PurchaseDate { get; set; }
+        public double PurchaseDate { get; set; }
 
         [InternalName("endDate")]
-        public Int32 EndDate { get; set; }
+        public int EndDate { get; set; }
     }
 }

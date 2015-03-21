@@ -39,33 +39,33 @@ namespace PVPNetConnect.RiotObjects.Platform.Login
         public object OldPassword { get; set; }
 
         [InternalName("username")]
-        public String Username { get; set; }
+        public string Username { get; set; }
 
         [InternalName("securityAnswer")]
         public object SecurityAnswer { get; set; }
 
         [InternalName("password")]
-        public String Password { get; set; }
+        public string Password { get; set; }
 
         [InternalName("partnerCredentials")]
         public object PartnerCredentials { get; set; }
 
         [InternalName("domain")]
-        public String Domain { get; set; }
+        public string Domain { get; set; }
 
         [InternalName("ipAddress")]
-        public String IpAddress { get; set; }
+        public string IpAddress { get; set; }
 
         [InternalName("clientVersion")]
-        public String ClientVersion { get; set; }
+        public string ClientVersion { get; set; }
 
         [InternalName("locale")]
-        public String Locale { get; set; }
+        public string Locale { get; set; }
 
         [InternalName("authToken")]
-        public String AuthToken { get; set; }
+        public string AuthToken { get; set; }
 
         [InternalName("operatingSystem")]
-        public String OperatingSystem { get; set; }
+        public string OperatingSystem { get; set; }
     }
 }

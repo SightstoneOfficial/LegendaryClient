@@ -1,5 +1,7 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,13 +11,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-
-#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -24,21 +19,11 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class Skins
     {
-        private List<ChampionDTO> _championList;
+        private List<ChampionDTO> championList;
 
         public Skins()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void Update()
@@ -47,11 +32,11 @@ namespace LegendaryClient.Windows.Profile
             {
                 var champList = await Client.PVPNet.GetAvailableChampions();
 
-                _championList = new List<ChampionDTO>(champList);
+                championList = new List<ChampionDTO>(champList);
 
-                _championList.Sort(
+                championList.Sort(
                     (x, y) =>
-                        String.Compare(champions.GetChampion(x.ChampionId)
+                        string.Compare(champions.GetChampion(x.ChampionId)
                             .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
                 FilterSkins();
@@ -73,7 +58,7 @@ namespace LegendaryClient.Windows.Profile
             {
                 SkinSelectListView.Items.Clear();
 
-                var tempList = _championList.ToList();
+                var tempList = championList.ToList();
                 var skinList = new List<ChampionSkinDTO>();
                 foreach (var champion in tempList)
                 {
@@ -81,7 +66,7 @@ namespace LegendaryClient.Windows.Profile
                 }
 
                 if (LimitedSkinCheckBox.IsChecked != null &&
-                    (!String.IsNullOrEmpty(SearchTextBox.Text) && !LimitedSkinCheckBox.IsChecked.Value))
+                    (!string.IsNullOrEmpty(SearchTextBox.Text) && !LimitedSkinCheckBox.IsChecked.Value))
                 {
                     skinList =
                         skinList.Where(

@@ -1,16 +1,11 @@
-﻿#region
-
+﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
+using PVPNetConnect.RiotObjects.Platform.Game.Practice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Maps;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game.Practice;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -24,18 +19,7 @@ namespace LegendaryClient.Windows
         public FactionsJoinGamePage()
         {
             InitializeComponent();
-            Change();
-
             GetGames();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
@@ -82,7 +66,7 @@ namespace LegendaryClient.Windows
 
         private void PasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            JoinGameButton.IsEnabled = !String.IsNullOrEmpty("factions");
+            JoinGameButton.IsEnabled = !string.IsNullOrEmpty("factions");
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
@@ -95,7 +79,7 @@ namespace LegendaryClient.Windows
                 gameId = item.Id;
                 gameName = item.GameName;
             }
-            if (!String.IsNullOrEmpty("factions"))
+            if (!string.IsNullOrEmpty("factions"))
                 Client.PVPNet.JoinGame(gameId, "factions");
             else
                 Client.PVPNet.JoinGame(gameId);
@@ -121,7 +105,7 @@ namespace LegendaryClient.Windows
                 )
                 isPrivate = true;
 
-            if ((!isPrivate) || (isPrivate && !String.IsNullOrEmpty("factions")))
+            if ((!isPrivate) || (isPrivate && !string.IsNullOrEmpty("factions")))
                 JoinGameButton.IsEnabled = true;
         }
 

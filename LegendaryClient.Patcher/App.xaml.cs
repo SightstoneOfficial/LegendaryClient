@@ -1,10 +1,4 @@
-﻿#region
-
-
-
-#endregion
-
-namespace LegendaryClient.Patcher
+﻿namespace LegendaryClient.Patcher
 {
     /// <summary>
     ///     Interaction logic for App.xaml

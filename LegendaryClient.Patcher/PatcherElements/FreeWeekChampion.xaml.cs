@@ -1,10 +1,4 @@
-﻿#region
-
-
-
-#endregion
-
-namespace LegendaryClient.Patcher.PatcherElements
+﻿namespace LegendaryClient.Patcher.PatcherElements
 {
     /// <summary>
     ///     Interaction logic for FreeWeekChampion.xaml

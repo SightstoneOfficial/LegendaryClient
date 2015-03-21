@@ -1,5 +1,11 @@
-﻿#region
-
+﻿using jabber;
+using jabber.connection;
+using jabber.protocol.client;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
+using LegendaryClient.Properties;
+using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,16 +16,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Maps;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -28,8 +24,8 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class FactionsGameLobbyPage
     {
-        private readonly string leftTeam;
-        private readonly string rightTeam;
+        private string leftTeam;
+        private string rightTeam;
         private bool HasConnectedToChat;
         private bool IsOwner;
         private bool LaunchedTeamSelect;
@@ -39,8 +35,6 @@ namespace LegendaryClient.Windows
         public FactionsGameLobbyPage()
         {
             InitializeComponent();
-            Change();
-
             GameName.Content = Client.GameName;
             Client.PVPNet.OnMessageReceived += GameLobby_OnMessageReceived;
             //If client has created game use initial DTO
@@ -70,18 +64,9 @@ namespace LegendaryClient.Windows
             Client.CurrentPage = this;
         }
 
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
-        }
-
         private void GameLobby_OnMessageReceived(object sender, object message)
         {
-            if (message.GetType() != typeof (GameDTO))
+            if (message.GetType() != typeof(GameDTO))
                 return;
 
             var dto = message as GameDTO;
@@ -96,72 +81,66 @@ namespace LegendaryClient.Windows
                     GameTypeConfigDTO configType =
                         Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
                     TypeLabel.Content = GetGameMode(configType.Id);
-                    SizeLabel.Content = dto.MaxNumPlayers/2 + "v" + dto.MaxNumPlayers/2;
+                    SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
 
                     HasConnectedToChat = true;
-                    try
-                    {
-                        string obfuscatedName =
-                            Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id),
-                                ChatPrefixes.Arranging_Practice);
-                        string jid = Client.GetChatroomJID(obfuscatedName, dto.RoomPassword, false);
-                        newRoom = Client.ConfManager.GetRoom(new JID(jid));
-                        newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-                        newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-                        newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-                        newRoom.Join(dto.RoomPassword);
-                    }
-                    catch
-                    {
-                    }
+                    string obfuscatedName =
+                        Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id),
+                            ChatPrefixes.Arranging_Practice);
+                    string jid = Client.GetChatroomJID(obfuscatedName, dto.RoomPassword, false);
+                    newRoom = Client.ConfManager.GetRoom(new JID(jid));
+                    newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                    newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+                    newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                    newRoom.Join(dto.RoomPassword);
                 }
                 switch (dto.GameState)
                 {
                     case "TEAM_SELECT":
-                    {
-                        OptomisticLock = dto.OptimisticLock;
-                        LaunchedTeamSelect = false;
-                        BlueTeamListView.Items.Clear();
-                        PurpleTeamListView.Items.Clear();
-
-                        var allParticipants = new List<Participant>(dto.TeamOne.ToArray());
-                        allParticipants.AddRange(dto.TeamTwo);
-
-                        int i = 0;
-                        bool purpleSide = false;
-
-                        foreach (Participant playerTeam in allParticipants)
                         {
-                            i++;
-                            var lobbyPlayer = new CustomLobbyPlayer();
-                            //var botPlayer = new BotControl();
-                            if (playerTeam is PlayerParticipant)
+                            OptomisticLock = dto.OptimisticLock;
+                            LaunchedTeamSelect = false;
+                            BlueTeamListView.Items.Clear();
+                            PurpleTeamListView.Items.Clear();
+
+                            var allParticipants = new List<Participant>(dto.TeamOne.ToArray());
+                            allParticipants.AddRange(dto.TeamTwo);
+
+                            int i = 0;
+                            bool purpleSide = false;
+
+                            foreach (Participant playerTeam in allParticipants)
                             {
-                                var player = playerTeam as PlayerParticipant;
-                                lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                ///BotParticipant botParticipant = playerTeam as BotParticipant;
-                                //botPlayer = RenderBot(botParticipant);
-                                IsOwner = dto.OwnerSummary.SummonerId ==
-                                          Client.LoginPacket.AllSummonerData.Summoner.SumId;
-                                StartGameButton.IsEnabled = IsOwner;
+                                i++;
+                                var lobbyPlayer = new CustomLobbyPlayer();
+                                //var botPlayer = new BotControl();
+                                if (playerTeam is PlayerParticipant)
+                                {
+                                    var player = playerTeam as PlayerParticipant;
+                                    lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
+                                    ///BotParticipant botParticipant = playerTeam as BotParticipant;
+                                    //botPlayer = RenderBot(botParticipant);
+                                    IsOwner = dto.OwnerSummary.SummonerId ==
+                                              Client.LoginPacket.AllSummonerData.Summoner.SumId;
+                                    StartGameButton.IsEnabled = IsOwner;
 
-                                if (Client.Whitelist.Count > 0)
-                                    if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                        await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                    if (Client.Whitelist.Count > 0)
+                                        if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
+                                            await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                }
+
+                                if (i > dto.TeamOne.Count)
+                                {
+                                    i = 0;
+                                    purpleSide = true;
+                                }
+
+                                if (!purpleSide)
+                                    BlueTeamListView.Items.Add(lobbyPlayer);
+                                else
+                                    PurpleTeamListView.Items.Add(lobbyPlayer);
                             }
-
-                            if (i > dto.TeamOne.Count)
-                            {
-                                i = 0;
-                                purpleSide = true;
-                            }
-
-                            if (!purpleSide)
-                                BlueTeamListView.Items.Add(lobbyPlayer);
-                            else
-                                PurpleTeamListView.Items.Add(lobbyPlayer);
                         }
-                    }
                         break;
                     case "PRE_CHAMP_SELECT":
                     case "CHAMP_SELECT":
@@ -271,7 +250,7 @@ namespace LegendaryClient.Windows
             Client.ReturnButton.Visibility = Visibility.Hidden;
             uiLogic.UpdateMainPage();
             Client.ClearPage(typeof(FactionsGameLobbyPage)); //Clear pages
-            Client.ClearPage(typeof(FactionsCreateGamePage)); 
+            Client.ClearPage(typeof(FactionsCreateGamePage));
         }
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)
@@ -285,7 +264,7 @@ namespace LegendaryClient.Windows
             if (button == null)
                 return;
 
-            var banPlayer = (PlayerParticipant) button.Tag;
+            var banPlayer = (PlayerParticipant)button.Tag;
             await Client.PVPNet.BanUserFromGame(Client.GameID, banPlayer.AccountId);
         }
 
@@ -321,10 +300,10 @@ namespace LegendaryClient.Windows
 
                 case 12:
                     return "Captain Pick";
-                    //R.I.P One for All
-                    /*
-                case 14:
-                    return "One for All";*/
+                //R.I.P One for All
+                /*
+            case 14:
+                return "One for All";*/
 
                 default:
                     return Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;
@@ -340,12 +319,5 @@ namespace LegendaryClient.Windows
         {
             return rightTeam;
         }
-    }
-
-    public class PlayerItem
-    {
-        public string Username { get; set; }
-
-        public PlayerParticipant Participant { get; set; }
     }
 }

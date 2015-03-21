@@ -43,9 +43,9 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook
         public List<MasteryBookPageDTO> BookPages { get; set; }
 
         [InternalName("dateString")]
-        public String DateString { get; set; }
+        public string DateString { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

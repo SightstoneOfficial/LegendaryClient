@@ -36,18 +36,18 @@ namespace PVPNetConnect.RiotObjects.Platform.Game
         }
 
         [InternalName("summonerInternalName")]
-        public String SummonerInternalName { get; set; }
+        public string SummonerInternalName { get; set; }
 
         [InternalName("spell2Id")]
-        public Double Spell2Id { get; set; }
+        public double Spell2Id { get; set; }
 
         [InternalName("selectedSkinIndex")]
-        public Int32 SelectedSkinIndex { get; set; }
+        public int SelectedSkinIndex { get; set; }
 
         [InternalName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [InternalName("spell1Id")]
-        public Double Spell1Id { get; set; }
+        public double Spell1Id { get; set; }
     }
 }

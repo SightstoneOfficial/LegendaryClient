@@ -36,36 +36,36 @@ namespace PVPNetConnect.RiotObjects.Team.Stats
         }
 
         [InternalName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [InternalName("mapId")]
-        public Int32 MapId { get; set; }
+        public int MapId { get; set; }
 
         [InternalName("assists")]
-        public Int32 Assists { get; set; }
+        public int Assists { get; set; }
 
         [InternalName("opposingTeamName")]
-        public String OpposingTeamName { get; set; }
+        public string OpposingTeamName { get; set; }
 
         [InternalName("invalid")]
-        public Boolean Invalid { get; set; }
+        public bool Invalid { get; set; }
 
         [InternalName("deaths")]
-        public Int32 Deaths { get; set; }
+        public int Deaths { get; set; }
 
         [InternalName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [InternalName("kills")]
-        public Int32 Kills { get; set; }
+        public int Kills { get; set; }
 
         [InternalName("win")]
-        public Boolean Win { get; set; }
+        public bool Win { get; set; }
 
         [InternalName("date")]
-        public Double Date { get; set; }
+        public double Date { get; set; }
 
         [InternalName("opposingTeamKills")]
-        public Int32 OpposingTeamKills { get; set; }
+        public int OpposingTeamKills { get; set; }
     }
 }

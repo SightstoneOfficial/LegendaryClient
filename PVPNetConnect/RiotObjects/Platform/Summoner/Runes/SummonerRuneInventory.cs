@@ -40,12 +40,12 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Runes
         public object SummonerRunesJson { get; set; }
 
         [InternalName("dateString")]
-        public String DateString { get; set; }
+        public string DateString { get; set; }
 
         [InternalName("summonerRunes")]
         public List<SummonerRune> SummonerRunes { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Team
         }
 
         [InternalName("timeStamp")]
-        public Double TimeStamp { get; set; }
+        public double TimeStamp { get; set; }
 
         [InternalName("teamId")]
         public TeamId TeamId { get; set; }

@@ -37,10 +37,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         }
 
         [InternalName("chatKey")]
-        public String ChatKey { get; set; }
+        public string ChatKey { get; set; }
 
         [InternalName("gameMetaData")]
-        public String GameData { get; set; }
+        public string GameData { get; set; }
 
         [InternalName("owner")]
         public Player Owner { get; set; }
@@ -53,6 +53,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract
         public List<Invitee> Invitees { get; set; }
 
         [InternalName("invitationId")]
-        public String InvitationID { get; set; }
+        public string InvitationID { get; set; }
     }
 }

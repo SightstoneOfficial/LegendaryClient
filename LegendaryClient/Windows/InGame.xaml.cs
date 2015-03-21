@@ -1,15 +1,9 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Logic;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using System.Diagnostics;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -21,7 +15,6 @@ namespace LegendaryClient.Windows
         public InGame(bool start = false)
         {
             InitializeComponent();
-            Change();
             if (Client.GameType == "PRACTICE_GAME")
                 QuitButton.Visibility = Visibility.Visible;
 
@@ -37,15 +30,6 @@ namespace LegendaryClient.Windows
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Reconnect Page";
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void Update_OnMessageReceived(object sender, object message)

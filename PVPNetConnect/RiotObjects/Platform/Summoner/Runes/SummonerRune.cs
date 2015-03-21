@@ -43,15 +43,15 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Runes
         public DateTime PurchaseDate { get; set; }
 
         [InternalName("runeId")]
-        public Int32 RuneId { get; set; }
+        public int RuneId { get; set; }
 
         [InternalName("quantity")]
-        public Int32 Quantity { get; set; }
+        public int Quantity { get; set; }
 
         [InternalName("rune")]
         public Rune Rune { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

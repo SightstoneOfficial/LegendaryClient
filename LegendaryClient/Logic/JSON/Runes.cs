@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Script.Serialization;
 using LegendaryClient.Logic.SQLite;
-
-#endregion
 
 namespace LegendaryClient.Logic.JSON
 {

@@ -1,5 +1,8 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Harassment;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,14 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Harassment;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-
-#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -25,27 +20,17 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class Overview
     {
-        private double _accId;
-        private List<PlayerStatSummary> _summaries = new List<PlayerStatSummary>();
+        private double accId;
+        private List<PlayerStatSummary> summaries = new List<PlayerStatSummary>();
 
         public Overview()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void Update(double summonerId, double accountId)
         {
-            _accId = accountId;
+            accId = accountId;
             var totalKudos =
                 await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + summonerId + "}");
             RenderKudos(totalKudos);
@@ -104,7 +89,7 @@ namespace LegendaryClient.Windows.Profile
 
         public void GotPlayerStats(PlayerLifetimeStats stats)
         {
-            _summaries = new List<PlayerStatSummary>();
+            summaries = new List<PlayerStatSummary>();
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 StatsComboBox.Items.Clear();
@@ -116,7 +101,7 @@ namespace LegendaryClient.Windows.Profile
                             stats.PlayerStatSummaries.PlayerStatSummarySet.Where(x => x.AggregatedStats.Stats.Count > 0)
                         )
                     {
-                        _summaries.Add(x);
+                        summaries.Add(x);
                         var summaryString = x.PlayerStatSummaryTypeString;
                         summaryString =
                             string.Concat(
@@ -146,7 +131,7 @@ namespace LegendaryClient.Windows.Profile
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     StatsListView.Items.Clear();
-                    var gameMode = _summaries[StatsComboBox.SelectedIndex];
+                    var gameMode = summaries[StatsComboBox.SelectedIndex];
                     foreach (
                         var Item in gameMode.AggregatedStats.Stats.Select(stat => new ProfilePage.KeyValueItem
                         {
@@ -170,9 +155,9 @@ namespace LegendaryClient.Windows.Profile
 
         private async void ViewAggregatedStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = await Client.PVPNet.GetAggregatedStats(_accId, "CLASSIC", "5");
+            var x = await Client.PVPNet.GetAggregatedStats(accId, "CLASSIC", "5");
             Client.OverlayContainer.Content =
-                new AggregatedStatsOverlay(x, _accId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
+                new AggregatedStatsOverlay(x, accId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;
         }
     }

@@ -18,7 +18,7 @@ namespace LCDevWindow.Commands
             {
                 string[] Json = Regex.Split(arg, "|");
                 JavaScriptSerializer asdf = new JavaScriptSerializer();
-                Dictionary<String, Object> Result = asdf.Deserialize<Dictionary<String, Object>>(Json[1]);
+                Dictionary<string, object> Result = asdf.Deserialize<Dictionary<string, object>>(Json[1]);
                 Main.Vars.Add(Json[0], Result);
                 return true;
             }
@@ -34,7 +34,7 @@ namespace LCDevWindow.Commands
         }
         public override List<string> HelpTips()
         {
-            List<String> tips = new List<String>();
+            List<string> tips = new List<string>();
             tips.Add("Adds a var to add to the Main class, and can be used for calling objects with PVPNetConnect");
             tips.Add("Usage: CreateVar(JsonName + | + Json (As string)) -> Json to add to Main.cs");
             return tips;

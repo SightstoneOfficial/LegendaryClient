@@ -1,20 +1,4 @@
-﻿#region
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Threading;
-using jabber;
+﻿using jabber;
 using jabber.connection;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
@@ -23,7 +7,6 @@ using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SoundLogic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
-using Microsoft.Win32;
 using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Reroll.Pojo;
@@ -31,13 +14,24 @@ using PVPNetConnect.RiotObjects.Platform.Summoner;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
 using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
 using PVPNetConnect.RiotObjects.Platform.Trade;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using Color = System.Drawing.Color;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using ListViewItem = System.Windows.Controls.ListViewItem;
 using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -46,7 +40,6 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ChampSelectPage
     {
-        internal static object LobbyContent = new object();
         private readonly List<string> PreviousPlayers = new List<string>(); //Needs to be initialized!
         private Page previousPage;
 
@@ -68,6 +61,7 @@ namespace LegendaryClient.Windows
         private GameTypeConfigDTO configType;
         private int counter;
         private List<int> disabledCharacters = new List<int>();
+        private string firstPlayer = null;
 
         #region champs
 
@@ -221,25 +215,6 @@ namespace LegendaryClient.Windows
             }
         }
 
-        /// <summary>
-        ///     Initializes all data required for champion select. Also retrieves latest GameDTO
-        /// </summary>
-        /// <summary>
-        ///     Fix Champ Select
-        /// </summary>
-        internal static void FixChampSelect()
-        {
-            /*
-            if (OnFixChampSelect != null)
-            {
-                foreach (Delegate d in OnFixChampSelect.GetInvocationList())
-                {
-                    PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
-                    OnFixChampSelect -= (PVPNetConnection.OnMessageReceivedHandler)d;
-                }
-            }//*/
-        }
-
         private async void StartChampSelect()
         {
             //Force client to popup once in champion select
@@ -249,7 +224,7 @@ namespace LegendaryClient.Windows
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort(
                 (x, y) =>
-                    String.Compare(champions.GetChampion(x.ChampionId)
+                    string.Compare(champions.GetChampion(x.ChampionId)
                         .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
             //Retrieve masteries and runes
@@ -329,20 +304,12 @@ namespace LegendaryClient.Windows
                 LatestDto = latestDto;
                 //Get the champions for the other team to ban & sort alpabetically
 
-                // Rank Game ?
-                try
-                {
-                    ChampionBanInfoDTO[] champsForBan = await Client.PVPNet.GetChampionsForBan();
-                    ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
-                    ChampionsForBan.Sort(
-                        (x, y) =>
-                            String.Compare(champions.GetChampion(x.ChampionId)
-                                .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
-                }
-                catch (Exception e)  // Not really
-                {
-                    Client.Log(e.Message + "\r\n\r\n" + e.Source);
-                }
+                ChampionBanInfoDTO[] champsForBan = await Client.PVPNet.GetChampionsForBan();
+                ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
+                ChampionsForBan.Sort(
+                    (x, y) =>
+                        string.Compare(champions.GetChampion(x.ChampionId)
+                            .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
 
                 //Render our champions
@@ -460,7 +427,7 @@ namespace LegendaryClient.Windows
                                     break;
                                 }
                             }
-                            if (String.IsNullOrEmpty(participant.SummonerName))
+                            if (string.IsNullOrEmpty(participant.SummonerName))
                             {
                                 participant.SummonerName = "Summoner " + t;
                                 t++;
@@ -484,11 +451,6 @@ namespace LegendaryClient.Windows
                             CountdownTimer.Stop();
 
                         Client.FixChampSelect();
-                        var fakePage = new FakePage
-                        {
-                            Content = LobbyContent
-                        };
-                        Client.SwitchPage(fakePage);
 
                         return;
                     }
@@ -618,16 +580,16 @@ namespace LegendaryClient.Windows
                         if (tempParticipant is PlayerParticipant)
                         {
                             var player = tempParticipant as PlayerParticipant;
-                            if (!String.IsNullOrEmpty(player.SummonerName))
+                            if (!string.IsNullOrEmpty(player.SummonerName))
                             {
                                 control.PlayerName.Content = player.SummonerName;
-                                control._sumName = player.SummonerName;
+                                control.sumName = player.SummonerName;
                             }
                             else
                             {
                                 AllPublicSummonerDataDTO summoner =
                                     await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.SummonerId);
-                                if (summoner.Summoner != null && !String.IsNullOrEmpty(summoner.Summoner.Name))
+                                if (summoner.Summoner != null && !string.IsNullOrEmpty(summoner.Summoner.Name))
                                     control.PlayerName.Content = summoner.Summoner.Name;
                                 else
                                     control.PlayerName.Content = "Unknown Player";
@@ -652,7 +614,8 @@ namespace LegendaryClient.Windows
                                     y.Opacity = 1;
                                 }
 
-                                foreach(ListViewItem y in championArray.Where(y => disabledCharacters.Contains((int)y.Tag))) {
+                                foreach (ListViewItem y in championArray.Where(y => disabledCharacters.Contains((int)y.Tag)))
+                                {
                                     y.Opacity = .7;
                                     y.IsHitTestVisible = false;
                                 }
@@ -709,7 +672,7 @@ namespace LegendaryClient.Windows
                             else
                             {
                                 control.PlayerName.Content = "Bot";
-                                control._sumName = "Bot";
+                                control.sumName = "Bot";
                             }
                         }
                         else
@@ -783,7 +746,7 @@ namespace LegendaryClient.Windows
                             string ip = n.PlayerCredentials.ObserverServerIp + ":" +
                                         n.PlayerCredentials.ObserverServerPort;
                             string key = n.PlayerCredentials.ObserverEncryptionKey;
-                            var gameId = (Int32)n.PlayerCredentials.GameId;
+                            var gameId = (int)n.PlayerCredentials.GameId;
                             new ReplayRecorder(ip, gameId, Client.Region.InternalName, key);
                         }
                     });
@@ -795,7 +758,7 @@ namespace LegendaryClient.Windows
 
                     InGame();
                     Client.ReturnButton.Visibility = Visibility.Hidden;
-                    if (!Properties.Settings.Default.DisableClientSound)
+                    if (!Settings.Default.DisableClientSound)
                     {
                         Client.AmbientSoundPlayer.Stop();
                     }
@@ -904,7 +867,7 @@ namespace LegendaryClient.Windows
                     uriSource = Path.Combine(Client.ExecutingDirectory, "Assets",
                         ability.iconPath.ToLower().Contains("passive") ? "passive" : "spell", ability.iconPath);
                     championAbility.AbilityImage.Source = Client.GetImage(uriSource);
-                    if (!String.IsNullOrEmpty(ability.hotkey))
+                    if (!string.IsNullOrEmpty(ability.hotkey))
                         championAbility.AbilityHotKey.Content = ability.hotkey;
 
                     switch (ability.hotkey)
@@ -1478,7 +1441,6 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        string firstPlayer = null;
         private void Chatroom_OnParticipantJoin(Room room, RoomParticipant participant)
         {
             if (Client.InstaCall)

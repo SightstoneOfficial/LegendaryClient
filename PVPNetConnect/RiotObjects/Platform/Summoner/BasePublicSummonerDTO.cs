@@ -36,24 +36,24 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("seasonTwoTier")]
-        public String SeasonTwoTier { get; set; }
+        public string SeasonTwoTier { get; set; }
 
         [InternalName("internalName")]
-        public String InternalName { get; set; }
+        public string InternalName { get; set; }
 
         [InternalName("seasonOneTier")]
-        public String SeasonOneTier { get; set; }
+        public string SeasonOneTier { get; set; }
 
         [InternalName("acctId")]
-        public Double AcctId { get; set; }
+        public double AcctId { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("sumId")]
-        public Double SumId { get; set; }
+        public double SumId { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
     }
 }

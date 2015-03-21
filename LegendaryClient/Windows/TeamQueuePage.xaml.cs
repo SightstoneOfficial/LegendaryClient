@@ -1,5 +1,19 @@
-﻿#region
-
+﻿using jabber;
+using jabber.connection;
+using jabber.protocol.client;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using Newtonsoft.Json;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Game.Message;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Matchmaking;
+using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
+using PVPNetConnect.RiotObjects.Platform.Summoner;
+using PVPNetConnect.RiotObjects.Team;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,26 +27,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
-using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using Microsoft.Win32;
-using Newtonsoft.Json;
-using PVPNetConnect.RiotObjects.Team;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Game.Message;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
-using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 using Timer = System.Timers.Timer;
-using PVPNetConnect;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -65,7 +60,6 @@ namespace LegendaryClient.Windows
         public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, TeamId SelectedTeam = null, string BotDifficulty = null)
         {
             InitializeComponent();
-            Change();
 
             Client.InviteListView = InviteListView;
             Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
@@ -85,15 +79,6 @@ namespace LegendaryClient.Windows
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Lobby";
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void LoadStats()
@@ -170,7 +155,7 @@ namespace LegendaryClient.Windows
 
                     Dispatcher.Invoke(() =>
                     {
-                        Client.inQueueTimer.Content = String.Format("In Queue {0:D2}:{1:D2}", time.Minutes, time.Seconds);
+                        Client.inQueueTimer.Content = string.Format("In Queue {0:D2}:{1:D2}", time.Minutes, time.Seconds);
                     });
                     setStartButtonText("Re-Click To Leave");
                 }
@@ -639,7 +624,7 @@ namespace LegendaryClient.Windows
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                if (String.IsNullOrEmpty(ChatTextBox.Text))
+                if (string.IsNullOrEmpty(ChatTextBox.Text))
                     return;
                 newRoom.PublicMessage(ChatTextBox.Text);
                 ChatTextBox.Text = "";
@@ -647,7 +632,7 @@ namespace LegendaryClient.Windows
             }
         }
 
-        internal List<Int32> QueueIds;
+        internal List<int> QueueIds;
 
         private bool inQueue;
 

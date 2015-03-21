@@ -1,16 +1,10 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.Maps;
+using PVPNetConnect.RiotObjects.Platform.Game.Practice;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.Maps;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game.Practice;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -24,18 +18,7 @@ namespace LegendaryClient.Windows
         public CustomGameListingPage()
         {
             InitializeComponent();
-            Change();
-
             GetGames();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
@@ -74,8 +57,7 @@ namespace LegendaryClient.Windows
         private void LimitGames()
         {
             var tempItems = new List<GameItem>();
-            foreach (
-                GameItem item in allItems.Where(item => item.GameName.ToLower().Contains(SearchTextBox.Text.ToLower())))
+            foreach (GameItem item in allItems.Where(item => item.GameName.ToLower().Contains(SearchTextBox.Text.ToLower())))
             {
                 if (PrivateCheckbox.IsChecked != true)
                     if (item.Private == "Y")
@@ -90,7 +72,7 @@ namespace LegendaryClient.Windows
 
         private void PasswordTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            JoinGameButton.IsEnabled = !String.IsNullOrEmpty(PasswordTextBox.Text);
+            JoinGameButton.IsEnabled = !string.IsNullOrEmpty(PasswordTextBox.Text);
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
@@ -103,7 +85,7 @@ namespace LegendaryClient.Windows
                 gameId = item.Id;
                 gameName = item.GameName;
             }
-            if (!String.IsNullOrEmpty(PasswordTextBox.Text))
+            if (!string.IsNullOrEmpty(PasswordTextBox.Text))
                 Client.PVPNet.JoinGame(gameId, PasswordTextBox.Text);
             else
                 Client.PVPNet.JoinGame(gameId);
@@ -126,12 +108,10 @@ namespace LegendaryClient.Windows
             if (CustomGameListView.SelectedItems.Count == 0)
                 return;
 
-            foreach (
-                GameItem gitem in CustomGameListView.SelectedItems.Cast<GameItem>().Where(gitem => gitem.Private == "Y")
-                )
+            foreach (GameItem gitem in CustomGameListView.SelectedItems.Cast<GameItem>().Where(gitem => gitem.Private == "Y"))
                 isPrivate = true;
 
-            if ((!isPrivate) || (isPrivate && !String.IsNullOrEmpty(PasswordTextBox.Text)))
+            if ((!isPrivate) || (isPrivate && !string.IsNullOrEmpty(PasswordTextBox.Text)))
                 JoinGameButton.IsEnabled = true;
             else if (isPrivate)
                 PasswordTextBox.IsReadOnly = false;

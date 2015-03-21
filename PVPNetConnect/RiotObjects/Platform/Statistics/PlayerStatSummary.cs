@@ -36,10 +36,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         }
 
         [InternalName("maxRating")]
-        public Int32 MaxRating { get; set; }
+        public int MaxRating { get; set; }
 
         [InternalName("playerStatSummaryTypeString")]
-        public String PlayerStatSummaryTypeString { get; set; }
+        public string PlayerStatSummaryTypeString { get; set; }
 
         [InternalName("aggregatedStats")]
         public SummaryAggStats AggregatedStats { get; set; }
@@ -48,24 +48,24 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public DateTime ModifyDate { get; set; }
 
         [InternalName("leaves")]
-        public Int32 Leaves { get; set; }
+        public int Leaves { get; set; }
 
         [InternalName("playerStatSummaryType")]
-        public String PlayerStatSummaryType { get; set; }
+        public string PlayerStatSummaryType { get; set; }
 
         [InternalName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [InternalName("losses")]
-        public Int32 Losses { get; set; }
+        public int Losses { get; set; }
 
         [InternalName("rating")]
-        public Int32 Rating { get; set; }
+        public int Rating { get; set; }
 
         [InternalName("aggregatedStatsJson")]
         public object AggregatedStatsJson { get; set; }
 
         [InternalName("wins")]
-        public Int32 Wins { get; set; }
+        public int Wins { get; set; }
     }
 }

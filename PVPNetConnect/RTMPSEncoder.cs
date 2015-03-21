@@ -135,7 +135,7 @@ namespace PVPNetConnect
             WriteStringAMF0(result, resultType); //Type
             WriteIntAMF0(result, invokeId);
             result.Add((byte)0x05); // Service call of null;
-            result.Add((byte)0x11); //AMF3 Object
+            result.Add((byte)0x11); //AMF3 object
             Encode(result, data);
 
             byte[] ret = result.ToArray();
@@ -176,7 +176,7 @@ namespace PVPNetConnect
             else if (obj is double)
             {
                 ret.Add((byte)0x05);
-                WriteDouble(ret, (double)obj);
+                Writedouble(ret, (double)obj);
             }
             else if (obj is string)
             {
@@ -188,7 +188,7 @@ namespace PVPNetConnect
                 ret.Add((byte)0x08);
                 WriteDate(ret, (DateTime)obj);
             }
-            // Must precede Object[] check
+            // Must precede object[] check
             else if (obj is byte[])
             {
                 ret.Add((byte)0x0C);
@@ -241,9 +241,9 @@ namespace PVPNetConnect
             }
         }
 
-        private void WriteDouble(List<byte> ret, double val)
+        private void Writedouble(List<byte> ret, double val)
         {
-            if (Double.IsNaN(val))
+            if (double.IsNaN(val))
             {
                 ret.Add((byte)0x7F);
                 ret.Add((byte)0xFF);
@@ -285,7 +285,7 @@ namespace PVPNetConnect
         private void WriteDate(List<Byte> ret, DateTime val)
         {
             ret.Add((byte)0x01);
-            WriteDouble(ret, (double)val.TimeOfDay.TotalMilliseconds);
+            Writedouble(ret, (double)val.TimeOfDay.TotalMilliseconds);
         }
 
         private void WriteArray(List<byte> ret, object[] val)
@@ -361,7 +361,7 @@ namespace PVPNetConnect
                 WriteInt(ret, (val.Count << 4) | 3); // Inline + member count
                 WriteString(ret, val.type);
 
-                List<String> keyOrder = new List<String>();
+                List<string> keyOrder = new List<string>();
                 foreach (string key in val.Keys)
                 {
                     WriteString(ret, key);

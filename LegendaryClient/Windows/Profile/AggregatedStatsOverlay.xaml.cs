@@ -1,22 +1,14 @@
-﻿using System.Globalization;
-
-#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-
-#endregion
-
-//While this is in the Profile folder, the namespace is LegendaryClient.Windows
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -25,45 +17,34 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class AggregatedStatsOverlay
     {
-        private AggregatedChampion _selectedStats;
+        private AggregatedChampion selectedStats;
         //private static readonly ILog log = LogManager.GetLogger(typeof (AggregatedStatsOverlay));
-        private readonly AggregatedChampion _allStats;
-        private readonly List<AggregatedChampion> _championStats;
-        private readonly Boolean _isOwnPlayer;
+        private readonly AggregatedChampion allStats;
+        private readonly List<AggregatedChampion> championStats;
+        private readonly bool isOwnPlayer;
 
-        public AggregatedStatsOverlay(AggregatedStats stats, Boolean isSelf)
+        public AggregatedStatsOverlay(AggregatedStats stats, bool isSelf)
         {
             InitializeComponent();
-            Change();
-
-            _isOwnPlayer = isSelf;
-            _allStats = new AggregatedChampion();
-            _championStats = new List<AggregatedChampion>();
+            isOwnPlayer = isSelf;
+            allStats = new AggregatedChampion();
+            championStats = new List<AggregatedChampion>();
             ParseStats(stats);
-            _selectedStats = _allStats;
+            selectedStats = allStats;
             HideGrid.Visibility = Visibility.Visible;
             DisplayStats();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void DisplayStats()
         {
             StatsListView.Items.Clear();
-            GamesLabel.Content = _selectedStats.TotalSessionsPlayed;
-            WinsLabel.Content = _selectedStats.TotalSessionsWon;
-            LossesLabel.Content = _selectedStats.TotalSessionsPlayed - _selectedStats.TotalSessionsWon;
-            if (Math.Abs(_selectedStats.TotalSessionsPlayed) >= 1)
+            GamesLabel.Content = selectedStats.TotalSessionsPlayed;
+            WinsLabel.Content = selectedStats.TotalSessionsWon;
+            LossesLabel.Content = selectedStats.TotalSessionsPlayed - selectedStats.TotalSessionsWon;
+            if (Math.Abs(selectedStats.TotalSessionsPlayed) >= 1)
             {
                 RatioLabel.Content = string.Format("{0:0.00}%",
-                    (_selectedStats.TotalSessionsWon/_selectedStats.TotalSessionsPlayed)*100);
+                    (selectedStats.TotalSessionsWon/selectedStats.TotalSessionsPlayed)*100);
             }
             else
             {
@@ -74,7 +55,7 @@ namespace LegendaryClient.Windows.Profile
             foreach (
                 var item in
                     from field in classType.GetFields(BindingFlags.Public | BindingFlags.Instance)
-                    where Math.Abs((double) field.GetValue(_selectedStats)) >= 1
+                    where Math.Abs((double) field.GetValue(selectedStats)) >= 1
                     select new ProfilePage.KeyValueItem
                     {
                         Key =
@@ -83,7 +64,7 @@ namespace LegendaryClient.Windows.Profile
                                     field.Name.Select(
                                         e => Char.IsUpper(e) ? " " + e : e.ToString(CultureInfo.InvariantCulture)))
                                     .TrimStart(' ')),
-                        Value = field.GetValue(_selectedStats)
+                        Value = field.GetValue(selectedStats)
                     })
             {
                 if (((string) item.Key).Contains("Time"))
@@ -119,14 +100,14 @@ namespace LegendaryClient.Windows.Profile
             foreach (var stat in stats.LifetimeStatistics)
             {
                 var champion =
-                    _championStats.Find(x => Math.Abs(x.ChampionId - stat.ChampionId) < Math.Abs(x.ChampionId*.00001));
+                    championStats.Find(x => Math.Abs(x.ChampionId - stat.ChampionId) < Math.Abs(x.ChampionId*.00001));
                 if (champion == null)
                 {
                     champion = new AggregatedChampion
                     {
                         ChampionId = stat.ChampionId
                     };
-                    _championStats.Add(champion);
+                    championStats.Add(champion);
                 }
 
                 var type = typeof (AggregatedChampion);
@@ -135,11 +116,11 @@ namespace LegendaryClient.Windows.Profile
                 f.SetValue(champion, stat.Value);
             }
 
-            _championStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
+            championStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
 
             //AllStats = ChampionStats;
 
-            foreach (var championStat in _championStats)
+            foreach (var championStat in championStats)
             {
                 if (Math.Abs(championStat.ChampionId) < .00001)
                 {
@@ -171,8 +152,8 @@ namespace LegendaryClient.Windows.Profile
                 return;
             }
 
-            _selectedStats = (AggregatedChampion) ((ListViewItem) ChampionsListView.SelectedItem).Tag;
-            if (!_isOwnPlayer)
+            selectedStats = (AggregatedChampion) ((ListViewItem) ChampionsListView.SelectedItem).Tag;
+            if (!isOwnPlayer)
             {
                 HideGrid.Visibility = Visibility.Hidden;
             }
@@ -182,7 +163,7 @@ namespace LegendaryClient.Windows.Profile
 
         private void ClearButton_Click(object sender, RoutedEventArgs e)
         {
-            _selectedStats = _allStats;
+            selectedStats = allStats;
             HideGrid.Visibility = Visibility.Visible;
             DisplayStats();
         }
@@ -209,7 +190,7 @@ namespace LegendaryClient.Windows.Profile
         public double TotalDamageDealt = 0;
         public double TotalDamageTaken = 0;
         public double TotalDeathsPerSession = 0;
-        public double TotalDoubleKills = 0;
+        public double TotaldoubleKills = 0;
         public double TotalFirstBlood = 0;
         public double TotalGoldEarned = 0;
         public double TotalHeal = 0;

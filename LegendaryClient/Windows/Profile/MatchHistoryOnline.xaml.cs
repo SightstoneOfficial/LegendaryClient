@@ -1,20 +1,13 @@
-#region
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Threading;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
-
-#endregion
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -23,30 +16,20 @@ namespace LegendaryClient.Windows.Profile
     /// </summary>
     public partial class MatchHistoryOnline
     {
-        private string _sumName;
-        private readonly List<MatchStats> _gameStats = new List<MatchStats>();
+        private string sumName;
+        private readonly List<MatchStats> gameStats = new List<MatchStats>();
 
-        public MatchHistoryOnline(String name = "")
+        public MatchHistoryOnline(string name = "")
         {
             InitializeComponent();
-            Change();
 
             //Started work on
-            if (String.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
                 name = Client.LoginPacket.AllSummonerData.Summoner.Name;
             }
 
-            _sumName = name;
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
+            sumName = name;
         }
 
         public void Update(double accountId)
@@ -56,7 +39,7 @@ namespace LegendaryClient.Windows.Profile
 
         public void GotRecentGames(RecentGames result)
         {
-            _gameStats.Clear();
+            gameStats.Clear();
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
             foreach (var game in result.GameStatistics)
             {
@@ -71,13 +54,13 @@ namespace LegendaryClient.Windows.Profile
                     f.SetValue(match, stat.Value);
                 }
                 match.Game = game;
-                _gameStats.Add(match);
+                gameStats.Add(match);
             }
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 GamesListView.Items.Clear();
-                foreach (var stats in _gameStats)
+                foreach (var stats in gameStats)
                 {
                     var item = new RecentGameOverview();
                     var gameChamp = champions.GetChampion((int) Math.Round(stats.Game.ChampionId));
@@ -162,7 +145,7 @@ namespace LegendaryClient.Windows.Profile
                 return;
             }
 
-            var stats = _gameStats[GamesListView.SelectedIndex];
+            var stats = gameStats[GamesListView.SelectedIndex];
             Browser.Focusable = false;
             Browser.Source =
                 new Uri(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview", 

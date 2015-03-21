@@ -1,5 +1,7 @@
-﻿#region
-
+﻿using jabber;
+using jabber.connection;
+using jabber.protocol.client;
+using LegendaryClient.Logic;
 using System;
 using System.IO;
 using System.Linq;
@@ -8,12 +10,6 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
-using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Logic;
-
-#endregion
 
 namespace LegendaryClient.Controls
 {
@@ -22,7 +18,7 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class GroupChatItem
     {
-        private readonly Room _newRoom;
+        private readonly Room newRoom;
 
         public GroupChatItem(string id, string title)
         {
@@ -34,18 +30,18 @@ namespace LegendaryClient.Controls
                 return;
             try
             {
-                _newRoom = Client.ConfManager.GetRoom(new JID(ChatId));
+                newRoom = Client.ConfManager.GetRoom(new JID(ChatId));
             }
             catch
             {
                 return;
             }
 
-            _newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
-            _newRoom.OnRoomMessage += GroupChatClient_OnMessage;
-            _newRoom.OnParticipantJoin += GroupChatClient_OnParticipantJoin;
-            _newRoom.OnParticipantLeave += GroupChatClient_OnParticipantLeave;
-            _newRoom.Join();
+            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            newRoom.OnRoomMessage += GroupChatClient_OnMessage;
+            newRoom.OnParticipantJoin += GroupChatClient_OnParticipantJoin;
+            newRoom.OnParticipantLeave += GroupChatClient_OnParticipantLeave;
+            newRoom.Join();
 
             RefreshRoom();
         }
@@ -56,7 +52,7 @@ namespace LegendaryClient.Controls
         private async void RefreshRoom()
         {
             ParticipantList.Items.Clear();
-            foreach (RoomParticipant par in _newRoom.Participants)
+            foreach (RoomParticipant par in newRoom.Participants)
             {
                 var player = new GroupChatPlayer {SName = {Content = par.Nick}};
                 var summoner = await Client.PVPNet.GetSummonerByName(par.Nick);
@@ -139,23 +135,23 @@ namespace LegendaryClient.Controls
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            _newRoom.OnRoomMessage -= GroupChatClient_OnMessage;
-            _newRoom.OnParticipantJoin -= GroupChatClient_OnParticipantJoin;
-            _newRoom.OnParticipantLeave -= GroupChatClient_OnParticipantLeave;
+            newRoom.OnRoomMessage -= GroupChatClient_OnMessage;
+            newRoom.OnParticipantJoin -= GroupChatClient_OnParticipantJoin;
+            newRoom.OnParticipantLeave -= GroupChatClient_OnParticipantLeave;
             Client.ClearMainGrid(typeof (GroupChatItem));
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            _newRoom.OnRoomMessage -= GroupChatClient_OnMessage;
-            _newRoom.OnParticipantJoin -= GroupChatClient_OnParticipantJoin;
-            _newRoom.OnParticipantLeave -= GroupChatClient_OnParticipantLeave;
+            newRoom.OnRoomMessage -= GroupChatClient_OnMessage;
+            newRoom.OnParticipantJoin -= GroupChatClient_OnParticipantJoin;
+            newRoom.OnParticipantLeave -= GroupChatClient_OnParticipantLeave;
             Client.ClearMainGrid(typeof (GroupChatItem));
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            if (String.IsNullOrEmpty(ChatTextBox.Text))
+            if (string.IsNullOrEmpty(ChatTextBox.Text))
                 return;
 
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
@@ -170,7 +166,7 @@ namespace LegendaryClient.Controls
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
-            _newRoom.PublicMessage(ChatTextBox.Text);
+            newRoom.PublicMessage(ChatTextBox.Text);
             ChatTextBox.Text = string.Empty;
             ChatText.ScrollToEnd();
         }

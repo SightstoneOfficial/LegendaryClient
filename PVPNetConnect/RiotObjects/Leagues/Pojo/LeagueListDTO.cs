@@ -37,21 +37,21 @@ namespace PVPNetConnect.RiotObjects.Leagues.Pojo
         }
 
         [InternalName("queue")]
-        public String Queue { get; set; }
+        public string Queue { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("tier")]
-        public String Tier { get; set; }
+        public string Tier { get; set; }
 
         [InternalName("requestorsRank")]
-        public String RequestorsRank { get; set; }
+        public string RequestorsRank { get; set; }
 
         [InternalName("entries")]
         public List<LeagueItemDTO> Entries { get; set; }
 
         [InternalName("requestorsName")]
-        public String RequestorsName { get; set; }
+        public string RequestorsName { get; set; }
     }
 }

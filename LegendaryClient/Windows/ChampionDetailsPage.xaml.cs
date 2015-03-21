@@ -1,5 +1,7 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,12 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -24,15 +20,12 @@ namespace LegendaryClient.Windows
     public partial class ChampionDetailsPage
     {
         internal champions TheChamp;
-        private Point _currentLocation;
-        private Vector _moveOffset;
-
+        private Point currentLocation;
+        private Vector moveOffset;
 
         public ChampionDetailsPage(int championId)
         {
             InitializeComponent();
-            Change();
-
             RenderChampions(championId);
         }
 
@@ -45,15 +38,6 @@ namespace LegendaryClient.Windows
             SkinName.Content = skin.displayName;
             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath);
             ChampionImage.Source = Client.GetImage(uriSource);
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public void RenderChampions(int championId)
@@ -191,8 +175,8 @@ namespace LegendaryClient.Windows
             if (Mouse.LeftButton != MouseButtonState.Pressed)
                 return;
 
-            _currentLocation = Mouse.GetPosition(MouseGrid);
-            _moveOffset = new Vector(tt.X, tt.Y);
+            currentLocation = Mouse.GetPosition(MouseGrid);
+            moveOffset = new Vector(tt.X, tt.Y);
             Grid.CaptureMouse();
         }
 
@@ -201,10 +185,10 @@ namespace LegendaryClient.Windows
             if (!Grid.IsMouseCaptured)
                 return;
 
-            Vector offset = Point.Subtract(e.GetPosition(MouseGrid), _currentLocation);
+            Vector offset = Point.Subtract(e.GetPosition(MouseGrid), currentLocation);
 
-            tt.X = _moveOffset.X + offset.X;
-            tt.Y = _moveOffset.Y + offset.Y;
+            tt.X = moveOffset.X + offset.X;
+            tt.Y = moveOffset.Y + offset.Y;
         }
 
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)

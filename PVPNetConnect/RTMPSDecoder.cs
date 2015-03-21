@@ -126,7 +126,7 @@ namespace PVPNetConnect
                     return ReadInt();
 
                 case 0x05:
-                    return ReadDouble();
+                    return Readdouble();
 
                 case 0x06:
                     return ReadString();
@@ -219,7 +219,7 @@ namespace PVPNetConnect
             return r;
         }
 
-        private double ReadDouble()
+        private double Readdouble()
         {
             long value = 0;
             for (int i = 0; i < 8; i++)
@@ -244,7 +244,7 @@ namespace PVPNetConnect
                 string str;
                 try
                 {
-                    System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+                    UTF8Encoding enc = new UTF8Encoding();
                     str = enc.GetString(data);
                 }
                 catch (Exception e)
@@ -275,7 +275,7 @@ namespace PVPNetConnect
 
             if (inline)
             {
-                long ms = (long)ReadDouble();
+                long ms = (long)Readdouble();
                 DateTime d = new DateTime(1970, 1, 1, 0, 0, 0, 0);
                 d = d.AddSeconds(ms / 1000);
 
@@ -408,7 +408,7 @@ namespace PVPNetConnect
                     else
                     {
                         //for (int i = dataPos; i < dataBuffer.length; i++)
-                        //System.out.print(String.format("%02X", dataBuffer[i]));
+                        //System.out.print(string.format("%02X", dataBuffer[i]));
                         //System.out.println();
                         throw new NotImplementedException("Externalizable not handled for " + cd.type);
                     }
@@ -417,14 +417,14 @@ namespace PVPNetConnect
                 {
                     for (int i = 0; i < cd.members.Count; i++)
                     {
-                        String key = cd.members[i];
+                        string key = cd.members[i];
                         object value = Decode();
                         ret.Add(key, value);
                     }
 
                     if (cd.dynamic)
                     {
-                        String key;
+                        string key;
                         while ((key = ReadString()).Length != 0)
                         {
                             object value = Decode();
@@ -629,7 +629,7 @@ namespace PVPNetConnect
             string str;
             try
             {
-                System.Text.UTF8Encoding enc = new System.Text.UTF8Encoding();
+                UTF8Encoding enc = new UTF8Encoding();
                 str = enc.GetString(data);
             }
             catch (Exception e)
@@ -642,7 +642,7 @@ namespace PVPNetConnect
 
         private int ReadIntAMF0()
         {
-            return (int)ReadDouble();
+            return (int)Readdouble();
         }
 
         private TypedObject ReadObjectAMF0()
@@ -653,7 +653,7 @@ namespace PVPNetConnect
             {
                 byte b = ReadByte();
                 if (b == 0x00)
-                    body.Add(key, ReadDouble());
+                    body.Add(key, Readdouble());
                 else if (b == 0x02)
                     body.Add(key, ReadStringAMF0());
                 else if (b == 0x05)

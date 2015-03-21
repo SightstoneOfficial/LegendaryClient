@@ -1,9 +1,5 @@
-﻿#region
-
-using System.Collections;
+﻿using System.Collections;
 using System.Windows.Media.Imaging;
-
-#endregion
 
 namespace LegendaryClient.Logic.SQLite
 {

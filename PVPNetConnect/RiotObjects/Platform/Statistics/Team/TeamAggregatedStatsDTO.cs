@@ -38,10 +38,10 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics.Team
         }
 
         [InternalName("queueType")]
-        public String QueueType { get; set; }
+        public string QueueType { get; set; }
 
         [InternalName("serializedToJson")]
-        public String SerializedToJson { get; set; }
+        public string SerializedToJson { get; set; }
 
         [InternalName("playerAggregatedStatsList")]
         public List<TeamPlayerAggregatedStatsDTO> PlayerAggregatedStatsList { get; set; }

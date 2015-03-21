@@ -1,5 +1,7 @@
-﻿#region
-
+﻿using jabber.protocol.client;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Properties;
 using System;
 using System.Linq;
 using System.Threading;
@@ -8,12 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -26,10 +22,9 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             Client.StatusLabel = StatusLabel;
-            //Client.StatusGrid = StatusGrid;
+            Change();
             Client.ChatListView = ChatListView;
             Client.ChatClient.OnMessage += ChatClient_OnMessage;
-            Change();
         }
 
         //Blink and add to notification list if messaged
@@ -52,7 +47,7 @@ namespace LegendaryClient.Windows
                 return;
             }
 
-            if (!Client.AllPlayers.ContainsKey(msg.From.User) || String.IsNullOrWhiteSpace(msg.Body))
+            if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
 
             ChatPlayerItem chatItem = Client.AllPlayers[msg.From.User];
@@ -286,12 +281,6 @@ namespace LegendaryClient.Windows
                 BackBar.Background = (Brush)bc.ConvertFrom("#FF2DA014");
             else if (y.Contains("Purple"))
                 BackBar.Background = (Brush)bc.ConvertFrom("#FF5A14A0");
-
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(y)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
     }
 }

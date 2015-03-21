@@ -36,30 +36,30 @@ namespace PVPNetConnect.RiotObjects.Platform.Account
         }
 
         [InternalName("groupCount")]
-        public Int32 GroupCount { get; set; }
+        public int GroupCount { get; set; }
 
         [InternalName("username")]
-        public String Username { get; set; }
+        public string Username { get; set; }
 
         [InternalName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [InternalName("summonerInternalName")]
         public object SummonerInternalName { get; set; }
 
         [InternalName("admin")]
-        public Boolean Admin { get; set; }
+        public bool Admin { get; set; }
 
         [InternalName("hasBetaAccess")]
-        public Boolean HasBetaAccess { get; set; }
+        public bool HasBetaAccess { get; set; }
 
         [InternalName("summonerName")]
         public object SummonerName { get; set; }
 
         [InternalName("partnerMode")]
-        public Boolean PartnerMode { get; set; }
+        public bool PartnerMode { get; set; }
 
         [InternalName("needsPasswordReset")]
-        public Boolean NeedsPasswordReset { get; set; }
+        public bool NeedsPasswordReset { get; set; }
     }
 }

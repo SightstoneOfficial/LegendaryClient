@@ -1,11 +1,5 @@
-﻿#region
-
-using System;
+﻿using LegendaryClient.Logic;
 using System.Windows;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -17,16 +11,6 @@ namespace LegendaryClient.Windows
         public MessageOverlay()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)

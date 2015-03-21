@@ -1,6 +1,7 @@
 ﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows;
 using System.Windows;
+
 namespace LegendaryClient.Controls
 {
     /// <summary>

@@ -36,7 +36,7 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics.Team
         }
 
         [InternalName("playerId")]
-        public Double PlayerId { get; set; }
+        public double PlayerId { get; set; }
 
         [InternalName("aggregatedStats")]
         public AggregatedStats AggregatedStats { get; set; }

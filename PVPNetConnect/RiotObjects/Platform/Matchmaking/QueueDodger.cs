@@ -42,6 +42,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public PVPNetConnect.RiotObjects.Platform.Summoner.Summoner Summoner { get; set; }
 
         [InternalName("dodgePenaltyRemainingTime")]
-        public Int32 PenaltyRemainingTime { get; set; }
+        public int PenaltyRemainingTime { get; set; }
     }
 }

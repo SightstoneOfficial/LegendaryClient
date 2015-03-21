@@ -37,24 +37,24 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("playerId")]
-        public Double PlayerId { get; set; }
+        public double PlayerId { get; set; }
 
         [InternalName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [InternalName("championLevel")]
-        public Int32 ChampionLevel { get; set; }
+        public int ChampionLevel { get; set; }
 
         [InternalName("championPoints")]
-        public Int32 ChampionPoints { get; set; }
+        public int ChampionPoints { get; set; }
 
         [InternalName("lastPlayTime")]
-        public Double LastPlayTime { get; set; }
+        public double LastPlayTime { get; set; }
 
         [InternalName("championPointsSinceLastLevel")]
-        public Int32 ChampionPointsSinceLastLevel { get; set; }
+        public int ChampionPointsSinceLastLevel { get; set; }
 
         [InternalName("championPointsUntilNextLevel")]
-        public Int32 ChampionPointsUntilNextLevel { get; set; }
+        public int ChampionPointsUntilNextLevel { get; set; }
     }
 }

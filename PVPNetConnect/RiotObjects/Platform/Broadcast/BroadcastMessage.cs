@@ -36,16 +36,16 @@ namespace PVPNetConnect.RiotObjects.Platform.Broadcast
         }
 
         [InternalName("id")]
-        public Int32 ID { get; set; }
+        public int ID { get; set; }
 
         [InternalName("content")]
-        public String Content { get; set; }
+        public string Content { get; set; }
 
         [InternalName("severity")]
-        public String Severity { get; set; }
+        public string Severity { get; set; }
 
         [InternalName("messageKey")]
-        public String MessageKey { get; set; }
+        public string MessageKey { get; set; }
 
         [InternalName("active")]
         public bool Active { get; set; }

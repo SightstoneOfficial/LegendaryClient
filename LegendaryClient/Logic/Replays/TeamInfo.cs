@@ -1,9 +1,5 @@
-﻿#region
-
+﻿using RtmpSharp.IO;
 using System;
-using RtmpSharp.IO;
-
-#endregion
 
 namespace LegendaryClient.Logic.Replays
 {
@@ -12,19 +8,19 @@ namespace LegendaryClient.Logic.Replays
     public class TeamInfo
     {
         [SerializedName("secondsUntilEligibleForDeletion")]
-        public Double SecondsUntilEligibleForDeletion { get; set; }
+        public double SecondsUntilEligibleForDeletion { get; set; }
 
         [SerializedName("memberStatusString")]
-        public String MemberStatusString { get; set; }
+        public string MemberStatusString { get; set; }
 
         [SerializedName("tag")]
-        public String Tag { get; set; }
+        public string Tag { get; set; }
 
         [SerializedName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [SerializedName("memberStatus")]
-        public String MemberStatus { get; set; }
+        public string MemberStatus { get; set; }
 
         [SerializedName("teamId")]
         public TeamId TeamId { get; set; }

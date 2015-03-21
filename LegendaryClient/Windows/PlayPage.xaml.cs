@@ -1,5 +1,9 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +16,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using Timer = System.Timers.Timer;
-using PVPNetConnect;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -162,7 +157,7 @@ namespace LegendaryClient.Windows
                     GameQueueConfig[] openQueues = await Client.PVPNet.GetAvailableQueues();
                     Array.Sort(openQueues,
                         (config, config2) =>
-                            String.Compare(config.CacheName, config2.CacheName, StringComparison.Ordinal));
+                            string.Compare(config.CacheName, config2.CacheName, StringComparison.Ordinal));
                     foreach (GameQueueConfig config in openQueues)
                     {
                         QueueButtonConfig settings = new QueueButtonConfig();

@@ -37,55 +37,55 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("internalName")]
-        public String InternalName { get; set; }
+        public string InternalName { get; set; }
 
         [InternalName("previousSeasonHighestTier")]
-        public String previousSeasonHighestTier { get; set; }
+        public string previousSeasonHighestTier { get; set; }
 
         [InternalName("acctId")]
-        public Double AcctId { get; set; }
+        public double AcctId { get; set; }
 
         [InternalName("helpFlag")]
-        public Boolean HelpFlag { get; set; }
+        public bool HelpFlag { get; set; }
 
         [InternalName("sumId")]
-        public Double SumId { get; set; }
+        public double SumId { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("displayEloQuestionaire")]
-        public Boolean DisplayEloQuestionaire { get; set; }
+        public bool DisplayEloQuestionaire { get; set; }
 
         [InternalName("lastGameDate")]
         public DateTime LastGameDate { get; set; }
         
         [InternalName("previousSeasonHighestTeamReward")]
-        public Int32 previousSeasonHighestTeamReward { get; set; }
+        public int previousSeasonHighestTeamReward { get; set; }
 
         [InternalName("revisionDate")]
         public DateTime RevisionDate { get; set; }
 
         [InternalName("advancedTutorialFlag")]
-        public Boolean AdvancedTutorialFlag { get; set; }
+        public bool AdvancedTutorialFlag { get; set; }
 
         [InternalName("revisionId")]
-        public Double RevisionId { get; set; }
+        public double RevisionId { get; set; }
 
         //TODO: find out object type, it seems to be null for now
         [InternalName("futureData")]
-        public Object futureData { get; set; }
+        public object futureData { get; set; }
 
         [InternalName("dataVersion")]
-        public Int32 dataVersion { get; set; }
+        public int dataVersion { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("nameChangeFlag")]
-        public Boolean NameChangeFlag { get; set; }
+        public bool NameChangeFlag { get; set; }
 
         [InternalName("tutorialFlag")]
-        public Boolean TutorialFlag { get; set; }
+        public bool TutorialFlag { get; set; }
     }
 }

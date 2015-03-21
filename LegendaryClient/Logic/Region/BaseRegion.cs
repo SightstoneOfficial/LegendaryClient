@@ -1,9 +1,5 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Net;
-
-#endregion
 
 namespace LegendaryClient.Logic.Region
 {
@@ -27,7 +23,6 @@ namespace LegendaryClient.Logic.Region
 
         public abstract Uri SpectatorLink { get; }
 
-        //ONLY SET FOR CS SERVER
         public abstract string SpectatorIpAddress { get; set; }
 
         public abstract string Location { get; }

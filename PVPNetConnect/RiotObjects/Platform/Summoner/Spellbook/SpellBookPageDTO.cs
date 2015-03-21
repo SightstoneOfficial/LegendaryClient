@@ -40,18 +40,18 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook
         public List<SlotEntry> SlotEntries { get; set; }
 
         [InternalName("summonerId")]
-        public Int32 SummonerId { get; set; }
+        public int SummonerId { get; set; }
 
         [InternalName("createDate")]
         public DateTime CreateDate { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("pageId")]
-        public Int32 PageId { get; set; }
+        public int PageId { get; set; }
 
         [InternalName("current")]
-        public Boolean Current { get; set; }
+        public bool Current { get; set; }
     }
 }

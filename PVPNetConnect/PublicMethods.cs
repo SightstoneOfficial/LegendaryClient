@@ -134,13 +134,13 @@ namespace PVPNetConnect
         }
 
         /// 5.)
-        public void GetSummonerRuneInventory(Double summonerId, SummonerRuneInventory.Callback callback)
+        public void GetSummonerRuneInventory(double summonerId, SummonerRuneInventory.Callback callback)
         {
             SummonerRuneInventory cb = new SummonerRuneInventory(callback);
             InvokeWithCallback("summonerRuneService", "getSummonerRuneInventory", new object[] { summonerId }, cb);
         }
 
-        public async Task<SummonerRuneInventory> GetSummonerRuneInventory(Double summonerId)
+        public async Task<SummonerRuneInventory> GetSummonerRuneInventory(double summonerId)
         {
             int Id = Invoke("summonerRuneService", "getSummonerRuneInventory", new object[] { summonerId });
             while (!results.ContainsKey(Id))
@@ -152,12 +152,12 @@ namespace PVPNetConnect
         }
 
         /// 6.)
-        public async Task<String> PerformLCDSHeartBeat(Int32 arg0, String arg1, Int32 arg2, String arg3)
+        public async Task<string> PerformLCDSHeartBeat(Int32 arg0, string arg1, int arg2, string arg3)
         {
             int Id = Invoke("loginService", "performLCDSHeartBeat", new object[] { arg0, arg1, arg2, arg3 });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            String result = (String)results[Id].GetTO("data")["body"];
+            string result = (String)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
@@ -181,7 +181,7 @@ namespace PVPNetConnect
         }
 
         /// 8.)
-        public async Task<object> LoadPreferencesByKey(String arg0, Double arg1, Boolean arg2)
+        public async Task<object> LoadPreferencesByKey(String arg0, double arg1, bool arg2)
         {
             int Id = Invoke("playerPreferencesService", "loadPreferencesByKey", new object[] { arg0, arg1, arg2 });
             while (!results.ContainsKey(Id))
@@ -190,7 +190,7 @@ namespace PVPNetConnect
             return null;
         }
 
-        public async Task<object> Call(String GroupFinderUUID, String GameMode, String ProcedureCall, String Parameters)
+        public async Task<object> Call(String GroupFinderUUID, string GameMode, string ProcedureCall, string Parameters)
         {
             int Id = Invoke("lcdsServiceProxy", "call", new object[] { GroupFinderUUID, GameMode, ProcedureCall, Parameters });
             while (!results.ContainsKey(Id))
@@ -200,13 +200,13 @@ namespace PVPNetConnect
         }
 
         /// 9.)
-        public void GetMasteryBook(Double summonerId, MasteryBookDTO.Callback callback)
+        public void GetMasteryBook(double summonerId, MasteryBookDTO.Callback callback)
         {
             MasteryBookDTO cb = new MasteryBookDTO(callback);
             InvokeWithCallback("masteryBookService", "getMasteryBook", new object[] { summonerId }, cb);
         }
 
-        public async Task<MasteryBookDTO> GetMasteryBook(Double summonerId)
+        public async Task<MasteryBookDTO> GetMasteryBook(double summonerId)
         {
             int Id = Invoke("masteryBookService", "getMasteryBook", new object[] { summonerId });
             while (!results.ContainsKey(Id))
@@ -236,12 +236,12 @@ namespace PVPNetConnect
         }
 
         /// 11.)
-        public async Task<String[]> GetSummonerNames(Double[] summonerIds)
+        public async Task<string[]> GetSummonerNames(double[] summonerIds)
         {
             int Id = Invoke("summonerService", "getSummonerNames", new object[] { summonerIds.Cast<object>().ToArray() });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            String[] result = new String[results[Id].GetTO("data").GetArray("body").Length];
+            string[] result = new string[results[Id].GetTO("data").GetArray("body").Length];
             for (int i = 0; i < results[Id].GetTO("data").GetArray("body").Length; i++)
             {
                 result[i] = (String)results[Id].GetTO("data").GetArray("body")[i];
@@ -292,13 +292,13 @@ namespace PVPNetConnect
         }
 
         /// 14.)
-        public void GetAllSummonerDataByAccount(Double accountId, AllSummonerData.Callback callback)
+        public void GetAllSummonerDataByAccount(double accountId, AllSummonerData.Callback callback)
         {
             AllSummonerData cb = new AllSummonerData(callback);
             InvokeWithCallback("summonerService", "getAllSummonerDataByAccount", new object[] { accountId }, cb);
         }
 
-        public async Task<AllSummonerData> GetAllSummonerDataByAccount(Double accountId)
+        public async Task<AllSummonerData> GetAllSummonerDataByAccount(double accountId)
         {
             int Id = Invoke("summonerService", "getAllSummonerDataByAccount", new object[] { accountId });
             while (!results.ContainsKey(Id))
@@ -328,12 +328,12 @@ namespace PVPNetConnect
         }
 
         /// 16.)
-        public async Task<String> GetSummonerIcons(Double[] summonerIds)
+        public async Task<string> GetSummonerIcons(double[] summonerIds)
         {
             int Id = Invoke("summonerService", "getSummonerIcons", new object[] { summonerIds.Cast<object>().ToArray() });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            String result = (String)results[Id].GetTO("data")["body"];
+            string result = (String)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
@@ -357,7 +357,7 @@ namespace PVPNetConnect
         }
 
         /// 18.)
-        public void RetrievePlayerStatsByAccountId(Double accountId, String season,
+        public void RetrievePlayerStatsByAccountId(double accountId, string season,
             PlayerLifetimeStats.Callback callback)
         {
             PlayerLifetimeStats cb = new PlayerLifetimeStats(callback);
@@ -365,7 +365,7 @@ namespace PVPNetConnect
                 cb);
         }
 
-        public async Task<PlayerLifetimeStats> RetrievePlayerStatsByAccountId(Double accountId, String season)
+        public async Task<PlayerLifetimeStats> RetrievePlayerStatsByAccountId(double accountId, string season)
         {
             int Id = Invoke("playerStatsService", "retrievePlayerStatsByAccountId", new object[] { accountId, season });
             while (!results.ContainsKey(Id))
@@ -377,7 +377,7 @@ namespace PVPNetConnect
         }
 
         /// 19.)
-        public async Task<ChampionStatInfo[]> RetrieveTopPlayedChampions(Double accountId, String gameMode)
+        public async Task<ChampionStatInfo[]> RetrieveTopPlayedChampions(double accountId, string gameMode)
         {
             int Id = Invoke("playerStatsService", "retrieveTopPlayedChampions", new object[] { accountId, gameMode });
             while (!results.ContainsKey(Id))
@@ -410,7 +410,7 @@ namespace PVPNetConnect
         }
 
         /// 21.)
-        public void GetAggregatedStats(Double summonerId, String gameMode, String season,
+        public void GetAggregatedStats(double summonerId, string gameMode, string season,
             AggregatedStats.Callback callback)
         {
             AggregatedStats cb = new AggregatedStats(callback);
@@ -418,7 +418,7 @@ namespace PVPNetConnect
                 cb);
         }
 
-        public async Task<AggregatedStats> GetAggregatedStats(Double summonerId, String gameMode, String season)
+        public async Task<AggregatedStats> GetAggregatedStats(double summonerId, string gameMode, string season)
         {
             int Id = Invoke("playerStatsService", "getAggregatedStats", new object[] { summonerId, gameMode, season });
             while (!results.ContainsKey(Id))
@@ -430,13 +430,13 @@ namespace PVPNetConnect
         }
 
         /// 22.)
-        public void GetRecentGames(Double accountId, RecentGames.Callback callback)
+        public void GetRecentGames(double accountId, RecentGames.Callback callback)
         {
             RecentGames cb = new RecentGames(callback);
             InvokeWithCallback("playerStatsService", "getRecentGames", new object[] { accountId }, cb);
         }
 
-        public async Task<RecentGames> GetRecentGames(Double accountId)
+        public async Task<RecentGames> GetRecentGames(double accountId)
         {
             int Id = Invoke("playerStatsService", "getRecentGames", new object[] { accountId });
             while (!results.ContainsKey(Id))
@@ -526,14 +526,14 @@ namespace PVPNetConnect
         }
 
         /// 26.)
-        public void GetTeamEndOfGameStats(TeamId arg0, Double arg1, EndOfGameStats.Callback callback)
+        public void GetTeamEndOfGameStats(TeamId arg0, double arg1, EndOfGameStats.Callback callback)
         {
             EndOfGameStats cb = new EndOfGameStats(callback);
             InvokeWithCallback("playerStatsService", "getTeamEndOfGameStats",
                 new object[] { arg0.GetBaseTypedObject(), arg1 }, cb);
         }
 
-        public async Task<EndOfGameStats> GetTeamEndOfGameStats(TeamId arg0, Double arg1)
+        public async Task<EndOfGameStats> GetTeamEndOfGameStats(TeamId arg0, double arg1)
         {
             int Id = Invoke("playerStatsService", "getTeamEndOfGameStats",
                 new object[] { arg0.GetBaseTypedObject(), arg1 });
@@ -556,35 +556,35 @@ namespace PVPNetConnect
         }
 
         /// 28.)
-        public async Task<Boolean> IsNameValidAndAvailable(String teamName)
+        public async Task<bool> IsNameValidAndAvailable(String teamName)
         {
             int Id = Invoke("summonerTeamService", "isNameValidAndAvailable", new object[] { teamName });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            Boolean result = (Boolean)results[Id].GetTO("data")["body"];
+            bool result = (bool)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
 
         /// 29.)
-        public async Task<Boolean> IsTagValidAndAvailable(String tagName)
+        public async Task<bool> IsTagValidAndAvailable(String tagName)
         {
             int Id = Invoke("summonerTeamService", "isTagValidAndAvailable", new object[] { tagName });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            Boolean result = (Boolean)results[Id].GetTO("data")["body"];
+            bool result = (bool)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
 
         /// 30.)
-        public void CreateTeam(String teamName, String tagName, TeamDTO.Callback callback)
+        public void CreateTeam(String teamName, string tagName, TeamDTO.Callback callback)
         {
             TeamDTO cb = new TeamDTO(callback);
             InvokeWithCallback("summonerTeamService", "createTeam", new object[] { teamName, tagName }, cb);
         }
 
-        public async Task<TeamDTO> CreateTeam(String teamName, String tagName)
+        public async Task<TeamDTO> CreateTeam(String teamName, string tagName)
         {
             int Id = Invoke("summonerTeamService", "createTeam", new object[] { teamName, tagName });
             while (!results.ContainsKey(Id))
@@ -596,14 +596,14 @@ namespace PVPNetConnect
         }
 
         /// 31.)
-        public void TeamInvitePlayer(Double summonerId, TeamId teamId, TeamDTO.Callback callback)
+        public void TeamInvitePlayer(double summonerId, TeamId teamId, TeamDTO.Callback callback)
         {
             TeamDTO cb = new TeamDTO(callback);
             InvokeWithCallback("summonerTeamService", "invitePlayer",
                 new object[] { summonerId, teamId.GetBaseTypedObject() }, cb);
         }
 
-        public async Task<TeamDTO> TeamInvitePlayer(Double summonerId, TeamId teamId)
+        public async Task<TeamDTO> TeamInvitePlayer(double summonerId, TeamId teamId)
         {
             int Id = Invoke("summonerTeamService", "invitePlayer",
                 new object[] { summonerId, teamId.GetBaseTypedObject() });
@@ -616,14 +616,14 @@ namespace PVPNetConnect
         }
 
         /// 32.)
-        public void KickPlayer(Double summonerId, TeamId teamId, TeamDTO.Callback callback)
+        public void KickPlayer(double summonerId, TeamId teamId, TeamDTO.Callback callback)
         {
             TeamDTO cb = new TeamDTO(callback);
             InvokeWithCallback("summonerTeamService", "kickPlayer",
                 new object[] { summonerId, teamId.GetBaseTypedObject() }, cb);
         }
 
-        public async Task<TeamDTO> KickPlayer(Double summonerId, TeamId teamId)
+        public async Task<TeamDTO> KickPlayer(double summonerId, TeamId teamId)
         {
             int Id = Invoke("summonerTeamService", "kickPlayer", new object[] { summonerId, teamId.GetBaseTypedObject() });
             while (!results.ContainsKey(Id))
@@ -635,13 +635,13 @@ namespace PVPNetConnect
         }
 
         /// 33.)
-        public void GetAllLeaguesForPlayer(Double summonerId, SummonerLeaguesDTO.Callback callback)
+        public void GetAllLeaguesForPlayer(double summonerId, SummonerLeaguesDTO.Callback callback)
         {
             SummonerLeaguesDTO cb = new SummonerLeaguesDTO(callback);
             InvokeWithCallback("leaguesServiceProxy", "getAllLeaguesForPlayer", new object[] { summonerId }, cb);
         }
 
-        public async Task<SummonerLeaguesDTO> GetAllLeaguesForPlayer(Double summonerId)
+        public async Task<SummonerLeaguesDTO> GetAllLeaguesForPlayer(double summonerId)
         {
             int Id = Invoke("leaguesServiceProxy", "getAllLeaguesForPlayer", new object[] { summonerId });
             while (!results.ContainsKey(Id))
@@ -653,13 +653,13 @@ namespace PVPNetConnect
         }
 
         /// 34.)
-        public void GetAllPublicSummonerDataByAccount(Double accountId, AllPublicSummonerDataDTO.Callback callback)
+        public void GetAllPublicSummonerDataByAccount(double accountId, AllPublicSummonerDataDTO.Callback callback)
         {
             AllPublicSummonerDataDTO cb = new AllPublicSummonerDataDTO(callback);
             InvokeWithCallback("summonerService", "getAllPublicSummonerDataByAccount", new object[] { accountId }, cb);
         }
 
-        public async Task<AllPublicSummonerDataDTO> GetAllPublicSummonerDataByAccount(Double accountId)
+        public async Task<AllPublicSummonerDataDTO> GetAllPublicSummonerDataByAccount(double accountId)
         {
             int Id = Invoke("summonerService", "getAllPublicSummonerDataByAccount", new object[] { accountId });
             while (!results.ContainsKey(Id))
@@ -671,13 +671,13 @@ namespace PVPNetConnect
         }
 
         /// 35.)
-        public void FindPlayer(Double summonerId, PlayerDTO.Callback callback)
+        public void FindPlayer(double summonerId, PlayerDTO.Callback callback)
         {
             PlayerDTO cb = new PlayerDTO(callback);
             InvokeWithCallback("summonerTeamService", "findPlayer", new object[] { summonerId }, cb);
         }
 
-        public async Task<PlayerDTO> FindPlayer(Double summonerId)
+        public async Task<PlayerDTO> FindPlayer(double summonerId)
         {
             int Id = Invoke("summonerTeamService", "findPlayer", new object[] { summonerId });
             while (!results.ContainsKey(Id))
@@ -689,13 +689,13 @@ namespace PVPNetConnect
         }
 
         /// 36.)
-        public void GetSpellBook(Double summonerId, SpellBookDTO.Callback callback)
+        public void GetSpellBook(double summonerId, SpellBookDTO.Callback callback)
         {
             SpellBookDTO cb = new SpellBookDTO(callback);
             InvokeWithCallback("spellBookService", "getSpellBook", new object[] { summonerId }, cb);
         }
 
-        public async Task<SpellBookDTO> GetSpellBook(Double summonerId)
+        public async Task<SpellBookDTO> GetSpellBook(double summonerId)
         {
             int Id = Invoke("spellBookService", "getSpellBook", new object[] { summonerId });
             while (!results.ContainsKey(Id))
@@ -720,7 +720,7 @@ namespace PVPNetConnect
                 new object[] { matchMakerParams.GetBaseTypedObject(), token.GetBaseTypedObject() }, cb);
         }
 
-        public void AttachToQueue(MatchMakerParams matchMakerParams, String token, SearchingForMatchNotification.Callback callback)
+        public void AttachToQueue(MatchMakerParams matchMakerParams, string token, SearchingForMatchNotification.Callback callback)
         {
             SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
             InvokeWithCallback("matchmakerService", "attachToQueue",
@@ -738,7 +738,7 @@ namespace PVPNetConnect
             return result;
         }
 
-        public async Task<SearchingForMatchNotification> AttachToQueue(MatchMakerParams matchMakerParams, String token)
+        public async Task<SearchingForMatchNotification> AttachToQueue(MatchMakerParams matchMakerParams, string token)
         {
             int Id = Invoke("matchmakerService", "attachToQueue", new object[] { matchMakerParams.GetBaseTypedObject(), token });
             while (!results.ContainsKey(Id))
@@ -750,23 +750,23 @@ namespace PVPNetConnect
         }
 
         /// 38.)
-        public async Task<Boolean> CancelFromQueueIfPossible(Double summonerId)
+        public async Task<bool> CancelFromQueueIfPossible(double summonerId)
         {
             int Id = Invoke("matchmakerService", "cancelFromQueueIfPossible", new object[] { summonerId });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            Boolean result = (Boolean)results[Id].GetTO("data")["body"];
+            bool result = (bool)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
 
         /// 39.)
-        public async Task<String> GetStoreUrl()
+        public async Task<string> GetStoreUrl()
         {
             int Id = Invoke("loginService", "getStoreUrl", new object[] { });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            String result = (String)results[Id].GetTO("data")["body"];
+            string result = (String)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
@@ -789,7 +789,7 @@ namespace PVPNetConnect
 
         /// 41.)
         ///
-        public async Task<object> JoinGame(Double gameId)
+        public async Task<object> JoinGame(double gameId)
         {
             int Id = Invoke("gameService", "joinGame", new object[] { gameId, null });
             while (!results.ContainsKey(Id))
@@ -798,7 +798,7 @@ namespace PVPNetConnect
             return null;
         }
 
-        public async Task<object> JoinGame(Double gameId, string password)
+        public async Task<object> JoinGame(double gameId, string password)
         {
             int Id = Invoke("gameService", "joinGame", new object[] { gameId, password });
             while (!results.ContainsKey(Id))
@@ -807,7 +807,7 @@ namespace PVPNetConnect
             return null;
         }
 
-        public async Task<object> ObserveGame(Double gameId)
+        public async Task<object> ObserveGame(double gameId)
         {
             int Id = Invoke("gameService", "observeGame", new object[] { gameId, null });
             while (!results.ContainsKey(Id))
@@ -816,7 +816,7 @@ namespace PVPNetConnect
             return null;
         }
 
-        public async Task<object> ObserveGame(Double gameId, string password)
+        public async Task<object> ObserveGame(double gameId, string password)
         {
             int Id = Invoke("gameService", "observeGame", new object[] { gameId, password });
             while (!results.ContainsKey(Id))
@@ -826,47 +826,47 @@ namespace PVPNetConnect
         }
 
         /// 42.)
-        public async Task<String> GetSummonerInternalNameByName(String summonerName)
+        public async Task<string> GetSummonerInternalNameByName(String summonerName)
         {
             int Id = Invoke("summonerService", "getSummonerInternalNameByName", new object[] { summonerName });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
 
-            String result = (String)results[Id].GetTO("data")["body"];
+            string result = (String)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
 
         /// 43.)
-        public async Task<Boolean> SwitchTeams(Double gameId)
+        public async Task<bool> SwitchTeams(double gameId)
         {
             int Id = Invoke("gameService", "switchTeams", new object[] { gameId });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
 
-            Boolean result = (Boolean)results[Id].GetTO("data")["body"];
+            bool result = (bool)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
 
         /// 44.)
-        public async Task<Boolean> SwitchPlayerToObserver(Double gameId)
+        public async Task<bool> SwitchPlayerToObserver(double gameId)
         {
             int Id = Invoke("gameService", "switchPlayerToObserver", new object[] { gameId });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            Boolean result = (Boolean)results[Id].GetTO("data")["body"];
+            bool result = (bool)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
 
         /// 44.)
-        public async Task<Boolean> SwitchObserverToPlayer(Double gameId, Int32 team)
+        public async Task<bool> SwitchObserverToPlayer(double gameId, int team)
         {
             int Id = Invoke("gameService", "switchObserverToPlayer", new object[] { gameId, team });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            Boolean result = (Boolean)results[Id].GetTO("data")["body"];
+            bool result = (bool)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
@@ -921,13 +921,13 @@ namespace PVPNetConnect
         }
 
         /// 49.)
-        public void StartChampionSelection(Double gameId, Double optomisticLock, StartChampSelectDTO.Callback callback)
+        public void StartChampionSelection(double gameId, double optomisticLock, StartChampSelectDTO.Callback callback)
         {
             StartChampSelectDTO cb = new StartChampSelectDTO(callback);
             InvokeWithCallback("gameService", "startChampionSelection", new object[] { gameId, optomisticLock }, cb);
         }
 
-        public async Task<StartChampSelectDTO> StartChampionSelection(Double gameId, Double optomisticLock)
+        public async Task<StartChampSelectDTO> StartChampionSelection(double gameId, double optomisticLock)
         {
             int Id = Invoke("gameService", "startChampionSelection", new object[] { gameId, optomisticLock });
             while (!results.ContainsKey(Id))
@@ -939,7 +939,7 @@ namespace PVPNetConnect
         }
 
         /// 50.)
-        public async Task<object> SetClientReceivedGameMessage(Double gameId, String arg1)
+        public async Task<object> SetClientReceivedGameMessage(double gameId, string arg1)
         {
             int Id = Invoke("gameService", "setClientReceivedGameMessage", new object[] { gameId, arg1 });
             while (!results.ContainsKey(Id))
@@ -949,13 +949,13 @@ namespace PVPNetConnect
         }
 
         /// 51.)
-        public void GetLatestGameTimerState(Double arg0, String arg1, Int32 arg2, GameDTO.Callback callback)
+        public void GetLatestGameTimerState(double arg0, string arg1, int arg2, GameDTO.Callback callback)
         {
             GameDTO cb = new GameDTO(callback);
             InvokeWithCallback("gameService", "getLatestGameTimerState", new object[] { arg0, arg1, arg2 }, cb);
         }
 
-        public async Task<GameDTO> GetLatestGameTimerState(Double arg0, String arg1, Int32 arg2)
+        public async Task<GameDTO> GetLatestGameTimerState(double arg0, string arg1, int arg2)
         {
             int Id = Invoke("gameService", "getLatestGameTimerState", new object[] { arg0, arg1, arg2 });
             while (!results.ContainsKey(Id))
@@ -967,7 +967,7 @@ namespace PVPNetConnect
         }
 
         /// 52.)
-        public async Task<object> SelectSpells(Int32 spellOneId, Int32 spellTwoId)
+        public async Task<object> SelectSpells(Int32 spellOneId, int spellTwoId)
         {
             int Id = Invoke("gameService", "selectSpells", new object[] { spellOneId, spellTwoId });
             while (!results.ContainsKey(Id))
@@ -1007,7 +1007,7 @@ namespace PVPNetConnect
         }
 
         /// 55.)
-        public async Task<object> SelectChampionSkin(Int32 championId, Int32 skinId)
+        public async Task<object> SelectChampionSkin(Int32 championId, int skinId)
         {
             int Id = Invoke("gameService", "selectChampionSkin", new object[] { championId, skinId });
             while (!results.ContainsKey(Id))
@@ -1027,7 +1027,7 @@ namespace PVPNetConnect
         }
 
         /// 57.)
-        public async Task<object> SetClientReceivedMaestroMessage(Double arg0, String arg1)
+        public async Task<object> SetClientReceivedMaestroMessage(double arg0, string arg1)
         {
             int Id = Invoke("gameService", "setClientReceivedMaestroMessage", new object[] { arg0, arg1 });
             while (!results.ContainsKey(Id))
@@ -1055,12 +1055,12 @@ namespace PVPNetConnect
         }
 
         /// 59.)
-        public async Task<Boolean> DeclineObserverReconnect()
+        public async Task<bool> DeclineObserverReconnect()
         {
             int Id = Invoke("gameService", "declineObserverReconnect", new object[] { });
             while (!results.ContainsKey(Id))
                 await Task.Delay(10);
-            Boolean result = (Boolean)results[Id].GetTO("data")["body"];
+            bool result = (bool)results[Id].GetTO("data")["body"];
             results.Remove(Id);
             return result;
         }
@@ -1367,7 +1367,7 @@ namespace PVPNetConnect
             return null;
         }
 
-        public async Task<object> SetPreferenceEnabled(String arg0, Boolean arg1)
+        public async Task<object> SetPreferenceEnabled(String arg0, bool arg1)
         {
             int Id = Invoke("playerPreferencesService", "setEnabled", new object[] { arg0, arg1 });
             while (!results.ContainsKey(Id))
@@ -1482,7 +1482,7 @@ namespace PVPNetConnect
                 new object[] { matchMakerParams.GetBaseTypedObject() }, cb);
         }
 
-        public void AttachTeamToQueue(MatchMakerParams matchMakerParams, String token, SearchingForMatchNotification.Callback callback)
+        public void AttachTeamToQueue(MatchMakerParams matchMakerParams, string token, SearchingForMatchNotification.Callback callback)
         {
             SearchingForMatchNotification cb = new SearchingForMatchNotification(callback);
             InvokeWithCallback("matchmakerService", "attachTeamToQueue",

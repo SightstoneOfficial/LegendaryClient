@@ -40,6 +40,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public List<PlayerStatSummary> PlayerStatSummarySet { get; set; }
 
         [InternalName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
     }
 }

@@ -36,27 +36,27 @@ namespace PVPNetConnect.RiotObjects.Platform.Summoner
         }
 
         [InternalName("internalName")]
-        public String InternalName { get; set; }
+        public string InternalName { get; set; }
 
         [InternalName("acctId")]
-        public Double AcctId { get; set; }
+        public double AcctId { get; set; }
 
         [InternalName("name")]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [InternalName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [InternalName("revisionDate")]
         public DateTime RevisionDate { get; set; }
 
         [InternalName("revisionId")]
-        public Double RevisionId { get; set; }
+        public double RevisionId { get; set; }
 
         [InternalName("summonerLevel")]
-        public Double SummonerLevel { get; set; }
+        public double SummonerLevel { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

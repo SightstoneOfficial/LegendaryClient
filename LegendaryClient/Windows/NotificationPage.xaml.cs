@@ -1,21 +1,15 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using Newtonsoft.Json;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Timers;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using Newtonsoft.Json;
 using Timer = System.Timers.Timer;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -33,17 +27,6 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             LoadTimer();
             UpdateData();
-            Change();
-        }
-
-        public void Change()
-        {
-            var bc = new BrushConverter();
-            bool x = Settings.Default.DarkTheme;
-            if (x)
-                TheGrid.Background = (Brush) bc.ConvertFrom("#E5000000");
-            else
-                TheGrid.Background = (Brush) bc.ConvertFrom("#E5B4B4B4");
         }
 
         private void LoadTimer()
@@ -52,6 +35,8 @@ namespace LegendaryClient.Windows
             timer.Elapsed += timer_Elapsed;
             timer.Start();
         }
+
+#pragma warning disable 4014
 
         private void UpdateData()
         {

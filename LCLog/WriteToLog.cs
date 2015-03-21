@@ -33,7 +33,7 @@ namespace LCLog
         /// </summary>
         /// <param name="lines"></param>
         /// <param name="type"></param>
-        public static void Log(String lines, String type = "LOG")
+        public static void Log(String lines, string type = "LOG")
         {
             if (System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
             {

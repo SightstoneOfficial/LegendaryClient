@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22310.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClient", "LegendaryClient\LegendaryClient.csproj", "{A6F20D1A-8523-42EF-BED7-90915047AB44}"
 EndProject
@@ -12,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegendaryClient.Patcher", "LegendaryClient.Patcher\LegendaryClient.Patcher.csproj", "{9C7F7F35-2F26-4191-A954-7770C7854D27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCLog", "LCLog\LCLog.csproj", "{B9ACF25E-89AE-4CC8-9041-1E74822DAC2D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiotPatch", "RiotPatch\RiotPatch.csproj", "{FD32D64F-B568-43A1-8C52-7F3DA59781AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LCDevWindow", "LCDevWindow\LCDevWindow.csproj", "{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}"
 EndProject
@@ -64,14 +62,6 @@ Global
 		{B9ACF25E-89AE-4CC8-9041-1E74822DAC2D}.PubRelease|Any CPU.Build.0 = Release|Any CPU
 		{B9ACF25E-89AE-4CC8-9041-1E74822DAC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9ACF25E-89AE-4CC8-9041-1E74822DAC2D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.DispersiaRelease|Any CPU.ActiveCfg = DispersiaRelease|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.DispersiaRelease|Any CPU.Build.0 = DispersiaRelease|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.PubRelease|Any CPU.ActiveCfg = Release|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.PubRelease|Any CPU.Build.0 = Release|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FD32D64F-B568-43A1-8C52-7F3DA59781AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{141419B1-FE7F-4B89-8F4C-EDF94ED8660F}.DispersiaRelease|Any CPU.ActiveCfg = Release|Any CPU

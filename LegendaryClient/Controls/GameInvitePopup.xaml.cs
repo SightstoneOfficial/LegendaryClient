@@ -1,17 +1,13 @@
-#region
-
-using System;
-using System.Threading;
-using System.Windows;
-using System.Windows.Threading;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using Newtonsoft.Json;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using PVPNetConnect.RiotObjects.Platform.Game;
-
-#endregion
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using System;
+using System.Threading;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace LegendaryClient.Controls
 {
@@ -20,23 +16,23 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class GameInvitePopup
     {
-        private string _gameMetaData;
+        private string gameMetaData;
 
-        private string _gameMode,
-            _gameType;
+        private string gameMode,
+            gameType;
 
-        private int _gameTypeConfigId;
-        private string _invitationId;
-        private string _invitationState;
-        private string _invitationStateAsString;
-        private string _inviter;
-        private bool _isRanked;
-        private int _mapId;
-        private string _mapName;
-        private string _mode;
-        private int _queueId;
-        private string _rankedTeamName;
-        private string _type;
+        private int gameTypeConfigId;
+        private string invitationID;
+        private string invitationState;
+        private string invitationStateAsString;
+        private string inviter;
+        private bool isRanked;
+        private int mapId;
+        private string mapName;
+        private string mode;
+        private int queueId;
+        private string rankedTeamName;
+        private string type;
         private GameDTO tempDTO;
 
         public GameInvitePopup(InvitationRequest stats)
@@ -101,11 +97,11 @@ namespace LegendaryClient.Controls
                             LoadGamePopupData(stats.Inviter == null ? info.stats : stats);
                             Visibility = Visibility.Hidden;
 
-                            RenderNotificationTextBox(_inviter + " has invited you to a game");
+                            RenderNotificationTextBox(inviter + " has invited you to a game");
                             RenderNotificationTextBox("");
-                            RenderNotificationTextBox("Mode: " + _mode);
-                            RenderNotificationTextBox("Map: " + _mapName);
-                            RenderNotificationTextBox("Type: " + _type);
+                            RenderNotificationTextBox("Mode: " + mode);
+                            RenderNotificationTextBox("Map: " + mapName);
+                            RenderNotificationTextBox("Type: " + type);
                             Unlock();
                             break;
                         default:
@@ -147,69 +143,69 @@ namespace LegendaryClient.Controls
 
         private void LoadGamePopupData(InvitationRequest stats)
         {
-            _invitationStateAsString = stats.InvitationStateAsString;
-            _gameMetaData = stats.GameMetaData;
-            _invitationState = stats.InvitationState;
+            invitationStateAsString = stats.InvitationStateAsString;
+            gameMetaData = stats.GameMetaData;
+            invitationState = stats.InvitationState;
             if (stats.Inviter != null)
-                _inviter = stats.Inviter.SummonerName;
+                inviter = stats.Inviter.SummonerName;
             else
-                _inviter = stats.Owner.SummonerName;
-            _invitationId = stats.InvitationId;
-            if (_invitationId != null)
+                inviter = stats.Owner.SummonerName;
+            invitationID = stats.InvitationId;
+            if (invitationID != null)
                 NoGame.Visibility = Visibility.Hidden;
 
             var m = JsonConvert.DeserializeObject<invitationRequest>(stats.GameMetaData);
-            _queueId = m.queueId;
-            _isRanked = m.isRanked;
-            _rankedTeamName = m.rankedTeamName;
-            _mapId = m.mapId;
-            _gameTypeConfigId = m.gameTypeConfigId;
-            _gameMode = m.gameMode;
-            _gameType = m.gameType;
+            queueId = m.queueId;
+            isRanked = m.isRanked;
+            rankedTeamName = m.rankedTeamName;
+            mapId = m.mapId;
+            gameTypeConfigId = m.gameTypeConfigId;
+            gameMode = m.gameMode;
+            gameType = m.gameType;
 
-            Client.PVPNet.getLobbyStatusInviteId = _invitationId;
-            switch (_mapId)
+            Client.PVPNet.getLobbyStatusInviteId = invitationID;
+            switch (mapId)
             {
                 case 1:
-                    _mapName = "Summoners Rift";
+                    mapName = "Summoners Rift";
                     break;
                 case 8:
-                    _mapName = "The Crystal Scar";
+                    mapName = "The Crystal Scar";
                     break;
                 case 10:
-                    _mapName = "The Twisted Treeline";
+                    mapName = "The Twisted Treeline";
                     break;
                 case 11:
-                    _mapName = "New Summoners Rift";
+                    mapName = "New Summoners Rift";
                     break;
                 case 12:
-                    _mapName = "Howling Abyss";
+                    mapName = "Howling Abyss";
                     break;
                 default:
-                    _mapName = "Unknown Map";
+                    mapName = "Unknown Map";
                     break;
             }
-            var gameModeLower = Client.TitleCaseString(string.Format(_gameMode.ToLower()));
-            var gameTypeLower = Client.TitleCaseString(string.Format(_gameType.ToLower()));
+            var gameModeLower = Client.TitleCaseString(string.Format(gameMode.ToLower()));
+            var gameTypeLower = Client.TitleCaseString(string.Format(gameType.ToLower()));
             var gameTypeRemove = gameTypeLower.Replace("_game", string.Empty);
             var removeAllUnder = gameTypeRemove.Replace("_", " ");
 
-            if (String.IsNullOrEmpty(_inviter))
-                _inviter = "An unknown player";
+            if (string.IsNullOrEmpty(inviter))
+                inviter = "An unknown player";
 
-            _mode = gameModeLower;
-            _type = removeAllUnder;
-            RenderNotificationTextBox(_inviter + " has invited you to a game");
+            mode = gameModeLower;
+            type = removeAllUnder;
+            RenderNotificationTextBox(inviter + " has invited you to a game");
             RenderNotificationTextBox(string.Empty);
             RenderNotificationTextBox("Mode: " + gameModeLower);
-            RenderNotificationTextBox("Map: " + _mapName);
+            RenderNotificationTextBox("Map: " + mapName);
             RenderNotificationTextBox("Type: " + removeAllUnder);
 
             var y = new InviteInfo
             {
                 stats = stats,
                 popup = this,
-                Inviter = _inviter
+                Inviter = inviter
             };
 
             Client.InviteData.Add(stats.InvitationId, y);
@@ -217,48 +213,46 @@ namespace LegendaryClient.Controls
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            if (_gameType == "PRACTICE_GAME")
+            if (gameType == "PRACTICE_GAME")
             {
 #pragma warning disable 4014
-                Client.PVPNet.Accept(_invitationId);
-#pragma warning restore 4014
+                Client.PVPNet.Accept(invitationID);
                 Client.SwitchPage(new CustomGameLobbyPage(tempDTO));
             }
             //goddammit teambuilder
-            else if (_gameType == "NORMAL_GAME" && _queueId != 61)
+            else if (gameType == "NORMAL_GAME" && queueId != 61)
             {
-                Client.SwitchPage(new TeamQueuePage(_invitationId));
+                Client.SwitchPage(new TeamQueuePage(invitationID));
             }
-            else if (_gameType == "NORMAL_GAME" && _queueId == 61)
+            else if (gameType == "NORMAL_GAME" && queueId == 61)
             {
                 var newLobby = Client.PVPNet.InviteLobby;
                 Client.SwitchPage(new TeamBuilderPage(false, newLobby));
             }
-            else if (_gameType == "RANKED_GAME")
+            else if (gameType == "RANKED_GAME")
             {
-                Client.SwitchPage(new TeamQueuePage(_invitationId));
+                Client.SwitchPage(new TeamQueuePage(invitationID));
             }
-            else if (_gameType == "RANKED_TEAM_GAME")
+            else if (gameType == "RANKED_TEAM_GAME")
             {
-                Client.SwitchPage(new TeamQueuePage(_invitationId));
+                Client.SwitchPage(new TeamQueuePage(invitationID));
             }
             Visibility = Visibility.Hidden;
-            Client.InviteData.Remove(_invitationId);
+            Client.InviteData.Remove(invitationID);
         }
 
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { Visibility = Visibility.Hidden; }));
 #pragma warning disable 4014
-            Client.PVPNet.Decline(_invitationId);
-#pragma warning restore 4014
-            Client.InviteData.Remove(_invitationId);
+            Client.PVPNet.Decline(invitationID);
+            Client.InviteData.Remove(invitationID);
         }
 
         private void Hide_Click(object sender, RoutedEventArgs e)
         {
             Visibility = Visibility.Hidden;
-            var x = Client.InviteData[_invitationId];
+            var x = Client.InviteData[invitationID];
             x.PopupVisible = false;
         }
     }

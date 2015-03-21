@@ -40,126 +40,126 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public object SkinName { get; set; }
 
         [InternalName("ranked")]
-        public Boolean Ranked { get; set; }
+        public bool Ranked { get; set; }
 
         [InternalName("skinIndex")]
-        public Int32 SkinIndex { get; set; }
+        public int SkinIndex { get; set; }
 
         [InternalName("fellowPlayers")]
         public List<FellowPlayerInfo> FellowPlayers { get; set; }
 
         [InternalName("gameType")]
-        public String GameType { get; set; }
+        public string GameType { get; set; }
 
         [InternalName("experienceEarned")]
-        public Double ExperienceEarned { get; set; }
+        public double ExperienceEarned { get; set; }
 
         [InternalName("rawStatsJson")]
         public object RawStatsJson { get; set; }
 
         [InternalName("eligibleFirstWinOfDay")]
-        public Boolean EligibleFirstWinOfDay { get; set; }
+        public bool EligibleFirstWinOfDay { get; set; }
 
         [InternalName("difficulty")]
         public object Difficulty { get; set; }
 
         [InternalName("gameMapId")]
-        public Int32 GameMapId { get; set; }
+        public int GameMapId { get; set; }
 
         [InternalName("leaver")]
-        public Boolean Leaver { get; set; }
+        public bool Leaver { get; set; }
 
         [InternalName("spell1")]
-        public Double Spell1 { get; set; }
+        public double Spell1 { get; set; }
 
         [InternalName("gameTypeEnum")]
-        public String GameTypeEnum { get; set; }
+        public string GameTypeEnum { get; set; }
 
         [InternalName("teamId")]
-        public Double TeamId { get; set; }
+        public double TeamId { get; set; }
 
         [InternalName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [InternalName("statistics")]
         public List<RawStat> Statistics { get; set; }
 
         [InternalName("spell2")]
-        public Double Spell2 { get; set; }
+        public double Spell2 { get; set; }
 
         [InternalName("afk")]
-        public Boolean Afk { get; set; }
+        public bool Afk { get; set; }
 
         [InternalName("id")]
         public object Id { get; set; }
 
         [InternalName("boostXpEarned")]
-        public Double BoostXpEarned { get; set; }
+        public double BoostXpEarned { get; set; }
 
         [InternalName("level")]
-        public Double Level { get; set; }
+        public double Level { get; set; }
 
         [InternalName("invalid")]
-        public Boolean Invalid { get; set; }
+        public bool Invalid { get; set; }
 
         [InternalName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [InternalName("createDate")]
         public DateTime CreateDate { get; set; }
 
         [InternalName("userServerPing")]
-        public Int32 UserServerPing { get; set; }
+        public int UserServerPing { get; set; }
 
         [InternalName("adjustedRating")]
-        public Int32 AdjustedRating { get; set; }
+        public int AdjustedRating { get; set; }
 
         [InternalName("premadeSize")]
-        public Int32 PremadeSize { get; set; }
+        public int PremadeSize { get; set; }
 
         [InternalName("boostIpEarned")]
-        public Double BoostIpEarned { get; set; }
+        public double BoostIpEarned { get; set; }
 
         [InternalName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [InternalName("timeInQueue")]
-        public Int32 TimeInQueue { get; set; }
+        public int TimeInQueue { get; set; }
 
         [InternalName("ipEarned")]
-        public Double IpEarned { get; set; }
+        public double IpEarned { get; set; }
 
         [InternalName("eloChange")]
-        public Int32 EloChange { get; set; }
+        public int EloChange { get; set; }
 
         [InternalName("gameMode")]
-        public String GameMode { get; set; }
+        public string GameMode { get; set; }
 
         [InternalName("difficultyString")]
         public object DifficultyString { get; set; }
 
         [InternalName("KCoefficient")]
-        public Double KCoefficient { get; set; }
+        public double KCoefficient { get; set; }
 
         [InternalName("teamRating")]
-        public Int32 TeamRating { get; set; }
+        public int TeamRating { get; set; }
 
         [InternalName("subType")]
-        public String SubType { get; set; }
+        public string SubType { get; set; }
 
         [InternalName("queueType")]
-        public String QueueType { get; set; }
+        public string QueueType { get; set; }
 
         [InternalName("premadeTeam")]
-        public Boolean PremadeTeam { get; set; }
+        public bool PremadeTeam { get; set; }
 
         [InternalName("predictedWinPct")]
-        public Double PredictedWinPct { get; set; }
+        public double PredictedWinPct { get; set; }
 
         [InternalName("rating")]
-        public Double Rating { get; set; }
+        public double Rating { get; set; }
 
         [InternalName("championId")]
-        public Double ChampionId { get; set; }
+        public double ChampionId { get; set; }
     }
 }

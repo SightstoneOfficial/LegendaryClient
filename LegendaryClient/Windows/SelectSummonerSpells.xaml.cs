@@ -1,15 +1,11 @@
-﻿#region
-
+﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.PlayerSpell;
+using LegendaryClient.Properties;
 using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.PlayerSpell;
-using LegendaryClient.Properties;
-
-#endregion
 
 namespace LegendaryClient.Windows
 {
@@ -23,7 +19,6 @@ namespace LegendaryClient.Windows
         public SelectSummonerSpells(string gameMode)
         {
             InitializeComponent();
-            Change();
 
             Array values = Enum.GetValues(typeof (NameToImage));
             foreach (NameToImage spell in values)
@@ -46,15 +41,6 @@ namespace LegendaryClient.Windows
                 champImage.Tag = (int) spell;
                 SummonerSpellListView.Items.Add(champImage);
             }
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         private async void SummonerSpellListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

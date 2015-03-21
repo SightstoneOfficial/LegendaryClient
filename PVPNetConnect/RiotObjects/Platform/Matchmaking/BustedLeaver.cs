@@ -37,13 +37,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         }
 
         [InternalName("reasonFailed")]
-        public String ReasonFailed { get; set; }
+        public string ReasonFailed { get; set; }
 
         [InternalName("accessToken")]
-        public String AccessToken { get; set; }
+        public string AccessToken { get; set; }
 
         [InternalName("leaverPenaltyMillisRemaining")]
-        public Double LeaverPenaltyMilisRemaining { get; set; }
+        public double LeaverPenaltyMilisRemaining { get; set; }
 
         [InternalName("summoner")]
         public Summoner.Summoner Summoner { get; set; }

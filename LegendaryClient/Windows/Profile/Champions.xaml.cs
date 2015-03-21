@@ -1,17 +1,12 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-
-#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -27,16 +22,6 @@ namespace LegendaryClient.Windows.Profile
         public Champions()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public async void Update()
@@ -47,7 +32,7 @@ namespace LegendaryClient.Windows.Profile
 
             _championList.Sort(
                 (x, y) =>
-                    String.Compare(champions.GetChampion(x.ChampionId)
+                    string.Compare(champions.GetChampion(x.ChampionId)
                         .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
 
             FilterChampions();
@@ -73,7 +58,7 @@ namespace LegendaryClient.Windows.Profile
             ChampionSelectListView.Items.Clear();
 
             var tempList = _championList.ToList();
-            if (!String.IsNullOrEmpty(SearchTextBox.Text))
+            if (!string.IsNullOrEmpty(SearchTextBox.Text))
             {
                 tempList =
                     tempList.Where(
@@ -131,7 +116,7 @@ namespace LegendaryClient.Windows.Profile
             }
         }
 
-        private void ChampionSelectListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ChampionSelectListView_MousedoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var champList = (ListView)sender;
             var champImage = champList.SelectedItem as ProfileChampionImage;

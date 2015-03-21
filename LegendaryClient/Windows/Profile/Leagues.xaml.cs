@@ -1,5 +1,9 @@
-﻿#region
-
+﻿using LegendaryClient.Controls;
+using LegendaryClient.Logic;
+using LegendaryClient.Logic.SQLite;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
+using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-
-#endregion
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -26,42 +21,32 @@ namespace LegendaryClient.Windows.Profile
     public partial class Leagues
     {
         //private static readonly ILog log = LogManager.GetLogger(typeof (Leagues));
-        private SummonerLeaguesDTO _myLeagues;
-        private string _queue;
-        private AggregatedStats _selectedAggregatedStats;
-        private string _selectedRank;
+        private SummonerLeaguesDTO myLeagues;
+        private string queue;
+        private AggregatedStats selectedAggregatedStats;
+        private string selectedRank;
 
         public Leagues()
         {
             InitializeComponent();
-            Change();
-        }
-
-        public void Change()
-        {
-            var themeAccent = new ResourceDictionary
-            {
-                Source = new Uri(Settings.Default.Theme)
-            };
-            Resources.MergedDictionaries.Add(themeAccent);
         }
 
         public void Update(SummonerLeaguesDTO result)
         {
-            _myLeagues = result;
+            myLeagues = result;
             foreach (
-                var leagues in _myLeagues.SummonerLeagues.Where(leagues => leagues.Queue == "RANKED_SOLO_5x5"))
+                var leagues in myLeagues.SummonerLeagues.Where(leagues => leagues.Queue == "RANKED_SOLO_5x5"))
             {
-                _selectedRank = leagues.RequestorsRank;
+                selectedRank = leagues.RequestorsRank;
             }
 
-            _queue = "RANKED_SOLO_5x5";
+            queue = "RANKED_SOLO_5x5";
             RenderLeague();
         }
 
         public void RenderLeague()
         {
-            if (_myLeagues == null)
+            if (myLeagues == null)
             {
                 //MessageBox.Show("You are not in League.");
                 var overlay = new MessageOverlay
@@ -77,9 +62,9 @@ namespace LegendaryClient.Windows.Profile
                 return;
             }
             LeaguesListView.Items.Clear();
-            foreach (var leagues in _myLeagues.SummonerLeagues.Where(leagues => leagues.Queue == _queue))
+            foreach (var leagues in myLeagues.SummonerLeagues.Where(leagues => leagues.Queue == queue))
             {
-                switch (_selectedRank)
+                switch (selectedRank)
                 {
                     case "V":
                         UpTierButton.IsEnabled = true;
@@ -95,10 +80,10 @@ namespace LegendaryClient.Windows.Profile
                         break;
                 }
 
-                CurrentLeagueLabel.Content = leagues.Tier + " " + _selectedRank;
+                CurrentLeagueLabel.Content = leagues.Tier + " " + selectedRank;
                 CurrentLeagueNameLabel.Content = leagues.Name;
                 var players =
-                    leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == _selectedRank).ToList();
+                    leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == selectedRank).ToList();
                 players.Reverse();
                 var i = 0;
                 foreach (var player in players)
@@ -146,19 +131,19 @@ namespace LegendaryClient.Windows.Profile
 
         private void DownTierButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (_selectedRank)
+            switch (selectedRank)
             {
                 case "I":
-                    _selectedRank = "II";
+                    selectedRank = "II";
                     break;
                 case "II":
-                    _selectedRank = "III";
+                    selectedRank = "III";
                     break;
                 case "III":
-                    _selectedRank = "IV";
+                    selectedRank = "IV";
                     break;
                 case "IV":
-                    _selectedRank = "V";
+                    selectedRank = "V";
                     break;
             }
 
@@ -167,19 +152,19 @@ namespace LegendaryClient.Windows.Profile
 
         private void UpTierButton_Click(object sender, RoutedEventArgs e)
         {
-            switch (_selectedRank)
+            switch (selectedRank)
             {
                 case "V":
-                    _selectedRank = "IV";
+                    selectedRank = "IV";
                     break;
                 case "IV":
-                    _selectedRank = "III";
+                    selectedRank = "III";
                     break;
                 case "III":
-                    _selectedRank = "II";
+                    selectedRank = "II";
                     break;
                 case "II":
-                    _selectedRank = "I";
+                    selectedRank = "I";
                     break;
             }
 
@@ -204,23 +189,23 @@ namespace LegendaryClient.Windows.Profile
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                _selectedAggregatedStats = stats;
+                selectedAggregatedStats = stats;
 
                 ViewAggregatedStatsButton.IsEnabled = false;
                 TopChampionsListView.Items.Clear();
                 var championStats = new List<AggregatedChampion>();
                 var i = 0;
-                if (_selectedAggregatedStats.LifetimeStatistics == null)
+                if (selectedAggregatedStats.LifetimeStatistics == null)
                 {
                     return;
                 }
 
-                if (!_selectedAggregatedStats.LifetimeStatistics.Any())
+                if (!selectedAggregatedStats.LifetimeStatistics.Any())
                 {
                     return;
                 }
 
-                foreach (var stat in _selectedAggregatedStats.LifetimeStatistics)
+                foreach (var stat in selectedAggregatedStats.LifetimeStatistics)
                 {
                     var champion = championStats.Find(x => Math.Abs(x.ChampionId - stat.ChampionId) < .00001);
                     if (champion == null)

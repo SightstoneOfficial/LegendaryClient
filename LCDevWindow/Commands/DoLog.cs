@@ -15,9 +15,9 @@ namespace LCDevWindow.Commands
         }
         public override List<string> HelpTips()
         {
-            List<String> tips = new List<String>();
+            List<string> tips = new List<string>();
             tips.Add("Adds text to the local Log window");
-            tips.Add("Usage: DoLog(string) -> String is the text to be added");
+            tips.Add("Usage: DoLog(string) -> string is the text to be added");
             return tips;
         }
         public override object ActivateCommand(string[] args)

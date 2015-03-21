@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="50" d:DesignWidth="50">
+             d:DesignHeight="350" d:DesignWidth="200">
     <Grid>
-        <Image x:Name="Img" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top" Width="50" />
-        <Label x:Name="ChampName" Content="Yasuo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,28,0,0" Width="50"
+        <Image x:Name="Img" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Label x:Name="ChampName" Content="Yasuo" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" 
                Background="#7F41B1E1" FontSize="9" />
 
 

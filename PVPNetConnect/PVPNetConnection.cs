@@ -13,13 +13,16 @@ using PVPNetConnect.RiotObjects;
 using PVPNetConnect.RiotObjects.Platform.Broadcast;
 using PVPNetConnect.RiotObjects.Platform.Game;
 using PVPNetConnect.RiotObjects.Platform.Game.Message;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Harassment;
 using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using PVPNetConnect.RiotObjects.Platform.Messaging;
+using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using PVPNetConnect.RiotObjects.Platform.Trade;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Security;
@@ -27,12 +30,8 @@ using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading;
-using System.Web.Script.Serialization;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
-using System.Diagnostics;
-using PVPNetConnect.RiotObjects.Platform.Harassment;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace PVPNetConnect
 {

@@ -39,6 +39,6 @@ namespace PVPNetConnect.RiotObjects.Platform.Statistics
         public DateTime Timestamp { get; set; }
 
         [InternalName("type")]
-        public String Type { get; set; }
+        public string Type { get; set; }
     }
 }

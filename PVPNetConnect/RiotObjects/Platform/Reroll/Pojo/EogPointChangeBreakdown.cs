@@ -36,18 +36,18 @@ namespace PVPNetConnect.RiotObjects.Platform.Reroll.Pojo
         }
 
         [InternalName("pointChangeFromGamePlay")]
-        public Double PointChangeFromGamePlay { get; set; }
+        public double PointChangeFromGamePlay { get; set; }
 
         [InternalName("pointChangeFromChampionsOwned")]
-        public Double PointChangeFromChampionsOwned { get; set; }
+        public double PointChangeFromChampionsOwned { get; set; }
 
         [InternalName("previousPoints")]
-        public Double PreviousPoints { get; set; }
+        public double PreviousPoints { get; set; }
 
         [InternalName("pointsUsed")]
-        public Double PointsUsed { get; set; }
+        public double PointsUsed { get; set; }
 
         [InternalName("endPoints")]
-        public Double EndPoints { get; set; }
+        public double EndPoints { get; set; }
     }
 }

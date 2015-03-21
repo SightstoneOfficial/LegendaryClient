@@ -179,10 +179,10 @@ namespace LegendaryClient.Windows
                 {
                     PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints /
                                                playerData.SummonerLevel.ExpToNextLevel) * 100;
-                    PlayerProgressLabel.Content = String.Format("Level {0}", playerData.SummonerLevel.Level);
-                    PlayerCurrentProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevelAndPoints.ExpPoints);
-                    PlayerAimProgressLabel.Content = String.Format("{0}XP", playerData.SummonerLevel.ExpToNextLevel);
-                    Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + String.Format(" ∙ Level: {0}", playerData.SummonerLevel.Level);
+                    PlayerProgressLabel.Content = string.Format("Level {0}", playerData.SummonerLevel.Level);
+                    PlayerCurrentProgressLabel.Content = string.Format("{0}XP", playerData.SummonerLevelAndPoints.ExpPoints);
+                    PlayerAimProgressLabel.Content = string.Format("{0}XP", playerData.SummonerLevel.ExpToNextLevel);
+                    Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + string.Format(" ∙ Level: {0}", playerData.SummonerLevel.Level);
                 }
                 else
                     Client.PVPNet.GetAllLeaguesForPlayer(playerData.Summoner.SumId, GotLeaguesForPlayer);
@@ -484,7 +484,7 @@ namespace LegendaryClient.Windows
                         item.Tag = kvPair.Value;
 
                     // Image
-                    if (!String.IsNullOrEmpty(imageUri))
+                    if (!string.IsNullOrEmpty(imageUri))
                     {
                         var promoImage = new BitmapImage(new Uri("http://" + region.RegionName + ".leagueoflegends.com/" + imageUri, UriKind.Absolute));
                         item.PromoImage.Stretch = Stretch.Fill;
@@ -616,8 +616,8 @@ namespace LegendaryClient.Windows
                                             var control = new ChampSelectPlayer
                                             {
                                                 ChampionImage = { Source = champions.GetChampion(championId).icon },
-                                                _champID = championId,
-                                                _sumName = playerName,
+                                                champID = championId,
+                                                sumName = playerName,
                                                 KnownPar = true
                                             };
                                             var uriSource =

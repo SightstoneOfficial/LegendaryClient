@@ -1,12 +1,37 @@
-﻿#region
-
-using System.Linq;
+﻿using jabber;
+using jabber.client;
+using jabber.connection;
+using jabber.protocol.client;
+using jabber.protocol.iq;
+using LCLog;
+using LegendaryClient.Controls;
+using LegendaryClient.Logic.JSON;
+using LegendaryClient.Logic.Region;
+using LegendaryClient.Logic.Replays;
+using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Properties;
+using LegendaryClient.Windows;
+using MahApps.Metro;
+using MahApps.Metro.Controls;
+using Newtonsoft.Json;
+using PVPNetConnect;
+using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
+using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
+using PVPNetConnect.RiotObjects.Platform.Game;
+using PVPNetConnect.RiotObjects.Platform.Game.Message;
+using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
+using PVPNetConnect.RiotObjects.Platform.Login;
+using PVPNetConnect.RiotObjects.Platform.Messaging;
+using PVPNetConnect.RiotObjects.Platform.Messaging.Persistence;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
+using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -16,33 +41,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
-using jabber;
-using jabber.client;
-using jabber.connection;
-using jabber.protocol.client;
-using jabber.protocol.iq;
-using LCLog;
-using LegendaryClient.Controls;
-using LegendaryClient.Logic.Region;
-using LegendaryClient.Logic.Replays;
-using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
-using LegendaryClient.Windows;
-using MahApps.Metro;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Game.Message;
-using PVPNetConnect.RiotObjects.Platform.Login;
-using PVPNetConnect.RiotObjects.Platform.Messaging;
-using SQLite;
-using Brush = System.Windows.Media.Brush;
 using Button = System.Windows.Controls.Button;
 using EndOfGameStats = PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats;
 using Error = PVPNetConnect.Error;
@@ -51,13 +52,6 @@ using Label = System.Windows.Controls.Label;
 using ListView = System.Windows.Controls.ListView;
 using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
-using System.Net;
-using Newtonsoft.Json;
-using PVPNetConnect.RiotObjects.Platform.Messaging.Persistence;
-using LegendaryClient.Logic.JSON;
-using MahApps.Metro.Controls;
-
-#endregion
 
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
@@ -86,15 +80,17 @@ namespace LegendaryClient.Logic
             using (SHA1Managed sha1 = new SHA1Managed())
             {
                 var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
-                return System.Convert.ToBase64String(hash);
+                return Convert.ToBase64String(hash);
             }
         }
+
         internal static bool patching = true;
+
         /// <summary>
         ///     This is all accounts that have been added to LegendaryClient
         ///     Use this for multiaccount in futuree
         /// </summary>
-        internal static Dictionary<String, LoginDataPacket> accountslist = new Dictionary<String, LoginDataPacket>();
+        internal static Dictionary<string, LoginDataPacket> accountslist = new Dictionary<string, LoginDataPacket>();
 
         internal static List<Group> Groups = new List<Group>();
 
@@ -102,57 +98,30 @@ namespace LegendaryClient.Logic
         ///     Gets the value of the league of Legends Settings
         /// </summary>
         /// <returns>All of the League Of Legends Settings</returns>
-        public static Dictionary<String, String> LeagueSettingsReader(this string fileLocation)
+        public static Dictionary<string, string> LeagueSettingsReader(this string fileLocation)
         {
-            var settings = new Dictionary<String, String>();
-            try
+            var settings = new Dictionary<string, string>();
+            if (File.Exists(fileLocation))
             {
                 string[] file = File.ReadAllLines(fileLocation);
                 foreach (string x in from x in file
-                                     where !String.IsNullOrEmpty(x) && !String.IsNullOrWhiteSpace(x)
+                                     where !string.IsNullOrEmpty(x) && !string.IsNullOrWhiteSpace(x)
                                      where !x.Contains("[") && !x.Contains("]")
                                      where !x.StartsWith("#") && x.Contains("=")
                                      select x)
-                {
-                    try
+                    if (x.Contains("="))
                     {
-                        //Spit the one value into 2 values
                         string[] value = x.Split('=');
                         settings.Add(value[0], value[1]);
                     }
-                    catch
-                    {
-                        Log("Error reading a setting value: " + x, "ReaderError");
-                    }
-                }
             }
-            catch { }
             return settings;
         }
 
         public static bool InstaCall = false;
         public static string CallString = string.Empty;
 
-        public static Brush Change()
-        {
-            string y = Settings.Default.Theme;
-            var bc = new BrushConverter();
-            if (y.Contains("Blue"))
-                return (Brush)bc.ConvertFrom("#FF1585B5");
-
-            if (y.Contains("Red"))
-                return (Brush)bc.ConvertFrom("#FFA01414");
-
-            if (y.Contains("Green"))
-                return (Brush)bc.ConvertFrom("#FF2DA014");
-
-            if (y.Contains("Purple"))
-                return (Brush)bc.ConvertFrom("#FF5A14A0");
-
-            return (Brush)bc.ConvertFrom("#FF141414"); //Steel
-        }
-
-        internal static Dictionary<String, PVPNetConnection> pvpnetlist = new Dictionary<String, PVPNetConnection>();
+        internal static Dictionary<string, PVPNetConnection> pvpnetlist = new Dictionary<string, PVPNetConnection>();
 
         internal static LoginDataPacket AddAccount()
         {
@@ -205,14 +174,6 @@ namespace LegendaryClient.Logic
         internal static List<runes> Runes;
 
         /// <summary>
-        ///     Retreives UpdateDate For LegendaryClient
-        /// </summary>
-        /// <summary>
-        ///     Stuff
-        /// </summary>
-        internal static string LegendaryClientVersion = "2.2.0.0";
-
-        /// <summary>
         ///     Button For Lobby
         /// </summary>
         internal static Button ReturnButton;
@@ -233,11 +194,6 @@ namespace LegendaryClient.Logic
         internal static Page CurrentPage;
 
         /// <summary>
-        ///     Update Data
-        /// </summary>
-        internal static int LegendaryClientReleaseNumber = 3;
-
-        /// <summary>
         ///     If Player is creating an account
         /// </summary>
         internal static bool done = true;
@@ -248,13 +204,6 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static string sqlite = "gameStats_en_US.sqlite";
 
-        //internal static string sqlite = "gameStats_ko_KR.sqlite";
-
-        /// <summary>
-        ///     Latest champion for League of Legends login screen
-        /// </summary>
-        internal const int LatestChamp = 103;
-
         /// <summary>
         ///     Latest version of League of Legends. Retrieved from ClientLibCommon.dat
         /// </summary>
@@ -264,10 +213,7 @@ namespace LegendaryClient.Logic
         ///     To see if the user is a dev
         /// </summary>
         internal static bool Dev = false;
-        /// <summary>
-        ///     Returns current level
-        /// </summary>
-        internal static int Level = 0;
+
         /// <summary>
         ///     The current directory the client is running from
         /// </summary>
@@ -314,24 +260,9 @@ namespace LegendaryClient.Logic
         internal static List<masteries> Masteries;
 
         /// <summary>
-        ///     The Invite Data
-        /// </summary>
-        internal static List<invitationRequest> InviteJsonRequest = new List<invitationRequest>();
-
-        /// <summary>
         ///     All of players who have been invited
         /// </summary>
-        internal static Dictionary<String, InviteInfo> InviteData = new Dictionary<String, InviteInfo>();
-
-        /// <summary>
-        ///     The database of all the search tags
-        /// </summary>
-        internal static List<championSearchTags> SearchTags;
-
-        /// <summary>
-        ///     The database of all the keybinding defaults & proper names
-        /// </summary>
-        internal static List<keybindingEvents> Keybinds;
+        internal static Dictionary<string, InviteInfo> InviteData = new Dictionary<string, InviteInfo>();
 
         internal static string Theme;
 
@@ -344,10 +275,18 @@ namespace LegendaryClient.Logic
         #region Chat
 
         internal static JabberClient ChatClient;
+
         //Fix for invitations
         public delegate void OnMessageHandler(object sender, Message e);
 
         public static event OnMessageHandler OnMessage;
+
+        public static Dictionary<string, string> PlayerNote = new Dictionary<string, string>();
+        internal static RosterManager RostManager;
+        internal static PresenceManager PresManager;
+        internal static ConferenceManager ConfManager;
+        internal static bool UpdatePlayers = true;
+        internal static Dictionary<string, ChatPlayerItem> AllPlayers = new Dictionary<string, ChatPlayerItem>();
 
         internal static PresenceType _CurrentPresence;
 
@@ -387,13 +326,6 @@ namespace LegendaryClient.Logic
             }
         }
 
-        internal static RosterManager RostManager;
-        internal static PresenceManager PresManager;
-        internal static ConferenceManager ConfManager;
-        internal static bool UpdatePlayers = true;
-
-        internal static Dictionary<string, ChatPlayerItem> AllPlayers = new Dictionary<string, ChatPlayerItem>();
-
         internal static bool ChatClient_OnInvalidCertificate(object sender, X509Certificate certificate, X509Chain chain,
             SslPolicyErrors sslPolicyErrors)
         {
@@ -411,20 +343,20 @@ namespace LegendaryClient.Logic
                     pop.Height = 230;
                     pop.HorizontalAlignment = HorizontalAlignment.Right;
                     pop.VerticalAlignment = VerticalAlignment.Bottom;
-                    Client.NotificationGrid.Children.Add(pop);
+                    NotificationGrid.Children.Add(pop);
                 }));
 
                 return;
             }
 
-            if (!AllPlayers.ContainsKey(msg.From.User) || String.IsNullOrWhiteSpace(msg.Body))
+            if (!AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
 
             var chatItem = AllPlayers[msg.From.User];
             if (Filter)
                 chatItem.Messages.Add(chatItem.Username + "|" + msg.Body.Filter());
             else
-                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);           
+                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
             MainWin.FlashWindow();
         }
 
@@ -433,10 +365,8 @@ namespace LegendaryClient.Logic
             await PVPConnect.Accept(GameID);
         }
 
-        public static Dictionary<String, String> PlayerNote = new Dictionary<String, String>();
         internal static void ChatClientConnect(object sender)
         {
-            Level = System.Convert.ToInt32(LoginPacket.AllSummonerData.SummonerLevel.Level);
             Groups.Add(new Group("Online"));
 
             //Get all groups
@@ -444,11 +374,11 @@ namespace LegendaryClient.Logic
             if (manager != null)
             {
                 string ParseString = manager.ToString();
-                var StringHackOne = new List<string>(ParseString.Split(new[] { "@pvp.net=" }, StringSplitOptions.None));
-                StringHackOne.RemoveAt(0);
+                var stringHackOne = new List<string>(ParseString.Split(new[] { "@pvp.net=" }, StringSplitOptions.None));
+                stringHackOne.RemoveAt(0);
                 foreach (
                     string Parse in
-                        StringHackOne.Select(StringHack => Regex.Split(StringHack, @"</item>,"))
+                        stringHackOne.Select(StringHack => Regex.Split(StringHack, @"</item>,"))
                             .Select(StringHackTwo => StringHackTwo[0]))
                 {
                     string temp;
@@ -465,7 +395,7 @@ namespace LegendaryClient.Logic
                         {
                             RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
 
-                            if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
+                            if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
                                 PlayerNote.Add(root.item.name, root.item.note);
 
                             if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
@@ -475,7 +405,7 @@ namespace LegendaryClient.Logic
                         {
                             RootObject2 root = JsonConvert.DeserializeObject<RootObject2>(PlayerJson);
 
-                            if (!String.IsNullOrEmpty(root.item.name) && !String.IsNullOrEmpty(root.item.note))
+                            if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
                                 PlayerNote.Add(root.item.name, root.item.note);
 
                             if (root.item.group != "**Default" && Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
@@ -518,7 +448,7 @@ namespace LegendaryClient.Logic
             //TODO: GameStatus values:
             //"teamSelect","hostingNormalGame","hostingPracticeGame","hostingRankedGame","hostingCoopVsAIGame","inQueue"
             //"spectating","outOfGame","championSelect","inGame","inTeamBuilder","tutorial"
-
+            int level = Convert.ToInt32(LoginPacket.AllSummonerData.SummonerLevel.Level);
             if (GameStatus != "busy")
             {
                 switch (GameStatus)
@@ -537,7 +467,7 @@ namespace LegendaryClient.Logic
             sb.Append("<body><profileIcon>");
             sb.Append(LoginPacket.AllSummonerData.Summoner.ProfileIconId);
             sb.Append("</profileIcon><level>");
-            sb.Append(Level);
+            sb.Append(level);
             sb.Append("</level>");
             if (!hidelegendaryaddition)
             {
@@ -550,7 +480,7 @@ namespace LegendaryClient.Logic
             sb.Append("</wins><leaves>0</leaves><odinWins>0</odinWins><odinLeaves>0</odinLeaves>"); // TODO
             sb.Append("<queueType />");
             sb.Append("<rankedLosses>0</rankedLosses><rankedRating>0</rankedRating>"); // unused for now
-            if (IsRanked)
+            if (!IsRanked)
                 sb.Append("<tier>UNRANKED</tier>");
             else
                 sb.Append("<tier>" + TierName + "</tier>");
@@ -658,32 +588,32 @@ namespace LegendaryClient.Logic
                         {
                             case "profileIcon":
                                 reader.Read();
-                                Player.ProfileIcon = System.Convert.ToInt32(reader.Value);
+                                Player.ProfileIcon = Convert.ToInt32(reader.Value);
                                 break;
 
                             case "level":
                                 reader.Read();
-                                Player.Level = System.Convert.ToInt32(reader.Value);
+                                Player.Level = Convert.ToInt32(reader.Value);
                                 break;
 
                             case "wins":
                                 reader.Read();
-                                Player.Wins = System.Convert.ToInt32(reader.Value);
+                                Player.Wins = Convert.ToInt32(reader.Value);
                                 break;
 
                             case "leaves":
                                 reader.Read();
-                                Player.Leaves = System.Convert.ToInt32(reader.Value);
+                                Player.Leaves = Convert.ToInt32(reader.Value);
                                 break;
 
                             case "rankedWins":
                                 reader.Read();
-                                Player.RankedWins = System.Convert.ToInt32(reader.Value);
+                                Player.RankedWins = Convert.ToInt32(reader.Value);
                                 break;
 
                             case "timeStamp":
                                 reader.Read();
-                                Player.Timestamp = System.Convert.ToInt64(reader.Value);
+                                Player.Timestamp = Convert.ToInt64(reader.Value);
                                 break;
 
                             case "statusMsg":
@@ -732,7 +662,7 @@ namespace LegendaryClient.Logic
                     Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
                 }
             }
-            if (String.IsNullOrWhiteSpace(Player.Status))
+            if (string.IsNullOrWhiteSpace(Player.Status))
                 Player.Status = "Online";
         }
 
@@ -759,8 +689,8 @@ namespace LegendaryClient.Logic
             while (incrementValue < result.Length)
             {
                 int bitHack = result[incrementValue];
-                obfuscatedName = obfuscatedName + System.Convert.ToString(((uint)(bitHack & 240) >> 4), 16);
-                obfuscatedName = obfuscatedName + System.Convert.ToString(bitHack & 15, 16);
+                obfuscatedName = obfuscatedName + Convert.ToString(((uint)(bitHack & 240) >> 4), 16);
+                obfuscatedName = obfuscatedName + Convert.ToString(bitHack & 15, 16);
                 incrementValue = incrementValue + 1;
             }
             obfuscatedName = Regex.Replace(obfuscatedName, @"/\s+/gx", string.Empty);
@@ -776,7 +706,7 @@ namespace LegendaryClient.Logic
             if (!IsTypePublic)
                 return ObfuscatedChatroomName + "@sec.pvp.net";
 
-            if (String.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(password))
                 return ObfuscatedChatroomName + "@lvl.pvp.net";
 
             return ObfuscatedChatroomName + "@conference.pvp.net";
@@ -796,7 +726,7 @@ namespace LegendaryClient.Logic
         internal static Grid MainGrid;
         internal static Grid NotificationGrid;
         internal static Grid StatusGrid = new Grid();
-        internal static Image BackgroundImage; 
+        internal static Image BackgroundImage;
 
         internal static Label StatusLabel;
         internal static Label InfoLabel;
@@ -862,8 +792,7 @@ namespace LegendaryClient.Logic
                 return;
             }
             Container.Content = page.Content;
-            if (!(page is FakePage))
-                Pages.Add(page);
+            Pages.Add(page);
         }
 
         /// <summary>
@@ -1068,7 +997,7 @@ namespace LegendaryClient.Logic
 
                             NotificationGrid.Children.Add(pop);
                         }));
-                        Client.MainWin.FlashWindow();
+                        MainWin.FlashWindow();
                     }
                     else if (message is ClientLoginKickNotification)
                     {
@@ -1087,7 +1016,7 @@ namespace LegendaryClient.Logic
                     }
                     else if (message is PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage)
                     {
-                        var leagueInfo  = message as PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage;
+                        var leagueInfo = message as PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage;
                         if (leagueInfo.Type == "leagues")
                         {
                             var promote = LeaguePromote.LeaguesPromote(leagueInfo.Params.ToString());
@@ -1100,7 +1029,7 @@ namespace LegendaryClient.Logic
                                 AccountId = leagueInfo.AccountId,
                                 MessageId = leagueInfo.MessageId
                             };
-                            messageOver.AcceptButton.Click += (o, e) => { Client.PVPNet.CallPersistenceMessaging(response); };
+                            messageOver.AcceptButton.Click += (o, e) => { PVPNet.CallPersistenceMessaging(response); };
                         }
                     }
                 }
@@ -1109,11 +1038,11 @@ namespace LegendaryClient.Logic
 
         private static void QuitClient(object sender, RoutedEventArgs e)
         {
- 	        if (Client.IsLoggedIn)
+            if (IsLoggedIn)
             {
-                Client.PVPNet.PurgeFromQueues();
-                Client.PVPNet.Leave();
-                Client.PVPNet.Disconnect();
+                PVPNet.PurgeFromQueues();
+                PVPNet.Leave();
+                PVPNet.Disconnect();
             }
             Environment.Exit(0);
 
@@ -1197,7 +1126,7 @@ namespace LegendaryClient.Logic
                     return "Nemesis Draft 5v5";
 
                 default:
-                    Client.Log(internalQueue);
+                    Log(internalQueue);
                     return internalQueue;
             }
         }
@@ -1358,25 +1287,25 @@ namespace LegendaryClient.Logic
             MainWin.Focus(); // important
         }
 
-        public static String TitleCaseString(String s)
+        public static string TitleCaseString(string s)
         {
             if (s == null) return s;
 
-            String[] words = s.Split(' ');
+            string[] words = s.Split(' ');
             for (int i = 0; i < words.Length; i++)
             {
                 if (words[i].Length == 0)
                     continue;
 
-                Char firstChar = Char.ToUpper(words[i][0]);
-                String rest = string.Empty;
+                char firstChar = char.ToUpper(words[i][0]);
+                string rest = string.Empty;
                 if (words[i].Length > 1)
                     rest = words[i].Substring(1).ToLower();
 
                 words[i] = firstChar + rest;
             }
 
-            return String.Join(" ", words);
+            return string.Join(" ", words);
         }
 
         public static BitmapSource ToWpfBitmap(Bitmap bitmap)
@@ -1410,11 +1339,11 @@ namespace LegendaryClient.Logic
         /// </summary>
         /// <param name="lines"></param>
         /// <param name="type"></param>
-        public static void Log(String lines, String type = "LOG")
+        public static void Log(string lines, string type = "LOG")
         {
             WriteToLog.Log(lines, type);
 
-            if (Client.Pipe)
+            if (Pipe)
                 return;
             try
             {
@@ -1449,9 +1378,9 @@ namespace LegendaryClient.Logic
 
         internal static string EncryptStringAES(this string input, string secret)
         {
-            string output = String.Empty;
+            string output = string.Empty;
             var aesAlg = new RijndaelManaged();
-            if (String.IsNullOrEmpty(input) || String.IsNullOrEmpty(secret))
+            if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(secret))
                 return output;
 
             try
@@ -1478,7 +1407,7 @@ namespace LegendaryClient.Logic
                             swEncrypt.Write(input);
                         }
                     }
-                    output = System.Convert.ToBase64String(msEncrypt.ToArray());
+                    output = Convert.ToBase64String(msEncrypt.ToArray());
                 }
             }
             finally
@@ -1492,9 +1421,9 @@ namespace LegendaryClient.Logic
 
         public static string DecryptStringAES(this string input, string Secret)
         {
-            string output = String.Empty;
+            string output = string.Empty;
             var aesAlg = new RijndaelManaged();
-            if (String.IsNullOrEmpty(input) || String.IsNullOrEmpty(Secret))
+            if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(Secret))
                 return output;
 
             try
@@ -1503,7 +1432,7 @@ namespace LegendaryClient.Logic
                 var key = new Rfc2898DeriveBytes(Secret, Encoding.ASCII.GetBytes("o6806642kbM7c5"));
 
                 // Create the streams used for decryption.                
-                byte[] bytes = System.Convert.FromBase64String(input);
+                byte[] bytes = Convert.FromBase64String(input);
                 using (var msDecrypt = new MemoryStream(bytes))
                 {
                     // Create a RijndaelManaged object
@@ -1556,7 +1485,7 @@ namespace LegendaryClient.Logic
             {
                 string filecontent = null;
                 var dlg = new System.Windows.Forms.OpenFileDialog();
-                if (String.IsNullOrEmpty(filename) && ShowDig)
+                if (string.IsNullOrEmpty(filename) && ShowDig)
                 {
                     dlg.DefaultExt = ".png";
                     dlg.Filter = @"Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
@@ -1566,7 +1495,7 @@ namespace LegendaryClient.Logic
                 }
                 else
                     if (File.Exists(filename))
-                        filecontent = File.ReadAllText(filename).ToSHA1();
+                    filecontent = File.ReadAllText(filename).ToSHA1();
 
                 if (filecontent != null)
                 {
@@ -1592,7 +1521,7 @@ namespace LegendaryClient.Logic
         internal static int SelectChamp;
         internal static bool usingInstaPick = false;
 
-        internal static KeyValuePair<String, String> userpass;
+        internal static KeyValuePair<string, string> userpass;
         internal static bool HasPopped = false;
 
         internal static void ChatClient_OnDisconnect(object sender)
@@ -1615,7 +1544,7 @@ namespace LegendaryClient.Logic
     public class ChatPlayerItem
     {
         public List<string> Messages = new List<string>();
-        //public List<string> Messages = new List<string>();
+
         public string Group { get; set; }
 
         public bool IsOnline { get; set; }

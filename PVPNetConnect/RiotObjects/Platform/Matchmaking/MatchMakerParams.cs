@@ -47,13 +47,13 @@ namespace PVPNetConnect.RiotObjects.Platform.Matchmaking
         public object Languages { get; set; }
 
         [InternalName("botDifficulty")]
-        public String BotDifficulty { get; set; }
+        public string BotDifficulty { get; set; }
 
         [InternalName("team")]
         public List<int> Team { get; set; }
 
         [InternalName("queueIds")]
-        public Int32[] QueueIds { get; set; }
+        public int[] QueueIds { get; set; }
 
         [InternalName("invitationId")]
         public object InvitationId { get; set; }
