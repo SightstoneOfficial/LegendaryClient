@@ -136,6 +136,19 @@ namespace LegendaryClient.Windows
                 Client.Champions = (from s in Client.SQLiteDatabase.Table<champions>()
                                     orderby s.name
                                     select s).ToList();
+
+                //* to remove just remove one slash from the comment
+                Client.Champions.Clear();
+                //Pls bard the tard for april fools
+                foreach (var champs in Client.SQLiteDatabase.Table<champions>().Where(champs => (DateTime.Now.Month == 4) && (DateTime.Now.Day == 1))) {
+                    if (champs.displayName == "bard" || champs.name == "bard")
+                    {
+                        champs.displayName = "tard";
+                        champs.name = "tard";
+                    }
+                    Client.Champions.Add(champs);
+                }
+                //*/
             }
             catch (Exception e) // Database broken?
             {
