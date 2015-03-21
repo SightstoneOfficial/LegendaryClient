@@ -910,6 +910,7 @@ namespace LegendaryClient.Logic
         {
             Log(error.Type.ToString(), "PVPNetError");
             Log(error.Message, "PVPNetError");
+            Log(error.ErrorCode, "PVPNetError");
         }
 #pragma warning disable 4014
 

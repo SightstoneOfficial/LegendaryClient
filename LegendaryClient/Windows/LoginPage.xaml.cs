@@ -319,6 +319,7 @@ namespace LegendaryClient.Windows
             Client.Dev = false;
             Client.PVPNet = null;
             Client.PVPNet = new PVPNetConnection();
+            Client.PVPNet.OnError += Client.PVPNet_OnError;
             LoggingInLabel.Content = "Logging in...";
             if (string.IsNullOrEmpty(Settings.Default.Guid))
                 Settings.Default.Guid = Guid.NewGuid().ToString();

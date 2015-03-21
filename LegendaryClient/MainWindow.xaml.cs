@@ -86,8 +86,8 @@ namespace LegendaryClient
             Client.UserTitleBarLabel = UserTitleBarLabel;
             Client.UserTitleBarImage = UserTitleBarImage;
             Client.InfoLabel = InfoLabel;
-            Client.PVPNet = new PVPNetConnection { KeepDelegatesOnLogout = false };
-            Client.PVPNet.OnError += Client.PVPNet_OnError;
+            //Client.PVPNet = new PVPNetConnection { KeepDelegatesOnLogout = false };
+            //Client.PVPNet.OnError += Client.PVPNet_OnError;
             if (string.IsNullOrEmpty(Settings.Default.Theme))
                 Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
             myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
