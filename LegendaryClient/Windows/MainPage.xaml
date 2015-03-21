@@ -27,8 +27,9 @@
             <local:HoverOverLabel x:Name="HoverLabel" Width="70" Height="70" Margin="10,0,0,10"
                               HorizontalAlignment="Left" VerticalAlignment="Bottom" MouseDown="HoverLabel_MouseDown"
                               MouseEnter="HoverLabel_MouseEnter" MouseLeave="HoverLabel_MouseLeave" Opacity="0" FontSize="14" />
-            <Label x:Name="SummonerNameLabel" Margin="100,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+            <Label x:Name="SummonerNameLabel" Margin="101,24,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                Content="Summoner Name" FontSize="22" />
+            
 
             <Grid Width="250" VerticalAlignment="Center" HorizontalAlignment="Right" Height="30" Margin="0,0,40,0">
                 <ProgressBar x:Name="PlayerProgressBar" Height="Auto" Value="0"/>
@@ -47,6 +48,8 @@
                 <Button x:Name="testChat" Width="75" Margin="0,0,230,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="TestChat"
                     Visibility="Hidden" Click="ChatTest_Click" />
             </Grid>
+            <Label x:Name="XPBoost" Content="Xp Boost 99 Day. 99 Win" HorizontalAlignment="Left" Height="31" Margin="301,42,0,0" VerticalAlignment="Top" Width="260"/>
+            <Label x:Name="IPBoost" Content="Ip Boost 99 Day. 99 Win" HorizontalAlignment="Left" Height="31" Margin="301,12,0,0" VerticalAlignment="Top" Width="260"/>
         </Grid>
 
         <TextBox x:Name="BroadcastMessage" Height="70" Margin="500,52,300,0" HorizontalAlignment="Stretch"
