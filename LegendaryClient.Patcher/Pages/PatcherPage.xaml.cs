@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading;
+using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
@@ -87,6 +88,7 @@ namespace LegendaryClient.Patcher.Pages
                                 client.DownloadString(
                                     string.Format("http://cdn.leagueoflegends.com/patcher/data/locales/en_US/champData/champData{0}.json", champs.id));
                             var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, Object>>(champDataJson);
+                            Client.RunAsyncOnUIThread(() => champItem.Tag = champsDataAsJson);
                             Client.RunAsyncOnUIThread(() => champItem.ChampName.Content = champsDataAsJson["key"]);
                             var latestAir =
                                 client.DownloadString(
@@ -122,31 +124,46 @@ namespace LegendaryClient.Patcher.Pages
                         var NewsJson = JsonConvert.DeserializeObject<RootObject>(news);
                         Client.RunOnUIThread(() =>
                             {
-                                var item = new CurrentStatus { StatusLabel = { Content = "LOLServers" } };
+                                var item = new CurrentStatus
+                                {
+                                    StatusLabel = { Content = "LOLServers" },
+                                    Tag = new Uri("https://na.leagueoflegends.com")
+                                };
                                 item.UpdateStatus(
                                     NewsJson.status ? PatcherElements.Status.Down : PatcherElements.Status.Up);
+                                item.MouseDown += (o, e) => Changed(o);
                                 StatusView.Items.Add(item);
                             });
                         WebRequest request = WebRequest.Create("http://legendaryclient.net");
                         HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                         Client.RunOnUIThread(() =>
                         {
-                            var item = new CurrentStatus { StatusLabel = { Content = "LegendaryClient website" } };
+                            var item = new CurrentStatus
+                            {
+                                StatusLabel = { Content = "LegendaryClient website" },
+                                Tag = new Uri("http://legendaryclient.net")
+                            };
                             item.UpdateStatus(
                                 response.StatusCode != HttpStatusCode.OK
                                     ? PatcherElements.Status.Down
                                     : PatcherElements.Status.Up);
+                            item.MouseDown += (o, e) => Changed(o);
                             StatusView.Items.Add(item);
                         });
                         request = WebRequest.Create("http://forums.legendaryclient.net");
                         response = (HttpWebResponse)request.GetResponse();
                         Client.RunOnUIThread(() =>
                         {
-                            var item = new CurrentStatus { StatusLabel = { Content = "LegendaryClient forums" } };
+                            var item = new CurrentStatus
+                            {
+                                StatusLabel = { Content = "LegendaryClient forums" },
+                                Tag = new Uri("http://forums.legendaryclient.net")
+                            };
                             item.UpdateStatus(
                                 response.StatusCode != HttpStatusCode.OK
                                     ? PatcherElements.Status.Down
                                     : PatcherElements.Status.Up);
+                            item.MouseDown += (o, e) => Changed(o);
                             StatusView.Items.Add(item);
                         });
                         if (loaded)
@@ -162,9 +179,10 @@ namespace LegendaryClient.Patcher.Pages
                                         TimeLabel = { Content = n.date },
                                         ContentBox = { Visibility = Visibility.Hidden },
                                         Height = 26,
-                                        Tag = n.url.Replace(@"\/", @"/"),
+                                        Tag = new Uri(n.url.Replace(@"\/", @"/")),
                                         Width = 300
                                     };
+                                    item.MouseDown += (o, e) => Changed(o);
                                     NewsBox.Items.Add(item);
                                 });
                         }
@@ -177,10 +195,11 @@ namespace LegendaryClient.Patcher.Pages
                                 item.TimeLabel.Visibility = Visibility.Hidden;
                                 item.Tag = new Dictionary<string, object>
                                 {
-                                    { "imgUrl", x.imageUrl },
-                                    { "thumbUrl", x.thumbUrl },
-                                    { "linkUrl", x.linkUrl }
+                                    { "imgUrl", x.imageUrl.Replace(@"\/", @"/") },
+                                    { "thumbUrl", x.thumbUrl.Replace(@"\/", @"/") },
+                                    { "linkUrl", x.linkUrl.Replace(@"\/", @"/") }
                                 };
+                                item.MouseDown += (o,e) => Changed(o);
                                 NewsBox.Items.Add(item);
                             });
                         }
@@ -188,6 +207,25 @@ namespace LegendaryClient.Patcher.Pages
                     }
                 });
             t.Start();
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Changed(sender);
+        }
+
+        private void Changed(object sender)
+        {
+            if (sender.GetType() == typeof(NewsItem))
+            {
+                if (!(((NewsItem)sender).Tag is string))
+                    return;
+                WebBrower.Source = (Uri)(((NewsItem)sender).Tag);
+            }
+            else if (sender.GetType() == typeof(CurrentStatus))
+            {
+                WebBrower.Source =  (Uri)(((CurrentStatus)sender).Tag);
+            }
         }
 
         private void Update_OnClick(object sender, RoutedEventArgs e)
