@@ -161,11 +161,12 @@ namespace LegendaryClient.Windows
 
                 SummonerActiveBoostsDTO activeBoost = await Client.PVPNet.GetSummonerActiveBoosts();
 
-                if (activeBoost.XpBoostPerWinCount > 0 && activeBoost.XpBoostEndDate > 0)
+                string xpBoostTime = ConvertBoostTime(activeBoost.XpBoostEndDate);
+                if (xpBoostTime != string.Empty && activeBoost.XpBoostEndDate > 0)
                 {
                     XPBoost.Content = "XP Boost " + ConvertBoostTime(activeBoost.XpBoostEndDate) + ". " + activeBoost.XpBoostPerWinCount + " Win.";
                 }
-                else if (activeBoost.XpBoostEndDate > 0)
+                else if (xpBoostTime != string.Empty)
                 {
                     XPBoost.Content = "XP Boost " + ConvertBoostTime(activeBoost.XpBoostEndDate) + ".";
                 }
@@ -178,13 +179,14 @@ namespace LegendaryClient.Windows
                     XPBoost.Visibility = Visibility.Hidden;
                 }
 
-                if (activeBoost.IpBoostPerWinCount > 0 && activeBoost.IpBoostEndDate > 0)
+                string ipBoostTime = ConvertBoostTime(activeBoost.IpBoostEndDate);
+                if (ipBoostTime != string.Empty && activeBoost.IpBoostEndDate > 0)
                 {
-                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ". " + activeBoost.IpBoostPerWinCount + " Win.";
+                    IPBoost.Content = "IP Boost " + ipBoostTime + ". " + activeBoost.IpBoostPerWinCount + " Win.";
                 }
-                else if (activeBoost.IpBoostEndDate > 0)
+                else if (ipBoostTime != string.Empty)
                 {
-                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ".";
+                    IPBoost.Content = "IP Boost " + ipBoostTime + ".";
                 }
                 else if (activeBoost.IpBoostPerWinCount > 0)
                 {
@@ -277,9 +279,13 @@ namespace LegendaryClient.Windows
                 DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
                 dtDateTime = dtDateTime.AddSeconds(double.Parse(unixTimeStamp));
                 TimeSpan diff2 = dtDateTime.Subtract(DateTime.Now);
-                string time = diff2.Days.ToString() + " Days ";
-                time += diff2.Hours.ToString() + " Hours";
-                return time;
+                if (diff2.Days >= 0 && diff2.Hours > 0)
+                {
+                    string time = diff2.Days.ToString() + " Days ";
+                    time += diff2.Hours.ToString() + " Hours";
+                    return time;
+                }
+                return string.Empty;
             }
             return string.Empty;
         }
