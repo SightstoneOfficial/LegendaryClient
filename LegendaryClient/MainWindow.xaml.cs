@@ -146,6 +146,14 @@ namespace LegendaryClient
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
                     Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
             }
+            // screen resolution fix: because MainWindow height is bigger than some screen height
+            if(SystemParameters.WorkArea.Height < this.Height)
+            {
+                // resize LC to MinHeight -- a UI designer may edit this
+                this.SizeToContent = SizeToContent.Manual;
+                this.Width = this.MinWidth;
+                this.Height = this.MinHeight;
+            }
         }
 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

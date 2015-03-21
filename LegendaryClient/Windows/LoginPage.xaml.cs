@@ -95,14 +95,39 @@ namespace LegendaryClient.Windows
             string themeLocation = Path.Combine(Client.ExecutingDirectory, "assets", "themes", Client.Theme);
             if (!Settings.Default.DisableLoginMusic)
             {
-                string[] music = Directory.GetFiles(themeLocation, "*.mp3");
+                string[] music;
+                string soundpath = Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "sound_o_heaven.ogg");
+                if (DateTime.Now.Month == 4 && DateTime.Now.Day == 1)
+                {
+                    if (!File.Exists(soundpath))
+                    {
+                        using (WebClient wc = new WebClient())
+                        {
+                            wc.DownloadFile("http://images.wikia.com/leagueoflegends/images/1/10/Teemo.laugh3.ogg", soundpath);
+                        }
+                    }
+                    music = new string[] { soundpath };
+                }
+                else
+                {
+                    music = Directory.GetFiles(themeLocation, "*.mp3");
+                }
                 SoundPlayer.Source = new Uri(Path.Combine(themeLocation, music[0]));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
             }
             else Sound.IsChecked = true;
 
-            if (Settings.Default.LoginPageImage == "")
+            if (DateTime.Now.Month == 4 && DateTime.Now.Day == 1)
+            {
+                string SkinPath = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                    "Teemo_Splash_" + new Random().Next(0, 8).ToString() + ".jpg");
+                if (File.Exists(SkinPath))
+                {
+                    LoginImage.Source = new BitmapImage(new Uri(SkinPath, UriKind.Absolute));
+                }
+            }
+            else if (Settings.Default.LoginPageImage == "")
             {
                 string[] videos = Directory.GetFiles(themeLocation, "*.mp4");
                 if (videos.Length > 0 && File.Exists(videos[0]))
