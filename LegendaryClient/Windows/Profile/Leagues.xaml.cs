@@ -220,8 +220,10 @@ namespace LegendaryClient.Windows.Profile
                     var type = typeof (AggregatedChampion);
                     var fieldName = Client.TitleCaseString(stat.StatType.Replace('_', ' ')).Replace(" ", string.Empty);
                     var f = type.GetField(fieldName);
-
-                    f.SetValue(champion, stat.Value);
+                    if (f == null)
+                        Client.Log(fieldName, "NewStatType");
+                    else
+                        f.SetValue(champion, stat.Value);
                 }
 
                 championStats.Sort((x, y) => y.TotalSessionsPlayed.CompareTo(x.TotalSessionsPlayed));
