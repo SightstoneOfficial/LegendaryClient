@@ -1002,6 +1002,10 @@ namespace LegendaryClient.Logic
                     }
                     else if (message is ClientLoginKickNotification)
                     {
+                        var kick = (ClientLoginKickNotification) message;
+                        if (kick.sessionToken == null)
+                            return;
+
                         Warning Warn = new Warning
                         {
                             Header = { Content = "Kicked from server" },

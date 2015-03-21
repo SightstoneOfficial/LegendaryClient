@@ -47,6 +47,16 @@ namespace PVPNetConnect
             return result;
         }
 
+        public async Task<object> Login(string data)
+        {
+            int Id = Invoke("loginService", "login", new object[] { data });
+            while (!results.ContainsKey(Id))
+                await Task.Delay(10);
+            TypedObject messageBody = GetResult(Id);
+            results.Remove(Id);
+            return null;
+        }
+
         public async Task<object> Subscribe(string service, double accountId)
         {
             TypedObject body = WrapBody(new TypedObject(), "messagingDestination", 0);

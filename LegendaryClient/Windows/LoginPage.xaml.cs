@@ -446,9 +446,11 @@ namespace LegendaryClient.Windows
             Client.PlayerChampions = await Client.PVPNet.GetAvailableChampions();
             Client.PVPNet.OnError -= PVPNet_OnError;
             Client.GameConfigs = packet.GameTypeConfigs;
+            /*
             Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
             Client.PVPNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
             Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
+            //*/
             Client.IsLoggedIn = true;
 
 
@@ -478,10 +480,17 @@ namespace LegendaryClient.Windows
                     os = ossplit[0];
 
                 newCredentials.OperatingSystem = os;
-
+                newCredentials.OperatingSystem = "Windows 7";
                 Session login = await Client.PVPNet.Login(newCredentials);
                 Client.PlayerSession = login;
 
+                Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
+                Client.PVPNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
+                Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
+
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
+                var result = System.Convert.ToBase64String(plainTextBytes);
+                await Client.PVPNet.Login(result);
                 //Setup chat
                 if (!Client.Garena)
                 {
