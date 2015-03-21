@@ -35,6 +35,7 @@ using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
 using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using PVPNetConnect.RiotObjects.Platform.Statistics;
 using PVPNetConnect.RiotObjects.Platform.Summoner;
+using PVPNetConnect.RiotObjects.Platform.Summoner.Boost;
 using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
@@ -158,6 +159,24 @@ namespace LegendaryClient.Windows
                 SummonerNameLabel.Content = playerData.Summoner.Name;
                 Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
 
+                SummonerActiveBoostsDTO activeBoost = await Client.PVPNet.GetSummonerActiveBoosts();
+                if (activeBoost.XpBoostPerWinCount > 0)
+                {
+                    XPBoost.Content = "XP Boost " + ConvertBoostTime(activeBoost.XpBoostEndDate) + ". " + activeBoost.XpBoostPerWinCount + " Win.";
+                }else{
+                    XPBoost.Content = "XP Boost " + ConvertBoostTime(activeBoost.XpBoostEndDate) + ".";
+                }
+
+                if (activeBoost.IpBoostPerWinCount > 0)
+                {
+                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.IpBoostEndDate) + ". " + activeBoost.XpBoostPerWinCount + " Win.";
+                }
+                else
+                {
+                    IPBoost.Content = "IP Boost " + ConvertBoostTime(activeBoost.XpBoostEndDate) + ".";
+                }
+
+
                 Sha1 sha1 = new Sha1();
                 if (!CheckedDev)
                 {
@@ -230,6 +249,19 @@ namespace LegendaryClient.Windows
                 Client.MainPageProfileImage = ProfileImage;
             }
         }
+
+        private string ConvertBoostTime(double unixTimeStamp)
+        {
+            string realtimestamp = unixTimeStamp.ToString();
+            realtimestamp = realtimestamp.Substring(0, realtimestamp.Length - 3);            
+            DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Local);
+            dtDateTime = dtDateTime.AddSeconds(double.Parse(realtimestamp));
+            TimeSpan diff2 = dtDateTime.Subtract(DateTime.Now);
+            string time = diff2.Days.ToString() + " Days ";
+            time += diff2.Hours.ToString() + " Hours";
+            return time;
+        }
+
 
         private void GotLeaguesForPlayer(SummonerLeaguesDTO result)
         {
@@ -374,6 +406,8 @@ namespace LegendaryClient.Windows
         {
             Client.PVPNet.SimulateEndOfGame();
         }
+
+
 
         #region News
 
