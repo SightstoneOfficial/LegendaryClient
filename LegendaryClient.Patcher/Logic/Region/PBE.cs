@@ -28,7 +28,7 @@ namespace LegendaryClient.Patcher.Logic.Region
             get
             {
                 var x = new WebClient().DownloadString(ReleaseListingUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None)[0];
-                return new Uri(string.Format("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest", x));
+                return new Uri(string.Format("http://l3cdn.riotgames.com/releases/pbe/projects/lol_air_client/releases/{0}/packages/files/packagemanifest", x));
             }
         }
 
@@ -37,7 +37,7 @@ namespace LegendaryClient.Patcher.Logic.Region
             get
             {
                 //This isn't actually real I will try to find out what it is
-                return new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting");
+                return new Uri("http://l3cdn.riotgames.com/releases/pbe/projects/lol_air_client/releases/releaselisting_PBE");
             }
         }
 
