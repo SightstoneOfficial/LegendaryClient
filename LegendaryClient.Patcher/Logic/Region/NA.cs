@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 
 namespace LegendaryClient.Patcher.Logic.Region
 {
@@ -7,12 +8,12 @@ namespace LegendaryClient.Patcher.Logic.Region
     {
         public override string RegionName
         {
-            get { return ""; }
+            get { return "NA"; }
         }
 
         public override string[] Locals
         {
-            get { return new[] { "" }; }
+            get { return new[] { "en_US" }; }
         }
 
         public override RegionType RegionType
@@ -27,7 +28,8 @@ namespace LegendaryClient.Patcher.Logic.Region
         {
             get
             {
-                return new Uri("");
+                var x = new WebClient().DownloadString(ReleaseListingUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                return new Uri(string.Format("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest", x));
             }
         }
 
@@ -35,7 +37,7 @@ namespace LegendaryClient.Patcher.Logic.Region
         {
             get
             {
-                return new Uri("");
+                return new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA");
             }
         }
 

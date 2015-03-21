@@ -18,6 +18,14 @@ namespace LegendaryClient.Patcher.Logic.Region
         public abstract Uri GameClientUpdateUri { get; }
 
         public abstract Uri GameReleaseListingUri { get; }
+
+        public static MainRegion GetMainRegion(string Region)
+        {
+            Region = Region.ToUpper();
+            var t = Type.GetType("LegendaryClient.Patcher.Logic.Region." + Region);
+
+            return t != null ? (MainRegion)Activator.CreateInstance(t) : null;
+        }
     }
 
     public enum RegionType
