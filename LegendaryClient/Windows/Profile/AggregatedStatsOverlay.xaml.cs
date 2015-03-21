@@ -208,5 +208,6 @@ namespace LegendaryClient.Windows.Profile
         public double TotalTripleKills = 0;
         public double TotalTurretsKilled = 0;
         public double TotalUnrealKills = 0;
+        public double TotalDoubleKills = 0;
     }
 }

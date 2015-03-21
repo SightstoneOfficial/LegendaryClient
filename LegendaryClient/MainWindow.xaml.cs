@@ -113,7 +113,8 @@ namespace LegendaryClient
             NotificationContainer.Content = Client.notificationPage.Content;
             Client.statusPage = new StatusPage();
             StatusContainer.Content = Client.statusPage.Content;
-
+            //NotificationOverlayContainer.Content = new FakePage().Content;
+            NotificationOverlayContainer.Content = new Grid();
             Grid NotificationTempGrid = null;
             foreach (var x in NotificationOverlayContainer.GetChildObjects().OfType<Grid>())
                 NotificationTempGrid = x;
