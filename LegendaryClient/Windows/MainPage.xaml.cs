@@ -885,26 +885,32 @@ namespace LegendaryClient.Windows
 
         private void NextGameButton_Click(object sender, RoutedEventArgs e)
         {
-            NextGameButton.IsEnabled = true;
-            PrevGameButton.IsEnabled = true;
-            SelectedGame = SelectedGame + 1;
-            if (SelectedGame >= GameList.Count - 1)
-                NextGameButton.IsEnabled = false;
-
-            ParseSpectatorGames();
+            ScrollGame(SelectedGame + 1);
         }
 
         private void PrevGameButton_Click(object sender, RoutedEventArgs e)
         {
-            NextGameButton.IsEnabled = true;
-            PrevGameButton.IsEnabled = true;
-            SelectedGame = SelectedGame - 1;
-            if (SelectedGame == 0)
-                PrevGameButton.IsEnabled = false;
-
-            ParseSpectatorGames();
+            ScrollGame(SelectedGame - 1);
         }
 
+        private void ScrollGame(int Game)
+        {
+            if(GameList == null)
+            {
+                return;
+            }
+            NextGameButton.IsEnabled = true;
+            PrevGameButton.IsEnabled = true;
+            if(SelectedGame >= GameList.Count - 1)
+            {
+                NextGameButton.IsEnabled = false;
+            }
+            if(SelectedGame == 0)
+            {
+                PrevGameButton.IsEnabled = false;
+            }
+            ParseSpectatorGames();
+        }
         #endregion Featured Games
     }
 }
