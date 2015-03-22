@@ -1062,11 +1062,18 @@ namespace LegendaryClient.Logic.Riot
         //
 
 
-        public static string GetAuthKey(String Username, String Password, String LoginQueue)
+        public static string GetAuthKey(String Username, String Password, String LoginQueue, String Token = null)
         {
             StringBuilder sb = new StringBuilder();
             string payload = "user=" + Username + ",password=" + Password;
             string query = "payload=" + payload;
+
+            if (Client.Garena)
+            {
+                payload = Token;
+                query = "payload=8393%20" + payload;
+            }
+
 
             WebRequest con = WebRequest.Create(LoginQueue + "login-queue/rest/queue/authenticate");
             con.Method = "POST";
@@ -1094,7 +1101,8 @@ namespace LegendaryClient.Logic.Riot
             {
                 Task.Delay(Convert.ToInt32(deserializedJSON["delay"]));
             }
-
+            if (Client.Garena)
+                Client.UID = (string) deserializedJSON["user"];
             return (string)deserializedJSON["token"];
         }
 

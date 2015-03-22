@@ -25,6 +25,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
@@ -346,6 +347,7 @@ namespace LegendaryClient.Windows
                     return;
                 if (!string.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
+                Client.Garena = true;
                 await garenaLogin();
                 return;
             }
@@ -491,10 +493,10 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.Server = "pvp.net";
                     Client.ChatClient.Resource = "xiff";
                     Client.ChatClient.SSL = true;
-                    //Client.ChatClient.User = RiotCalls.getUID();
-                    //var gas = RiotCalls.getGas();
-                    //Client.ChatClient.Password = "AIR_" + gas;
-                    //Client.userpass = new KeyValuePair<string, string>(RiotCalls.getUID(), "AIR_" + gas);
+                    Client.ChatClient.User = Client.UID;
+                    var gas = getGas();
+                    Client.ChatClient.Password = "AIR_" + gas;
+                    Client.userpass = new KeyValuePair<string, string>(Client.UID, "AIR_" + gas);
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                     Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
@@ -640,10 +642,6 @@ namespace LegendaryClient.Windows
                     process.Kill();
                     s1 = s1.Substring(1);
                     Client.Log("Received token, it is: " + s1);
-
-                    //RiotCalls = null;
-                    //RiotCalls = new PVPNetConnection { garenaToken = s1 };
-                    //RiotCalls.Connect("", "", garenaregion.PVPRegion, Client.Version);
                     Client.Region = garenaregion;
                     Dispatcher.BeginInvoke(
                         DispatcherPriority.Input, new ThreadStart(() =>
@@ -654,9 +652,31 @@ namespace LegendaryClient.Windows
                                 LoggingInLabel.Content = "Logging in...";
                                 LoggingInProgressRing.Visibility = Visibility.Visible;
                             }));
-                    //RiotCalls.OnError += PVPNet_OnError;
-                    //RiotCalls.OnLogin += PVPNet_OnLogin;
-                    //Client.RiotConnection.MessageReceived += Client.OnMessageReceived;
+                    var context = RiotCalls.RegisterObjects();
+                    Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + garenaregion.Server + ":2099"), context, ObjectEncoding.Amf3);
+                    Client.RiotConnection.CallbackException += client_CallbackException;
+                    Client.RiotConnection.MessageReceived += client_MessageReceived;
+                    await Client.RiotConnection.ConnectAsync();
+
+                    AuthenticationCredentials newCredentials = new AuthenticationCredentials
+                    {
+                        Username = LoginUsernameBox.Text,
+                        Password = LoginPasswordBox.Password,
+                        ClientVersion = Client.Version,
+                        IpAddress = RiotCalls.GetIpAddress(),
+                        Locale = garenaregion.Locale,
+                        Domain = "lolclient.lol.riotgames.com",
+                        AuthToken =
+                            RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1))
+                    };
+
+                    Session login = await RiotCalls.Login(newCredentials);
+                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", "bc-" + login.AccountSummary.AccountId);
+                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "gn-" + login.AccountSummary.AccountId, "gn-" + login.AccountSummary.AccountId);
+                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "cn-" + login.AccountSummary.AccountId, "cn-" + login.AccountSummary.AccountId);
+                    var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
+                    var packet = await RiotCalls.GetLoginDataPacketForUser();
+                    GotLoginPacket(packet);
                 }
             }
         }
@@ -720,6 +740,32 @@ namespace LegendaryClient.Windows
                         break;
                 }
             }
+        }
+
+        private string Gas;
+        public string getGas()
+        {
+
+            string begin = "{\"signature\":\"";
+            string end = "}";
+
+            int beginIndex = Gas.IndexOf(begin, StringComparison.Ordinal);
+            int endIndex = Gas.LastIndexOf(end, StringComparison.Ordinal);
+
+            string output = Gas.Substring(beginIndex, endIndex - beginIndex);
+
+            byte[] encbuff = Encoding.UTF8.GetBytes(output);
+            output = HttpServerUtility.UrlTokenEncode(encbuff);
+
+            return output;
+        }
+        private static string reToken(string s)
+        {
+            var s1 = s.Replace("/", "%2F");
+            s1 = s1.Replace("+", "%2B");
+            s1 = s1.Replace("=", "%3D");
+
+            return s1;
         }
     }
 }

@@ -88,6 +88,8 @@ namespace LegendaryClient.Logic
 
         internal static List<Group> Groups = new List<Group>();
 
+        internal static string UID;
+
         /// <summary>
         ///     Gets the value of the league of Legends Settings
         /// </summary>
