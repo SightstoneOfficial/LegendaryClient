@@ -435,7 +435,7 @@ namespace LegendaryClient.Windows
         {
             if (User)
             {
-                PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(Command.Text);
+                PublicSummoner summoner = await RiotCalls.GetSummonerByName(Command.Text);
                 if (string.IsNullOrWhiteSpace(summoner.Name))
                 {
                     var overlay = new MessageOverlay
@@ -452,7 +452,7 @@ namespace LegendaryClient.Windows
                 HintLabel.Visibility = Visibility.Visible;
                 var fadeLabelInAnimationx = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
                 HintLabel.BeginAnimation(OpacityProperty, fadeLabelInAnimationx);
-                PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(Command.Text);
+                PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(Command.Text);
                 if (n.GameName != null)
                 {
                     string ip = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;

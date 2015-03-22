@@ -32,6 +32,8 @@ using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Crypto;
+using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
 
@@ -115,10 +117,10 @@ namespace LegendaryClient.Windows
 
         public async void GetPendingInvites()
         {
-            object[] allInvites = await Client.PVPNet.getPendingInvitations();
+            object[] allInvites = await RiotCalls.getPendingInvitations();
             foreach (var item in allInvites)
             {
-                InvitationRequest invite = new InvitationRequest((TypedObject)item);
+                InvitationRequest invite = (InvitationRequest)item;
                 var pop = new GameInvitePopup(invite)
                 {
                     HorizontalAlignment = HorizontalAlignment.Right,
@@ -139,7 +141,7 @@ namespace LegendaryClient.Windows
 
         private void GotPlayerData(LoginDataPacket packet)
         {
-            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             UpdateSummonerInformation();
         }
 
@@ -148,11 +150,11 @@ namespace LegendaryClient.Windows
             if (Client.IsLoggedIn)
             {
                 AllSummonerData playerData =
-                    await Client.PVPNet.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
+                    await RiotCalls.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
                 SummonerNameLabel.Content = playerData.Summoner.Name;
                 Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
 
-                SummonerActiveBoostsDTO activeBoost = await Client.PVPNet.GetSummonerActiveBoosts();
+                SummonerActiveBoostsDTO activeBoost = await RiotCalls.GetSummonerActiveBoosts();
 
                 string xpBoostTime = ConvertBoostTime(activeBoost.XpBoostEndDate);
                 if (xpBoostTime != string.Empty && activeBoost.XpBoostEndDate > 0)
@@ -217,7 +219,7 @@ namespace LegendaryClient.Windows
                     Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + string.Format(" ∙ Level: {0}", playerData.SummonerLevel.Level);
                 }
                 else
-                    Client.PVPNet.GetAllLeaguesForPlayer(playerData.Summoner.SumId, GotLeaguesForPlayer);
+                    GotLeaguesForPlayer(await RiotCalls.GetAllLeaguesForPlayer(playerData.Summoner.SumId));
 
                 if (Client.LoginPacket.BroadcastNotification.BroadcastMessages != null)
                 {
@@ -421,11 +423,6 @@ namespace LegendaryClient.Windows
                 else
                     BroadcastMessage.Text = "";
             }));
-        }
-
-        private void fakeend_Click(object sender, RoutedEventArgs e)
-        {
-            Client.PVPNet.SimulateEndOfGame();
         }
 
 

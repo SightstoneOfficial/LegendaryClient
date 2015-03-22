@@ -15,6 +15,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
@@ -36,7 +37,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             GameName.Content = Client.GameName;
-            Client.PVPNet.OnMessageReceived += GameLobby_OnMessageReceived;
+            Client.RiotConnection.MessageReceived += GameLobby_OnMessageReceived;
             //If client has created game use initial DTO
             if (Client.GameLobbyDTO != null)
             {
@@ -126,7 +127,7 @@ namespace LegendaryClient.Windows
 
                                     if (Client.Whitelist.Count > 0)
                                         if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                            await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                            await RiotCalls.BanUserFromGame(Client.GameID, player.AccountId);
                                 }
 
                                 if (i > dto.TeamOne.Count)
@@ -246,7 +247,7 @@ namespace LegendaryClient.Windows
 
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.QuitGame();
+            await RiotCalls.QuitGame();
             Client.ReturnButton.Visibility = Visibility.Hidden;
             Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(FactionsGameLobbyPage)); //Clear pages
@@ -255,7 +256,7 @@ namespace LegendaryClient.Windows
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.SwitchTeams(Client.GameID);
+            await RiotCalls.SwitchTeams(Client.GameID);
         }
 
         private async void KickAndBan_Click(object sender, RoutedEventArgs e)
@@ -265,12 +266,12 @@ namespace LegendaryClient.Windows
                 return;
 
             var banPlayer = (PlayerParticipant)button.Tag;
-            await Client.PVPNet.BanUserFromGame(Client.GameID, banPlayer.AccountId);
+            await RiotCalls.BanUserFromGame(Client.GameID, banPlayer.AccountId);
         }
 
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.StartChampionSelection(Client.GameID, OptomisticLock);
+            await RiotCalls.StartChampionSelection(Client.GameID, OptomisticLock);
         }
 
         public static string GetGameMode(int i)

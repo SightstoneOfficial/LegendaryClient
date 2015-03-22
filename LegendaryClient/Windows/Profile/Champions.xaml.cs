@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows.Profile
@@ -26,7 +27,7 @@ namespace LegendaryClient.Windows.Profile
 
         public async void Update()
         {
-            var champList = await Client.PVPNet.GetAvailableChampions();
+            var champList = await RiotCalls.GetAvailableChampions();
 
             _championList = new List<ChampionDTO>(champList);
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
@@ -35,7 +36,7 @@ namespace LegendaryClient.Windows
         {
             CustomGameListView.Items.Clear();
             allItems.Clear();
-            PracticeGameSearchResult[] games = await Client.PVPNet.ListAllPracticeGames();
+            PracticeGameSearchResult[] games = await RiotCalls.ListAllPracticeGames();
             foreach (GameItem item in games.Select(game => new GameItem
             {
                 GameName = game.Name,
@@ -86,9 +87,9 @@ namespace LegendaryClient.Windows
                 gameName = item.GameName;
             }
             if (!string.IsNullOrEmpty(PasswordTextBox.Text))
-                Client.PVPNet.JoinGame(gameId, PasswordTextBox.Text);
+                RiotCalls.JoinGame(gameId, PasswordTextBox.Text);
             else
-                Client.PVPNet.JoinGame(gameId);
+                RiotCalls.JoinGame(gameId);
 
             Client.GameID = gameId;
             Client.GameName = gameName;

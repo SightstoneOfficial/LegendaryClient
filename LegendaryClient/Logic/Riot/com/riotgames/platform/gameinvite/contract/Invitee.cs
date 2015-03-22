@@ -13,6 +13,9 @@ namespace LegendaryClient.Logic.Riot.Platform
         [SerializedName("summonerName")]
         public String SummonerName { get; set; }
 
+        [SerializedName("inviteeState")]
+        public string inviteeState { get; set; }
+
         [SerializedName("summonerId")]
         public Double SummonerId { get; set; }
     }

@@ -389,7 +389,7 @@ namespace LegendaryClient.Windows.Profile
                 MasteryPage.Name = MasteryTextBox.Text;
             }
 
-            await Client.PVPNet.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
+            await RiotCalls.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
         }
 
         private void MasteryPageListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -452,7 +452,7 @@ namespace LegendaryClient.Windows.Profile
             newPage.PageId = pageId;
             newPage.TalentEntries = new List<TalentEntry>();
             Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Add(newPage);
-            await Client.PVPNet.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
+            await RiotCalls.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
             _masteryPageOrder.Add(pageId);
             MasteryPageListView.Items.Add(Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count + " ");
         }

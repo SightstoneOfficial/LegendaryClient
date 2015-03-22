@@ -7,7 +7,9 @@ using System.Xml;
 using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Windows;
+using LegendaryClient.Logic.Riot.Team;
 
 #endregion
 
@@ -157,7 +159,7 @@ namespace LegendaryClient.Controls
                     Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_REJECT);
                     break;
                 case ChatSubjects.RANKED_TEAM_UPDATE:
-                    Client.PVPNet.DeclineTeamInvite(new TeamId { FullId = _teamId });
+                    RiotCalls.DeclineTeamInvite(new TeamId { FullId = _teamId });
                     break;
             }
             Visibility = Visibility.Hidden;
@@ -170,7 +172,7 @@ namespace LegendaryClient.Controls
                 case ChatSubjects.PRACTICE_GAME_INVITE:
                     Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.PRACTICE_GAME_INVITE_ACCEPT);
 #pragma warning disable 4014
-                    Client.PVPNet.JoinGame(_gameId);
+                    RiotCalls.JoinGame(_gameId);
 #pragma warning restore 4014
                     Client.GameID = _gameId;
                     Client.GameName = "Joined game";
@@ -182,7 +184,7 @@ namespace LegendaryClient.Controls
                     Visibility = Visibility.Hidden;
                     break;
                 case ChatSubjects.RANKED_TEAM_UPDATE:
-                    Client.PVPNet.AcceptTeamInvite(new TeamId { FullId = _teamId });
+                    RiotCalls.AcceptTeamInvite(new TeamId { FullId = _teamId });
                     Visibility = Visibility.Hidden;
                     break;
             }

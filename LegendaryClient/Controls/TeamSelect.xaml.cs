@@ -2,6 +2,7 @@
 using LegendaryClient.Windows;
 using System.Windows;
 using System.Collections.Generic;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot.Team;
 
@@ -21,12 +22,12 @@ namespace LegendaryClient.Controls
         }
         private async void GetTeams()
         {
-            PlayerDTO allTeams = await Client.PVPNet.FindPlayer(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+            PlayerDTO allTeams = await RiotCalls.FindPlayer(Client.LoginPacket.AllSummonerData.Summoner.SumId);
             if (allTeams.TeamsSummary != null)
             {
                 foreach (var item in allTeams.TeamsSummary)
                 {
-                    TeamDTO teams = new PVPNetConnect.RiotObjects.Team.Dto.TeamDTO((TypedObject)item);
+                    TeamDTO teams = (TeamDTO)item;
                     TeamList.Items.Add(teams.Name);
                     TeamIdList.Add(teams.TeamId);
                 }
@@ -40,7 +41,7 @@ namespace LegendaryClient.Controls
 
         private async void SelectTeam_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            LobbyStatus lobby = await Client.PVPNet.createArrangedRankedTeamLobby(Client.QueueId, TeamList.SelectedItem.ToString());
+            LobbyStatus lobby = await RiotCalls.createArrangedRankedTeamLobby(Client.QueueId, TeamList.SelectedItem.ToString());
 
             TeamId SelectedTeamId = TeamIdList[TeamList.SelectedIndex];
             Client.ClearPage(typeof(TeamQueuePage));

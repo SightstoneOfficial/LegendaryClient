@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows.Profile
@@ -37,7 +38,7 @@ namespace LegendaryClient.Windows.Profile
 
         public void Update(double accountId)
         {
-            Client.PVPNet.GetRecentGames(accountId, GotRecentGames);
+            RiotCalls.GetRecentGames(accountId, GotRecentGames);
         }
 
         public void GotRecentGames(RecentGames result)

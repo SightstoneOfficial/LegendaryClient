@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows.Profile
@@ -30,7 +31,7 @@ namespace LegendaryClient.Windows.Profile
         {
             try
             {
-                var champList = await Client.PVPNet.GetAvailableChampions();
+                var champList = await RiotCalls.GetAvailableChampions();
 
                 championList = new List<ChampionDTO>(champList);
 

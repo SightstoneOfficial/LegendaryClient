@@ -3,6 +3,7 @@ using System.Windows;
 using Awesomium.Core;
 using LegendaryClient.Logic;
 using System.Diagnostics;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Properties;
 
 namespace LegendaryClient.Windows
@@ -19,7 +20,7 @@ namespace LegendaryClient.Windows
 
         public async void RefreshBrowser()
         {
-            var uri = await Client.PVPNet.GetStoreUrl();
+            var uri = await RiotCalls.GetStoreUrl();
             ShopBrowser.Source = new Uri(uri);
             Debug.WriteLine(uri);
         }

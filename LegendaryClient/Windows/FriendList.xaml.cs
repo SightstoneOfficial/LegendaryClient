@@ -405,12 +405,12 @@ namespace LegendaryClient.Windows
         private async void Invite_Click(object sender, RoutedEventArgs e)
         {
             if (Client.isOwnerOfGame)
-                await Client.PVPNet.Invite(LastPlayerItem.Id.Replace("sum", ""));
+                await RiotCalls.Invite(LastPlayerItem.Id.Replace("sum", ""));
         }
 
         private async void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
-            PublicSummoner JID = await Client.PVPNet.GetSummonerByName(FriendAddBox.Text);
+            PublicSummoner JID = await RiotCalls.GetSummonerByName(FriendAddBox.Text);
             var jid = new JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
             string[] groups = new List<string>(new[] { "**Default" }).ToArray();
             Client.ChatClient.Subscribe(jid, "", groups);
@@ -424,7 +424,7 @@ namespace LegendaryClient.Windows
                 case "inGame":
                     {
                         PlatformGameLifecycleDTO n =
-                            await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
+                            await RiotCalls.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
                         if (n.GameName != null)
                             Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress,
                                 n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId,
@@ -454,7 +454,7 @@ namespace LegendaryClient.Windows
         {
             if (LastPlayerItem != null)
             {
-                PublicSummoner JID = await Client.PVPNet.GetSummonerByName(LastPlayerItem.Username);
+                PublicSummoner JID = await RiotCalls.GetSummonerByName(LastPlayerItem.Username);
                 var jid = new JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
                 Client.ChatClient.RemoveRosterItem(jid);
                 Client.RostManager.Remove(jid);

@@ -2,7 +2,6 @@
 using jabber.connection;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.JSON;
-using LegendaryClient.Logic.Patcher;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Logic.SWF;
@@ -33,9 +32,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.IO;
+using RtmpSharp.Messaging;
+using RtmpSharp.Net;
 using Brush = System.Windows.Media.Brush;
 using Point = System.Windows.Point;
+using RiotPatcher = LegendaryClient.Logic.Patcher.RiotPatcher;
 
 namespace LegendaryClient.Windows
 {
@@ -346,10 +350,6 @@ namespace LegendaryClient.Windows
                 return;
             }
             string UserName = LoginUsernameBox.Text;
-            Client.Dev = false;
-            Client.PVPNet = null;
-            Client.PVPNet = new PVPNetConnection();
-            Client.PVPNet.OnError += Client.PVPNet_OnError;
             LoggingInLabel.Content = "Logging in...";
             if (string.IsNullOrEmpty(Settings.Default.Guid))
                 Settings.Default.Guid = Guid.NewGuid().ToString();
@@ -378,48 +378,44 @@ namespace LegendaryClient.Windows
             ErrorTextBox.Visibility = Visibility.Hidden;
             LoggingInLabel.Visibility = Visibility.Visible;
             LoggingInProgressRing.Visibility = Visibility.Visible;
-            Client.PVPNet.OnError += PVPNet_OnError;
-            Client.PVPNet.OnLogin += PVPNet_OnLogin;
-            Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
             Client.Region = selectedRegion;
-            if (selectedRegion.PVPRegion != Region.CS)
-                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.PVPRegion,
-                    Client.Version);
-            else
+            var context = RiotCalls.RegisterObjects();
+            Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + selectedRegion.Server + ":2099"), context, ObjectEncoding.Amf3);
+            Client.RiotConnection.CallbackException += client_CallbackException;
+            Client.RiotConnection.MessageReceived += client_MessageReceived;
+            await Client.RiotConnection.ConnectAsync();
+
+            AuthenticationCredentials newCredentials = new AuthenticationCredentials
             {
-                Dictionary<string, string> settings = selectedRegion.Location.LeagueSettingsReader();
-                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.PVPRegion,
-                    Client.Version, true, settings["host"], settings["lq_uri"], selectedRegion.Locale);
-            }
+                Username = LoginUsernameBox.Text,
+                Password = LoginPasswordBox.Password,
+                ClientVersion = Client.Version,
+                IpAddress = RiotCalls.GetIpAddress(),
+                Locale = selectedRegion.Locale,
+                Domain = "lolclient.lol.riotgames.com",
+                AuthToken =
+                    RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
+            };
+
+            Session login = await RiotCalls.Login(newCredentials);
+            await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", "bc-" + login.AccountSummary.AccountId);
+            await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "gn-" + login.AccountSummary.AccountId, "gn-" + login.AccountSummary.AccountId);
+            await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "cn-" + login.AccountSummary.AccountId, "cn-" + login.AccountSummary.AccountId);
+            var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
+            var packet = await RiotCalls.GetLoginDataPacketForUser();
+            GotLoginPacket(packet);
         }
 
-        private void PVPNet_OnLogin(object sender, string username, string ipAddress)
+        void client_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            if (Client.Garena)
-            {
-                shouldExit = true;
-                foreach (var process in Process.GetProcessesByName("lolclient"))
-                    process.Kill();
-            }
-            Client.PVPNet.GetLoginDataPacketForUser(GotLoginPacket);
+            ;
         }
 
-        private void PVPNet_OnError(object sender, Error error)
+        void client_CallbackException(object sender, Exception e)
         {
-            //Display error message
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                HideGrid.Visibility = Visibility.Visible;
-                ErrorTextBox.Visibility = Visibility.Visible;
-                LoggingInProgressRing.Visibility = Visibility.Hidden;
-                LoggingInLabel.Visibility = Visibility.Hidden;
-                ErrorTextBox.Text = error.Message;
-            }));
-            Client.PVPNet.OnMessageReceived -= Client.OnMessageReceived;
-            Client.PVPNet.OnError -= PVPNet_OnError;
-            Client.PVPNet.OnLogin -= PVPNet_OnLogin;
+            throw e;
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
@@ -439,8 +435,6 @@ namespace LegendaryClient.Windows
                 while (!Client.done)
                 {
                 }
-                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion,
-                    Client.Version);
                 return;
             }
             Client.LoginPacket = packet;
@@ -455,60 +449,19 @@ namespace LegendaryClient.Windows
                 while (!Client.done)
                 {
                 }
-                Client.PVPNet.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion,
-                    Client.Version);
+                //RiotCalls.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
 
                 return;
             }
-            Client.PlayerChampions = await Client.PVPNet.GetAvailableChampions();
-            Client.PVPNet.OnError -= PVPNet_OnError;
+            Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
             Client.GameConfigs = packet.GameTypeConfigs;
-            
-            Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
-            Client.PVPNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
-            Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
             Client.IsLoggedIn = true;
 
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 Client.StatusContainer.Visibility = Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
-                /*
-                var newCredentials = new AuthenticationCredentials
-                {
-                    Username = LoginUsernameBox.Text,
-                    Password = LoginPasswordBox.Password,
-                    ClientVersion = Client.Version,
-                    IpAddress = GetNewIpAddress(),
-                    Locale = Client.Region.Locale,
-                    Domain = "lolclient.lol.riotgames.com"
-                };
-                //Almost like the lol client now
-                string os = Environment.OSVersion.ToString();
-                string[] ossplit = os.Split('.');
-                if (ossplit[0] == "Windows 8")
-                {
-                    if (ossplit[1] == "1")
-                        os = "Windows 8.1";
-                }
-                else
-                    os = ossplit[0];
-                
-                newCredentials.OperatingSystem = os;
-                newCredentials.OperatingSystem = "Windows 7";
-                Session login = await Client.PVPNet.Login(newCredentials);
-                Client.PlayerSession = login;
-
-                Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
-                Client.PVPNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
-                Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
-                
-                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
-                var result = System.Convert.ToBase64String(plainTextBytes);
-                await Client.PVPNet.Login(result);
-                //*/
-                //Setup chat
                 if (!Client.Garena)
                 {
                     Client.ChatClient.AutoReconnect = 30;
@@ -530,6 +483,7 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
+                    
                     Client.ChatClient.AutoReconnect = 30;
                     Client.ChatClient.KeepAlive = 10;
                     Client.ChatClient.NetworkHost = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
@@ -537,11 +491,10 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.Server = "pvp.net";
                     Client.ChatClient.Resource = "xiff";
                     Client.ChatClient.SSL = true;
-                    Client.ChatClient.User = Client.PVPNet.getUID();
-                    var gas = Client.PVPNet.getGas();
-                    Client.ChatClient.Password = "AIR_" + gas;
-                    Client.userpass = new KeyValuePair<string, string>(Client.PVPNet.getUID(),
-                        "AIR_" + gas);
+                    //Client.ChatClient.User = RiotCalls.getUID();
+                    //var gas = RiotCalls.getGas();
+                    //Client.ChatClient.Password = "AIR_" + gas;
+                    //Client.userpass = new KeyValuePair<string, string>(RiotCalls.getUID(), "AIR_" + gas);
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                     Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
@@ -572,7 +525,7 @@ namespace LegendaryClient.Windows
                            Client.LoginPacket.AllSummonerData.Summoner.Name);
 
                 //Gather data and convert it that way that it does not cause errors
-                PlatformGameLifecycleDTO data = Client.LoginPacket.ReconnectInfo;
+                PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)Client.LoginPacket.ReconnectInfo;
 
                 Client.MainPage = new MainPage();
                 if (data != null && data.Game != null)
@@ -688,9 +641,9 @@ namespace LegendaryClient.Windows
                     s1 = s1.Substring(1);
                     Client.Log("Received token, it is: " + s1);
 
-                    Client.PVPNet = null;
-                    Client.PVPNet = new PVPNetConnection { garenaToken = s1 };
-                    Client.PVPNet.Connect("", "", garenaregion.PVPRegion, Client.Version);
+                    //RiotCalls = null;
+                    //RiotCalls = new PVPNetConnection { garenaToken = s1 };
+                    //RiotCalls.Connect("", "", garenaregion.PVPRegion, Client.Version);
                     Client.Region = garenaregion;
                     Dispatcher.BeginInvoke(
                         DispatcherPriority.Input, new ThreadStart(() =>
@@ -701,9 +654,9 @@ namespace LegendaryClient.Windows
                                 LoggingInLabel.Content = "Logging in...";
                                 LoggingInProgressRing.Visibility = Visibility.Visible;
                             }));
-                    Client.PVPNet.OnError += PVPNet_OnError;
-                    Client.PVPNet.OnLogin += PVPNet_OnLogin;
-                    Client.PVPNet.OnMessageReceived += Client.OnMessageReceived;
+                    //RiotCalls.OnError += PVPNet_OnError;
+                    //RiotCalls.OnLogin += PVPNet_OnLogin;
+                    //Client.RiotConnection.MessageReceived += Client.OnMessageReceived;
                 }
             }
         }

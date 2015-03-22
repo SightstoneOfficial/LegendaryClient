@@ -16,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
@@ -45,7 +46,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             GameName.Content = Client.GameName;
-            Client.PVPNet.OnMessageReceived += GameLobby_OnMessageReceived;
+            Client.RiotConnection.MessageReceived += GameLobby_OnMessageReceived;
             //If client has created game use initial DTO
             if (Client.GameLobbyDTO != null)
                 GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
@@ -120,7 +121,7 @@ namespace LegendaryClient.Windows
                                         continue;
 
                                     if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                        await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                        await RiotCalls.BanUserFromGame(Client.GameID, player.AccountId);
                                 }
                                 else if (playerTeam is BotParticipant)
                                 {
@@ -148,7 +149,7 @@ namespace LegendaryClient.Windows
                                         continue;
 
                                     if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                        await Client.PVPNet.BanUserFromGame(Client.GameID, player.AccountId);
+                                        await RiotCalls.BanUserFromGame(Client.GameID, player.AccountId);
                                 }
                                 else if (playerTeam is BotParticipant)
                                 {
@@ -312,13 +313,13 @@ namespace LegendaryClient.Windows
             botPlayer.cmbSelectChamp.SelectionChanged += async (a, b) =>
             {
                 champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
-                await Client.PVPNet.RemoveBotChampion(champ.id, BotPlayer);
+                await RiotCalls.RemoveBotChampion(champ.id, BotPlayer);
                 AddBot(c.id, botPlayer.blueSide, botPlayer.difficulty);
             };
             botPlayer.cmbSelectDificulty.SelectionChanged += async (a, b) =>
             {
                 champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
-                await Client.PVPNet.RemoveBotChampion(champ.id, BotPlayer);
+                await RiotCalls.RemoveBotChampion(champ.id, BotPlayer);
                 AddBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex);
             };
 
@@ -355,12 +356,12 @@ namespace LegendaryClient.Windows
                 return;
 
             var player = button.Tag as GameObserver;
-            await Client.PVPNet.BanObserverFromGame(Client.GameID, player.AccountId);
+            await RiotCalls.BanObserverFromGame(Client.GameID, player.AccountId);
         }
 
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.QuitGame();
+            await RiotCalls.QuitGame();
             Client.ReturnButton.Visibility = Visibility.Hidden;
             Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
@@ -369,7 +370,7 @@ namespace LegendaryClient.Windows
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.SwitchTeams(Client.GameID);
+            await RiotCalls.SwitchTeams(Client.GameID);
         }
 
         private static async void KickAndBan_Click(object sender, RoutedEventArgs e)
@@ -382,7 +383,7 @@ namespace LegendaryClient.Windows
             if (player != null)
             {
                 PlayerParticipant banPlayer = player;
-                await Client.PVPNet.BanUserFromGame(Client.GameID, banPlayer.AccountId);
+                await RiotCalls.BanUserFromGame(Client.GameID, banPlayer.AccountId);
             }
             else
             {
@@ -391,13 +392,13 @@ namespace LegendaryClient.Windows
                     return;
 
                 BotParticipant banPlayer = tag;
-                await Client.PVPNet.RemoveBotChampion(champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
+                await RiotCalls.RemoveBotChampion(champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
             }
         }
 
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.StartChampionSelection(Client.GameID, OptomisticLock);
+            await RiotCalls.StartChampionSelection(Client.GameID, OptomisticLock);
         }
 
         public static string GetGameMode(int i)
@@ -509,7 +510,7 @@ namespace LegendaryClient.Windows
                     par.BotSkillLevel = difficulty;
                     break;
             }
-            await Client.PVPNet.SelectBotChampion(champint, par);
+            await RiotCalls.SelectBotChampion(champint, par);
         }
 
         private void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
@@ -524,17 +525,17 @@ namespace LegendaryClient.Windows
 
         private async void SpectatorButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.SwitchPlayerToObserver(Client.GameID);
+            await RiotCalls.SwitchPlayerToObserver(Client.GameID);
         }
 
         private async void JoinPurpleTeamFromSpectator_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.SwitchObserverToPlayer(Client.GameID, 200);
+            await RiotCalls.SwitchObserverToPlayer(Client.GameID, 200);
         }
 
         private async void JoinBlueTeamFromSpectator_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.SwitchObserverToPlayer(Client.GameID, 100);
+            await RiotCalls.SwitchObserverToPlayer(Client.GameID, 100);
         }
     }
 }

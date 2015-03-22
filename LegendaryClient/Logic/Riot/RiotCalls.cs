@@ -34,6 +34,11 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<Session>("loginService", "login", Credentials);
         }
 
+        public static Task<Session> Accept(string id)
+        {
+            return InvokeAsync<Session>("lcdsGameInvitationService", "accept", id);
+        }
+
         /// <summary>
         /// Heartbeat to send every 2 minutes.
         /// </summary>
@@ -815,7 +820,10 @@ namespace LegendaryClient.Logic.Riot
 
 
 
-
+        public static Task<LobbyStatus> getLobbyStatus(string args)
+        {
+            return InvokeAsync<LobbyStatus>("lcdsGameInvitationService", "accept", args);
+        }
 
 
 
@@ -824,7 +832,7 @@ namespace LegendaryClient.Logic.Riot
         {
             try
             {
-                return Client.RtmpConnection.InvokeAsync<T>("my-rtmps", destination, method, argument);
+                return Client.RiotConnection.InvokeAsync<T>("my-rtmps", destination, method, argument);
             }
             catch (InvocationException e)
             {
@@ -833,7 +841,7 @@ namespace LegendaryClient.Logic.Riot
                 return null;
             }
         }
-
+        //
 
 
         public static string GetAuthKey(String Username, String Password, String LoginQueue)
@@ -919,7 +927,7 @@ namespace LegendaryClient.Logic.Riot
             return context;
         }
 
-        enum PlayerSkill
+        public enum PlayerSkill
         {
             BEGINNER,
             VETERAN,

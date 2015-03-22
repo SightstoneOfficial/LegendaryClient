@@ -9,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows.Profile
@@ -169,7 +170,7 @@ namespace LegendaryClient.Windows.Profile
         private async void GetAvailableRunes()
         {
             var runeInven =
-                await Client.PVPNet.GetSummonerRuneInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+                await RiotCalls.GetSummonerRuneInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
             runes = runeInven.SummonerRunes;
             runes.Sort((x, y) => string.Compare(x.Rune.Name, y.Rune.Name, StringComparison.Ordinal));
             RuneFilterComboBox.SelectedIndex = 0;
@@ -439,7 +440,7 @@ namespace LegendaryClient.Windows.Profile
                 runePage.Name = RuneTextBox.Text;
             }
 
-            await Client.PVPNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
+            await RiotCalls.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
         }
 
         private void ClearRunes_Click(object sender, RoutedEventArgs e)

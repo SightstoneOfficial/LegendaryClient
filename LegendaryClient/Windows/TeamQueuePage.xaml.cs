@@ -19,8 +19,13 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.serviceproxy.dispatch;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.IO;
 using Timer = System.Timers.Timer;
+using LegendaryClient.Logic.Riot.Team;
 
 namespace LegendaryClient.Windows
 {
@@ -55,7 +60,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
 
             Client.InviteListView = InviteListView;
-            Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
+            Client.RiotConnection.MessageReceived += Update_OnMessageReceived;
 
             //MainWindow Window = new MainWindow();
             //Window.Hide();
@@ -86,14 +91,13 @@ namespace LegendaryClient.Windows
 
             if (CurrentLobby == null)
             {
-                //Yay fixed lobby. Riot hates me still though. They broke this earlier, except I have fixed it
-                CurrentLobby = await Client.PVPNet.getLobbyStatus();
+                CurrentLobby = await RiotCalls.getLobbyStatus(Invite);
             }
             if (CurrentLobby.InvitationID != null)
             {
                 string ObfuscatedName =
-                    Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.Replace("INVID", "invid"),
-                        ChatPrefixes.Arranging_Game); //Why do you need to replace INVID with invid Riot?
+                    Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.ToLower(),
+                        ChatPrefixes.Arranging_Game);
                 string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
                 newRoom = Client.ConfManager.GetRoom(new JID(JID));
                 newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
@@ -125,14 +129,14 @@ namespace LegendaryClient.Windows
         {
             LastSender = (Button)sender;
             var stats = (Member)LastSender.Tag;
-            await Client.PVPNet.Kick(stats.SummonerId);
+            await RiotCalls.Kick(stats.SummonerId);
         }
 
         private async void Owner_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             var stats = (Member)LastSender.Tag;
-            await Client.PVPNet.MakeOwner(stats.SummonerId);
+            await RiotCalls.MakeOwner(stats.SummonerId);
         }
 
         private double startTime;
@@ -307,11 +311,11 @@ namespace LegendaryClient.Windows
                         TeamPlayer.HorizontalAlignment = HorizontalAlignment.Stretch;
 
                         TeamPlayer.Kick.Click += Kick_Click;
-                        TeamPlayer.Inviter.Click += async (object sender, RoutedEventArgs e) =>
+                        TeamPlayer.Inviter.Click += async (sender, e) =>
                         {
                             LastSender = (Button)sender;
                             var s = (Member)LastSender.Tag;
-                            await Client.PVPNet.GrantInvite(s.SummonerId);
+                            await RiotCalls.GrantInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Hidden;
@@ -322,7 +326,7 @@ namespace LegendaryClient.Windows
                         {
                             LastSender = (Button)sender;
                             var s = (Member)LastSender.Tag;
-                            await Client.PVPNet.revokeInvite(s.SummonerId);
+                            await RiotCalls.revokeInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Visible;
@@ -333,7 +337,7 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Owner.Click += Owner_Click;
                         Players++;
 
-                        PublicSummoner Summoner = await Client.PVPNet.GetSummonerByName(stats.SummonerName);
+                        PublicSummoner Summoner = await RiotCalls.GetSummonerByName(stats.SummonerName);
 
                         //Populate the ProfileIcon
                         int ProfileIconID = Summoner.ProfileIconId;
@@ -378,7 +382,7 @@ namespace LegendaryClient.Windows
                     }
                     if (IsOwner)
                     {
-                        await Client.PVPNet.Call(Guid.NewGuid().ToString(), "suggestedPlayers",
+                        await RiotCalls.CallLCDS(Guid.NewGuid().ToString(), "suggestedPlayers",
                             "retrieveOnlineFriendsOfFriends", "{\"queueId\":" + queueId + "}");
                     }
                 }));
@@ -404,7 +408,7 @@ namespace LegendaryClient.Windows
                     if (QueueDTO.GameState == "TERMINATED")
                     {
                         Client.HasPopped = false;
-                        Client.PVPNet.OnMessageReceived += GotQueuePop;
+                        Client.RiotConnection.MessageReceived += GotQueuePop;
                     }
                 }));
             }
@@ -463,7 +467,7 @@ namespace LegendaryClient.Windows
                         invitePlayer.PlayerLabel.Content = s.summonerName;
                         invitePlayer.InviteButton.Click += async (object obj, RoutedEventArgs e) =>
                         {
-                            await Client.PVPNet.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
+                            await RiotCalls.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
                             foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
                             {
                                 if ((string)item.PlayerLabel.Content == s.summonerName)
@@ -499,8 +503,8 @@ namespace LegendaryClient.Windows
 
         private async void Leave_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.Leave();
-            await Client.PVPNet.PurgeFromQueues();
+            await RiotCalls.Leave();
+            await RiotCalls.PurgeFromQueues();
             inQueue = false;
 #pragma warning disable CS4014
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -584,14 +588,14 @@ namespace LegendaryClient.Windows
             }
             else if (message is PlayerCredentialsDto)
             {
-                Client.PVPNet.OnMessageReceived -= RestartDodgePop;
+                Client.RiotConnection.MessageReceived -= RestartDodgePop;
             }
         }
 
         void Client_PlayerAccepedQueue(bool accept)
         {
             if (accept)
-                Client.PVPNet.OnMessageReceived += RestartDodgePop;
+                Client.RiotConnection.MessageReceived += RestartDodgePop;
         }
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)
@@ -652,11 +656,11 @@ namespace LegendaryClient.Windows
                 parameters.Team = InviteList;
                 parameters.TeamId = selectedTeamId;
                 parameters.BotDifficulty = botDifficulty;
-                Client.PVPNet.AttachTeamToQueue(parameters, EnteredQueue);
+                RiotCalls.AttachTeamToQueue(parameters, EnteredQueue);
             }
             else
             {
-                Client.PVPNet.PurgeFromQueues();
+                RiotCalls.PurgeFromQueues();
                 setStartButtonText("Start Game");
                 inQueue = false;
                 Client.GameStatus = "outOfGame";
@@ -712,8 +716,8 @@ namespace LegendaryClient.Windows
                                 break;
                             case "LEAVER_BUSTED":
                                 Client.Log("Busting LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
-                                Client.PVPNet.AttachTeamToQueue(parameters,
-                                    new ASObject { Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken },
+                                RiotCalls.AttachTeamToQueue(parameters,
+                                    new AsObject { Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken },
                                     EnteredQueue);
                                 break;
                             case "RANKED_NUM_CHAMPS":
@@ -729,7 +733,7 @@ namespace LegendaryClient.Windows
                 }));
                 return;
             }
-            Client.PVPNet.OnMessageReceived += GotQueuePop;
+            Client.RiotConnection.MessageReceived += GotQueuePop;
             setStartButtonText("Joining Queue");
             startTime = 1;
             inQueue = true;

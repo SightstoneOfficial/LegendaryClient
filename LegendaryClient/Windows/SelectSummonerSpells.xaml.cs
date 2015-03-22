@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using LegendaryClient.Logic.Riot;
 
 namespace LegendaryClient.Windows
 {
@@ -64,7 +65,7 @@ namespace LegendaryClient.Windows
             else
             {
                 SummonerSpell2.Source = new BitmapImage(uriSource);
-                await Client.PVPNet.SelectSpells(SelectedSpell1, spellId);
+                await RiotCalls.SelectSpells(SelectedSpell1, spellId);
                 Client.OverlayContainer.Visibility = Visibility.Hidden;
             }
         }

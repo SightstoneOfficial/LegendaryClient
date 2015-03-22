@@ -6,7 +6,10 @@ using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.Messaging;
 
 namespace LegendaryClient.Controls
 {
@@ -37,7 +40,7 @@ namespace LegendaryClient.Controls
         public GameInvitePopup(InvitationRequest stats)
         {
             InitializeComponent();
-            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             try
             {
                 var info = Client.InviteData[stats.InvitationId];
@@ -57,14 +60,16 @@ namespace LegendaryClient.Controls
             }
         }
 
-        private void PVPNet_OnMessageReceived(object sender, object message)
+        private void PVPNet_OnMessageReceived(object sender, object msg)
         {
+            var args = msg as MessageReceivedEventArgs;
+            var message = args != null ? args.Body : msg;
             if (!(message is InvitationRequest))
                 return;
 
-            if (message.GetType() == typeof (InvitationRequest))
+            if (message.GetType() == typeof(InvitationRequest))
             {
-                var stats = (InvitationRequest) message;
+                var stats = (InvitationRequest)message;
                 try
                 {
                     var info = Client.InviteData[stats.InvitationId];
@@ -117,7 +122,7 @@ namespace LegendaryClient.Controls
             }
             else if (message.GetType() == typeof (GameDTO))
             {
-                tempDTO = (GameDTO) message;
+                tempDTO = (GameDTO)message;
             }
         }
 
@@ -161,8 +166,6 @@ namespace LegendaryClient.Controls
             gameTypeConfigId = m.gameTypeConfigId;
             gameMode = m.gameMode;
             gameType = m.gameType;
-
-            Client.PVPNet.getLobbyStatusInviteId = invitationID;
             switch (mapId)
             {
                 case 1:
@@ -210,12 +213,12 @@ namespace LegendaryClient.Controls
             Client.InviteData.Add(stats.InvitationId, y);
         }
 
-        private void Accept_Click(object sender, RoutedEventArgs e)
+        private async void Accept_Click(object sender, RoutedEventArgs e)
         {
             if (gameType == "PRACTICE_GAME")
             {
 #pragma warning disable 4014
-                Client.PVPNet.Accept(invitationID);
+                RiotCalls.Accept(invitationID);
                 Client.SwitchPage(new CustomGameLobbyPage(tempDTO));
             }
             //goddammit teambuilder
@@ -225,8 +228,7 @@ namespace LegendaryClient.Controls
             }
             else if (gameType == "NORMAL_GAME" && queueId == 61)
             {
-                var newLobby = Client.PVPNet.InviteLobby;
-                Client.SwitchPage(new TeamBuilderPage(false, newLobby));
+                Client.SwitchPage(new TeamBuilderPage(false, await RiotCalls.getLobbyStatus(invitationID)));
             }
             else if (gameType == "RANKED_GAME")
             {
@@ -244,7 +246,7 @@ namespace LegendaryClient.Controls
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { Visibility = Visibility.Hidden; }));
 #pragma warning disable 4014
-            Client.PVPNet.Decline(invitationID);
+            RiotCalls.Decline(invitationID);
             Client.InviteData.Remove(invitationID);
         }
 

@@ -9,6 +9,8 @@ using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.serviceproxy.dispatch;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot.Team;
 
@@ -39,7 +41,7 @@ namespace LegendaryClient.Windows
             LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline();
             TeamsContainer.Content = new Teams();
 
-            //Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            //Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             //Auto get summoner profile when created instance.
             if (Client.IsLoggedIn)
                 GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
@@ -54,7 +56,7 @@ namespace LegendaryClient.Windows
         {
             PublicSummoner summoner =
                 await
-                    Client.PVPNet.GetSummonerByName(string.IsNullOrWhiteSpace(s)
+                    RiotCalls.GetSummonerByName(string.IsNullOrWhiteSpace(s)
                         ? Client.LoginPacket.AllSummonerData.Summoner.Name
                         : s);
             if (string.IsNullOrWhiteSpace(summoner.Name))
@@ -79,8 +81,8 @@ namespace LegendaryClient.Windows
             }      
             else
             {
-                Client.PVPNet.GetAllLeaguesForPlayer(summoner.SummonerId, GotLeaguesForPlayer);
-                PlayerDTO playerTeams = await Client.PVPNet.FindPlayer(summoner.SummonerId);
+                GotLeaguesForPlayer(await RiotCalls.GetAllLeaguesForPlayer(summoner.SummonerId));
+                PlayerDTO playerTeams = await RiotCalls.FindPlayer(summoner.SummonerId);
                 GotPlayerTeams(playerTeams);
             }
                 
@@ -89,7 +91,7 @@ namespace LegendaryClient.Windows
             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png");
             ProfileImage.Source = Client.GetImage(uriSource);
 
-            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(s);
+            PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(s);
             if (n.GameName != null)
             {
                 InGameHeader.Visibility = Visibility.Visible;
@@ -131,7 +133,7 @@ namespace LegendaryClient.Windows
             if (overview != null)
                 overview.Update(summoner.SummonerId, summoner.AcctId);
 
-            //Client.PVPNet.Call(Guid.NewGuid().ToString(), "championMastery", "getAllChampionMasteries", "[" + summoner.SummonerId + "]");
+            //RiotCalls.Call(Guid.NewGuid().ToString(), "championMastery", "getAllChampionMasteries", "[" + summoner.SummonerId + "]");
         }
         private void PVPNet_OnMessageReceived(object sender, object message)
         {
@@ -139,7 +141,7 @@ namespace LegendaryClient.Windows
             if (message.GetType() == typeof(LcdsServiceProxyResponse))
             {
                 var serializer = new JavaScriptSerializer();
-                var deserializedJson = serializer.Deserialize<List<ChampionMastery>>((message as LcdsServiceProxyResponse).Payload);
+                //var deserializedJson = serializer.Deserialize<List<ChampionMastery>>((message as LcdsServiceProxyResponse).Payload);
             }
         }
 

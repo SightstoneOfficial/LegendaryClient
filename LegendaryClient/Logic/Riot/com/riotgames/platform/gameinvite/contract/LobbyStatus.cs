@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using RtmpSharp.IO;
 
 namespace LegendaryClient.Logic.Riot.Platform
@@ -8,21 +10,22 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class LobbyStatus
     {
         [SerializedName("chatKey")]
-        public String ChatKey { get; set; }
+        public string ChatKey { get; set; }
 
         [SerializedName("gameMetaData")]
-        public String GameData { get; set; }
+        public string GameData { get; set; }
 
         [SerializedName("owner")]
         public Player Owner { get; set; }
+        //public Player Owner { get; set; }
 
         [SerializedName("members")]
-        public Double[] PlayerIds { get; set; }
+        public List<Member> Members { get; set; }
 
         [SerializedName("invitees")]
-        public Invitee InvitedPlayers { get; set; }
+        public List<Invitee> Invitees { get; set; }
 
         [SerializedName("invitationId")]
-        public String InvitationID { get; set; }
+        public string InvitationID { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 
@@ -56,7 +57,7 @@ namespace LegendaryClient.Windows
         private async void Client_PlayerAccepedQueue(bool accept)
         {
             if (accept)
-                Client.PVPNet.OnMessageReceived += RestartDodgePop;
+                Client.RiotConnection.MessageReceived += RestartDodgePop;
             else
                 await LeaveAllQueues();
         }
@@ -151,7 +152,7 @@ namespace LegendaryClient.Windows
                         PingRectangle.Fill = brush;
                     }
                     //Queues
-                    GameQueueConfig[] openQueues = await Client.PVPNet.GetAvailableQueues();
+                    GameQueueConfig[] openQueues = await RiotCalls.GetAvailableQueues();
                     Array.Sort(openQueues,
                         (config, config2) =>
                             string.Compare(config.CacheName, config2.CacheName, StringComparison.Ordinal));
@@ -180,7 +181,7 @@ namespace LegendaryClient.Windows
                         item.TeamQueueButton.Click += TeamQueueButton_Click;
                         item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
                         item.QueueId = config.Id;
-                        QueueInfo t = await Client.PVPNet.GetQueueInformation(config.Id);
+                        QueueInfo t = await RiotCalls.GetQueueInformation(config.Id);
                         item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                         TimeSpan time = TimeSpan.FromMilliseconds(t.WaitTime);
                         string answer = string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds);
@@ -275,7 +276,7 @@ namespace LegendaryClient.Windows
 
                 Queues.Add(config.Id);
                 Client.QueueId = config.Id;
-                LobbyStatus lobby = await Client.PVPNet.createArrangedTeamLobby(config.Id);
+                LobbyStatus lobby = await RiotCalls.createArrangedTeamLobby(config.Id);
 
                 Client.ClearPage(typeof (TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby));
@@ -283,14 +284,14 @@ namespace LegendaryClient.Windows
             else if (config.TypeString.Contains("BOT"))
             {
                 Queues.Add(config.Id);
-                LobbyStatus lobby = await Client.PVPNet.createArrangedBotTeamLobby(config.Id, settings.BotLevel);
+                LobbyStatus lobby = await RiotCalls.createArrangedBotTeamLobby(config.Id, settings.BotLevel);
 
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby, false, null, settings.BotLevel));
             }
             else
             {
-                LobbyStatus lobby = await Client.PVPNet.createArrangedTeamLobby(config.Id);
+                LobbyStatus lobby = await RiotCalls.createArrangedTeamLobby(config.Id);
                 Client.SwitchPage(new TeamBuilderPage(true, lobby));
             }
         }
@@ -324,7 +325,7 @@ namespace LegendaryClient.Windows
                     Client.QueueId = config.Id;
 
                     param = parameters;
-                    Client.PVPNet.AttachToQueue(parameters, EnteredQueue);
+                    RiotCalls.AttachToQueue(parameters, EnteredQueue);
                 }
                 else if (config.Id != 61)
                 {
@@ -341,11 +342,11 @@ namespace LegendaryClient.Windows
                     };
                     Client.QueueId = config.Id;
                     param = parameters;
-                    Client.PVPNet.AttachToQueue(parameters, EnteredQueue);
+                    RiotCalls.AttachToQueue(parameters, EnteredQueue);
                 }
                 else if (config.Id == 61)
                 {
-                    LobbyStatus lobby = await Client.PVPNet.createArrangedTeamLobby(config.Id);
+                    LobbyStatus lobby = await RiotCalls.createArrangedTeamLobby(config.Id);
                     Client.ClearPage(typeof (TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false, lobby));
                 }
@@ -376,7 +377,7 @@ namespace LegendaryClient.Windows
                         };
                         reQueue.Elapsed += (x, d) =>
                         {
-                            Client.PVPNet.AttachToQueue(
+                            RiotCalls.AttachToQueue(
                                 param,
                                 new ASObject
                                 {
@@ -481,7 +482,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                 Client.timeStampSince =
                     (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
                 Client.SetChatHover();
-                Client.PVPNet.OnMessageReceived += GotQueuePop;
+                Client.RiotConnection.MessageReceived += GotQueuePop;
                 Client.Log("Now in Queue");
             }
         }
@@ -500,7 +501,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                 Client.OverlayContainer.Content = new QueuePopOverlay(queue, this).Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
             }));
-            Client.PVPNet.OnMessageReceived -= GotQueuePop;
+            Client.RiotConnection.MessageReceived -= GotQueuePop;
         }
 
         private void RestartDodgePop(object sender, object message)
@@ -511,12 +512,12 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                 if (queue.GameState == "TERMINATED")
                 {
                     Client.HasPopped = false;
-                    Client.PVPNet.OnMessageReceived += GotQueuePop;
+                    Client.RiotConnection.MessageReceived += GotQueuePop;
                 }
             }
             else if (message is PlayerCredentialsDto)
             {
-                Client.PVPNet.OnMessageReceived -= RestartDodgePop;
+                Client.RiotConnection.MessageReceived -= RestartDodgePop;
             }
         }
 
@@ -601,9 +602,9 @@ You've been placed in a lower priority queue" + Environment.NewLine;
         private async Task<bool> LeaveAllQueues()
         {
             InQueue = false;
-            await Client.PVPNet.PurgeFromQueues();
-            await Client.PVPNet.QuitGame();
-            await Client.PVPNet.Leave();
+            await RiotCalls.PurgeFromQueues();
+            await RiotCalls.QuitGame();
+            await RiotCalls.Leave();
             Client.ClearPage(typeof (CustomGameLobbyPage));
             Client.ClearPage(typeof (CreateCustomGamePage));
             Client.ClearPage(typeof (FactionsCreateGamePage));

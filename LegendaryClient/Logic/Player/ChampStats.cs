@@ -72,7 +72,7 @@ namespace LegendaryClient.Logic.Player
 
         async void LoadName(string Name)
         {
-            PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(Name);
+            PublicSummoner summoner = await RiotCalls.GetSummonerByName(Name);
             await Load(summoner.AcctId);
         }
 
@@ -81,7 +81,7 @@ namespace LegendaryClient.Logic.Player
 
         public async Task<string[]> Load(double ID)
         {
-            RecentGames result = await Client.PVPNet.GetRecentGames(ID);
+            RecentGames result = await RiotCalls.GetRecentGames(ID);
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
             GamesWithChamp = 0;
             foreach (PlayerGameStats game in result.GameStatistics)

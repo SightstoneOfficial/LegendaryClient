@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows.Profile
@@ -179,8 +180,8 @@ namespace LegendaryClient.Windows.Profile
             var item = (LeagueItem) LeaguesListView.SelectedItem;
             PlayerLabel.Content = item.PlayerLabel.Content;
 
-            var x = await Client.PVPNet.GetSummonerByName((string) item.PlayerLabel.Content);
-            Client.PVPNet.GetAggregatedStats(x.AcctId, "CLASSIC", "5", GotStats);
+            var x = await RiotCalls.GetSummonerByName((string) item.PlayerLabel.Content);
+            GotStats(await RiotCalls.GetAggregatedStats(x.AcctId, "CLASSIC", "5"));
         }
 
         private void GotStats(AggregatedStats stats)

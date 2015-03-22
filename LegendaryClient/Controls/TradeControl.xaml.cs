@@ -2,6 +2,7 @@
 
 using System.Windows;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 #endregion
@@ -23,12 +24,12 @@ namespace LegendaryClient.Controls
             var tradeDTO = Tag as TradeContractDTO;
             if (tradeDTO != null)
                 await
-                    Client.PVPNet.AcceptTrade(tradeDTO.RequesterInternalSummonerName, (int) tradeDTO.RequesterChampionId);
+                    RiotCalls.AcceptTrade(tradeDTO.RequesterInternalSummonerName, (int) tradeDTO.RequesterChampionId);
         }
 
         private async void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
-            await Client.PVPNet.DeclineTrade();
+            await RiotCalls.DeclineTrade();
             Visibility = Visibility.Hidden;
         }
     }

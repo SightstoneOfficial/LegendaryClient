@@ -17,6 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient
@@ -53,7 +54,7 @@ namespace LegendaryClient
         }
         private static async Task<bool> IsUserValid(string Username)
         {
-            PublicSummoner sum = await Client.PVPNet.GetSummonerByName(Username);
+            PublicSummoner sum = await RiotCalls.GetSummonerByName(Username);
             if (string.IsNullOrEmpty(sum.Name))
                 return false;
             else
@@ -62,7 +63,7 @@ namespace LegendaryClient
 
         private async void LoadStats(string user)
         {
-            PlatformGameLifecycleDTO n = await Client.PVPNet.RetrieveInProgressSpectatorGameInfo(user);
+            PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(user);
             if (n.GameName != null)
             {
                 LoadPar(new List<Participant>(n.Game.TeamOne.ToArray()), n, BlueTeam);
@@ -109,7 +110,7 @@ namespace LegendaryClient
             {
                 if (par is PlayerParticipant)
                 {
-                    PublicSummoner scoutersum = await Client.PVPNet.GetSummonerByName(GSUsername);
+                    PublicSummoner scoutersum = await RiotCalls.GetSummonerByName(GSUsername);
                     if ((par as PlayerParticipant).AccountId == scoutersum.AcctId)
                         isYourTeam = true;
                 }
@@ -143,10 +144,10 @@ namespace LegendaryClient
                         GameStats.Clear();
                         try
                         {
-                            PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(championSelect.SummonerInternalName);
+                            PublicSummoner summoner = await RiotCalls.GetSummonerByName(championSelect.SummonerInternalName);
                             if(File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png")))
                                 control.ProfileIcon.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png"));
-                            RecentGames result = await Client.PVPNet.GetRecentGames(summoner.AcctId);
+                            RecentGames result = await RiotCalls.GetRecentGames(summoner.AcctId);
                             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
                             foreach (PlayerGameStats game in result.GameStatistics)
                             {
@@ -417,16 +418,16 @@ namespace LegendaryClient
         }
         private async Task<SummonerRuneInventory> GetUserRunesPage(string User)
         {
-            PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
-            SummonerRuneInventory runes = await Client.PVPNet.GetSummonerRuneInventory(summoner.SummonerId);
+            PublicSummoner summoner = await RiotCalls.GetSummonerByName(User);
+            SummonerRuneInventory runes = await RiotCalls.GetSummonerRuneInventory(summoner.SummonerId);
             return runes;
 
 
         }
         private async Task<MasteryBookDTO> GetUserMasterPage(string User)
         {
-            PublicSummoner summoner = await Client.PVPNet.GetSummonerByName(User);
-            MasteryBookDTO page = await Client.PVPNet.GetMasteryBook(summoner.SummonerId);
+            PublicSummoner summoner = await RiotCalls.GetSummonerByName(User);
+            MasteryBookDTO page = await RiotCalls.GetMasteryBook(summoner.SummonerId);
             return page;
         }
     }

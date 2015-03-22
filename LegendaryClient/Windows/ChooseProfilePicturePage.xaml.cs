@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
@@ -22,7 +23,7 @@ namespace LegendaryClient.Windows
         private async void GetIcons()
         {
             SummonerIconInventoryDTO playerIcons =
-                await Client.PVPNet.GetSummonerIconInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+                await RiotCalls.GetSummonerIconInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
             foreach (Icon ic in playerIcons.SummonerIcons)
             {
                 var champImage = new Image
@@ -65,7 +66,7 @@ namespace LegendaryClient.Windows
             {
                 var m = (Image) SummonerIconListView.SelectedItem;
                 int summonerIcon = Convert.ToInt32(m.Tag);
-                await Client.PVPNet.UpdateProfileIconId(summonerIcon);
+                await RiotCalls.UpdateProfileIconId(summonerIcon);
                 Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId = summonerIcon;
                 Client.SetChatHover();
                 var uriSource =

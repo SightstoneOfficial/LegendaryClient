@@ -1,5 +1,6 @@
 ﻿using LegendaryClient.Logic;
 using System.Windows;
+using LegendaryClient.Logic.Riot;
 
 namespace LegendaryClient.Windows
 {
@@ -43,14 +44,14 @@ namespace LegendaryClient.Windows
             int kudoId = KudosList.SelectedIndex + 1;
             GiveButton.IsEnabled = false;
             if (sameTeam)
-                await Client.PVPNet.CallKudos(
+                await RiotCalls.CallKudos(
                     "{\"gameId\":" + gameID +
                     ",\"commandName\":\"GIVE\"" +
                     ",\"giverId\":" + Client.LoginPacket.AllSummonerData.Summoner.SumId +
                     ",\"kudosType\":" + kudoId + 
                     ",\"receiverId\": " + summonerID + "}");
             else
-                await Client.PVPNet.CallKudos(
+                await RiotCalls.CallKudos(
                     "{\"gameId\":" + gameID +
                     ",\"commandName\":\"GIVE\"" + 
                     ",\"giverId\":" + Client.LoginPacket.AllSummonerData.Summoner.SumId +

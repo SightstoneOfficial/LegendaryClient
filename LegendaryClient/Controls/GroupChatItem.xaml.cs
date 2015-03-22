@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 
 namespace LegendaryClient.Controls
 {
@@ -55,7 +56,7 @@ namespace LegendaryClient.Controls
             foreach (RoomParticipant par in newRoom.Participants)
             {
                 var player = new GroupChatPlayer {SName = {Content = par.Nick}};
-                var summoner = await Client.PVPNet.GetSummonerByName(par.Nick);
+                var summoner = await RiotCalls.GetSummonerByName(par.Nick);
                 var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                     summoner.ProfileIconId + ".png");
                 player.SIcon.Source = Client.GetImage(uriSource);
@@ -101,7 +102,7 @@ namespace LegendaryClient.Controls
 
                 ChatText.ScrollToEnd();
                 var x = new GroupChatPlayer {SName = {Content = participant.Nick}};
-                var summoner = await Client.PVPNet.GetSummonerByName(participant.Nick);
+                var summoner = await RiotCalls.GetSummonerByName(participant.Nick);
                 var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                     summoner.ProfileIconId + ".png");
                 x.SIcon.Source = Client.GetImage(uriSource);

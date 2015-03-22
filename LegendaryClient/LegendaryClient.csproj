@@ -259,8 +259,11 @@
     <Compile Include="Logic\Riot\com\riotgames\platform\catalog\runes\Rune.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\catalog\runes\RuneType.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\clientfacade\domain\LoginDataPacket.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\InvitationRequest.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\Invitee.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\Inviter.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\LobbyStatus.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\Member.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\Player.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\game\BannedChampion.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\game\BotParticipant.cs" />
@@ -296,6 +299,7 @@
     <Compile Include="Logic\Riot\com\riotgames\platform\reroll\pojo\RollResult.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\reroll\pojo\SimpleDialogMessage.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\reroll\pojo\StoreAccountBalanceNotification.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\serviceproxy\dispatch\LcdsServiceProxyResponse.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\statistics\AggregatedStat.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\statistics\AggregatedStats.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\statistics\AggregatedStatsKey.cs" />

@@ -6,6 +6,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
@@ -25,11 +26,11 @@ namespace LegendaryClient.Windows
             initFinished = true;
         }
 
-        private void CreateGameButton_Click(object sender, RoutedEventArgs e)
+        private async void CreateGameButton_Click(object sender, RoutedEventArgs e)
         {
             NameInvalidLabel.Visibility = Visibility.Hidden;
             PracticeGameConfig gameConfig = GenerateGameConfig();
-            Client.PVPNet.CreatePracticeGame(gameConfig, CreatedGame);
+            CreatedGame(await RiotCalls.CreatePracticeGame(gameConfig));
         }
 
         private PracticeGameConfig GenerateGameConfig()

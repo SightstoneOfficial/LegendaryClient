@@ -24,8 +24,10 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.serviceproxy.dispatch;
 
 namespace LegendaryClient.Windows
 {
@@ -101,7 +103,7 @@ namespace LegendaryClient.Windows
             LoadStats();
 
             Client.InviteListView = InvitedPlayers;
-            Client.PVPNet.OnMessageReceived += PVPNet_OnMessageReceived;
+            Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             Client.LastPageContent = Content;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
@@ -173,7 +175,7 @@ namespace LegendaryClient.Windows
                         {
                             PlatformGameLifecycleDTO n =
                                 await
-                                    Client.PVPNet.RetrieveInProgressSpectatorGameInfo(
+                                    RiotCalls.RetrieveInProgressSpectatorGameInfo(
                                         Client.LoginPacket.AllSummonerData.Summoner.Name);
                             if (n.GameName != null)
                             {
@@ -416,11 +418,11 @@ namespace LegendaryClient.Windows
                 if (timer != null)
                     timer.Stop();
 
-                Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+                Client.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
                 Client.GameStatus = "outOfGame";
                 Client.SetChatHover();
 #pragma warning disable 4014
-                Client.PVPNet.Leave();
+                RiotCalls.Leave();
 #pragma warning restore 4014
 
                 //temp, what other reasons are there?
@@ -794,7 +796,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await Client.PVPNet.SaveMasteryBook(bookDTO);
+                await RiotCalls.SaveMasteryBook(bookDTO);
             }
         }
 
@@ -838,7 +840,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await Client.PVPNet.SelectDefaultSpellBookPage(SelectedRunePage);
+                await RiotCalls.SelectDefaultSpellBookPage(SelectedRunePage);
             }
         }
 
@@ -960,7 +962,7 @@ namespace LegendaryClient.Windows
 
         public async void CallWithArgs(String UUID, string GameMode, string ProcedureCall, string Parameters)
         {
-            await Client.PVPNet.Call(UUID, GameMode, ProcedureCall, Parameters);
+            await RiotCalls.CallLCDS(UUID, GameMode, ProcedureCall, Parameters);
         }
 
         private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
@@ -1082,8 +1084,8 @@ namespace LegendaryClient.Windows
 
         private async void InGame()
         {
-            await Client.PVPNet.Leave();
-            Client.PVPNet.OnMessageReceived -= PVPNet_OnMessageReceived;
+            await RiotCalls.Leave();
+            Client.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
             Client.GameStatus = "inGame";
             Client.timeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;

@@ -118,7 +118,7 @@ namespace LegendaryClient.Windows
             foreach (string player in invitedPlayers)
             {
                 //This invites the player
-                await Client.PVPNet.Invite(player.Replace("sum", ""));
+                await RiotCalls.Invite(player.Replace("sum", ""));
 
                 ChatPlayerItem playerInfo = Client.AllPlayers[player];
 

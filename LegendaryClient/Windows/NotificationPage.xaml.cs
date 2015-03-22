@@ -9,6 +9,7 @@ using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows
@@ -51,12 +52,12 @@ namespace LegendaryClient.Windows
                     notification.Accept.Click += (s, e) =>
                     {
                         Client.SwitchPage(new TeamQueuePage(data1.stats.InvitationId));
-                        Client.PVPNet.Accept(data1.stats.InvitationId);
+                        RiotCalls.Accept(data1.stats.InvitationId);
                         Client.InviteData.Remove(data1.stats.InvitationId);
                     };
                     notification.Decline.Click += (s, e) =>
                     {
-                        Client.PVPNet.Decline(data2.stats.InvitationId);
+                        RiotCalls.Decline(data2.stats.InvitationId);
                         Client.InviteData.Remove(data2.stats.InvitationId);
                     };
                     notification.TitleLabel.Content = "Game Invite";

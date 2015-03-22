@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows.Profile
@@ -32,9 +33,9 @@ namespace LegendaryClient.Windows.Profile
             sumName = name;
         }
 
-        public void Update(double accountId)
+        public async void Update(double accountId)
         {
-            Client.PVPNet.GetRecentGames(accountId, GotRecentGames);
+            GotRecentGames(await RiotCalls.GetRecentGames(accountId));
         }
 
         public void GotRecentGames(RecentGames result)

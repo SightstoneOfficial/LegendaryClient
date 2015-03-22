@@ -1,5 +1,6 @@
 ﻿using LegendaryClient.Logic;
 using System.Windows;
+using LegendaryClient.Logic.Riot;
 
 namespace LegendaryClient.Windows
 {
@@ -19,9 +20,9 @@ namespace LegendaryClient.Windows
         {
             if (UsernameTextBox.Text.Length > 0)
             {
-                if (await Client.PVPNet.IsNameValidAndAvailable(UsernameTextBox.Text))
+                if (await RiotCalls.IsNameValidAndAvailable(UsernameTextBox.Text))
                 {
-                    await Client.PVPNet.CreateDefaultSummoner(UsernameTextBox.Text);
+                    await RiotCalls.CreateDefaultSummoner(UsernameTextBox.Text);
                     Client.OverlayContainer.Visibility = Visibility.Hidden;
                     Client.done = true;
                 }

@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows.Profile
@@ -31,11 +32,11 @@ namespace LegendaryClient.Windows.Profile
         {
             accId = accountId;
             var totalKudos =
-                await Client.PVPNet.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + summonerId + "}");
+                await RiotCalls.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + summonerId + "}");
             RenderKudos(totalKudos);
-            var topChampions = await Client.PVPNet.RetrieveTopPlayedChampions(accountId, "CLASSIC");
+            var topChampions = await RiotCalls.RetrieveTopPlayedChampions(accountId, "CLASSIC");
             RenderTopPlayedChampions(topChampions);
-            Client.PVPNet.RetrievePlayerStatsByAccountId(accountId, "5", GotPlayerStats);
+            GotPlayerStats(await RiotCalls.RetrievePlayerStatsByAccountId(accountId, "5"));
         }
 
         public void RenderKudos(LcdsResponseString totalKudos)
@@ -154,7 +155,7 @@ namespace LegendaryClient.Windows.Profile
 
         private async void ViewAggregatedStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = await Client.PVPNet.GetAggregatedStats(accId, "CLASSIC", "5");
+            var x = await RiotCalls.GetAggregatedStats(accId, "CLASSIC", "5");
             Client.OverlayContainer.Content =
                 new AggregatedStatsOverlay(x, accId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;

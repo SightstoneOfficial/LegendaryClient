@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
 
@@ -37,12 +38,12 @@ namespace LegendaryClient.Controls
             if (stats == null)
             {
                 stats = new PlayerStatisticsChampSelect();
-                var summoner = await Client.PVPNet.GetSummonerByName(sumName);
+                var summoner = await RiotCalls.GetSummonerByName(sumName);
                 if (summoner.SummonerLevel < 30)
                     stats.Rank.Content = "Level " + summoner.SummonerLevel;
                 else
                 {
-                   SummonerLeaguesDTO playerLeagues = await Client.PVPNet.GetAllLeaguesForPlayer(summoner.SummonerId);
+                   SummonerLeaguesDTO playerLeagues = await RiotCalls.GetAllLeaguesForPlayer(summoner.SummonerId);
                    stats.Rank.Content = playerLeagues.SummonerLeagues;
 
                     foreach (LeagueListDTO x in playerLeagues.SummonerLeagues.Where(x => x.Queue == "RANKED_SOLO_5x5"))
@@ -56,7 +57,7 @@ namespace LegendaryClient.Controls
                     stats = null;
                     return;
                 }
-                var topChampions = await Client.PVPNet.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
+                var topChampions = await RiotCalls.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
                 foreach (var x in topChampions)
                 {
                     Debugger.Log(0, "CHAMPS", x.ChampionId + Environment.NewLine);

@@ -73,7 +73,7 @@ namespace LegendaryClient.Windows
                     break;
             }
             report.Offense = reportReason;
-            await Client.PVPNet.ReportPlayer(report);
+            await RiotCalls.ReportPlayer(report);
             reportButton.IsEnabled = false;
             Client.OverOverlayContainer.Visibility = Visibility.Hidden;
         }

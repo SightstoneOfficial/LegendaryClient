@@ -85,8 +85,8 @@ namespace LegendaryClient
             Client.UserTitleBarLabel = UserTitleBarLabel;
             Client.UserTitleBarImage = UserTitleBarImage;
             Client.InfoLabel = InfoLabel;
-            //Client.PVPNet = new PVPNetConnection { KeepDelegatesOnLogout = false };
-            //Client.PVPNet.OnError += Client.PVPNet_OnError;
+            //RiotCalls = new PVPNetConnection { KeepDelegatesOnLogout = false };
+            //RiotCalls.OnError += RiotCalls_OnError;
             if (string.IsNullOrEmpty(Settings.Default.Theme))
                 Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
             myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
@@ -275,8 +275,8 @@ namespace LegendaryClient
                 (Client.MainWin as MainWindow).FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
-                Client.PVPNet.QuitGame();
-                Client.PVPNet.Disconnect();
+                RiotCalls.QuitGame();
+                RiotCalls.Disconnect();
                 Client.ChatClient.OnDisconnect -= Client.ChatClient_OnDisconnect;
                 Client.ChatClient.Close();
                 Client.ChatClient = null;
@@ -324,9 +324,9 @@ namespace LegendaryClient
             {
                 if (Client.IsLoggedIn)
                 {
-                    Client.PVPNet.PurgeFromQueues();
-                    Client.PVPNet.Leave();
-                    Client.PVPNet.Disconnect();
+                    RiotCalls.PurgeFromQueues();
+                    RiotCalls.Leave();
+                    RiotCalls.Disconnect();
                 }
                 Environment.Exit(0);
             }
@@ -336,9 +336,9 @@ namespace LegendaryClient
         {
             if (Client.IsLoggedIn)
             {
-                Client.PVPNet.PurgeFromQueues();
-                Client.PVPNet.Leave();
-                Client.PVPNet.Disconnect();
+                RiotCalls.PurgeFromQueues();
+                RiotCalls.Leave();
+                RiotCalls.Disconnect();
             }
             Environment.Exit(0);
         }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
@@ -25,7 +26,7 @@ namespace LegendaryClient.Windows
                     Client.LaunchGame();
             }
 
-            Client.PVPNet.OnMessageReceived += Update_OnMessageReceived;
+            Client.RiotConnection.MessageReceived += Update_OnMessageReceived;
             Client.IsInGame = true;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
@@ -46,7 +47,7 @@ namespace LegendaryClient.Windows
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 Client.IsInGame = false;
-                Client.PVPNet.OnMessageReceived -= Update_OnMessageReceived;
+                Client.RiotConnection.MessageReceived -= Update_OnMessageReceived;
                 Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(InGame));
             }));
@@ -65,7 +66,7 @@ namespace LegendaryClient.Windows
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 Client.IsInGame = false;
-                Client.PVPNet.OnMessageReceived -= Update_OnMessageReceived;
+                Client.RiotConnection.MessageReceived -= Update_OnMessageReceived;
                 Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(InGame));
             }));

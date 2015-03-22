@@ -254,19 +254,19 @@ namespace LegendaryClient.Windows
             QuickLoad = true;
 
             //Signal to the server we are in champion select
-            await Client.PVPNet.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
+            await RiotCalls.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
             //Selects Champion
             //New method makes it easier to instapick a champ + works in draft
             /*
             if (previousPage is TeamQueuePage && (previousPage as TeamQueuePage).SelectChampBox.Text != "Auto Select Champ")
             {
-                await Client.PVPNet.SelectChampion(ChampList.FirstOrDefault(x => champions.GetChampion(x.ChampionId).displayName.ToLower() == (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower()).ChampionId);
+                await RiotCalls.SelectChampion(ChampList.FirstOrDefault(x => champions.GetChampion(x.ChampionId).displayName.ToLower() == (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower()).ChampionId);
             }
             //*/
             //Retrieve the latest GameDTO
             GameDTO latestDto =
                 await
-                    Client.PVPNet.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
+                    RiotCalls.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
                         Client.ChampSelectDTO.PickTurn);
             //Find the game config for timers
             configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDto.GameTypeConfigId);
@@ -298,7 +298,7 @@ namespace LegendaryClient.Windows
                 LatestDto = latestDto;
                 //Get the champions for the other team to ban & sort alpabetically
 
-                ChampionBanInfoDTO[] champsForBan = await Client.PVPNet.GetChampionsForBan();
+                ChampionBanInfoDTO[] champsForBan = await RiotCalls.GetChampionsForBan();
                 ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
                 ChampionsForBan.Sort(
                     (x, y) =>
@@ -312,7 +312,7 @@ namespace LegendaryClient.Windows
                 //Start recieving champ select
                 ChampSelect_OnMessageReceived(this, latestDto);
                 Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
-                Client.PVPNet.OnMessageReceived += ChampSelect_OnMessageReceived;
+                Client.RiotConnection.MessageReceived += ChampSelect_OnMessageReceived;
             }
         }
 
@@ -513,7 +513,7 @@ namespace LegendaryClient.Windows
                     else if (champDto.GameState == "POST_CHAMP_SELECT")
                     {
                         //Post game has started. Allow trading
-                        CanTradeWith = await Client.PVPNet.GetPotentialTraders();
+                        CanTradeWith = await RiotCalls.GetPotentialTraders();
                         HasLockedIn = true;
                         GameStatusLabel.Content = "All players have picked!";
                         if (configType != null)
@@ -540,7 +540,7 @@ namespace LegendaryClient.Windows
                         Client.ReturnButton.Visibility = Visibility.Visible;
                         Client.inQueueTimer.Visibility = Visibility.Visible;
                         Client.NotificationGrid.Children.Add(pop);
-                        Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+                        Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
                         Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
                         Client.GameStatus = "inQueue";
                         Client.SetChatHover();
@@ -582,7 +582,7 @@ namespace LegendaryClient.Windows
                             else
                             {
                                 AllPublicSummonerDataDTO summoner =
-                                    await Client.PVPNet.GetAllPublicSummonerDataByAccount(player.SummonerId);
+                                    await RiotCalls.GetAllPublicSummonerDataByAccount(player.SummonerId);
                                 if (summoner.Summoner != null && !string.IsNullOrEmpty(summoner.Summoner.Name))
                                     control.PlayerName.Content = summoner.Summoner.Name;
                                 else
@@ -714,7 +714,7 @@ namespace LegendaryClient.Windows
             }
             else if (message is PlayerCredentialsDto)
             {
-                Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+                Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
 
                 #region Launching Game
 
@@ -733,7 +733,7 @@ namespace LegendaryClient.Windows
                     {
                         PlatformGameLifecycleDTO n =
                             await
-                                Client.PVPNet.RetrieveInProgressSpectatorGameInfo(
+                                RiotCalls.RetrieveInProgressSpectatorGameInfo(
                                     Client.LoginPacket.AllSummonerData.Summoner.Name);
                         if (n.GameName != null)
                         {
@@ -1115,7 +1115,7 @@ namespace LegendaryClient.Windows
         private async void TradeButton_Click(object sender, RoutedEventArgs e)
         {
             var p = (KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>)((Button)sender).Tag;
-            await Client.PVPNet.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
+            await RiotCalls.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
 
             PlayerTradeControl.Visibility = Visibility.Visible;
             champions myChampion = champions.GetChampion((int)MyChampId);
@@ -1140,7 +1140,7 @@ namespace LegendaryClient.Windows
                 if (item.Tag == null)
                     return;
                 //SelectChampion.SelectChampion(selection.ChampionId)*/
-                await Client.PVPNet.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
+                await RiotCalls.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
                 //TODO: Fix stupid animation glitch on left hand side
                 var fadingAnimation = new DoubleAnimation
                 {
@@ -1169,7 +1169,7 @@ namespace LegendaryClient.Windows
             else if (item.Tag != null)
             {
                 SearchTextBox.Text = string.Empty;
-                await Client.PVPNet.BanChampion((int)item.Tag);
+                await RiotCalls.BanChampion((int)item.Tag);
             }
         }
 
@@ -1188,7 +1188,7 @@ namespace LegendaryClient.Windows
                 string[] splitItem = s.Split(':');
                 int championId = Convert.ToInt32(splitItem[1]);
                 champions champion = champions.GetChampion(championId);
-                await Client.PVPNet.SelectChampionSkin(championId, 0);
+                await RiotCalls.SelectChampionSkin(championId, 0);
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
                     Text = "Selected Default " + champion.name + " as skin" + Environment.NewLine
@@ -1198,7 +1198,7 @@ namespace LegendaryClient.Windows
             else
             {
                 championSkins skin = championSkins.GetSkin((int)item.Tag);
-                await Client.PVPNet.SelectChampionSkin(skin.championId, skin.id);
+                await RiotCalls.SelectChampionSkin(skin.championId, skin.id);
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
                     Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine
@@ -1242,8 +1242,8 @@ namespace LegendaryClient.Windows
         private async void QuitCurrentGame()
         {
             Client.AmbientSoundPlayer.Stop();
-            await Client.PVPNet.QuitGame();
-            Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            await RiotCalls.QuitGame();
+            Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.GameStatus = "outOfGame";
@@ -1255,8 +1255,8 @@ namespace LegendaryClient.Windows
 
         private async void InGame()
         {
-            await Client.PVPNet.QuitGame();
-            Client.PVPNet.OnMessageReceived -= ChampSelect_OnMessageReceived;
+            await RiotCalls.QuitGame();
+            Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.ClearPage(typeof(FactionsCreateGamePage));
@@ -1276,12 +1276,12 @@ namespace LegendaryClient.Windows
                 if (ChampionSelectListView.SelectedItems.Count <= 0)
                     return;
 
-                await Client.PVPNet.ChampionSelectCompleted();
+                await RiotCalls.ChampionSelectCompleted();
                 HasLockedIn = true;
             }
             else
             {
-                await Client.PVPNet.Roll();
+                await RiotCalls.Roll();
                 HasLockedIn = true;
             }
         }
@@ -1343,7 +1343,7 @@ namespace LegendaryClient.Windows
                 bookDto.BookPages.Add(masteryPage);
             }
             if (hasChanged)
-                await Client.PVPNet.SaveMasteryBook(bookDto);
+                await RiotCalls.SaveMasteryBook(bookDto);
         }
 
         private async void RuneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1375,7 +1375,7 @@ namespace LegendaryClient.Windows
                 ChatText.ScrollToEnd();
             }
             if (hasChanged)
-                await Client.PVPNet.SelectDefaultSpellBookPage(selectedRunePage);
+                await RiotCalls.SelectDefaultSpellBookPage(selectedRunePage);
         }
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)
@@ -1537,7 +1537,7 @@ namespace LegendaryClient.Windows
                 }
 
 
-                if ((await Client.PVPNet.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook)).DefaultPage == null)
+                if ((await RiotCalls.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook)).DefaultPage == null)
                 {
                     Client.LoginPacket.AllSummonerData.SpellBook = failsafe;
                     var pop = new NotifyPlayerPopup("Save failed", "Failed to use local rune page.")

@@ -2,6 +2,7 @@
 
 using System;
 using LegendaryClient.Controls;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 
 #endregion
 
