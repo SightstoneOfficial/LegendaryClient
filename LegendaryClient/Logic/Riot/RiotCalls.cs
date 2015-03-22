@@ -968,7 +968,12 @@ namespace LegendaryClient.Logic.Riot
         /// <returns></returns>
         public static Task<object> PurgeFromQueues()
         {
-            return InvokeAsync<object>("gameService", "selectBotChampion");
+            return InvokeAsync<object>("matchmakerService", "purgeFromQueues");
+        }
+
+        public static Task<object> LeaveLeaverBuster(string access)
+        {
+            return InvokeAsync<object>("matchmakerService", "purgeFromQueues", access);
         }
 
         /// <summary>

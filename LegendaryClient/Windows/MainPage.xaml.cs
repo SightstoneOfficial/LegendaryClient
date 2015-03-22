@@ -61,6 +61,7 @@ namespace LegendaryClient.Windows
             Client.Profile = new ProfilePage();
             GetNews(region);
             GetPendingInvites();
+            ChangeSpectatorRegion(Client.Region);
             var update = new Timer
             {
                 Interval = 5000
@@ -481,10 +482,6 @@ namespace LegendaryClient.Windows
             worker.RunWorkerCompleted += delegate { ParseNews(region); };
 
             worker.RunWorkerAsync();
-        }
-
-        private void ChatTest_Click(object sender, RoutedEventArgs e)
-        {
         }
 
         private void ParseNews(BaseRegion region)

@@ -483,7 +483,7 @@ namespace LegendaryClient.Windows
                             else
                                 PurpleBanListView.Items.Add(champImage);
 
-                            foreach (ListViewItem y in championArray.Where(y => (int)y.Tag == x.ChampionId))
+                            foreach (var y in championArray.Where(y => (int)y.Tag == x.ChampionId))
                             {
                                 ChampionSelectListView.Items.Remove(y);
                                 //Remove from arrays

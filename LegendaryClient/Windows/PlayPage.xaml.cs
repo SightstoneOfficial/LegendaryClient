@@ -392,6 +392,8 @@ namespace LegendaryClient.Windows
                         };
                         Timer t = new Timer { Interval = 1000 };
                         var timeleft = x.LeaverPenaltyMilisRemaining;
+                        if (Client.Dev)
+                            timeleft = 2000;
                         t.Elapsed += (messafge, mx) =>
                         {
                             timeleft = timeleft - 1000;
