@@ -10,6 +10,11 @@ namespace LegendaryClient.Logic.Region
             get { return "LAN"; }
         }
 
+        public override string Server
+        {
+            get { return ""; }
+        }
+
         public override string Location
         {
             get { return null; }
@@ -18,6 +23,11 @@ namespace LegendaryClient.Logic.Region
         public override bool Garena
         {
             get { return false; }
+        }
+
+        public override string LoginQueue
+        {
+            get { return ""; }
         }
 
         public override string InternalName
@@ -38,11 +48,6 @@ namespace LegendaryClient.Logic.Region
         public override Uri NewsAddress
         {
             get { return new Uri("http://lan.leagueoflegends.com/es/rss.xml"); }
-        }
-
-        public override PVPNetConnect.Region PVPRegion
-        {
-            get { return PVPNetConnect.Region.LA1; }
         }
 
         public override IPAddress[] PingAddresses

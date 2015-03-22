@@ -1155,10 +1155,6 @@
       <Project>{b9acf25e-89ae-4cc8-9041-1e74822dac2d}</Project>
       <Name>LCLog</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PVPNetConnect\PVPNetConnect.csproj">
-      <Project>{93dcbebf-c652-40ed-a003-cff421f68b4f}</Project>
-      <Name>PVPNetConnect</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="ShockwaveFlashObjects">

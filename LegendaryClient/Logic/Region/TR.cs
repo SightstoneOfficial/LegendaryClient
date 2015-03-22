@@ -10,6 +10,16 @@ namespace LegendaryClient.Logic.Region
             get { return "TR"; }
         }
 
+        public override string Server
+        {
+            get { return ""; }
+        }
+
+        public override string LoginQueue
+        {
+            get { return ""; }
+        }
+
         public override string Location
         {
             get { return null; }
@@ -39,11 +49,6 @@ namespace LegendaryClient.Logic.Region
         {
             get { return new Uri("http://tr.leagueoflegends.com/tr/rss.xml"); }
             //This returns english (not spanish) characters
-        }
-
-        public override PVPNetConnect.Region PVPRegion
-        {
-            get { return PVPNetConnect.Region.TR; }
         }
 
         public override IPAddress[] PingAddresses

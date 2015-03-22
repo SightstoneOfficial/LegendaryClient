@@ -17,7 +17,9 @@ namespace LegendaryClient.Logic.Region
 
         public abstract string Locale { get; }
 
-        public abstract PVPNetConnect.Region PVPRegion { get; }
+        public abstract string Server { get; }
+
+        public abstract string LoginQueue { get; }
 
         public abstract IPAddress[] PingAddresses { get; }
 
@@ -30,7 +32,7 @@ namespace LegendaryClient.Logic.Region
         public static BaseRegion GetRegion(String requestedRegion)
         {
             requestedRegion = requestedRegion.ToUpper();
-            Type t = Type.GetType("LegendaryClient.Logic.Region." + requestedRegion);
+            var t = Type.GetType("LegendaryClient.Logic.Region." + requestedRegion);
 
             if (t != null)
                 return (BaseRegion) Activator.CreateInstance(t);

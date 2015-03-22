@@ -14,6 +14,11 @@ namespace LegendaryClient.Logic.Region
             get { return null; }
         }
 
+        public override string Server
+        {
+            get { return ""; }
+        }
+
         public override string RegionName
         {
             get { return "KR"; }
@@ -22,6 +27,11 @@ namespace LegendaryClient.Logic.Region
         public override bool Garena
         {
             get { return false; }
+        }
+
+        public override string LoginQueue
+        {
+            get { return ""; }
         }
 
         public override string InternalName
@@ -43,11 +53,6 @@ namespace LegendaryClient.Logic.Region
         public override Uri NewsAddress
         {
             get { return new Uri(""); }
-        }
-
-        public override PVPNetConnect.Region PVPRegion
-        {
-            get { return PVPNetConnect.Region.KR; }
         }
 
         public override IPAddress[] PingAddresses

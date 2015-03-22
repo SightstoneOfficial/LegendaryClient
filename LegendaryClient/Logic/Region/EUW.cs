@@ -10,9 +10,19 @@ namespace LegendaryClient.Logic.Region
             get { return "EUW"; }
         }
 
+        public override string Server
+        {
+            get { return ""; }
+        }
+
         public override bool Garena
         {
             get { return false; }
+        }
+
+        public override string LoginQueue
+        {
+            get { return ""; }
         }
 
         public override string Location
@@ -38,11 +48,6 @@ namespace LegendaryClient.Logic.Region
         public override Uri NewsAddress
         {
             get { return new Uri("http://euw.leagueoflegends.com/en/rss.xml"); }
-        }
-
-        public override PVPNetConnect.Region PVPRegion
-        {
-            get { return PVPNetConnect.Region.EUW; }
         }
 
         public override IPAddress[] PingAddresses

@@ -10,9 +10,19 @@ namespace LegendaryClient.Logic.Region
             get { return "EUNE"; }
         }
 
+        public override string Server
+        {
+            get { return ""; }
+        }
+
         public override bool Garena
         {
             get { return false; }
+        }
+
+        public override string LoginQueue
+        {
+            get { return ""; }
         }
 
         public override string InternalName
@@ -33,11 +43,6 @@ namespace LegendaryClient.Logic.Region
         public override Uri NewsAddress
         {
             get { return new Uri("http://eune.leagueoflegends.com/en/rss.xml"); }
-        }
-
-        public override PVPNetConnect.Region PVPRegion
-        {
-            get { return PVPNetConnect.Region.EUN; }
         }
 
         public override IPAddress[] PingAddresses

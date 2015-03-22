@@ -10,6 +10,16 @@ namespace LegendaryClient.Logic.Region
             get { return "SG"; }
         }
 
+        public override string Server
+        {
+            get { return "prod.lol.garenanow.com"; }
+        }
+
+        public override string LoginQueue
+        {
+            get { return "https://lq.lol.garenanow.com/"; }
+        }
+
         public override string Location
         {
             get { return null; }
@@ -39,11 +49,6 @@ namespace LegendaryClient.Logic.Region
         public override string Locale
         {
             get { return "en_SG"; }
-        }
-
-        public override PVPNetConnect.Region PVPRegion
-        {
-            get { return PVPNetConnect.Region.SG; }
         }
 
         public override IPAddress[] PingAddresses

@@ -10,6 +10,11 @@ namespace LegendaryClient.Logic.Region
             get { return "BR"; }
         }
 
+        public override string Server
+        {
+            get { return ""; }
+        }
+
         public override string Location
         {
             get { return null; }
@@ -18,6 +23,11 @@ namespace LegendaryClient.Logic.Region
         public override bool Garena
         {
             get { return false; }
+        }
+
+        public override string LoginQueue
+        {
+            get { return ""; }
         }
 
         public override string InternalName
@@ -39,11 +49,6 @@ namespace LegendaryClient.Logic.Region
         public override string Locale
         {
             get { return "en_US"; }
-        }
-
-        public override PVPNetConnect.Region PVPRegion
-        {
-            get { return PVPNetConnect.Region.BR; }
         }
 
         public override IPAddress[] PingAddresses

@@ -10,6 +10,11 @@ namespace LegendaryClient.Logic.Region
             get { return "LAS"; }
         }
 
+        public override string Server
+        {
+            get { return ""; }
+        }
+
         public override string Location
         {
             get { return null; }
@@ -35,9 +40,9 @@ namespace LegendaryClient.Logic.Region
             get { return false; }
         }
 
-        public override PVPNetConnect.Region PVPRegion
+        public override string LoginQueue
         {
-            get { return PVPNetConnect.Region.LA2; }
+            get { return ""; }
         }
 
         public override string Locale
