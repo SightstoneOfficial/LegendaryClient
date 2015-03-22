@@ -39,6 +39,8 @@ namespace LegendaryClient.Controls
             {
                 stats = new PlayerStatisticsChampSelect();
                 var summoner = await RiotCalls.GetSummonerByName(sumName);
+                if (summoner == null)
+                    return;
                 if (summoner.SummonerLevel < 30)
                     stats.Rank.Content = "Level " + summoner.SummonerLevel;
                 else
@@ -52,9 +54,8 @@ namespace LegendaryClient.Controls
                     if (string.IsNullOrEmpty(stats.Rank.Content.ToString()))
                         stats.Rank.Content = "Unranked";
                 }
-                if (summoner == null || stats == null || summoner.InternalName.Contains("bot"))
+                if (stats == null || summoner.InternalName.Contains("bot"))
                 {
-                    stats = null;
                     return;
                 }
                 var topChampions = await RiotCalls.RetrieveTopPlayedChampions(summoner.AcctId, "CLASSIC");
