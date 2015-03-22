@@ -818,14 +818,139 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<Object>("lcdsServiceProxy", "call", UUID, GameMode, ProcedureCall, Parameters);
         }
 
-
-
-        public static Task<LobbyStatus> getLobbyStatus(string args)
+        /// <summary>
+        /// Accept invite to the game
+        /// </summary>
+        /// <param name="inviteID">The id of accepted invite</param>
+        /// <returns>LobbyStatus</returns>
+        public static Task<LobbyStatus> AcceptInvite(string inviteID)
         {
-            return InvokeAsync<LobbyStatus>("lcdsGameInvitationService", "accept", args);
+            return InvokeAsync<LobbyStatus>("lcdsGameInvitationService", "accept", inviteID);
         }
 
+        /// <summary>
+        /// Decline invite to the game
+        /// </summary>
+        /// <param name="inviteID">The id of declined invite</param>
+        /// <returns>null</returns>
+        public static Task<LobbyStatus> DeclineInvite(string inviteID)
+        {
+            return InvokeAsync<LobbyStatus>("lcdsGameInvitationService", "decline", inviteID);
+        }
 
+        /// <summary>
+        /// Leave lobby
+        /// </summary>
+        /// <returns>null</returns>
+        public static Task<object> Leave()
+        {
+            InvokeAsync<object>("lcdsGameInvitationService", "leave");
+            return null;
+        }
+
+        /// <summary>
+        /// Removes player ability to invite players
+        /// </summary>
+        /// <param name="summoner_ID">The id of selected summoner</param>
+        /// <returns></returns>
+        public static Task<object> RevokeInvite(double summoner_ID)
+        {
+            InvokeAsync<object>("lcdsGameInvitationService", "revokeInvitePrivileges", summoner_ID);
+            return null;
+        }
+
+        /// <summary>
+        /// Creates lobby for the team
+        /// </summary>
+        /// <param name="queueId">The id of selected queue</param>
+        /// <returns>LobbyStatus</returns>
+        public static Task<LobbyStatus> CreateArrangeTeamLobby(double queueId)
+        {
+            return InvokeAsync<LobbyStatus>("lcdsGameInvitationService", "createArrangedTeamLobby", queueId);
+        }
+
+        /// <summary>
+        /// Creates lobby for the ranked team
+        /// </summary>
+        /// <param name="queueId">The id of selected queue</param>
+        /// <param name="teamName">The name of the selected team</param>
+        /// <returns>LobbyStatus</returns>
+        public static Task<LobbyStatus> CreateArrangedRankedTeamLobby(double queueId, string teamName)
+        {
+            return InvokeAsync<LobbyStatus>("lcdsGameInvitationService", "createArrangedRankedTeamLobby", queueId, teamName);
+        }
+
+        /// <summary>
+        /// Creates team lobby for the bot game
+        /// </summary>
+        /// <param name="queueId">The id of selected queue</param>
+        /// <param name="botLevel">The difficulty of the bots</param>
+        /// <returns>LobbyStatus</returns>
+        public static Task<LobbyStatus> CreateArrangedBotTeamLobby(double queueId, string botLevel)
+        {
+            return InvokeAsync<LobbyStatus>("lcdsGameInvitationService", "createArrangedBotTeamLobby", queueId, botLevel);
+        }
+
+        /// <summary>
+        /// Declines invite to the ranked team
+        /// </summary>
+        /// <param name="teamId">The id of inviting team</param>
+        /// <returns></returns>
+        public static Task<object> DeclineTeamInvite(TeamId teamId)
+        {
+            return InvokeAsync<object>("summonerTeamService", "leaveTeam", teamId);
+        }
+
+        /// <summary>
+        /// Accept invite to the ranked team
+        /// </summary>
+        /// <param name="teamId">The id of inviting team</param>
+        /// <returns></returns>
+        public static Task<object> AcceptTeamInvite(TeamId teamId)
+        {
+            return InvokeAsync<object>("summonerTeamService", "joinTeam", teamId);
+        }
+
+        /// <summary>
+        /// Kicks the bot from custom game lobby
+        /// </summary>
+        /// <param name="champId">The id of kicked bot</param>
+        /// <param name="item">The bot info object</param>
+        /// <returns></returns>
+        public static Task<object> RemoveBotChampion(int champId, BotParticipant item)
+        {
+            return InvokeAsync<object>("gameService", "removeBotChampion", champId, item);
+        }
+
+        /// <summary>
+        /// Adds the bot from custom game lobby
+        /// </summary>
+        /// <param name="champId">The id of added bot</param>
+        /// <param name="item">The bot info object</param>
+        /// <returns></returns>
+        public static Task<object> SelectBotChampion(int champId, BotParticipant item)
+        {
+            return InvokeAsync<object>("gameService", "selectBotChampion", champId, item);
+        }
+
+        /// <summary>
+        /// Leave all queues
+        /// </summary>
+        /// <returns></returns>
+        public static Task<object> PurgeFromQueues()
+        {
+            return InvokeAsync<object>("gameService", "selectBotChampion");
+        }
+
+        /// <summary>
+        /// Transfers ownership of the Lobby
+        /// </summary>
+        /// <param name="summonerId">Id of the summoner</param>
+        /// <returns></returns>
+        public static Task<object> MakeOwner(double summonerId)
+        {
+            return InvokeAsync<object>("lcdsGameInvitationService", "transferOwnership", summonerId);
+        }
 
 
         public static Task<T> InvokeAsync<T>(string destination, string method, params object[] argument)
