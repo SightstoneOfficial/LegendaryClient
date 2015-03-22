@@ -312,7 +312,7 @@ namespace LegendaryClient.Windows
 
                 //Start recieving champ select
                 ChampSelect_OnMessageReceived(this, latestDto);
-                Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
+                //Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
                 Client.RiotConnection.MessageReceived += ChampSelect_OnMessageReceived;
             }
         }
@@ -542,7 +542,7 @@ namespace LegendaryClient.Windows
                         Client.inQueueTimer.Visibility = Visibility.Visible;
                         Client.NotificationGrid.Children.Add(pop);
                         Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
-                        Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
+                        //Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
                         Client.GameStatus = "inQueue";
                         Client.SetChatHover();
                         Client.SwitchPage(previousPage);
@@ -570,7 +570,10 @@ namespace LegendaryClient.Windows
                         var control = new ChampSelectPlayer();
                         //Cast AramPlayers as PlayerParticipants. This removes reroll data
                         if (tempParticipant is AramPlayerParticipant)
-                            tempParticipant = new PlayerParticipant(tempParticipant.GetBaseTypedObject());
+                        {
+                            tempParticipant = new PlayerParticipant();
+                            //tempParticipant = new PlayerParticipant();
+                        }
 
                         if (tempParticipant is PlayerParticipant)
                         {

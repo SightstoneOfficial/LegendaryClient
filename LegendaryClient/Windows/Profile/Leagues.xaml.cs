@@ -116,10 +116,10 @@ namespace LegendaryClient.Windows.Profile
                     item.WinsLabel.Content = player.Wins;
                     item.LpLabel.Content = player.LeaguePoints;
 
-                    var miniSeries = player.MiniSeries as TypedObject;
+                    var miniSeries = player.MiniSeries;
                     if (miniSeries != null)
                     {
-                        item.LpLabel.Content = ((string) miniSeries["progress"]).Replace('N', '-');
+                        item.LpLabel.Content = player.MiniSeries.Progress.Replace('N', '-');
                     }
 
                     LeaguesListView.Items.Add(item);

@@ -41,7 +41,7 @@ namespace LegendaryClient.Controls
 
         private async void SelectTeam_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            LobbyStatus lobby = await RiotCalls.createArrangedRankedTeamLobby(Client.QueueId, TeamList.SelectedItem.ToString());
+            LobbyStatus lobby = await RiotCalls.CreateArrangedRankedTeamLobby(Client.QueueId, TeamList.SelectedItem.ToString());
 
             TeamId SelectedTeamId = TeamIdList[TeamList.SelectedIndex];
             Client.ClearPage(typeof(TeamQueuePage));

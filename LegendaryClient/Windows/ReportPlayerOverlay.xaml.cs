@@ -1,7 +1,9 @@
 ﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.Riot;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
 {

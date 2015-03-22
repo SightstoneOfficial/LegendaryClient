@@ -288,9 +288,9 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                string currentLp = "";
-                string currentTier = "";
-                bool inPromo = false;
+                string CurrentLP = "";
+                string CurrentTier = "";
+                bool InPromo = false;
                 if (result.SummonerLeagues != null && result.SummonerLeagues.Count > 0)
                 {
                     foreach (
@@ -300,7 +300,7 @@ namespace LegendaryClient.Windows
                         Client.Tier = leagues.RequestorsRank;
                         Client.TierName = leagues.Tier;
                         Client.LeagueName = leagues.Name;
-                        currentTier = leagues.Tier + " " + leagues.RequestorsRank;
+                        CurrentTier = leagues.Tier + " " + leagues.RequestorsRank;
                         List<LeagueItemDTO> players =
                             leagues.Entries.OrderBy(o => o.LeaguePoints)
                                 .Where(item => item.Rank == leagues.RequestorsRank)
@@ -310,16 +310,13 @@ namespace LegendaryClient.Windows
                             if (player.PlayerOrTeamName != Client.LoginPacket.AllSummonerData.Summoner.Name)
                                 continue;
 
-                            var miniSeries = player.MiniSeries as TypedObject;
-                            string series = "";
-                            if (miniSeries != null)
+                            string Series = "";
+                            if (player.MiniSeries != null)
                             {
-                                series = ((string)miniSeries["progress"]).Replace('N', '-');
-                                inPromo = true;
+                                Series = player.MiniSeries.Progress.Replace('N', '-');
+                                InPromo = true;
                             }
-                            currentLp = (player.LeaguePoints == 100
-                                ? series
-                                : Convert.ToString(player.LeaguePoints));
+                            CurrentLP = (player.LeaguePoints == 100 ? Series : Convert.ToString(player.LeaguePoints));
                         }
                     }
                 }
@@ -329,22 +326,19 @@ namespace LegendaryClient.Windows
                     PlayerProgressLabel.Content = "Level 30";
                     PlayerCurrentProgressLabel.Content = "";
                     PlayerAimProgressLabel.Content = "";
+                    return;
                 }
 
-                PlayerProgressLabel.Content = currentTier;
-                if (inPromo)
+                PlayerProgressLabel.Content = CurrentTier;
+                if (InPromo)
                 {
-                    PlayerCurrentProgressLabel.Content = currentLp.Replace('N', '-');
+                    PlayerCurrentProgressLabel.Content = CurrentLP.Replace('N', '-');
                     PlayerProgressBar.Value = 100;
                 }
                 else
                 {
-                    if (string.IsNullOrEmpty(currentLp))
-                        currentLp = "0";
-
-                    PlayerCurrentProgressLabel.Content = currentLp + "LP";
-                    Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + " ∙ Tier: " + currentTier + " ∙ LP: " + currentLp;
-                    PlayerProgressBar.Value = Convert.ToInt32(currentLp);
+                    PlayerCurrentProgressLabel.Content = CurrentLP + "LP";
+                    PlayerProgressBar.Value = Convert.ToInt32(CurrentLP);
                 }
             }));
         }

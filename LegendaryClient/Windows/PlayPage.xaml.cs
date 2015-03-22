@@ -360,28 +360,28 @@ namespace LegendaryClient.Windows
             await LeaveAllQueues();
         }
 
-        private void EnteredQueue(SearchingForMatchNotification result)
+        private async void EnteredQueue(SearchingForMatchNotification result)
         {
             if (result.PlayerJoinFailures != null)
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    var leaver = new QueueDodger(result.PlayerJoinFailures[0] as TypedObject);
+                    var leaver = result.PlayerJoinFailures[0];
                     if (leaver.ReasonFailed == "LEAVER_BUSTED")
                     {
-                        Client.Log("LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
+                        var x = (BustedLeaver)(object)leaver;
+                        Client.Log("LeaverBuster, Access token is: " + x.AccessToken);
                         var reQueue = new Timer
                         {
-                            Interval =
-                                new BustedLeaver((TypedObject) result.PlayerJoinFailures[0]).LeaverPenaltyMilisRemaining
+                            Interval = x.LeaverPenaltyMilisRemaining
                         };
-                        reQueue.Elapsed += async (x, d) =>
+                        reQueue.Elapsed += async (m, d) =>
                         {
                             EnteredQueue(await RiotCalls.AttachToQueue(
                                 param,
                                 new ASObject
                                 {
-                                    Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken
+                                    Token = x.AccessToken
                                 }));
 
                             Client.OverlayContainer.Visibility = Visibility.Hidden;
@@ -394,7 +394,7 @@ namespace LegendaryClient.Windows
                             MessageTextBox = { Text = "" }
                         };
                         Timer t = new Timer { Interval = 1000 };
-                        var timeleft = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).LeaverPenaltyMilisRemaining;
+                        var timeleft = x.LeaverPenaltyMilisRemaining;
                         t.Elapsed += (messafge, mx) =>
                         {
                             timeleft = timeleft - 1000;
@@ -430,7 +430,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                         var settings = (QueueButtonConfig) LastSender.Tag;
                         var config = settings.GameQueueConfig;
                         Queues.Remove(config.Id);
-                        var failure = new QueueDodger(result.PlayerJoinFailures[0] as TypedObject);
+                        var failure = result.PlayerJoinFailures[0];
                         var message = new MessageOverlay
                         {
                             MessageTitle = { Content = "Failed to join queue" },

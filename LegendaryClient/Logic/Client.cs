@@ -1208,26 +1208,12 @@ namespace LegendaryClient.Logic
 
         internal static void FixLobby()
         {
-            if (OnFixLobby == null)
-                return;
 
-            foreach (Delegate d in OnFixLobby.GetInvocationList())
-            {
-                RiotCalls.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
-                OnFixLobby -= (PVPNetConnection.OnMessageReceivedHandler)d;
-            }
         }
 
         internal static void FixChampSelect()
         {
-            if (OnFixChampSelect == null)
-                return;
 
-            foreach (Delegate d in OnFixChampSelect.GetInvocationList())
-            {
-                RiotCalls.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
-                OnFixChampSelect -= (PVPNetConnection.OnMessageReceivedHandler)d;
-            }
         }
 
         #endregion League Of Legends Logic

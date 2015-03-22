@@ -689,7 +689,7 @@ namespace LegendaryClient.Windows
                     messageOver.MessageTitle.Content = "Could not join the queue";
                     foreach (var item in result.PlayerJoinFailures)
                     {
-                        var x = new QueueDodger(item as TypedObject);
+                        var x = (QueueDodger)item;
                         TimeSpan time = TimeSpan.FromMilliseconds(x.PenaltyRemainingTime);
                         switch (x.ReasonFailed)
                         {
@@ -715,9 +715,9 @@ namespace LegendaryClient.Windows
                                 messageOver.MessageTextBox.Text += " - Not enough players for this queue type.";
                                 break;
                             case "LEAVER_BUSTED":
-                                Client.Log("Busting LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
-                                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters,
-                                    new ASObject { Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken }));
+
+                                Client.Log("Busting LeaverBuster, Access token is: " + (((object)result.PlayerJoinFailures[0]) as BustedLeaver).AccessToken);
+                                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters, new ASObject { Token = (((object)result.PlayerJoinFailures[0]) as BustedLeaver).AccessToken }));
                                 break;
                             case "RANKED_NUM_CHAMPS":
                                 messageOver.MessageTextBox.Text += " - You require at least 16 owned champions to play a Normal Draft / Ranked game.";

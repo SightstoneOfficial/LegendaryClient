@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
+using System.Runtime.Remoting.Contexts;
 using System.Web.Script.Serialization;
 using LegendaryClient.Logic.Riot.Leagues;
+using RtmpSharp.IO;
 
 namespace LegendaryClient.Logic.JSON
 {
@@ -10,12 +14,12 @@ namespace LegendaryClient.Logic.JSON
         {
             var newItem = new PromoteItem();
             var serializer = new JavaScriptSerializer();
-            var deserializedJson = serializer.Deserialize<TypedObject>(json);
+            var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(json);
             var leagueItem = deserializedJson["leagueItem"] as Dictionary<string, object>;
             if (leagueItem == null)
                 return newItem;
 
-            var asd = new TypedObject();
+            var asd = new AsObject();
             newItem.notifyReason = deserializedJson["notifyReason"] as string;
             newItem.LeaguePointsDelta = deserializedJson["leaguePointsDelta"] as int?;
             newItem.LeaguePointsDelta = deserializedJson["gameId"] as int?;
@@ -23,7 +27,7 @@ namespace LegendaryClient.Logic.JSON
             {
                 asd.Add(item.Key,item.Value);
             }
-            newItem.leagueItem = new LeagueItemDTO(asd);
+            newItem.leagueItem = (LeagueItemDTO)(object)asd;
             return newItem;
         }
     }
