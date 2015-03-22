@@ -163,16 +163,8 @@ namespace LegendaryClient.Windows
                                     select s).ToList();
 
                 //* to remove just remove one slash from the comment
-                Client.Champions.Clear();
                 //Pls bard the tard for april fools
-                foreach (var champs in Client.SQLiteDatabase.Table<champions>().Where(champs => (DateTime.Now.Month == 4) && (DateTime.Now.Day == 1))) {
-                    if (champs.displayName == "bard" || champs.name == "bard")
-                    {
-                        champs.displayName = "tard";
-                        champs.name = "tard";
-                    }
-                    Client.Champions.Add(champs);
-                }
+                Client.Champions.Find(bard => bard.name == "Bard").displayName = "Tard";
                 //*/
             }
             catch (Exception e) // Database broken?
@@ -471,11 +463,10 @@ namespace LegendaryClient.Windows
             Client.PlayerChampions = await Client.PVPNet.GetAvailableChampions();
             Client.PVPNet.OnError -= PVPNet_OnError;
             Client.GameConfigs = packet.GameTypeConfigs;
-            /*
+            
             Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
             Client.PVPNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
             Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
-            //*/
             Client.IsLoggedIn = true;
 
 
@@ -483,7 +474,7 @@ namespace LegendaryClient.Windows
             {
                 Client.StatusContainer.Visibility = Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
-
+                /*
                 var newCredentials = new AuthenticationCredentials
                 {
                     Username = LoginUsernameBox.Text,
@@ -503,7 +494,7 @@ namespace LegendaryClient.Windows
                 }
                 else
                     os = ossplit[0];
-
+                
                 newCredentials.OperatingSystem = os;
                 newCredentials.OperatingSystem = "Windows 7";
                 Session login = await Client.PVPNet.Login(newCredentials);
@@ -512,10 +503,11 @@ namespace LegendaryClient.Windows
                 Client.PVPNet.Subscribe("bc", packet.AllSummonerData.Summoner.AcctId);
                 Client.PVPNet.Subscribe("cn", packet.AllSummonerData.Summoner.AcctId);
                 Client.PVPNet.Subscribe("gn", packet.AllSummonerData.Summoner.AcctId);
-
+                
                 var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
                 var result = System.Convert.ToBase64String(plainTextBytes);
                 await Client.PVPNet.Login(result);
+                //*/
                 //Setup chat
                 if (!Client.Garena)
                 {
