@@ -31,6 +31,7 @@ namespace LegendaryClient.Controls
 
         private async void ChampPlayer_MouseOver(object sender, MouseEventArgs e)
         {
+            /*
             if (!KnownPar)
                 return;
 
@@ -206,7 +207,7 @@ namespace LegendaryClient.Controls
                     }
                 }
                 catch { }
-            }
+            }//*/
         }
 
         private void ChampPlayer_MouseLeave(object sender, MouseEventArgs e)
