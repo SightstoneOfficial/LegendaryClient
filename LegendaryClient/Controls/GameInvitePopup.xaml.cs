@@ -218,7 +218,7 @@ namespace LegendaryClient.Controls
             if (gameType == "PRACTICE_GAME")
             {
 #pragma warning disable 4014
-                RiotCalls.Accept(invitationID);
+                RiotCalls.AcceptInvite(invitationID);
                 Client.SwitchPage(new CustomGameLobbyPage(tempDTO));
             }
             //goddammit teambuilder

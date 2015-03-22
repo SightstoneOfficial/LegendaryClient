@@ -34,18 +34,6 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<Session>("loginService", "login", Credentials);
         }
 
-        public static Task<bool> IsNameValidAndAvailable(String Name)
-        {
-            return InvokeAsync<bool>("summonerTeamService", "isNameValidAndAvailable", Name);
-        }
-
-        //createArrangedRankedTeamLobby
-
-        public static Task<Session> Accept(string id)
-        {
-            return InvokeAsync<Session>("lcdsGameInvitationService", "accept", id);
-        }
-
         /// <summary>
         /// Heartbeat to send every 2 minutes.
         /// </summary>
@@ -1099,7 +1087,7 @@ namespace LegendaryClient.Logic.Riot
 
             if (Status == "QUEUE")
             {
-
+                Task.Delay(Convert.ToInt32(deserializedJSON["delay"]));
             }
 
             return (string)deserializedJSON["token"];

@@ -52,7 +52,7 @@ namespace LegendaryClient.Windows
                     notification.Accept.Click += (s, e) =>
                     {
                         Client.SwitchPage(new TeamQueuePage(data1.stats.InvitationId));
-                        RiotCalls.Accept(data1.stats.InvitationId);
+                        RiotCalls.AcceptInvite(data1.stats.InvitationId);
                         Client.InviteData.Remove(data1.stats.InvitationId);
                     };
                     notification.Decline.Click += (s, e) =>
