@@ -27,20 +27,13 @@ using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
 using Newtonsoft.Json;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Broadcast;
-using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Boost;
 using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Crypto;
+using LegendaryClient.Logic.Riot.Leagues;
+using LegendaryClient.Logic.Riot.Platform;
 
 #endregion
 

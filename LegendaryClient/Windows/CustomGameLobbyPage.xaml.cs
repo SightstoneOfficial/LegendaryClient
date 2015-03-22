@@ -5,8 +5,6 @@ using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
 {

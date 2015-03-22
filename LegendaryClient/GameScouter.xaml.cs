@@ -4,11 +4,6 @@ using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows.Profile;
 using MahApps.Metro.Controls;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Runes;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +17,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient
 {

@@ -11,14 +11,11 @@ using LegendaryClient.Logic.UpdateRegion;
 using LegendaryClient.Properties;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Login;
 using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -36,6 +33,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Platform;
+using Brush = System.Windows.Media.Brush;
+using Point = System.Windows.Point;
 
 namespace LegendaryClient.Windows
 {

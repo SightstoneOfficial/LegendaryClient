@@ -18,7 +18,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using LegendaryClient.Logic.Replays;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
 {

@@ -1,13 +1,13 @@
 ﻿using LegendaryClient.Logic;
 using LegendaryClient.Logic.Player;
 using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using LegendaryClient.Logic.Riot.Leagues;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Controls
 {

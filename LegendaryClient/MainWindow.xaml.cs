@@ -3,7 +3,6 @@ using LegendaryClient.Logic;
 using LegendaryClient.Windows;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
-using PVPNetConnect;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

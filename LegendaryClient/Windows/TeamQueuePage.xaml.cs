@@ -6,14 +6,6 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
 using Newtonsoft.Json;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Game.Message;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
-using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using PVPNetConnect.RiotObjects.Team;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -27,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows

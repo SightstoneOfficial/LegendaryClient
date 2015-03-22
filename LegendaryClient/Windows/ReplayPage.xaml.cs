@@ -3,8 +3,6 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 using RtmpSharp.IO;
 using System;
 using System.Diagnostics;

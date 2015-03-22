@@ -14,15 +14,6 @@ using LegendaryClient.Windows;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using Newtonsoft.Json;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-using PVPNetConnect.RiotObjects.Platform.Clientfacade.Domain;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Game.Message;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Login;
-using PVPNetConnect.RiotObjects.Platform.Messaging;
-using PVPNetConnect.RiotObjects.Platform.Messaging.Persistence;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -45,9 +36,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.Net;
 using Button = System.Windows.Controls.Button;
-using EndOfGameStats = PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats;
-using Error = PVPNetConnect.Error;
 using Image = System.Windows.Controls.Image;
 using Label = System.Windows.Controls.Label;
 using ListView = System.Windows.Controls.ListView;
@@ -122,7 +112,7 @@ namespace LegendaryClient.Logic
         public static bool InstaCall = false;
         public static string CallString = string.Empty;
 
-        internal static Dictionary<string, PVPNetConnection> pvpnetlist = new Dictionary<string, PVPNetConnection>();
+        //internal static Dictionary<string, PVPNetConnection> pvpnetlist = new Dictionary<string, PVPNetConnection>();
 
         internal static LoginDataPacket AddAccount()
         {
@@ -137,20 +127,6 @@ namespace LegendaryClient.Logic
             accountslist.Add(packet.AllSummonerData.Summoner.Name, packet);
 
             return packet;
-        }
-
-        internal static async Task<LoginDataPacket> AddAccount(string username, string password) //needs finished haha
-        {
-            var pvp = new PVPNetConnection();
-            var credentials = new AuthenticationCredentials
-            {
-                ClientVersion = Version,
-                AuthToken = string.Empty,
-                Password = password,
-                IpAddress = string.Empty
-            };
-            await pvp.Login(credentials);
-            return new LoginDataPacket();
         }
 
         internal static bool Filter = true;
@@ -224,16 +200,6 @@ namespace LegendaryClient.Logic
         ///     Riot's database with all the client data
         /// </summary>
         internal static SQLiteConnection SQLiteDatabase;
-
-        /// <summary>
-        ///     Fix for champ select. Do not use this!
-        /// </summary>
-        internal static event PVPNetConnection.OnMessageReceivedHandler OnFixChampSelect;
-
-        /// <summary>
-        ///     Allow lobby to still have a connection. Do not use this!
-        /// </summary>
-        internal static event PVPNetConnection.OnMessageReceivedHandler OnFixLobby;
 
         /// <summary>
         ///     The database of all the champions
@@ -359,11 +325,6 @@ namespace LegendaryClient.Logic
             else
                 chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
             MainWin.FlashWindow();
-        }
-
-        internal static async void GameInvite(object sender, PVPNetConnection PVPConnect, string GameID)
-        {
-            await PVPConnect.Accept(GameID);
         }
 
         internal static void ChatClientConnect(object sender)
@@ -838,7 +799,7 @@ namespace LegendaryClient.Logic
         /// <summary>
         ///     Main connection to the League of Legends server
         /// </summary>
-        internal static PVPNetConnection PVPNet;
+        internal static RtmpClient RiotConnection;
 
         /// <summary>
         ///     Packet recieved when initially logged on. Cached so the packet doesn't
@@ -909,9 +870,7 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static void PVPNet_OnError(object sender, Error error)
         {
-            Log(error.Type.ToString(), "PVPNetError");
-            Log(error.Message, "PVPNetError");
-            Log(error.ErrorCode, "PVPNetError");
+
         }
 #pragma warning disable 4014
 
@@ -942,7 +901,7 @@ namespace LegendaryClient.Logic
                                 break;
                             case "PLAYER_QUIT":
                                 messageOver.MessageTitle.Content = "Player quit";
-                                var name = await PVPNet.GetSummonerNames(new double[] { Convert.ToDouble(notification.MessageArgument) });
+                                var name = await PVPNet.GetSummonerNames(new[] { Convert.ToDouble(notification.MessageArgument) });
                                 messageOver.MessageTextBox.Text = name[0] + " quit from queue!";
                                 break;
                             default:
@@ -956,9 +915,9 @@ namespace LegendaryClient.Logic
                         if (notification.Type != "PLAYER_QUIT")
                             SwitchPage(new MainPage());
                     }
-                    else if (message is EndOfGameStats)
+                    else if (message is Riot.Platform.EndOfGameStats)
                     {
-                        var stats = message as Riot.Platform.EndOfGameStats;
+                        var stats = (Riot.Platform.EndOfGameStats)message;
                         var EndOfGame = new EndOfGamePage(stats);
                         ClearPage(typeof(TeamQueuePage));
                         OverlayContainer.Visibility = Visibility.Visible;

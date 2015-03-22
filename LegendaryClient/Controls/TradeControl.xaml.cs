@@ -2,7 +2,7 @@
 
 using System.Windows;
 using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Trade;
+using LegendaryClient.Logic.Riot.Platform;
 
 #endregion
 

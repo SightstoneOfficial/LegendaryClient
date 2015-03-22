@@ -2,7 +2,6 @@
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
-using PVPNetConnect.RiotObjects.Platform.Game;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -14,6 +13,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using LegendaryClient.Logic.Riot.Platform;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Drawing.Color;
 using Image = System.Windows.Controls.Image;

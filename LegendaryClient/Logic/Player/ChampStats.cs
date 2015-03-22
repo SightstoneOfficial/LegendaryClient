@@ -1,11 +1,10 @@
 ﻿using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows.Profile;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Logic.Player
 {

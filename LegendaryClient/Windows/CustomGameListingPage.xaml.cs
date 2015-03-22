@@ -1,10 +1,10 @@
 ﻿using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
-using PVPNetConnect.RiotObjects.Platform.Game.Practice;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
 {

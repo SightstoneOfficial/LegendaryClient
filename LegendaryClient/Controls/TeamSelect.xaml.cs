@@ -1,11 +1,9 @@
 ﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows;
-using PVPNetConnect.RiotObjects.Team.Dto;
-using PVPNetConnect.RiotObjects.Team;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect;
 using System.Windows;
 using System.Collections.Generic;
+using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.Riot.Team;
 
 
 namespace LegendaryClient.Controls

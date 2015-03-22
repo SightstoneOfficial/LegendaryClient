@@ -1,11 +1,6 @@
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
 using LegendaryClient.Windows.Profile;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
-using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
-using PVPNetConnect.RiotObjects.Platform.Summoner;
-using PVPNetConnect.RiotObjects.Team.Dto;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +9,8 @@ using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.Riot.Team;
 
 namespace LegendaryClient.Windows
 {

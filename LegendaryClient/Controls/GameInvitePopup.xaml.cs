@@ -2,12 +2,11 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using Newtonsoft.Json;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
 using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Controls
 {

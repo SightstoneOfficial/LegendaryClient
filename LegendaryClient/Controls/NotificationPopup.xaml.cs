@@ -8,7 +8,6 @@ using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Windows;
-using PVPNetConnect.RiotObjects.Team;
 
 #endregion
 

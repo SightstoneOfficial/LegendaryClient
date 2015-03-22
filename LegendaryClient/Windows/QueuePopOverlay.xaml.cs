@@ -1,9 +1,6 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SoundLogic;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Leagues.Client.Dto;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,6 +10,8 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Leagues;
+using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows

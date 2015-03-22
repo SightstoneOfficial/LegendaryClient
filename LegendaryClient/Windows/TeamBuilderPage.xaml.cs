@@ -9,12 +9,6 @@ using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
 using Newtonsoft.Json;
-using PVPNetConnect.RiotObjects.Platform.Catalog.Champion;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.ServiceProxy.Dispatch;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Masterybook;
-using PVPNetConnect.RiotObjects.Platform.Summoner.Spellbook;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -30,6 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows
