@@ -92,7 +92,7 @@ namespace LegendaryClient.Windows
             ProfileImage.Source = Client.GetImage(uriSource);
 
             PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(s);
-            if (n.GameName != null)
+            if (n != null && n.GameName != null)
             {
                 InGameHeader.Visibility = Visibility.Visible;
                 InGameHeader.IsSelected = true;
@@ -134,15 +134,6 @@ namespace LegendaryClient.Windows
                 overview.Update(summoner.SummonerId, summoner.AcctId);
 
             //RiotCalls.Call(Guid.NewGuid().ToString(), "championMastery", "getAllChampionMasteries", "[" + summoner.SummonerId + "]");
-        }
-        private void PVPNet_OnMessageReceived(object sender, object message)
-        {
-
-            if (message.GetType() == typeof(LcdsServiceProxyResponse))
-            {
-                var serializer = new JavaScriptSerializer();
-                //var deserializedJson = serializer.Deserialize<List<ChampionMastery>>((message as LcdsServiceProxyResponse).Payload);
-            }
         }
 
         private void GotLeaguesForPlayer(SummonerLeaguesDTO result)

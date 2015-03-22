@@ -36,6 +36,7 @@ using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.Messaging;
 
 #endregion
 
@@ -398,11 +399,11 @@ namespace LegendaryClient.Windows
             //Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
-        private void PVPNet_OnMessageReceived(object sender, object message)
+        private void PVPNet_OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                if (!(message is BroadcastNotification))
+                if (!(message.Body is BroadcastNotification))
                     return;
 
                 //var notif = message as BroadcastNotification;

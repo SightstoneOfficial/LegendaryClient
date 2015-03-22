@@ -28,6 +28,7 @@ using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Riot.com.riotgames.platform.serviceproxy.dispatch;
+using RtmpSharp.Messaging;
 
 namespace LegendaryClient.Windows
 {
@@ -140,16 +141,16 @@ namespace LegendaryClient.Windows
             newRoom.OnParticipantJoin -= newRoom_OnParticipantJoin;
         }
 
-        private void PVPNet_OnMessageReceived(object sender, object message)
+        private void PVPNet_OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
-            if (message.GetType() == typeof(LcdsServiceProxyResponse))
+            if (message.Body.GetType() == typeof(LcdsServiceProxyResponse))
             {
-                var ProxyResponse = message as LcdsServiceProxyResponse;
+                var ProxyResponse = message.Body as LcdsServiceProxyResponse;
                 HandleProxyResponse(ProxyResponse);
             }
-            if (message.GetType() == typeof(GameDTO))
+            if (message.Body.GetType() == typeof(GameDTO))
             {
-                var ChampDTO = message as GameDTO;
+                var ChampDTO = message.Body as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     if (ChampDTO.GameState == "START_REQUESTED")
@@ -159,11 +160,11 @@ namespace LegendaryClient.Windows
                     }
                 }));
             }
-            else if (message.GetType() == typeof(PlayerCredentialsDto))
+            else if (message.Body.GetType() == typeof(PlayerCredentialsDto))
             {
                 #region Launching Game
 
-                var dto = message as PlayerCredentialsDto;
+                var dto = message.Body as PlayerCredentialsDto;
                 Client.CurrentGame = dto;
 
                 if (!HasLaunchedGame)

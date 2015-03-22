@@ -13,6 +13,7 @@ using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.Messaging;
 using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows
@@ -58,13 +59,13 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { TimerLabel.Content = TimeLeft; }));
         }
 
-        private void PVPNet_OnMessageReceived(object sender, object message)
+        private void PVPNet_OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
-            if (message.GetType() == typeof(GameDTO))
+            if (message.Body.GetType() == typeof(GameDTO))
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    var QueueDTO = message as GameDTO;
+                    var QueueDTO = message.Body as GameDTO;
                     if (QueueDTO != null && QueueDTO.GameState == "TERMINATED")
                     {
                         Client.OverlayContainer.Visibility = Visibility.Hidden;

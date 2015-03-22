@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.Messaging;
 
 namespace LegendaryClient.Windows
 {
@@ -49,11 +50,11 @@ namespace LegendaryClient.Windows
             Client.RiotConnection.MessageReceived += GameLobby_OnMessageReceived;
             //If client has created game use initial DTO
             if (Client.GameLobbyDTO != null)
-                GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
+                Lobby_OnMessageReceived(null, Client.GameLobbyDTO);
             else
             {
                 Client.GameLobbyDTO = gameLobby;
-                GameLobby_OnMessageReceived(null, Client.GameLobbyDTO);
+                Lobby_OnMessageReceived(null, Client.GameLobbyDTO);
             }
             Client.InviteListView = InviteListView;
             Client.CurrentPage = this;
@@ -61,9 +62,14 @@ namespace LegendaryClient.Windows
             Client.ReturnButton.Content = "Return to Custom Game Lobby";
         }
 
-        private void GameLobby_OnMessageReceived(object sender, object message)
+        private void GameLobby_OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
-            if (message == null)
+            Lobby_OnMessageReceived(sender, message.Body);
+        }
+
+        private void Lobby_OnMessageReceived(object sender, object message)
+        {
+            if (message != null && message == null)
                 return;
 
             if (message.GetType() != typeof(GameDTO))

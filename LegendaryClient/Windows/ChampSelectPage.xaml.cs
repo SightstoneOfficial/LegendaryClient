@@ -22,6 +22,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using RtmpSharp.Messaging;
 using Color = System.Drawing.Color;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using ListViewItem = System.Windows.Controls.ListViewItem;
@@ -311,7 +312,7 @@ namespace LegendaryClient.Windows
                 RenderChamps(false);
 
                 //Start recieving champ select
-                ChampSelect_OnMessageReceived(this, latestDto);
+                Select_OnMessageReceived(this, latestDto);
                 //Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
                 Client.RiotConnection.MessageReceived += ChampSelect_OnMessageReceived;
             }
@@ -327,12 +328,17 @@ namespace LegendaryClient.Windows
             LobbyTimeLabel2.Content = counter;
         }
 
+        private void ChampSelect_OnMessageReceived(object sender, MessageReceivedEventArgs message)
+        {
+            Select_OnMessageReceived(sender, message.Body);
+        }
+
         /// <summary>
         ///     Main logic behind Champion Select
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="message"></param>
-        private void ChampSelect_OnMessageReceived(object sender, object message)
+        private void Select_OnMessageReceived(object sender, object message)
         {
             if (message is GameDTO)
             {

@@ -29,7 +29,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -46,6 +45,7 @@ using Timer = System.Windows.Forms.Timer;
 using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform.Messaging.Persistence;
+using RtmpSharp.Messaging;
 
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
@@ -860,28 +860,18 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static PlayerCredentialsDto CurrentGame;
 
-        internal static Session PlayerSession;
-
         internal static bool AutoAcceptQueue = false;
         internal static object LobbyContent;
         internal static object LastPageContent;
         internal static bool IsInGame = false;
         internal static bool RunonePop = false;
-
-        /// <summary>
-        ///     When an error occurs while connected. Currently just logged
-        /// </summary>
-        internal static void PVPNet_OnError(object sender, Error error)
-        {
-
-        }
 #pragma warning disable 4014
 
-        internal static void OnMessageReceived(object sender, object message)
+        internal static void OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
             MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
-                var balance = message as StoreAccountBalanceNotification;
+                var balance = message.Body as StoreAccountBalanceNotification;
                 if (balance != null)
                 {
                     StoreAccountBalanceNotification newBalance = balance;
@@ -891,7 +881,7 @@ namespace LegendaryClient.Logic
                 }
                 else
                 {
-                    var gameNotification = message as GameNotification;
+                    var gameNotification = message.Body as GameNotification;
                     if (gameNotification != null)
                     {
                         GameNotification notification = gameNotification;
@@ -918,26 +908,26 @@ namespace LegendaryClient.Logic
                         if (notification.Type != "PLAYER_QUIT")
                             SwitchPage(new MainPage());
                     }
-                    else if (message is Riot.Platform.EndOfGameStats)
+                    else if (message.Body is Riot.Platform.EndOfGameStats)
                     {
-                        var stats = (Riot.Platform.EndOfGameStats)message;
+                        var stats = (Riot.Platform.EndOfGameStats)message.Body;
                         var EndOfGame = new EndOfGamePage(stats);
                         ClearPage(typeof(TeamQueuePage));
                         OverlayContainer.Visibility = Visibility.Visible;
                         OverlayContainer.Content = EndOfGame.Content;
                     }
-                    else if (message is StoreFulfillmentNotification)
+                    else if (message.Body is StoreFulfillmentNotification)
                     {
                         PlayerChampions = await RiotCalls.GetAvailableChampions();
                     }
-                    else if (message is Inviter)
+                    else if (message.Body is Inviter)
                     {
-                        var stats = message as Inviter;
+                        var stats = message.Body as Inviter;
                         //CurrentInviter = stats;
                     }
-                    else if (message is InvitationRequest)
+                    else if (message.Body is InvitationRequest)
                     {
-                        var stats = message as InvitationRequest;
+                        var stats = message.Body as InvitationRequest;
                         if (stats.Inviter == null)
                             return;
 
@@ -963,9 +953,9 @@ namespace LegendaryClient.Logic
                         }));
                         MainWin.FlashWindow();
                     }
-                    else if (message is ClientLoginKickNotification)
+                    else if (message.Body is ClientLoginKickNotification)
                     {
-                        var kick = (ClientLoginKickNotification) message;
+                        var kick = (ClientLoginKickNotification)message.Body;
                         if (kick.sessionToken == null)
                             return;
 
@@ -982,9 +972,9 @@ namespace LegendaryClient.Logic
                         FullNotificationOverlayContainer.Content = Warn.Content;
                         FullNotificationOverlayContainer.Visibility = Visibility.Visible;
                     }
-                    else if (message is SimpleDialogMessage)
+                    else if (message.Body is SimpleDialogMessage)
                     {
-                        var leagueInfo = message as SimpleDialogMessage;
+                        var leagueInfo = message.Body as SimpleDialogMessage;
                         if (leagueInfo.Type == "leagues")
                         {
                             var promote = LeaguePromote.LeaguesPromote(leagueInfo.Params.ToString());
