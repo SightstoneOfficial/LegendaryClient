@@ -36,4 +36,4 @@ artifacts:
 
 notifications:
   - provider: Webhook
-    url: https://webhooks.gitter.im/e/bda62727b7b80a130d60
+    url: https://webhooks.gitter.im/e/7794e768f0946077fb12
