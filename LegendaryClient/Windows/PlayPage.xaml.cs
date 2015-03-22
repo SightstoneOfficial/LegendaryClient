@@ -370,7 +370,7 @@ namespace LegendaryClient.Windows
                     var leaver = result.PlayerJoinFailures[0];
                     if (leaver.ReasonFailed == "LEAVER_BUSTED")
                     {
-                        var x = (BustedLeaver)(object)leaver;
+                        var x = (BustedLeaver)leaver;
                         Client.Log("LeaverBuster, Access token is: " + x.AccessToken);
                         var reQueue = new Timer
                         {
@@ -378,8 +378,7 @@ namespace LegendaryClient.Windows
                         };
                         reQueue.Elapsed += async (m, d) =>
                         {
-                            var obj = new AsObject();
-                            obj.Add("LEAVER_BUSTER_ACCESS_TOKEN", x.AccessToken);
+                            var obj = new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", x.AccessToken } };
                             EnteredQueue(await RiotCalls.AttachToQueue(param, obj));
 
                             Client.OverlayContainer.Visibility = Visibility.Hidden;
@@ -489,7 +488,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
             if (!(message is GameDTO))
                 return;
 
-            var queue = message as GameDTO;
+            var queue = (GameDTO) message;
             if (Client.HasPopped)
                 return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -505,7 +504,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
         {
             if (message is GameDTO)
             {
-                var queue = message as GameDTO;
+                var queue = (GameDTO) message;
                 if (queue.GameState == "TERMINATED")
                 {
                     Client.HasPopped = false;

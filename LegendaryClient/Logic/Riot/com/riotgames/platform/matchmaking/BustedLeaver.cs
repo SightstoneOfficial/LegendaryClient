@@ -6,10 +6,10 @@ namespace LegendaryClient.Logic.Riot.Platform
 {
     [Serializable]
     [SerializedName("com.riotgames.platform.matchmaking.BustedLeaver")]
-    public class BustedLeaver
+    public class BustedLeaver : QueueDodger
     {
-        [SerializedName("reasonFailed")]		
-        public string ReasonFailed { get; set; }
+        //[SerializedName("reasonFailed")]		
+        //public string ReasonFailed { get; set; }
 
         [SerializedName("accessToken")]		
         public string AccessToken { get; set; }
@@ -17,7 +17,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         [SerializedName("leaverPenaltyMillisRemaining")]		
         public double LeaverPenaltyMilisRemaining { get; set; }
 
-        [SerializedName("summoner")]		
-        public Summoner Summoner { get; set; }
+        //[SerializedName("summoner")]		
+        //public Summoner Summoner { get; set; }
     }
 }

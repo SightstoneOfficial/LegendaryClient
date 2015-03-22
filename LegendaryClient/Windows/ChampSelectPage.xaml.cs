@@ -577,8 +577,7 @@ namespace LegendaryClient.Windows
                         //Cast AramPlayers as PlayerParticipants. This removes reroll data
                         if (tempParticipant is AramPlayerParticipant)
                         {
-                            tempParticipant = new PlayerParticipant();
-                            //tempParticipant = new PlayerParticipant();
+                            tempParticipant = (PlayerParticipant)tempParticipant;
                         }
 
                         if (tempParticipant is PlayerParticipant)
