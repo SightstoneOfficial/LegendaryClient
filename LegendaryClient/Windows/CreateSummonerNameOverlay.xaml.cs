@@ -20,9 +20,8 @@ namespace LegendaryClient.Windows
         {
             if (UsernameTextBox.Text.Length > 0)
             {
-                if (await RiotCalls.IsNameValidAndAvailable(UsernameTextBox.Text))
+                if (await RiotCalls.CreateDefaultSummoner(UsernameTextBox.Text) != null)
                 {
-                    await RiotCalls.CreateDefaultSummoner(UsernameTextBox.Text);
                     Client.OverlayContainer.Visibility = Visibility.Hidden;
                     Client.done = true;
                 }
