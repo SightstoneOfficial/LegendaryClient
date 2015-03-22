@@ -259,12 +259,15 @@
     <Compile Include="Logic\Riot\com\riotgames\platform\catalog\runes\Rune.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\catalog\runes\RuneType.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\clientfacade\domain\LoginDataPacket.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\InvitePrivileges.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\InvitationRequest.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\Invitee.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\Inviter.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\LobbyStatus.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\Member.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\gameinvite\contract\Player.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\game\AramPlayerParticipant.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\game\ASObject.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\game\BannedChampion.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\game\BotParticipant.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\game\ChampionBanInfoDTO.cs" />
@@ -282,17 +285,22 @@
     <Compile Include="Logic\Riot\com\riotgames\platform\game\PracticeGameConfig.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\game\practice\PracticeGameSearchResult.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\game\StartChampSelectDTO.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\harassment\HarassmentReport.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\harassment\LcdsResponseString.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\leagues\client\dto\SummonerLeagueItemsDTO.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\leagues\client\dto\SummonerLeaguesDTO.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\login\AuthenticationCredentials.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\login\Session.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\matchmaking\BustedLeaver.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\matchmaking\GameQueueConfig.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\matchmaking\MatchingThrottleConfig.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\matchmaking\MatchMakerParams.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\matchmaking\QueueDodger.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\matchmaking\QueueInfo.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\matchmaking\SearchingForMatchNotification.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\messaging\ClientLoginKickNotification.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\messaging\persistence\SimpleDialogMessage.cs" />
+    <Compile Include="Logic\Riot\com\riotgames\platform\messaging\persistence\SimpleDialogMessageResponse.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\messaging\StoreFulfillmentNotification.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\reroll\pojo\EogPointChangeBreakdown.cs" />
     <Compile Include="Logic\Riot\com\riotgames\platform\reroll\pojo\PointSummary.cs" />
@@ -382,12 +390,7 @@
     <Compile Include="Logic\Region\LAS.cs" />
     <Compile Include="Logic\Region\Garena\SG.cs" />
     <Compile Include="Logic\Region\TR.cs" />
-    <Compile Include="Logic\Replays\EndOfGameStats.cs" />
-    <Compile Include="Logic\Replays\PlayerParticipantStatsSummary.cs" />
-    <Compile Include="Logic\Replays\RawStatDTO.cs" />
     <Compile Include="Logic\Replays\ReplayRecorder.cs" />
-    <Compile Include="Logic\Replays\TeamId.cs" />
-    <Compile Include="Logic\Replays\TeamInfo.cs" />
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
     <Compile Include="Logic\SoundLogic\ChampSelectSound.cs" />
     <Compile Include="Logic\SoundLogic\SelectChampion.cs" />
@@ -1263,6 +1266,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Logic\Riot\ProxyObject\" />
     <Folder Include="Windows\Profile\Teams\" />
   </ItemGroup>
   <ItemGroup>

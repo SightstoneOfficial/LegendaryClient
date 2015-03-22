@@ -22,6 +22,7 @@ using System.Security.Principal;
 using System.Windows.Threading;
 using System.Net;
 using Microsoft.Win32;
+using LegendaryClient.Logic.Riot;
 
 namespace LegendaryClient
 {
@@ -276,7 +277,7 @@ namespace LegendaryClient
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
                 RiotCalls.QuitGame();
-                RiotCalls.Disconnect();
+                Client.RiotConnection.Close();
                 Client.ChatClient.OnDisconnect -= Client.ChatClient_OnDisconnect;
                 Client.ChatClient.Close();
                 Client.ChatClient = null;
@@ -326,7 +327,7 @@ namespace LegendaryClient
                 {
                     RiotCalls.PurgeFromQueues();
                     RiotCalls.Leave();
-                    RiotCalls.Disconnect();
+                    Client.RiotConnection.Close();
                 }
                 Environment.Exit(0);
             }
@@ -338,7 +339,7 @@ namespace LegendaryClient
             {
                 RiotCalls.PurgeFromQueues();
                 RiotCalls.Leave();
-                RiotCalls.Disconnect();
+                Client.RiotConnection.Close();
             }
             Environment.Exit(0);
         }

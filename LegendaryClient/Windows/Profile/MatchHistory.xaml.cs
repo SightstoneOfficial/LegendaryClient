@@ -16,6 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using System.Threading.Tasks;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -36,9 +37,10 @@ namespace LegendaryClient.Windows.Profile
             ReplayLabel.Content = "game not recorded";
         }
 
-        public void Update(double accountId)
+        public async Task<object> Update(double accountId)
         {
-            RiotCalls.GetRecentGames(accountId, GotRecentGames);
+            GotRecentGames(await RiotCalls.GetRecentGames(accountId));
+            return null;
         }
 
         public void GotRecentGames(RecentGames result)

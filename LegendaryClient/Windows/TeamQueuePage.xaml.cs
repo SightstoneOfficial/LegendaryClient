@@ -91,7 +91,7 @@ namespace LegendaryClient.Windows
 
             if (CurrentLobby == null)
             {
-                CurrentLobby = await RiotCalls.getLobbyStatus(Invite);
+                CurrentLobby = await RiotCalls.AcceptInvite(Invite);
             }
             if (CurrentLobby.InvitationID != null)
             {
@@ -326,7 +326,7 @@ namespace LegendaryClient.Windows
                         {
                             LastSender = (Button)sender;
                             var s = (Member)LastSender.Tag;
-                            await RiotCalls.revokeInvite(s.SummonerId);
+                            await RiotCalls.RevokeInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Visible;
@@ -635,7 +635,7 @@ namespace LegendaryClient.Windows
 
 #pragma warning disable 4014
 
-        private void StartGameButton_Click(object sender, RoutedEventArgs e)
+        private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
             if (!inQueue)
             {
@@ -656,7 +656,7 @@ namespace LegendaryClient.Windows
                 parameters.Team = InviteList;
                 parameters.TeamId = selectedTeamId;
                 parameters.BotDifficulty = botDifficulty;
-                RiotCalls.AttachTeamToQueue(parameters, EnteredQueue);
+                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters));
             }
             else
             {
@@ -678,11 +678,11 @@ namespace LegendaryClient.Windows
             Dispatcher.Invoke(() => { StartGameButton.Content = text; });
         }
 
-        private void EnteredQueue(SearchingForMatchNotification result)
+        private async void EnteredQueue(SearchingForMatchNotification result)
         {
             if (result.PlayerJoinFailures != null)
             {
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
                     Client.HasPopped = false;
                     var messageOver = new MessageOverlay();
@@ -716,9 +716,8 @@ namespace LegendaryClient.Windows
                                 break;
                             case "LEAVER_BUSTED":
                                 Client.Log("Busting LeaverBuster, Access token is: " + new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken);
-                                RiotCalls.AttachTeamToQueue(parameters,
-                                    new AsObject { Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken },
-                                    EnteredQueue);
+                                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters,
+                                    new ASObject { Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken }));
                                 break;
                             case "RANKED_NUM_CHAMPS":
                                 messageOver.MessageTextBox.Text += " - You require at least 16 owned champions to play a Normal Draft / Ranked game.";

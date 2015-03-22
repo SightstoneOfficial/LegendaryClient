@@ -228,7 +228,7 @@ namespace LegendaryClient.Controls
             }
             else if (gameType == "NORMAL_GAME" && queueId == 61)
             {
-                Client.SwitchPage(new TeamBuilderPage(false, await RiotCalls.getLobbyStatus(invitationID)));
+                Client.SwitchPage(new TeamBuilderPage(false, await RiotCalls.AcceptInvite(invitationID)));
             }
             else if (gameType == "RANKED_GAME")
             {
@@ -246,7 +246,7 @@ namespace LegendaryClient.Controls
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { Visibility = Visibility.Hidden; }));
 #pragma warning disable 4014
-            RiotCalls.Decline(invitationID);
+            RiotCalls.DeclineInvite(invitationID);
             Client.InviteData.Remove(invitationID);
         }
 

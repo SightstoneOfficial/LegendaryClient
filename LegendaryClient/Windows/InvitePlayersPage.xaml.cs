@@ -1,5 +1,6 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.Riot;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

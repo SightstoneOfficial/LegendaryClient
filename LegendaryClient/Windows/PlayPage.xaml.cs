@@ -276,7 +276,7 @@ namespace LegendaryClient.Windows
 
                 Queues.Add(config.Id);
                 Client.QueueId = config.Id;
-                LobbyStatus lobby = await RiotCalls.createArrangedTeamLobby(config.Id);
+                LobbyStatus lobby = await RiotCalls.CreateArrangedTeamLobby(config.Id);
 
                 Client.ClearPage(typeof (TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby));
@@ -284,14 +284,14 @@ namespace LegendaryClient.Windows
             else if (config.TypeString.Contains("BOT"))
             {
                 Queues.Add(config.Id);
-                LobbyStatus lobby = await RiotCalls.createArrangedBotTeamLobby(config.Id, settings.BotLevel);
+                LobbyStatus lobby = await RiotCalls.CreateArrangedBotTeamLobby(config.Id, settings.BotLevel);
 
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby, false, null, settings.BotLevel));
             }
             else
             {
-                LobbyStatus lobby = await RiotCalls.createArrangedTeamLobby(config.Id);
+                LobbyStatus lobby = await RiotCalls.CreateArrangedTeamLobby(config.Id);
                 Client.SwitchPage(new TeamBuilderPage(true, lobby));
             }
         }
@@ -325,7 +325,7 @@ namespace LegendaryClient.Windows
                     Client.QueueId = config.Id;
 
                     param = parameters;
-                    RiotCalls.AttachToQueue(parameters, EnteredQueue);
+                    EnteredQueue(await RiotCalls.AttachToQueue(parameters));
                 }
                 else if (config.Id != 61)
                 {
@@ -342,11 +342,11 @@ namespace LegendaryClient.Windows
                     };
                     Client.QueueId = config.Id;
                     param = parameters;
-                    RiotCalls.AttachToQueue(parameters, EnteredQueue);
+                    EnteredQueue(await RiotCalls.AttachToQueue(parameters));
                 }
                 else if (config.Id == 61)
                 {
-                    LobbyStatus lobby = await RiotCalls.createArrangedTeamLobby(config.Id);
+                    LobbyStatus lobby = await RiotCalls.CreateArrangedTeamLobby(config.Id);
                     Client.ClearPage(typeof (TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false, lobby));
                 }
@@ -375,15 +375,14 @@ namespace LegendaryClient.Windows
                             Interval =
                                 new BustedLeaver((TypedObject) result.PlayerJoinFailures[0]).LeaverPenaltyMilisRemaining
                         };
-                        reQueue.Elapsed += (x, d) =>
+                        reQueue.Elapsed += async (x, d) =>
                         {
-                            RiotCalls.AttachToQueue(
+                            EnteredQueue(await RiotCalls.AttachToQueue(
                                 param,
                                 new ASObject
                                 {
-                                    Token = new BustedLeaver((TypedObject) result.PlayerJoinFailures[0]).AccessToken
-                                },
-                                EnteredQueue);
+                                    Token = new BustedLeaver((TypedObject)result.PlayerJoinFailures[0]).AccessToken
+                                }));
 
                             Client.OverlayContainer.Visibility = Visibility.Hidden;
                             reQueue.Stop();

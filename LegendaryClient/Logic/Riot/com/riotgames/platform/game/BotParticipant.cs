@@ -7,43 +7,43 @@ namespace LegendaryClient.Logic.Riot.Platform
     [SerializedName("com.riotgames.platform.game.BotParticipant")]
     public class BotParticipant : Participant
     {
-        [SerializedName("botSkillLevel")]
-        public Int32 BotSkillLevel { get; set; }
-
-        [SerializedName("champion")]
-        public ChampionDTO Champion { get; set; }
-
-        [SerializedName("botSkillLevelName")]
-        public String BotSkillLevelName { get; set; }
-
-        [SerializedName("teamId")]
-        public String TeamId { get; set; }
-
-        [SerializedName("isGameOwner")]
-        public Boolean IsGameOwner { get; set; }
-
-        [SerializedName("pickMode")]
-        public Int32 PickMode { get; set; }
-
-        [SerializedName("team")]
-        public Int32 Team { get; set; }
+        [SerializedName("champion")]		
+        public ChampionDTO Champion { get; set; }		
+		
+        [SerializedName("botSkillLevel")]		
+        public int BotSkillLevel { get; set; }		
+		
+        [SerializedName("teamId")]		
+        public string teamId { get; set; }		
+		
+        [SerializedName("botSkillLevelName")]		
+        public string botSkillLevelName { get; set; }		
+		
+        [SerializedName("pickMode")]		
+        public int pickMode { get; set; }		
+		
+        [SerializedName("isMe")]		
+        public bool IsMe { get; set; }		
+		
+        [SerializedName("team")]		
+        public int Team { get; set; }		
+		
+        [SerializedName("pickTurn")]		
+        public int PickTurn { get; set; }		
+		
+        [SerializedName("badges")]		
+        public int Badges { get; set; }		
+		
+        [SerializedName("teamName")]		
+        public object TeamName { get; set; }		
+		
+        [SerializedName("isGameOwner")]		
+        public bool IsGameOwner { get; set; }
 
         [SerializedName("summonerInternalName")]
-        public String SummonerInternalName { get; set; }
-
-        [SerializedName("pickTurn")]
-        public Int32 PickTurn { get; set; }
-
-        [SerializedName("badges")]
-        public Int32 Badges { get; set; }
-
-        [SerializedName("isMe")]
-        public Boolean IsMe { get; set; }
+        public string SummonerInternalName { get; set; }
 
         [SerializedName("summonerName")]
-        public String SummonerName { get; set; }
-
-        [SerializedName("teamName")]
-        public object TeamName { get; set; }
+        public string SummonerName { get; set; }
     }
 }

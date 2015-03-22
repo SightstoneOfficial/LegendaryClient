@@ -24,23 +24,23 @@ namespace LegendaryClient.Logic.PlayerSpell
 
         public static bool CanUseSpell(int spellId, double level, string gameMode)
         {
-            if (Client.LoginPacket.ClientSystemStates.InactiveSpellIdList.Contains(spellId))
+            if (Client.LoginPacket.ClientSystemStates.inactiveSpellIdList.Contains(spellId))
                 return false;
 
             switch (gameMode)
             {
                 case "CLASSIC":
-                    if (Client.LoginPacket.ClientSystemStates.InactiveClassicSpellIdList.Contains(spellId))
+                    if (Client.LoginPacket.ClientSystemStates.inactiveClassicSpellIdList.Contains(spellId))
                         return false;
                     break;
 
                 case "ARAM":
-                    if (Client.LoginPacket.ClientSystemStates.InactiveAramSpellIdList.Contains(spellId))
+                    if (Client.LoginPacket.ClientSystemStates.inactiveAramSpellIdList.Contains(spellId))
                         return false;
                     break;
 
                 case "ODIN":
-                    if (Client.LoginPacket.ClientSystemStates.InactiveOdinSpellIdList.Contains(spellId))
+                    if (Client.LoginPacket.ClientSystemStates.inactiveOdinSpellIdList.Contains(spellId))
                         return false;
                     break;
             }

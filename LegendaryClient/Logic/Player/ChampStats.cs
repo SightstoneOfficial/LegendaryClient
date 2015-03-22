@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.Riot;
 
 namespace LegendaryClient.Logic.Player
 {

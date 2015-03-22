@@ -9,6 +9,9 @@ namespace LegendaryClient.Logic.Riot.Platform
     [SerializedName("com.riotgames.platform.clientfacade.domain.LoginDataPacket")]
     public class LoginDataPacket
     {
+        [SerializedName("restrictedGamesRemainingForRanked")]
+        public int RestrictedGamesRemainingForRanked { get; set; }
+
         [SerializedName("playerStatSummaries")]
         public PlayerStatSummaries PlayerStatSummaries { get; set; }
 

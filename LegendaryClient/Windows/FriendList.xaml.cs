@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
+using LegendaryClient.Logic.Riot;
 
 namespace LegendaryClient.Windows
 {

@@ -68,5 +68,17 @@ namespace LegendaryClient.Logic.Riot.Platform
             Name = "HowlingAbyss",
             TotalPlayers = 10
         };
+
+        		
+        public static GameMap NewSummonersRift = new GameMap()		
+        {		
+            Description =		
+                "The oldest and most venerated Field of Justice is known as Summoner's Rift.  This battleground is known for the constant conflicts fought between two opposing groups of Summoners.  Traverse down one of three different paths in order to attack your enemy at their weakest point.  Work with your allies to siege the enemy base and destroy their Headquarters!",		
+            MapId = 11,		
+            DisplayName = "New Summoner's Rift",		
+            MinCustomPlayers = 1,		
+            Name = "SummonersRift",		
+            TotalPlayers = 10		
+        };
     }
 }

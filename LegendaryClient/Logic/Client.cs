@@ -43,6 +43,9 @@ using Label = System.Windows.Controls.Label;
 using ListView = System.Windows.Controls.ListView;
 using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
+using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
+using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.Riot.Platform.Messaging.Persistence;
 
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
@@ -447,7 +450,7 @@ namespace LegendaryClient.Logic
             else
                 sb.Append("<tier>" + TierName + "</tier>");
             sb.Append("<rankedSoloRestricted>");
-            sb.Append(LoginPacket.restrictedGamesRemainingForRanked != -1);
+            sb.Append(LoginPacket.RestrictedGamesRemainingForRanked != -1);
             sb.Append("</rankedSoloRestricted>");
             if (IsRanked)
                 sb.Append("<rankedLeagueName>" + LeagueName + "</rankedLeagueName><rankedLeagueDivision>" + Tier +
@@ -901,7 +904,7 @@ namespace LegendaryClient.Logic
                                 break;
                             case "PLAYER_QUIT":
                                 messageOver.MessageTitle.Content = "Player quit";
-                                var name = await PVPNet.GetSummonerNames(new[] { Convert.ToDouble(notification.MessageArgument) });
+                                var name = await RiotCalls.GetSummonerNames(new[] { Convert.ToDouble(notification.MessageArgument) });
                                 messageOver.MessageTextBox.Text = name[0] + " quit from queue!";
                                 break;
                             default:
@@ -925,7 +928,7 @@ namespace LegendaryClient.Logic
                     }
                     else if (message is StoreFulfillmentNotification)
                     {
-                        PlayerChampions = await PVPNet.GetAvailableChampions();
+                        PlayerChampions = await RiotCalls.GetAvailableChampions();
                     }
                     else if (message is Inviter)
                     {
@@ -979,9 +982,9 @@ namespace LegendaryClient.Logic
                         FullNotificationOverlayContainer.Content = Warn.Content;
                         FullNotificationOverlayContainer.Visibility = Visibility.Visible;
                     }
-                    else if (message is PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage)
+                    else if (message is SimpleDialogMessage)
                     {
-                        var leagueInfo = message as PVPNetConnect.RiotObjects.Platform.Messaging.Persistence.SimpleDialogMessage;
+                        var leagueInfo = message as SimpleDialogMessage;
                         if (leagueInfo.Type == "leagues")
                         {
                             var promote = LeaguePromote.LeaguesPromote(leagueInfo.Params.ToString());
@@ -994,7 +997,7 @@ namespace LegendaryClient.Logic
                                 AccountId = leagueInfo.AccountId,
                                 MessageId = leagueInfo.MessageId
                             };
-                            messageOver.AcceptButton.Click += (o, e) => { PVPNet.CallPersistenceMessaging(response); };
+                            messageOver.AcceptButton.Click += (o, e) => { RiotCalls.CallPersistenceMessaging(response); };
                         }
                     }
                 }
@@ -1005,9 +1008,9 @@ namespace LegendaryClient.Logic
         {
             if (IsLoggedIn)
             {
-                PVPNet.PurgeFromQueues();
-                PVPNet.Leave();
-                PVPNet.Disconnect();
+                RiotCalls.PurgeFromQueues();
+                RiotCalls.Leave();
+                Client.RiotConnection.Close();
             }
             Environment.Exit(0);
 
@@ -1193,7 +1196,7 @@ namespace LegendaryClient.Logic
             FixLobby();
             IsInGame = false;
 
-            await PVPNet.QuitGame();
+            await RiotCalls.QuitGame();
             StatusGrid.Visibility = Visibility.Hidden;
             PlayButton.Visibility = Visibility.Visible;
             LobbyContent = null;
@@ -1210,7 +1213,7 @@ namespace LegendaryClient.Logic
 
             foreach (Delegate d in OnFixLobby.GetInvocationList())
             {
-                PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                RiotCalls.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
                 OnFixLobby -= (PVPNetConnection.OnMessageReceivedHandler)d;
             }
         }
@@ -1222,7 +1225,7 @@ namespace LegendaryClient.Logic
 
             foreach (Delegate d in OnFixChampSelect.GetInvocationList())
             {
-                PVPNet.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
+                RiotCalls.OnMessageReceived -= (PVPNetConnection.OnMessageReceivedHandler)d;
                 OnFixChampSelect -= (PVPNetConnection.OnMessageReceivedHandler)d;
             }
         }

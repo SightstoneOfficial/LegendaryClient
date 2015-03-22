@@ -1,7 +1,7 @@
 ﻿using System;
 using RtmpSharp.IO;
 
-namespace LegendaryClient.Logic.Riot.Platform
+namespace LegendaryClient.Logic.Riot.Platform.Reroll.Pojo
 {
     [Serializable]
     [SerializedName("com.riotgames.platform.reroll.pojo.SimpleDialogMessage")]

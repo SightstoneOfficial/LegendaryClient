@@ -117,7 +117,7 @@ namespace LegendaryClient.Windows
 
         public async void GetPendingInvites()
         {
-            object[] allInvites = await RiotCalls.getPendingInvitations();
+            object[] allInvites = await RiotCalls.GetPendingInvitations();
             foreach (var item in allInvites)
             {
                 InvitationRequest invite = (InvitationRequest)item;
@@ -205,9 +205,7 @@ namespace LegendaryClient.Windows
 
                 if (Client.Dev)
                 {
-                    fakeend.Visibility = Visibility.Visible;
-                    testChat.Visibility = Visibility.Visible;
-                    testInvite.Visibility = Visibility.Visible;
+
                 }
                 if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
                 {
@@ -221,12 +219,12 @@ namespace LegendaryClient.Windows
                 else
                     GotLeaguesForPlayer(await RiotCalls.GetAllLeaguesForPlayer(playerData.Summoner.SumId));
 
-                if (Client.LoginPacket.BroadcastNotification.BroadcastMessages != null)
+                if (Client.LoginPacket.BroadcastNotification.broadcastMessages != null)
                 {
-                    var message = Client.LoginPacket.BroadcastNotification.BroadcastMessages[0];
-                    if (message != null)
-                        BroadcastMessage.Text =
-                            message.Content;
+                    //var message = Client.LoginPacket.BroadcastNotification.broadcastMessages[0];
+                    //if (message != null)
+                    //    BroadcastMessage.Text =
+                    //        message.Content;
                 }
 
                 foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
@@ -413,15 +411,15 @@ namespace LegendaryClient.Windows
                 if (!(message is BroadcastNotification))
                     return;
 
-                var notif = message as BroadcastNotification;
-                if (notif.BroadcastMessages == null)
-                    return;
-
-                var Message = notif.BroadcastMessages[0];
-                if (Message != null && Message.Active)
-                    BroadcastMessage.Text = Message.Content;
-                else
-                    BroadcastMessage.Text = "";
+                //var notif = message as BroadcastNotification;
+                //if (notif.BroadcastMessages == null)
+                //    return;
+                //
+                //var Message = notif.BroadcastMessages[0];
+                //if (Message != null && Message.Active)
+                //    BroadcastMessage.Text = Message.Content;
+                //else
+                //    BroadcastMessage.Text = "";
             }));
         }
 

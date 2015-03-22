@@ -57,7 +57,7 @@ namespace LegendaryClient.Windows
                     };
                     notification.Decline.Click += (s, e) =>
                     {
-                        RiotCalls.Decline(data2.stats.InvitationId);
+                        RiotCalls.DeclineInvite(data2.stats.InvitationId);
                         Client.InviteData.Remove(data2.stats.InvitationId);
                     };
                     notification.TitleLabel.Content = "Game Invite";

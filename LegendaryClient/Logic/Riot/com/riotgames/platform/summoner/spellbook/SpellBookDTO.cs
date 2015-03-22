@@ -19,5 +19,8 @@ namespace LegendaryClient.Logic.Riot.Platform
 
         [SerializedName("summonerId")]
         public Double SummonerId { get; set; }
+
+        [SerializedName("defaultPage")]
+        public SpellBookPageDTO DefaultPage { get; set; }
     }
 }

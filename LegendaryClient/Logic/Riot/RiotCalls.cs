@@ -101,10 +101,11 @@ namespace LegendaryClient.Logic.Riot
         /// Get the current IP & EXP Boosts for the user.
         /// </summary>
         /// <returns>Returns the active boosts for the user</returns>
-        public static Task<SummonerActiveBoostsDTO> GetSumonerActiveBoosts()
+        public static Task<SummonerActiveBoostsDTO> GetSummonerActiveBoosts()
         {
             return InvokeAsync<SummonerActiveBoostsDTO>("inventoryService", "getSumonerActiveBoosts");
-        }
+        } 
+        // Yes this is Sumoner not Summoner
 
         /// <summary>
         /// Get the current champions for the user.
@@ -466,6 +467,17 @@ namespace LegendaryClient.Logic.Riot
         }
 
         /// <summary>
+        /// Attaches to a queue with LeaverBusted token
+        /// </summary>
+        /// <param name="MatchMakerParams">The parameters for the queue</param>
+        /// <param name="token">Token required to queue with LeaverBusted</param>
+        /// <returns>Returns a notification to tell you if it was successful</returns>
+        public static Task<SearchingForMatchNotification> AttachToQueue(MatchMakerParams MatchMakerParams, ASObject token)
+        {
+            return InvokeAsync<SearchingForMatchNotification>("matchmakerService", "attachToQueue", MatchMakerParams, token);
+        }
+
+        /// <summary>
         /// Attemps to leave a queue
         /// </summary>
         /// <param name="SummonerId">The users summoner id</param>
@@ -492,6 +504,17 @@ namespace LegendaryClient.Logic.Riot
         public static Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParams matchMakerParams)
         {
             return InvokeAsync<SearchingForMatchNotification>("matchmakerService", "attachTeamToQueue", matchMakerParams);
+        }
+
+        /// <summary>
+        /// Attaches a premade team to a queue with LeaverBusted token
+        /// </summary>
+        /// <param name="MatchMakerParams">The parameters for the queue</param>
+        /// <param name="token">Token required to queue with LeaverBusted</param>
+        /// <returns>Returns a notification to tell you if it was successful</returns>
+        public static Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParams matchMakerParams, ASObject token)
+        {
+            return InvokeAsync<SearchingForMatchNotification>("matchmakerService", "attachTeamToQueue", matchMakerParams, token);
         }
 
         /// <summary>
@@ -638,9 +661,9 @@ namespace LegendaryClient.Logic.Riot
         /// Saves the players spellbook
         /// </summary>
         /// <param name="Spellbook">The players SpellBookDTO</param>
-        public static Task<Object> SaveSpellBook(SpellBookDTO Spellbook)
+        public static Task<SpellBookDTO> SaveSpellBook(SpellBookDTO Spellbook)
         {
-            return InvokeAsync<Object>("spellBookService", "saveSpellBook", Spellbook);
+            return InvokeAsync<SpellBookDTO>("spellBookService", "saveSpellBook", Spellbook);
         }
 
         /// <summary>
@@ -851,11 +874,22 @@ namespace LegendaryClient.Logic.Riot
         /// <summary>
         /// Removes player ability to invite players
         /// </summary>
-        /// <param name="summoner_ID">The id of selected summoner</param>
+        /// <param name="summonerId">The id of selected summoner</param>
         /// <returns></returns>
-        public static Task<object> RevokeInvite(double summoner_ID)
+        public static Task<object> RevokeInvite(double summonerId)
         {
-            InvokeAsync<object>("lcdsGameInvitationService", "revokeInvitePrivileges", summoner_ID);
+            InvokeAsync<object>("lcdsGameInvitationService", "revokeInvitePrivileges", summonerId);
+            return null;
+        }
+
+        /// <summary>
+        /// Gives player ability to invite players
+        /// </summary>
+        /// <param name="summonerId">The id of selected summoner</param>
+        /// <returns></returns>
+        public static Task<object> GrantInvite(double summonerId)
+        {
+            InvokeAsync<object>("lcdsGameInvitationService", "grantInvitePrivileges", summonerId);
             return null;
         }
 
@@ -864,7 +898,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="queueId">The id of selected queue</param>
         /// <returns>LobbyStatus</returns>
-        public static Task<LobbyStatus> CreateArrangeTeamLobby(double queueId)
+        public static Task<LobbyStatus> CreateArrangedTeamLobby(double queueId)
         {
             return InvokeAsync<LobbyStatus>("lcdsGameInvitationService", "createArrangedTeamLobby", queueId);
         }
@@ -952,6 +986,65 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<object>("lcdsGameInvitationService", "transferOwnership", summonerId);
         }
 
+        /// <summary>
+        /// Checks for pending invitation
+        /// </summary>
+        /// <returns></returns>
+        public static Task<object[]> GetPendingInvitations()
+        {
+            return InvokeAsync<object[]>("lcdsGameInvitationService", "getPendingInvitations");
+        }
+
+        /// <summary>
+        /// Used for accepting messages
+        /// </summary>
+        /// 
+        /// <returns></returns>
+        public static Task<object> CallPersistenceMessaging(SimpleDialogMessageResponse response)
+        {
+            return InvokeAsync<object>("lcdsGameInvitationService", "callPersistenceMessaging", response);
+        }
+
+        /// <summary>
+        /// Used for inviting players to lobby
+        /// </summary>
+        /// <param name="id">Account id of the summoner</param>
+        /// <returns></returns>
+        public static Task<object> Invite(string id)
+        {
+            return InvokeAsync<object>("lcdsGameInvitationService", "invite", id);
+        }
+
+        /// <summary>
+        /// Used for inviting friend of the friend players to lobby
+        /// </summary>
+        /// <param name="summonerId">Account id of the summoner to invite</param>
+        /// <param name="commonFriendId">Account id of the friend in common</param>
+        /// <returns></returns>
+        public static Task<object> InviteFriendOfFriend(double summonerId, double commonFriendId)
+        {
+            return InvokeAsync<object>("lcdsGameInvitationService", "invite", summonerId, commonFriendId);
+        }
+
+        /// <summary>
+        /// Used to kick summoner from team lobby
+        /// </summary>
+        /// <param name="summonerId">Summoner id</param>
+        /// <returns></returns>
+       public static Task<object> Kick(double summonerId)		
+        {		
+            return InvokeAsync<object>("lcdsGameInvitationService", "kick", summonerId);		
+        }
+
+        /// <summary>
+        /// Used to report player after game
+        /// </summary>
+       /// <param name="report">All report info</param>
+        /// <returns></returns>
+       public static Task<object> ReportPlayer(HarassmentReport report)		
+        {
+            return InvokeAsync<object>("clientFacadeService", "reportPlayer", report);		
+        }
 
         public static Task<T> InvokeAsync<T>(string destination, string method, params object[] argument)
         {

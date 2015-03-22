@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.Riot;
 
 namespace LegendaryClient.Windows.Profile
 {
