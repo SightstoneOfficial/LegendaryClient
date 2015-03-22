@@ -42,7 +42,6 @@ using Label = System.Windows.Controls.Label;
 using ListView = System.Windows.Controls.ListView;
 using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
-using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform.Messaging.Persistence;
 using RtmpSharp.Messaging;
@@ -910,9 +909,9 @@ namespace LegendaryClient.Logic
                         if (notification.Type != "PLAYER_QUIT")
                             SwitchPage(new MainPage());
                     }
-                    else if (message.Body is Riot.Platform.EndOfGameStats)
+                    else if (message.Body is EndOfGameStats)
                     {
-                        var stats = (Riot.Platform.EndOfGameStats)message.Body;
+                        var stats = (EndOfGameStats)message.Body;
                         var EndOfGame = new EndOfGamePage(stats);
                         ClearPage(typeof(TeamQueuePage));
                         OverlayContainer.Visibility = Visibility.Visible;
@@ -924,12 +923,12 @@ namespace LegendaryClient.Logic
                     }
                     else if (message.Body is Inviter)
                     {
-                        var stats = message.Body as Inviter;
+                        var stats = (Inviter) message.Body;
                         //CurrentInviter = stats;
                     }
                     else if (message.Body is InvitationRequest)
                     {
-                        var stats = message.Body as InvitationRequest;
+                        var stats = (InvitationRequest) message.Body;
                         if (stats.Inviter == null)
                             return;
 

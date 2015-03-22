@@ -1143,12 +1143,25 @@ namespace LegendaryClient.Logic.Riot
             foreach (Type Team in x)
                 context.Register(Team);
 
-            context.Register(typeof(PendingKudosDTO));
+            context.RegisterAlias(typeof(PendingKudosDTO), "com.riotgames.kudos.dto.PendingKudosDTO", true);
             context.RegisterAlias(typeof(Icon), "com.riotgames.platform.summoner.icon.SummonerIcon", true);
             context.RegisterAlias(typeof(StoreAccountBalanceNotification), "com.riotgames.platform.messaging.StoreAccountBalanceNotification", true);
-
-            //Hack to make aram work
             context.RegisterAlias(typeof(PlayerParticipant), "com.riotgames.platform.reroll.pojo.AramPlayerParticipant", true);
+            context.RegisterAlias(typeof(GameDTO), "com.riotgames.platform.game.GameDTO", true);
+            context.RegisterAlias(typeof(PlayerCredentialsDto), "com.riotgames.platform.game.PlayerCredentialsDto", true);
+            context.RegisterAlias(typeof(InvitationRequest), "com.riotgames.platform.gameinvite.contract.InvitationRequest", true);
+            context.RegisterAlias(typeof(Member), "com.riotgames.platform.gameinvite.contract.Member", true);
+            context.RegisterAlias(typeof(LcdsServiceProxyResponse), "com.riotgames.platform.serviceproxy.dispatch.LcdsServiceProxyResponse", true);
+            context.RegisterAlias(typeof(GameNotification), "com.riotgames.platform.game.message.GameNotification", true);
+            context.RegisterAlias(typeof(SearchingForMatchNotification), "com.riotgames.platform.matchmaking.SearchingForMatchNotification", true);
+            context.RegisterAlias(typeof(BroadcastNotification), "com.riotgames.platform.broadcast.BroadcastNotification", true);
+            context.RegisterAlias(typeof(BroadcastNotification), "com.riotgames.platform.broadcast.BroadcastMessage", true);
+            context.RegisterAlias(typeof(SimpleDialogMessageResponse), "com.riotgames.platform.messaging.persistence.SimpleDialogMessage", true);
+            context.RegisterAlias(typeof(TradeContractDTO), "com.riotgames.platform.trade.api.contract.TradeContractDTO", true);
+            context.RegisterAlias(typeof(EndOfGameStats), "com.riotgames.platform.statistics.EndOfGameStats", true);
+            context.RegisterAlias(typeof(HarassmentReport), "com.riotgames.platform.harassment.HarassmentReport", true);
+            context.RegisterAlias(typeof(LobbyStatus), "com.riotgames.platform.gameinvite.contract.LobbyStatus", true);
+            context.RegisterAlias(typeof(ClientLoginKickNotification), "com.riotgames.platform.messaging.ClientLoginKickNotification", true);
 
             return context;
         }

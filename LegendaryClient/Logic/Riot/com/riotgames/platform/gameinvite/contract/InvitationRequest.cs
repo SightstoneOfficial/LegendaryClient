@@ -1,7 +1,7 @@
 ﻿using System;
 using RtmpSharp.IO;
 
-namespace LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract
+namespace LegendaryClient.Logic.Riot.Platform
 {
     [Serializable]
     [SerializedName("com.riotgames.platform.gameinvite.contract.InvitationRequest")]

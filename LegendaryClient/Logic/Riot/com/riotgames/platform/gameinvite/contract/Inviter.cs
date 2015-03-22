@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using RtmpSharp.IO;
 
-namespace LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract
+namespace LegendaryClient.Logic.Riot.Platform
 {
     [Serializable]
-    [SerializedName("com.riotgames.platform.gameinvite.contract.Invitee")]
+    [SerializedName("com.riotgames.platform.gameinvite.contract.Inviter")]
     public class Inviter
     {
         [SerializedName("previousSeasonHighestTier")]

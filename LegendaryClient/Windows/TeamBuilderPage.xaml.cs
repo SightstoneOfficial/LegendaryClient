@@ -27,7 +27,6 @@ using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
-using LegendaryClient.Logic.Riot.com.riotgames.platform.serviceproxy.dispatch;
 using RtmpSharp.Messaging;
 
 namespace LegendaryClient.Windows

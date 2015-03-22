@@ -10,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
-using LegendaryClient.Logic.Riot.com.riotgames.platform.serviceproxy.dispatch;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot.Team;
 

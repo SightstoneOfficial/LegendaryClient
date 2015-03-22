@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RtmpSharp.IO;
 
-namespace LegendaryClient.Logic.Riot.com.riotgames.platform.serviceproxy.dispatch
+namespace LegendaryClient.Logic.Riot.Platform
 {
     [Serializable]
     [SerializedName("com.riotgames.platform.serviceproxy.dispatch.LcdsServiceProxyResponse")]

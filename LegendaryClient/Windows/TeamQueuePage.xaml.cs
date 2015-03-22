@@ -20,8 +20,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
-using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
-using LegendaryClient.Logic.Riot.com.riotgames.platform.serviceproxy.dispatch;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.IO;
 using Timer = System.Timers.Timer;

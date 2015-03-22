@@ -7,7 +7,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
-using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
 

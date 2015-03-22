@@ -33,7 +33,6 @@ using Size = System.Drawing.Size;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Crypto;
 using LegendaryClient.Logic.Riot;
-using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;

@@ -1235,7 +1235,6 @@
     </Content>
     <Resource Include="NONE.png" />
     <Resource Include="noise.png" />
-    <Content Include="PVPNetConnect.csproj" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

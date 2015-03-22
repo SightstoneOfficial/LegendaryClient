@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using LegendaryClient.Logic.Riot.com.riotgames.platform.gameinvite.contract;
 using RtmpSharp.IO;
 
 namespace LegendaryClient.Logic.Riot.Platform
