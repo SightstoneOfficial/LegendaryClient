@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.IO;
 using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows
@@ -377,12 +378,9 @@ namespace LegendaryClient.Windows
                         };
                         reQueue.Elapsed += async (m, d) =>
                         {
-                            EnteredQueue(await RiotCalls.AttachToQueue(
-                                param,
-                                new ASObject
-                                {
-                                    Token = x.AccessToken
-                                }));
+                            var obj = new AsObject();
+                            obj.Add("LEAVER_BUSTER_ACCESS_TOKEN", x.AccessToken);
+                            EnteredQueue(await RiotCalls.AttachToQueue(param, obj));
 
                             Client.OverlayContainer.Visibility = Visibility.Hidden;
                             reQueue.Stop();

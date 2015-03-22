@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using RtmpSharp.Messaging;
 
 namespace LegendaryClient.Windows
 {
@@ -33,12 +34,12 @@ namespace LegendaryClient.Windows
             Client.ReturnButton.Content = "Return to Reconnect Page";
         }
 
-        private void Update_OnMessageReceived(object sender, object message)
+        private void Update_OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
-            if (message.GetType() != typeof (GameDTO))
+            if (message.Body.GetType() != typeof(GameDTO))
                 return;
 
-            if (((GameDTO) message).GameState != "TERMINATED")
+            if (((GameDTO)message.Body).GameState != "TERMINATED")
                 return;
 
             Client.GameStatus = "outOfGame";

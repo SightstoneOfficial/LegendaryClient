@@ -26,6 +26,7 @@ using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.IO;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Riot.Team;
+using RtmpSharp.Messaging;
 
 namespace LegendaryClient.Windows
 {
@@ -392,17 +393,17 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private void Update_OnMessageReceived(object sender, object message)
+        private void Update_OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
-            if (message.GetType() == typeof(LobbyStatus))
+            if (message.Body.GetType() == typeof(LobbyStatus))
             {
-                var Lobby = message as LobbyStatus;
+                var Lobby = message.Body as LobbyStatus;
                 CurrentLobby = Lobby;
                 RenderLobbyData();
             }
-            else if (message is GameDTO)
+            else if (message.Body is GameDTO)
             {
-                var QueueDTO = message as GameDTO;
+                var QueueDTO = message.Body as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     if (QueueDTO.GameState == "TERMINATED")
@@ -412,7 +413,7 @@ namespace LegendaryClient.Windows
                     }
                 }));
             }
-            else if (message is GameNotification)
+            else if (message.Body is GameNotification)
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -421,16 +422,16 @@ namespace LegendaryClient.Windows
                     Client.inQueueTimer.Visibility = Visibility.Hidden;
                 }));
             }
-            else if (message is SearchingForMatchNotification)
+            else if (message.Body is SearchingForMatchNotification)
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input,
-                    new ThreadStart(() => { EnteredQueue(message as SearchingForMatchNotification); }));
+                    new ThreadStart(() => { EnteredQueue(message.Body as SearchingForMatchNotification); }));
             }
-            else if (message is InvitePrivileges)
+            else if (message.Body is InvitePrivileges)
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    var priv = message as InvitePrivileges;
+                    var priv = message.Body as InvitePrivileges;
                     if (priv.canInvite)
                     {
                         var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
@@ -447,9 +448,9 @@ namespace LegendaryClient.Windows
                     }
                 }));
             }
-            else if (message is LcdsServiceProxyResponse)
+            else if (message.Body is LcdsServiceProxyResponse)
             {
-                parseLcdsMessage(message as LcdsServiceProxyResponse); //Don't look there, its ugly!!! :)))
+                parseLcdsMessage(message.Body as LcdsServiceProxyResponse); //Don't look there, its ugly!!! :)))
             }
         }
 

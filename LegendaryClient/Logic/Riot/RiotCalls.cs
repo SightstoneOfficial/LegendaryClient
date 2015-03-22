@@ -296,7 +296,7 @@ namespace LegendaryClient.Logic.Riot
         /// <returns>Returns all the summoner data for an account</returns>
         public static Task<AllSummonerData> GetAllSummonerDataByAccount(Double AccountId)
         {
-            return InvokeAsync<AllSummonerData>("summonerService", "getAllSummonerDataByAccount");
+            return InvokeAsync<AllSummonerData>("summonerService", "getAllSummonerDataByAccount", AccountId);
         }
 
         /// <summary>
@@ -467,7 +467,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="MatchMakerParams">The parameters for the queue</param>
         /// <param name="token">Token required to queue with LeaverBusted</param>
         /// <returns>Returns a notification to tell you if it was successful</returns>
-        public static Task<SearchingForMatchNotification> AttachToQueue(MatchMakerParams MatchMakerParams, ASObject token)
+        public static Task<SearchingForMatchNotification> AttachToQueue(MatchMakerParams MatchMakerParams, AsObject token)
         {
             return InvokeAsync<SearchingForMatchNotification>("matchmakerService", "attachToQueue", MatchMakerParams, token);
         }
