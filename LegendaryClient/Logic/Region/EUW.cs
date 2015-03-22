@@ -12,7 +12,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string Server
         {
-            get { return ""; }
+            get { return "prod.euw1.lol.riotgames.com"; }
         }
 
         public override bool Garena
@@ -22,7 +22,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string LoginQueue
         {
-            get { return ""; }
+            get { return "https://lq.euw1.lol.riotgames.com/"; }
         }
 
         public override string Location

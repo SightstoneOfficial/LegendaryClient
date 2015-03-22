@@ -1,7 +1,6 @@
-﻿using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Leagues.Pojo;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Script.Serialization;
+using LegendaryClient.Logic.Riot.Leagues;
 
 namespace LegendaryClient.Logic.JSON
 {

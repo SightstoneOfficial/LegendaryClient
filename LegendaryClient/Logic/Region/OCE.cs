@@ -12,12 +12,12 @@ namespace LegendaryClient.Logic.Region
 
         public override string Server
         {
-            get { return ""; }
+            get { return "prod.oc1.lol.riotgames.com"; }
         }
 
         public override string LoginQueue
         {
-            get { return ""; }
+            get { return "https://lq.oc1.lol.riotgames.com/"; }
         }
 
         public override string Location

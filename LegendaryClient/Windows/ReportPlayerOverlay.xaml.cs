@@ -1,5 +1,4 @@
 ﻿using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Harassment;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;

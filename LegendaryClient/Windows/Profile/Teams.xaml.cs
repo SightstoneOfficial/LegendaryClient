@@ -1,8 +1,7 @@
-﻿using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Team.Dto;
-using System.Threading;
+﻿using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Team;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -27,9 +26,7 @@ namespace LegendaryClient.Windows.Profile
                 int i = 0;
                 foreach (var item in result.TeamsSummary)
                 {
-                    
-                    
-                    TeamDTO team = new TeamDTO((TypedObject)item);
+                    var team = (TeamDTO)item;
                     switch (i)
                     {
                         case 0: Team1.Header = team.Name;

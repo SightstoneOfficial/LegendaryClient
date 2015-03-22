@@ -44,6 +44,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
+using LegendaryClient.Logic.Riot.Platform;
 using Button = System.Windows.Controls.Button;
 using EndOfGameStats = PVPNetConnect.RiotObjects.Platform.Statistics.EndOfGameStats;
 using Error = PVPNetConnect.Error;
@@ -957,7 +958,7 @@ namespace LegendaryClient.Logic
                     }
                     else if (message is EndOfGameStats)
                     {
-                        var stats = message as EndOfGameStats;
+                        var stats = message as Riot.Platform.EndOfGameStats;
                         var EndOfGame = new EndOfGamePage(stats);
                         ClearPage(typeof(TeamQueuePage));
                         OverlayContainer.Visibility = Visibility.Visible;

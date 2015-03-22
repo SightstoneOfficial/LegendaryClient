@@ -6,7 +6,6 @@ using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
-using PVPNetConnect.RiotObjects.Platform.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -19,6 +18,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Replays;
 
 namespace LegendaryClient.Windows
 {

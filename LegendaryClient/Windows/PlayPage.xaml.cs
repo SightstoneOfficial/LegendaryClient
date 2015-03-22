@@ -1,9 +1,5 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
-using PVPNetConnect;
-using PVPNetConnect.RiotObjects.Platform.Game;
-using PVPNetConnect.RiotObjects.Platform.Gameinvite.Contract;
-using PVPNetConnect.RiotObjects.Platform.Matchmaking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 
 namespace LegendaryClient.Windows

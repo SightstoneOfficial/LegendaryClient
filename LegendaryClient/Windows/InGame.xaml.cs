@@ -1,9 +1,9 @@
 ﻿using LegendaryClient.Logic;
-using PVPNetConnect.RiotObjects.Platform.Game;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Windows
 {

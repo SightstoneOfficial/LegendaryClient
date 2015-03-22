@@ -20,7 +20,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string Server
         {
-            get { return ""; }
+            get { return vals["host"]; }
         }
 
         public override string RegionName
@@ -35,7 +35,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string LoginQueue
         {
-            get { return ""; }
+            get { return vals["loginQueue"]; }
         }
 
         public override string InternalName

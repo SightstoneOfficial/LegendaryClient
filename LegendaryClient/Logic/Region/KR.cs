@@ -16,7 +16,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string Server
         {
-            get { return ""; }
+            get { return "prod.kr.lol.riotgames.com"; }
         }
 
         public override string RegionName
@@ -31,7 +31,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string LoginQueue
         {
-            get { return ""; }
+            get { return "https://lq.kr.lol.riotgames.com/"; }
         }
 
         public override string InternalName

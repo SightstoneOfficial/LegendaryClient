@@ -12,7 +12,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string Server
         {
-            get { return ""; }
+            get { return "prod.la2.lol.riotgames.com"; }
         }
 
         public override string Location
@@ -42,7 +42,7 @@ namespace LegendaryClient.Logic.Region
 
         public override string LoginQueue
         {
-            get { return ""; }
+            get { return "https://lq.la2.lol.riotgames.com/"; }
         }
 
         public override string Locale

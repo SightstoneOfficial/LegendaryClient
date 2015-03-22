@@ -1,4 +1,4 @@
-﻿using PVPNetConnect.RiotObjects.Leagues.Pojo;
+﻿using LegendaryClient.Logic.Riot.Leagues;
 
 namespace LegendaryClient.Logic.JSON
 {

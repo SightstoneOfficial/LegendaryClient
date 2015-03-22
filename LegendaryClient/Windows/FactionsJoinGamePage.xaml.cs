@@ -1,6 +1,5 @@
 ﻿using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
-using PVPNetConnect.RiotObjects.Platform.Game.Practice;
 using System;
 using System.Collections.Generic;
 using System.Linq;
