@@ -65,12 +65,12 @@ namespace LegendaryClient.Logic.Region
 
         public override Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.na2.lol.riotgames.com:80/observer-mode/rest/"); }
+            get { return new Uri("http://spectator.na1.lol.riotgames.com:80/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress
         {
-            get { return "spectator.na2.lol.riotgames.com:80"; }
+            get { return "spectator.na1.lol.riotgames.com:80"; }
             set { }
         }
 
