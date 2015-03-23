@@ -431,7 +431,7 @@ namespace LegendaryClient.Windows
             //Riot added this for no reason but make it look like the riot client we have to do this
             var plainTextBytes = Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
             var result = Convert.ToBase64String(plainTextBytes);
-            await RiotCalls.Login(result);
+            //await RiotCalls.Login(result);
             var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
             var packetx = await RiotCalls.GetLoginDataPacketForUser();
             GotLoginPacket(packetx);
@@ -705,7 +705,7 @@ namespace LegendaryClient.Windows
                     //Riot added this for no reason but make it look like the riot client we have to do this
                     var plainTextBytes = Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
                     var result = Convert.ToBase64String(plainTextBytes);
-                    await RiotCalls.Login(result);
+                    //await RiotCalls.Login(result);
                     var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
                     var packet = await RiotCalls.GetLoginDataPacketForUser();
                     GotLoginPacket(packet);
