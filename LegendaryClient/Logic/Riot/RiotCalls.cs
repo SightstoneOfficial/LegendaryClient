@@ -34,6 +34,11 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<Session>("loginService", "login", Credentials);
         }
 
+        public static Task<String> Login(String obj)
+        {
+            return InvokeAsync<String>("loginService", "login", obj);
+        }
+
         /// <summary>
         /// Heartbeat to send every 2 minutes.
         /// </summary>
@@ -507,7 +512,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="MatchMakerParams">The parameters for the queue</param>
         /// <param name="token">Token required to queue with LeaverBusted</param>
         /// <returns>Returns a notification to tell you if it was successful</returns>
-        public static Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParams matchMakerParams, ASObject token)
+        public static Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParams matchMakerParams, AsObject token)
         {
             return InvokeAsync<SearchingForMatchNotification>("matchmakerService", "attachTeamToQueue", matchMakerParams, token);
         }
@@ -1101,7 +1106,10 @@ namespace LegendaryClient.Logic.Riot
                 Task.Delay(Convert.ToInt32(deserializedJSON["delay"]));
             }
             if (Client.Garena)
-                Client.UID = (string) deserializedJSON["user"];
+            {
+                Client.UID = (string)deserializedJSON["user"];
+                Client.Gas = sb.ToString();
+            }
             return (string)deserializedJSON["token"];
         }
 

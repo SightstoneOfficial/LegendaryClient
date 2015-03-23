@@ -23,6 +23,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public Inviter Inviter { get; set; }
 
         [SerializedName("owner")]
-        public Platform.Player Owner { get; set; }
+        public Player Owner { get; set; }
     }
 }

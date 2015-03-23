@@ -292,35 +292,34 @@ namespace LegendaryClient.Windows
                 string CurrentLP = "";
                 string CurrentTier = "";
                 bool InPromo = false;
-                if (result.SummonerLeagues != null && result.SummonerLeagues.Count > 0)
+                if (result.SummonerLeagues.Exists(x => x.Queue == "RANKED_SOLO_5x5") &&
+                    result.SummonerLeagues.Count > 0)
                 {
-                    foreach (
-                        LeagueListDTO leagues in
-                            result.SummonerLeagues.Where(leagues => leagues.Queue == "RANKED_SOLO_5x5"))
-                    {
-                        Client.Tier = leagues.RequestorsRank;
-                        Client.TierName = leagues.Tier;
-                        Client.LeagueName = leagues.Name;
-                        CurrentTier = leagues.Tier + " " + leagues.RequestorsRank;
-                        List<LeagueItemDTO> players =
-                            leagues.Entries.OrderBy(o => o.LeaguePoints)
-                                .Where(item => item.Rank == leagues.RequestorsRank)
-                                .ToList();
-                        foreach (LeagueItemDTO player in players)
-                        {
-                            if (player.PlayerOrTeamName != Client.LoginPacket.AllSummonerData.Summoner.Name)
-                                continue;
+                    var leagues = result.SummonerLeagues.Single(x => x.Queue == "RANKED_SOLO_5x5");
 
-                            string Series = "";
-                            if (player.MiniSeries != null)
-                            {
-                                Series = player.MiniSeries.Progress.Replace('N', '-');
-                                InPromo = true;
-                            }
-                            CurrentLP = (player.LeaguePoints == 100 ? Series : Convert.ToString(player.LeaguePoints));
+                    Client.Tier = leagues.RequestorsRank;
+                    Client.TierName = leagues.Tier;
+                    Client.LeagueName = leagues.Name;
+                    CurrentTier = leagues.Tier + " " + leagues.RequestorsRank;
+                    List<LeagueItemDTO> players =
+                        leagues.Entries.OrderBy(o => o.LeaguePoints)
+                            .Where(item => item.Rank == leagues.RequestorsRank)
+                            .ToList();
+                    foreach (LeagueItemDTO player in players)
+                    {
+                        if (player.PlayerOrTeamName != Client.LoginPacket.AllSummonerData.Summoner.Name)
+                            continue;
+
+                        string Series = "";
+                        if (player.MiniSeries != null)
+                        {
+                            Series = player.MiniSeries.Progress.Replace('N', '-');
+                            InPromo = true;
                         }
+                        CurrentLP = (player.LeaguePoints == 100 ? Series : Convert.ToString(player.LeaguePoints));
                     }
                 }
+
                 else
                 {
                     PlayerProgressBar.Value = 100;

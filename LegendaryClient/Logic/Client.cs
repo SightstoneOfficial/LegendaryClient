@@ -800,6 +800,8 @@ namespace LegendaryClient.Logic
 
         #region League Of Legends Logic
 
+        internal static string Gas;
+
         /// <summary>
         ///     Main connection to the League of Legends server
         /// </summary>

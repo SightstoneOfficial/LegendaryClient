@@ -384,30 +384,7 @@ namespace LegendaryClient.Windows
 
             Client.Region = selectedRegion;
             var context = RiotCalls.RegisterObjects();
-            Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + selectedRegion.Server + ":2099"), context, ObjectEncoding.Amf3);
-            Client.RiotConnection.CallbackException += client_CallbackException;
-            Client.RiotConnection.MessageReceived += client_MessageReceived;
-            await Client.RiotConnection.ConnectAsync();
-
-            AuthenticationCredentials newCredentials = new AuthenticationCredentials
-            {
-                Username = LoginUsernameBox.Text,
-                Password = LoginPasswordBox.Password,
-                ClientVersion = Client.Version,
-                IpAddress = RiotCalls.GetIpAddress(),
-                Locale = selectedRegion.Locale,
-                Domain = "lolclient.lol.riotgames.com",
-                AuthToken =
-                    RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
-            };
-
-            Session login = await RiotCalls.Login(newCredentials);
-            await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", "bc-" + login.AccountSummary.AccountId);
-            await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "gn-" + login.AccountSummary.AccountId, "gn-" + login.AccountSummary.AccountId);
-            await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "cn-" + login.AccountSummary.AccountId, "cn-" + login.AccountSummary.AccountId);
-            var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
-            var packet = await RiotCalls.GetLoginDataPacketForUser();
-            GotLoginPacket(packet);
+            Login();
         }
 
         void client_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -421,11 +398,50 @@ namespace LegendaryClient.Windows
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
+        async void Login()
+        {
+            BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+            Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
+            Client.RiotConnection.CallbackException += client_CallbackException;
+            Client.RiotConnection.MessageReceived += client_MessageReceived;
+            await Client.RiotConnection.ConnectAsync();
 
+            AuthenticationCredentials newCredentials = new AuthenticationCredentials
+            {
+                Username = LoginUsernameBox.Text,
+                Password = LoginPasswordBox.Password,
+                ClientVersion = Client.Version,
+                IpAddress = RiotCalls.GetIpAddress(),
+                Locale = selectedRegion.Locale,
+                OperatingSystem = "Windows 7",
+                Domain = "lolclient.lol.riotgames.com",
+                AuthToken =
+                    RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
+            };
+
+            Session login = await RiotCalls.Login(newCredentials);
+            var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
+            var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
+            var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
+            Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+
+            await Task.WhenAll(taskArray);
+            //Riot added this for no reason but make it look like the riot client we have to do this
+            var plainTextBytes = Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
+            var result = Convert.ToBase64String(plainTextBytes);
+            //await RiotCalls.Login(result);
+            var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
+            var packetx = await RiotCalls.GetLoginDataPacketForUser();
+            GotLoginPacket(packetx);
+        }
         private async void GotLoginPacket(LoginDataPacket packet)
         {
             if (packet.AllSummonerData == null)
             {
+                Client.RiotConnection.CallbackException -= client_CallbackException;
+                Client.RiotConnection.MessageReceived -= client_MessageReceived;
                 //Just Created Account, need to put logic here.
                 Client.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -437,11 +453,14 @@ namespace LegendaryClient.Windows
                 while (!Client.done)
                 {
                 }
+                Login();
                 return;
             }
             Client.LoginPacket = packet;
             if (packet.AllSummonerData.Summoner.ProfileIconId == -1)
             {
+                Client.RiotConnection.CallbackException -= client_CallbackException;
+                Client.RiotConnection.MessageReceived -= client_MessageReceived;
                 Client.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -451,10 +470,12 @@ namespace LegendaryClient.Windows
                 while (!Client.done)
                 {
                 }
-                //RiotCalls.Connect(LoginUsernameBox.Text, LoginPasswordBox.Password, Client.Region.PVPRegion, Client.Version);
+                Login();
 
                 return;
             }
+
+            Client.RiotConnection.MessageReceived += Client.OnMessageReceived;
             Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
             Client.GameConfigs = packet.GameTypeConfigs;
             Client.IsLoggedIn = true;
@@ -667,13 +688,24 @@ namespace LegendaryClient.Windows
                         Locale = garenaregion.Locale,
                         Domain = "lolclient.lol.riotgames.com",
                         AuthToken =
-                            RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1))
+                            RiotCalls.GetAuthKey(
+                                LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
+                        OperatingSystem = "Windows 7"
                     };
 
                     Session login = await RiotCalls.Login(newCredentials);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", "bc-" + login.AccountSummary.AccountId);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "gn-" + login.AccountSummary.AccountId, "gn-" + login.AccountSummary.AccountId);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "cn-" + login.AccountSummary.AccountId, "cn-" + login.AccountSummary.AccountId);
+                    var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
+                    var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
+                    var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
+                    Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+
+                    await Task.WhenAll(taskArray);
+                    //Riot added this for no reason but make it look like the riot client we have to do this
+                    var plainTextBytes = Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
+                    var result = Convert.ToBase64String(plainTextBytes);
+                    //await RiotCalls.Login(result);
                     var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
                     var packet = await RiotCalls.GetLoginDataPacketForUser();
                     GotLoginPacket(packet);
@@ -742,17 +774,16 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private string Gas;
         public string getGas()
         {
 
             string begin = "{\"signature\":\"";
             string end = "}";
 
-            int beginIndex = Gas.IndexOf(begin, StringComparison.Ordinal);
-            int endIndex = Gas.LastIndexOf(end, StringComparison.Ordinal);
+            int beginIndex = Client.Gas.IndexOf(begin, StringComparison.Ordinal);
+            int endIndex = Client.Gas.LastIndexOf(end, StringComparison.Ordinal);
 
-            string output = Gas.Substring(beginIndex, endIndex - beginIndex);
+            string output = Client.Gas.Substring(beginIndex, endIndex - beginIndex);
 
             byte[] encbuff = Encoding.UTF8.GetBytes(output);
             output = HttpServerUtility.UrlTokenEncode(encbuff);
