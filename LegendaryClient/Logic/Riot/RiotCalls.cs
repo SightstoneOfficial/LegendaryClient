@@ -860,10 +860,9 @@ namespace LegendaryClient.Logic.Riot
         /// Leave lobby
         /// </summary>
         /// <returns>null</returns>
-        public static Task<object> Leave()
+        public static async Task Leave()
         {
-            InvokeAsync<object>("lcdsGameInvitationService", "leave");
-            return null;
+            await InvokeAsync<object>("lcdsGameInvitationService", "leave");
         }
 
         /// <summary>
