@@ -681,32 +681,21 @@ namespace LegendaryClient.Windows
 
                     AuthenticationCredentials newCredentials = new AuthenticationCredentials
                     {
-                        Username = LoginUsernameBox.Text,
-                        Password = LoginPasswordBox.Password,
+                        AuthToken =
+                            RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
+                        Username = Client.UID,
+                        Password = null,
                         ClientVersion = Client.Version,
                         IpAddress = RiotCalls.GetIpAddress(),
                         Locale = garenaregion.Locale,
+                        PartnerCredentials = "8393 " + s1,
                         Domain = "lolclient.lol.riotgames.com",
-                        AuthToken =
-                            RiotCalls.GetAuthKey(
-                                LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
-                        OperatingSystem = "Windows 7"
                     };
-
                     Session login = await RiotCalls.Login(newCredentials);
-                    var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
-                    var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
-                    var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
-                    Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
-                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
-                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
-
-                    await Task.WhenAll(taskArray);
-                    //Riot added this for no reason but make it look like the riot client we have to do this
-                    var plainTextBytes = Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
-                    var result = Convert.ToBase64String(plainTextBytes);
-                    //await RiotCalls.Login(result);
-                    var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
+                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", "bc-" + login.AccountSummary.AccountId);
+                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "gn-" + login.AccountSummary.AccountId, "gn-" + login.AccountSummary.AccountId);
+                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "cn-" + login.AccountSummary.AccountId, "cn-" + login.AccountSummary.AccountId);
+                    var LoggedIn = await Client.RiotConnection.LoginAsync(Client.UID, login.Token);
                     var packet = await RiotCalls.GetLoginDataPacketForUser();
                     GotLoginPacket(packet);
                 }
@@ -790,6 +779,7 @@ namespace LegendaryClient.Windows
 
             return output;
         }
+
         private static string reToken(string s)
         {
             var s1 = s.Replace("/", "%2F");
