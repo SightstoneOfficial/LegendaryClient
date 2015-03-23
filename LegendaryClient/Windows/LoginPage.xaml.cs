@@ -33,6 +33,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Controls;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.IO;
@@ -420,6 +421,7 @@ namespace LegendaryClient.Windows
             };
 
             Session login = await RiotCalls.Login(newCredentials);
+            Client.PlayerSession = login;
             var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
             var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
             var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
@@ -433,9 +435,37 @@ namespace LegendaryClient.Windows
             var result = Convert.ToBase64String(plainTextBytes);
             //await RiotCalls.Login(result);
             var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
-            var packetx = await RiotCalls.GetLoginDataPacketForUser();
-            GotLoginPacket(packetx);
+            DoGetOnLoginPacket();
         }
+
+        private async void DoGetOnLoginPacket()
+        {
+            //TODO: Finish this so all calls are used
+            var packetx = await RiotCalls.GetLoginDataPacketForUser();
+            Client.Queues = await RiotCalls.GetAvailableQueues();
+            Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
+            //var runes = await RiotCalls.GetSummonerRuneInventory(packetx.AllSummonerData.Summoner.AcctId);
+            Client.StartHeartbeat();
+            //var leaguePos = await RiotCalls.GetMyLeaguePositions();
+            //var preferences = await RiotCalls.LoadPreferencesByKey();
+            //var masterybook = await RiotCalls.GetMasteryBook(packetx.AllSummonerData.Summoner.AcctId);
+            //var lobby = await RiotCalls.CheckLobbyStatus();
+            var invites = await RiotCalls.GetPendingInvitations();
+            //var player = await RiotCalls.CreatePlayer();
+            GotLoginPacket(packetx);
+
+            foreach (var pop in from InvitationRequest invite in invites select new GameInvitePopup(invite) {
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Height = 230
+            })
+                Client.NotificationGrid.Children.Add(pop);
+            if (invites.Length != 0)
+                Client.MainWin.FlashWindow();
+
+            Client.LoginPacket = packetx;
+        }
+
         private async void GotLoginPacket(LoginDataPacket packet)
         {
             if (packet.AllSummonerData == null)
@@ -476,7 +506,6 @@ namespace LegendaryClient.Windows
             }
 
             Client.RiotConnection.MessageReceived += Client.OnMessageReceived;
-            Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
             Client.GameConfigs = packet.GameTypeConfigs;
             Client.IsLoggedIn = true;
 

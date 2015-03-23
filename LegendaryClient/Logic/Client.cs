@@ -29,6 +29,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -800,6 +801,32 @@ namespace LegendaryClient.Logic
 
         #region League Of Legends Logic
 
+        private static System.Timers.Timer HeartbeatTimer;
+
+        internal static void StartHeartbeat()
+        {
+            HeartbeatTimer = new System.Timers.Timer();
+            HeartbeatTimer.Elapsed += DoHeartbeat;
+            HeartbeatTimer.Interval = 120000; // in milliseconds
+            HeartbeatTimer.Start();
+            DoHeartbeat(null, null);
+        }
+
+        private static int HeartbeatCount;
+        public static Session PlayerSession;
+        internal async static void DoHeartbeat(object sender, ElapsedEventArgs e)
+        {
+            if (IsLoggedIn)
+            {
+                string result = await RiotCalls.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId), 
+                    PlayerSession.Token, 
+                    HeartbeatCount,
+                    DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-0700'"));
+
+                HeartbeatCount++;
+            }
+        }
+
         internal static string Gas;
 
         /// <summary>
@@ -1489,6 +1516,8 @@ namespace LegendaryClient.Logic
         public static ProfilePage Profile;
 
         public static MainPage MainPage;
+
+        public static GameQueueConfig[] Queues;
     }
 
 

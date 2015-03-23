@@ -39,6 +39,19 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<String>("loginService", "login", obj);
         }
 
+        public static Task<Object> LoadPreferencesByKey()
+        {
+            InvokeAsync<String>("playerPreferencesService", "loadPreferencesByKey", "KEY_BINDINGS",
+                  Double.NaN,
+                  false);
+            return null;
+        }
+
+        public static Task<Object> CheckLobbyStatus()
+        {
+            return InvokeAsync<Object>("lcdsGameInvitationService", "checkLobbyStatus");
+        }
+
         /// <summary>
         /// Heartbeat to send every 2 minutes.
         /// </summary>

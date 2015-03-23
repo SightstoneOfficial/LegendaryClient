@@ -59,7 +59,6 @@ namespace LegendaryClient.Windows
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
             Client.Profile = new ProfilePage();
             GetNews(region);
-            GetPendingInvites();
             ChangeSpectatorRegion(Client.Region);
             var update = new Timer
             {
@@ -114,24 +113,6 @@ namespace LegendaryClient.Windows
                 }));
             };
             featuredUpdateTimer.Start();
-        }
-
-        public async void GetPendingInvites()
-        {
-            object[] allInvites = await RiotCalls.GetPendingInvitations();
-            foreach (var item in allInvites)
-            {
-                InvitationRequest invite = (InvitationRequest)item;
-                var pop = new GameInvitePopup(invite)
-                {
-                    HorizontalAlignment = HorizontalAlignment.Right,
-                    VerticalAlignment = VerticalAlignment.Bottom,
-                    Height = 230
-                };
-                Client.NotificationGrid.Children.Add(pop);
-            }
-            if (allInvites.Length != 0)
-                Client.MainWin.FlashWindow();
         }
 
         [STAThread]
@@ -222,10 +203,11 @@ namespace LegendaryClient.Windows
 
                 if (Client.LoginPacket.BroadcastNotification.broadcastMessages != null)
                 {
-                    //var message = Client.LoginPacket.BroadcastNotification.broadcastMessages[0];
-                    //if (message != null)
-                    //    BroadcastMessage.Text =
-                    //        message.Content;
+                    var message = Client.LoginPacket.BroadcastNotification.broadcastMessages[0];
+                    if (message != null)
+                    {
+                        //BroadcastMessage.Text = message.Content;
+                    }
                 }
 
                 foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)

@@ -16,6 +16,7 @@ using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.IO;
 using Timer = System.Timers.Timer;
+using RtmpSharp.Messaging;
 
 namespace LegendaryClient.Windows
 {
@@ -153,7 +154,7 @@ namespace LegendaryClient.Windows
                         PingRectangle.Fill = brush;
                     }
                     //Queues
-                    GameQueueConfig[] openQueues = await RiotCalls.GetAvailableQueues();
+                    GameQueueConfig[] openQueues = Client.Queues;
                     Array.Sort(openQueues,
                         (config, config2) =>
                             string.Compare(config.CacheName, config2.CacheName, StringComparison.Ordinal));
@@ -372,19 +373,6 @@ namespace LegendaryClient.Windows
                     {
                         var x = (BustedLeaver)leaver;
                         Client.Log("LeaverBuster, Access token is: " + x.AccessToken);
-                        var reQueue = new Timer
-                        {
-                            Interval = x.LeaverPenaltyMilisRemaining
-                        };
-                        reQueue.Elapsed += async (m, d) =>
-                        {
-                            var obj = new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", x.AccessToken } };
-                            EnteredQueue(await RiotCalls.AttachToQueue(param, obj));
-
-                            Client.OverlayContainer.Visibility = Visibility.Hidden;
-                            reQueue.Stop();
-                        };
-                        reQueue.Start();
                         var message = new MessageOverlay
                         {
                             MessageTitle = { Content = "LeaverBuster" },
@@ -392,15 +380,14 @@ namespace LegendaryClient.Windows
                         };
                         Timer t = new Timer { Interval = 1000 };
                         var timeleft = x.LeaverPenaltyMilisRemaining;
-                        if (Client.Dev)
-                            timeleft = 2000;
                         t.Elapsed += (messafge, mx) =>
                         {
                             timeleft = timeleft - 1000;
                             TimeSpan time = TimeSpan.FromMilliseconds(timeleft);
                             Dispatcher.BeginInvoke(
-                                DispatcherPriority.Input, new ThreadStart(() =>
+                                DispatcherPriority.Input, new ThreadStart(async() =>
                                     {
+                                        //Can not bypass this sadly, it just relaunches
                                         message.MessageTextBox.Text =
                                             @"Abandoning a match or being AFK results in a negative experience for your teammates, and is a punishable offense in League of Legends.
 You've been placed in a lower priority queue" + Environment.NewLine;
@@ -412,11 +399,14 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                                         message.MessageTextBox.Text += "You can close this window and you will still be in queue";
 
                                         Client.OverlayContainer.Content = message.Content;
+                                        if (timeleft < 0)
+                                        {
+                                            t.Stop();
+                                            Client.OverlayContainer.Visibility = Visibility.Hidden;
+                                            var obj = new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", x.AccessToken } };
+                                            EnteredQueue(await RiotCalls.AttachToQueue(param, obj));
+                                        }
                                     }));
-                            if (Math.Round(timeleft) < 0)
-                            {
-                                t.Stop();
-                            }
 
                         };
                         t.Start();
@@ -502,18 +492,18 @@ You've been placed in a lower priority queue" + Environment.NewLine;
             Client.RiotConnection.MessageReceived -= GotQueuePop;
         }
 
-        private void RestartDodgePop(object sender, object message)
+        private void RestartDodgePop(object sender, MessageReceivedEventArgs message)
         {
-            if (message is GameDTO)
+            if (message.Body is GameDTO)
             {
-                var queue = (GameDTO) message;
+                var queue = (GameDTO)message.Body;
                 if (queue.GameState == "TERMINATED")
                 {
                     Client.HasPopped = false;
                     Client.RiotConnection.MessageReceived += GotQueuePop;
                 }
             }
-            else if (message is PlayerCredentialsDto)
+            else if (message.Body is PlayerCredentialsDto)
             {
                 Client.RiotConnection.MessageReceived -= RestartDodgePop;
             }
