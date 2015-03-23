@@ -653,7 +653,7 @@ namespace LegendaryClient.Windows
             var garenaregion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             LoggingInProgressRing.Visibility = Visibility.Visible;
             LoginPasswordBox.Visibility = Visibility.Hidden;
-
+            shouldExit = false;
             while (!shouldExit)
             {
                 await Task.Delay(500);
@@ -661,6 +661,10 @@ namespace LegendaryClient.Windows
                 {
                     var s1 = GetCommandLine(process);
                     process.Kill();
+                    foreach(var lolclient in Process.GetProcessesByName("LolClient"))
+                    {
+                        lolclient.Kill();
+                    }
                     s1 = s1.Substring(1);
                     Client.Log("Received token, it is: " + s1);
                     Client.Region = garenaregion;
@@ -698,6 +702,7 @@ namespace LegendaryClient.Windows
                     var LoggedIn = await Client.RiotConnection.LoginAsync(Client.UID, login.Token);
                     var packet = await RiotCalls.GetLoginDataPacketForUser();
                     GotLoginPacket(packet);
+                    shouldExit = true;
                 }
             }
         }
