@@ -1114,7 +1114,10 @@ namespace LegendaryClient.Logic.Riot
                 Task.Delay(Convert.ToInt32(deserializedJSON["delay"]));
             }
             if (Client.Garena)
-                Client.UID = (string) deserializedJSON["user"];
+            {
+                Client.UID = (string)deserializedJSON["user"];
+                Client.Gas = sb.ToString();
+            }
             return (string)deserializedJSON["token"];
         }
 

@@ -774,17 +774,16 @@ namespace LegendaryClient.Windows
             }
         }
 
-        private string Gas;
         public string getGas()
         {
 
             string begin = "{\"signature\":\"";
             string end = "}";
 
-            int beginIndex = Gas.IndexOf(begin, StringComparison.Ordinal);
-            int endIndex = Gas.LastIndexOf(end, StringComparison.Ordinal);
+            int beginIndex = Client.Gas.IndexOf(begin, StringComparison.Ordinal);
+            int endIndex = Client.Gas.LastIndexOf(end, StringComparison.Ordinal);
 
-            string output = Gas.Substring(beginIndex, endIndex - beginIndex);
+            string output = Client.Gas.Substring(beginIndex, endIndex - beginIndex);
 
             byte[] encbuff = Encoding.UTF8.GetBytes(output);
             output = HttpServerUtility.UrlTokenEncode(encbuff);
