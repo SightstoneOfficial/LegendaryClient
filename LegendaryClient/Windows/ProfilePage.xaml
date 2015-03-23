@@ -56,5 +56,8 @@
                 <Frame x:Name="LeagueMatchHistoryBetaContainer" />
             </TabItem>
         </TabControl>
+        <Label Margin="0,11,303,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="First Win of the day available in:" FontSize="22" Width="321" />
+        <Label x:Name="FirstWinOfTheDayLabel" Margin="0,50,303,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+        	Content="23h 59m 59s" FontSize="22" />
     </Grid>
 </Page>

@@ -23,6 +23,7 @@ namespace LegendaryClient.Windows
         public ProfilePage()
         {
             InitializeComponent();
+
             if (Client.Dev)
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -40,6 +41,7 @@ namespace LegendaryClient.Windows
             LeagueMatchHistoryBetaContainer.Content = new MatchHistoryOnline();
             TeamsContainer.Content = new Teams();
 
+            getFirstWinOfTheDay();
             //Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             //Auto get summoner profile when created instance.
             if (Client.IsLoggedIn)
@@ -62,8 +64,8 @@ namespace LegendaryClient.Windows
             {
                 var overlay = new MessageOverlay
                 {
-                    MessageTitle = {Content = "No Summoner Found"},
-                    MessageTextBox = {Text = "The summoner \"" + s + "\" does not exist."}
+                    MessageTitle = { Content = "No Summoner Found" },
+                    MessageTextBox = { Text = "The summoner \"" + s + "\" does not exist." }
                 };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -77,14 +79,14 @@ namespace LegendaryClient.Windows
             {
                 LeagueHeader.Visibility = Visibility.Collapsed;
                 TeamsHeader.Visibility = Visibility.Collapsed;
-            }      
+            }
             else
             {
                 GotLeaguesForPlayer(await RiotCalls.GetAllLeaguesForPlayer(summoner.SummonerId));
                 PlayerDTO playerTeams = await RiotCalls.FindPlayer(summoner.SummonerId);
                 GotPlayerTeams(playerTeams);
             }
-                
+
 
             int profileIconId = summoner.ProfileIconId;
             string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png");
@@ -155,7 +157,7 @@ namespace LegendaryClient.Windows
         private void GotPlayerTeams(PlayerDTO teams)
         {
 
-            if(teams.PlayerTeams.Count > 0)
+            if (teams.PlayerTeams.Count > 0)
             {
                 var overview = TeamsContainer.Content as Teams;
                 overview.Update(teams);
@@ -165,7 +167,7 @@ namespace LegendaryClient.Windows
 
         private void TabContainer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            switch ((string) ((TabItem) TabContainer.SelectedItem).Header)
+            switch ((string)((TabItem)TabContainer.SelectedItem).Header)
             {
                 case "Champions":
                     var champions = ChampionsContainer.Content as Champions;
@@ -179,6 +181,20 @@ namespace LegendaryClient.Windows
                         skins.Update();
                     break;
             }
+        }
+
+        private void getFirstWinOfTheDay()
+        {
+            if (Client.LoginPacket.TimeUntilFirstWinOfDay < 1)
+            {
+                FirstWinOfTheDayLabel.Content = "Ready";
+            }
+            else
+            {
+                TimeSpan time = TimeSpan.FromMilliseconds(Client.LoginPacket.TimeUntilFirstWinOfDay);
+                FirstWinOfTheDayLabel.Content = "" + time.Hours + "h " + time.Minutes + "m " + time.Seconds + "s";
+            }
+
         }
 
         public class KeyValueItem
