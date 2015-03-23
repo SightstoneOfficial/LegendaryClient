@@ -34,6 +34,11 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<Session>("loginService", "login", Credentials);
         }
 
+        public static Task<String> Login(String obj)
+        {
+            return InvokeAsync<String>("loginService", "login", obj);
+        }
+
         /// <summary>
         /// Heartbeat to send every 2 minutes.
         /// </summary>
