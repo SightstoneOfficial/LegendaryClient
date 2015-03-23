@@ -426,6 +426,7 @@ namespace LegendaryClient.Windows
         {
             if (packet.AllSummonerData == null)
             {
+                Client.RiotConnection.MessageReceived += Client.OnMessageReceived;
                 //Just Created Account, need to put logic here.
                 Client.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
