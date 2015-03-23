@@ -462,7 +462,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                     var fakeButton = new Button
                     {
                         Tag = item
-                    }; //We require a unique button to add to the dictionary
+                    }; 
                     item.Content = "00:00";
                 }));
                 InQueue = true;
@@ -475,12 +475,12 @@ You've been placed in a lower priority queue" + Environment.NewLine;
             }
         }
 
-        private void GotQueuePop(object sender, object message)
+        private void GotQueuePop(object sender, MessageReceivedEventArgs message)
         {
-            if (!(message is GameDTO))
+            if (!(message.Body is GameDTO))
                 return;
 
-            var queue = (GameDTO) message;
+            var queue = (GameDTO) message.Body;
             if (Client.HasPopped)
                 return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>

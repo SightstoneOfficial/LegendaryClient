@@ -16,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
@@ -27,15 +28,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class CustomGameLobbyPage
     {
-        private static readonly List<int> bots = new List<int>(new[]
-        {
-            12, 32, 1, 22, 53, 63, 51, 69, 31, 42,
-            122, 36, 81, 9, 3, 86, 104, 39, 59, 24,
-            30, 10, 96, 89, 236, 99, 54, 90, 11, 21,
-            62, 25, 75, 20, 33, 58, 13, 98, 102, 15,
-            16, 50, 44, 18, 48, 77, 8, 19, 5, 115, 
-            26, 143
-        });
+        private static readonly List<int> bots = new List<int>();
 
         private bool HasConnectedToChat;
 
@@ -46,6 +39,9 @@ namespace LegendaryClient.Windows
         public CustomGameLobbyPage(GameDTO gameLobby = null)
         {
             InitializeComponent();
+            //Hopefully this works better
+            foreach (var champs in Client.PlayerChampions.Where(champs => champs.BotEnabled))
+                bots.Add(champs.ChampionId);
             GameName.Content = Client.GameName;
             Client.RiotConnection.MessageReceived += GameLobby_OnMessageReceived;
             //If client has created game use initial DTO

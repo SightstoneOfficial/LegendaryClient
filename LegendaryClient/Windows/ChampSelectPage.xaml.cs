@@ -164,6 +164,8 @@ namespace LegendaryClient.Windows
             return this;
         }
 
+        private bool draft;
+
         private void GetLocalRunePages()
         {
             foreach (var item in Client.LocalRunePages)
@@ -257,15 +259,6 @@ namespace LegendaryClient.Windows
 
             //Signal to the server we are in champion select
             await RiotCalls.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
-            //Selects Champion
-            //New method makes it easier to instapick a champ + works in draft
-            /*
-            if (previousPage is TeamQueuePage && (previousPage as TeamQueuePage).SelectChampBox.Text != "Auto Select Champ")
-            {
-                await RiotCalls.SelectChampion(ChampList.FirstOrDefault(x => champions.GetChampion(x.ChampionId).displayName.ToLower() == (previousPage as TeamQueuePage).SelectChampBox.Text.ToLower()).ChampionId);
-            }
-            //*/
-            //Retrieve the latest GameDTO
             GameDTO latestDto =
                 await
                     RiotCalls.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
@@ -299,13 +292,16 @@ namespace LegendaryClient.Windows
 
                 LatestDto = latestDto;
                 //Get the champions for the other team to ban & sort alpabetically
-
-                ChampionBanInfoDTO[] champsForBan = await RiotCalls.GetChampionsForBan();
-                ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
-                ChampionsForBan.Sort(
-                    (x, y) =>
-                        string.Compare(champions.GetChampion(x.ChampionId)
-                            .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
+                if (latestDto.GameState.ToUpper() == "PRE_CHAMP_SELECT")
+                {
+                    draft = true;
+                    ChampionBanInfoDTO[] champsForBan = await RiotCalls.GetChampionsForBan();
+                    ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
+                    ChampionsForBan.Sort(
+                        (x, y) =>
+                            string.Compare(champions.GetChampion(x.ChampionId)
+                                .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
+                }
 
 
                 //Render our champions
