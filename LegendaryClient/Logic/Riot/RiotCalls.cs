@@ -507,7 +507,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="MatchMakerParams">The parameters for the queue</param>
         /// <param name="token">Token required to queue with LeaverBusted</param>
         /// <returns>Returns a notification to tell you if it was successful</returns>
-        public static Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParams matchMakerParams, ASObject token)
+        public static Task<SearchingForMatchNotification> AttachTeamToQueue(MatchMakerParams matchMakerParams, AsObject token)
         {
             return InvokeAsync<SearchingForMatchNotification>("matchmakerService", "attachTeamToQueue", matchMakerParams, token);
         }
@@ -862,7 +862,14 @@ namespace LegendaryClient.Logic.Riot
         /// <returns>null</returns>
         public static Task<object> Leave()
         {
-            InvokeAsync<object>("lcdsGameInvitationService", "leave");
+            try
+            {
+                InvokeAsync<object>("lcdsGameInvitationService", "leave");
+            }
+            catch
+            {
+                // ignored
+            }
             return null;
         }
 

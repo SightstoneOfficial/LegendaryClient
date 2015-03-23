@@ -602,7 +602,8 @@ You've been placed in a lower priority queue" + Environment.NewLine;
             InQueue = false;
             await RiotCalls.PurgeFromQueues();
             await RiotCalls.QuitGame();
-            await RiotCalls.Leave();
+            if (Client.LastPageContent is TeamQueuePage)
+                await RiotCalls.Leave();
             Client.ClearPage(typeof (CustomGameLobbyPage));
             Client.ClearPage(typeof (CreateCustomGamePage));
             Client.ClearPage(typeof (FactionsCreateGamePage));

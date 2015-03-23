@@ -716,7 +716,14 @@ namespace LegendaryClient.Windows
                             case "LEAVER_BUSTED":
 
                                 Client.Log("Busting LeaverBuster, Access token is: " + (((object)result.PlayerJoinFailures[0]) as BustedLeaver).AccessToken);
-                                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters, new ASObject { Token = (((object)result.PlayerJoinFailures[0]) as BustedLeaver).AccessToken }));
+                                var obj = new AsObject
+                                {
+                                    {
+                                        "LEAVER_BUSTER_ACCESS_TOKEN",
+                                        (result.PlayerJoinFailures[0] as BustedLeaver).AccessToken
+                                    }
+                                };
+                                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters, obj));
                                 break;
                             case "RANKED_NUM_CHAMPS":
                                 messageOver.MessageTextBox.Text += " - You require at least 16 owned champions to play a Normal Draft / Ranked game.";
