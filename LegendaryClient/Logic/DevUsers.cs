@@ -16,7 +16,9 @@ namespace LegendaryClient.Logic
             Stream stream = client.OpenRead("http://legendaryclient.net/devs.txt");
             StreamReader reader = new StreamReader(stream);
             string content = reader.ReadToEnd();
-            return content.Split('\n').ToList();
+            var devs = content.Split('\n').ToList();
+            devs.RemoveAll(x => x.StartsWith("#"));
+            return devs;
         }
         
     }
