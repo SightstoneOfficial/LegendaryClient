@@ -11,15 +11,15 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object LastLevelIncrease { get; set; }
 
         [SerializedName("level")]
-        public Int32 Level { get; set; }
+        public int Level { get; set; }
 
         [SerializedName("lastDecay")]
         public DateTime LastDecay { get; set; }
 
         [SerializedName("userInformed")]
-        public Boolean UserInformed { get; set; }
+        public bool UserInformed { get; set; }
 
         [SerializedName("points")]
-        public Int32 Points { get; set; }
+        public int Points { get; set; }
     }
 }

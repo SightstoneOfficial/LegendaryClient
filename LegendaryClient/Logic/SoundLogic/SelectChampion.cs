@@ -6,7 +6,7 @@ namespace LegendaryClient.Logic.SoundLogic
 {
     public class SelectChampion
     {
-        public static int SelectChamp(Int32 champ)
+        public static int SelectChamp(int champ)
         {
             Client.SoundPlayer.Source =
                 new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions", champions.GetChampion(champ).name + ".mp3"));

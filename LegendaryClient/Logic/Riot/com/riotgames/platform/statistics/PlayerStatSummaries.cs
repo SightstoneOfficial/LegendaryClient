@@ -12,6 +12,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public List<PlayerStatSummary> PlayerStatSummarySet { get; set; }
 
         [SerializedName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
     }
 }

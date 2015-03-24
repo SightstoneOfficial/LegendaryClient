@@ -7,7 +7,7 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
     public class DoABC : Tag
     {
         public byte[] ABCData;
-        public UInt32 Flags;
+        public uint Flags;
         public string Name;
         private byte[] actionRecord;
 

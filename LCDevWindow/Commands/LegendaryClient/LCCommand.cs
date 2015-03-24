@@ -14,7 +14,7 @@ namespace LCDevWindow.Commands.LegendaryClient
 
         public abstract string CommandName { get; }
 
-        public static Command GetCommand(String Command)
+        public static Command GetCommand(string Command)
         {
             Type t = Type.GetType("LCDevWindow.Commands." + Command);
 

@@ -8,24 +8,24 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class SummonerActiveBoostsDTO
     {
         [SerializedName("xpBoostEndDate")]
-        public Double XpBoostEndDate { get; set; }
+        public double XpBoostEndDate { get; set; }
 
         [SerializedName("xpBoostPerWinCount")]
-        public Int32 XpBoostPerWinCount { get; set; }
+        public int XpBoostPerWinCount { get; set; }
 
         [SerializedName("xpLoyaltyBoost")]
-        public Int32 XpLoyaltyBoost { get; set; }
+        public int XpLoyaltyBoost { get; set; }
 
         [SerializedName("ipBoostPerWinCount")]
-        public Int32 IpBoostPerWinCount { get; set; }
+        public int IpBoostPerWinCount { get; set; }
 
         [SerializedName("ipLoyaltyBoost")]
-        public Int32 IpLoyaltyBoost { get; set; }
+        public int IpLoyaltyBoost { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [SerializedName("ipBoostEndDate")]
-        public Double IpBoostEndDate { get; set; }
+        public double IpBoostEndDate { get; set; }
     }
 }

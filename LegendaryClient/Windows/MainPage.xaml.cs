@@ -653,7 +653,7 @@ namespace LegendaryClient.Windows
                                                         SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
                                             control.SummonerSpell2.Source = new BitmapImage(uriSource);
                                             control.PlayerName.Content = playerName;
-                                            control.Tag = new List<Object> { playerName, championId };
+                                            control.Tag = new List<object> { playerName, championId };
 
                                             var m = new Image();
                                             Panel.SetZIndex(m, -2); //Put background behind everything

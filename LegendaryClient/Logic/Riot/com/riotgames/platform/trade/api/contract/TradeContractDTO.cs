@@ -11,13 +11,13 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String RequesterInternalSummonerName { get; set; }
 
         [SerializedName("requesterChampionId")]
-        public Double RequesterChampionId { get; set; }
+        public double RequesterChampionId { get; set; }
 
         [SerializedName("state")]
         public String State { get; set; }
 
         [SerializedName("responderChampionId")]
-        public Double ResponderChampionId { get; set; }
+        public double ResponderChampionId { get; set; }
 
         [SerializedName("responderInternalSummonerName")]
         public String ResponderInternalSummonerName { get; set; }

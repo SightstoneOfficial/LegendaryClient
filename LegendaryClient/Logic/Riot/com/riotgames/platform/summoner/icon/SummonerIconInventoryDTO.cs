@@ -9,7 +9,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class SummonerIconInventoryDTO
     {
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [SerializedName("summonerIcons")]
         public List<Icon> SummonerIcons { get; set; }

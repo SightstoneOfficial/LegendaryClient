@@ -9,7 +9,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class MatchingThrottleConfig
     {
         [SerializedName("limit")]
-        public Double Limit { get; set; }
+        public double Limit { get; set; }
 
         [SerializedName("matchingThrottleProperties")]
         public List<object> MatchingThrottleProperties { get; set; }

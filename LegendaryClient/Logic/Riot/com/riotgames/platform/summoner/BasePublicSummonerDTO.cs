@@ -17,15 +17,15 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String SeasonOneTier { get; set; }
 
         [SerializedName("acctId")]
-        public Double AcctId { get; set; }
+        public double AcctId { get; set; }
 
         [SerializedName("name")]
         public String Name { get; set; }
 
         [SerializedName("sumId")]
-        public Double SumId { get; set; }
+        public double SumId { get; set; }
 
         [SerializedName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
     }
 }

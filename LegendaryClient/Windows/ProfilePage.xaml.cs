@@ -128,7 +128,7 @@ namespace LegendaryClient.Windows
 
             var history = MatchHistoryContainer.Content as MatchHistory;
             if (history != null)
-                history.Update(summoner.AcctId);
+                await history.Update(summoner.AcctId);
 
             var overview = OverviewContainer.Content as Overview;
             if (overview != null)

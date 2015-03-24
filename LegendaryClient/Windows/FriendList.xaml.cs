@@ -99,7 +99,7 @@ namespace LegendaryClient.Windows
                     playersListView.Foreground = Brushes.White;
                     playersListView.Background = null;
                     playersListView.BorderBrush = null;
-                    playersListView.MouseDoubleClick += PlayersListView_MousedoubleClick;
+                    playersListView.MouseDoubleClick += PlayersListView_MouseDoubleClick;
                     playersListView.SelectionChanged += ChatListView_SelectionChanged;
                     playersListView.PreviewMouseWheel += PlayersListView_PreviewMouseWheel;
 
@@ -228,7 +228,7 @@ namespace LegendaryClient.Windows
             LastPlayerItem = playerItem;
         }
 
-        private void PlayersListView_MousedoubleClick(object sender, MouseButtonEventArgs e)
+        private void PlayersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (selection.AddedItems.Count <= 0)
                 return;

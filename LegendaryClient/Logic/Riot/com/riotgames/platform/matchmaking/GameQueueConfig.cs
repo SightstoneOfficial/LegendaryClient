@@ -9,25 +9,25 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class GameQueueConfig
     {
         [SerializedName("blockedMinutesThreshold")]
-        public Int32 BlockedMinutesThreshold { get; set; }
+        public int BlockedMinutesThreshold { get; set; }
 
         [SerializedName("minimumParticipantListSize")]
-        public Int32 MinimumParticipantListSize { get; set; }
+        public int MinimumParticipantListSize { get; set; }
 
         [SerializedName("ranked")]
-        public Boolean Ranked { get; set; }
+        public bool Ranked { get; set; }
 
         [SerializedName("maxLevel")]
-        public Int32 MaxLevel { get; set; }
+        public int MaxLevel { get; set; }
 
         [SerializedName("minLevel")]
-        public Int32 MinLevel { get; set; }
+        public int MinLevel { get; set; }
 
         [SerializedName("gameTypeConfigId")]
-        public Int32 GameTypeConfigId { get; set; }
+        public int GameTypeConfigId { get; set; }
 
         [SerializedName("thresholdEnabled")]
-        public Boolean ThresholdEnabled { get; set; }
+        public bool ThresholdEnabled { get; set; }
 
         [SerializedName("queueState")]
         public String QueueState { get; set; }
@@ -39,7 +39,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String CacheName { get; set; }
 
         [SerializedName("id")]
-        public Double Id { get; set; }
+        public double Id { get; set; }
 
         [SerializedName("queueBonusKey")]
         public String QueueBonusKey { get; set; }
@@ -51,13 +51,13 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String PointsConfigKey { get; set; }
 
         [SerializedName("teamOnly")]
-        public Boolean TeamOnly { get; set; }
+        public bool TeamOnly { get; set; }
 
         [SerializedName("minimumQueueDodgeDelayTime")]
-        public Int32 MinimumQueueDodgeDelayTime { get; set; }
+        public int MinimumQueueDodgeDelayTime { get; set; }
 
         [SerializedName("supportedMapIds")]
-        public List<Int32> SupportedMapIds { get; set; }
+        public List<int> SupportedMapIds { get; set; }
 
         [SerializedName("gameMode")]
         public String GameMode { get; set; }
@@ -66,19 +66,19 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String TypeString { get; set; }
 
         [SerializedName("numPlayersPerTeam")]
-        public Int32 NumPlayersPerTeam { get; set; }
+        public int NumPlayersPerTeam { get; set; }
 
         [SerializedName("maximumParticipantListSize")]
-        public Int32 MaximumParticipantListSize { get; set; }
+        public int MaximumParticipantListSize { get; set; }
 
         [SerializedName("disallowFreeChampions")]
-        public Boolean DisallowFreeChampions { get; set; }
+        public bool DisallowFreeChampions { get; set; }
 
         [SerializedName("mapSelectionAlgorithm")]
         public String MapSelectionAlgorithm { get; set; }
 
         [SerializedName("thresholdSize")]
-        public Double ThresholdSize { get; set; }
+        public double ThresholdSize { get; set; }
 
         [SerializedName("matchingThrottleConfig")]
         public MatchingThrottleConfig MatchingThrottleConfig { get; set; }

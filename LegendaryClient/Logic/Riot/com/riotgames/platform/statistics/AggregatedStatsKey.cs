@@ -11,7 +11,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String GameMode { get; set; }
 
         [SerializedName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [SerializedName("gameModeString")]
         public String GameModeString { get; set; }

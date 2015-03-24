@@ -8,9 +8,9 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class SlotEntry
     {
         [SerializedName("runeId")]
-        public Int32 RuneId { get; set; }
+        public int RuneId { get; set; }
 
         [SerializedName("runeSlotId")]
-        public Int32 RuneSlotId { get; set; }
+        public int RuneSlotId { get; set; }
     }
 }

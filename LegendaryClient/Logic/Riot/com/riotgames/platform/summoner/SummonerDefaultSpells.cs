@@ -14,6 +14,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object SummonerDefaultSpellMap { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

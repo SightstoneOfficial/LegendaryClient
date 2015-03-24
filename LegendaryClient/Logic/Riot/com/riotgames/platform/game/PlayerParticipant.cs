@@ -11,58 +11,58 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object TimeAddedToQueue { get; set; }
 
         [SerializedName("index")]
-        public Int32 Index { get; set; }
+        public int Index { get; set; }
 
         [SerializedName("queueRating")]
-        public Int32 QueueRating { get; set; }
+        public int QueueRating { get; set; }
 
         [SerializedName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [SerializedName("botDifficulty")]
         public String BotDifficulty { get; set; }
 
         [SerializedName("originalAccountNumber")]
-        public Double OriginalAccountNumber { get; set; }
+        public double OriginalAccountNumber { get; set; }
 
         [SerializedName("summonerInternalName")]
         public String SummonerInternalName { get; set; }
 
         [SerializedName("minor")]
-        public Boolean Minor { get; set; }
+        public bool Minor { get; set; }
 
         [SerializedName("locale")]
         public object Locale { get; set; }
 
         [SerializedName("lastSelectedSkinIndex")]
-        public Int32 LastSelectedSkinIndex { get; set; }
+        public int LastSelectedSkinIndex { get; set; }
 
         [SerializedName("partnerId")]
         public String PartnerId { get; set; }
 
         [SerializedName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [SerializedName("teamOwner")]
-        public Boolean TeamOwner { get; set; }
+        public bool TeamOwner { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [SerializedName("badges")]
-        public Int32 Badges { get; set; }
+        public int Badges { get; set; }
 
         [SerializedName("pickTurn")]
-        public Int32 PickTurn { get; set; }
+        public int PickTurn { get; set; }
 
         [SerializedName("clientInSynch")]
-        public Boolean ClientInSynch { get; set; }
+        public bool ClientInSynch { get; set; }
 
         [SerializedName("summonerName")]
         public String SummonerName { get; set; }
 
         [SerializedName("pickMode")]
-        public Int32 PickMode { get; set; }
+        public int PickMode { get; set; }
 
         [SerializedName("originalPlatformId")]
         public String OriginalPlatformId { get; set; }

@@ -12,10 +12,10 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object SkinName { get; set; }
 
         [SerializedName("ranked")]
-        public Boolean Ranked { get; set; }
+        public bool Ranked { get; set; }
 
         [SerializedName("skinIndex")]
-        public Int32 SkinIndex { get; set; }
+        public int SkinIndex { get; set; }
 
         [SerializedName("fellowPlayers")]
         public List<FellowPlayerInfo> FellowPlayers { get; set; }
@@ -24,85 +24,85 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String GameType { get; set; }
 
         [SerializedName("experienceEarned")]
-        public Double ExperienceEarned { get; set; }
+        public double ExperienceEarned { get; set; }
 
         [SerializedName("rawStatsJson")]
         public object RawStatsJson { get; set; }
 
         [SerializedName("eligibleFirstWinOfDay")]
-        public Boolean EligibleFirstWinOfDay { get; set; }
+        public bool EligibleFirstWinOfDay { get; set; }
 
         [SerializedName("difficulty")]
         public object Difficulty { get; set; }
 
         [SerializedName("gameMapId")]
-        public Int32 GameMapId { get; set; }
+        public int GameMapId { get; set; }
 
         [SerializedName("leaver")]
-        public Boolean Leaver { get; set; }
+        public bool Leaver { get; set; }
 
         [SerializedName("spell1")]
-        public Double Spell1 { get; set; }
+        public double Spell1 { get; set; }
 
         [SerializedName("gameTypeEnum")]
         public String GameTypeEnum { get; set; }
 
         [SerializedName("teamId")]
-        public Double TeamId { get; set; }
+        public double TeamId { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [SerializedName("statistics")]
         public List<RawStat> Statistics { get; set; }
 
         [SerializedName("spell2")]
-        public Double Spell2 { get; set; }
+        public double Spell2 { get; set; }
 
         [SerializedName("afk")]
-        public Boolean Afk { get; set; }
+        public bool Afk { get; set; }
 
         [SerializedName("id")]
         public object Id { get; set; }
 
         [SerializedName("boostXpEarned")]
-        public Double BoostXpEarned { get; set; }
+        public double BoostXpEarned { get; set; }
 
         [SerializedName("level")]
-        public Double Level { get; set; }
+        public double Level { get; set; }
 
         [SerializedName("invalid")]
-        public Boolean Invalid { get; set; }
+        public bool Invalid { get; set; }
 
         [SerializedName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [SerializedName("createDate")]
         public DateTime CreateDate { get; set; }
 
         [SerializedName("userServerPing")]
-        public Int32 UserServerPing { get; set; }
+        public int UserServerPing { get; set; }
 
         [SerializedName("adjustedRating")]
-        public Int32 AdjustedRating { get; set; }
+        public int AdjustedRating { get; set; }
 
         [SerializedName("premadeSize")]
-        public Int32 PremadeSize { get; set; }
+        public int PremadeSize { get; set; }
 
         [SerializedName("boostIpEarned")]
-        public Double BoostIpEarned { get; set; }
+        public double BoostIpEarned { get; set; }
 
         [SerializedName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [SerializedName("timeInQueue")]
-        public Int32 TimeInQueue { get; set; }
+        public int TimeInQueue { get; set; }
 
         [SerializedName("ipEarned")]
-        public Double IpEarned { get; set; }
+        public double IpEarned { get; set; }
 
         [SerializedName("eloChange")]
-        public Int32 EloChange { get; set; }
+        public int EloChange { get; set; }
 
         [SerializedName("gameMode")]
         public String GameMode { get; set; }
@@ -111,10 +111,10 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object DifficultyString { get; set; }
 
         [SerializedName("KCoefficient")]
-        public Double KCoefficient { get; set; }
+        public double KCoefficient { get; set; }
 
         [SerializedName("teamRating")]
-        public Int32 TeamRating { get; set; }
+        public int TeamRating { get; set; }
 
         [SerializedName("subType")]
         public String SubType { get; set; }
@@ -123,15 +123,15 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String QueueType { get; set; }
 
         [SerializedName("premadeTeam")]
-        public Boolean PremadeTeam { get; set; }
+        public bool PremadeTeam { get; set; }
 
         [SerializedName("predictedWinPct")]
-        public Double PredictedWinPct { get; set; }
+        public double PredictedWinPct { get; set; }
 
         [SerializedName("rating")]
-        public Double Rating { get; set; }
+        public double Rating { get; set; }
 
         [SerializedName("championId")]
-        public Double ChampionId { get; set; }
+        public double ChampionId { get; set; }
     }
 }

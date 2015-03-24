@@ -11,7 +11,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object GameSpecificLoyaltyRewards { get; set; }
 
         [SerializedName("reconnectDelay")]
-        public Int32 ReconnectDelay { get; set; }
+        public int ReconnectDelay { get; set; }
 
         [SerializedName("lastModifiedDate")]
         public object LastModifiedDate { get; set; }

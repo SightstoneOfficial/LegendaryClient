@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class GameObserver
     {
         [SerializedName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [SerializedName("botDifficulty")]
         public String BotDifficulty { get; set; }
@@ -20,31 +20,31 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object Locale { get; set; }
 
         [SerializedName("lastSelectedSkinIndex")]
-        public Int32 LastSelectedSkinIndex { get; set; }
+        public int LastSelectedSkinIndex { get; set; }
 
         [SerializedName("partnerId")]
         public String PartnerId { get; set; }
 
         [SerializedName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [SerializedName("badges")]
-        public Int32 Badges { get; set; }
+        public int Badges { get; set; }
 
         [SerializedName("pickTurn")]
-        public Int32 PickTurn { get; set; }
+        public int PickTurn { get; set; }
 
         [SerializedName("originalAccountId")]
-        public Double OriginalAccountId { get; set; }
+        public double OriginalAccountId { get; set; }
 
         [SerializedName("summonerName")]
         public String SummonerName { get; set; }
 
         [SerializedName("pickMode")]
-        public Int32 PickMode { get; set; }
+        public int PickMode { get; set; }
 
         [SerializedName("originalPlatformId")]
         public String OriginalPlatformId { get; set; }

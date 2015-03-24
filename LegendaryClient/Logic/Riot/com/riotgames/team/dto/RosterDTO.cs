@@ -9,7 +9,7 @@ namespace LegendaryClient.Logic.Riot.Team
     public class RosterDTO
     {
         [SerializedName("ownerId")]
-        public Double OwnerId { get; set; }
+        public double OwnerId { get; set; }
 
         [SerializedName("memberList")]
         public List<TeamMemberInfoDTO> MemberList { get; set; }

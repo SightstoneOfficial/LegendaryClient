@@ -20,6 +20,6 @@ namespace LegendaryClient.Logic.Riot.Team
         public String Status { get; set; }
 
         [SerializedName("playerId")]
-        public Double PlayerId { get; set; }
+        public double PlayerId { get; set; }
     }
 }

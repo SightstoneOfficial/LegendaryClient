@@ -11,24 +11,24 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String InternalName { get; set; }
 
         [SerializedName("acctId")]
-        public Double AcctId { get; set; }
+        public double AcctId { get; set; }
 
         [SerializedName("name")]
         public String Name { get; set; }
 
         [SerializedName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [SerializedName("revisionDate")]
         public DateTime RevisionDate { get; set; }
 
         [SerializedName("revisionId")]
-        public Double RevisionId { get; set; }
+        public double RevisionId { get; set; }
 
         [SerializedName("summonerLevel")]
-        public Double SummonerLevel { get; set; }
+        public double SummonerLevel { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

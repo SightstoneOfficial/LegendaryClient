@@ -8,12 +8,12 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class ChampionBanInfoDTO
     {
         [SerializedName("enemyOwned")]
-        public Boolean EnemyOwned { get; set; }
+        public bool EnemyOwned { get; set; }
 
         [SerializedName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [SerializedName("owned")]
-        public Boolean Owned { get; set; }
+        public bool Owned { get; set; }
     }
 }

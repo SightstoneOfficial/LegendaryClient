@@ -12,13 +12,13 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String[] SearchTags { get; set; }
 
         [SerializedName("ownedByYourTeam")]
-        public Boolean OwnedByYourTeam { get; set; }
+        public bool OwnedByYourTeam { get; set; }
 
         [SerializedName("botEnabled")]
-        public Boolean BotEnabled { get; set; }
+        public bool BotEnabled { get; set; }
 
         [SerializedName("banned")]
-        public Boolean Banned { get; set; }
+        public bool Banned { get; set; }
 
         [SerializedName("skinName")]
         public String SkinName { get; set; }
@@ -30,22 +30,22 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object ChampionData { get; set; }
 
         [SerializedName("owned")]
-        public Boolean Owned { get; set; }
+        public bool Owned { get; set; }
 
         [SerializedName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [SerializedName("freeToPlayReward")]
-        public Boolean FreeToPlayReward { get; set; }
+        public bool FreeToPlayReward { get; set; }
 
         [SerializedName("freeToPlay")]
-        public Boolean FreeToPlay { get; set; }
+        public bool FreeToPlay { get; set; }
 
         [SerializedName("ownedByEnemyTeam")]
-        public Boolean OwnedByEnemyTeam { get; set; }
+        public bool OwnedByEnemyTeam { get; set; }
 
         [SerializedName("active")]
-        public Boolean Active { get; set; }
+        public bool Active { get; set; }
 
         [SerializedName("championSkins")]
         public List<ChampionSkinDTO> ChampionSkins { get; set; }
@@ -54,12 +54,12 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String Description { get; set; }
 
         [SerializedName("winCountRemaining")]
-        public Int32 WinCountRemaining { get; set; }
+        public int WinCountRemaining { get; set; }
 
         [SerializedName("purchaseDate")]
-        public Double PurchaseDate { get; set; }
+        public double PurchaseDate { get; set; }
 
         [SerializedName("endDate")]
-        public Int32 EndDate { get; set; }
+        public int EndDate { get; set; }
     }
 }

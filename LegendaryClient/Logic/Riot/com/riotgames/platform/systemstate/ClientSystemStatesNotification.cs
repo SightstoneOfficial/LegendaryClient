@@ -14,99 +14,99 @@ namespace LegendaryClient.Logic.Riot.Platform
     [SerializedName("com.riotgames.platform.systemstate.ClientSystemStatesNotification")]
     public class ClientSystemStatesNotification : IExternalizable
     {
-        public Boolean championTradeThroughLCDS { get; set; }
+        public bool championTradeThroughLCDS { get; set; }
 
-        public Boolean practiceGameEnabled { get; set; }
+        public bool practiceGameEnabled { get; set; }
 
-        public Boolean advancedTutorialEnabled { get; set; }
+        public bool advancedTutorialEnabled { get; set; }
 
-        public Int32[] practiceGameTypeConfigIdList { get; set; }
+        public int[] practiceGameTypeConfigIdList { get; set; }
 
-        public Int32 minNumPlayersForPracticeGame { get; set; }
+        public int minNumPlayersForPracticeGame { get; set; }
 
-        public Int32[] PracticeGameTypeConfigIdList { get; set; }
+        public int[] PracticeGameTypeConfigIdList { get; set; }
 
-        public Int32[] freeToPlayChampionIdList { get; set; }
+        public int[] freeToPlayChampionIdList { get; set; }
 
         public object[] inactiveChampionIdList { get; set; }
 
-        public Int32[] inactiveSpellIdList { get; set; }
+        public int[] inactiveSpellIdList { get; set; }
 
-        public Int32[] inactiveTutorialSpellIdList { get; set; }
+        public int[] inactiveTutorialSpellIdList { get; set; }
 
-        public Int32[] inactiveClassicSpellIdList { get; set; }
+        public int[] inactiveClassicSpellIdList { get; set; }
 
-        public Int32[] inactiveOdinSpellIdList { get; set; }
+        public int[] inactiveOdinSpellIdList { get; set; }
 
-        public Int32[] inactiveAramSpellIdList { get; set; }
+        public int[] inactiveAramSpellIdList { get; set; }
 
-        public Int32[] enabledQueueIdsList { get; set; }
+        public int[] enabledQueueIdsList { get; set; }
 
-        public Int32[] unobtainableChampionSkinIDList { get; set; }
+        public int[] unobtainableChampionSkinIDList { get; set; }
 
-        public Int32[] freeToPlayChampionForNewPlayersIdList { get; set; }
+        public int[] freeToPlayChampionForNewPlayersIdList { get; set; }
 
-        public Dictionary<String, Object> gameModeToInactiveSpellIds { get; set; }
+        public Dictionary<String, object> gameModeToInactiveSpellIds { get; set; }
 
-        public Boolean archivedStatsEnabled { get; set; }
+        public bool archivedStatsEnabled { get; set; }
 
-        public Dictionary<String, Object> queueThrottleDTO { get; set; }
+        public Dictionary<String, object> queueThrottleDTO { get; set; }
 
-        public Dictionary<String, Object>[] gameMapEnabledDTOList { get; set; }
+        public Dictionary<String, object>[] gameMapEnabledDTOList { get; set; }
 
-        public Boolean storeCustomerEnabled { get; set; }
+        public bool storeCustomerEnabled { get; set; }
 
-        public Boolean socialIntegrationEnabled { get; set; }
+        public bool socialIntegrationEnabled { get; set; }
 
-        public Boolean runeUniquePerSpellBook { get; set; }
+        public bool runeUniquePerSpellBook { get; set; }
 
-        public Boolean tribunalEnabled { get; set; }
+        public bool tribunalEnabled { get; set; }
 
-        public Boolean observerModeEnabled { get; set; }
+        public bool observerModeEnabled { get; set; }
 
-        public Int32 currentSeason { get; set; }
+        public int currentSeason { get; set; }
 
-        public Int32 freeToPlayChampionsForNewPlayersMaxLevel { get; set; }
+        public int freeToPlayChampionsForNewPlayersMaxLevel { get; set; }
 
-        public Int32 spectatorSlotLimit { get; set; }
+        public int spectatorSlotLimit { get; set; }
 
-        public Int32 clientHeartBeatRateSeconds { get; set; }
+        public int clientHeartBeatRateSeconds { get; set; }
 
         public String[] observableGameModes { get; set; }
 
         public String observableCustomGameModes { get; set; }
 
-        public Boolean teamServiceEnabled { get; set; }
+        public bool teamServiceEnabled { get; set; }
 
-        public Boolean leagueServiceEnabled { get; set; }
+        public bool leagueServiceEnabled { get; set; }
 
-        public Boolean modularGameModeEnabled { get; set; }
+        public bool modularGameModeEnabled { get; set; }
 
-        public Decimal riotDataServiceDataSendProbability { get; set; }
+        public decimal riotDataServiceDataSendProbability { get; set; }
 
-        public Boolean displayPromoGamesPlayedEnabled { get; set; }
+        public bool displayPromoGamesPlayedEnabled { get; set; }
 
-        public Boolean masteryPageOnServer { get; set; }
+        public bool masteryPageOnServer { get; set; }
 
-        public Int32 maxMasteryPagesOnServer { get; set; }
+        public int maxMasteryPagesOnServer { get; set; }
 
-        public Boolean tournamentSendStatsEnabled { get; set; }
+        public bool tournamentSendStatsEnabled { get; set; }
 
         public String replayServiceAddress { get; set; }
 
-        public Boolean kudosEnabled { get; set; }
+        public bool kudosEnabled { get; set; }
 
-        public Boolean buddyNotesEnabled { get; set; }
+        public bool buddyNotesEnabled { get; set; }
 
-        public Boolean localeSpecificChatRoomsEnabled { get; set; }
+        public bool localeSpecificChatRoomsEnabled { get; set; }
 
-        public Dictionary<String, Object> replaySystemStates { get; set; }
+        public Dictionary<String, object> replaySystemStates { get; set; }
 
-        public Boolean sendFeedbackEventsEnabled { get; set; }
+        public bool sendFeedbackEventsEnabled { get; set; }
 
         public String[] knownGeographicGameServerRegions { get; set; }
 
-        public Boolean leaguesDecayMessagingEnabled { get; set; }
+        public bool leaguesDecayMessagingEnabled { get; set; }
 
         public string Json { get; set; }
 

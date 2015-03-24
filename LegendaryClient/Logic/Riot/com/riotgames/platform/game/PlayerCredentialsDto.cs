@@ -11,19 +11,19 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String EncryptionKey { get; set; }
 
         [SerializedName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [SerializedName("lastSelectedSkinIndex")]
-        public Int32 LastSelectedSkinIndex { get; set; }
+        public int LastSelectedSkinIndex { get; set; }
 
         [SerializedName("serverIp")]
         public String ServerIp { get; set; }
 
         [SerializedName("observer")]
-        public Boolean Observer { get; set; }
+        public bool Observer { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
 
         [SerializedName("observerServerIp")]
         public String ObserverServerIp { get; set; }
@@ -32,13 +32,13 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String HandshakeToken { get; set; }
 
         [SerializedName("playerId")]
-        public Double PlayerId { get; set; }
+        public double PlayerId { get; set; }
 
         [SerializedName("serverPort")]
-        public Int32 ServerPort { get; set; }
+        public int ServerPort { get; set; }
 
         [SerializedName("observerServerPort")]
-        public Int32 ObserverServerPort { get; set; }
+        public int ObserverServerPort { get; set; }
 
         [SerializedName("summonerName")]
         public String SummonerName { get; set; }
@@ -47,6 +47,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String ObserverEncryptionKey { get; set; }
 
         [SerializedName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
     }
 }

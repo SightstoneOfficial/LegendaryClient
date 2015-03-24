@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class TeamPlayerAggregatedStatsDTO
     {
         [SerializedName("playerId")]
-        public Double PlayerId { get; set; }
+        public double PlayerId { get; set; }
 
         [SerializedName("aggregatedStats")]
         public AggregatedStats AggregatedStats { get; set; }

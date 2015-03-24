@@ -65,11 +65,11 @@ namespace LegendaryClient.Logic.SWF
 
         public byte SWFVersion { get; private set; }
 
-        public UInt32 FileSize { get; private set; }
+        public uint FileSize { get; private set; }
 
-        public UInt16 FrameRate { get; private set; }
+        public ushort FrameRate { get; private set; }
 
-        public UInt16 FrameCount { get; private set; }
+        public ushort FrameCount { get; private set; }
 
         public List<Tag> Tags { get; set; }
 

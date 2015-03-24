@@ -14,13 +14,13 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String Name { get; set; }
 
         [SerializedName("mapId")]
-        public Int32 MapId { get; set; }
+        public int MapId { get; set; }
 
         [SerializedName("minCustomPlayers")]
-        public Int32 MinCustomPlayers { get; set; }
+        public int MinCustomPlayers { get; set; }
 
         [SerializedName("totalPlayers")]
-        public Int32 TotalPlayers { get; set; }
+        public int TotalPlayers { get; set; }
 
         [SerializedName("description")]
         public String Description { get; set; }

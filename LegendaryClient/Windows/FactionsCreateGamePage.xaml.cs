@@ -170,8 +170,8 @@ namespace LegendaryClient.Windows
 
             //Also "report" to get riot to send a report back, and "extra" to have data sent so you can identify it (passbackDataPacket)
 
-            byte[] plainTextBytes = Encoding.UTF8.GetBytes(json);
-            TournamentCodeTextbox.Text += "/" + Convert.ToBase64String(plainTextBytes);
+            byte[] plainTextbytes = Encoding.UTF8.GetBytes(json);
+            TournamentCodeTextbox.Text += "/" + Convert.ToBase64String(plainTextbytes);
         }
 
         private void WhitelistAddButton_Click(object sender, RoutedEventArgs e)

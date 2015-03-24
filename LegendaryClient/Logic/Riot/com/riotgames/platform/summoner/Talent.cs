@@ -8,34 +8,34 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class Talent
     {
         [SerializedName("index")]
-        public Int32 Index { get; set; }
+        public int Index { get; set; }
 
         [SerializedName("level5Desc")]
         public String Level5Desc { get; set; }
 
         [SerializedName("minLevel")]
-        public Int32 MinLevel { get; set; }
+        public int MinLevel { get; set; }
 
         [SerializedName("maxRank")]
-        public Int32 MaxRank { get; set; }
+        public int MaxRank { get; set; }
 
         [SerializedName("level4Desc")]
         public String Level4Desc { get; set; }
 
         [SerializedName("tltId")]
-        public Int32 TltId { get; set; }
+        public int TltId { get; set; }
 
         [SerializedName("level3Desc")]
         public String Level3Desc { get; set; }
 
         [SerializedName("talentGroupId")]
-        public Int32 TalentGroupId { get; set; }
+        public int TalentGroupId { get; set; }
 
         [SerializedName("gameCode")]
-        public Int32 GameCode { get; set; }
+        public int GameCode { get; set; }
 
         [SerializedName("minTier")]
-        public Int32 MinTier { get; set; }
+        public int MinTier { get; set; }
 
         [SerializedName("prereqTalentGameCode")]
         public object PrereqTalentGameCode { get; set; }
@@ -47,7 +47,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String Name { get; set; }
 
         [SerializedName("talentRowId")]
-        public Int32 TalentRowId { get; set; }
+        public int TalentRowId { get; set; }
 
         [SerializedName("level1Desc")]
         public String Level1Desc { get; set; }

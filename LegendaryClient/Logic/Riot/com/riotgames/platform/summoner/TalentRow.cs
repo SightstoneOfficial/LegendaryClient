@@ -9,18 +9,18 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class TalentRow
     {
         [SerializedName("index")]
-        public Int32 Index { get; set; }
+        public int Index { get; set; }
 
         [SerializedName("talents")]
         public List<Talent> Talents { get; set; }
 
         [SerializedName("tltGroupId")]
-        public Int32 TltGroupId { get; set; }
+        public int TltGroupId { get; set; }
 
         [SerializedName("pointsToActivate")]
-        public Int32 PointsToActivate { get; set; }
+        public int PointsToActivate { get; set; }
 
         [SerializedName("tltRowId")]
-        public Int32 TltRowId { get; set; }
+        public int TltRowId { get; set; }
     }
 }

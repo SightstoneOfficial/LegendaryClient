@@ -8,31 +8,31 @@ namespace LegendaryClient.Logic.Riot.Team
     public class TeamStatDetail
     {
         [SerializedName("maxRating")]
-        public Int32 MaxRating { get; set; }
+        public int MaxRating { get; set; }
 
         [SerializedName("teamIdString")]
         public String TeamIdString { get; set; }
 
         [SerializedName("seedRating")]
-        public Int32 SeedRating { get; set; }
+        public int SeedRating { get; set; }
 
         [SerializedName("losses")]
-        public Int32 Losses { get; set; }
+        public int Losses { get; set; }
 
         [SerializedName("rating")]
-        public Int32 Rating { get; set; }
+        public int Rating { get; set; }
 
         [SerializedName("teamStatTypeString")]
         public String TeamStatTypeString { get; set; }
 
         [SerializedName("averageGamesPlayed")]
-        public Int32 AverageGamesPlayed { get; set; }
+        public int AverageGamesPlayed { get; set; }
 
         [SerializedName("teamId")]
         public TeamId TeamId { get; set; }
 
         [SerializedName("wins")]
-        public Int32 Wins { get; set; }
+        public int Wins { get; set; }
 
         [SerializedName("teamStatType")]
         public String TeamStatType { get; set; }

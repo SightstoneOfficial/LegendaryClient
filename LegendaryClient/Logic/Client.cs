@@ -345,7 +345,7 @@ namespace LegendaryClient.Logic
                 stringHackOne.RemoveAt(0);
                 foreach (
                     string Parse in
-                        stringHackOne.Select(StringHack => Regex.Split(StringHack, @"</item>,"))
+                        stringHackOne.Select(stringHack => Regex.Split(stringHack, @"</item>,"))
                             .Select(StringHackTwo => StringHackTwo[0]))
                 {
                     string temp;

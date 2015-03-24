@@ -15,19 +15,19 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object ToolTip { get; set; }
 
         [SerializedName("tier")]
-        public Int32 Tier { get; set; }
+        public int Tier { get; set; }
 
         [SerializedName("itemId")]
-        public Int32 ItemId { get; set; }
+        public int ItemId { get; set; }
 
         [SerializedName("runeType")]
         public RuneType RuneType { get; set; }
 
         [SerializedName("duration")]
-        public Int32 Duration { get; set; }
+        public int Duration { get; set; }
 
         [SerializedName("gameCode")]
-        public Int32 GameCode { get; set; }
+        public int GameCode { get; set; }
 
         [SerializedName("itemEffects")]
         public List<ItemEffect> ItemEffects { get; set; }

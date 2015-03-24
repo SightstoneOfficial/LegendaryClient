@@ -12,18 +12,18 @@ namespace LegendaryClient.Logic.Riot.Platform
         public List<TalentEntry> TalentEntries { get; set; }
 
         [SerializedName("pageId")]
-        public Double PageId { get; set; }
+        public double PageId { get; set; }
 
         [SerializedName("name")]
         public String Name { get; set; }
 
         [SerializedName("current")]
-        public Boolean Current { get; set; }
+        public bool Current { get; set; }
 
         [SerializedName("createDate")]
         public object CreateDate { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

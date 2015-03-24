@@ -39,7 +39,7 @@ namespace LegendaryClient.Logic.Riot.Team
         public DateTime SecondLastJoinDate { get; set; }
 
         [SerializedName("secondsUntilEligibleForDeletion")]
-        public Double SecondsUntilEligibleForDeletion { get; set; }
+        public double SecondsUntilEligibleForDeletion { get; set; }
 
         [SerializedName("matchHistory")]
         public List<object> MatchHistory { get; set; }

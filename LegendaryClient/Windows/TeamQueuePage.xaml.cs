@@ -677,7 +677,7 @@ namespace LegendaryClient.Windows
             Dispatcher.Invoke(() => { StartGameButton.Content = text; });
         }
 
-        private async void EnteredQueue(SearchingForMatchNotification result)
+        private void EnteredQueue(SearchingForMatchNotification result)
         {
             if (result.PlayerJoinFailures != null)
             {

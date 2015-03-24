@@ -206,7 +206,7 @@ namespace LegendaryClient
             }       
         }
 
-        private void ProfileButton_MousedoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ProfileButton_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (Client.IsLoggedIn)
             {
@@ -304,7 +304,7 @@ namespace LegendaryClient
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
         }
-        private void MainWindow_Closing(Object sender, CancelEventArgs e)
+        private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
             if (Properties.Settings.Default.warnClose || Client.curentlyRecording.Count > 0 || Client.IsInGame)
             {
@@ -441,9 +441,9 @@ namespace LegendaryClient
         {
             byte[] outBuffer = streamEncoding.GetBytes(outString);
             int len = outBuffer.Length;
-            if (len > UInt16.MaxValue)
+            if (len > ushort.MaxValue)
             {
-                len = (int)UInt16.MaxValue;
+                len = (int)ushort.MaxValue;
             }
             ioStream.WriteByte((byte)(len / 256));
             ioStream.WriteByte((byte)(len & 255));

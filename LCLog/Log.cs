@@ -22,7 +22,7 @@ namespace LCLog
         {
             try
             {
-                if (e.Exception.Message.Contains("too small for an Int32") ||
+                if (e.Exception.Message.Contains("too small for an int") ||
                     e.Exception.Message.Contains("Constructor on type "))
                     return;
             }

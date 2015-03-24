@@ -11,15 +11,15 @@ namespace LegendaryClient.Logic.Riot.Leagues
         public String Progress { get; set; }
 
         [SerializedName("target")]
-        public Int32 Target { get; set; }
+        public int Target { get; set; }
 
         [SerializedName("losses")]
-        public Int32 Losses { get; set; }
+        public int Losses { get; set; }
 
         [SerializedName("timeLeftToPlayMillis")]
-        public Double TimeLeftToPlayMillis { get; set; }
+        public double TimeLeftToPlayMillis { get; set; }
 
         [SerializedName("wins")]
-        public Int32 Wins { get; set; }
+        public int Wins { get; set; }
     }
 }

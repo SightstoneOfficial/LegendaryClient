@@ -117,7 +117,7 @@ namespace LegendaryClient.Windows.Profile
             }
         }
 
-        private void ChampionSelectListView_MousedoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ChampionSelectListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             var champList = (ListView)sender;
             var champImage = champList.SelectedItem as ProfileChampionImage;

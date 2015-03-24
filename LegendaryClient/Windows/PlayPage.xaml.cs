@@ -364,7 +364,7 @@ namespace LegendaryClient.Windows
 
         private int time;
         private Timer t = new Timer();
-        private async void EnteredQueue(SearchingForMatchNotification result)
+        private void EnteredQueue(SearchingForMatchNotification result)
         {
             if (result.PlayerJoinFailures != null)
             {

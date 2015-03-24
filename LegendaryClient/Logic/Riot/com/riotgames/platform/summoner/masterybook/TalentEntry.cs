@@ -8,15 +8,15 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class TalentEntry
     {
         [SerializedName("rank")]
-        public Int32 Rank { get; set; }
+        public int Rank { get; set; }
 
         [SerializedName("talentId")]
-        public Int32 TalentId { get; set; }
+        public int TalentId { get; set; }
 
         [SerializedName("talent")]
         public Talent Talent { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

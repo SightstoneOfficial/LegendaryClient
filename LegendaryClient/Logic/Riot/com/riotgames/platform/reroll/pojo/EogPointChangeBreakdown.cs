@@ -8,18 +8,18 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class EogPointChangeBreakdown
     {
         [SerializedName("pointChangeFromGamePlay")]
-        public Double PointChangeFromGamePlay { get; set; }
+        public double PointChangeFromGamePlay { get; set; }
 
         [SerializedName("pointChangeFromChampionsOwned")]
-        public Double PointChangeFromChampionsOwned { get; set; }
+        public double PointChangeFromChampionsOwned { get; set; }
 
         [SerializedName("previousPoints")]
-        public Double PreviousPoints { get; set; }
+        public double PreviousPoints { get; set; }
 
         [SerializedName("pointsUsed")]
-        public Double PointsUsed { get; set; }
+        public double PointsUsed { get; set; }
 
         [SerializedName("endPoints")]
-        public Double EndPoints { get; set; }
+        public double EndPoints { get; set; }
     }
 }

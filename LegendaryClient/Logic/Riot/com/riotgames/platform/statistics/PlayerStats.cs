@@ -12,7 +12,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public List<TimeTrackedStat> TimeTrackedStats { get; set; }
 
         [SerializedName("promoGamesPlayed")]
-        public Int32 PromoGamesPlayed { get; set; }
+        public int PromoGamesPlayed { get; set; }
 
         [SerializedName("promoGamesPlayedLastUpdated")]
         public object PromoGamesPlayedLastUpdated { get; set; }

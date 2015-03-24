@@ -9,15 +9,15 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class ChampionStatInfo
     {
         [SerializedName("totalGamesPlayed")]
-        public Int32 TotalGamesPlayed { get; set; }
+        public int TotalGamesPlayed { get; set; }
 
         [SerializedName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [SerializedName("stats")]
         public List<AggregatedStat> Stats { get; set; }
 
         [SerializedName("championId")]
-        public Double ChampionId { get; set; }
+        public double ChampionId { get; set; }
     }
 }

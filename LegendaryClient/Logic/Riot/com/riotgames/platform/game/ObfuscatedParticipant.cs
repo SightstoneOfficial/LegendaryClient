@@ -8,18 +8,18 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class ObfuscatedParticipant : Participant
     {
         [SerializedName("badges")]
-        public Int32 Badges { get; set; }
+        public int Badges { get; set; }
 
         [SerializedName("index")]
-        public Int32 Index { get; set; }
+        public int Index { get; set; }
 
         [SerializedName("clientInSynch")]
-        public Boolean ClientInSynch { get; set; }
+        public bool ClientInSynch { get; set; }
 
         [SerializedName("gameUniqueId")]
-        public Int32 GameUniqueId { get; set; }
+        public int GameUniqueId { get; set; }
 
         [SerializedName("pickMode")]
-        public Int32 PickMode { get; set; }
+        public int PickMode { get; set; }
     }
 }

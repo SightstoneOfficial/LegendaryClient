@@ -8,18 +8,18 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class PointSummary
     {
         [SerializedName("pointsToNextRoll")]
-        public Double PointsToNextRoll { get; set; }
+        public double PointsToNextRoll { get; set; }
 
         [SerializedName("maxRolls")]
-        public Int32 MaxRolls { get; set; }
+        public int MaxRolls { get; set; }
 
         [SerializedName("numberOfRolls")]
-        public Int32 NumberOfRolls { get; set; }
+        public int NumberOfRolls { get; set; }
 
         [SerializedName("pointsCostToRoll")]
-        public Double PointsCostToRoll { get; set; }
+        public double PointsCostToRoll { get; set; }
 
         [SerializedName("currentPoints")]
-        public Double CurrentPoints { get; set; }
+        public double CurrentPoints { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class RawStatDTO
     {
         [SerializedName("value")]
-        public Double Value { get; set; }
+        public double Value { get; set; }
 
         [SerializedName("statTypeName")]
         public String StatTypeName { get; set; }

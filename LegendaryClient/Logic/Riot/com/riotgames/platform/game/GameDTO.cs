@@ -12,13 +12,13 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String SpectatorsAllowed { get; set; }
 
         [SerializedName("passwordSet")]
-        public Boolean PasswordSet { get; set; }
+        public bool PasswordSet { get; set; }
 
         [SerializedName("gameType")]
         public String GameType { get; set; }
 
         [SerializedName("gameTypeConfigId")]
-        public Int32 GameTypeConfigId { get; set; }
+        public int GameTypeConfigId { get; set; }
 
         [SerializedName("glmGameId")]
         public object GlmGameId { get; set; }
@@ -36,10 +36,10 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object StatusOfParticipants { get; set; }
 
         [SerializedName("glmSecurePort")]
-        public Int32 GlmSecurePort { get; set; }
+        public int GlmSecurePort { get; set; }
 
         [SerializedName("id")]
-        public Double Id { get; set; }
+        public double Id { get; set; }
 
         [SerializedName("ownerSummary")]
         public PlayerParticipant OwnerSummary { get; set; }
@@ -57,7 +57,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String Name { get; set; }
 
         [SerializedName("spectatorDelay")]
-        public Int32 SpectatorDelay { get; set; }
+        public int SpectatorDelay { get; set; }
 
         [SerializedName("teamOne")]
         public List<Participant> TeamOne { get; set; }
@@ -69,7 +69,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String QueueTypeName { get; set; }
 
         [SerializedName("glmPort")]
-        public Int32 GlmPort { get; set; }
+        public int GlmPort { get; set; }
 
         [SerializedName("passbackUrl")]
         public object PassbackUrl { get; set; }
@@ -78,28 +78,28 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String RoomPassword { get; set; }
 
         [SerializedName("optimisticLock")]
-        public Double OptimisticLock { get; set; }
+        public double OptimisticLock { get; set; }
 
         [SerializedName("maxNumPlayers")]
-        public Int32 MaxNumPlayers { get; set; }
+        public int MaxNumPlayers { get; set; }
 
         [SerializedName("queuePosition")]
-        public Int32 QueuePosition { get; set; }
+        public int QueuePosition { get; set; }
 
         [SerializedName("gameMode")]
         public String GameMode { get; set; }
 
         [SerializedName("expiryTime")]
-        public Double ExpiryTime { get; set; }
+        public double ExpiryTime { get; set; }
 
         [SerializedName("mapId")]
-        public Int32 MapId { get; set; }
+        public int MapId { get; set; }
 
         [SerializedName("banOrder")]
-        public List<Int32> BanOrder { get; set; }
+        public List<int> BanOrder { get; set; }
 
         [SerializedName("pickTurn")]
-        public Int32 PickTurn { get; set; }
+        public int PickTurn { get; set; }
 
         [SerializedName("gameStateString")]
         public String GameStateString { get; set; }
@@ -108,7 +108,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public List<PlayerChampionSelectionDTO> PlayerChampionSelections { get; set; }
 
         [SerializedName("joinTimerDuration")]
-        public Int32 JoinTimerDuration { get; set; }
+        public int JoinTimerDuration { get; set; }
 
         [SerializedName("passbackDataPacket")]
         public object PassbackDataPacket { get; set; }

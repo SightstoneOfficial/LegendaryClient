@@ -24,7 +24,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public List<int> Team { get; set; }
 
         [SerializedName("queueIds")]
-        public Int32[] QueueIds { get; set; }
+        public int[] QueueIds { get; set; }
 
         [SerializedName("invitationId")]
         public object InvitationId { get; set; }

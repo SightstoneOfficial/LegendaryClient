@@ -15,31 +15,31 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String InternalName { get; set; }
 
         [SerializedName("acctId")]
-        public Double AcctId { get; set; }
+        public double AcctId { get; set; }
 
         [SerializedName("helpFlag")]
-        public Boolean HelpFlag { get; set; }
+        public bool HelpFlag { get; set; }
 
         [SerializedName("sumId")]
-        public Double SumId { get; set; }
+        public double SumId { get; set; }
 
         [SerializedName("profileIconId")]
-        public Int32 ProfileIconId { get; set; }
+        public int ProfileIconId { get; set; }
 
         [SerializedName("displayEloQuestionaire")]
-        public Boolean DisplayEloQuestionaire { get; set; }
+        public bool DisplayEloQuestionaire { get; set; }
 
         [SerializedName("lastGameDate")]
         public DateTime LastGameDate { get; set; }
 
         [SerializedName("advancedTutorialFlag")]
-        public Boolean AdvancedTutorialFlag { get; set; }
+        public bool AdvancedTutorialFlag { get; set; }
 
         [SerializedName("revisionDate")]
         public DateTime RevisionDate { get; set; }
 
         [SerializedName("revisionId")]
-        public Double RevisionId { get; set; }
+        public double RevisionId { get; set; }
 
         [SerializedName("seasonOneTier")]
         public String SeasonOneTier { get; set; }
@@ -48,10 +48,10 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String Name { get; set; }
 
         [SerializedName("nameChangeFlag")]
-        public Boolean NameChangeFlag { get; set; }
+        public bool NameChangeFlag { get; set; }
 
         [SerializedName("tutorialFlag")]
-        public Boolean TutorialFlag { get; set; }
+        public bool TutorialFlag { get; set; }
 
         [SerializedName("socialNetworkUserIds")]
         public List<object> SocialNetworkUserIds { get; set; }

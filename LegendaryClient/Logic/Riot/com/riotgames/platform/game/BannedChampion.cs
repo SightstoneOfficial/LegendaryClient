@@ -8,12 +8,12 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class BannedChampion
     {
         [SerializedName("pickTurn")]
-        public Int32 PickTurn { get; set; }
+        public int PickTurn { get; set; }
 
         [SerializedName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [SerializedName("teamId")]
-        public Int32 TeamId { get; set; }
+        public int TeamId { get; set; }
     }
 }

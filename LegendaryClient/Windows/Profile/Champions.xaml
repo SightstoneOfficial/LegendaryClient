@@ -15,7 +15,7 @@
 
         <ListView x:Name="ChampionSelectListView" Margin="10,50,10,10" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  Background="#66505050" BorderBrush="{x:Null}" MouseDoubleClick="ChampionSelectListView_MousedoubleClick">
+                  Background="#66505050" BorderBrush="{x:Null}" MouseDoubleClick="ChampionSelectListView_MouseDoubleClick">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />

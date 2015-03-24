@@ -8,33 +8,33 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class ChampionSkinDTO
     {
         [SerializedName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [SerializedName("skinId")]
-        public Int32 SkinId { get; set; }
+        public int SkinId { get; set; }
 
         [SerializedName("freeToPlayReward")]
-        public Boolean FreeToPlayReward { get; set; }
+        public bool FreeToPlayReward { get; set; }
 
         [SerializedName("stillObtainable")]
-        public Boolean StillObtainable { get; set; }
+        public bool StillObtainable { get; set; }
 
         [SerializedName("lastSelected")]
-        public Boolean LastSelected { get; set; }
+        public bool LastSelected { get; set; }
 
         [SerializedName("skinIndex")]
-        public Int32 SkinIndex { get; set; }
+        public int SkinIndex { get; set; }
 
         [SerializedName("owned")]
-        public Boolean Owned { get; set; }
+        public bool Owned { get; set; }
 
         [SerializedName("winCountRemaining")]
-        public Int32 WinCountRemaining { get; set; }
+        public int WinCountRemaining { get; set; }
 
         [SerializedName("purchaseDate")]
-        public Double PurchaseDate { get; set; }
+        public double PurchaseDate { get; set; }
 
         [SerializedName("endDate")]
-        public Double EndDate { get; set; }
+        public double EndDate { get; set; }
     }
 }

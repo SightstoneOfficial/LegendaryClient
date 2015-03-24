@@ -18,6 +18,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public List<SummonerRune> SummonerRunes { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace LegendaryClient.Logic.Region
 
         public abstract string Location { get; }
 
-        public static BaseRegion GetRegion(String requestedRegion)
+        public static BaseRegion GetRegion(string requestedRegion)
         {
             requestedRegion = requestedRegion.ToUpper();
             var t = Type.GetType("LegendaryClient.Logic.Region." + requestedRegion);

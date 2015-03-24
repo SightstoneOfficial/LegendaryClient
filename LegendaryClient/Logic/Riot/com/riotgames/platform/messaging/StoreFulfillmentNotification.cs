@@ -8,10 +8,10 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class StoreFulfillmentNotification
     {
         [SerializedName("rp")]
-        public Double Rp { get; set; }
+        public double Rp { get; set; }
 
         [SerializedName("ip")]
-        public Double Ip { get; set; }
+        public double Ip { get; set; }
 
         [SerializedName("inventoryType")]
         public String InventoryType { get; set; }

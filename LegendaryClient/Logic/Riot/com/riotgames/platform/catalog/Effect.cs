@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class Effect
     {
         [SerializedName("effectId")]
-        public Int32 EffectId { get; set; }
+        public int EffectId { get; set; }
 
         [SerializedName("gameCode")]
         public String GameCode { get; set; }

@@ -8,10 +8,10 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class RuneSlot
     {
         [SerializedName("id")]
-        public Int32 Id { get; set; }
+        public int Id { get; set; }
 
         [SerializedName("minLevel")]
-        public Int32 MinLevel { get; set; }
+        public int MinLevel { get; set; }
 
         [SerializedName("runeType")]
         public RuneType RuneType { get; set; }

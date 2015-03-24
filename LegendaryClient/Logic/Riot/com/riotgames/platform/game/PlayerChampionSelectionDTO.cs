@@ -11,15 +11,15 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String SummonerInternalName { get; set; }
 
         [SerializedName("spell2Id")]
-        public Double Spell2Id { get; set; }
+        public double Spell2Id { get; set; }
 
         [SerializedName("selectedSkinIndex")]
-        public Int32 SelectedSkinIndex { get; set; }
+        public int SelectedSkinIndex { get; set; }
 
         [SerializedName("championId")]
-        public Int32 ChampionId { get; set; }
+        public int ChampionId { get; set; }
 
         [SerializedName("spell1Id")]
-        public Double Spell1Id { get; set; }
+        public double Spell1Id { get; set; }
     }
 }

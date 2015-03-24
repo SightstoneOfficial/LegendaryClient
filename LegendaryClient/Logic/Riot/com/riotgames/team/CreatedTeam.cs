@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Team
     public class CreatedTeam
     {
         [SerializedName("timeStamp")]
-        public Double TimeStamp { get; set; }
+        public double TimeStamp { get; set; }
 
         [SerializedName("teamId")]
         public TeamId TeamId { get; set; }

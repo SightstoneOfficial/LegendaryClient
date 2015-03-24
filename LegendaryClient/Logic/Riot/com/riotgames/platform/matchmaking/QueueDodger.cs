@@ -14,6 +14,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public Summoner Summoner { get; set; }
 
         [SerializedName("dodgePenaltyRemainingTime")]
-        public Int32 PenaltyRemainingTime { get; set; }
+        public int PenaltyRemainingTime { get; set; }
     }
 }

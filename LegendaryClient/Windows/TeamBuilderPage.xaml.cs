@@ -960,7 +960,7 @@ namespace LegendaryClient.Windows
             ChampAndSkinBackgroundImage.BeginAnimation(OpacityProperty, fadingAnimation);
         }
 
-        public async void CallWithArgs(String UUID, string GameMode, string ProcedureCall, string Parameters)
+        public async void CallWithArgs(string UUID, string GameMode, string ProcedureCall, string Parameters)
         {
             await RiotCalls.CallLCDS(UUID, GameMode, ProcedureCall, Parameters);
         }

@@ -70,10 +70,11 @@ namespace LegendaryClient.Patcher.Logic
             const int stopByte = -1;
             var outFileStream = new FileStream(outFile, FileMode.Create);
             var inZStream = new ZInputStream(File.Open(inFile, FileMode.Open, FileAccess.Read));
+
             while (stopByte != (data = inZStream.Read()))
             {
-                var dataByte = (byte) data;
-                outFileStream.WriteByte(dataByte);
+                var databyte = (byte) data;
+                outFileStream.WriteByte(databyte);
             }
 
             inZStream.Close();

@@ -37,22 +37,22 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<Session>("loginService", "login", Credentials);
         }
 
-        public static Task<String> Login(String obj)
+        public static Task<String> Login(string obj)
         {
             return InvokeAsync<String>("loginService", "login", obj);
         }
 
-        public static Task<Object> LoadPreferencesByKey()
+        public static Task<object> LoadPreferencesByKey()
         {
             InvokeAsync<String>("playerPreferencesService", "loadPreferencesByKey", "KEY_BINDINGS",
-                  Double.NaN,
+                  double.NaN,
                   false);
             return null;
         }
 
-        public static Task<Object> CheckLobbyStatus()
+        public static Task<object> CheckLobbyStatus()
         {
-            return InvokeAsync<Object>("lcdsGameInvitationService", "checkLobbyStatus");
+            return InvokeAsync<object>("lcdsGameInvitationService", "checkLobbyStatus");
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="SessionToken">The token for the user</param>
         /// <param name="HeartbeatCount">The current amount that heartbeat has been sent</param>
         /// <param name="CurrentTime">The current time in GMT-0700 in format ddd MMM d yyyy HH:mm:ss</param>
-        public static Task<string> PerformLCDSHeartBeat(Int32 AccountId, String SessionToken, Int32 HeartbeatCount, String CurrentTime)
+        public static Task<string> PerformLCDSHeartBeat(int AccountId, string SessionToken, int HeartbeatCount, string CurrentTime)
         {
             return InvokeAsync<string>("loginService", "performLCDSHeartBeat", AccountId, SessionToken, HeartbeatCount, CurrentTime);
         }
@@ -99,7 +99,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="JSONInformation"></param>
         /// <returns>Json Data about kudos</returns>
-        public static Task<LcdsResponseString> CallKudos(String JSONInformation)
+        public static Task<LcdsResponseString> CallKudos(string JSONInformation)
         {
             return InvokeAsync<LcdsResponseString>("clientFacadeService", "callKudos", JSONInformation);
         }
@@ -137,7 +137,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerId">The summoner ID for the user</param>
         /// <returns>Returns the inventory for the user</returns>
-        public static Task<SummonerRuneInventory> GetSummonerRuneInventory(Double SummonerId)
+        public static Task<SummonerRuneInventory> GetSummonerRuneInventory(double SummonerId)
         {
             return InvokeAsync<SummonerRuneInventory>("summonerRuneService", "getSummonerRuneInventory", SummonerId);
         }
@@ -147,7 +147,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerId">The summoner ID for the user</param>
         /// <returns>Returns the mastery books for the user</returns>
-        public static Task<MasteryBookDTO> GetMasteryBook(Double SummonerId)
+        public static Task<MasteryBookDTO> GetMasteryBook(double SummonerId)
         {
             return InvokeAsync<MasteryBookDTO>("summonerRuneService", "getSummonerRuneInventory", SummonerId);
         }
@@ -157,7 +157,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerId">The summoner ID for the user</param>
         /// <returns>Returns the rune pages for a user</returns>
-        public static Task<SpellBookDTO> GetSpellBook(Double SummonerId)
+        public static Task<SpellBookDTO> GetSpellBook(double SummonerId)
         {
             return InvokeAsync<SpellBookDTO>("spellBookService", "getSpellBook", SummonerId);
         }
@@ -176,7 +176,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="queueType">Queue type</param>
         /// <returns>Returns the top 50 players league info</returns>
-        public static Task<LeagueListDTO> GetChallengerLeague(String queueType)
+        public static Task<LeagueListDTO> GetChallengerLeague(string queueType)
         {
             return InvokeAsync<LeagueListDTO>("leaguesServiceProxy", "getChallengerLeague", queueType);
         }
@@ -195,7 +195,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="TeamName">The team name</param>
         /// <returns>Returns the league information for a team</returns>
-        public static Task<SummonerLeaguesDTO> GetLeaguesForTeam(String TeamName)
+        public static Task<SummonerLeaguesDTO> GetLeaguesForTeam(string TeamName)
         {
             return InvokeAsync<SummonerLeaguesDTO>("leaguesServiceProxy", "getLeaguesForTeam", TeamName);
         }
@@ -205,7 +205,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerId">The summoner id of the player</param>
         /// <returns>Returns the league information for a team</returns>
-        public static Task<SummonerLeaguesDTO> GetAllLeaguesForPlayer(Double SummonerId)
+        public static Task<SummonerLeaguesDTO> GetAllLeaguesForPlayer(double SummonerId)
         {
             return InvokeAsync<SummonerLeaguesDTO>("leaguesServiceProxy", "getAllLeaguesForPlayer", SummonerId);
         }
@@ -233,7 +233,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="TeamName">The team name</param>
         /// <returns>Returns the information for a team</returns>
-        public static Task<TeamDTO> FindTeamByName(String TeamName)
+        public static Task<TeamDTO> FindTeamByName(string TeamName)
         {
             return InvokeAsync<TeamDTO>("summonerTeamService", "findTeamByName", TeamName);
         }
@@ -242,29 +242,29 @@ namespace LegendaryClient.Logic.Riot
         /// Disbands a team
         /// </summary>
         /// <param name="TeamId">The team Id</param>
-        public static Task<Object> DisbandTeam(TeamId TeamId)
+        public static Task<object> DisbandTeam(TeamId TeamId)
         {
-            return InvokeAsync<Object>("summonerTeamService", "disbandTeam", TeamId);
+            return InvokeAsync<object>("summonerTeamService", "disbandTeam", TeamId);
         }
 
         /// <summary>
         /// Checks if a name is available 
         /// </summary>
         /// <param name="TeamName">The name that you want to validate</param>
-        /// <returns>Returns a boolean as the result</returns>
-        public static Task<Boolean> IsTeamNameValidAndAvailable(String TeamName)
+        /// <returns>Returns a bool as the result</returns>
+        public static Task<bool> IsTeamNameValidAndAvailable(string TeamName)
         {
-            return InvokeAsync<Boolean>("summonerTeamService", "isNameValidAndAvailable", TeamName);
+            return InvokeAsync<bool>("summonerTeamService", "isNameValidAndAvailable", TeamName);
         }
 
         /// <summary>
         /// Checks if a tag is available 
         /// </summary>
         /// <param name="TeamName">The tag that you want to validate</param>
-        /// <returns>Returns a boolean as the result</returns>
-        public static Task<Boolean> IsTeamTagValidAndAvailable(String TagName)
+        /// <returns>Returns a bool as the result</returns>
+        public static Task<bool> IsTeamTagValidAndAvailable(string TagName)
         {
-            return InvokeAsync<Boolean>("summonerTeamService", "isTagValidAndAvailable", TagName);
+            return InvokeAsync<bool>("summonerTeamService", "isTagValidAndAvailable", TagName);
         }
         
         /// <summary>
@@ -273,7 +273,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="TeamName">The team name</param>
         /// <param name="TagName">The tag name</param>
         /// <returns>Returns the information for a team</returns>
-        public static Task<TeamDTO> CreateTeam(String TeamName, String TagName)
+        public static Task<TeamDTO> CreateTeam(string TeamName, string TagName)
         {
             return InvokeAsync<TeamDTO>("summonerTeamService", "createTeam", TeamName, TagName);
         }
@@ -284,7 +284,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="SummonerId">The summoner id of the player you want to invite</param>
         /// <param name="TeamId">The team id</param>
         /// <returns>Returns the information for a team</returns>
-        public static Task<TeamDTO> TeamInvitePlayer(Double SummonerId, TeamId TeamId)
+        public static Task<TeamDTO> TeamInvitePlayer(double SummonerId, TeamId TeamId)
         {
             return InvokeAsync<TeamDTO>("summonerTeamService", "invitePlayer", SummonerId, TeamId);
         }
@@ -295,7 +295,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="SummonerId">The summoner id of the player you want to kick</param>
         /// <param name="TeamId">The team id</param>
         /// <returns>Returns the information for a team</returns>
-        public static Task<TeamDTO> KickPlayer(Double SummonerId, TeamId TeamId)
+        public static Task<TeamDTO> KickPlayer(double SummonerId, TeamId TeamId)
         {
             return InvokeAsync<TeamDTO>("summonerTeamService", "kickPlayer", SummonerId, TeamId);
         }
@@ -305,7 +305,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerId">The summoner id</param>
         /// <returns>Returns the information for a player</returns>
-        public static Task<PlayerDTO> FindPlayer(Double SummonerId)
+        public static Task<PlayerDTO> FindPlayer(double SummonerId)
         {
             return InvokeAsync<PlayerDTO>("summonerTeamService", "findPlayer", SummonerId);
         }
@@ -315,7 +315,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="AccountId">The account id</param>
         /// <returns>Returns all the summoner data for an account</returns>
-        public static Task<AllSummonerData> GetAllSummonerDataByAccount(Double AccountId)
+        public static Task<AllSummonerData> GetAllSummonerDataByAccount(double AccountId)
         {
             return InvokeAsync<AllSummonerData>("summonerService", "getAllSummonerDataByAccount", AccountId);
         }
@@ -325,7 +325,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerName">The name of the summoner</param>
         /// <returns>Returns the summoner</returns>
-        public static Task<PublicSummoner> GetSummonerByName(String SummonerName)
+        public static Task<PublicSummoner> GetSummonerByName(string SummonerName)
         {
             return InvokeAsync<PublicSummoner>("summonerService", "getSummonerByName", SummonerName);
         }
@@ -335,7 +335,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="AccountId">The account id</param>
         /// <returns>Returns all the public summoner data for an account</returns>
-        public static Task<AllPublicSummonerDataDTO> GetAllPublicSummonerDataByAccount(Double AccountId)
+        public static Task<AllPublicSummonerDataDTO> GetAllPublicSummonerDataByAccount(double AccountId)
         {
             return InvokeAsync<AllPublicSummonerDataDTO>("summonerService", "getAllPublicSummonerDataByAccount", AccountId);
         }
@@ -345,7 +345,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerName">The summoner name</param>
         /// <returns>Returns a summoners internal name</returns>
-        public static Task<String> GetSummonerInternalNameByName(String SummonerName)
+        public static Task<String> GetSummonerInternalNameByName(string SummonerName)
         {
             return InvokeAsync<String>("summonerService", "getSummonerInternalNameByName", SummonerName);
         }
@@ -354,9 +354,9 @@ namespace LegendaryClient.Logic.Riot
         /// Updates the profile icon for the user
         /// </summary>
         /// <param name="IconId">The icon id</param>
-        public static Task<Object> UpdateProfileIconId(Int32 IconId)
+        public static Task<object> UpdateProfileIconId(int IconId)
         {
-            return InvokeAsync<Object>("summonerService", "updateProfileIconId", IconId);
+            return InvokeAsync<object>("summonerService", "updateProfileIconId", IconId);
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerIds">Array of Summoner IDs</param>
         /// <returns>Returns an array of Summoner Names</returns>
-        public static Task<String[]> GetSummonerNames(Double[] SummonerIds)
+        public static Task<String[]> GetSummonerNames(double[] SummonerIds)
         {
             return InvokeAsync<String[]>("summonerService", "getSummonerNames", SummonerIds);
         }
@@ -374,7 +374,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="PlayerName">Display name for the summoner</param>
         /// <returns></returns>
-        public static Task<AllSummonerData> CreateDefaultSummoner(String PlayerName)
+        public static Task<AllSummonerData> CreateDefaultSummoner(string PlayerName)
         {
             return InvokeAsync<AllSummonerData>("summonerService", "createDefaultSummoner", PlayerName);
         }
@@ -384,9 +384,9 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="PlayerSkill">The skill of the player</param>
         /// <returns></returns>
-        public static Task<Object> ProcessELOQuestionaire(PlayerSkill PlayerSkill)
+        public static Task<object> ProcessELOQuestionaire(PlayerSkill PlayerSkill)
         {
-            return InvokeAsync<Object>("playerStatsService", "processEloQuestionaire", PlayerSkill.ToString());
+            return InvokeAsync<object>("playerStatsService", "processEloQuestionaire", PlayerSkill.ToString());
         }
 
         /// <summary>
@@ -413,7 +413,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="AccountId">The account id</param>
         /// <param name="Season">The season you want to retrieve stats from</param>
         /// <returns>Returns the player stats for a season</returns>
-        public static Task<PlayerLifetimeStats> RetrievePlayerStatsByAccountId(Double AccountId, String Season)
+        public static Task<PlayerLifetimeStats> RetrievePlayerStatsByAccountId(double AccountId, string Season)
         {
             return InvokeAsync<PlayerLifetimeStats>("playerStatsService", "retrievePlayerStatsByAccountId", AccountId, Season);
         }
@@ -424,7 +424,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="AccountId">The account id</param>
         /// <param name="GameMode">The game mode</param>
         /// <returns>Returns an array of the top 3 champions</returns>
-        public static Task<ChampionStatInfo[]> RetrieveTopPlayedChampions(Double AccountId, String GameMode)
+        public static Task<ChampionStatInfo[]> RetrieveTopPlayedChampions(double AccountId, string GameMode)
         {
             return InvokeAsync<ChampionStatInfo[]>("playerStatsService", "retrieveTopPlayedChampions", AccountId, GameMode);
         }
@@ -436,7 +436,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="GameMode">The game mode requested</param>
         /// <param name="Season">The season you want to retrieve stats from</param>
         /// <returns>Returns the aggregated stats requested</returns>
-        public static Task<AggregatedStats> GetAggregatedStats(Double SummonerId, String GameMode, String Season)
+        public static Task<AggregatedStats> GetAggregatedStats(double SummonerId, string GameMode, string Season)
         {
             return InvokeAsync<AggregatedStats>("playerStatsService", "getAggregatedStats", SummonerId, GameMode, Season);
         }
@@ -446,7 +446,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="AccountId">The account id of a player</param>
         /// <returns>Returns the recent games for a player</returns>
-        public static Task<RecentGames> GetRecentGames(Double AccountId)
+        public static Task<RecentGames> GetRecentGames(double AccountId)
         {
             return InvokeAsync<RecentGames>("playerStatsService", "getRecentGames", AccountId);
         }
@@ -467,7 +467,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="TeamId">The team id</param>
         /// <param name="GameId">The game id</param>
         /// <returns>Returns the end of game stats for a game</returns>
-        public static Task<EndOfGameStats> GetTeamEndOfGameStats(TeamId TeamId, Double GameId)
+        public static Task<EndOfGameStats> GetTeamEndOfGameStats(TeamId TeamId, double GameId)
         {
             return InvokeAsync<EndOfGameStats>("playerStatsService", "getTeamEndOfGameStats", TeamId, GameId);
         }
@@ -498,18 +498,18 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerId">The users summoner id</param>
         /// <returns>If successfully cancelled returns true, otherwise champion select about to start</returns>
-        public static Task<Boolean> CancelFromQueueIfPossible(Double SummonerId)
+        public static Task<bool> CancelFromQueueIfPossible(double SummonerId)
         {
-            return InvokeAsync<Boolean>("matchmakerService", "cancelFromQueueIfPossible", SummonerId);
+            return InvokeAsync<bool>("matchmakerService", "cancelFromQueueIfPossible", SummonerId);
         }
 
         /// <summary>
         /// Accepts an invite to a matchmaking game
         /// </summary>
         /// <param name="InviteId">The invite id</param>
-        public static Task<Object> AcceptInviteForMatchmakingGame(String InviteId)
+        public static Task<object> AcceptInviteForMatchmakingGame(string InviteId)
         {
-            return InvokeAsync<Object>("matchmakerService", "acceptInviteForMatchmakingGame", InviteId);
+            return InvokeAsync<object>("matchmakerService", "acceptInviteForMatchmakingGame", InviteId);
         }
 
         /// <summary>
@@ -546,9 +546,9 @@ namespace LegendaryClient.Logic.Riot
         /// Joins a game
         /// </summary>
         /// <param name="GameId">The game id the user wants to join</param>
-        public static Task<Object> JoinGame(Double GameId)
+        public static Task<object> JoinGame(double GameId)
         {
-            return InvokeAsync<Object>("gameService", "joinGame", GameId, null);
+            return InvokeAsync<object>("gameService", "joinGame", GameId, null);
         }
 
         /// <summary>
@@ -557,19 +557,19 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="GameId">The game id the user wants to join</param>
         /// <param name="Password">The password of the game</param>
         /// <returns></returns>
-        public static Task<Object> JoinGame(Double GameId, String Password)
+        public static Task<object> JoinGame(double GameId, string Password)
         {
-            return InvokeAsync<Object>("gameService", "joinGame", GameId, Password);
+            return InvokeAsync<object>("gameService", "joinGame", GameId, Password);
         }
 
-        public static Task<Object> ObserveGame(Double GameId)
+        public static Task<object> ObserveGame(double GameId)
         {
-            return InvokeAsync<Object>("gameService", "observeGame", GameId, null);
+            return InvokeAsync<object>("gameService", "observeGame", GameId, null);
         }
 
-        public static Task<Object> ObserveGame(Double GameId, String Password)
+        public static Task<object> ObserveGame(double GameId, string Password)
         {
-            return InvokeAsync<Object>("gameService", "observeGame", GameId, Password);
+            return InvokeAsync<object>("gameService", "observeGame", GameId, Password);
         }
 
         /// <summary>
@@ -577,9 +577,9 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="GameId">The game id</param>
         /// <returns>Returns true if successful</returns>
-        public static Task<Boolean> SwitchTeams(Double GameId)
+        public static Task<bool> SwitchTeams(double GameId)
         {
-            return InvokeAsync<Boolean>("gameService", "switchTeams", GameId);
+            return InvokeAsync<bool>("gameService", "switchTeams", GameId);
         }
 
         /// <summary>
@@ -587,9 +587,9 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="GameId">The game id</param>
         /// <returns>Returns true if successful</returns>
-        public static Task<Boolean> SwitchPlayerToObserver(Double GameId)
+        public static Task<bool> SwitchPlayerToObserver(double GameId)
         {
-            return InvokeAsync<Boolean>("gameService", "switchPlayerToObserver", GameId );
+            return InvokeAsync<bool>("gameService", "switchPlayerToObserver", GameId );
         }
 
         /// <summary>
@@ -597,17 +597,17 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="GameId">The game id</param>
         /// <returns>Returns true if successful</returns>
-        public static Task<Boolean> SwitchObserverToPlayer(Double GameId, Int32 Team)
+        public static Task<bool> SwitchObserverToPlayer(double GameId, int Team)
         {
-            return InvokeAsync<Boolean>("gameService", "switchObserverToPlayer", GameId, Team);
+            return InvokeAsync<bool>("gameService", "switchObserverToPlayer", GameId, Team);
         }
 
         /// <summary>
         /// Quits from the current game
         /// </summary>
-        public static Task<Object> QuitGame()
+        public static Task<object> QuitGame()
         {
-            return InvokeAsync<Object>("gameService", "quitGame");
+            return InvokeAsync<object>("gameService", "quitGame");
         }
 
         /// <summary>
@@ -626,7 +626,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="GameId">The game id</param>
         /// <param name="OptomisticLock">The optomistic lock (provided by GameDTO)</param>
         /// <returns>Returns a StartChampSelectDTO</returns>
-        public static Task<StartChampSelectDTO> StartChampionSelection(Double GameId, Double OptomisticLock)
+        public static Task<StartChampSelectDTO> StartChampionSelection(double GameId, double OptomisticLock)
         {
             return InvokeAsync<StartChampSelectDTO>("gameService", "startChampionSelection", GameId, OptomisticLock);
         }
@@ -636,9 +636,9 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="GameId">The game id</param>
         /// <param name="Argument">The argument to be passed</param>
-        public static Task<Object> SetClientReceivedGameMessage(Double GameId, String Argument)
+        public static Task<object> SetClientReceivedGameMessage(double GameId, string Argument)
         {
-            return InvokeAsync<Object>("gameService", "setClientReceivedGameMessage", GameId, Argument);
+            return InvokeAsync<object>("gameService", "setClientReceivedGameMessage", GameId, Argument);
         }
 
         /// <summary>
@@ -648,7 +648,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="GameState">The current game state</param>
         /// <param name="PickTurn">The current pick turn</param>
         /// <returns>Returns the latest GameDTO</returns>
-        public static Task<GameDTO> GetLatestGameTimerState(Double GameId, String GameState, Int32 PickTurn)
+        public static Task<GameDTO> GetLatestGameTimerState(double GameId, string GameState, int PickTurn)
         {
             return InvokeAsync<GameDTO>("gameService", "getLatestGameTimerState", GameId, GameState, PickTurn);
         }
@@ -658,9 +658,9 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SpellOneId">The spell id for the first spell</param>
         /// <param name="SpellTwoId">The spell id for the second spell</param>
-        public static Task<Object> SelectSpells(Int32 SpellOneId, Int32 SpellTwoId)
+        public static Task<object> SelectSpells(int SpellOneId, int SpellTwoId)
         {
-            return InvokeAsync<Object>("gameService", "selectSpells", SpellOneId, SpellTwoId);
+            return InvokeAsync<object>("gameService", "selectSpells", SpellOneId, SpellTwoId);
         }
 
         /// <summary>
@@ -686,9 +686,9 @@ namespace LegendaryClient.Logic.Riot
         /// Selects a champion for use
         /// </summary>
         /// <param name="ChampionId">The selected champion id</param>
-        public static Task<Object> SelectChampion(Int32 ChampionId)
+        public static Task<object> SelectChampion(int ChampionId)
         {
-            return InvokeAsync<Object>("gameService", "selectChampion", ChampionId);
+            return InvokeAsync<object>("gameService", "selectChampion", ChampionId);
         }
 
         /// <summary>
@@ -696,17 +696,17 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="ChampionId">The selected champion id</param>
         /// <param name="SkinId">The selected champion skin</param>
-        public static Task<Object> SelectChampionSkin(Int32 ChampionId, Int32 SkinId)
+        public static Task<object> SelectChampionSkin(int ChampionId, int SkinId)
         {
-            return InvokeAsync<Object>("gameService", "selectChampionSkin", ChampionId, SkinId);
+            return InvokeAsync<object>("gameService", "selectChampionSkin", ChampionId, SkinId);
         }
 
         /// <summary>
         /// Lock in your champion selection
         /// </summary>
-        public static Task<Object> ChampionSelectCompleted()
+        public static Task<object> ChampionSelectCompleted()
         {
-            return InvokeAsync<Object>("gameService", "championSelectCompleted");
+            return InvokeAsync<object>("gameService", "championSelectCompleted");
         }
         
         /// <summary>
@@ -714,7 +714,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerName">The summoner name</param>
         /// <returns>Returns the game info</returns>
-        public static Task<PlatformGameLifecycleDTO> RetrieveInProgressSpectatorGameInfo(String SummonerName)
+        public static Task<PlatformGameLifecycleDTO> RetrieveInProgressSpectatorGameInfo(string SummonerName)
         {
             return InvokeAsync<PlatformGameLifecycleDTO>("gameService", "retrieveInProgressSpectatorGameInfo", SummonerName);
         }
@@ -723,9 +723,9 @@ namespace LegendaryClient.Logic.Riot
         /// Accepts a popped queue
         /// </summary>
         /// <param name="AcceptGame">Accept or decline the queue</param>
-        public static Task<Object> AcceptPoppedGame(Boolean AcceptGame)
+        public static Task<object> AcceptPoppedGame(bool AcceptGame)
         {
-            return InvokeAsync<Object>("gameService", "acceptPoppedGame", AcceptGame);
+            return InvokeAsync<object>("gameService", "acceptPoppedGame", AcceptGame);
         }
 
         /// <summary>
@@ -733,9 +733,9 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="GameId">The game id</param>
         /// <param name="AccountId">The account id of the player</param>
-        public static Task<Object> BanUserFromGame(Double GameId, Double AccountId)
+        public static Task<object> BanUserFromGame(double GameId, double AccountId)
         {
-            return InvokeAsync<Object>("gameService", "banUserFromGame", GameId, AccountId);
+            return InvokeAsync<object>("gameService", "banUserFromGame", GameId, AccountId);
         }
 
         /// <summary>
@@ -743,18 +743,18 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="GameId">The game id</param>
         /// <param name="AccountId">The account id of the player</param>
-        public static Task<Object> BanObserverFromGame(Double GameId, Double AccountId)
+        public static Task<object> BanObserverFromGame(double GameId, double AccountId)
         {
-            return InvokeAsync<Object>("gameService", "banObserverFromGame", GameId, AccountId);
+            return InvokeAsync<object>("gameService", "banObserverFromGame", GameId, AccountId);
         }
 
         /// <summary>
         /// Bans a champion from the game (must be during PRE_CHAMP_SELECT and the users PickTurn)
         /// </summary>
         /// <param name="ChampionId">The champion id</param>
-        public static Task<Object> BanChampion(Int32 ChampionId)
+        public static Task<object> BanChampion(int ChampionId)
         {
-            return InvokeAsync<Object>("gameService", "banChampion", ChampionId);
+            return InvokeAsync<object>("gameService", "banChampion", ChampionId);
         }
 
         /// <summary>
@@ -781,7 +781,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="QueueId">The queue id</param>
         /// <returns>Returns the queue information</returns>
-        public static Task<QueueInfo> GetQueueInformation(Double QueueId)
+        public static Task<QueueInfo> GetQueueInformation(double QueueId)
         {
             return InvokeAsync<QueueInfo>("matchmakerService", "getQueueInfo", QueueId);
         }
@@ -791,7 +791,7 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerId">The summoner id</param>
         /// <returns>Returns the summoner icons</returns>
-        public static Task<SummonerIconInventoryDTO> GetSummonerIconInventory(Double SummonerId)
+        public static Task<SummonerIconInventoryDTO> GetSummonerIconInventory(double SummonerId)
         {
             return InvokeAsync<SummonerIconInventoryDTO>("summonerIconService", "getSummonerIconInventory", SummonerId);
         }
@@ -810,17 +810,17 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerInternalName">The internal name of a summoner</param>
         /// <param name="ChampionId">The champion id requested</param>
-        public static Task<Object> AttemptTrade(String SummonerInternalName, Int32 ChampionId)
+        public static Task<object> AttemptTrade(string SummonerInternalName, int ChampionId)
         {
-            return InvokeAsync<Object>("lcdsChampionTradeService", "attemptTrade", SummonerInternalName, ChampionId, false);
+            return InvokeAsync<object>("lcdsChampionTradeService", "attemptTrade", SummonerInternalName, ChampionId, false);
         }
 
         /// <summary>
         /// Decline the current trade
         /// </summary>
-        public static Task<Object> DeclineTrade()
+        public static Task<object> DeclineTrade()
         {
-            return InvokeAsync<Object>("lcdsChampionTradeService", "dismissTrade");
+            return InvokeAsync<object>("lcdsChampionTradeService", "dismissTrade");
         }
 
         /// <summary>
@@ -828,9 +828,9 @@ namespace LegendaryClient.Logic.Riot
         /// </summary>
         /// <param name="SummonerInternalName">The internal name of a summoner</param>
         /// <param name="ChampionId">The champion id requested</param>
-        public static Task<Object> AcceptTrade(String SummonerInternalName, Int32 ChampionId)
+        public static Task<object> AcceptTrade(string SummonerInternalName, int ChampionId)
         {
-            return InvokeAsync<Object>("lcdsChampionTradeService", "attemptTrade", SummonerInternalName, ChampionId, true);
+            return InvokeAsync<object>("lcdsChampionTradeService", "attemptTrade", SummonerInternalName, ChampionId, true);
         }
 
         /// <summary>
@@ -839,7 +839,7 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="QueueId">The queue ID for the lobby</param>
         /// <param name="UUID">The generated UUID of the lobby</param>
         /// <returns></returns>
-        public static Task<LobbyStatus> CreateGroupFinderLobby(Int32 QueueId, String UUID)
+        public static Task<LobbyStatus> CreateGroupFinderLobby(int QueueId, string UUID)
         {
             return InvokeAsync<LobbyStatus>("lcdsServiceProxy", "createGroupFinderLobby", QueueId, UUID);
         }
@@ -852,9 +852,9 @@ namespace LegendaryClient.Logic.Riot
         /// <param name="ProcedureCall">The procedure to call</param>
         /// <param name="Parameters">The parameters to pass in JSON encoded format</param>
         /// <returns></returns>
-        public static Task<Object> CallLCDS(String UUID, String GameMode, String ProcedureCall, String Parameters)
+        public static Task<object> CallLCDS(string UUID, string GameMode, string ProcedureCall, string Parameters)
         {
-            return InvokeAsync<Object>("lcdsServiceProxy", "call", UUID, GameMode, ProcedureCall, Parameters);
+            return InvokeAsync<object>("lcdsServiceProxy", "call", UUID, GameMode, ProcedureCall, Parameters);
         }
 
         /// <summary>
@@ -1085,7 +1085,7 @@ namespace LegendaryClient.Logic.Riot
         private static string node;
         private static int numb;
         private static string champ;
-        private async Task<int> GetCurrentQueuePosition(String LoginQueue)
+        private async Task<int> GetCurrentQueuePosition(string LoginQueue)
         {
             int num;
             string str = string.Format("{0}/{1}", LoginQueue + "login-queue/rest/queue/ticker", champ);
@@ -1102,12 +1102,12 @@ namespace LegendaryClient.Logic.Riot
             }
             return num;
         }
-        private async Task CancelQueue(String LoginQueue)
+        private async Task CancelQueue(string LoginQueue)
         {
             await (new WebClient()).DownloadStringTaskAsync(LoginQueue + "login-queue/rest/queue/cancelQueue");
         }
 
-        public static string GetAuthKey(String Username, String Password, String LoginQueue, String Token = null)
+        public static string GetAuthKey(string Username, string Password, string LoginQueue, string Token = null)
         {
             StringBuilder sb = new StringBuilder();
             string payload = "user=" + Username + ",password=" + Password;
@@ -1184,15 +1184,15 @@ namespace LegendaryClient.Logic.Riot
 
             Assembly LegendaryClient = Assembly.GetExecutingAssembly();
 
-            var x = LegendaryClient.GetTypes().Where(t => String.Equals(t.Namespace, "LegendaryClient.Logic.Riot.Platform", StringComparison.Ordinal));
+            var x = LegendaryClient.GetTypes().Where(t => string.Equals(t.Namespace, "LegendaryClient.Logic.Riot.Platform", StringComparison.Ordinal));
             foreach (Type Platform in x)
                 context.Register(Platform);
 
-            x = LegendaryClient.GetTypes().Where(t => String.Equals(t.Namespace, "LegendaryClient.Logic.Riot.Leagues", StringComparison.Ordinal));
+            x = LegendaryClient.GetTypes().Where(t => string.Equals(t.Namespace, "LegendaryClient.Logic.Riot.Leagues", StringComparison.Ordinal));
             foreach (Type League in x)
                 context.Register(League);
 
-            x = LegendaryClient.GetTypes().Where(t => String.Equals(t.Namespace, "LegendaryClient.Logic.Riot.Team", StringComparison.Ordinal));
+            x = LegendaryClient.GetTypes().Where(t => string.Equals(t.Namespace, "LegendaryClient.Logic.Riot.Team", StringComparison.Ordinal));
             foreach (Type Team in x)
                 context.Register(Team);
 

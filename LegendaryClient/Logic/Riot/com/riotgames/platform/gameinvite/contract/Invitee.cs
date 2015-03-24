@@ -17,6 +17,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public string inviteeState { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

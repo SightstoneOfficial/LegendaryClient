@@ -8,27 +8,27 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class SummonerLevel
     {
         [SerializedName("expTierMod")]
-        public Double ExpTierMod { get; set; }
+        public double ExpTierMod { get; set; }
 
         [SerializedName("grantRp")]
-        public Double GrantRp { get; set; }
+        public double GrantRp { get; set; }
 
         [SerializedName("expForLoss")]
-        public Double ExpForLoss { get; set; }
+        public double ExpForLoss { get; set; }
 
         [SerializedName("summonerTier")]
-        public Double SummonerTier { get; set; }
+        public double SummonerTier { get; set; }
 
         [SerializedName("infTierMod")]
-        public Double InfTierMod { get; set; }
+        public double InfTierMod { get; set; }
 
         [SerializedName("expToNextLevel")]
-        public Double ExpToNextLevel { get; set; }
+        public double ExpToNextLevel { get; set; }
 
         [SerializedName("expForWin")]
-        public Double ExpForWin { get; set; }
+        public double ExpForWin { get; set; }
 
         [SerializedName("summonerLevel")]
-        public Double Level { get; set; }
+        public double Level { get; set; }
     }
 }

@@ -8,9 +8,9 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class StoreAccountBalanceNotification
     {
         [SerializedName("rp")]
-        public Double Rp { get; set; }
+        public double Rp { get; set; }
 
         [SerializedName("ip")]
-        public Double Ip { get; set; }
+        public double Ip { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace LegendaryClient.Controls
             this.champID = champID;
         }
 
-        private async void ChampPlayer_MouseOver(object sender, MouseEventArgs e)
+        private void ChampPlayer_MouseOver(object sender, MouseEventArgs e)
         {
             /*
             if (!KnownPar)

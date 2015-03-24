@@ -11,7 +11,7 @@ namespace LegendaryClient.Logic.Riot.Platform.Reroll.Pojo
         public String TitleCode { get; set; }
 
         [SerializedName("accountId")]
-        public Double AccountId { get; set; }
+        public double AccountId { get; set; }
 
         [SerializedName("params")]
         public object Params { get; set; }

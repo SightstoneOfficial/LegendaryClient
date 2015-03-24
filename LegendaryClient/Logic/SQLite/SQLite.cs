@@ -163,8 +163,8 @@ namespace SQLite
             // open using the byte[]
             // in the case where the path may include Unicode
             // force open to using UTF-8 using sqlite3_open_v2
-            var databasePathAsBytes = GetNullTerminatedUtf8(DatabasePath);
-            var r = SQLite3.Open(databasePathAsBytes, out handle, (int)openFlags, IntPtr.Zero);
+            var databasePathAsbytes = GetNullTerminatedUtf8(DatabasePath);
+            var r = SQLite3.Open(databasePathAsbytes, out handle, (int)openFlags, IntPtr.Zero);
 #endif
 
             Handle = handle;
@@ -981,7 +981,7 @@ namespace SQLite
             if (firstLen >= 2 && savepoint.Length > firstLen + 1)
             {
                 int depth;
-                if (Int32.TryParse(savepoint.Substring(firstLen + 1), out depth))
+                if (int.TryParse(savepoint.Substring(firstLen + 1), out depth))
                 {
                     // TODO: Mild race here, but inescapable without locking almost everywhere.
                     if (0 <= depth && depth < _transactionDepth)
@@ -1881,19 +1881,19 @@ namespace SQLite
         public static string SqlType(TableMapping.Column p, bool storeDateTimeAsTicks)
         {
             var clrType = p.ColumnType;
-            if (clrType == typeof(bool) || clrType == typeof(Byte) || clrType == typeof(UInt16) || clrType == typeof(SByte) || clrType == typeof(Int16) || clrType == typeof(int))
+            if (clrType == typeof(bool) || clrType == typeof(byte) || clrType == typeof(ushort) || clrType == typeof(sbyte) || clrType == typeof(short) || clrType == typeof(int))
             {
                 return "integer";
             }
-            else if (clrType == typeof(UInt32) || clrType == typeof(Int64))
+            else if (clrType == typeof(uint) || clrType == typeof(long))
             {
                 return "bigint";
             }
-            else if (clrType == typeof(Single) || clrType == typeof(double) || clrType == typeof(Decimal))
+            else if (clrType == typeof(Single) || clrType == typeof(double) || clrType == typeof(decimal))
             {
                 return "float";
             }
-            else if (clrType == typeof(String))
+            else if (clrType == typeof(string))
             {
                 int len = p.MaxStringLength;
                 return "varchar(" + len + ")";
@@ -2201,7 +2201,7 @@ namespace SQLite
             }
             else
             {
-                if (value is Int32)
+                if (value is int)
                 {
                     SQLite3.BindInt(stmt, index, (int)value);
                 }
@@ -2209,7 +2209,7 @@ namespace SQLite
                 {
                     SQLite3.BindText(stmt, index, (string)value, -1, NegativePointer);
                 }
-                else if (value is Byte || value is UInt16 || value is SByte || value is Int16)
+                else if (value is byte || value is ushort || value is sbyte || value is short)
                 {
                     SQLite3.BindInt(stmt, index, Convert.ToInt32(value));
                 }
@@ -2217,11 +2217,11 @@ namespace SQLite
                 {
                     SQLite3.BindInt(stmt, index, (bool)value ? 1 : 0);
                 }
-                else if (value is UInt32 || value is Int64)
+                else if (value is uint || value is long)
                 {
-                    SQLite3.BindInt64(stmt, index, Convert.ToInt64(value));
+                    SQLite3.Bindlong(stmt, index, Convert.ToInt64(value));
                 }
-                else if (value is Single || value is double || value is Decimal)
+                else if (value is Single || value is double || value is decimal)
                 {
                     SQLite3.Binddouble(stmt, index, Convert.ToDouble(value));
                 }
@@ -2229,7 +2229,7 @@ namespace SQLite
                 {
                     if (storeDateTimeAsTicks)
                     {
-                        SQLite3.BindInt64(stmt, index, ((DateTime)value).Ticks);
+                        SQLite3.Bindlong(stmt, index, ((DateTime)value).Ticks);
                     }
                     else
                     {
@@ -2276,7 +2276,7 @@ namespace SQLite
             }
             else
             {
-                if (clrType == typeof(String))
+                if (clrType == typeof(string))
                 {
                     return SQLite3.ColumnString(stmt, index);
                 }
@@ -2300,7 +2300,7 @@ namespace SQLite
                 {
                     if (_conn.StoreDateTimeAsTicks)
                     {
-                        return new DateTime(SQLite3.ColumnInt64(stmt, index));
+                        return new DateTime(SQLite3.Columnlong(stmt, index));
                     }
                     else
                     {
@@ -2316,27 +2316,27 @@ namespace SQLite
 #endif
                     return SQLite3.ColumnInt(stmt, index);
                 }
-                else if (clrType == typeof(Int64))
+                else if (clrType == typeof(long))
                 {
-                    return SQLite3.ColumnInt64(stmt, index);
+                    return SQLite3.Columnlong(stmt, index);
                 }
-                else if (clrType == typeof(UInt32))
+                else if (clrType == typeof(uint))
                 {
-                    return (uint)SQLite3.ColumnInt64(stmt, index);
+                    return (uint)SQLite3.Columnlong(stmt, index);
                 }
                 else if (clrType == typeof(decimal))
                 {
                     return (decimal)SQLite3.Columndouble(stmt, index);
                 }
-                else if (clrType == typeof(Byte))
+                else if (clrType == typeof(byte))
                 {
                     return (byte)SQLite3.ColumnInt(stmt, index);
                 }
-                else if (clrType == typeof(UInt16))
+                else if (clrType == typeof(ushort))
                 {
                     return (ushort)SQLite3.ColumnInt(stmt, index);
                 }
-                else if (clrType == typeof(Int16))
+                else if (clrType == typeof(short))
                 {
                     return (short)SQLite3.ColumnInt(stmt, index);
                 }
@@ -2346,7 +2346,7 @@ namespace SQLite
                 }
                 else if (clrType == typeof(byte[]))
                 {
-                    return SQLite3.ColumnByteArray(stmt, index);
+                    return SQLite3.ColumnbyteArray(stmt, index);
                 }
                 else if (clrType == typeof(Guid))
                 {
@@ -3083,7 +3083,7 @@ namespace SQLite
         public static extern int Changes(IntPtr db);
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_prepare_v2", CallingConvention = CallingConvention.Cdecl)]
-        public static extern Result Prepare2(IntPtr db, [MarshalAs(UnmanagedType.LPStr)] string sql, int numBytes, out IntPtr stmt, IntPtr pzTail);
+        public static extern Result Prepare2(IntPtr db, [MarshalAs(UnmanagedType.LPStr)] string sql, int numbytes, out IntPtr stmt, IntPtr pzTail);
 
         public static IntPtr Prepare2(IntPtr db, string query)
         {
@@ -3125,8 +3125,8 @@ namespace SQLite
         [DllImport("sqlite3", EntryPoint = "sqlite3_bind_int", CallingConvention = CallingConvention.Cdecl)]
         public static extern int BindInt(IntPtr stmt, int index, int val);
 
-        [DllImport("sqlite3", EntryPoint = "sqlite3_bind_int64", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int BindInt64(IntPtr stmt, int index, long val);
+        [DllImport("sqlite3", EntryPoint = "sqlite3_bind_long", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Bindlong(IntPtr stmt, int index, long val);
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_bind_double", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Binddouble(IntPtr stmt, int index, double val);
@@ -3157,8 +3157,8 @@ namespace SQLite
         [DllImport("sqlite3", EntryPoint = "sqlite3_column_int", CallingConvention = CallingConvention.Cdecl)]
         public static extern int ColumnInt(IntPtr stmt, int index);
 
-        [DllImport("sqlite3", EntryPoint = "sqlite3_column_int64", CallingConvention = CallingConvention.Cdecl)]
-        public static extern long ColumnInt64(IntPtr stmt, int index);
+        [DllImport("sqlite3", EntryPoint = "sqlite3_column_long", CallingConvention = CallingConvention.Cdecl)]
+        public static extern long Columnlong(IntPtr stmt, int index);
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_column_double", CallingConvention = CallingConvention.Cdecl)]
         public static extern double Columndouble(IntPtr stmt, int index);
@@ -3173,16 +3173,16 @@ namespace SQLite
         public static extern IntPtr ColumnBlob(IntPtr stmt, int index);
 
         [DllImport("sqlite3", EntryPoint = "sqlite3_column_bytes", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int ColumnBytes(IntPtr stmt, int index);
+        public static extern int Columnbytes(IntPtr stmt, int index);
 
         public static string ColumnString(IntPtr stmt, int index)
         {
             return Marshal.PtrToStringUni(SQLite3.ColumnText16(stmt, index));
         }
 
-        public static byte[] ColumnByteArray(IntPtr stmt, int index)
+        public static byte[] ColumnbyteArray(IntPtr stmt, int index)
         {
-            int length = ColumnBytes(stmt, index);
+            int length = Columnbytes(stmt, index);
             var result = new byte[length];
             if (length > 0)
                 Marshal.Copy(ColumnBlob(stmt, index), result, 0, length);
@@ -3275,9 +3275,9 @@ namespace SQLite
 			return Sqlite3.sqlite3_bind_int(stmt, index, val);
 		}
 
-		public static int BindInt64(Sqlite3Statement stmt, int index, long val)
+		public static int Bindlong(Sqlite3Statement stmt, int index, long val)
 		{
-			return Sqlite3.sqlite3_bind_int64(stmt, index, val);
+			return Sqlite3.sqlite3_bind_long(stmt, index, val);
 		}
 
 		public static int Binddouble(Sqlite3Statement stmt, int index, double val)
@@ -3328,9 +3328,9 @@ namespace SQLite
 			return Sqlite3.sqlite3_column_int(stmt, index);
 		}
 
-		public static long ColumnInt64(Sqlite3Statement stmt, int index)
+		public static long Columnlong(Sqlite3Statement stmt, int index)
 		{
-			return Sqlite3.sqlite3_column_int64(stmt, index);
+			return Sqlite3.sqlite3_column_long(stmt, index);
 		}
 
 		public static double Columndouble(Sqlite3Statement stmt, int index)
@@ -3353,7 +3353,7 @@ namespace SQLite
 			return Sqlite3.sqlite3_column_blob(stmt, index);
 		}
 
-		public static int ColumnBytes(Sqlite3Statement stmt, int index)
+		public static int Columnbytes(Sqlite3Statement stmt, int index)
 		{
 			return Sqlite3.sqlite3_column_bytes(stmt, index);
 		}
@@ -3363,7 +3363,7 @@ namespace SQLite
 			return Sqlite3.sqlite3_column_text(stmt, index);
 		}
 
-		public static byte[] ColumnByteArray(Sqlite3Statement stmt, int index)
+		public static byte[] ColumnbyteArray(Sqlite3Statement stmt, int index)
 		{
 			return ColumnBlob(stmt, index);
 		}

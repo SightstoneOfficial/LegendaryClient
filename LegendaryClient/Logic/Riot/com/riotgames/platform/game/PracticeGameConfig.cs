@@ -14,7 +14,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String GameName { get; set; }
 
         [SerializedName("gameTypeConfig")]
-        public Int32 GameTypeConfig { get; set; }
+        public int GameTypeConfig { get; set; }
 
         [SerializedName("passbackDataPacket")]
         public object PassbackDataPacket { get; set; }
@@ -32,7 +32,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String AllowSpectators { get; set; }
 
         [SerializedName("maxNumPlayers")]
-        public Int32 MaxNumPlayers { get; set; }
+        public int MaxNumPlayers { get; set; }
 
         [SerializedName("region")]
         public String Region { get; set; }

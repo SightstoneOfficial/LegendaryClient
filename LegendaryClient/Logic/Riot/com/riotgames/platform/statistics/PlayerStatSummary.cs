@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class PlayerStatSummary
     {
         [SerializedName("maxRating")]
-        public Int32 MaxRating { get; set; }
+        public int MaxRating { get; set; }
 
         [SerializedName("playerStatSummaryTypeString")]
         public String PlayerStatSummaryTypeString { get; set; }
@@ -26,18 +26,18 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String PlayerStatSummaryType { get; set; }
 
         [SerializedName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [SerializedName("losses")]
-        public Int32 Losses { get; set; }
+        public int Losses { get; set; }
 
         [SerializedName("rating")]
-        public Int32 Rating { get; set; }
+        public int Rating { get; set; }
 
         [SerializedName("aggregatedStatsJson")]
         public object AggregatedStatsJson { get; set; }
 
         [SerializedName("wins")]
-        public Int32 Wins { get; set; }
+        public int Wins { get; set; }
     }
 }

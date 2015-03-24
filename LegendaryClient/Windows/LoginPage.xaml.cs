@@ -431,8 +431,8 @@ namespace LegendaryClient.Windows
 
             await Task.WhenAll(taskArray);
             //Riot added this for no reason but make it look like the riot client we have to do this
-            var plainTextBytes = Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
-            var result = Convert.ToBase64String(plainTextBytes);
+            var plainTextbytes = Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
+            var result = Convert.ToBase64String(plainTextbytes);
             //await RiotCalls.Login(result);
             var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
             DoGetOnLoginPacket();
@@ -466,7 +466,7 @@ namespace LegendaryClient.Windows
             Client.LoginPacket = packetx;
         }
 
-        private async void GotLoginPacket(LoginDataPacket packet)
+        private void GotLoginPacket(LoginDataPacket packet)
         {
             if (packet.AllSummonerData == null)
             {

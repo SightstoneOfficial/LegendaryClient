@@ -1094,7 +1094,7 @@ namespace LegendaryClient.Windows
             //If this player is duo/trio/quadra queued with players
             if (player.TeamParticipantId != null && (double)player.TeamParticipantId != 0)
             {
-                //Byte hack to get individual hex colors
+                //byte hack to get individual hex colors
                 byte[] values = BitConverter.GetBytes((double)player.TeamParticipantId);
                 if (!BitConverter.IsLittleEndian) Array.Reverse(values);
 

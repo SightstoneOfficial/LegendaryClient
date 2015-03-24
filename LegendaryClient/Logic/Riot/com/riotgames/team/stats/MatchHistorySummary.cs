@@ -11,33 +11,33 @@ namespace LegendaryClient.Logic.Riot.Team
         public String GameMode { get; set; }
 
         [SerializedName("mapId")]
-        public Int32 MapId { get; set; }
+        public int MapId { get; set; }
 
         [SerializedName("assists")]
-        public Int32 Assists { get; set; }
+        public int Assists { get; set; }
 
         [SerializedName("opposingTeamName")]
         public String OpposingTeamName { get; set; }
 
         [SerializedName("invalid")]
-        public Boolean Invalid { get; set; }
+        public bool Invalid { get; set; }
 
         [SerializedName("deaths")]
-        public Int32 Deaths { get; set; }
+        public int Deaths { get; set; }
 
         [SerializedName("gameId")]
-        public Double GameId { get; set; }
+        public double GameId { get; set; }
 
         [SerializedName("kills")]
-        public Int32 Kills { get; set; }
+        public int Kills { get; set; }
 
         [SerializedName("win")]
-        public Boolean Win { get; set; }
+        public bool Win { get; set; }
 
         [SerializedName("date")]
-        public Double Date { get; set; }
+        public double Date { get; set; }
 
         [SerializedName("opposingTeamKills")]
-        public Int32 OpposingTeamKills { get; set; }
+        public int OpposingTeamKills { get; set; }
     }
 }

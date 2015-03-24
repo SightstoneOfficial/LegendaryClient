@@ -15,7 +15,7 @@ namespace LCDevWindow.Commands
 
         public abstract string CommandName { get; }
 
-        public static object GetCommand(String Command)
+        public static object GetCommand(string Command)
         {
             Type t = Type.GetType("LCDevWindow.Commands." + Command);
 

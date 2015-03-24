@@ -20,7 +20,7 @@ namespace LegendaryClient.Logic.UpdateRegion
 
         public abstract string BaseLink { get; }
 
-        public static BaseUpdateRegion GetUpdateRegion(String requestedRegion)
+        public static BaseUpdateRegion GetUpdateRegion(string requestedRegion)
         {
             Type t = Type.GetType("LegendaryClient.Logic.UpdateRegion." + requestedRegion);
             return (BaseUpdateRegion)Activator.CreateInstance(t);

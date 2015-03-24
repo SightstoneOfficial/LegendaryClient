@@ -11,6 +11,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String StatType { get; set; }
 
         [SerializedName("value")]
-        public Double Value { get; set; }
+        public double Value { get; set; }
     }
 }

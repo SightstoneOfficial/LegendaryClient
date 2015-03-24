@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class PracticeGameSearchResult
     {
         [SerializedName("spectatorCount")]
-        public Int32 SpectatorCount { get; set; }
+        public int SpectatorCount { get; set; }
 
         [SerializedName("glmGameId")]
         public object GlmGameId { get; set; }
@@ -17,7 +17,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public object GlmHost { get; set; }
 
         [SerializedName("glmPort")]
-        public Int32 GlmPort { get; set; }
+        public int GlmPort { get; set; }
 
         [SerializedName("gameModeString")]
         public String GameModeString { get; set; }
@@ -26,33 +26,33 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String AllowSpectators { get; set; }
 
         [SerializedName("gameMapId")]
-        public Int32 GameMapId { get; set; }
+        public int GameMapId { get; set; }
 
         [SerializedName("maxNumPlayers")]
-        public Int32 MaxNumPlayers { get; set; }
+        public int MaxNumPlayers { get; set; }
 
         [SerializedName("glmSecurePort")]
-        public Int32 GlmSecurePort { get; set; }
+        public int GlmSecurePort { get; set; }
 
         [SerializedName("gameMode")]
         public String GameMode { get; set; }
 
         [SerializedName("id")]
-        public Double Id { get; set; }
+        public double Id { get; set; }
 
         [SerializedName("name")]
         public String Name { get; set; }
 
         [SerializedName("privateGame")]
-        public Boolean PrivateGame { get; set; }
+        public bool PrivateGame { get; set; }
 
         [SerializedName("owner")]
         public PlayerParticipant Owner { get; set; }
 
         [SerializedName("team1Count")]
-        public Int32 Team1Count { get; set; }
+        public int Team1Count { get; set; }
 
         [SerializedName("team2Count")]
-        public Int32 Team2Count { get; set; }
+        public int Team2Count { get; set; }
     }
 }

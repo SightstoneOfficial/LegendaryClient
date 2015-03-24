@@ -87,7 +87,7 @@ namespace LegendaryClient.Patcher.Pages
                             var champDataJson =
                                 client.DownloadString(
                                     string.Format("http://cdn.leagueoflegends.com/patcher/data/locales/en_US/champData/champData{0}.json", champs.id));
-                            var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, Object>>(champDataJson);
+                            var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, object>>(champDataJson);
                             Client.RunAsyncOnUIThread(() => champItem.Tag = champsDataAsJson);
                             Client.RunAsyncOnUIThread(() => champItem.ChampName.Content = champsDataAsJson["key"]);
                             var latestAir =
@@ -121,7 +121,7 @@ namespace LegendaryClient.Patcher.Pages
                     {
                         var news = client.DownloadString("http://ll.leagueoflegends.com/pages/launcher/na").
                             Replace("refreshContent(", "").Replace(");", "");
-                        var NewsJson = JsonConvert.DeserializeObject<RootObject>(news);
+                        var NewsJson = JsonConvert.DeserializeObject<Rootobject>(news);
                         Client.RunOnUIThread(() =>
                             {
                                 var item = new CurrentStatus
@@ -331,7 +331,7 @@ namespace LegendaryClient.Patcher.Pages
         private void CurrentDomain_FirstChanceException(object sender, FirstChanceExceptionEventArgs e)
         {
             //Disregard PVPNetSpam
-            if (e.Exception.Message.Contains("too small for an Int32") ||
+            if (e.Exception.Message.Contains("too small for an int") ||
                 e.Exception.Message.Contains("Constructor on type "))
                 return;
             Log("A first chance exception was thrown", "EXCEPTION");
@@ -405,7 +405,7 @@ namespace LegendaryClient.Patcher.Pages
         public string linkUrl { get; set; }
     }
 
-    public class RootObject
+    public class Rootobject
     {
         public bool status { get; set; }
         public int serverStatus { get; set; }

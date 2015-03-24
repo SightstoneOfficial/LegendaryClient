@@ -8,15 +8,15 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class SummonerLevelAndPoints
     {
         [SerializedName("infPoints")]
-        public Double InfPoints { get; set; }
+        public double InfPoints { get; set; }
 
         [SerializedName("expPoints")]
-        public Double ExpPoints { get; set; }
+        public double ExpPoints { get; set; }
 
         [SerializedName("summonerLevel")]
-        public Double SummonerLevel { get; set; }
+        public double SummonerLevel { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

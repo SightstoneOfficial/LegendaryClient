@@ -8,10 +8,10 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class ItemEffect
     {
         [SerializedName("effectId")]
-        public Int32 EffectId { get; set; }
+        public int EffectId { get; set; }
 
         [SerializedName("itemEffectId")]
-        public Int32 ItemEffectId { get; set; }
+        public int ItemEffectId { get; set; }
 
         [SerializedName("effect")]
         public Effect Effect { get; set; }
@@ -20,6 +20,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String Value { get; set; }
 
         [SerializedName("itemId")]
-        public Int32 ItemId { get; set; }
+        public int ItemId { get; set; }
     }
 }

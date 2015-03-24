@@ -14,15 +14,15 @@ namespace LegendaryClient.Logic.Riot.Platform
         public DateTime PurchaseDate { get; set; }
 
         [SerializedName("runeId")]
-        public Int32 RuneId { get; set; }
+        public int RuneId { get; set; }
 
         [SerializedName("quantity")]
-        public Int32 Quantity { get; set; }
+        public int Quantity { get; set; }
 
         [SerializedName("rune")]
         public Rune Rune { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

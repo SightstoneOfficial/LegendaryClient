@@ -8,6 +8,6 @@ namespace LegendaryClient.Logic.Riot.Kudos
     public class PendingKudosDTO
     {
         [SerializedName("pendingCounts")]
-        public Int32[] PendingCounts { get; set; }
+        public int[] PendingCounts { get; set; }
     }
 }

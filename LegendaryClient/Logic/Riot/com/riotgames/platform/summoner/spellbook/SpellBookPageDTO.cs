@@ -12,7 +12,7 @@ namespace LegendaryClient.Logic.Riot.Platform
         public List<SlotEntry> SlotEntries { get; set; }
 
         [SerializedName("summonerId")]
-        public Int32 SummonerId { get; set; }
+        public int SummonerId { get; set; }
 
         [SerializedName("createDate")]
         public DateTime CreateDate { get; set; }
@@ -21,9 +21,9 @@ namespace LegendaryClient.Logic.Riot.Platform
         public String Name { get; set; }
 
         [SerializedName("pageId")]
-        public Int32 PageId { get; set; }
+        public int PageId { get; set; }
 
         [SerializedName("current")]
-        public Boolean Current { get; set; }
+        public bool Current { get; set; }
     }
 }

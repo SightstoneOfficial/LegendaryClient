@@ -11,9 +11,9 @@ namespace LegendaryClient.Logic.Riot.Platform
         public DateTime PurchaseDate { get; set; }
 
         [SerializedName("iconId")]
-        public Double IconId { get; set; }
+        public double IconId { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

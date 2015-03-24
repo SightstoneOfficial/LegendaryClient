@@ -8,12 +8,12 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class QueueInfo
     {
         [SerializedName("waitTime")]
-        public Double WaitTime { get; set; }
+        public double WaitTime { get; set; }
 
         [SerializedName("queueId")]
-        public Double QueueId { get; set; }
+        public double QueueId { get; set; }
 
         [SerializedName("queueLength")]
-        public Int32 QueueLength { get; set; }
+        public int QueueLength { get; set; }
     }
 }

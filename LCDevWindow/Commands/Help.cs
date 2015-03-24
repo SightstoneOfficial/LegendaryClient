@@ -39,7 +39,7 @@ namespace LCDevWindow.Commands
             foreach (Command command in commands)
             {
                 Main.win.Log(command.CommandName, Brushes.Green);
-                foreach (String help in command.HelpTips())
+                foreach (string help in command.HelpTips())
                 {
                     Main.win.Log(help, Brushes.Black);
                 }
@@ -49,7 +49,7 @@ namespace LCDevWindow.Commands
             foreach (LCCommand command in lccommands)
             {
                 Main.win.Log(command.CommandName, Brushes.Green);
-                foreach (String help in command.HelpTips())
+                foreach (string help in command.HelpTips())
                 {
                     Main.win.Log(help, Brushes.Black);
                 }

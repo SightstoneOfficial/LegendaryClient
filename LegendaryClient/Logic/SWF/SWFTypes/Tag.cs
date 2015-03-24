@@ -6,18 +6,18 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
 {
     public class Tag
     {
-        private BytecodeHolder Bytecode;
+        private BytecodeHolder byteCode;
 
         public Tag(byte[] data)
         {
             Data = data;
-            Bytecode = new BytecodeHolder(this);
+            byteCode = new BytecodeHolder(this);
         }
 
         public Tag()
         {
             Data = new byte[0];
-            Bytecode = new BytecodeHolder(this);
+            byteCode = new BytecodeHolder(this);
         }
 
         public byte[] Data { get; private set; }
@@ -50,15 +50,15 @@ namespace LegendaryClient.Logic.SWF.SWFTypes
 
         public virtual IEnumerator GetEnumerator()
         {
-            return new BytecodeEnumerator(this);
+            return new bytecodeEnumerator(this);
         }
 
-        public class BytecodeEnumerator : IEnumerator
+        public class bytecodeEnumerator : IEnumerator
         {
             private readonly Tag tag;
             private int index = -1;
 
-            internal BytecodeEnumerator(Tag tag)
+            internal bytecodeEnumerator(Tag tag)
             {
                 this.tag = tag;
                 index = -1;

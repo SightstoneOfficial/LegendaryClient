@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class SummonerTalentsAndPoints
     {
         [SerializedName("talentPoints")]
-        public Int32 TalentPoints { get; set; }
+        public int TalentPoints { get; set; }
 
         [SerializedName("modifyDate")]
         public DateTime ModifyDate { get; set; }
@@ -17,6 +17,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public DateTime CreateDate { get; set; }
 
         [SerializedName("summonerId")]
-        public Double SummonerId { get; set; }
+        public double SummonerId { get; set; }
     }
 }

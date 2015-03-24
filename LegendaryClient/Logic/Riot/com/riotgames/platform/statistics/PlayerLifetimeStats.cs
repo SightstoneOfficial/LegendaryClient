@@ -17,10 +17,10 @@ namespace LegendaryClient.Logic.Riot.Platform
         public DateTime PreviousFirstWinOfDay { get; set; }
 
         [SerializedName("userId")]
-        public Double UserId { get; set; }
+        public double UserId { get; set; }
 
         [SerializedName("dodgeStreak")]
-        public Int32 DodgeStreak { get; set; }
+        public int DodgeStreak { get; set; }
 
         [SerializedName("dodgePenaltyDate")]
         public object DodgePenaltyDate { get; set; }

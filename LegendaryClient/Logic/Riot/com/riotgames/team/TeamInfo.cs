@@ -8,7 +8,7 @@ namespace LegendaryClient.Logic.Riot.Team
     public class TeamInfo
     {
         [SerializedName("secondsUntilEligibleForDeletion")]
-        public Double SecondsUntilEligibleForDeletion { get; set; }
+        public double SecondsUntilEligibleForDeletion { get; set; }
 
         [SerializedName("memberStatusString")]
         public String MemberStatusString { get; set; }

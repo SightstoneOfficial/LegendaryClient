@@ -8,36 +8,36 @@ namespace LegendaryClient.Logic.Riot.Platform
     public class GameTypeConfigDTO
     {
         [SerializedName("id")]
-        public Int32 Id { get; set; }
+        public int Id { get; set; }
 
         [SerializedName("allowTrades")]
-        public Boolean AllowTrades { get; set; }
+        public bool AllowTrades { get; set; }
 
         [SerializedName("name")]
         public String Name { get; set; }
 
         [SerializedName("mainPickTimerDuration")]
-        public Int32 MainPickTimerDuration { get; set; }
+        public int MainPickTimerDuration { get; set; }
 
         [SerializedName("exclusivePick")]
-        public Boolean ExclusivePick { get; set; }
+        public bool ExclusivePick { get; set; }
 
         [SerializedName("duplicatePick")]
-        public Boolean DuplicatePick { get; set; }
+        public bool DuplicatePick { get; set; }
 
         [SerializedName("teamChampionPool")]
-        public Boolean TeamChampionPool { get; set; }
+        public bool TeamChampionPool { get; set; }
 
         [SerializedName("pickMode")]
         public String PickMode { get; set; }
 
         [SerializedName("maxAllowableBans")]
-        public Int32 MaxAllowableBans { get; set; }
+        public int MaxAllowableBans { get; set; }
 
         [SerializedName("banTimerDuration")]
-        public Int32 BanTimerDuration { get; set; }
+        public int BanTimerDuration { get; set; }
 
         [SerializedName("postPickTimerDuration")]
-        public Int32 PostPickTimerDuration { get; set; }
+        public int PostPickTimerDuration { get; set; }
     }
 }
