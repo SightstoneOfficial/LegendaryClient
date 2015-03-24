@@ -362,6 +362,8 @@ namespace LegendaryClient.Windows
             await LeaveAllQueues();
         }
 
+        private int time;
+        private Timer t = new Timer();
         private async void EnteredQueue(SearchingForMatchNotification result)
         {
             if (result.PlayerJoinFailures != null)
@@ -456,15 +458,28 @@ You've been placed in a lower priority queue" + Environment.NewLine;
             }
             else if (result.JoinedQueues != null)
             {
+                Button item = new Button();
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    Button item = LastSender;
+                    item = LastSender;
                     var fakeButton = new Button
                     {
                         Tag = item
                     }; 
                     item.Content = "00:00";
                 }));
+                if (t.Enabled)
+                    t.Stop();
+                t = new Timer { Interval = 1000 };
+                t.Start();
+                t.Elapsed += (gg, easy) =>
+                {
+                    time = time + 1000;
+                    TimeSpan timespan = TimeSpan.FromMilliseconds(time);
+                    Dispatcher.BeginInvoke(
+                        DispatcherPriority.Input,
+                        new ThreadStart(() => item.Content = string.Format("{0:D2}m:{1:D2}s", timespan.Minutes, timespan.Seconds)));
+                };
                 InQueue = true;
                 Client.GameStatus = "inQueue";
                 Client.timeStampSince =

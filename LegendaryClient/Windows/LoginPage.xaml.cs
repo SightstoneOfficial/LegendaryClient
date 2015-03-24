@@ -127,7 +127,7 @@ namespace LegendaryClient.Windows
             if (DateTime.Now.Month == 4 && DateTime.Now.Day == 1)
             {
                 string SkinPath = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                    "Teemo_Splash_" + new Random().Next(0, 8).ToString() + ".jpg");
+                    "Teemo_Splash_" + new Random().Next(0, 8) + ".jpg");
                 if (File.Exists(SkinPath))
                 {
                     LoginImage.Source = new BitmapImage(new Uri(SkinPath, UriKind.Absolute));
