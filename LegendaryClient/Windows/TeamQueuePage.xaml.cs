@@ -549,19 +549,19 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        private void GotQueuePop(object sender, object message)
+        private void GotQueuePop(object sender, MessageReceivedEventArgs message)
         {
-            if (!Client.HasPopped && message is GameDTO && (message as GameDTO).GameState == "JOINING_CHAMP_SELECT")
+            if (!Client.HasPopped && message.Body is GameDTO && (message.Body as GameDTO).GameState == "JOINING_CHAMP_SELECT")
             {
                 Client.HasPopped = true;
-                var Queue = message as GameDTO;
+                var Queue = message.Body as GameDTO;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     Client.OverlayContainer.Content = new QueuePopOverlay(Queue, this).Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
             }
-            else if (message is GameNotification && (message as GameNotification).Type == "PLAYER_QUIT")
+            else if (message.Body is GameNotification && (message.Body as GameNotification).Type == "PLAYER_QUIT")
             {
                 setStartButtonText("Start Game");
                 inQueue = false;

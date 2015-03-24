@@ -737,6 +737,7 @@ namespace LegendaryClient.Logic
         /// </summary>
         internal static void SwitchPage(Page page)
         {
+            Log("Switching to the page: " + page.GetType());
             IsOnPlayPage = page.GetType() == typeof(PlayPage);
             BackgroundImage.Visibility = page.GetType() == typeof(ChampSelectPage)
                 ? Visibility.Hidden
@@ -899,6 +900,7 @@ namespace LegendaryClient.Logic
 
         internal static void OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
+            Log("Message received! The type is: " + message.GetType());
             MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 var balance = message.Body as StoreAccountBalanceNotification;
