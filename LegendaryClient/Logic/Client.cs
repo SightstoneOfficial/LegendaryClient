@@ -894,13 +894,13 @@ namespace LegendaryClient.Logic
         internal static bool AutoAcceptQueue = false;
         internal static object LobbyContent;
         internal static object LastPageContent;
-        internal static bool IsInGame = false;
+        internal static bool IsInGame;
         internal static bool RunonePop = false;
 #pragma warning disable 4014
 
         internal static void OnMessageReceived(object sender, MessageReceivedEventArgs message)
         {
-            Log("Message received! The type is: " + message.GetType());
+            Log("Message received! The type is: " + message.Body.GetType());
             MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 var balance = message.Body as StoreAccountBalanceNotification;
