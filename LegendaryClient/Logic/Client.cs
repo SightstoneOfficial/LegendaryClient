@@ -1172,6 +1172,8 @@ namespace LegendaryClient.Logic
             };
             t.Tick += (o, m) =>
             {
+                if (Region.Garena)
+                    return;
                 GameScouter scouter = new GameScouter();
                 scouter.LoadScouter(LoginPacket.AllSummonerData.Summoner.Name);
                 scouter.Show();
