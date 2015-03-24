@@ -154,7 +154,7 @@ namespace LegendaryClient.Windows
                         PingRectangle.Fill = brush;
                     }
                     //Queues
-                    GameQueueConfig[] openQueues = await RiotCalls.GetAvailableQueues();
+                    GameQueueConfig[] openQueues = Client.Queues;
                     Array.Sort(openQueues,
                         (config, config2) =>
                             string.Compare(config.CacheName, config2.CacheName, StringComparison.Ordinal));

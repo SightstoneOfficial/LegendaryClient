@@ -729,8 +729,8 @@ namespace LegendaryClient.Windows
                     await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "gn-" + login.AccountSummary.AccountId, "gn-" + login.AccountSummary.AccountId);
                     await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "cn-" + login.AccountSummary.AccountId, "cn-" + login.AccountSummary.AccountId);
                     var LoggedIn = await Client.RiotConnection.LoginAsync(Client.UID, login.Token);
-                    var packet = await RiotCalls.GetLoginDataPacketForUser();
-                    GotLoginPacket(packet);
+                    //var packet = await RiotCalls.GetLoginDataPacketForUser();
+                    DoGetOnLoginPacket();
                     shouldExit = true;
                 }
             }
