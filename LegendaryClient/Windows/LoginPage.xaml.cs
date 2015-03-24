@@ -416,7 +416,7 @@ namespace LegendaryClient.Windows
                 Locale = selectedRegion.Locale,
                 OperatingSystem = "Windows 7",
                 Domain = "lolclient.lol.riotgames.com",
-                AuthToken =
+                AuthToken = await
                     RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
             };
 
@@ -714,7 +714,7 @@ namespace LegendaryClient.Windows
 
                     AuthenticationCredentials newCredentials = new AuthenticationCredentials
                     {
-                        AuthToken =
+                        AuthToken = await
                             RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
                         Username = Client.UID,
                         Password = null,
@@ -731,7 +731,7 @@ namespace LegendaryClient.Windows
                     var LoggedIn = await Client.RiotConnection.LoginAsync(Client.UID, login.Token);
                     //var packet = await RiotCalls.GetLoginDataPacketForUser();
                     DoGetOnLoginPacket();
-                    shouldExit = true;
+                    break;
                 }
             }
         }

@@ -1085,7 +1085,7 @@ namespace LegendaryClient.Logic.Riot
         private static string node;
         private static int numb;
         private static string champ;
-        private async Task<int> GetCurrentQueuePosition(string LoginQueue)
+        private async static Task<int> GetCurrentQueuePosition(string LoginQueue)
         {
             int num;
             string str = string.Format("{0}/{1}", LoginQueue + "login-queue/rest/queue/ticker", champ);
@@ -1107,7 +1107,7 @@ namespace LegendaryClient.Logic.Riot
             await (new WebClient()).DownloadStringTaskAsync(LoginQueue + "login-queue/rest/queue/cancelQueue");
         }
 
-        public static string GetAuthKey(string Username, string Password, string LoginQueue, string Token = null)
+        public async static Task<string> GetAuthKey(string Username, string Password, string LoginQueue, string Token = null)
         {
             StringBuilder sb = new StringBuilder();
             string payload = "user=" + Username + ",password=" + Password;
@@ -1141,12 +1141,26 @@ namespace LegendaryClient.Logic.Riot
 
             string Status = (string)deserializedJSON["status"];
 
-            JArray item = (JArray)deserializedJSON["tickers"];
-            node = (string)deserializedJSON["node"];
-            JToken jTokens = item.FirstOrDefault(t => (string)t["node"] == node);
-            champ = (string)jTokens["champ"];
-            numb = (int)jTokens["id"];
-
+            if (deserializedJSON.ContainsKey("tickers"))
+            {
+                JArray item = (JArray)deserializedJSON["tickers"];
+                node = (string)deserializedJSON["node"];
+                JToken jTokens = item.FirstOrDefault(t => (string)t["node"] == node);
+                champ = (string)jTokens["champ"];
+                numb = (int)jTokens["id"];
+                while (true)
+                {
+                    int currentQueuePosition = await GetCurrentQueuePosition(LoginQueue);
+                    int num1 = currentQueuePosition;
+                    int num2 = currentQueuePosition;
+                    if (num1 <= 0)
+                    {
+                        break;
+                    }
+                    OnQueuePositionChanged(num2);
+                    await Task.Delay(2000);
+                }
+            }
             if (Status == "QUEUE")
             {
                 Task.Delay(Convert.ToInt32(deserializedJSON["delay"]));
@@ -1158,6 +1172,17 @@ namespace LegendaryClient.Logic.Riot
             }
             return (string)deserializedJSON["token"];
         }
+
+        private static void OnQueuePositionChanged(int e)
+        {
+            EventHandler<int> eventHandler = QueuePositionChanged;
+            if (eventHandler != null)
+            {
+                eventHandler(typeof(RiotCalls), e);
+            }
+        }
+        public static event EventHandler<int> QueuePositionChanged;
+
 
         public static string GetIpAddress()
         {
