@@ -108,7 +108,7 @@ namespace LegendaryClient.Windows
                 OverviewHeader.IsSelected = true;
             }
 
-            if (summoner.InternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName)
+            if (summoner.Name == Client.LoginPacket.AllSummonerData.Summoner.Name)
             {
                 ChampionsTab.Visibility = Visibility.Visible;
                 SkinsTab.Visibility = Visibility.Visible;

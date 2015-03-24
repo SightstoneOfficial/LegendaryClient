@@ -13,8 +13,11 @@ using System.Net;
 using System.Xml;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RtmpSharp.Messaging;
 
 namespace LegendaryClient.Logic.Riot
@@ -1076,8 +1079,33 @@ namespace LegendaryClient.Logic.Riot
                 return null;
             }
         }
-        //
 
+
+
+        private static string node;
+        private static int numb;
+        private static string champ;
+        private async Task<int> GetCurrentQueuePosition(String LoginQueue)
+        {
+            int num;
+            string str = string.Format("{0}/{1}", LoginQueue + "login-queue/rest/queue/ticker", champ);
+            string str1 = await (new WebClient()).DownloadStringTaskAsync(str);
+            string item = (string)JObject.Parse(str1)[node];
+            if (item != null)
+            {
+                int num1 = int.Parse(item, NumberStyles.HexNumber);
+                num = Math.Max(numb - num1, 0);
+            }
+            else
+            {
+                num = 0;
+            }
+            return num;
+        }
+        private async Task CancelQueue(String LoginQueue)
+        {
+            await (new WebClient()).DownloadStringTaskAsync(LoginQueue + "login-queue/rest/queue/cancelQueue");
+        }
 
         public static string GetAuthKey(String Username, String Password, String LoginQueue, String Token = null)
         {
@@ -1109,10 +1137,15 @@ namespace LegendaryClient.Logic.Riot
             inputStream.Close();
             con.Abort();
 
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            Dictionary<string, object> deserializedJSON = serializer.Deserialize<Dictionary<string, object>>(sb.ToString());
+            Dictionary<string, object> deserializedJSON = JsonConvert.DeserializeObject<Dictionary<string, object>>(sb.ToString());
 
             string Status = (string)deserializedJSON["status"];
+
+            JArray item = (JArray)deserializedJSON["tickers"];
+            node = (string)deserializedJSON["node"];
+            JToken jTokens = item.FirstOrDefault(t => (string)t["node"] == node);
+            champ = (string)jTokens["champ"];
+            numb = (int)jTokens["id"];
 
             if (Status == "QUEUE")
             {
