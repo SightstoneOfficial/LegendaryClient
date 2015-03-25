@@ -131,7 +131,7 @@ Other Features
 
 **View other teams champions in ARAM**
 
-![AramHack](http://i.imgur.com/9tPrxGy)
+![Aram Hack](http://i.imgur.com/Cw5qWM7.jpg)
 
 **Customizable Client - Even use your favorite fanarts!**
 
