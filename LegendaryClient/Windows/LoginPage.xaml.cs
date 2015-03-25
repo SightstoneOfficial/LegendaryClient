@@ -405,8 +405,8 @@ namespace LegendaryClient.Windows
             Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
             Client.RiotConnection.CallbackException += client_CallbackException;
             Client.RiotConnection.MessageReceived += client_MessageReceived;
-            Client.RiotConnection.SetChunkSize(2147483647);
             await Client.RiotConnection.ConnectAsync();
+            Client.RiotConnection.SetChunkSize(2147483647);
 
             AuthenticationCredentials newCredentials = new AuthenticationCredentials
             {
@@ -711,8 +711,8 @@ namespace LegendaryClient.Windows
                     Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + garenaregion.Server + ":2099"), context, ObjectEncoding.Amf3);
                     Client.RiotConnection.CallbackException += client_CallbackException;
                     Client.RiotConnection.MessageReceived += client_MessageReceived;
-                    Client.RiotConnection.SetChunkSize(2147483647);
                     await Client.RiotConnection.ConnectAsync();
+                    Client.RiotConnection.SetChunkSize(2147483647);
 
                     AuthenticationCredentials newCredentials = new AuthenticationCredentials
                     {

@@ -30,7 +30,7 @@ namespace LegendaryClient.Windows
         private readonly SerializationContext context;
         private bool User = true;
         private ReplayRecorder recorder;
-        private EndOfGameStats selectedStats;
+        private EndOfReplayGameStats selectedStats;
 
         public ReplayPage()
         {
@@ -50,9 +50,9 @@ namespace LegendaryClient.Windows
 
             context = new SerializationContext();
 
-            context.Register(typeof(EndOfGameStats));
-            context.Register(typeof(PlayerParticipantStatsSummary));
-            context.Register(typeof(RawStatDTO));
+            context.Register(typeof(EndOfReplayGameStats));
+            context.Register(typeof(ReplayParticipantStatsSummary));
+            context.Register(typeof(ReplayRawStatDTO));
 
             #endregion Register Context
 
@@ -102,7 +102,7 @@ namespace LegendaryClient.Windows
                         File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "cabinet", d, "endOfGameStats")));
                 var statsReader = new AmfReader(new MemoryStream(base64Stats), context);
 
-                var stats = (EndOfGameStats)statsReader.ReadAmf3Item();
+                var stats = (EndOfReplayGameStats)statsReader.ReadAmf3Item();
 
                 var item = new ReplayItem();
 
@@ -161,7 +161,7 @@ namespace LegendaryClient.Windows
         private void item_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var item = (ReplayItem)sender;
-            var stats = (EndOfGameStats)item.Tag;
+            var stats = (EndOfReplayGameStats)item.Tag;
             selectedStats = stats;
 
             ReplayOverviewGrid.Visibility = Visibility.Visible;
@@ -177,7 +177,7 @@ namespace LegendaryClient.Windows
             TeamOnePanel.Children.Clear();
             TeamTwoPanel.Children.Clear();
 
-            foreach (PlayerParticipantStatsSummary summary in stats.TeamPlayerParticipantStats)
+            foreach (ReplayParticipantStatsSummary summary in stats.TeamPlayerParticipantStats)
             {
                 double k = -1, d = -1, a = -1;
                 var player = new PlayerItemReplay
@@ -188,7 +188,7 @@ namespace LegendaryClient.Windows
                     }
                 };
 
-                foreach (RawStatDTO stat in summary.Statistics)
+                foreach (ReplayRawStatDTO stat in summary.Statistics)
                 {
                     if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
                     {
@@ -260,7 +260,7 @@ namespace LegendaryClient.Windows
                 TeamOnePanel.Children.Add(player);
             }
 
-            foreach (PlayerParticipantStatsSummary summary in stats.OtherTeamPlayerParticipantStats)
+            foreach (ReplayParticipantStatsSummary summary in stats.OtherTeamPlayerParticipantStats)
             {
                 double k = -1, d = -1, a = -1;
                 var player = new PlayerItemReplay
@@ -270,7 +270,7 @@ namespace LegendaryClient.Windows
                         Content = summary.SummonerName
                     }
                 };
-                foreach (RawStatDTO stat in summary.Statistics)
+                foreach (ReplayRawStatDTO stat in summary.Statistics)
                 {
                     if (stat.StatTypeName.StartsWith("ITEM") && stat.Value != 0)
                     {

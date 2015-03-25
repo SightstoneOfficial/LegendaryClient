@@ -247,6 +247,9 @@
     <Compile Include="Logic\QueueButtonConfig.cs" />
     <Compile Include="Logic\Region\Garena\ID.cs" />
     <Compile Include="Logic\Region\PBE.cs" />
+    <Compile Include="Logic\Replays\EndOfReplayGameStats.cs" />
+    <Compile Include="Logic\Replays\ReplayParticipantStatsSummary.cs" />
+    <Compile Include="Logic\Replays\ReplayRawStatDTO.cs" />
     <Compile Include="Logic\Riot\com\riotgames\kudos\dto\PendingKudosDTO.cs" />
     <Compile Include="Logic\Riot\com\riotgames\leagues\pojo\LeagueItemDTO.cs" />
     <Compile Include="Logic\Riot\com\riotgames\leagues\pojo\LeagueListDTO.cs" />
