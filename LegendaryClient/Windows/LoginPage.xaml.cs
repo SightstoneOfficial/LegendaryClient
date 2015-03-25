@@ -417,7 +417,7 @@ namespace LegendaryClient.Windows
                 OperatingSystem = "Windows 7",
                 Domain = "lolclient.lol.riotgames.com",
                 AuthToken = await
-                    RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
+                    RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
             };
 
             Session login = await RiotCalls.Login(newCredentials);
@@ -715,7 +715,7 @@ namespace LegendaryClient.Windows
                     AuthenticationCredentials newCredentials = new AuthenticationCredentials
                     {
                         AuthToken = await
-                            RiotCalls.GetAuthKey(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
+                            RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
                         Username = Client.UID,
                         Password = null,
                         ClientVersion = Client.Version,
