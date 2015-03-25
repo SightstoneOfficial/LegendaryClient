@@ -1144,7 +1144,7 @@ namespace LegendaryClient.Logic.Riot
             if (deserializedJSON.ContainsKey("tickers"))
             {
                 JArray item = (JArray)deserializedJSON["tickers"];
-                node = (string)deserializedJSON["node"];
+                node = deserializedJSON["node"].ToString();
                 JToken jTokens = item.FirstOrDefault(t => (string)t["node"] == node);
                 champ = (string)jTokens["champ"];
                 numb = (int)jTokens["id"];

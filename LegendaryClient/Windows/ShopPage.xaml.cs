@@ -3,6 +3,8 @@ using System.Windows;
 using Awesomium.Core;
 using LegendaryClient.Logic;
 using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Properties;
 
@@ -16,6 +18,20 @@ namespace LegendaryClient.Windows
         public ShopPage()
         {
             InitializeComponent();
+            //Tard();
+        }
+        async Task Tard()
+        {
+            while (true)
+            {
+                ShopBrowser.ExecuteJavascript(
+                    "document.getElementsByClassName('search_text').innerHTML = document.getElementsByClassName('search_text').innerHTML.replace('Bard', 'Tard');");
+                ShopBrowser.ExecuteJavascript(
+                    "document.getElementsByClassName('item_name').innerHTML = document.getElementsByClassName('item_name').innerHTML.replace('Bard', 'Tard');");
+                await Task.Delay(1000);
+                if (Client.CurrentPage.GetType() != typeof(ShopPage))
+                    break;
+            }
         }
 
         public async void RefreshBrowser()
@@ -23,6 +39,8 @@ namespace LegendaryClient.Windows
             var uri = await RiotCalls.GetStoreUrl();
             ShopBrowser.Source = new Uri(uri);
             Debug.WriteLine(uri);
+            //Client.Log(await RiotCalls.GetStoreUrl());
+
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
