@@ -102,7 +102,7 @@
     <Reference Include="RAFlibPlus">
       <HintPath>..\DLLS\RAFlibPlus.dll</HintPath>
     </Reference>
-    <Reference Include="rtmp-sharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=de03138e40aefba6, processorArchitecture=MSIL">
+    <Reference Include="rtmp-sharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\rtmp-sharp.dll</HintPath>
     </Reference>

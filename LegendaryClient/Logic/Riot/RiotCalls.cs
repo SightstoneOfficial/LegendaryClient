@@ -493,7 +493,7 @@ namespace LegendaryClient.Logic.Riot
         /// <returns>Returns a notification to tell you if it was successful</returns>
         public static Task<SearchingForMatchNotification> AttachToQueue(MatchMakerParams MatchMakerParams, AsObject token)
         {
-            return InvokeAsync<SearchingForMatchNotification>("matchmakerService", "attachToQueue", MatchMakerParams, token);
+            return InvokeAsync<SearchingForMatchNotification>("matchmakerService", "attachToQueue", new object[]{ MatchMakerParams, token});
         }
 
         /// <summary>
@@ -1151,9 +1151,10 @@ namespace LegendaryClient.Logic.Riot
             }
             return str;
         }
-
+        static int times;
         public async static Task<String> GetRestToken(string username, string password, string loginQueue, string gtoken = null)
         {
+            times = 0;
             string token = null;
             //LoginException.ResponseType responseType;
             Stream responseStream;
@@ -1182,6 +1183,8 @@ namespace LegendaryClient.Logic.Riot
                 using (StreamReader streamReader = new StreamReader(responseStream))
                 {
                     JObject jObjects = JObject.Parse(await streamReader.ReadToEndAsync());
+                    foreach (var xd in jObjects)
+                        Client.Log(xd.Key + "+|+" + xd.Value);
                     Func<string> func = () => jObjects["token"].ToString(Formatting.None); //lqt
                     JArray item = (JArray)jObjects["tickers"];
                     if (item != null)
@@ -1220,12 +1223,16 @@ namespace LegendaryClient.Logic.Riot
                         }
                         token = func();
                     }
-                }
+                }                
+                return token;
             }
             catch (Exception exception1)
             {
                 Client.Log("Login Failure: " + exception1.Message);
             }
+            times++;
+            if (!(times > 5))
+                return await GetRestToken(username, password, loginQueue, gtoken);
             return token;
         }
 
