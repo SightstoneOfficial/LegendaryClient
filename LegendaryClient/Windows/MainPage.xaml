@@ -18,7 +18,7 @@
 
     <Grid>
         <Grid Height="90" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Top" Panel.ZIndex="1">
-            <Rectangle Fill="#66505050" HorizontalAlignment="Stretch" Height="90"></Rectangle>
+            <Rectangle Fill="{DynamicResource AccentColorBrush}" HorizontalAlignment="Stretch" Height="90"></Rectangle>
             <Border Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1"
                 BorderBrush="Black">
                 <Image x:Name="ProfileImage" Width="69" Height="69" Margin="0,0,0,0"
