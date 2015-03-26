@@ -84,7 +84,7 @@
             </Style>
 
             <Style x:Key="AccentedSquareButtonStyle" BasedOn="{StaticResource SquareButtonStyle}"
-                   TargetType="{x:Type Button}">
+           TargetType="{x:Type Button}">
                 <Setter Property="Background"
                 Value="{DynamicResource AccentColorBrush}" />
                 <Setter Property="Foreground"
@@ -92,7 +92,7 @@
             </Style>
 
             <Style TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}"/>
-            
+
             <Style TargetType="ComboBox">
                 <Setter Property="MinHeight" Value="25" />
                 <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}" />
