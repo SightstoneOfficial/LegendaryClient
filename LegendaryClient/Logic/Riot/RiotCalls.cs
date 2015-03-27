@@ -15,6 +15,7 @@ using System.Xml;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -42,7 +43,7 @@ namespace LegendaryClient.Logic.Riot
 
         public static Task<String> Login(string obj)
         {
-            return InvokeAsync<String>("loginService", "login", obj);
+            return InvokeAsync<String>("auth", "8", obj);
         }
 
         public static Task<object> LoadPreferencesByKey()
@@ -1069,11 +1070,11 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<object>("clientFacadeService", "reportPlayer", report);		
         }
 
-        public static Task<T> InvokeAsync<T>(string destination, string method, params object[] argument)
+        public static Task<T> InvokeAsync<T>(string destination, string method, params object[] arguments)
         {
             try
             {
-                return Client.RiotConnection.InvokeAsync<T>("my-rtmps", destination, method, argument);
+                return Client.RiotConnection.InvokeAsync<T>("my-rtmps", destination, method, arguments);
             }
             catch (InvocationException e)
             {
@@ -1082,7 +1083,15 @@ namespace LegendaryClient.Logic.Riot
                 return null;
             }
         }
-
+        public static string EscapeItem(string item)
+        {
+            if (string.IsNullOrEmpty(item))
+            {
+                return item;
+            }
+            string str = Regex.Replace(item, "(\\\\*)\"", "$1\\$0");
+            return Regex.Replace(str, "^(.*\\s.*?)(\\\\*)$", "\"$1$2$2\"");
+        }
 
 
         private static string node;

@@ -36,7 +36,7 @@ namespace LegendaryClient.Windows
             RenderStats(statistics);
             Client.SwitchPage(Client.MainPage);
             Client.runonce = false;
-
+            Client.ChampId = -1;
             string jid = Client.GetChatroomJID(statistics.RoomName, statistics.RoomPassword, false);
             newRoom = Client.ConfManager.GetRoom(new JID(jid));
             newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;

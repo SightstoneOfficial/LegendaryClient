@@ -1146,6 +1146,7 @@ namespace LegendaryClient.Windows
                     return;
                 //SelectChampion.SelectChampion(selection.ChampionId)*/
                 await RiotCalls.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
+                Client.ChampId = (int) item.Tag;
                 //TODO: Fix stupid animation glitch on left hand side
                 var fadingAnimation = new DoubleAnimation
                 {

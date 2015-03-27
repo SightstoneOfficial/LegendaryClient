@@ -714,16 +714,51 @@ namespace LegendaryClient.Windows
                                 messageOver.MessageTextBox.Text += " - Not enough players for this queue type.";
                                 break;
                             case "LEAVER_BUSTED":
-
-                                Client.Log("Busting LeaverBuster, Access token is: " + (((object)result.PlayerJoinFailures[0]) as BustedLeaver).AccessToken);
-                                var obj = new AsObject
-                                {
+                                var xm = (BustedLeaver)x;
+                                    Client.Log("LeaverBuster, Access token is: " + xm.AccessToken);
+                                    var message = new MessageOverlay
                                     {
-                                        "LEAVER_BUSTER_ACCESS_TOKEN",
-                                        (result.PlayerJoinFailures[0] as BustedLeaver).AccessToken
-                                    }
-                                };
-                                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters, obj));
+                                        MessageTitle = { Content = "LeaverBuster" },
+                                        MessageTextBox = { Text = "" }
+                                    };
+                                    Timer t = new Timer { Interval = 1000 };
+                                    var timeleft = xm.LeaverPenaltyMilisRemaining;
+                                    t.Elapsed += (messafge, mx) =>
+                                    {
+                                        timeleft = timeleft - 1000;
+                                        var timex = TimeSpan.FromMilliseconds(timeleft);
+                                        Dispatcher.BeginInvoke(
+                                            DispatcherPriority.Input, new ThreadStart(() =>
+                                            {
+                                                //Can not bypass this sadly, it just relaunches
+                                                message.MessageTextBox.Text =
+                                                    @"Abandoning a match or being AFK results in a negative experience for your teammates, and is a punishable offense in League of Legends.
+You've been placed in a lower priority queue" + Environment.NewLine;
+                                                message.MessageTextBox.Text += "You have " +
+                                                                               string.Format(
+                                                                                   "{0:D2}m:{1:D2}s", timex.Minutes, timex.Seconds) +
+                                                                               " remaining until you may queue again" + Environment.NewLine;
+
+                                                message.MessageTextBox.Text += "You can close this window and you will still be in queue";
+
+                                                Client.OverlayContainer.Content = message.Content;
+                                                if (timeleft < 0)
+                                                {
+                                                    t.Stop();
+                                                    Client.OverlayContainer.Visibility = Visibility.Hidden;
+                                                }
+                                            }));
+
+                                    };
+                                    t.Start();
+                                    Client.OverlayContainer.Content = message.Content;
+                                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                                if (CurrentLobby.Owner.SummonerId.MathRound() !=
+                                    Client.LoginPacket.AllSummonerData.Summoner.SumId.MathRound())
+                                {
+                                    return;
+                                }
+                                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters, new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", xm.AccessToken } }));
                                 break;
                             case "RANKED_NUM_CHAMPS":
                                 messageOver.MessageTextBox.Text += " - You require at least 16 owned champions to play a Normal Draft / Ranked game.";

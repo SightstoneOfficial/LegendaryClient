@@ -402,7 +402,7 @@ namespace LegendaryClient.Logic
         }
 
         internal static bool hidelegendaryaddition = false;
-
+        internal static int ChampId = -1;
         internal static string GetPresence()
         {
             //<dev>true</dev> == lc dev
@@ -470,11 +470,15 @@ namespace LegendaryClient.Logic
                     sb.Append("<timeStamp>" + timeStampSince + "</timeStamp>");
                     break;
                 case "inGame":
-                    sb.Append("<gameQueueType>NONE</gameQueueType><isObservable>ALL</isObservable><skinname>Random</skinname>");
+                    sb.Append("<gameQueueType>NONE</gameQueueType><isObservable>ALL</isObservable><skinname>");
+                    sb.Append(ChampId != -1 ? champions.GetChampion(ChampId).displayName : "Unknown");
+                    sb.Append("</skinname>");
                     break;
                 case "championSelect":
                     sb.Append(
-                        "<gameQueueType>NONE</gameQueueType><isObservable>ALL</isObservable><skinname>Random</skinname>");
+                        "<gameQueueType>NONE</gameQueueType><isObservable>ALL</isObservable><skinname>");
+                    sb.Append(ChampId != -1 ? champions.GetChampion(ChampId).displayName : "Unknown");
+                    sb.Append("</skinname>");
                     break;
             }
             if (CurrentStatus == "Online")
@@ -1457,44 +1461,6 @@ namespace LegendaryClient.Logic
             return buffer;
         }
         public static bool Pipe = false;
-        public static bool Authenticate(string filename, bool ShowDig = true)
-        {
-            try
-            {
-                string filecontent = null;
-                var dlg = new System.Windows.Forms.OpenFileDialog();
-                if (string.IsNullOrEmpty(filename) && ShowDig)
-                {
-                    dlg.DefaultExt = ".png";
-                    dlg.Filter = @"Key Files (*.key)|*.key|Sha1 Key Files(*.Sha1Key)|*Sha1Key";
-                    System.Windows.Forms.DialogResult result = dlg.ShowDialog();
-                    if (result == System.Windows.Forms.DialogResult.OK)
-                        filecontent = File.ReadAllText(dlg.FileName).ToSHA1();
-                }
-                else
-                    if (File.Exists(filename))
-                    filecontent = File.ReadAllText(filename).ToSHA1();
-
-                if (filecontent != null)
-                {
-                    using (var client = new WebClient())
-                    {
-                        if (client.DownloadString("http://eddy5641.github.io/LegendaryClient/Data.sha1").Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)[0] == filecontent)
-                        {
-                            Settings.Default.devKeyLoc = string.IsNullOrEmpty(filename) ? dlg.FileName : filename;
-                            Settings.Default.Save();
-                            return true;
-                        }
-                    }
-                }
-            }
-            catch (Exception ee)
-            {
-                Log("Failed to authernticate", "ERROR");
-                Log(ee.ToString(), "ERROR");
-            }
-            return false;
-        }
 
         internal static int SelectChamp;
         internal static bool usingInstaPick = false;
@@ -1522,6 +1488,11 @@ namespace LegendaryClient.Logic
         public static MainPage MainPage;
 
         public static GameQueueConfig[] Queues;
+
+        public static int MathRound(this double toRound)
+        {
+            return (int)Math.Round(toRound);
+        }
     }
 
 
