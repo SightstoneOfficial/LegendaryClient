@@ -20,7 +20,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Background Image and Blur -->
-        <Image Source="/LegendaryClient;component/champselectbg3.jpg" x:Name="BackgroundSplash" Stretch="UniformToFill" Opacity="0.4" Grid.ColumnSpan="7" Margin="0,0,0,0" Panel.ZIndex="-10">
+        <Image Source="/LegendaryClient;component/champselectbg3.jpg" x:Name="BackgroundSplash" Stretch="UniformToFill" Opacity="0.4" Grid.ColumnSpan="7" Margin="-15,-0,-15,-15" Panel.ZIndex="-10">
             <Image.BitmapEffect>
                 <BlurBitmapEffect Radius="15" KernelType="Gaussian" />
             </Image.BitmapEffect>
@@ -43,7 +43,7 @@
         </Grid>
 
 
-        <ListView x:Name="BlueListView" Padding="0" HorizontalAlignment="Left" Margin="0,80,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="490" Width="255" Background="Transparent" BorderBrush="{x:Null}" Grid.Column="1">
+        <ListView x:Name="BlueListView" Padding="0" HorizontalAlignment="Left" Margin="0,80,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="500" Width="255" Background="Transparent" BorderBrush="{x:Null}" Grid.Column="1">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -67,7 +67,7 @@
                 <BlurBitmapEffect Radius="15" KernelType="Gaussian" />
             </Rectangle.BitmapEffect>
         </Rectangle>
-        <ListView x:Name="PurpleListView" Padding="0" HorizontalAlignment="Right" Margin="0,80,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="490" Width="255" Background="Transparent" BorderBrush="{x:Null}" Grid.Column="5">
+        <ListView x:Name="PurpleListView" Padding="0" HorizontalAlignment="Right" Margin="0,80,0,0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="500" Width="255" Background="Transparent" BorderBrush="{x:Null}" Grid.Column="5">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -132,11 +132,11 @@
             </ListView>
         </Grid>
 
-        <Grid VerticalAlignment="Top" Height="87" Margin="0,483,0,0" Grid.Column="3" Panel.ZIndex="100">
+        <Grid VerticalAlignment="Top" Height="90" Margin="0,483,0,0" Grid.Column="3" Panel.ZIndex="100">
             <Grid HorizontalAlignment="Left" Width="300" Background="#66505050">
                 <Label Content="Masteries and Runes" Foreground="WhiteSmoke" FontWeight="ExtraLight" FontSize="12" Margin="4,0,0,0" Width="180" Height="30" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <ComboBox x:Name="MasteryComboBox" Margin="9,0,0,9" Width="191" Height="26" SelectionChanged="MasteryComboBox_SelectionChanged" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
-                <Button x:Name="EditRunesButton" Content="Runes" HorizontalAlignment="Right" Margin="0,0,9,39" Width="82" Height="26" Click="EditRunesButton_Click" VerticalAlignment="Bottom" />
+                <Button x:Name="EditRunesButton" Content="Runes" HorizontalAlignment="Right" Margin="0,0,9,42" Width="82" Height="26" Click="EditRunesButton_Click" VerticalAlignment="Bottom" />
                 <Button x:Name="EditMasteriesButton" Content="Masteries" HorizontalAlignment="Right" Margin="0,0,9,9" Width="82" Height="26" Click="EditMasteriesButton_Click" VerticalAlignment="Bottom" />
                 <UniformGrid Margin="9,22,0,38" Height="26" Width="190" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <ComboBox x:Name="RuneComboBox" Margin="0,0,2,-13" Height="26" SelectionChanged="RuneComboBox_SelectionChanged" HorizontalAlignment="Stretch" />
@@ -164,7 +164,7 @@
         </Grid>
         <!-- <Rectangle Fill="#FFffffff" Margin="273,758,257,-30" Grid.Column="3" Height="10" Width="200" /> -->
 
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,580,0,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}" Grid.Column="3" BorderThickness="0">
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,583,0,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}" Grid.Column="3" BorderThickness="0">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
@@ -173,6 +173,6 @@
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" HorizontalAlignment="Stretch" Height="26" Margin="0,0,130,14" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Column="3" BorderThickness="0" />
         <Button x:Name="ChatButton" Content="Send" Margin="0,0,0,14" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" Height="26" Grid.Column="3" BorderThickness="0"/>
-        <ToggleButton x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="89" Margin="0,183,0,0" Checked="Switch_Click" Unchecked="Switch_Click" Height="25" Grid.Column="3" BorderThickness="0" />
+        <ToggleButton x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="89" Margin="0,183,0,0" Checked="Switch_Click" Unchecked="Switch_Click" Height="26" Grid.Column="3" BorderThickness="1,0,0,0" />
     </Grid>
 </Page>

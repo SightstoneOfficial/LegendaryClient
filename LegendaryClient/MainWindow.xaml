@@ -14,7 +14,7 @@
             <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click"/>
             <Label x:Name="InfoLabel" Content="Not Logged In" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" />
             <Button x:Name="HomeButton" Content="home" Click="HomeButton_Click" />
-            <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" />
+            <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" Foreground="Orange" />
             <Button x:Name="ProfileButton" Content="profile" Click="ProfileButton_Click" MouseDoubleClick="ProfileButton_MouseDoubleClick"/>
             <Button x:Name="ShopButton" Content="shop" Click="ShopButton_Click" />
             <Button x:Name="ReplayButton" Content="replays" Click="ReplayButton_Click" />
@@ -29,13 +29,16 @@
                         Viewport="0,0,150,150" ViewportUnits="Absolute" Opacity="0.4" />
         </Grid.Background>
 
-        <Image x:Name="UserTitleBarImage" Source="/LegendaryClient;component/NONE.png" Width="30px" Margin="0,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" />
+        <Image x:Name="UserTitleBarImage" Source="/LegendaryClient;component/NONE.png" Width="30" Margin="0,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" />
         <Label x:Name="UserTitleBarLabel" Content="Username" FontWeight="Light" Margin="33,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" FontSize="15" Foreground="WhiteSmoke" />
 
         <ContentControl x:Name="FullNotificationOverlayContainer" HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch" Panel.ZIndex="999" />
-        <Image x:Name="BackImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill"
-               Opacity="0.4" />
+        <Image x:Name="BackImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Opacity="0.4" Margin="-15,0,-15,-15">
+            <Image.BitmapEffect>
+                <BlurBitmapEffect Radius="15" KernelType="Gaussian" />
+            </Image.BitmapEffect>
+        </Image>
         <MediaElement x:Name="SoundPlayer" Width="0" Height="0" HorizontalAlignment="Left"
                       VerticalAlignment="Top" LoadedBehavior="Manual" UnloadedBehavior="Stop" />
         <MediaElement x:Name="ASoundPlayer" Width="0" Height="0" HorizontalAlignment="Left"

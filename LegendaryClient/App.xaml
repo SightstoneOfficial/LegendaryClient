@@ -23,7 +23,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
                 <Setter Property="Padding" Value="5,6" />
-                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
                 <Setter Property="Template">
                     <Setter.Value>
@@ -83,8 +83,7 @@
                 </Setter>
             </Style>
 
-            <Style x:Key="AccentedSquareButtonStyle"
-           BasedOn="{StaticResource SquareButtonStyle}"
+            <Style x:Key="AccentedSquareButtonStyle" BasedOn="{StaticResource SquareButtonStyle}"
            TargetType="{x:Type Button}">
                 <Setter Property="Background"
                 Value="{DynamicResource AccentColorBrush}" />
@@ -93,6 +92,85 @@
             </Style>
 
             <Style TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}"/>
+
+            <Style TargetType="ComboBox">
+                <Setter Property="MinHeight" Value="25" />
+                <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                <Setter Property="Padding" Value="5,6" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+            </Style>
+            
+            <Style TargetType="ToggleButton">
+                <Setter Property="MinHeight" Value="25" />
+                <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}" />
+                <Setter Property="FontWeight" Value="SemiBold" />
+                <Setter Property="Background" Value="{DynamicResource WhiteBrush}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource BlackBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+                <Setter Property="Padding" Value="5,6" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Grid Background="{TemplateBinding Background}">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="DisabledVisualElement">
+                                                    <SplineDoubleKeyFrame KeyTime="0" Value="0.7" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="contentPresenter">
+                                                    <EasingDoubleKeyFrame KeyTime="0" Value="0.3" />
+                                                </DoubleAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="FocusStates">
+                                        <VisualState x:Name="Focused" />
+                                        <VisualState x:Name="Unfocused" />
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="ValidationStates">
+                                        <VisualState x:Name="Valid" />
+                                        <VisualState x:Name="InvalidFocused" />
+                                        <VisualState x:Name="InvalidUnfocused" />
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Border x:Name="Background" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                                Background="{x:Null}" />
+                                <Rectangle x:Name="DisabledVisualElement" Fill="{DynamicResource ControlsDisabledBrush}"
+                                   IsHitTestVisible="false" Opacity="0" />
+                                <ContentPresenter x:Name="contentPresenter"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          OpacityMask="{x:Null}" />
+                            </Grid>
+
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="{DynamicResource GrayBrush8}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="true">
+                                    <Setter Property="Background" Value="{DynamicResource BlackBrush}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource WhiteBrush}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
             <Style x:Key="ChatStatusStyle" TargetType="ComboBox">
                 <Style.Triggers>
@@ -114,6 +192,9 @@
                         <Setter Property="Background" Value="Transparent" />
                     </Trigger>
                 </Style.Triggers>
+                <Setter Property="Padding" Value="0" />
+                <Setter Property="Margin" Value="0,0,0,0" />
+                <Setter Property="BorderThickness" Value="0" />
             </Style>
 
             <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="WindowStates"
