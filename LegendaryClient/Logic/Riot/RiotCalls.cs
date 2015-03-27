@@ -1152,88 +1152,100 @@ namespace LegendaryClient.Logic.Riot
             return str;
         }
         static int times;
-        public async static Task<String> GetRestToken(string username, string password, string loginQueue, string gtoken = null)
+
+        public static async Task<String> GetRestToken(string username, string password, string loginQueue, string gtoken = null)
         {
-            times = 0;
-            string token = null;
-            //LoginException.ResponseType responseType;
-            Stream responseStream;
-            try
+            while (true)
             {
-                string str = string.Format("user={0},password={1}", HttpUtility.UrlEncode(username), HttpUtility.UrlEncode(password));
-                if (Client.Garena && gtoken != null)
-                    str = gtoken;
-                HttpWebRequest httpWebRequest = WebRequest.CreateHttp(loginQueue + "login-queue/rest/queue/authenticate");
-                httpWebRequest.ContentType = "application/x-www-form-urlencoded";
-                httpWebRequest.Method = "POST";
-                using (StreamWriter streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
-                {
-                    if (Client.Garena)
-                        await streamWriter.WriteAsync(string.Concat("payload=8393%20", str));
-                    await streamWriter.WriteAsync(string.Concat("payload=", str));
-                }
+                times = 0;
+                string token = null;
+                //LoginException.ResponseType responseType;
+                Stream responseStream;
                 try
                 {
-                    responseStream = httpWebRequest.GetResponse().GetResponseStream();
-                }
-                catch (WebException webException)
-                {
-                    responseStream = webException.Response.GetResponseStream();
-                }
-                using (StreamReader streamReader = new StreamReader(responseStream))
-                {
-                    JObject jObjects = JObject.Parse(await streamReader.ReadToEndAsync());
-                    foreach (var xd in jObjects)
-                        Client.Log(xd.Key + "+|+" + xd.Value);
-                    Func<string> func = () => jObjects["token"].ToString(Formatting.None); //lqt
-                    JArray item = (JArray)jObjects["tickers"];
-                    if (item != null)
+                    string str = string.Format("user={0},password={1}", HttpUtility.UrlEncode(username), HttpUtility.UrlEncode(password));
+                    if (Client.Garena && gtoken != null)
                     {
-                        string item1 = (string)jObjects["node"];
-                        JToken jTokens = item.FirstOrDefault(t => (string)t["node"] == item1);
-                        if (jTokens == null)
+                        str = gtoken;
+                    }
+                    HttpWebRequest httpWebRequest = WebRequest.CreateHttp(loginQueue + "login-queue/rest/queue/authenticate");
+                    httpWebRequest.ContentType = "application/x-www-form-urlencoded";
+                    httpWebRequest.Method = "POST";
+                    using (StreamWriter streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
+                    {
+                        if (Client.Garena)
                         {
-                            //throw new LoginException(LoginException.ResponseType.Unknown, null);
+                            await streamWriter.WriteAsync(string.Concat("payload=8393%20", str));
                         }
-                        string str1 = (string)jTokens["champ"];
-                        int num = (int)jTokens["id"];
-                        while (true)
+                        await streamWriter.WriteAsync(string.Concat("payload=", str));
+                    }
+                    try
+                    {
+                        responseStream = httpWebRequest.GetResponse().GetResponseStream();
+                    }
+                    catch (WebException webException)
+                    {
+                        responseStream = webException.Response.GetResponseStream();
+                    }
+                    using (StreamReader streamReader = new StreamReader(responseStream))
+                    {
+                        JObject jObjects = JObject.Parse(await streamReader.ReadToEndAsync());
+                        foreach (var xd in jObjects)
                         {
-                            int currentQueuePosition = await GetCurrentQueuePosition(str1, item1, num, loginQueue);
-                            int num1 = currentQueuePosition;
-                            int num2 = currentQueuePosition;
-                            if (num1 <= 0)
+                            Client.Log(xd.Key + "+|+" + xd.Value);
+                        }
+                        Func<string> func = () => jObjects["token"].ToString(Formatting.None); //lqt
+                        JArray item = (JArray) jObjects["tickers"];
+                        if (item != null)
+                        {
+                            string item1 = (string) jObjects["node"];
+                            JToken jTokens = item.FirstOrDefault(t => (string) t["node"] == item1);
+                            if (jTokens == null)
                             {
-                                break;
+                                //throw new LoginException(LoginException.ResponseType.Unknown, null);
                             }
-                            OnQueuePositionChanged(num2);
-                            await Task.Delay(2000);
+                            string str1 = (string) jTokens["champ"];
+                            int num = (int) jTokens["id"];
+                            while (true)
+                            {
+                                int currentQueuePosition = await GetCurrentQueuePosition(str1, item1, num, loginQueue);
+                                int num1 = currentQueuePosition;
+                                int num2 = currentQueuePosition;
+                                if (num1 <= 0)
+                                {
+                                    break;
+                                }
+                                OnQueuePositionChanged(num2);
+                                await Task.Delay(2000);
+                            }
+                            OnQueuePositionChanged(0);
+                            token = await GetToken(func(), loginQueue);
                         }
-                        OnQueuePositionChanged(0);
-                        token = await GetToken(func(), loginQueue);
-                    }
-                    else
-                    {
-                        string item2 = (string)jObjects["status"];
-                        string str2 = (string)jObjects["reason"];
-                        if (!item2.Equals("login", StringComparison.OrdinalIgnoreCase))
+                        else
                         {
-                            bool flag = item2.Equals("busy", StringComparison.OrdinalIgnoreCase);
-                            bool flag1 = item2.Equals("failed", StringComparison.OrdinalIgnoreCase);
+                            string item2 = (string) jObjects["status"];
+                            string str2 = (string) jObjects["reason"];
+                            if (!item2.Equals("login", StringComparison.OrdinalIgnoreCase))
+                            {
+                                bool flag = item2.Equals("busy", StringComparison.OrdinalIgnoreCase);
+                                bool flag1 = item2.Equals("failed", StringComparison.OrdinalIgnoreCase);
+                            }
+                            token = func();
                         }
-                        token = func();
                     }
-                }                
+                    return token;
+                }
+                catch (Exception exception1)
+                {
+                    Client.Log("Login Failure: " + exception1.Message);
+                }
+                times++;
+                if (!(times > 5))
+                {
+                    continue;
+                }
                 return token;
             }
-            catch (Exception exception1)
-            {
-                Client.Log("Login Failure: " + exception1.Message);
-            }
-            times++;
-            if (!(times > 5))
-                return await GetRestToken(username, password, loginQueue, gtoken);
-            return token;
         }
 
         private static void OnQueuePositionChanged(int e)
