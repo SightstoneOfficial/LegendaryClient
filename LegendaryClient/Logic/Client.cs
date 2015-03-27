@@ -306,6 +306,15 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnMessage(object sender, Message msg)
         {
+            //This blocks spammers from elo bosters
+            using (var client = new WebClient())
+            {
+                var banned = client.DownloadString("http://legendaryclient.net/Autoblock.txt");
+                var split1 = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                if (split1.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
+                    return;
+            }
+
             if (msg.Subject != null)
             {
                 MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -331,6 +340,8 @@ namespace LegendaryClient.Logic
                 chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
             MainWin.FlashWindow();
         }
+
+        internal static bool autoBlock = true;
 
         internal static void ChatClientConnect(object sender)
         {
