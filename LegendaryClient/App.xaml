@@ -10,7 +10,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Steel.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
@@ -99,9 +99,7 @@
                 <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
                 <Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
-                <Setter Property="Padding" Value="5,6" />
                 <Setter Property="BorderThickness" Value="0" />
-                <Setter Property="SnapsToDevicePixels" Value="True" />
             </Style>
             
             <Style TargetType="ToggleButton">
