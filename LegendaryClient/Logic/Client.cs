@@ -313,6 +313,8 @@ namespace LegendaryClient.Logic
                 var split1 = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                 if (split1.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
                     return;
+                if (msg.Body.ToLower().Contains("elo") && msg.Body.ToLower().Contains("boost"))
+                    return;
             }
 
             if (msg.Subject != null)
