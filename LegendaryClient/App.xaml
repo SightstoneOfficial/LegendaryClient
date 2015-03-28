@@ -98,7 +98,7 @@
                 <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}" />
                 <Setter Property="FontWeight" Value="SemiBold" />
                 <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
-                <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                <Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
                 <Setter Property="Padding" Value="5,6" />
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="SnapsToDevicePixels" Value="True" />
