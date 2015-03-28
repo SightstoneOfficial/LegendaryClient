@@ -137,6 +137,9 @@ Other Features
 
 ![Customizable](http://i.imgur.com/1aaZxDp.png)
 
+**Elo Boost Block**
+Automatically blocks messages from elo boosters. No more spam
+
 #Donations
 Donations will be used for ONLY this project/other league related projects
 Examples include:
