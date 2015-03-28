@@ -392,7 +392,7 @@ namespace LegendaryClient.Logic
                     }
                     catch
                     {
-                        Client.Log("Can't load friends", "ERROR");
+                        Log("Can't load friends", "ERROR");
                     }
                 }
             }
@@ -1345,6 +1345,11 @@ namespace LegendaryClient.Logic
                 SendPIPE.WriteString("[" + type + "] " + lines);
             }
             catch { }
+        }
+
+        public static void Log(Exception e)
+        {
+            Log(e.Message, "Exception");
         }
 
         //Get Image

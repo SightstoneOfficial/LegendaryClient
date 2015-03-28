@@ -16,7 +16,7 @@ namespace LegendaryClient.Logic.Replays
         public int GameId;
 
 
-        public int LastChunkNumber = 0;
+        public int LastChunkNumber;
         public bool Recording = true;
         public string Region;
 
@@ -127,21 +127,25 @@ namespace LegendaryClient.Logic.Replays
 
                 if (LastChunkNumber == chunkId)
                 {
+                    try
+                    {
+                        var t = new Thread(() =>
+                            {
+                                //fix stupid chunks not downloading from lag
+                                while (true)
+                                {
+                                    if (Redo())
+                                        break;
+                                }
+                            });
+                        t.Start();
+                    }
+                    catch (Exception e)
+                    {
+                        Client.Log(e);
+                    }
                     //Sometimes chunk 1 isn't retrieved so get it again... it's like 7 kb so np
-                    client.DownloadFile(
-                        string.Format("{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest",
-                            "getGameDataChunk",
-                            Region,
-                            GameId,
-                            1),
-                        Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + 1));
-
-                    client.DownloadFile(
-                        string.Format("{0}/consumer/{1}/{2}/{3}/token", Server + "/observer-mode/rest",
-                            "endOfGameStats",
-                            Region,
-                            GameId),
-                        Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "endOfGameStats"));
+                    
 
                     if (OnReplayRecorded != null)
                         OnReplayRecorded();
@@ -182,6 +186,34 @@ namespace LegendaryClient.Logic.Replays
                 LastChunkNumber = chunkId;
 
                 Thread.Sleep(Convert.ToInt32(deserializedJson["nextAvailableChunk"]));
+            }
+        }
+
+        private bool Redo()
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+
+                    client.DownloadFile(
+                        string.Format(
+                            "{0}/consumer/{1}/{2}/{3}/{4}/token", Server + "/observer-mode/rest", "getGameDataChunk",
+                            Region, GameId, 1),
+                        Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "chunk-" + 1));
+
+                    client.DownloadFile(
+                        string.Format(
+                            "{0}/consumer/{1}/{2}/{3}/token", Server + "/observer-mode/rest", "endOfGameStats", Region,
+                            GameId),
+                        Path.Combine(Client.ExecutingDirectory, "cabinet", GameId + "-" + Region, "endOfGameStats"));
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Client.Log(e);
+                return false;
             }
         }
     }
