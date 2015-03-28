@@ -49,6 +49,8 @@ namespace LegendaryClient.Windows
 
             if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
+            if (msg.Body.ToLower().Contains("elo") && msg.Body.ToLower().Contains("boost"))
+                return;
 
             ChatPlayerItem chatItem = Client.AllPlayers[msg.From.User];
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
