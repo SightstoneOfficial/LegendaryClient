@@ -125,7 +125,7 @@ namespace LegendaryClient.Logic.Riot.Platform
                 {
                     ArrayList tempArrayList = keyPair.Value as ArrayList;
                     if (tempArrayList.Count > 0)
-                        f.SetValue(this, tempArrayList.ToArray(tempArrayList[0].GetType()));
+                        f.SetValue(this, tempArrayList.ToArray(f.PropertyType.GetElementType()));
                     else
                         f.SetValue(this, null);
                 }
