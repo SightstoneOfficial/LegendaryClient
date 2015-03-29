@@ -36,7 +36,7 @@ namespace LegendaryClient.Windows.Profile
             RenderKudos(totalKudos);
             var topChampions = await RiotCalls.RetrieveTopPlayedChampions(accountId, "CLASSIC");
             RenderTopPlayedChampions(topChampions);
-            GotPlayerStats(await RiotCalls.RetrievePlayerStatsByAccountId(accountId, "5"));
+            GotPlayerStats(await RiotCalls.RetrievePlayerStatsByAccountId(accountId, Client.LoginPacket.ClientSystemStates.currentSeason.ToString()));
         }
 
         public void RenderKudos(LcdsResponseString totalKudos)
@@ -155,7 +155,7 @@ namespace LegendaryClient.Windows.Profile
 
         private async void ViewAggregatedStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = await RiotCalls.GetAggregatedStats(accId, "CLASSIC", "5");
+            var x = await RiotCalls.GetAggregatedStats(accId, "CLASSIC", Client.LoginPacket.ClientSystemStates.currentSeason.ToString());
             Client.OverlayContainer.Content =
                 new AggregatedStatsOverlay(x, accId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;

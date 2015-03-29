@@ -181,7 +181,7 @@ namespace LegendaryClient.Windows.Profile
             PlayerLabel.Content = item.PlayerLabel.Content;
 
             var x = await RiotCalls.GetSummonerByName((string) item.PlayerLabel.Content);
-            GotStats(await RiotCalls.GetAggregatedStats(x.AcctId, "CLASSIC", "5"));
+            GotStats(await RiotCalls.GetAggregatedStats(x.AcctId, "CLASSIC", Client.LoginPacket.ClientSystemStates.currentSeason.ToString()));
         }
 
         private void GotStats(AggregatedStats stats)

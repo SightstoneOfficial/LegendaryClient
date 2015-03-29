@@ -224,6 +224,15 @@ namespace LegendaryClient.Windows
                 (x, y) =>
                     string.Compare(champions.GetChampion(x.ChampionId)
                         .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
+            if (Client.LoginPacket.ClientSystemStates.freeToPlayChampionsForNewPlayersMaxLevel >=
+                Client.LoginPacket.AllSummonerData.SummonerLevel.Level)
+                foreach (var item in ChampList)
+                {
+                    if (Client.LoginPacket.ClientSystemStates.freeToPlayChampionIdList.Contains(item.ChampionId))
+                        item.FreeToPlay = true;
+                    else
+                        item.FreeToPlay = false;
+                }
 
             //Retrieve masteries and runes
             MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
@@ -1146,7 +1155,7 @@ namespace LegendaryClient.Windows
                     return;
                 //SelectChampion.SelectChampion(selection.ChampionId)*/
                 await RiotCalls.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
-                Client.ChampId = (int) item.Tag;
+                Client.ChampId = (int)item.Tag;
                 //TODO: Fix stupid animation glitch on left hand side
                 var fadingAnimation = new DoubleAnimation
                 {
