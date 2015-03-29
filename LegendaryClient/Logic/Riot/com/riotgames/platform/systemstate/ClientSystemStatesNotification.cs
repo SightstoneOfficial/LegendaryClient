@@ -28,7 +28,7 @@ namespace LegendaryClient.Logic.Riot.Platform
 
         public int[] freeToPlayChampionIdList { get; set; }
 
-        public object[] inactiveChampionIdList { get; set; }
+        public int[] inactiveChampionIdList { get; set; }
 
         public int[] inactiveSpellIdList { get; set; }
 
@@ -125,7 +125,7 @@ namespace LegendaryClient.Logic.Riot.Platform
                 {
                     ArrayList tempArrayList = keyPair.Value as ArrayList;
                     if (tempArrayList.Count > 0)
-                        f.SetValue(this, ((ArrayList)keyPair.Value).ToArray(tempArrayList[0].GetType()));
+                        f.SetValue(this, tempArrayList.ToArray(tempArrayList[0].GetType()));
                     else
                         f.SetValue(this, null);
                 }

@@ -817,6 +817,15 @@ You've been placed in a lower priority queue" + Environment.NewLine;
 
         private void InstaCall_Click(object sender, RoutedEventArgs e)
         {
+            if (ChatTextBox.Text == string.Empty)
+            {
+                if (Client.InstaCall)
+                    CreateText("Insta call disabled.", Brushes.OrangeRed);
+                else
+                    CreateText("Type call in textbox first.", Brushes.OrangeRed);
+                Client.InstaCall = false;
+                return;
+            }
             Client.InstaCall = true;
             Client.CallString = ChatTextBox.Text;
             CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select", Brushes.OrangeRed);
