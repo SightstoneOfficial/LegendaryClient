@@ -87,7 +87,7 @@
 
         <local:TradeControl x:Name="PlayerTradeControl" HorizontalAlignment="Left" Margin="144,85,0,0" Height="200" Width="300" Panel.ZIndex="1" VerticalAlignment="Top" Visibility="Hidden" Grid.ColumnSpan="3" Grid.Column="1" />
 
-        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="0,210,0,0" Height="263" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" Grid.Column="3" BorderThickness="0">
+        <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="0,210,0,0" Height="246" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" Grid.Column="3" BorderThickness="0">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />
@@ -134,7 +134,7 @@
         </Grid>
 
         <Grid VerticalAlignment="Top" Height="90" Margin="0,483,0,0" Grid.Column="3" Panel.ZIndex="100">
-            <Grid HorizontalAlignment="Left" Width="300" Background="#66505050">
+            <Grid HorizontalAlignment="Left" Width="300" Background="#66505050" Margin="0,-15,0,15">
                 <Label Content="Masteries and Runes" Foreground="WhiteSmoke" FontWeight="ExtraLight" FontSize="12" Margin="4,0,0,0" Width="180" Height="30" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <ComboBox x:Name="MasteryComboBox" Margin="9,0,0,9" Width="191" Height="26" SelectionChanged="MasteryComboBox_SelectionChanged" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
                 <Button x:Name="EditRunesButton" Content="Runes" HorizontalAlignment="Right" Margin="0,0,9,42" Width="82" Height="26" Click="EditRunesButton_Click" VerticalAlignment="Bottom" />
@@ -145,7 +145,7 @@
                 </UniformGrid>
             </Grid>
 
-            <Grid HorizontalAlignment="Left" Margin="310,0,0,0" Width="140" Background="#66505050">
+            <Grid HorizontalAlignment="Left" Margin="305,-15,0,15" Width="140" Background="#66505050">
                 <Label Content="Summoner Spells" Foreground="WhiteSmoke" FontWeight="ExtraLight" FontSize="12" Height="30" Margin="0,0,0,0" Panel.ZIndex="1" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                 <Button x:Name="SummonerSpell1" Height="55" Margin="9,0,0,9" Width="55" Click="SummonerSpell_Click" HorizontalAlignment="Left" VerticalAlignment="Bottom">
                     <StackPanel>
@@ -159,13 +159,13 @@
                 </Button>
             </Grid>
 
-            <Grid HorizontalAlignment="Stretch" Margin="460,0,0,0" Background="#66505050">
+            <Grid HorizontalAlignment="Stretch" Margin="450,-15,0,15" Background="#66505050">
                 <Button x:Name="LockInButton" Content="Lock In" Margin="10,0,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="41" Click="LockInButton_Click" />
             </Grid>
         </Grid>
         <!-- <Rectangle Fill="#FFffffff" Margin="273,758,257,-30" Grid.Column="3" Height="10" Width="200" /> -->
 
-        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,583,0,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}" Grid.Column="3" BorderThickness="0">
+        <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,573,0,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}" Grid.Column="3" BorderThickness="0">
             <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
                     <Setter Property="Margin" Value="0" />
