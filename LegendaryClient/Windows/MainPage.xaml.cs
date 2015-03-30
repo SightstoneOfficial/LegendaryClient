@@ -51,11 +51,9 @@ namespace LegendaryClient.Windows
         internal ArrayList NewsList;
         internal int SelectedGame = 0;
         internal bool CheckedDev = false;
-        internal bool inGame;
-        public MainPage(bool inGame)
+        public MainPage()
         {
             InitializeComponent();
-            this.inGame = inGame;
             GotPlayerData(Client.LoginPacket);
             SpectatorComboBox.SelectedValue = Client.Region.RegionName.ToUpper();
             BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
@@ -245,8 +243,6 @@ namespace LegendaryClient.Windows
                     Client.Log("Can't load profile image.", "ERROR");
                 }
                 Client.MainPageProfileImage = ProfileImage;
-                if (!inGame)
-                    Client.SwitchPage(Client.MainPage);
             }
         }
 
