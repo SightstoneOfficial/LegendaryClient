@@ -1060,6 +1060,16 @@ namespace LegendaryClient.Logic.Riot
             return InvokeAsync<object>("lcdsGameInvitationService", "kick", summonerId);		
         }
 
+       /// <summary>
+       /// Used to invite multiple summoners
+       /// </summary>
+       /// <param name="summonerId">Summoner ids array</param>
+       /// <returns></returns>
+       public static Task<object> InviteBulk(object[] summonerIds)
+       {
+           return InvokeAsync<object>("lcdsGameInvitationService", "inviteBulk", summonerIds, "DEFAULT");
+       }
+
         /// <summary>
         /// Used to report player after game
         /// </summary>

@@ -955,7 +955,7 @@ namespace LegendaryClient.Logic
                         OverlayContainer.Visibility = Visibility.Visible;
                         ClearPage(typeof(CustomGameLobbyPage));
                         if (notification.Type != "PLAYER_QUIT")
-                            SwitchPage(new MainPage());
+                            SwitchPage(Client.MainPage);
                     }
                     else if (message.Body is EndOfGameStats)
                     {
@@ -1244,7 +1244,7 @@ namespace LegendaryClient.Logic
             LastPageContent = null;
             GameStatus = "outOfGame";
             SetChatHover();
-            SwitchPage(new MainPage());
+            SwitchPage(Client.MainPage);
         }
 
         internal static void FixLobby()
