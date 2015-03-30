@@ -580,16 +580,16 @@ namespace LegendaryClient.Windows
                 //Gather data and convert it that way that it does not cause errors
                 PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)Client.LoginPacket.ReconnectInfo;
 
-                Client.MainPage = new MainPage();
                 if (data != null && data.Game != null)
                 {
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
                     Client.CurrentGame = data.PlayerCredentials;
                     Client.GameType = data.Game.GameType;
                     Client.SwitchPage(new InGame());
+                    Client.MainPage = new MainPage(true);
                 }
                 else
-                    Client.SwitchPage(Client.MainPage);
+                    Client.MainPage = new MainPage(false);
 
                 Client.ClearPage(typeof(LoginPage));
             }));
