@@ -1059,87 +1059,24 @@ namespace LegendaryClient.Logic
 
         }
 
+        internal static Dictionary<string, string> queueNames;
 
         internal static string InternalQueueToPretty(string internalQueue)
         {
-            switch (internalQueue)
+            if (queueNames == null)
             {
-                case "matching-queue-NORMAL-5x5-game-queue":
-                    return "Normal 5v5";
-
-                case "matching-queue-NORMAL-3x3-game-queue":
-                    return "Normal 3v3";
-
-                case "matching-queue-NORMAL-5x5-draft-game-queue":
-                    return "Draft 5v5";
-
-                case "matching-queue-RANKED_SOLO-5x5-game-queue":
-                    return "Ranked 5v5";
-
-                case "matching-queue-RANKED_TEAM-3x3-game-queue":
-                    return "Ranked Team 3v3";
-
-                case "matching-queue-RANKED_TEAM-5x5-game-queue":
-                    return "Ranked Team 5v5";
-
-                case "matching-queue-ODIN-5x5-game-queue":
-                    return "Dominion 5v5";
-
-                case "matching-queue-ARAM-5x5-game-queue":
-                    return "ARAM 5v5";
-
-                case "matching-queue-BOT-5x5-game-queue":
-                    return "Bot 5v5 Beginner";
-
-                case "matching-queue-ODIN-5x5-draft-game-queue":
-                    return "Dominion Draft 5v5";
-
-                case "matching-queue-BOT_TT-3x3-game-queue":
-                    return "Bot 3v3 Easy";
-
-                case "matching-queue-BOT_EASY-5x5-game-queue":
-                    return "Bot 5v5 Easy";
-
-                case "matching-queue-BOT_MEDIUM-5x5-game-queue":
-                    return "Bot 5v5 Medium";
-
-                case "matching-queue-ODINBOT-5x5-game-queue":
-                    return "Dominion Bot 5v5 Easy";
-
-                case "matching-queue-ONEFORALL-5x5-game-queue":
-                    return "One For All 5v5";
-
-                case "matching-queue-GROUPFINDER-5x5-game-queue":
-                    return "Team Builder 5v5";
-
-                case "matching-queue-BOT_INTRO-5x5-game-queue":
-                    return "Bot 5v5 Intro";
-
-                case "matching-queue-GROUP_FINDER-5x5-game-queue":
-                    return "Teambuilder 5v5 Beta (In Dev. Do Not Play)";
-
-                case "matching-queue-NIGHTMARE_BOT_1-5x5-game-queue":
-                    return "Nightmare Bots 5v5 (Easy)";
-
-                case "matching-queue-NIGHTMARE_BOT_2-5x5-game-queue":
-                    return "Nightmare Bots 5v5 (Med)";
-
-                case "matching-queue-NIGHTMARE_BOT_3-5x5-game-queue":
-                    return "Nightmare Bots 5v5 (Hard)";
-
-                case "matching-queue-TT-6x6-game-queue":
-                    return "Hexakill Twisted Treeline";
-
-                case "matching-queue-KINGPORO-5x5-game-queue":
-                    return "King Poro 5v5";
-
-                case "matching-queue-COUNTERPICK-5x5-game-queue":
-                    return "Nemesis Draft 5v5";
-
-                default:
-                    Log(internalQueue);
-                    return internalQueue;
+                using (WebClient client = new WebClient())
+                {
+                    string names = client.DownloadString("http://legendaryclient.net/QueueName");
+                    string[] queues = names.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    queueNames = queues.Select(x => x.Split('|')).ToDictionary(x => x[0], x => x[1]);
+                }
             }
+            if (queueNames.ContainsKey(internalQueue))
+                return queueNames[internalQueue];
+
+            Log(internalQueue);
+            return internalQueue;
         }
 
         internal static string GetGameDirectory()
