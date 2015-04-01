@@ -1,0 +1,26 @@
+matching-queue-NORMAL-5x5-game-queue|Normal 5v5
+matching-queue-NORMAL-3x3-game-queue|Normal 3v3
+matching-queue-NORMAL-5x5-draft-game-queue|Draft 5v5
+matching-queue-RANKED_SOLO-5x5-game-queue|Ranked 5v5
+matching-queue-RANKED_TEAM-3x3-game-queue|Ranked Team 3v3
+matching-queue-RANKED_TEAM-5x5-game-queue|Ranked Team 5v5
+matching-queue-ODIN-5x5-game-queue|Dominion 5v5
+matching-queue-ARAM-5x5-game-queue|ARAM 5v5
+matching-queue-BOT-5x5-game-queue|Bot 5v5 Beginner
+matching-queue-ODIN-5x5-draft-game-queue|Dominion Draft 5v5
+matching-queue-BOT_TT-3x3-game-queue|Bot 3v3 Easy
+matching-queue-BOT_EASY-5x5-game-queue|Bot 5v5 Easy
+matching-queue-BOT_MEDIUM-5x5-game-queue|Bot 5v5 Medium
+matching-queue-ODINBOT-5x5-game-queue|Dominion Bot 5v5 Easy
+matching-queue-ONEFORALL-5x5-game-queue|One For All 5v5
+matching-queue-GROUPFINDER-5x5-game-queue|Team Builder 5v5
+matching-queue-BOT_INTRO-5x5-game-queue|Bot 5v5 Intro
+matching-queue-GROUP_FINDER-5x5-game-queue|Teambuilder 5v5 Beta (In Dev. Do Not Play)
+matching-queue-NIGHTMARE_BOT_1-5x5-game-queue|Nightmare Bots 5v5 (Easy)
+matching-queue-NIGHTMARE_BOT_2-5x5-game-queue|Nightmare Bots 5v5 (Med)
+matching-queue-NIGHTMARE_BOT_3-5x5-game-queue|Nightmare Bots 5v5 (Hard)
+matching-queue-TT-6x6-game-queue|Hexakill Twisted Treeline
+matching-queue-KINGPORO-5x5-game-queue|King Poro 5v5
+matching-queue-COUNTERPICK-5x5-game-queue|Nemesis Draft 5v5
+matching-queue-URF-5x5-game-queue|URF 5v5
+matching-queue-URF-BOT-5x5-game-queue|URF Bot 5v5
