@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Riot;
+using System.Threading.Tasks;
 
 namespace LegendaryClient.Windows
 {
@@ -70,7 +71,7 @@ namespace LegendaryClient.Windows
 
         private void UpdateChat(object sender, ElapsedEventArgs e)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 if (Client.CurrentStatus != StatusBox.Text && StatusBox.Text != "Set your status message")
                     Client.CurrentStatus = StatusBox.Text;
@@ -87,6 +88,10 @@ namespace LegendaryClient.Windows
                 ChatListView.Children.Clear();
 
                 #region "Groups"
+                while (!Client.loadedGroups)
+                {
+                    await Task.Delay(1000);
+                }
                 foreach (Group g in Client.Groups)
                 {
                     var playersListView = new ListView

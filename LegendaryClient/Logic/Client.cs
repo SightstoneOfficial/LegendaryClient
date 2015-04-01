@@ -345,8 +345,11 @@ namespace LegendaryClient.Logic
 
         internal static bool autoBlock = true;
 
+        internal static bool loadedGroups = false;
+
         internal static void ChatClientConnect(object sender)
         {
+            loadedGroups = false;
             Groups.Add(new Group("Online"));
 
             //Get all groups
@@ -401,6 +404,7 @@ namespace LegendaryClient.Logic
 
             Groups.Add(new Group("Offline"));
             SetChatHover();
+            loadedGroups = true;
         }
 
         internal static void SendMessage(string User, string Message)

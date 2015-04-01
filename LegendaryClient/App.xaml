@@ -92,15 +92,6 @@
             </Style>
 
             <Style TargetType="Button" BasedOn="{StaticResource AccentedSquareButtonStyle}"/>
-
-            <Style TargetType="ComboBox">
-                <Setter Property="MinHeight" Value="25" />
-                <Setter Property="FontFamily" Value="{DynamicResource DefaultFont}" />
-                <Setter Property="FontWeight" Value="SemiBold" />
-                <Setter Property="Background" Value="{DynamicResource AccentColorBrush}" />
-                <Setter Property="Foreground" Value="{DynamicResource IdealForegroundColorBrush}" />
-                <Setter Property="BorderThickness" Value="0" />
-            </Style>
             
             <Style TargetType="ToggleButton">
                 <Setter Property="MinHeight" Value="25" />

@@ -304,9 +304,11 @@ namespace LegendaryClient.Windows
             if (IsInGame())
                 return;
             //to queue
+            bool Join = InQueue;
+            LastSender = (Button)sender;
+
             if (InQueue == false)
             {
-                LastSender = (Button)sender; 
                 var settings = (QueueButtonConfig)LastSender.Tag;
                 var config = (GameQueueConfig)settings.GameQueueConfig;
                 //Make TeamBuilder Work for solo
@@ -353,9 +355,16 @@ namespace LegendaryClient.Windows
                     Client.SwitchPage(new TeamBuilderPage(false, lobby));
                 }
             }
-            if (!InQueue)
+            if (!Join)
                 return;
 
+            if (t.Enabled)
+            {
+                t.Stop();
+                t.Close();
+            }
+
+            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => LastSender.Content = "Queue (Beta)"));
             InQueue = false;
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
@@ -472,6 +481,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                     t.Stop();
                 t = new Timer { Interval = 1000 };
                 t.Start();
+                time = 0;
                 t.Elapsed += (gg, easy) =>
                 {
                     time = time + 1000;
@@ -600,6 +610,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
         private async void LeaveQueuesButton_Click(object sender, RoutedEventArgs e)
         {
             await LeaveAllQueues();
+            Client.RiotConnection.MessageReceived -= GotQueuePop;
         }
 
         private async Task<bool> LeaveAllQueues()
