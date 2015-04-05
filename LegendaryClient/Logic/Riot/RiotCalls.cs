@@ -1082,6 +1082,8 @@ namespace LegendaryClient.Logic.Riot
 
         public static Task<T> InvokeAsync<T>(string destination, string method, params object[] arguments)
         {
+            while (Client.isConnectedToRTMP == false)
+                Task.Delay(100);
             try
             {
                 return Client.RiotConnection.InvokeAsync<T>("my-rtmps", destination, method, arguments);

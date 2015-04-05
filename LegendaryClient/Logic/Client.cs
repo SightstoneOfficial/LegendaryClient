@@ -46,6 +46,8 @@ using Timer = System.Windows.Forms.Timer;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform.Messaging.Persistence;
 using RtmpSharp.Messaging;
+using System.Threading.Tasks;
+using System.Net.NetworkInformation;
 
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
@@ -1429,6 +1431,19 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnDisconnect(object sender)
         {
+            if (connectionCheck == null)
+            {
+                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
+                connectionCheck.Start();
+            }
+            else if (!connectionCheck.IsAlive)
+            {
+                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
+                connectionCheck.Start();
+            }
+
+            while (!isInternetAvailable)
+                Task.Delay(100);
             ChatClient.User = userpass.Key;
             ChatClient.Password = userpass.Value;
             ChatClient.Login();
@@ -1452,6 +1467,64 @@ namespace LegendaryClient.Logic
         {
             return (int)Math.Round(toRound);
         }
+
+        public static bool isConnectedToRTMP = true;
+
+        public static string reconnectToken { get; set; }
+
+        public static async void RiotConnection_Disconnected(object sender, EventArgs e)
+        {
+            isConnectedToRTMP = false;
+
+            if (connectionCheck == null)
+            {
+                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
+                connectionCheck.Start();
+            }
+            else if (!connectionCheck.IsAlive)
+            {
+                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
+                connectionCheck.Start();
+            }
+
+            while (!isInternetAvailable)
+                Task.Delay(100);
+
+            await Client.RiotConnection.RecreateConnection(reconnectToken);
+            var str1 = string.Format("gn-{0}", Client.PlayerSession.AccountSummary.AccountId);
+            var str2 = string.Format("cn-{0}", Client.PlayerSession.AccountSummary.AccountId);
+            var str3 = string.Format("bc-{0}", Client.PlayerSession.AccountSummary.AccountId);
+            Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                       Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                       Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+
+            await Task.WhenAll(taskArray);
+            isConnectedToRTMP = true;
+        }
+        public static bool isInternetAvailable;
+
+        public static void CheckInternetConnection()
+        {
+            isInternetAvailable = false;
+            while (isInternetAvailable == false)
+            {
+                try
+                {
+                    Ping myPing = new Ping();
+                    String host = "8.8.8.8";
+                    byte[] buffer = new byte[32];
+                    int timeout = 1000;
+                    PingOptions pingOptions = new PingOptions();
+                    PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
+                    isInternetAvailable = (reply.Status == IPStatus.Success);
+                }
+                catch (Exception)
+                {
+                    isInternetAvailable = false;
+                }
+            }
+        }
+        public static Thread connectionCheck;
     }
 
 

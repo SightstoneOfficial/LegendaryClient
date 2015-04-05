@@ -407,7 +407,6 @@ namespace LegendaryClient.Windows
             Client.RiotConnection.MessageReceived += client_MessageReceived;
             await Client.RiotConnection.ConnectAsync();
             Client.RiotConnection.SetChunkSize(2147483647);
-
             AuthenticationCredentials newCredentials = new AuthenticationCredentials
             {
                 Username = LoginUsernameBox.Text,
@@ -432,8 +431,8 @@ namespace LegendaryClient.Windows
 
             await Task.WhenAll(taskArray);
             //Riot added this for no reason but make it look like the riot client we have to do this
-            var plainTextbytes = Encoding.UTF8.GetBytes(newCredentials.Username + ":" + login.Token);
-            var result = Convert.ToBase64String(plainTextbytes);
+            var plainTextbytes = Encoding.UTF8.GetBytes(login.AccountSummary.Username + ":" + login.Token);
+            Client.reconnectToken = Convert.ToBase64String(plainTextbytes);
             //await RiotCalls.Login(result);
             var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
             DoGetOnLoginPacket();
@@ -507,6 +506,7 @@ namespace LegendaryClient.Windows
             }
 
             Client.RiotConnection.MessageReceived += Client.OnMessageReceived;
+            Client.RiotConnection.Disconnected += Client.RiotConnection_Disconnected;
             Client.GameConfigs = packet.GameTypeConfigs;
             Client.IsLoggedIn = true;
 
