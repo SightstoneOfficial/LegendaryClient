@@ -15,7 +15,8 @@ namespace LegendaryClient.Scripting_Environment
 		private ScriptEngine pyEngine = null;
 		private ScriptRuntime pyRuntime = null;
 		private ScriptScope pyScope = null;
-		public Plugin_Core()
+		private string Name;
+		public Plugin_Core(string PluginName)
 		{
 			pyEngine = Python.CreateEngine();
 			//actually load the STD lib
@@ -24,7 +25,7 @@ namespace LegendaryClient.Scripting_Environment
 			pyEngine.SetSearchPaths(searchPaths);
 			pyRuntime = Python.CreateRuntime();
 			pyScope = pyEngine.CreateScope();
-			
+			Name = PluginName;
 		}
 		
 		/// <summary>
