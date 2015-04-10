@@ -18,8 +18,13 @@ namespace LegendaryClient.Scripting_Environment
 		public Plugin_Core()
 		{
 			pyEngine = Python.CreateEngine();
+			//actually load the STD lib
+			ICollection<string> searchPaths = pyEngine.GetSearchPaths();
+			searchPaths.Add("..\\..\\Lib");
+			pyEngine.SetSearchPaths(searchPaths);
 			pyRuntime = Python.CreateRuntime();
 			pyScope = pyEngine.CreateScope();
+			
 		}
 		
 		/// <summary>
