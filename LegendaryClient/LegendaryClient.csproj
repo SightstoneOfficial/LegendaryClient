@@ -1225,6 +1225,8 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Lib\ensurepip\_bundled\pip-1.5.6-py2.py3-none-any.whl" />
+    <None Include="Lib\ensurepip\_bundled\setuptools-3.6-py2.py3-none-any.whl" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -1392,6 +1394,7 @@
     <Content Include="Lib\encodings\aliases.py" />
     <Content Include="Lib\encodings\ascii.py" />
     <Content Include="Lib\encodings\base64_codec.py" />
+    <Content Include="Lib\encodings\bz2_codec.py" />
     <Content Include="Lib\encodings\charmap.py" />
     <Content Include="Lib\encodings\cp037.py" />
     <Content Include="Lib\encodings\cp1006.py" />
@@ -1430,6 +1433,7 @@
     <Content Include="Lib\encodings\cp875.py" />
     <Content Include="Lib\encodings\hex_codec.py" />
     <Content Include="Lib\encodings\hp_roman8.py" />
+    <Content Include="Lib\encodings\idna.py" />
     <Content Include="Lib\encodings\iso8859_1.py" />
     <Content Include="Lib\encodings\iso8859_10.py" />
     <Content Include="Lib\encodings\iso8859_11.py" />
@@ -1482,6 +1486,9 @@
     <Content Include="Lib\encodings\uu_codec.py" />
     <Content Include="Lib\encodings\zlib_codec.py" />
     <Content Include="Lib\encodings\__init__.py" />
+    <Content Include="Lib\ensurepip\_uninstall.py" />
+    <Content Include="Lib\ensurepip\__init__.py" />
+    <Content Include="Lib\ensurepip\__main__.py" />
     <Content Include="Lib\filecmp.py" />
     <Content Include="Lib\fileinput.py" />
     <Content Include="Lib\fnmatch.py" />
@@ -1606,6 +1613,20 @@
     <Content Include="Lib\mimify.py" />
     <Content Include="Lib\modulefinder.py" />
     <Content Include="Lib\multifile.py" />
+    <Content Include="Lib\multiprocessing\connection.py" />
+    <Content Include="Lib\multiprocessing\dummy\connection.py" />
+    <Content Include="Lib\multiprocessing\dummy\__init__.py" />
+    <Content Include="Lib\multiprocessing\forking.py" />
+    <Content Include="Lib\multiprocessing\heap.py" />
+    <Content Include="Lib\multiprocessing\managers.py" />
+    <Content Include="Lib\multiprocessing\pool.py" />
+    <Content Include="Lib\multiprocessing\process.py" />
+    <Content Include="Lib\multiprocessing\queues.py" />
+    <Content Include="Lib\multiprocessing\reduction.py" />
+    <Content Include="Lib\multiprocessing\sharedctypes.py" />
+    <Content Include="Lib\multiprocessing\synchronize.py" />
+    <Content Include="Lib\multiprocessing\util.py" />
+    <Content Include="Lib\multiprocessing\__init__.py" />
     <Content Include="Lib\mutex.py" />
     <Content Include="Lib\netrc.py" />
     <Content Include="Lib\new.py" />
@@ -1671,6 +1692,7 @@
     <Content Include="Lib\string.py" />
     <Content Include="Lib\StringIO.py" />
     <Content Include="Lib\stringold.py" />
+    <Content Include="Lib\stringprep.py" />
     <Content Include="Lib\struct.py" />
     <Content Include="Lib\subprocess.py" />
     <Content Include="Lib\sunau.py" />
