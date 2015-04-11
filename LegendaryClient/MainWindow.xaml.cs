@@ -276,6 +276,7 @@ namespace LegendaryClient
                 LoginPage page = new LoginPage();
                 Client.Pages.Clear();
                 RiotCalls.QuitGame();
+                Client.RiotConnection.Disconnected -= Client.RiotConnection_Disconnected;
                 Client.RiotConnection.Close();
                 Client.ChatClient.OnDisconnect -= Client.ChatClient_OnDisconnect;
                 Client.ChatClient.Close();
