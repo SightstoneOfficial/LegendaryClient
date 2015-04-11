@@ -531,8 +531,8 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                     Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
-                    Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
                     Client.ChatClient.Connect();
+                    Client.ChatClient.OnError += Client.ChatClient_OnError;
                 }
                 else
                 {
@@ -551,8 +551,8 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                     Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
-                    Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
                     Client.ChatClient.Connect();
+                    Client.ChatClient.OnError += Client.ChatClient_OnError;
                 }
 
                 Client.RostManager = new RosterManager

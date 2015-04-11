@@ -407,6 +407,7 @@ namespace LegendaryClient.Logic
             Groups.Add(new Group("Offline"));
             SetChatHover();
             loadedGroups = true;
+            Client.RostManager.OnRosterEnd -= Client.ChatClientConnect; //only update groups on login
         }
 
         internal static void SendMessage(string User, string Message)
@@ -842,8 +843,8 @@ namespace LegendaryClient.Logic
         {
             if (IsLoggedIn)
             {
-                string result = await RiotCalls.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId), 
-                    PlayerSession.Token, 
+                string result = await RiotCalls.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId),
+                    PlayerSession.Token,
                     HeartbeatCount,
                     DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-0700'"));
 
@@ -977,12 +978,12 @@ namespace LegendaryClient.Logic
                     }
                     else if (message.Body is Inviter)
                     {
-                        var stats = (Inviter) message.Body;
+                        var stats = (Inviter)message.Body;
                         //CurrentInviter = stats;
                     }
                     else if (message.Body is InvitationRequest)
                     {
-                        var stats = (InvitationRequest) message.Body;
+                        var stats = (InvitationRequest)message.Body;
                         if (stats.Inviter == null)
                             return;
 
@@ -1429,26 +1430,6 @@ namespace LegendaryClient.Logic
         internal static KeyValuePair<string, string> userpass;
         internal static bool HasPopped = false;
 
-        internal static void ChatClient_OnDisconnect(object sender)
-        {
-            if (connectionCheck == null)
-            {
-                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
-                connectionCheck.Start();
-            }
-            else if (!connectionCheck.IsAlive)
-            {
-                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
-                connectionCheck.Start();
-            }
-
-            while (!isInternetAvailable)
-                Task.Delay(100);
-            ChatClient.User = userpass.Key;
-            ChatClient.Password = userpass.Value;
-            ChatClient.Login();
-        }
-
         public static string UpdateRegion { get; set; }
 
         public static string GameType { get; set; }
@@ -1525,6 +1506,27 @@ namespace LegendaryClient.Logic
             }
         }
         public static Thread connectionCheck;
+
+        internal static void ChatClient_OnError(object sender, Exception ex)
+        {
+            if (connectionCheck == null)
+            {
+                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
+                connectionCheck.Start();
+            }
+            else if (!connectionCheck.IsAlive)
+            {
+                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
+                connectionCheck.Start();
+            }
+
+            while (!isInternetAvailable)
+                Task.Delay(100);
+
+            ChatClient.Connect();
+            ChatClient.Login();
+            SetChatHover();
+        }
     }
 
 
