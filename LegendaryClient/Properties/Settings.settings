@@ -87,7 +87,7 @@
       <Value Profile="(Default)">PH</Value>
     </Setting>
     <Setting Name="AutoPlay" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="DisableClientSound" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
