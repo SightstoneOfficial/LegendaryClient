@@ -87,6 +87,12 @@ namespace LegendaryClient
             Client.InfoLabel = InfoLabel;
             //RiotCalls = new PVPNetConnection { KeepDelegatesOnLogout = false };
             //RiotCalls.OnError += RiotCalls_OnError;
+            if (Settings.Default.UpgradeRequired)
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeRequired = false;
+                Settings.Default.Save();
+            }
             if (string.IsNullOrEmpty(Settings.Default.Theme))
                 Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
             myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));

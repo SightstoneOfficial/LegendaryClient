@@ -1456,7 +1456,7 @@ namespace LegendaryClient.Logic
         public static async void RiotConnection_Disconnected(object sender, EventArgs e)
         {
             isConnectedToRTMP = false;
-
+            Client.Log("Disconnected from RTMPS");
             if (connectionCheck == null)
             {
                 connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
@@ -1509,6 +1509,7 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnError(object sender, Exception ex)
         {
+            Client.Log("Error with chat connection");
             if (connectionCheck == null)
             {
                 connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
