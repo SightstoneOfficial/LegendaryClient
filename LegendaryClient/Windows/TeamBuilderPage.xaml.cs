@@ -234,7 +234,7 @@ namespace LegendaryClient.Windows
                         spell2 = response.initialSpellIds[1];
 
                     Dispatcher.BeginInvoke(DispatcherPriority.Input,
-                        new ThreadStart(() => { RenderLegenadryClientPlayerSumSpellIcons(); }));
+                        new ThreadStart(() => { RenderLegendaryClientPlayerSumSpellIcons(); }));
                 }
                 if (response.spellIds.Length > 0)
                     availableSpells = response.spellIds.ToList();
@@ -600,7 +600,7 @@ namespace LegendaryClient.Windows
         }
 
         //This is something you don't know exists
-        private void RenderLegenadryClientPlayerSumSpellIcons()
+        private void RenderLegendaryClientPlayerSumSpellIcons()
         {
             if (ChampionId != 0)
             {
@@ -1072,7 +1072,7 @@ namespace LegendaryClient.Windows
                     SelectedSpell1 = 0;
                     SpellsGrid.Visibility = Visibility.Hidden;
                 }
-                RenderLegenadryClientPlayerSumSpellIcons();
+                RenderLegendaryClientPlayerSumSpellIcons();
             }
         }
 
