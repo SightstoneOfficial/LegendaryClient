@@ -1261,7 +1261,7 @@ namespace LegendaryClient.Logic.Riot
                     Client.Log("Login Failure: " + exception1.Message);
                 }
                 times++;
-                if (!(times > 5))
+                if (!(times > 5) && token == null)
                 {
                     continue;
                 }
