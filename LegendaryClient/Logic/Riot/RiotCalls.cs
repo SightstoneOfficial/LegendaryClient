@@ -1181,18 +1181,17 @@ namespace LegendaryClient.Logic.Riot
                 times = 0;
                 string token = null;
                 //LoginException.ResponseType responseType;
-                Stream responseStream;
                 try
                 {
-                    string str = string.Format("user={0},password={1}", HttpUtility.UrlEncode(username), HttpUtility.UrlEncode(password));
+                    var str = string.Format("user={0},password={1}", HttpUtility.UrlEncode(username), HttpUtility.UrlEncode(password));
                     if (Client.Garena && gtoken != null)
                     {
                         str = gtoken;
                     }
-                    HttpWebRequest httpWebRequest = WebRequest.CreateHttp(loginQueue + "login-queue/rest/queue/authenticate");
+                    var httpWebRequest = WebRequest.CreateHttp(loginQueue + "login-queue/rest/queue/authenticate");
                     httpWebRequest.ContentType = "application/x-www-form-urlencoded";
                     httpWebRequest.Method = "POST";
-                    using (StreamWriter streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
+                    using (var streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
                     {
                         if (Client.Garena)
                         {
@@ -1200,6 +1199,7 @@ namespace LegendaryClient.Logic.Riot
                         }
                         await streamWriter.WriteAsync(string.Concat("payload=", str));
                     }
+                    Stream responseStream;
                     try
                     {
                         responseStream = httpWebRequest.GetResponse().GetResponseStream();
@@ -1261,11 +1261,8 @@ namespace LegendaryClient.Logic.Riot
                     Client.Log("Login Failure: " + exception1.Message);
                 }
                 times++;
-                if (!(times > 5) && token == null)
-                {
-                    continue;
-                }
-                return token;
+                if ((times > 5) && token != null)
+                    return token;
             }
         }
 
