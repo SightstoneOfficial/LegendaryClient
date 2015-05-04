@@ -847,7 +847,10 @@ namespace LegendaryClient.Logic
                     PlayerSession.Token,
                     HeartbeatCount,
                     DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-0700'"));
-
+                if (result != "5")
+                {
+                    
+                }
                 HeartbeatCount++;
             }
         }
@@ -1456,7 +1459,7 @@ namespace LegendaryClient.Logic
         public static async void RiotConnection_Disconnected(object sender, EventArgs e)
         {
             isConnectedToRTMP = false;
-            Client.Log("Disconnected from RTMPS");
+            Log("Disconnected from RTMPS");
             if (connectionCheck == null)
             {
                 connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
@@ -1471,13 +1474,14 @@ namespace LegendaryClient.Logic
             while (!isInternetAvailable)
                 Task.Delay(100);
 
-            await Client.RiotConnection.RecreateConnection(reconnectToken);
-            var str1 = string.Format("gn-{0}", Client.PlayerSession.AccountSummary.AccountId);
-            var str2 = string.Format("cn-{0}", Client.PlayerSession.AccountSummary.AccountId);
-            var str3 = string.Format("bc-{0}", Client.PlayerSession.AccountSummary.AccountId);
-            Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
-                                       Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
-                                       Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+            await RiotConnection.RecreateConnection(reconnectToken);
+            await RiotCalls.Login(reconnectToken);
+            var str1 = string.Format("gn-{0}", PlayerSession.AccountSummary.AccountId);
+            var str2 = string.Format("cn-{0}", PlayerSession.AccountSummary.AccountId);
+            var str3 = string.Format("bc-{0}", PlayerSession.AccountSummary.AccountId);
+            Task<bool>[] taskArray = { RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                       RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                       RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
 
             await Task.WhenAll(taskArray);
             isConnectedToRTMP = true;

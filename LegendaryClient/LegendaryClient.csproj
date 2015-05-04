@@ -102,10 +102,6 @@
     <Reference Include="RAFlibPlus">
       <HintPath>..\DLLS\RAFlibPlus.dll</HintPath>
     </Reference>
-    <Reference Include="rtmp-sharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=de03138e40aefba6, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DLLS\rtmp-sharp.dll</HintPath>
-    </Reference>
     <Reference Include="SharpCompress">
       <HintPath>..\packages\sharpcompress.0.10.3\lib\net40\SharpCompress.dll</HintPath>
     </Reference>
@@ -1277,6 +1273,10 @@
     <ProjectReference Include="..\LCLog\LCLog.csproj">
       <Project>{b9acf25e-89ae-4cc8-9041-1e74822dac2d}</Project>
       <Name>LCLog</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\rtmp-sharp\rtmp-sharp.csproj">
+      <Project>{aa1a4f5d-3bd4-4832-9f5d-90727007727e}</Project>
+      <Name>rtmp-sharp</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

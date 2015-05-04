@@ -2,24 +2,19 @@
 using RtmpSharp.IO;
 using System.Reflection;
 using System.Linq;
-using System;
 using LegendaryClient.Logic.Riot.Kudos;
-using System.Collections;
 using System.Threading.Tasks;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot.Team;
 using LegendaryClient.Logic.Riot.Leagues;
 using System.Text;
 using System.Net;
-using System.Xml;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Web;
 using System.Web.Script.Serialization;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RtmpSharp.Messaging;
 using Formatting = Newtonsoft.Json.Formatting;
@@ -34,11 +29,11 @@ namespace LegendaryClient.Logic.Riot
         /// <summary>
         /// Login to Riot's servers.
         /// </summary>
-        /// <param name="Credentials">The credentials for the user</param>
+        /// <param name="credentials">The credentials for the user</param>
         /// <returns>Session information for the user</returns>
-        public static Task<Session> Login(AuthenticationCredentials Credentials)
+        public static Task<Session> Login(AuthenticationCredentials credentials)
         {
-            return InvokeAsync<Session>("loginService", "login", Credentials);
+            return InvokeAsync<Session>("loginService", "login", credentials);
         }
 
         public static Task<String> Login(string obj)
