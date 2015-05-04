@@ -1475,7 +1475,7 @@ namespace LegendaryClient.Logic
                 Task.Delay(100);
 
             await RiotConnection.RecreateConnection(reconnectToken);
-            await RiotCalls.Login(reconnectToken);
+            //await RiotCalls.Login(reconnectToken);
             var str1 = string.Format("gn-{0}", PlayerSession.AccountSummary.AccountId);
             var str2 = string.Format("cn-{0}", PlayerSession.AccountSummary.AccountId);
             var str3 = string.Format("bc-{0}", PlayerSession.AccountSummary.AccountId);
