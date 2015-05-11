@@ -724,16 +724,21 @@ namespace LegendaryClient.Windows
                         IpAddress = RiotCalls.GetIpAddress(),
                         Locale = garenaregion.Locale,
                         PartnerCredentials = "8393 " + s1,
+                        OperatingSystem = "Windows 7",
                         Domain = "lolclient.lol.riotgames.com",
                     };
                     Session login = await RiotCalls.Login(newCredentials);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", "bc-" + login.AccountSummary.AccountId);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "gn-" + login.AccountSummary.AccountId, "gn-" + login.AccountSummary.AccountId);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "cn-" + login.AccountSummary.AccountId, "cn-" + login.AccountSummary.AccountId);
+                    var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
+                    var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
+                    var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
+                    Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+
+                    await Task.WhenAll(taskArray);
                     var LoggedIn = await Client.RiotConnection.LoginAsync(Client.UID, login.Token);
                     //var packet = await RiotCalls.GetLoginDataPacketForUser();
                     DoGetOnLoginPacket();
-                    break;
                 }
             }
         }
@@ -804,16 +809,12 @@ namespace LegendaryClient.Windows
 
             string begin = "{\"signature\":\"";
             string end = "}";
+            string gas = Client.Gas;
+            gas = gas.Replace("\r\n  ", "");
+            byte[] encbuff = Encoding.UTF8.GetBytes(gas);
+            gas = HttpServerUtility.UrlTokenEncode(encbuff);
 
-            int beginIndex = Client.Gas.IndexOf(begin, StringComparison.Ordinal);
-            int endIndex = Client.Gas.LastIndexOf(end, StringComparison.Ordinal);
-
-            string output = Client.Gas.Substring(beginIndex, endIndex - beginIndex);
-
-            byte[] encbuff = Encoding.UTF8.GetBytes(output);
-            output = HttpServerUtility.UrlTokenEncode(encbuff);
-
-            return output;
+            return gas;
         }
 
         private static string reToken(string s)

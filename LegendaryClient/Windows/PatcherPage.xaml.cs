@@ -193,18 +193,20 @@ namespace LegendaryClient.Windows
             Stream inStream =
                         File.OpenRead(Path.Combine(Client.ExecutingDirectory, "Assets",
                             "dragontail-" + patcher.DDragonVersion + ".tgz"));
+
             using (var reader = ReaderFactory.Open(inStream))
             {
                 while (reader.MoveToNextEntry())
                 {
                     if (!reader.Entry.IsDirectory)
                     {
-                        reader.WriteAllToDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"), ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                        reader.WriteAllToDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"),
+                            ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
                     }
                 }
             }
-            inStream.Close();
 
+            inStream.Close();
             Copy(
                 Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion,
                     "data"), Path.Combine(Client.ExecutingDirectory, "Assets", "data"));
