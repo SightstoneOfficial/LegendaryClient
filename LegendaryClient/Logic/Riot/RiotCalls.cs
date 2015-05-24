@@ -1210,7 +1210,13 @@ namespace LegendaryClient.Logic.Riot
                         {
                             Client.Log(xd.Key + "+|+" + xd.Value);
                         }
-                        Func<string> func = () => jObjects["token"].ToString(Formatting.None); //lqt
+                        Func<string> func = () => jObjects["token"].ToString(); //lqt
+                        string ss;
+                        if (Client.Garena)
+                        {
+                            Client.UID = jObjects["user"].ToString(Formatting.Indented).Substring(1,jObjects["user"].ToString(Formatting.None).Length-2);
+                            Client.Gas = jObjects["gasToken"].ToString();
+                        }
                         JArray item = (JArray) jObjects["tickers"];
                         if (item != null)
                         {
