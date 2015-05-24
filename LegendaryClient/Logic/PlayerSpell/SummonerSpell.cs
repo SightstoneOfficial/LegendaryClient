@@ -91,7 +91,8 @@ namespace LegendaryClient.Logic.PlayerSpell
         Mana = 13,
         Dot = 14,
         OdinGarrison = 17,
-        Barrier = 21
+        Barrier = 21,
+        Snowball = 32
     }
 
     public enum SummonerSpells
@@ -109,6 +110,7 @@ namespace LegendaryClient.Logic.PlayerSpell
         Clarity = 13,
         Ignite = 14,
         Garrison = 17,
-        Barrier = 21
+        Barrier = 21,
+        Mark = 32
     }
 }
