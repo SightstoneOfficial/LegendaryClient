@@ -189,7 +189,7 @@ namespace LegendaryClient.Windows
                 return;
             }
 
-            FreeToPlayChampions.GetInstance();
+            var FreeToPlay = FreeToPlayChampions.GetInstance();
 
             foreach (champions c in Client.Champions)
             {
@@ -197,7 +197,10 @@ namespace LegendaryClient.Windows
                     UriKind.Absolute);
                 c.icon = new BitmapImage(source);
 
-                c.IsFreeToPlay = FreeToPlayChampions.GetInstance().IsFreeToPlay(c);
+                if (FreeToPlay != null)
+                {
+                    c.IsFreeToPlay = FreeToPlay.IsFreeToPlay(c);
+                }
                 Champions.InsertExtraChampData(c);
             }
 
