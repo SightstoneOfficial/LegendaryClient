@@ -731,6 +731,7 @@ namespace LegendaryClient.Windows
                         Domain = "lolclient.lol.riotgames.com",
                     };
                     Session login = await RiotCalls.Login(newCredentials);
+                    Client.PlayerSession = login;
                     var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
                     var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
                     var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
