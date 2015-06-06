@@ -7,6 +7,11 @@
                       WindowStartupLocation="CenterScreen"
                       TitleForeground="Transparent"
                       Closing="MainWindow_Closing">
+﻿                     
+﻿                     //DropShadow MainWindow
+﻿                     EnableDWMDropShadow="True"
+                      ResizeMode="CanResizeWithGrip"
+                      WindowTransitionsEnabled="False">
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
