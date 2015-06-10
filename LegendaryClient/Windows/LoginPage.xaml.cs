@@ -405,6 +405,17 @@ namespace LegendaryClient.Windows
         async void Login()
         {
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+            var authToken = await RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue);
+
+            if (authToken == "invalid_credentials")
+            {
+                ErrorTextBox.Text = "Wrong login data";
+                HideGrid.Visibility = Visibility.Visible;
+                ErrorTextBox.Visibility = Visibility.Visible;
+                LoggingInLabel.Visibility = Visibility.Hidden;
+                LoggingInProgressRing.Visibility = Visibility.Collapsed;
+                return;
+            }
             Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
             Client.RiotConnection.CallbackException += client_CallbackException;
             Client.RiotConnection.MessageReceived += client_MessageReceived;
@@ -419,8 +430,7 @@ namespace LegendaryClient.Windows
                 Locale = selectedRegion.Locale,
                 OperatingSystem = "Windows 7",
                 Domain = "lolclient.lol.riotgames.com",
-                AuthToken = await
-                    RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
+                AuthToken = authToken
             };
 
             Session login = await RiotCalls.Login(newCredentials);
