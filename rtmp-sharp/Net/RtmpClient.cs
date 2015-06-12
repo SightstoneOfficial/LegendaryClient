@@ -449,7 +449,18 @@ namespace RtmpSharp.Net
                 InvokeId = GetNextInvokeId(),
                 MethodCall = new Method(null, new object[] { remotingMessage })
             };
-            var result = await QueueCommandAsTask(invoke, 3, 0);
+
+            //HACK Return null if result is "_error"
+
+            object result;
+            try
+            {
+                result = await QueueCommandAsTask(invoke, 3, 0);
+            }
+            catch
+            {
+                result = null;
+            }
             return (T)MiniTypeConverter.ConvertTo(result, typeof(T));
         }
 
