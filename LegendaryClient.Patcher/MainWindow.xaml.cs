@@ -20,7 +20,9 @@ namespace LegendaryClient.Patcher
         public MainWindow()
         {
             InitializeComponent();
-
+            this.Visibility = Visibility.Hidden;
+            var page = new SplashPage();
+            page.Show();
             Client.ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Client.MainHolder = Container;
             Client.Win = this;

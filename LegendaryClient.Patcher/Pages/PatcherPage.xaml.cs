@@ -107,6 +107,12 @@ namespace LegendaryClient.Patcher.Pages
 
                             Client.RunOnUIThread(() => champView.Items.Add(champItem));
                         }
+                        Client.RunOnUIThread(() =>
+                        {
+                            Client.Win.Visibility = Visibility.Visible;
+                            Client.Win.Show();
+                            Client.splashPage.Close();
+                        });
                     }
                 });
             x.Start();

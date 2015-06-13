@@ -6,8 +6,67 @@
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1360"
       Title="PatcherSettingsPage">
-
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid Background="#7FFFFFFF">
-        <Grid Height="700" Width="1000" Background="WhiteSmoke" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Grid Height="700" Width="1000" Background="WhiteSmoke" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <Label Content="Settings" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="32"/>
+            <TabControl HorizontalAlignment="Left" Height="632" VerticalAlignment="Top" Width="980" Margin="10,58,0,0">
+                <TabItem Header="LegendaryClient.Patcher">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <TabItem Header="LegendaryClient">
+                    <Grid Background="#FFE5E5E5">
+                        <Label Content="Version Select" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                        <ComboBox x:Name="Version" HorizontalAlignment="Left" VerticalAlignment="Top" Width="415" Margin="173,10,0,0" SelectionChanged="Version_SelectionChanged">
+                            <Label x:Name="Github" Content="Use latest Github Version" Tag="Github"/>
+                            <Label x:Name="Appveyor" Content="Use latest Appveyor Version" Tag="Appveyor"/>
+                        </ComboBox>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="5" Width="967"/>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,78,0,0" Height="5" Width="967"/>
+                        <GridSplitter Width="5" Margin="0,-440,482,56" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
+                        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,55,0,0" Value="100" Width="415" />
+                        <Label Content="LegendaryClient Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0"/>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,82,0,0" Height="5" Width="966"/>
+                        <GridSplitter Width="5" Margin="0,-399,482,15" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="League of Legends">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <!--Leave this one last-->
+                <TabItem Header="Language">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </Page>

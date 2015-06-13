@@ -196,6 +196,9 @@ namespace LegendaryClient.Windows
 
             using (var reader = ReaderFactory.Open(inStream))
             {
+                reader.WriteAllToDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"),
+                            ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                /*
                 while (reader.MoveToNextEntry())
                 {
                     if (!reader.Entry.IsDirectory)
@@ -204,6 +207,7 @@ namespace LegendaryClient.Windows
                             ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
                     }
                 }
+                //*/
             }
 
             inStream.Close();

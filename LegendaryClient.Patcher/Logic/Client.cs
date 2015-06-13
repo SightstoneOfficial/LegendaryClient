@@ -39,6 +39,8 @@ namespace LegendaryClient.Patcher.Logic
         /// </summary>
         internal static MainWindow Win;
 
+        internal static SplashPage splashPage;
+
         /// <summary>
         ///     Used to swich pages
         /// </summary>
