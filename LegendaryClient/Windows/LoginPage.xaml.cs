@@ -51,6 +51,8 @@ namespace LegendaryClient.Windows
     public partial class LoginPage
     {
         private bool shouldExit = false;
+        private string liveVersion = "";
+        private string garenaVersion = "";
 
         public LoginPage()
         {
@@ -248,7 +250,32 @@ namespace LegendaryClient.Windows
                     var thirdSplit = secondSplit[0].Split((char)19);
                     Client.Version = thirdSplit[1];
                 }
+                
+            if (Settings.Default.GarenaLocation != string.Empty)
+            {
+                reader = new SWFReader(Path.Combine(Settings.Default.GarenaLocation, "Air", "Lib", "ClientLibCommon.dat"));
+                foreach (var secondSplit in from abcTag in reader.Tags.OfType<DoABC>()
+                                            where abcTag.Name.Contains("riotgames/platform/gameclient/application/Version")
+                                            select Encoding.Default.GetString(abcTag.ABCData)
+                                                into str
+                                                select str.Split((char)6)
+                                                    into firstSplit
 
+                                                    select firstSplit[0].Split((char)18))
+
+                    try
+                    {
+                        garenaVersion = secondSplit[1];
+                    }
+                    catch
+                    {
+                        var thirdSplit = secondSplit[0].Split((char)19);
+                        garenaVersion = thirdSplit[1];
+                    }
+            }
+
+            if ((string)UpdateRegionComboBox.SelectedItem == "Garena") Client.Version = garenaVersion;
+            else Client.Version = liveVersion;
 
             Version.Text = Client.Version;
 
@@ -792,6 +819,7 @@ namespace LegendaryClient.Windows
                         LoginUsernameBox.Visibility = Visibility.Visible;
                         LoginPasswordBox.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
+                        updateClientVersion(liveVersion);
                         break;
 
                     case "Live":
@@ -799,6 +827,7 @@ namespace LegendaryClient.Windows
                         LoginUsernameBox.Visibility = Visibility.Visible;
                         LoginPasswordBox.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
+                        updateClientVersion(liveVersion);
                         break;
 
                     case "Korea":
@@ -806,6 +835,7 @@ namespace LegendaryClient.Windows
                         LoginUsernameBox.Visibility = Visibility.Visible;
                         RememberUsernameCheckbox.Visibility = Visibility.Visible;
                         LoginPasswordBox.Visibility = Visibility.Visible;
+                        updateClientVersion(liveVersion);
                         break;
 
                     case "Garena":
@@ -813,9 +843,16 @@ namespace LegendaryClient.Windows
                         LoginUsernameBox.Visibility = Visibility.Hidden;
                         RememberUsernameCheckbox.Visibility = Visibility.Hidden;
                         LoginPasswordBox.Visibility = Visibility.Hidden;
+                        updateClientVersion(liveVersion);
                         break;
                 }
             }
+        }
+
+        public void updateClientVersion(string version)
+        {
+            Client.Version = version;
+            Version.Text = Client.Version;
         }
 
         public string getGas()
