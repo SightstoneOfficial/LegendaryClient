@@ -308,15 +308,18 @@ namespace LegendaryClient.Logic
         internal static void ChatClient_OnMessage(object sender, Message msg)
         {
             //This blocks spammers from elo bosters
-            using (var client = new WebClient())
+            if (Client.ChatAutoBlock == null)
             {
-                var banned = client.DownloadString("http://legendaryclient.net/Autoblock.txt");
-                var split1 = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                if (split1.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
-                    return;
-                if (msg.Body.ToLower().Contains("elo") && msg.Body.ToLower().Contains("boost"))
-                    return;
+                using (var client = new WebClient())
+                {
+                    var banned = client.DownloadString("http://legendaryclient.net/Autoblock.txt");
+                    Client.ChatAutoBlock = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                }
             }
+            if (Client.ChatAutoBlock.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
+                return;
+            if (msg.Body.ToLower().Contains("elo") && msg.Body.ToLower().Contains("boost"))
+                return;
 
             if (msg.Subject != null)
             {
@@ -1531,6 +1534,8 @@ namespace LegendaryClient.Logic
             ChatClient.Login();
             SetChatHover();
         }
+
+        public static string[] ChatAutoBlock { get; set; }
     }
 
 

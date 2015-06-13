@@ -416,10 +416,6 @@ namespace LegendaryClient.Windows
                     {
                         webClient.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
                         webClient.Headers.Add("Content-Type", "text/html; charset=UTF-8");
-                        webClient.Headers.Add("Accept-Encoding", "gzip,deflate,sdch");
-                        webClient.Headers.Add("Referer", "http://google.com/");
-                        webClient.Headers.Add("Accept",
-                            "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
                     }
                     catch
                     {
