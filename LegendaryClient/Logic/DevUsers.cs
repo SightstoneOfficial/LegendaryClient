@@ -12,13 +12,20 @@ namespace LegendaryClient.Logic
     {
         public static List<string> getDevelopers()
         {
-            WebClient client = new WebClient();
-            Stream stream = client.OpenRead("http://legendaryclient.net/devs.txt");
-            StreamReader reader = new StreamReader(stream);
-            string content = reader.ReadToEnd();
-            var devs = content.Split('\n').ToList();
-            devs.RemoveAll(x => x.StartsWith("#"));
-            return devs;
+            try
+            {
+                WebClient client = new WebClient();
+                Stream stream = client.OpenRead("http://legendaryclient.net/devs.txt");
+                StreamReader reader = new StreamReader(stream);
+                string content = reader.ReadToEnd();
+                var devs = content.Split('\n').ToList();
+                devs.RemoveAll(x => x.StartsWith("#"));
+                return devs;
+            }
+            catch
+            {
+                return new List<string>();
+            }
         }
         
     }

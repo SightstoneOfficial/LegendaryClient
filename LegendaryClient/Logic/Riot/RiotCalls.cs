@@ -1247,6 +1247,11 @@ namespace LegendaryClient.Logic.Riot
                         {
                             string item2 = (string) jObjects["status"];
                             string str2 = (string) jObjects["reason"];
+
+                            if (str2 == "invalid_credentials")
+                            {
+                                return str2;
+                            }
                             if (!item2.Equals("login", StringComparison.OrdinalIgnoreCase))
                             {
                                 bool flag = item2.Equals("busy", StringComparison.OrdinalIgnoreCase);

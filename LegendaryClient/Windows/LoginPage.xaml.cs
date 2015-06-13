@@ -189,7 +189,7 @@ namespace LegendaryClient.Windows
                 return;
             }
 
-            FreeToPlayChampions.GetInstance();
+            var FreeToPlay = FreeToPlayChampions.GetInstance();
 
             foreach (champions c in Client.Champions)
             {
@@ -197,7 +197,10 @@ namespace LegendaryClient.Windows
                     UriKind.Absolute);
                 c.icon = new BitmapImage(source);
 
-                c.IsFreeToPlay = FreeToPlayChampions.GetInstance().IsFreeToPlay(c);
+                if (FreeToPlay != null)
+                {
+                    c.IsFreeToPlay = FreeToPlay.IsFreeToPlay(c);
+                }
                 Champions.InsertExtraChampData(c);
             }
 
@@ -402,6 +405,17 @@ namespace LegendaryClient.Windows
         async void Login()
         {
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+            var authToken = await RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue);
+
+            if (authToken == "invalid_credentials")
+            {
+                ErrorTextBox.Text = "Wrong login data";
+                HideGrid.Visibility = Visibility.Visible;
+                ErrorTextBox.Visibility = Visibility.Visible;
+                LoggingInLabel.Visibility = Visibility.Hidden;
+                LoggingInProgressRing.Visibility = Visibility.Collapsed;
+                return;
+            }
             Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
             Client.RiotConnection.CallbackException += client_CallbackException;
             Client.RiotConnection.MessageReceived += client_MessageReceived;
@@ -416,8 +430,7 @@ namespace LegendaryClient.Windows
                 Locale = selectedRegion.Locale,
                 OperatingSystem = "Windows 7",
                 Domain = "lolclient.lol.riotgames.com",
-                AuthToken = await
-                    RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
+                AuthToken = authToken
             };
 
             Session login = await RiotCalls.Login(newCredentials);
@@ -728,6 +741,7 @@ namespace LegendaryClient.Windows
                         Domain = "lolclient.lol.riotgames.com",
                     };
                     Session login = await RiotCalls.Login(newCredentials);
+                    Client.PlayerSession = login;
                     var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
                     var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
                     var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);

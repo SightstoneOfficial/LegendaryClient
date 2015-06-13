@@ -592,12 +592,19 @@ namespace LegendaryClient.Windows
                             }
                             else
                             {
-                                AllPublicSummonerDataDTO summoner =
-                                    await RiotCalls.GetAllPublicSummonerDataByAccount(player.SummonerId);
-                                if (summoner.Summoner != null && !string.IsNullOrEmpty(summoner.Summoner.Name))
-                                    control.PlayerName.Content = summoner.Summoner.Name;
-                                else
+                                try
+                                {
+                                    AllPublicSummonerDataDTO summoner =
+                                        await RiotCalls.GetAllPublicSummonerDataByAccount(player.SummonerId);
+                                    if (summoner.Summoner != null && !string.IsNullOrEmpty(summoner.Summoner.Name))
+                                        control.PlayerName.Content = summoner.Summoner.Name;
+                                    else
+                                        control.PlayerName.Content = "Unknown Player";
+                                }
+                                catch
+                                {
                                     control.PlayerName.Content = "Unknown Player";
+                                }
                             }
 
                             foreach (PlayerChampionSelectionDTO selection in champDto.PlayerChampionSelections)
