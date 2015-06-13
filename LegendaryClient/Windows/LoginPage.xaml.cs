@@ -217,18 +217,19 @@ namespace LegendaryClient.Windows
             Client.Runes = Runes.PopulateRunes();
             BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
             var patcher = new RiotPatcher();
+            if (Client.UpdateRegion != "Garena")
+            {
+                string tempString = patcher.GetListing(updateRegion.AirListing);
 
-            string tempString = patcher.GetListing(updateRegion.AirListing);
-
-            string[] packages = patcher.GetManifest(
-                updateRegion.AirManifest + "releases/" + tempString + "/packages/files/packagemanifest");
-            foreach (
-                string usestring in
-                    packages.Select(package => package.Split(',')[0])
-                        .Where(usestring => usestring.Contains("ClientLibCommon.dat")))
-                new WebClient().DownloadFile(new Uri(updateRegion.BaseLink + usestring),
-                    Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
-
+                string[] packages = patcher.GetManifest(
+                    updateRegion.AirManifest + "releases/" + tempString + "/packages/files/packagemanifest");
+                foreach (
+                    string usestring in
+                        packages.Select(package => package.Split(',')[0])
+                            .Where(usestring => usestring.Contains("ClientLibCommon.dat")))
+                    new WebClient().DownloadFile(new Uri(updateRegion.BaseLink + usestring),
+                        Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
+            }
             var reader = new SWFReader(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
             foreach (var secondSplit in from abcTag in reader.Tags.OfType<DoABC>()
                                         where abcTag.Name.Contains("riotgames/platform/gameclient/application/Version")
