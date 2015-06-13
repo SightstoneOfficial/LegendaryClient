@@ -9,7 +9,6 @@ using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
 using LegendaryClient.Windows;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
