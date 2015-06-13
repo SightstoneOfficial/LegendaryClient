@@ -235,16 +235,17 @@ namespace LegendaryClient.Windows
                                         where abcTag.Name.Contains("riotgames/platform/gameclient/application/Version")
                                         select Encoding.Default.GetString(abcTag.ABCData)
                                             into str
-                                        select str.Split((char)6)
+                                            select str.Split((char)6)
                                                 into firstSplit
 
-                                        select firstSplit[0].Split((char)18))
+                                                select firstSplit[0].Split((char)18))
 
-                try
+
+                if (secondSplit.Count() > 1)
                 {
                     Client.Version = secondSplit[1];
                 }
-                catch
+                else
                 {
                     var thirdSplit = secondSplit[0].Split((char)19);
                     Client.Version = thirdSplit[1];
@@ -468,11 +469,13 @@ namespace LegendaryClient.Windows
             //var player = await RiotCalls.CreatePlayer();
             GotLoginPacket(packetx);
 
-            foreach (var pop in from InvitationRequest invite in invites select new GameInvitePopup(invite) {
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                Height = 230
-            })
+            foreach (var pop in from InvitationRequest invite in invites
+                                select new GameInvitePopup(invite)
+                                {
+                                    HorizontalAlignment = HorizontalAlignment.Right,
+                                    VerticalAlignment = VerticalAlignment.Bottom,
+                                    Height = 230
+                                })
                 Client.NotificationGrid.Children.Add(pop);
             if (invites.Length != 0)
                 Client.MainWin.FlashWindow();
@@ -533,7 +536,8 @@ namespace LegendaryClient.Windows
                 {
                     Client.ChatClient.AutoReconnect = 30;
                     Client.ChatClient.KeepAlive = 10;
-                    Client.ChatClient.NetworkHost = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
+                    //For some reason Jabber-Net sometimes cant resolve hostname, so we do it manually
+                    Client.ChatClient.NetworkHost = Dns.GetHostEntry("chat." + Client.Region.ChatName + ".lol.riotgames.com").AddressList[0].ToString();
                     Client.ChatClient.Port = 5223;
                     Client.ChatClient.Server = "pvp.net";
                     Client.ChatClient.Resource = "xiff";
@@ -550,7 +554,6 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    
                     Client.ChatClient.AutoReconnect = 30;
                     Client.ChatClient.KeepAlive = 10;
                     Client.ChatClient.NetworkHost = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
@@ -705,7 +708,7 @@ namespace LegendaryClient.Windows
                 {
                     var s1 = GetCommandLine(process);
                     process.Kill();
-                    foreach(var lolclient in Process.GetProcessesByName("LolClient"))
+                    foreach (var lolclient in Process.GetProcessesByName("LolClient"))
                     {
                         lolclient.Kill();
                     }
