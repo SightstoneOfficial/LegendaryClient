@@ -221,6 +221,7 @@ namespace LegendaryClient.Windows
                             item2.QueueButton.Content = "Queue (Beta)";
                             item2.TeamQueueButton.Tag = settings;
                             item2.TeamQueueButton.Click += TeamQueueButton_Click;
+                            item2.QueueId = config.Id;
                             item2.QueueLabel.Content = item.QueueLabel.Content.ToString().Replace("Easy", "Medium");
                             item2.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                             item2.WaitTimeLabel.Content = "Avg Wait Time: " + answer;

@@ -108,6 +108,8 @@ namespace LegendaryClient.Logic.Riot.Platform
 
         public bool leaguesDecayMessagingEnabled { get; set; }
 
+        public bool tournamentShortCodesEnabled { get; set; }
+
         public string Json { get; set; }
 
         public void ReadExternal(IDataInput input)
@@ -121,6 +123,11 @@ namespace LegendaryClient.Logic.Riot.Platform
             foreach (KeyValuePair<string, object> keyPair in deserializedJSON)
             {
                 var f = classType.GetProperty(keyPair.Key);
+                if (f == null)
+                {
+                    Client.Log("New Client System State: " + keyPair.Key);
+                    continue;
+                }
                 if (keyPair.Value.GetType() == typeof(ArrayList))
                 {
                     ArrayList tempArrayList = keyPair.Value as ArrayList;

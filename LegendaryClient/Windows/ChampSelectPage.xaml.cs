@@ -164,8 +164,6 @@ namespace LegendaryClient.Windows
             return this;
         }
 
-        private bool draft;
-
         private void GetLocalRunePages()
         {
             foreach (var item in Client.LocalRunePages)
@@ -303,7 +301,6 @@ namespace LegendaryClient.Windows
                 //Get the champions for the other team to ban & sort alpabetically
                 if (latestDto.GameState.ToUpper() == "PRE_CHAMP_SELECT")
                 {
-                    draft = true;
                     ChampionBanInfoDTO[] champsForBan = await RiotCalls.GetChampionsForBan();
                     ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
                     ChampionsForBan.Sort(
@@ -595,12 +592,19 @@ namespace LegendaryClient.Windows
                             }
                             else
                             {
-                                AllPublicSummonerDataDTO summoner =
-                                    await RiotCalls.GetAllPublicSummonerDataByAccount(player.SummonerId);
-                                if (summoner.Summoner != null && !string.IsNullOrEmpty(summoner.Summoner.Name))
-                                    control.PlayerName.Content = summoner.Summoner.Name;
-                                else
+                                try
+                                {
+                                    AllPublicSummonerDataDTO summoner =
+                                        await RiotCalls.GetAllPublicSummonerDataByAccount(player.SummonerId);
+                                    if (summoner.Summoner != null && !string.IsNullOrEmpty(summoner.Summoner.Name))
+                                        control.PlayerName.Content = summoner.Summoner.Name;
+                                    else
+                                        control.PlayerName.Content = "Unknown Player";
+                                }
+                                catch
+                                {
                                     control.PlayerName.Content = "Unknown Player";
+                                }
                             }
 
                             foreach (PlayerChampionSelectionDTO selection in champDto.PlayerChampionSelections)

@@ -107,7 +107,7 @@ namespace LegendaryClient.Windows
                     break;
 
                 default:
-                    gameConfig.GameMap = GameMap.SummonersRift;
+                    gameConfig.GameMap = GameMap.NewSummonersRift;
                     gameConfig.GameMode = "CLASSIC";
                     break;
             }
@@ -227,21 +227,29 @@ namespace LegendaryClient.Windows
 
         private void TeamSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.RemovedItems.Count == 0)
+                return;
             GenerateSpectatorCode();
         }
 
         private void AllowSpectatorsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.RemovedItems.Count == 0)
+                return;
             GenerateSpectatorCode();
         }
 
         private void GameTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.RemovedItems.Count == 0)
+                return;
             GenerateSpectatorCode();
         }
 
         private void MapListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (e.RemovedItems.Count == 0)
+                return;
             GenerateSpectatorCode();
             MapLabel.Content = ((Label)MapListBox.SelectedItem).Content;
         }

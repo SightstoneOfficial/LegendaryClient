@@ -15,7 +15,7 @@
         <Button x:Name="UnderButtonRight" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Width="267"
 			Height="100" Style="{DynamicResource HideSquare}" Click="Play_Click" />
         <!--This is the title grid, the bar that is at the top-->
-        <Grid Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center">
+        <Grid x:Name="UpdateGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center">
             <Image HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1000"
 				Source="/LegendaryClient.Patcher;component/TopBar.Png" />
             <Label x:Name="StatusLabel" Content="Downloading Files. Please wait" HorizontalAlignment="Left" VerticalAlignment="Top"
@@ -31,6 +31,11 @@
             <Label Content="0%" HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Top"
 				Margin="0,0,86,0" Width="184" />
 
+        </Grid>
+        <Grid x:Name="FinishedGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" >
+            <Image HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1000"
+				Source="/LegendaryClient.Patcher;component/TopBar.Png" />
+            <Label Content="Finished" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Width="995" FontSize="100" VerticalContentAlignment="Top" FontFamily="/LegendaryClient.Patcher;component/#Lobster 1.3" Margin="0,-20,0,0"/>
         </Grid>
         <Button x:Name="OverButtonLeft" MouseEnter="OverButtonLeft_MouseEnter"
 			MouseLeave="ReturnButtonsToNumbers_MouseLeage" Content="Show Log TextBox" HorizontalAlignment="Left"

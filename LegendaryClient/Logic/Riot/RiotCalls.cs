@@ -2,24 +2,19 @@
 using RtmpSharp.IO;
 using System.Reflection;
 using System.Linq;
-using System;
 using LegendaryClient.Logic.Riot.Kudos;
-using System.Collections;
 using System.Threading.Tasks;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot.Team;
 using LegendaryClient.Logic.Riot.Leagues;
 using System.Text;
 using System.Net;
-using System.Xml;
 using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Web;
 using System.Web.Script.Serialization;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RtmpSharp.Messaging;
 using Formatting = Newtonsoft.Json.Formatting;
@@ -34,11 +29,11 @@ namespace LegendaryClient.Logic.Riot
         /// <summary>
         /// Login to Riot's servers.
         /// </summary>
-        /// <param name="Credentials">The credentials for the user</param>
+        /// <param name="credentials">The credentials for the user</param>
         /// <returns>Session information for the user</returns>
-        public static Task<Session> Login(AuthenticationCredentials Credentials)
+        public static Task<Session> Login(AuthenticationCredentials credentials)
         {
-            return InvokeAsync<Session>("loginService", "login", Credentials);
+            return InvokeAsync<Session>("loginService", "login", credentials);
         }
 
         public static Task<String> Login(string obj)
@@ -1181,18 +1176,17 @@ namespace LegendaryClient.Logic.Riot
                 times = 0;
                 string token = null;
                 //LoginException.ResponseType responseType;
-                Stream responseStream;
                 try
                 {
-                    string str = string.Format("user={0},password={1}", HttpUtility.UrlEncode(username), HttpUtility.UrlEncode(password));
+                    var str = string.Format("user={0},password={1}", HttpUtility.UrlEncode(username), HttpUtility.UrlEncode(password));
                     if (Client.Garena && gtoken != null)
                     {
                         str = gtoken;
                     }
-                    HttpWebRequest httpWebRequest = WebRequest.CreateHttp(loginQueue + "login-queue/rest/queue/authenticate");
+                    var httpWebRequest = WebRequest.CreateHttp(loginQueue + "login-queue/rest/queue/authenticate");
                     httpWebRequest.ContentType = "application/x-www-form-urlencoded";
                     httpWebRequest.Method = "POST";
-                    using (StreamWriter streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
+                    using (var streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
                     {
                         if (Client.Garena)
                         {
@@ -1200,6 +1194,7 @@ namespace LegendaryClient.Logic.Riot
                         }
                         await streamWriter.WriteAsync(string.Concat("payload=", str));
                     }
+                    Stream responseStream;
                     try
                     {
                         responseStream = httpWebRequest.GetResponse().GetResponseStream();
@@ -1215,7 +1210,13 @@ namespace LegendaryClient.Logic.Riot
                         {
                             Client.Log(xd.Key + "+|+" + xd.Value);
                         }
-                        Func<string> func = () => jObjects["token"].ToString(Formatting.None); //lqt
+                        Func<string> func = () => jObjects["token"].ToString(); //lqt
+                        string ss;
+                        if (Client.Garena)
+                        {
+                            Client.UID = jObjects["user"].ToString(Formatting.Indented).Substring(1,jObjects["user"].ToString(Formatting.None).Length-2);
+                            Client.Gas = jObjects["gasToken"].ToString();
+                        }
                         JArray item = (JArray) jObjects["tickers"];
                         if (item != null)
                         {
@@ -1246,6 +1247,11 @@ namespace LegendaryClient.Logic.Riot
                         {
                             string item2 = (string) jObjects["status"];
                             string str2 = (string) jObjects["reason"];
+
+                            if (str2 == "invalid_credentials")
+                            {
+                                return str2;
+                            }
                             if (!item2.Equals("login", StringComparison.OrdinalIgnoreCase))
                             {
                                 bool flag = item2.Equals("busy", StringComparison.OrdinalIgnoreCase);
@@ -1261,11 +1267,8 @@ namespace LegendaryClient.Logic.Riot
                     Client.Log("Login Failure: " + exception1.Message);
                 }
                 times++;
-                if (!(times > 5))
-                {
-                    continue;
-                }
-                return token;
+                if ((times > 5) && token != null)
+                    return token;
             }
         }
 

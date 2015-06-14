@@ -6,7 +6,9 @@
                       SaveWindowPosition="True" TitleCaps="False"
                       WindowStartupLocation="CenterScreen"
                       TitleForeground="Transparent"
-                      Closing="MainWindow_Closing">
+                      Closing="MainWindow_Closing"
+                      EnableDWMDropShadow="True"
+                      ResizeMode="CanResizeWithGrip">
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>

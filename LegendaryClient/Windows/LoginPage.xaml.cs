@@ -189,7 +189,7 @@ namespace LegendaryClient.Windows
                 return;
             }
 
-            FreeToPlayChampions.GetInstance();
+            var FreeToPlay = FreeToPlayChampions.GetInstance();
 
             foreach (champions c in Client.Champions)
             {
@@ -197,7 +197,10 @@ namespace LegendaryClient.Windows
                     UriKind.Absolute);
                 c.icon = new BitmapImage(source);
 
-                c.IsFreeToPlay = FreeToPlayChampions.GetInstance().IsFreeToPlay(c);
+                if (FreeToPlay != null)
+                {
+                    c.IsFreeToPlay = FreeToPlay.IsFreeToPlay(c);
+                }
                 Champions.InsertExtraChampData(c);
             }
 
@@ -214,33 +217,35 @@ namespace LegendaryClient.Windows
             Client.Runes = Runes.PopulateRunes();
             BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
             var patcher = new RiotPatcher();
+            if (Client.UpdateRegion != "Garena")
+            {
+                string tempString = patcher.GetListing(updateRegion.AirListing);
 
-            string tempString = patcher.GetListing(updateRegion.AirListing);
-
-            string[] packages = patcher.GetManifest(
-                updateRegion.AirManifest + "releases/" + tempString + "/packages/files/packagemanifest");
-            foreach (
-                string usestring in
-                    packages.Select(package => package.Split(',')[0])
-                        .Where(usestring => usestring.Contains("ClientLibCommon.dat")))
-                new WebClient().DownloadFile(new Uri(updateRegion.BaseLink + usestring),
-                    Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
-
+                string[] packages = patcher.GetManifest(
+                    updateRegion.AirManifest + "releases/" + tempString + "/packages/files/packagemanifest");
+                foreach (
+                    string usestring in
+                        packages.Select(package => package.Split(',')[0])
+                            .Where(usestring => usestring.Contains("ClientLibCommon.dat")))
+                    new WebClient().DownloadFile(new Uri(updateRegion.BaseLink + usestring),
+                        Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
+            }
             var reader = new SWFReader(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
             foreach (var secondSplit in from abcTag in reader.Tags.OfType<DoABC>()
                                         where abcTag.Name.Contains("riotgames/platform/gameclient/application/Version")
                                         select Encoding.Default.GetString(abcTag.ABCData)
                                             into str
-                                        select str.Split((char)6)
+                                            select str.Split((char)6)
                                                 into firstSplit
 
-                                        select firstSplit[0].Split((char)18))
+                                                select firstSplit[0].Split((char)18))
 
-                try
+
+                if (secondSplit.Count() > 1)
                 {
                     Client.Version = secondSplit[1];
                 }
-                catch
+                else
                 {
                     var thirdSplit = secondSplit[0].Split((char)19);
                     Client.Version = thirdSplit[1];
@@ -402,6 +407,17 @@ namespace LegendaryClient.Windows
         async void Login()
         {
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+            var authToken = await RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue);
+
+            if (authToken == "invalid_credentials")
+            {
+                ErrorTextBox.Text = "Wrong login data";
+                HideGrid.Visibility = Visibility.Visible;
+                ErrorTextBox.Visibility = Visibility.Visible;
+                LoggingInLabel.Visibility = Visibility.Hidden;
+                LoggingInProgressRing.Visibility = Visibility.Collapsed;
+                return;
+            }
             Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
             Client.RiotConnection.CallbackException += client_CallbackException;
             Client.RiotConnection.MessageReceived += client_MessageReceived;
@@ -416,8 +432,7 @@ namespace LegendaryClient.Windows
                 Locale = selectedRegion.Locale,
                 OperatingSystem = "Windows 7",
                 Domain = "lolclient.lol.riotgames.com",
-                AuthToken = await
-                    RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue)
+                AuthToken = authToken
             };
 
             Session login = await RiotCalls.Login(newCredentials);
@@ -454,11 +469,13 @@ namespace LegendaryClient.Windows
             //var player = await RiotCalls.CreatePlayer();
             GotLoginPacket(packetx);
 
-            foreach (var pop in from InvitationRequest invite in invites select new GameInvitePopup(invite) {
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                Height = 230
-            })
+            foreach (var pop in from InvitationRequest invite in invites
+                                select new GameInvitePopup(invite)
+                                {
+                                    HorizontalAlignment = HorizontalAlignment.Right,
+                                    VerticalAlignment = VerticalAlignment.Bottom,
+                                    Height = 230
+                                })
                 Client.NotificationGrid.Children.Add(pop);
             if (invites.Length != 0)
                 Client.MainWin.FlashWindow();
@@ -519,7 +536,8 @@ namespace LegendaryClient.Windows
                 {
                     Client.ChatClient.AutoReconnect = 30;
                     Client.ChatClient.KeepAlive = 10;
-                    Client.ChatClient.NetworkHost = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
+                    //For some reason Jabber-Net sometimes cant resolve hostname, so we do it manually
+                    Client.ChatClient.NetworkHost = Dns.GetHostEntry("chat." + Client.Region.ChatName + ".lol.riotgames.com").AddressList[0].ToString();
                     Client.ChatClient.Port = 5223;
                     Client.ChatClient.Server = "pvp.net";
                     Client.ChatClient.Resource = "xiff";
@@ -531,12 +549,11 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                     Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
-                    Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
                     Client.ChatClient.Connect();
+                    Client.ChatClient.OnError += Client.ChatClient_OnError;
                 }
                 else
                 {
-                    
                     Client.ChatClient.AutoReconnect = 30;
                     Client.ChatClient.KeepAlive = 10;
                     Client.ChatClient.NetworkHost = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
@@ -551,8 +568,8 @@ namespace LegendaryClient.Windows
                     Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
                     Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
                     Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
-                    Client.ChatClient.OnDisconnect += Client.ChatClient_OnDisconnect;
                     Client.ChatClient.Connect();
+                    Client.ChatClient.OnError += Client.ChatClient_OnError;
                 }
 
                 Client.RostManager = new RosterManager
@@ -691,7 +708,7 @@ namespace LegendaryClient.Windows
                 {
                     var s1 = GetCommandLine(process);
                     process.Kill();
-                    foreach(var lolclient in Process.GetProcessesByName("LolClient"))
+                    foreach (var lolclient in Process.GetProcessesByName("LolClient"))
                     {
                         lolclient.Kill();
                     }
@@ -724,16 +741,22 @@ namespace LegendaryClient.Windows
                         IpAddress = RiotCalls.GetIpAddress(),
                         Locale = garenaregion.Locale,
                         PartnerCredentials = "8393 " + s1,
+                        OperatingSystem = "Windows 7",
                         Domain = "lolclient.lol.riotgames.com",
                     };
                     Session login = await RiotCalls.Login(newCredentials);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", "bc-" + login.AccountSummary.AccountId);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "gn-" + login.AccountSummary.AccountId, "gn-" + login.AccountSummary.AccountId);
-                    await Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "cn-" + login.AccountSummary.AccountId, "cn-" + login.AccountSummary.AccountId);
+                    Client.PlayerSession = login;
+                    var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
+                    var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
+                    var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
+                    Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+
+                    await Task.WhenAll(taskArray);
                     var LoggedIn = await Client.RiotConnection.LoginAsync(Client.UID, login.Token);
                     //var packet = await RiotCalls.GetLoginDataPacketForUser();
                     DoGetOnLoginPacket();
-                    break;
                 }
             }
         }
@@ -804,16 +827,12 @@ namespace LegendaryClient.Windows
 
             string begin = "{\"signature\":\"";
             string end = "}";
+            string gas = Client.Gas;
+            gas = gas.Replace("\r\n  ", "");
+            byte[] encbuff = Encoding.UTF8.GetBytes(gas);
+            gas = HttpServerUtility.UrlTokenEncode(encbuff);
 
-            int beginIndex = Client.Gas.IndexOf(begin, StringComparison.Ordinal);
-            int endIndex = Client.Gas.LastIndexOf(end, StringComparison.Ordinal);
-
-            string output = Client.Gas.Substring(beginIndex, endIndex - beginIndex);
-
-            byte[] encbuff = Encoding.UTF8.GetBytes(output);
-            output = HttpServerUtility.UrlTokenEncode(encbuff);
-
-            return output;
+            return gas;
         }
 
         private static string reToken(string s)

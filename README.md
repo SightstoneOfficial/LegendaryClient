@@ -76,7 +76,7 @@ You need these DLLS:
 * MahApps.Metro
 * SharpZipLib
 * Sqlite
-* PVPNetConnect : Included as a project
+* rtmp-sharp : Included as a project
  
 These DLLS should be included
 

@@ -144,7 +144,7 @@ namespace LegendaryClient
                         GameStats.Clear();
                         try
                         {
-                            PublicSummoner summoner = await RiotCalls.GetSummonerByName(championSelect.SummonerInternalName);
+                            PublicSummoner summoner = await RiotCalls.GetSummonerByName(championSelect.SummonerInternalName.Replace("summoner", string.Empty));
                             if(File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png")))
                                 control.ProfileIcon.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png"));
                             RecentGames result = await RiotCalls.GetRecentGames(summoner.AcctId);

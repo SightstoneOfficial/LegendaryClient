@@ -6,8 +6,125 @@
       mc:Ignorable="d"
       d:DesignHeight="768" d:DesignWidth="1360"
       Title="PatcherSettingsPage">
-
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <Grid Background="#7FFFFFFF">
-        <Grid Height="700" Width="1000" Background="WhiteSmoke" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Grid Height="700" Width="1000" Background="WhiteSmoke" HorizontalAlignment="Center" VerticalAlignment="Center" >
+            <Label x:Name="SettingsLabel"  Content="Settings" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="32"/>
+            <TabControl HorizontalAlignment="Left" Height="632" VerticalAlignment="Top" Width="980" Margin="10,58,0,0">
+                <TabItem Header="LegendaryClient.Patcher">
+                    <Grid Background="#FFE5E5E5">
+                        <Label Content="UpdateSettings" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                        <ComboBox x:Name="UpdateSettings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="415" Margin="260,10,0,0" SelectionChanged="Setting_SelectionChanged">
+                            <Label x:Name="OnlyLoL" Content="Update only League of Legends" Tag="OnlyLOL"/>
+                            <Label x:Name="LegendaryClient" Content="Use latest Appveyor Version" Tag="LegendaryClient"/>
+                        </ComboBox>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="5" Width="967"/>
+                        <GridSplitter Width="5" Margin="0,-439,483,57" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
+                        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,55,0,0" Value="100" Width="415" />
+                        <Label Content="Patcher Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0"/>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,82,0,0" Height="5" Width="966"/>
+                        <GridSplitter Width="5" Margin="0,-398,483,16" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
+                        <CheckBox Content="Use P2P (League of Legends) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,96,0,0"/>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,123,0,0" Height="5" Width="966"/>
+                        <GridSplitter Width="6" Margin="0,-356,482,-25" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
+                        <Label Content="P2P" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,92,0,0"/>
+                        <Label Content="Always Update LegendaryClient.Patcher" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,133,0,0"/>
+                        <CheckBox Content="Always Update LegendaryClient.Patcher whenever possible" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,137,0,0"/>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,164,0,0" Height="5" Width="966"/>
+                        <GridSplitter Width="5" Margin="0,-316,483,-66" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
+                        <CheckBox Content="Use P2P (LegendaryClient) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="475,96,0,0"/>
+                        <CheckBox Content="Use P2P (LegendaryClient.Patcher) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="675,96,0,0"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="LegendaryClient">
+                    <Grid Background="#FFE5E5E5">
+                        <Label Content="Version Select" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                        <ComboBox x:Name="Version" HorizontalAlignment="Left" VerticalAlignment="Top" Width="415" Margin="173,10,0,0" SelectionChanged="Version_SelectionChanged">
+                            <Label x:Name="Github" Content="Use latest Github Version" Tag="Github"/>
+                            <Label x:Name="Appveyor" Content="Use latest Appveyor Version" Tag="Appveyor"/>
+                        </ComboBox>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="5" Width="967"/>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,78,0,0" Height="5" Width="967"/>
+                        <GridSplitter Width="5" Margin="0,-440,482,56" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
+                        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,55,0,0" Value="100" Width="415" />
+                        <Label Content="LegendaryClient Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0"/>
+                        <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,82,0,0" Height="5" Width="966"/>
+                        <GridSplitter Width="5" Margin="0,-399,482,15" RenderTransformOrigin="0.5,0.5">
+                            <GridSplitter.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="90"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </GridSplitter.RenderTransform>
+                        </GridSplitter>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="League of Legends">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+                <!--Leave this one last-->
+                <TabItem Header="Language">
+                    <Grid Background="#FFE5E5E5"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
     </Grid>
 </Page>

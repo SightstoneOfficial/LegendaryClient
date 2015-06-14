@@ -20,14 +20,16 @@ namespace LegendaryClient.Patcher
         public MainWindow()
         {
             InitializeComponent();
-
+            this.Visibility = Visibility.Hidden;
+            var page = new SplashPage();
+            page.Show();
             Client.ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             Client.MainHolder = Container;
             Client.Win = this;
 
             Client.OverlayContainer = OverlayContainer;
             Client.OverlayGrid = OverlayGrid;
-            OverlayContainer.Content = new PatcherSettingsPage().Content;
+            OverlayContainer.Content = new PatcherSettingsPage(Properties.Settings.Default.FirstStart).Content;
 
             var waitAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
             waitAnimation.Completed += (o, e) => { Container.Content = new PatcherPage().Content; };

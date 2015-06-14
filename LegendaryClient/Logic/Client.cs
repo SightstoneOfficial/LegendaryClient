@@ -9,7 +9,6 @@ using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
-using LegendaryClient.Properties;
 using LegendaryClient.Windows;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
@@ -309,15 +308,18 @@ namespace LegendaryClient.Logic
         internal static void ChatClient_OnMessage(object sender, Message msg)
         {
             //This blocks spammers from elo bosters
-            using (var client = new WebClient())
+            if (Client.ChatAutoBlock == null)
             {
-                var banned = client.DownloadString("http://legendaryclient.net/Autoblock.txt");
-                var split1 = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                if (split1.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
-                    return;
-                if (msg.Body.ToLower().Contains("elo") && msg.Body.ToLower().Contains("boost"))
-                    return;
+                using (var client = new WebClient())
+                {
+                    var banned = client.DownloadString("http://legendaryclient.net/Autoblock.txt");
+                    Client.ChatAutoBlock = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                }
             }
+            if (Client.ChatAutoBlock.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
+                return;
+            if (msg.Body.ToLower().Contains("elo") && msg.Body.ToLower().Contains("boost"))
+                return;
 
             if (msg.Subject != null)
             {
@@ -407,6 +409,7 @@ namespace LegendaryClient.Logic
             Groups.Add(new Group("Offline"));
             SetChatHover();
             loadedGroups = true;
+            Client.RostManager.OnRosterEnd -= Client.ChatClientConnect; //only update groups on login
         }
 
         internal static void SendMessage(string User, string Message)
@@ -842,11 +845,14 @@ namespace LegendaryClient.Logic
         {
             if (IsLoggedIn)
             {
-                string result = await RiotCalls.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId), 
-                    PlayerSession.Token, 
+                string result = await RiotCalls.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId),
+                    PlayerSession.Token,
                     HeartbeatCount,
                     DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-0700'"));
-
+                if (result != "5")
+                {
+                    
+                }
                 HeartbeatCount++;
             }
         }
@@ -977,12 +983,12 @@ namespace LegendaryClient.Logic
                     }
                     else if (message.Body is Inviter)
                     {
-                        var stats = (Inviter) message.Body;
+                        var stats = (Inviter)message.Body;
                         //CurrentInviter = stats;
                     }
                     else if (message.Body is InvitationRequest)
                     {
-                        var stats = (InvitationRequest) message.Body;
+                        var stats = (InvitationRequest)message.Body;
                         if (stats.Inviter == null)
                             return;
 
@@ -1429,26 +1435,6 @@ namespace LegendaryClient.Logic
         internal static KeyValuePair<string, string> userpass;
         internal static bool HasPopped = false;
 
-        internal static void ChatClient_OnDisconnect(object sender)
-        {
-            if (connectionCheck == null)
-            {
-                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
-                connectionCheck.Start();
-            }
-            else if (!connectionCheck.IsAlive)
-            {
-                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
-                connectionCheck.Start();
-            }
-
-            while (!isInternetAvailable)
-                Task.Delay(100);
-            ChatClient.User = userpass.Key;
-            ChatClient.Password = userpass.Value;
-            ChatClient.Login();
-        }
-
         public static string UpdateRegion { get; set; }
 
         public static string GameType { get; set; }
@@ -1475,7 +1461,7 @@ namespace LegendaryClient.Logic
         public static async void RiotConnection_Disconnected(object sender, EventArgs e)
         {
             isConnectedToRTMP = false;
-
+            Log("Disconnected from RTMPS");
             if (connectionCheck == null)
             {
                 connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
@@ -1490,13 +1476,14 @@ namespace LegendaryClient.Logic
             while (!isInternetAvailable)
                 Task.Delay(100);
 
-            await Client.RiotConnection.RecreateConnection(reconnectToken);
-            var str1 = string.Format("gn-{0}", Client.PlayerSession.AccountSummary.AccountId);
-            var str2 = string.Format("cn-{0}", Client.PlayerSession.AccountSummary.AccountId);
-            var str3 = string.Format("bc-{0}", Client.PlayerSession.AccountSummary.AccountId);
-            Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
-                                       Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
-                                       Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+            await RiotConnection.RecreateConnection(reconnectToken);
+            //await RiotCalls.Login(reconnectToken);
+            var str1 = string.Format("gn-{0}", PlayerSession.AccountSummary.AccountId);
+            var str2 = string.Format("cn-{0}", PlayerSession.AccountSummary.AccountId);
+            var str3 = string.Format("bc-{0}", PlayerSession.AccountSummary.AccountId);
+            Task<bool>[] taskArray = { RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                       RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                       RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
 
             await Task.WhenAll(taskArray);
             isConnectedToRTMP = true;
@@ -1525,6 +1512,30 @@ namespace LegendaryClient.Logic
             }
         }
         public static Thread connectionCheck;
+
+        internal static void ChatClient_OnError(object sender, Exception ex)
+        {
+            Client.Log("Error with chat connection");
+            if (connectionCheck == null)
+            {
+                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
+                connectionCheck.Start();
+            }
+            else if (!connectionCheck.IsAlive)
+            {
+                connectionCheck = new Thread(CheckInternetConnection) { IsBackground = true };
+                connectionCheck.Start();
+            }
+
+            while (!isInternetAvailable)
+                Task.Delay(100);
+
+            ChatClient.Connect();
+            ChatClient.Login();
+            SetChatHover();
+        }
+
+        public static string[] ChatAutoBlock { get; set; }
     }
 
 

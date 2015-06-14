@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
+using LegendaryClient.Patcher.Properties;
 
 #endregion
 
@@ -65,7 +66,6 @@ namespace LegendaryClient.Patcher.Pages
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.");
             Load();
-            //LogTextBox(CreateConfigurationmanifest());
         }
 
         private void Load()
@@ -83,6 +83,8 @@ namespace LegendaryClient.Patcher.Pages
                         foreach (var champs in champsAsJson.champions)
                         {
                             FreeWeekChampion champItem = null;
+                            //There is probably a better way to do this, but this will work if there
+                            //are currently no images installed on the user's computer (first time install)
                             Client.RunAsyncOnUIThread(() => champItem = new FreeWeekChampion());
                             var champDataJson =
                                 client.DownloadString(
@@ -99,12 +101,23 @@ namespace LegendaryClient.Patcher.Pages
                                     string.Format(
                                         "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
                                         latestAir)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                            foreach (var stream in from data in pkgManifest where data.Contains((string)champsDataAsJson["key"] + "_0.") select (HttpWebRequest)HttpWebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream())
+                            foreach (var stream in from data in pkgManifest where data.Contains((string)champsDataAsJson["key"] + "_0.") select (HttpWebRequest)WebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream())
                             {
-                                Client.RunAsyncOnUIThread(() => champItem.Img.Source = ToWpfBitmap(Image.FromStream(stream)));
+                                var stream1 = stream;
+                                Client.RunAsyncOnUIThread(() => champItem.Img.Source = ToWpfBitmap(Image.FromStream(stream1)));
                             }
 
                             Client.RunOnUIThread(() => champView.Items.Add(champItem));
+                        }
+                        Client.RunOnUIThread(() =>
+                        {
+                            Client.Win.Visibility = Visibility.Visible;
+                            Client.Win.Show();
+                            Client.splashPage.Close();
+                        });
+                        if (Settings.Default.FirstStart)
+                        {
+                            Client.RunOnUIThread(() => Client.OverlayGrid.Visibility = Visibility.Visible);
                         }
                     }
                 });
@@ -121,7 +134,7 @@ namespace LegendaryClient.Patcher.Pages
                     {
                         var news = client.DownloadString("http://ll.leagueoflegends.com/pages/launcher/na").
                             Replace("refreshContent(", "").Replace(");", "");
-                        var NewsJson = JsonConvert.DeserializeObject<Rootobject>(news);
+                        var newsJson = JsonConvert.DeserializeObject<Rootobject>(news);
                         Client.RunOnUIThread(() =>
                             {
                                 var item = new CurrentStatus
@@ -130,12 +143,12 @@ namespace LegendaryClient.Patcher.Pages
                                     Tag = new Uri("https://na.leagueoflegends.com")
                                 };
                                 item.UpdateStatus(
-                                    NewsJson.status ? PatcherElements.Status.Down : PatcherElements.Status.Up);
+                                    newsJson.status ? PatcherElements.Status.Down : PatcherElements.Status.Up);
                                 item.MouseDown += (o, e) => Changed(o);
                                 StatusView.Items.Add(item);
                             });
-                        WebRequest request = WebRequest.Create("http://legendaryclient.net");
-                        HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                        var request = WebRequest.Create("http://legendaryclient.net");
+                        var response = (HttpWebResponse)request.GetResponse();
                         Client.RunOnUIThread(() =>
                         {
                             var item = new CurrentStatus
@@ -150,6 +163,7 @@ namespace LegendaryClient.Patcher.Pages
                             item.MouseDown += (o, e) => Changed(o);
                             StatusView.Items.Add(item);
                         });
+                        /*
                         request = WebRequest.Create("http://forums.legendaryclient.net");
                         response = (HttpWebResponse)request.GetResponse();
                         Client.RunOnUIThread(() =>
@@ -166,10 +180,11 @@ namespace LegendaryClient.Patcher.Pages
                             item.MouseDown += (o, e) => Changed(o);
                             StatusView.Items.Add(item);
                         });
+                        //*/
                         if (loaded)
                             return;
                         //Might as well load news
-                        foreach (var n in NewsJson.news)
+                        foreach (var n in newsJson.news)
                         {
                             Client.RunOnUIThread(() =>
                                 {
@@ -186,7 +201,7 @@ namespace LegendaryClient.Patcher.Pages
                                     NewsBox.Items.Add(item);
                                 });
                         }
-                        foreach (var x in NewsJson.community)
+                        foreach (var x in newsJson.community)
                         {
                             Client.RunOnUIThread(() =>
                             {
@@ -224,7 +239,10 @@ namespace LegendaryClient.Patcher.Pages
             }
             else if (sender.GetType() == typeof(CurrentStatus))
             {
-                WebBrower.Source =  (Uri)(((CurrentStatus)sender).Tag);
+                var x = (((CurrentStatus) sender).Tag);
+                if (x.GetType() != typeof(Directory))
+                    WebBrower.Source = (Uri)x;
+                else WebBrower.Source = new Uri((string)((Dictionary<string, object>)x)["linkUrl"]);
             }
         }
 
@@ -280,6 +298,7 @@ namespace LegendaryClient.Patcher.Pages
         /// <param name="e"></param>
         private void Play_Click(object sender, RoutedEventArgs e)
         {
+            Environment.Exit(0);
         }
 
         /// <summary>

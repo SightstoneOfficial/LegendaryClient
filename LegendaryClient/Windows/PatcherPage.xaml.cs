@@ -193,18 +193,24 @@ namespace LegendaryClient.Windows
             Stream inStream =
                         File.OpenRead(Path.Combine(Client.ExecutingDirectory, "Assets",
                             "dragontail-" + patcher.DDragonVersion + ".tgz"));
+
             using (var reader = ReaderFactory.Open(inStream))
             {
+                reader.WriteAllToDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"),
+                            ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                /*
                 while (reader.MoveToNextEntry())
                 {
                     if (!reader.Entry.IsDirectory)
                     {
-                        reader.WriteAllToDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"), ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
+                        reader.WriteAllToDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "temp"),
+                            ExtractOptions.ExtractFullPath | ExtractOptions.Overwrite);
                     }
                 }
+                //*/
             }
-            inStream.Close();
 
+            inStream.Close();
             Copy(
                 Path.Combine(Client.ExecutingDirectory, "Assets", "temp", patcher.DDragonVersion,
                     "data"), Path.Combine(Client.ExecutingDirectory, "Assets", "data"));
@@ -332,6 +338,28 @@ namespace LegendaryClient.Windows
                     bool toExit = false;
                     if (Client.UpdateRegion == "Garena")
                     {
+                        if (Settings.Default.GarenaLocation == string.Empty)
+                            ClientRegionLocation("Garena");
+                        if (File.Exists(Path.Combine(Settings.Default.GarenaLocation, "Air", "Lib", "ClientLibCommon.dat")))
+                        {
+                            File.Copy(Path.Combine(Settings.Default.GarenaLocation, "Air", "Lib", "ClientLibCommon.dat"),
+                                      Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"), true);
+
+                            LogTextBox("League of Legends is Up-To-Date");
+                            Client.Location = Path.Combine(lolRootPath, "Game");
+                            Client.RootLocation = lolRootPath;
+                        }
+                        else
+                        {
+
+                            LogTextBox("League of Legends is not Up-To-Date or location is incorrect");
+                            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                            {
+                                SkipPatchButton.IsEnabled = true;
+                                FindClientButton.Visibility = Visibility.Visible;
+                            }));
+                            toExit = true;
+                        }
                         /*
                         XmlReader reader = XmlReader.Create("http://updateres.garenanow.com/im/versions.xml");
                         string garenaVersion = "";
@@ -344,9 +372,6 @@ namespace LegendaryClient.Windows
                             }
                         }
                         */
-                        LogTextBox("League of Legends is Up-To-Date");
-                        Client.Location = Path.Combine(lolRootPath, "Game");
-                        Client.RootLocation = lolRootPath;
                     }
                     else if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
                     {

@@ -20,7 +20,7 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Label x:Name="RegionLabel" Content="Connected to: NA" FontWeight="Light" FontSize="15" />
+            <Label x:Name="RegionLabel" Content="Connected to: {REGION}" FontWeight="Light" FontSize="15" />
             <Button x:Name="Settings" Content="Patcher Settings" Click="SlideGrid" />
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
