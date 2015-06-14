@@ -188,7 +188,7 @@ namespace LegendaryClient.Windows
 
                 if (Client.Dev)
                 {
-
+                    LoadScript.Visibility = Visibility.Visible;
                 }
                 if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
                 {

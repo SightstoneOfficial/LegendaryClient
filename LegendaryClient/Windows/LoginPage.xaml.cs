@@ -556,7 +556,8 @@ namespace LegendaryClient.Windows
                 {
                     Client.ChatClient.AutoReconnect = 30;
                     Client.ChatClient.KeepAlive = 10;
-                    Client.ChatClient.NetworkHost = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
+                    //For some reason Jabber-Net sometimes cant resolve hostname, so we do it manually
+                    Client.ChatClient.NetworkHost = Dns.GetHostEntry("chat" + Client.Region.ChatName + ".lol.garenanow.com").AddressList[0].ToString();
                     Client.ChatClient.Port = 5223;
                     Client.ChatClient.Server = "pvp.net";
                     Client.ChatClient.Resource = "xiff";
