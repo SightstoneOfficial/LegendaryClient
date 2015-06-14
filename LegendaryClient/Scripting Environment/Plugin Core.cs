@@ -14,10 +14,19 @@ namespace LegendaryClient.Scripting_Environment
 	{
 		
 		private static List<Script> loadedScripts = new List<Script>();
-		public static Dictionary<string, object> variables = new Dictionary<string, object> { {"log", new Action<string, string>(LCLog.WriteToLog.Log) } };
-		public static void LoadScript(string Path)
+		public static Dictionary<string, object> variables = new Dictionary<string, object> { {"LogToText", new Action<string, string>(LCLog.WriteToLog.Log) }, {"Log", new Action<string>(log) } };
+		static Logger LogWindow = new Logger();
+
+		public static void log(string text)
 		{
-			var skript = new Script(Path);
+			if (!LogWindow.IsVisible)
+				LogWindow.Visibility = System.Windows.Visibility.Visible;
+			LogWindow.Log(text);
+        }
+
+		public static void LoadScript(string Path, string name)
+		{
+			var skript = new Script(Path, name);
             
 			foreach(var variable in variables.Keys)
 			{

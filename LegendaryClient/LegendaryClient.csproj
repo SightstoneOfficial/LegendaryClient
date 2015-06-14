@@ -533,6 +533,9 @@
       <DependentUpon>ReplayItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Scripting Environment\Interpreter.cs" />
+    <Compile Include="Scripting Environment\Logger.xaml.cs">
+      <DependentUpon>Logger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Scripting Environment\Plugin Core.cs" />
     <Compile Include="Scripting Environment\Script.cs" />
     <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
@@ -939,6 +942,10 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Scripting Environment\Logger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ChampionDetailsPage.xaml">
       <SubType>Designer</SubType>

@@ -869,7 +869,7 @@ namespace LegendaryClient.Windows
 			Microsoft.Win32.OpenFileDialog myFile = new Microsoft.Win32.OpenFileDialog();
 			myFile.ShowDialog();
 			var PluginPath = myFile.FileName;
-			Plugin_Core.LoadScript(PluginPath);
+			Plugin_Core.LoadScript(PluginPath, myFile.SafeFileName);
 			Plugin_Core.runAll();
 		}
 	}

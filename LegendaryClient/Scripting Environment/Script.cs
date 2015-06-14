@@ -9,11 +9,18 @@ namespace LegendaryClient.Scripting_Environment
 	public class Script
 	{
 		private Interpreter ScriptExec;
-		public Script(string path)
+		private string name;
+		public Script(string path, string name)
 		{
+			this.name = name;
 			ScriptExec = new Interpreter();
 			ScriptExec.loadCode(path);
 
+		}
+
+		private void log(object obj)
+		{
+			Plugin_Core.log(name + ": " + obj.ToString());
 		}
 
 		public void run()
