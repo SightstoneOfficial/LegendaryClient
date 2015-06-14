@@ -1,1 +1,1 @@
-log("hey, what's up?")
+Log("hey, what's up?")
