@@ -15,7 +15,7 @@ namespace LegendaryClient.Scripting_Environment
 		
 		private static List<Script> loadedScripts = new List<Script>();
 		private static List<string> loadedScriptNames = new List<string>();
-		public static Dictionary<string, object> variables = new Dictionary<string, object> { {"LogToText", new Action<string, string>(LCLog.WriteToLog.Log) }};
+		public static Dictionary<string, object> variables = new Dictionary<string, object> { {"LogToFile", new Action<string>(LogToFile) }};
 		static Logger LogWindow = new Logger();
 
 		public static void log(string text)
@@ -28,6 +28,11 @@ namespace LegendaryClient.Scripting_Environment
 				
 			LogWindow.Log(text);
         }
+
+		private static void LogToFile(object var)
+		{
+			LCLog.WriteToLog.Log(var.ToString());
+		}
 
 		public static void LoadScript(string Path, string name)
 		{

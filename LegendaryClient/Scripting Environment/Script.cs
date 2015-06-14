@@ -12,11 +12,18 @@ namespace LegendaryClient.Scripting_Environment
 		private string name;
 		public Script(string path, string name)
 		{
-			this.name = name;
-			
+			this.name = name.Replace(".py", "");
             ScriptExec = new Interpreter();
 			ScriptExec.addVar("Log", new Action<object>(log));
 			ScriptExec.loadCode(path);
+			try
+			{
+				name = ScriptExec.getValue("PluginName");
+			}
+			catch(Exception e)
+			{
+				log("A valid name was not defined");
+			}
 
 		}
 

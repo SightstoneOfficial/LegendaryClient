@@ -1,0 +1,6 @@
+function Log(object)
+This will print the object into the console.
+function LogToFile(object)
+This will print the object into the Log, that LC is currently editing.
+variable PluginName
+If you assign a string to this variable, it will be taken as Plugin Name
