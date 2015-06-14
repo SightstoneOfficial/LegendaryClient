@@ -24,7 +24,11 @@ namespace LegendaryClient.Scripting_Environment
 		{
 			var func = ScriptExec.getValue(name);
 			if (!(func is Exception))
+			{
+				func = func as Action;
 				func();
+			}
+				
 		}
 	}
 }
