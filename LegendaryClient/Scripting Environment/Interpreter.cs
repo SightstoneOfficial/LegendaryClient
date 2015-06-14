@@ -52,6 +52,7 @@ namespace LegendaryClient.Scripting_Environment
 
 		public void addVar(string varName, object value)
 		{
+
 			pyScope.SetVariable(varName, value);
 		}
 

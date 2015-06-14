@@ -14,7 +14,7 @@ namespace LegendaryClient.Scripting_Environment
 	{
 		
 		private static List<Script> loadedScripts = new List<Script>();
-		public static Dictionary<string, object> variables = new Dictionary<string, object>();
+		public static Dictionary<string, object> variables = new Dictionary<string, object> { {"log", new Action<string, string>(LCLog.WriteToLog.Log) } };
 		public static void LoadScript(string Path)
 		{
 			var skript = new Script(Path);
