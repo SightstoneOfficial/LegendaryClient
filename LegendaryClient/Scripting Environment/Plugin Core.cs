@@ -26,6 +26,14 @@ namespace LegendaryClient.Scripting_Environment
 			loadedScripts.Add(skript);
 		}
 
+		public static void runAll()
+		{
+			foreach(var skript in loadedScripts)
+			{
+				skript.run();
+			}
+		}
+
 		public static void CallFunctions(string funcName)
 		{
 			foreach(var skript in loadedScripts)

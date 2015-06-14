@@ -41,7 +41,8 @@
             </Grid>
             <Label x:Name="XPBoost" Content="Xp Boost 99 Day. 99 Win" HorizontalAlignment="Left" Height="31" Margin="301,42,0,0" VerticalAlignment="Top" Width="260"/>
             <Label x:Name="IPBoost" Content="Ip Boost 99 Day. 99 Win" HorizontalAlignment="Left" Height="31" Margin="301,12,0,0" VerticalAlignment="Top" Width="260"/>
-        </Grid>
+			<Button x:Name="LoadScript" Content="Load A Plugin" HorizontalAlignment="Left" Margin="625,12,0,0" VerticalAlignment="Top" Width="144" Height="31" Click="LoadScript_Click"/>
+		</Grid>
 
         <TextBox x:Name="BroadcastMessage" Height="70" Margin="500,52,300,0" HorizontalAlignment="Stretch"
                  VerticalAlignment="Top" IsReadOnly="True" FontSize="18" FontWeight="ExtraLight"

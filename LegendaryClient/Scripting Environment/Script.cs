@@ -15,6 +15,12 @@ namespace LegendaryClient.Scripting_Environment
 			ScriptExec.loadCode(path);
 
 		}
+
+		public void run()
+		{
+			ScriptExec.runCode();
+		}
+
 		public void addVar(string name, object value)
 		{
 			ScriptExec.addVar(name, value);

@@ -36,7 +36,7 @@ namespace LegendaryClient.Scripting_Environment
 			}
 		}
 
-		public object runCode(string Path)
+		public object runCode()
 		{
 			try
 			{

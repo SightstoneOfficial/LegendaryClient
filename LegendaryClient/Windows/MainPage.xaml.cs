@@ -26,6 +26,7 @@ using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Scripting_Environment;
 using Newtonsoft.Json;
 using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
@@ -861,6 +862,15 @@ namespace LegendaryClient.Windows
             ParseSpectatorGames();
         }
 
-        #endregion Featured Games
-    }
+		#endregion Featured Games
+
+		private void LoadScript_Click(object sender, RoutedEventArgs e)
+		{
+			Microsoft.Win32.OpenFileDialog myFile = new Microsoft.Win32.OpenFileDialog();
+			myFile.ShowDialog();
+			var PluginPath = myFile.FileName;
+			Plugin_Core.LoadScript(PluginPath);
+			Plugin_Core.runAll();
+		}
+	}
 }
