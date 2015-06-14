@@ -12,6 +12,9 @@ namespace LegendaryClient.Patcher.Pages
         public PatcherSettingsPage(bool newsettings = false)
         {
             InitializeComponent();
+            if (newsettings)
+                SettingsLabel.Content = "Please configure your settings before using LegendaryClient.Patcher!";
+
             if (Properties.Settings.Default.UseGithub)
                 Version.SelectedItem = Github;
             else
@@ -24,6 +27,14 @@ namespace LegendaryClient.Patcher.Pages
                 Properties.Settings.Default.UseGithub = true;
             else
                 Properties.Settings.Default.UseGithub = false;
+        }
+
+        private void Setting_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (UpdateSettings.SelectedItem == OnlyLoL)
+                Properties.Settings.Default.OnlyLOL = true;
+            else
+                Properties.Settings.Default.OnlyLOL = false;
         }
     }
 }

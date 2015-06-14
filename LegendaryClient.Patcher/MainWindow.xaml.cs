@@ -29,7 +29,7 @@ namespace LegendaryClient.Patcher
 
             Client.OverlayContainer = OverlayContainer;
             Client.OverlayGrid = OverlayGrid;
-            OverlayContainer.Content = new PatcherSettingsPage().Content;
+            OverlayContainer.Content = new PatcherSettingsPage(Properties.Settings.Default.FirstStart).Content;
 
             var waitAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
             waitAnimation.Completed += (o, e) => { Container.Content = new PatcherPage().Content; };

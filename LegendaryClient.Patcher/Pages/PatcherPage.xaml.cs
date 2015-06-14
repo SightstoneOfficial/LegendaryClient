@@ -19,6 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
+using LegendaryClient.Patcher.Properties;
 
 #endregion
 
@@ -65,7 +66,6 @@ namespace LegendaryClient.Patcher.Pages
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.");
             Load();
-            //LogTextBox(CreateConfigurationmanifest());
         }
 
         private void Load()
@@ -83,6 +83,8 @@ namespace LegendaryClient.Patcher.Pages
                         foreach (var champs in champsAsJson.champions)
                         {
                             FreeWeekChampion champItem = null;
+                            //There is probably a better way to do this, but this will work if there
+                            //are currently no images installed on the user's computer (first time install)
                             Client.RunAsyncOnUIThread(() => champItem = new FreeWeekChampion());
                             var champDataJson =
                                 client.DownloadString(
@@ -113,6 +115,10 @@ namespace LegendaryClient.Patcher.Pages
                             Client.Win.Show();
                             Client.splashPage.Close();
                         });
+                        if (Settings.Default.FirstStart)
+                        {
+                            Client.RunOnUIThread(() => Client.OverlayGrid.Visibility = Visibility.Visible);
+                        }
                     }
                 });
             x.Start();
@@ -292,6 +298,7 @@ namespace LegendaryClient.Patcher.Pages
         /// <param name="e"></param>
         private void Play_Click(object sender, RoutedEventArgs e)
         {
+            Environment.Exit(0);
         }
 
         /// <summary>

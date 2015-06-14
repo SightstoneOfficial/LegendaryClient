@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace LegendaryClient.Patcher.Logic
 {
+    //I don't know what else you may want to pull from Appveyor but I only pulled a little
+    //bit of info so they can use the latest version
     public class NuGetFeed
     {
         public string id { get; set; }
