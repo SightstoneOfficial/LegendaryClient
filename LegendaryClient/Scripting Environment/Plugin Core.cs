@@ -18,9 +18,13 @@ namespace LegendaryClient.Scripting_Environment
 		static Logger LogWindow = new Logger();
 
 		public static void log(string text)
-		{
+		{ 
 			if (!LogWindow.IsVisible)
+			{
 				LogWindow.Visibility = System.Windows.Visibility.Visible;
+				LogWindow.Show();
+			}
+				
 			LogWindow.Log(text);
         }
 
