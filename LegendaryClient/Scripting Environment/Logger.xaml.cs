@@ -23,7 +23,16 @@ namespace LegendaryClient.Scripting_Environment
 		{
 			InitializeComponent();
 			Visibility = Visibility.Collapsed;
+			textBox.Text = "";
+			Closing += Logger_Closing;
 		}
+
+		private void Logger_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			e.Cancel = true;
+			Visibility = Visibility.Collapsed;
+		}
+
 
 		public void Log(string text)
 		{

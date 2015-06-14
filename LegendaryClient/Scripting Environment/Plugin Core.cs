@@ -14,7 +14,8 @@ namespace LegendaryClient.Scripting_Environment
 	{
 		
 		private static List<Script> loadedScripts = new List<Script>();
-		public static Dictionary<string, object> variables = new Dictionary<string, object> { {"LogToText", new Action<string, string>(LCLog.WriteToLog.Log) }, {"Log", new Action<string>(log) } };
+		private static List<string> loadedScriptNames = new List<string>();
+		public static Dictionary<string, object> variables = new Dictionary<string, object> { {"LogToText", new Action<string, string>(LCLog.WriteToLog.Log) }};
 		static Logger LogWindow = new Logger();
 
 		public static void log(string text)
@@ -30,8 +31,10 @@ namespace LegendaryClient.Scripting_Environment
 
 		public static void LoadScript(string Path, string name)
 		{
+			if (loadedScriptNames.Contains(name))
+				return;
 			var skript = new Script(Path, name);
-            
+			loadedScriptNames.Add(name);
 			foreach(var variable in variables.Keys)
 			{
 				skript.addVar(variable, variables[variable]);

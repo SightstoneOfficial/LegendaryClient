@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="Logger" Height="336" Width="341">
 	<Grid>
-		<TextBox x:Name="textBox" HorizontalAlignment="Left" Height="305" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="333"/>
+		<TextBox x:Name="textBox" HorizontalAlignment="Left" Height="305" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="333" />
 	</Grid>
 </Window>

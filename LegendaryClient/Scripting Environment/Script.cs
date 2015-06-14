@@ -13,7 +13,9 @@ namespace LegendaryClient.Scripting_Environment
 		public Script(string path, string name)
 		{
 			this.name = name;
-			ScriptExec = new Interpreter();
+			
+            ScriptExec = new Interpreter();
+			ScriptExec.addVar("Log", new Action<object>(log));
 			ScriptExec.loadCode(path);
 
 		}
