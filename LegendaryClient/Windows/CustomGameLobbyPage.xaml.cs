@@ -65,7 +65,7 @@ namespace LegendaryClient.Windows
 
         private void Lobby_OnMessageReceived(object sender, object message)
         {
-            if (message != null && message == null)
+            if (message == null)
                 return;
 
             if (message.GetType() != typeof(GameDTO))
