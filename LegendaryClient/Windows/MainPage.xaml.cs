@@ -135,7 +135,7 @@ namespace LegendaryClient.Windows
                 AllSummonerData playerData =
                     await RiotCalls.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
                 SummonerNameLabel.Content = playerData.Summoner.Name;
-                Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+                
 
                 SummonerActiveBoostsDTO activeBoost = await RiotCalls.GetSummonerActiveBoosts();
 
@@ -181,15 +181,19 @@ namespace LegendaryClient.Windows
                     if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + Client.Region.RegionName)))
                     {
                         Client.Dev = true;
-                        Client.UserTitleBarLabel.Content = "Dev ∙ " + Client.UserTitleBarLabel.Content;
                     }
                     CheckedDev = true;
                 }
 
                 if (Client.Dev)
                 {
-                    LoadScript.Visibility = Visibility.Visible;
+                    Client.UserTitleBarLabel.Content = "Dev ∙ " + playerData.Summoner.Name;
                 }
+                else
+                {
+                    Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+                }
+
                 if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
                 {
                     PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints /
@@ -863,14 +867,5 @@ namespace LegendaryClient.Windows
         }
 
 		#endregion Featured Games
-
-		private void LoadScript_Click(object sender, RoutedEventArgs e)
-		{
-			Microsoft.Win32.OpenFileDialog myFile = new Microsoft.Win32.OpenFileDialog();
-			myFile.ShowDialog();
-			var PluginPath = myFile.FileName;
-			Plugin_Core.LoadScript(PluginPath, myFile.SafeFileName);
-			Plugin_Core.runAll();
-		}
 	}
 }

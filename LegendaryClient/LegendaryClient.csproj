@@ -626,6 +626,9 @@
     <Compile Include="Windows\SelectChampOverlay.xaml.cs">
       <DependentUpon>SelectChampOverlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\PluginsPage.xaml.cs">
+      <DependentUpon>PluginsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\StatusPage.xaml.cs">
       <DependentUpon>StatusPage.xaml</DependentUpon>
     </Compile>
@@ -1095,6 +1098,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\PluginsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\StatusPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1253,9 +1260,7 @@
     <Resource Include="BackTex.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="chat.png" />
     <Resource Include="Locked.png" />
-    <Resource Include="joinchat.png" />
     <Resource Include="accepted.png" />
     <Resource Include="declined.png" />
     <Content Include="BoostDlls\cg.dll">
@@ -1791,12 +1796,24 @@
     </Content>
     <Resource Include="NONE.png" />
     <Resource Include="noise.png" />
+    <Resource Include="page6_web.jpg" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="trade.png" />
     <Resource Include="star.png" />
     <Resource Include="undecided.png" />
+    <Resource Include="ui\img\bar\alert.png" />
+    <Resource Include="ui\img\bar\chat.png" />
+    <Resource Include="ui\img\bar\contacts.png" />
+    <Resource Include="ui\img\menubar\home.png" />
+    <Resource Include="ui\img\menubar\logout.png" />
+    <Resource Include="ui\img\menubar\profile.png" />
+    <Resource Include="ui\img\menubar\replays.png" />
+    <Resource Include="ui\img\menubar\settings.png" />
+    <Resource Include="ui\img\menubar\shop.png" />
+    <Resource Include="ui\img\bar\plugin.png" />
+    <Resource Include="ui\img\menubar\plugins.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

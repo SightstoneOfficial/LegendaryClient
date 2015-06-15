@@ -36,16 +36,25 @@
                     Content="←" Foreground="Black" />
         </Grid>
 
+        <Button x:Name="PluginButton" Width="50" Margin="0,4,170,4" HorizontalAlignment="Right"
+                VerticalAlignment="Stretch" Style="{x:Null}">
+            <StackPanel>
+                <Image Source="/LegendaryClient;component/ui/img/bar/plugin.png" Stretch="None" />
+            </StackPanel>
+        </Button>
+
         <Button x:Name="ChatButton" Width="50" Margin="0,4,115,4" HorizontalAlignment="Right"
                 VerticalAlignment="Stretch" Style="{x:Null}" Click="ChatButton_Click">
             <StackPanel>
-                <Image Source="/LegendaryClient;component/chat.png" Stretch="None" />
+                <Image Source="/LegendaryClient;component/ui/img/bar/contacts.png" Stretch="None" />
             </StackPanel>
         </Button>
         <Button x:Name="NotificationButton" Width="50" Margin="0,4,5,4" HorizontalAlignment="Right"
-                VerticalAlignment="Stretch"
-                Style="{x:Null}" Content="!" Foreground="Black" FontSize="20"
-                Click="NotificationButton_Click" />
+                VerticalAlignment="Stretch" Style="{x:Null}" Click="NotificationButton_Click">
+            <StackPanel>
+                <Image Source="/LegendaryClient;component/ui/img/bar/alert.png" Stretch="None" />
+            </StackPanel>
+        </Button>
         <TextBox x:Name="DevCommand" Width="254" Height="32"
                  Margin="0,0,115,4" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  TextWrapping="Wrap" controls:TextBoxHelper.Watermark="Enter Dev Command here" FontSize="20"
@@ -53,7 +62,7 @@
         <Button x:Name="JoinChat" Width="50" Margin="0,4,60,4" HorizontalAlignment="Right"
                 VerticalAlignment="Stretch" Style="{x:Null}" Click="JoinChatButton_Click">
             <StackPanel>
-                <Image Width="28" Height="28" Source="/LegendaryClient;component/joinchat.png" Stretch="Fill" />
+                <Image Width="28" Height="28" Source="/LegendaryClient;component/ui/img/bar/chat.png" Stretch="Fill" />
             </StackPanel>
         </Button>
     </Grid>

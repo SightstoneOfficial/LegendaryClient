@@ -248,6 +248,15 @@ namespace LegendaryClient
             }
         }
 
+        private void PluginsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Client.IsLoggedIn)
+            {
+                PluginsPage PluginsPage = new PluginsPage();
+                Client.SwitchPage(PluginsPage);
+            }
+        }
+
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             if (Client.IsLoggedIn)
