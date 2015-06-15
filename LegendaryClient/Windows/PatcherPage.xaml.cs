@@ -113,7 +113,7 @@ namespace LegendaryClient.Windows
 					//Extract the zip
 					ZipFile.ExtractToDirectory(Path.Combine(Client.ExecutingDirectory, "Client", "LIB", "LIB.zip"), Path.Combine(Client.ExecutingDirectory, "Client", "LIB"));
 					//delete it
-					File.Delete(Path.Combine(Client.ExecutingDirectory, "Client", "LIB.zip"));
+					File.Delete(Path.Combine(Client.ExecutingDirectory, "Client","LIB" , "LIB.zip"));
 					LogTextBox("Plugin dependencies are installed");
 				}
 				else
