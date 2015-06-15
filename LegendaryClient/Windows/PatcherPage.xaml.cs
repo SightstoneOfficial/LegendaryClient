@@ -7,6 +7,7 @@ using MediaToolkit.Model;
 using Microsoft.Win32;
 using SharpCompress.Common;
 using SharpCompress.Reader;
+using SharpCompress.Archive;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -20,6 +21,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.IO.Compression;
 
 namespace LegendaryClient.Windows
 {
@@ -112,8 +114,30 @@ namespace LegendaryClient.Windows
 
                 versionLol.Close();
             }
+			LogTextBox("Checking Plugin dependencies...");
+			//Check if LIB is not extracted
+			if(File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "LIB", "abc.py")))
+			{
+				LogTextBox("Plugin dependencies are installed");
+			}
+			else
+			{
+				if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "LIB", "LIB.zip")))
+				{
+					LogTextBox("Extracting Plugin dependencies...");
+					//Extract the zip
+					ZipFile.ExtractToDirectory(Path.Combine(Client.ExecutingDirectory, "Client", "LIB", "LIB.zip"), Path.Combine(Client.ExecutingDirectory, "Client", "LIB"));
+					//delete it
+					File.Delete(Path.Combine(Client.ExecutingDirectory, "Client", "LIB.zip"));
+					LogTextBox("Plugin dependencies are installed");
+				}
+				else
+				{
+					LogTextBox("Plugin dependencies are NOT installed. Some features of the Plugins might not work!");
+				}
+			}
 
-            string dDragonDownloadUrl = patcher.GetDragon();
+			string dDragonDownloadUrl = patcher.GetDragon();
             if (!string.IsNullOrEmpty(dDragonDownloadUrl))
             {
                 LogTextBox("Newest DataDragon Version: " + patcher.DDragonVersion);
@@ -189,6 +213,7 @@ namespace LegendaryClient.Windows
                     ExtractingLabel.Visibility = Visibility.Visible;
                     ExtractingProgressRing.Visibility = Visibility.Visible;
                 }));
+			
 
             Stream inStream =
                         File.OpenRead(Path.Combine(Client.ExecutingDirectory, "Assets",
