@@ -7,6 +7,8 @@ LegendaryClient
 [![Releases](https://img.shields.io/github/release/eddy5641/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
 [![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/eddy5641/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+LegendaryClient does not compile correctly under VS15. You need to manually replace the rtmp-sharp.dll in the output!
+
 Beautiful, fully-featured League of Legends client.
 
 Still under heavy development! Lots of things don't work or don't look good...
