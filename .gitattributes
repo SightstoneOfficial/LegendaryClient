@@ -63,4 +63,5 @@
 #*.RTF   diff=astextplain
 
 # Ignore Python files in language stats
+LegndaryClient/Lib/* linguist-vendored
 *.py linguist-vendored=false
