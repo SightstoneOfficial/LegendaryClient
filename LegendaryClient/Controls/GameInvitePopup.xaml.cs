@@ -42,6 +42,8 @@ namespace LegendaryClient.Controls
             Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             try
             {
+                if (!Client.InviteData.ContainsKey(stats.InvitationId))
+                    return;
                 var info = Client.InviteData[stats.InvitationId];
                 Client.Log("Tried to find a popup that existed but should have been blocked. ", "Error");
                 if (info == null)

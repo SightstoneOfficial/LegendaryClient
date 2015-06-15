@@ -455,6 +455,18 @@ namespace LegendaryClient.Windows
                 var fadeLabelInAnimationx = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
                 HintLabel.BeginAnimation(OpacityProperty, fadeLabelInAnimationx);
                 PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(Command.Text);
+                if (n == null)
+                {
+                    var overlay = new MessageOverlay
+                    {
+                        MessageTitle = { Content = "No Game Found" },
+                        MessageTextBox = { Text = "The summoner \"" + Command.Text + "\" is not currently in game." }
+                    };
+                    Client.OverlayContainer.Content = overlay.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+
+                    return;
+                }
                 if (n.GameName != null)
                 {
                     string ip = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
@@ -507,7 +519,18 @@ namespace LegendaryClient.Windows
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "ReplayHandler.exe")))
+            {
+                var overlay = new MessageOverlay
+                {
+                    MessageTitle = { Content = "No Replay Handler" },
+                    MessageTextBox = { Text = "Replay service is experimental and can not be found" }
+                };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
 
+                return;
+            }
             var replay = new ProcessStartInfo
             {
                 FileName = Path.Combine(Client.ExecutingDirectory, "ReplayHandler.exe"),

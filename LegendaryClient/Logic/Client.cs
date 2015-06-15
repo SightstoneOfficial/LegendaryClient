@@ -1004,15 +1004,14 @@ namespace LegendaryClient.Logic
                         if (stats.Inviter == null)
                             return;
 
-                        try
-                        {
-                            InviteInfo x = InviteData[stats.InvitationId];
-                            if (x.Inviter != null)
-                                return;
-                        }
-                        catch
-                        {
-                        }
+
+                        if (InviteData.ContainsKey(stats.InvitationId))
+                            return;
+                        InviteInfo x = InviteData[stats.InvitationId];
+
+                        if (x.Inviter != null)
+                            return;
+                        
                         MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
                             var pop = new GameInvitePopup(stats)
