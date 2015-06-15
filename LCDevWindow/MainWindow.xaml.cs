@@ -36,6 +36,7 @@ namespace LCDevWindow
         bool pipe = true;
         Timer shutdown = new Timer();
         int shutdownint = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -87,6 +88,7 @@ namespace LCDevWindow
                 });
             xls.Start();
         }
+
         private static int numThreads = 4;
         public static void StartPipe()
         {

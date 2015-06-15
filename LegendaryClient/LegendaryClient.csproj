@@ -75,6 +75,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Awesomium.Core, Version=1.7.4.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -622,6 +626,9 @@
     <Compile Include="Windows\SelectChampOverlay.xaml.cs">
       <DependentUpon>SelectChampOverlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\PluginsPage.xaml.cs">
+      <DependentUpon>PluginsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\StatusPage.xaml.cs">
       <DependentUpon>StatusPage.xaml</DependentUpon>
     </Compile>
@@ -1091,6 +1098,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\PluginsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\StatusPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1231,6 +1242,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="app.manifest" />
     <None Include="Lib\ensurepip\_bundled\pip-1.5.6-py2.py3-none-any.whl" />
     <None Include="Lib\ensurepip\_bundled\setuptools-3.6-py2.py3-none-any.whl" />
     <None Include="packages.config" />
@@ -1248,9 +1260,7 @@
     <Resource Include="BackTex.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="chat.png" />
     <Resource Include="Locked.png" />
-    <Resource Include="joinchat.png" />
     <Resource Include="accepted.png" />
     <Resource Include="declined.png" />
     <Content Include="BoostDlls\cg.dll">
@@ -1786,12 +1796,24 @@
     </Content>
     <Resource Include="NONE.png" />
     <Resource Include="noise.png" />
+    <Resource Include="page6_web.jpg" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="trade.png" />
     <Resource Include="star.png" />
     <Resource Include="undecided.png" />
+    <Resource Include="ui\img\bar\alert.png" />
+    <Resource Include="ui\img\bar\chat.png" />
+    <Resource Include="ui\img\bar\contacts.png" />
+    <Resource Include="ui\img\menubar\home.png" />
+    <Resource Include="ui\img\menubar\logout.png" />
+    <Resource Include="ui\img\menubar\profile.png" />
+    <Resource Include="ui\img\menubar\replays.png" />
+    <Resource Include="ui\img\menubar\settings.png" />
+    <Resource Include="ui\img\menubar\shop.png" />
+    <Resource Include="ui\img\bar\plugin.png" />
+    <Resource Include="ui\img\menubar\plugins.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

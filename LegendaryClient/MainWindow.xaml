@@ -7,21 +7,35 @@
                       WindowStartupLocation="CenterScreen"
                       TitleForeground="Transparent"
                       Closing="MainWindow_Closing"
-                      EnableDWMDropShadow="True"
-                      ResizeMode="CanResizeWithGrip">
+                      EnableDWMDropShadow="True">
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Label x:Name="inQueueTimer" Content="00:00" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" Visibility="Hidden"/>
             <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click"/>
             <Label x:Name="InfoLabel" Content="Not Logged In" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" />
-            <Button x:Name="HomeButton" Content="home" Click="HomeButton_Click" />
+            <Button x:Name="HomeButton" Click="HomeButton_Click">
+                <Image Source="/LegendaryClient;component/ui/img/menubar/home.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
+            </Button>
             <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" Foreground="Orange" />
-            <Button x:Name="ProfileButton" Content="profile" Click="ProfileButton_Click" MouseDoubleClick="ProfileButton_MouseDoubleClick"/>
-            <Button x:Name="ShopButton" Content="shop" Click="ShopButton_Click" />
-            <Button x:Name="ReplayButton" Content="replays" Click="ReplayButton_Click" />
-            <Button x:Name="SettingsButton" Content="settings" Click="SettingsButton_Click" />
-            <Button x:Name="LogoutButton" Content="logout" Click="LogoutButton_Click" />
+            <Button x:Name="ProfileButton" Click="ProfileButton_Click" MouseDoubleClick="ProfileButton_MouseDoubleClick">
+                <Image Source="/LegendaryClient;component/ui/img/menubar/profile.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
+            </Button>
+            <Button x:Name="ShopButton" Click="ShopButton_Click">
+                <Image Source="/LegendaryClient;component/ui/img/menubar/shop.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
+            </Button>
+            <Button x:Name="ReplayButton" Click="ReplayButton_Click">
+                <Image Source="/LegendaryClient;component/ui/img/menubar/replays.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
+            </Button>
+            <Button x:Name="SettingsButton" Click="SettingsButton_Click">
+                <Image Source="/LegendaryClient;component/ui/img/menubar/settings.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
+            </Button>
+            <Button x:Name="PluginsButton" Click="PluginsButton_Click">
+                <Image Source="/LegendaryClient;component/ui/img/menubar/plugins.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
+            </Button>
+            <Button x:Name="LogoutButton" Click="LogoutButton_Click">
+                <Image Source="/LegendaryClient;component/ui/img/menubar/logout.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
+            </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
 
@@ -35,7 +49,8 @@
         <Label x:Name="UserTitleBarLabel" Content="Username" FontWeight="Light" Margin="33,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" FontSize="15" Foreground="WhiteSmoke" />
 
         <ContentControl x:Name="FullNotificationOverlayContainer" HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch" Panel.ZIndex="999" />
+                        VerticalAlignment="Stretch" Panel.ZIndex="999" >
+        </ContentControl>
         <Image x:Name="BackImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Opacity="0.4" Margin="-15,0,-15,-15">
             <Image.BitmapEffect>
                 <BlurBitmapEffect Radius="15" KernelType="Gaussian" />
