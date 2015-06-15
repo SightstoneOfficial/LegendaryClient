@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Scripting.Hosting;
 using IronPython.Hosting;
-using System.IO;
 
 namespace LegendaryClient.Scripting_Environment
 {
@@ -22,9 +21,6 @@ namespace LegendaryClient.Scripting_Environment
 			pyEngine = Python.CreateEngine();
 			pyRuntime = pyEngine.Runtime;
 			pyScope = pyEngine.CreateScope();
-			var paths = pyEngine.GetSearchPaths();
-			paths.Add(Path.Combine(Logic.Client.ExecutingDirectory,"Client", "LIB"));
-			pyEngine.SetSearchPaths(paths);
 		}
 
 		public object loadCode(string Path)
