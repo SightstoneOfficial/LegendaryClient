@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -97,10 +98,34 @@ namespace LegendaryClient.Windows
                 TotalProgressLabel.Content = "20%";
                 TotalProgessBar.Value = 20;
             }));
+			#region Plugins
+			LogTextBox("Checking Plugin dependencies...");
+			//Check if LIB is not extracted
+			if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "LIB", "abc.py")))
+			{
+				LogTextBox("Plugin dependencies are installed");
+			}
+			else
+			{
+				if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Client", "LIB", "LIB.zip")))
+				{
+					LogTextBox("Extracting Plugin dependencies...");
+					//Extract the zip
+					ZipFile.ExtractToDirectory(Path.Combine(Client.ExecutingDirectory, "Client", "LIB", "LIB.zip"), Path.Combine(Client.ExecutingDirectory, "Client", "LIB"));
+					//delete it
+					File.Delete(Path.Combine(Client.ExecutingDirectory, "Client", "LIB.zip"));
+					LogTextBox("Plugin dependencies are installed");
+				}
+				else
+				{
+					LogTextBox("Plugin dependencies are NOT installed. Some features of the Plugins might not work!");
+				}
+			}
+			#endregion
 
-            #region DDragon
+			#region DDragon
 
-            var encoding = new ASCIIEncoding();
+			var encoding = new ASCIIEncoding();
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets"));
 
@@ -112,6 +137,7 @@ namespace LegendaryClient.Windows
 
                 versionLol.Close();
             }
+
 
             string dDragonDownloadUrl = patcher.GetDragon();
             if (!string.IsNullOrEmpty(dDragonDownloadUrl))
