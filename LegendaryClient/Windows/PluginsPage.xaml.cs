@@ -32,7 +32,8 @@ namespace LegendaryClient.Windows
         private void LoadScript_Click(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog myFile = new Microsoft.Win32.OpenFileDialog();
-            myFile.ShowDialog();
+            if (myFile.ShowDialog().GetValueOrDefault() == false)
+                return;
             var PluginPath = myFile.FileName;
 			Core.LoadScript(PluginPath, myFile.SafeFileName);
 			Core.runAll();
