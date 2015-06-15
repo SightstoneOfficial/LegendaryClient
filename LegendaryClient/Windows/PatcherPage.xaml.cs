@@ -611,6 +611,7 @@ namespace LegendaryClient.Windows
             {
                 PatchTextBox.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + s + Environment.NewLine;
                 PatchTextBox.ScrollToEnd();
+                this.Focus();
             }));
             Client.Log(s);
         }
