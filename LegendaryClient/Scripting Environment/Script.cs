@@ -10,26 +10,41 @@ namespace LegendaryClient.Scripting_Environment
 	{
 		private Interpreter ScriptExec;
 		private string name;
-		public Script(string path, string name)
+		Plugin_Core Parent;
+		public Script(string path, string name, Plugin_Core refer)
 		{
+			Parent = refer;
 			this.name = name.Replace(".py", "");
             ScriptExec = new Interpreter();
 			ScriptExec.addVar("Log", new Action<object>(log));
 			ScriptExec.loadCode(path);
+			
+
+		}
+
+		public string getName()
+		{
+			return name;
+		}
+
+		public void setup()
+		{
+			ScriptExec.runCode();
+			Parent.ClearConsole();
 			try
 			{
 				name = ScriptExec.getValue("PluginName");
 			}
-			catch(Exception e)
+			catch (Exception e)
 			{
 				log("A valid name was not defined");
-			}
 
+			}
 		}
 
 		private void log(object obj)
 		{
-			Plugin_Core.log(name + ": " + obj.ToString());
+			Parent.log(name + ": " + obj.ToString());
 		}
 
 		public void run()
@@ -51,6 +66,16 @@ namespace LegendaryClient.Scripting_Environment
 				func();
 			}
 				
+		}
+
+		internal void callFunc(string funcName, object par1, object par2)
+		{
+			var func = ScriptExec.getValue(name);
+			if (!(func is Exception))
+			{
+				func = func as Action;
+				func(par1, par2);
+			}
 		}
 	}
 }

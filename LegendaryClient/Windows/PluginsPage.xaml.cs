@@ -24,6 +24,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class PluginsPage
     {
+		private Scripting_Environment.Plugin_Core Core = new Scripting_Environment.Plugin_Core();
         public PluginsPage()
         {
             InitializeComponent();
@@ -33,8 +34,8 @@ namespace LegendaryClient.Windows
             Microsoft.Win32.OpenFileDialog myFile = new Microsoft.Win32.OpenFileDialog();
             myFile.ShowDialog();
             var PluginPath = myFile.FileName;
-            LegendaryClient.Scripting_Environment.Plugin_Core.LoadScript(PluginPath, myFile.SafeFileName);
-            LegendaryClient.Scripting_Environment.Plugin_Core.runAll();
+			Core.LoadScript(PluginPath, myFile.SafeFileName);
+			Core.runAll();
         }
     }
 }

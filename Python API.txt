@@ -3,4 +3,10 @@ This will print the object into the console.
 function LogToFile(object)
 This will print the object into the Log, that LC is currently editing.
 variable PluginName
-If you assign a string to this variable, it will be taken as Plugin Name
+If you assign a string to this variable, it will be taken as Plugin Name.
+variable Username
+This variable contains the Summonername of the User.
+function sendMessage(string Receiver, string Text)
+Sends the given Text to the passed User.
+undefined onMessage(string sender, string Message)
+If you defined this function, it will get called, whenever the Client receives a message.

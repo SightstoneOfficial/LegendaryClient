@@ -10,44 +10,72 @@ using System.Threading.Tasks;
 
 namespace LegendaryClient.Scripting_Environment
 {
-	class Plugin_Core
+	public class Plugin_Core
 	{
-		
-		private static List<Script> loadedScripts = new List<Script>();
-		private static List<string> loadedScriptNames = new List<string>();
-		public static Dictionary<string, object> variables = new Dictionary<string, object> { {"LogToFile", new Action<string>(LogToFile) }};
-		static Logger LogWindow = new Logger();
+		public Dictionary<string, object> variables;
+        public Plugin_Core()
+		{
+			Logic.Client.onChatMessageReceived += Client_onChatMessageReceived;
+			variables = new Dictionary<string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", Logic.Client.LoginPacket.AllSummonerData.Summoner.Name }, { "sendMessage", new Action<string, string>(Logic.Client.SendMessage) } };
 
-		public static void log(string text)
+		}
+
+		private List<Script> loadedScripts = new List<Script>();
+		private List<string> loadedScriptNamesIdentifier = new List<string>();
+		private List<string> loadedScriptNamesVisual = new List<string>();
+
+
+		Logger LogWindow = new Logger();
+
+
+		public void log(string text)
 		{ 
 			if (!LogWindow.IsVisible)
 			{
 				LogWindow.Visibility = System.Windows.Visibility.Visible;
 				LogWindow.Show();
 			}
-				
+			
 			LogWindow.Log(text);
+			
         }
 
-		private static void LogToFile(object var)
+		private void Client_onChatMessageReceived(string sender, string Message)
+		{
+			CallFunctions("onMessage", sender, Message);
+		}
+
+		private void LogToFile(object var)
 		{
 			LCLog.WriteToLog.Log(var.ToString());
 		}
 
-		public static void LoadScript(string Path, string name)
+		public void ClearConsole()
 		{
-			if (loadedScriptNames.Contains(name))
+			LogWindow.Clear();
+		}
+
+		public void LoadScript(string Path, string name)
+		{
+			if (loadedScriptNamesIdentifier.Contains(name))
 				return;
-			var skript = new Script(Path, name);
-			loadedScriptNames.Add(name);
+			var skript = new Script(Path, name, this);
 			foreach(var variable in variables.Keys)
 			{
 				skript.addVar(variable, variables[variable]);
 			}
+			skript.setup();
+			loadedScriptNamesIdentifier.Add(name);
+			loadedScriptNamesVisual.Add(skript.getName());
 			loadedScripts.Add(skript);
 		}
 
-		public static void runAll()
+		public List<string> getAllLoadedPlugins()
+		{
+			return loadedScriptNamesVisual;
+		}
+
+		public void runAll()
 		{
 			foreach(var skript in loadedScripts)
 			{
@@ -55,11 +83,18 @@ namespace LegendaryClient.Scripting_Environment
 			}
 		}
 
-		public static void CallFunctions(string funcName)
+		public void CallFunctions(string funcName)
 		{
 			foreach(var skript in loadedScripts)
 			{
 				skript.callFunc(funcName);
+			}
+		}
+		public void CallFunctions(string funcName, object par1, object par2)
+		{
+			foreach (var skript in loadedScripts)
+			{
+				skript.callFunc(funcName, par1, par2);
 			}
 		}
 	}

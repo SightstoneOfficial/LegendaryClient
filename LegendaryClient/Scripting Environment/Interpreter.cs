@@ -64,7 +64,7 @@ namespace LegendaryClient.Scripting_Environment
 			}
 			catch(Exception e)
 			{
-				return e;
+				return e.Message;
 			}
 		}
 	}
