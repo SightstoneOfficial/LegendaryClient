@@ -1796,7 +1796,6 @@
     </Content>
     <Resource Include="NONE.png" />
     <Resource Include="noise.png" />
-    <Resource Include="page6_web.jpg" />
     <Content Include="sqlite3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
