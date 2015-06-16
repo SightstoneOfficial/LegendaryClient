@@ -1,5 +1,9 @@
 ﻿#region
-
+using LegendaryClient.Patcher.Logic;
+using LegendaryClient.Patcher.Logic.Region;
+using System;
+using System.Collections.Generic;
+using System.Windows.Controls;
 #endregion
 
 namespace LegendaryClient.Patcher.Pages
@@ -9,6 +13,10 @@ namespace LegendaryClient.Patcher.Pages
     /// </summary>
     public partial class PatcherSettingsPage
     {
+        List<MainRegion> riot = new List<MainRegion>();
+        List<MainRegion> garena = new List<MainRegion>();
+        MainRegion pbe;
+        MainRegion kr;
         public PatcherSettingsPage(bool newsettings = false)
         {
             InitializeComponent();
@@ -30,6 +38,24 @@ namespace LegendaryClient.Patcher.Pages
             LCPP2P.IsChecked = Properties.Settings.Default.LCPP2P;
             AlwaysUpdate.IsChecked = Properties.Settings.Default.AlwaysUpdate;
             PatcherVolume.Value = Properties.Settings.Default.Volume;
+
+            var regions = Client.GetInstances<MainRegion>();
+            foreach (MainRegion region in regions)
+            {
+                if (region.RegionType == RegionType.Riot)
+                    riot.Add(region);
+                else if (region.RegionType == RegionType.PBE)
+                    pbe = region;
+                else if (region.RegionType == RegionType.KR)
+                    kr = region;
+                else if (region.RegionType == RegionType.Garena)
+                    garena.Add(region);
+            }
+
+            Region.Items.Add("Riot");
+            Region.Items.Add("PBE");
+            Region.Items.Add("Korea");
+            Region.Items.Add("Garena");
         }
 
         private void Version_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -50,12 +76,6 @@ namespace LegendaryClient.Patcher.Pages
             Properties.Settings.Default.Save();
         }
 
-        private void Slider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
-        {
-            Properties.Settings.Default.Volume = (int)PatcherVolume.Value;
-            Properties.Settings.Default.Save();
-        }
-
         private void LOLP2P_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
             Properties.Settings.Default.LOLP2P = (bool)LOLP2P.IsChecked;
@@ -71,6 +91,71 @@ namespace LegendaryClient.Patcher.Pages
         private void LCPP2P_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
             Properties.Settings.Default.LCPP2P = (bool)LCPP2P.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void AlwaysUpdate_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Properties.Settings.Default.AlwaysUpdate = (bool)AlwaysUpdate.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void PatcherVolume_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            Properties.Settings.Default.Volume = PatcherVolume.Value;
+            Properties.Settings.Default.Save();
+            Client.SoundPlayer.Volume = Properties.Settings.Default.Volume / 100;
+        }
+
+        private void Slider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            //Do nothing because we have to edit the LC settings and that we will do later
+        }
+
+        private void Region_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Region.SelectedIndex == -1)
+                return;
+            Properties.Settings.Default.RegionType = Region.SelectedItem.ToString();
+            Properties.Settings.Default.Save();
+            RegionName.Items.Clear();
+            RegionName.Visibility = System.Windows.Visibility.Visible;
+            if (Region.SelectedItem == "Riot")
+            {
+                foreach (MainRegion region in riot)
+                {
+                    RegionName.Items.Add(region.RegionName);
+                }
+            }
+            else if (Region.SelectedItem == "PBE")
+            {
+                RegionName.Items.Add("PBE");
+                RegionName.SelectedItem = "PBE";
+            }
+            else if (Region.SelectedItem == "Korea")
+            {
+                RegionName.Items.Add("KR");
+                RegionName.SelectedItem = "KR";
+            }
+            else if (Region.SelectedItem == "Garena")
+            {
+                foreach (MainRegion region in garena)
+                {
+                    RegionName.Items.Add(region.RegionName);
+                }
+            }
+            else
+            {
+                RegionName.SelectedIndex = -1;
+                RegionName.Visibility = System.Windows.Visibility.Hidden;
+            }
+        }
+
+        private void RegionName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (RegionName.SelectedIndex == -1)
+                return;
+            Properties.Settings.Default.RegionName = RegionName.SelectedItem.ToString();
             Properties.Settings.Default.Save();
         }
     }

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
@@ -56,6 +57,10 @@ namespace LegendaryClient.Patcher.Logic
         /// </summary>
         internal static ContentControl OverlayContainer;
 
+        /// <summary>
+        ///     Used to play sounds
+        /// </summary>
+        internal static MediaElement SoundPlayer;
 
         internal static Type CurrentPage; //Stop changing to same page
         internal static List<Page> CachedPages = new List<Page>();
@@ -70,6 +75,13 @@ namespace LegendaryClient.Patcher.Logic
         internal static async void RunAsyncOnUIThread(Action function)
         {
             await MainHolder.Dispatcher.BeginInvoke(DispatcherPriority.Input, function);
+        }
+
+        internal static List<T> GetInstances<T>()
+        {
+            return (from t in Assembly.GetExecutingAssembly().GetTypes()
+                    where t.BaseType == (typeof(T)) && t.GetConstructor(Type.EmptyTypes) != null
+                    select (T)Activator.CreateInstance(t)).ToList();
         }
 
         internal static void SwitchPage<T>(bool fade = false, params object[] args)

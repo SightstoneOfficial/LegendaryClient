@@ -38,8 +38,14 @@
     <Setting Name="AlwaysUpdate" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="Volume" Type="System.Int32" Scope="User">
+    <Setting Name="Volume" Type="System.Double" Scope="User">
       <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="RegionType" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RegionName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

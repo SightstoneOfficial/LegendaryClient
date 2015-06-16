@@ -170,12 +170,36 @@ namespace LegendaryClient.Patcher.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public int Volume {
+        public double Volume {
             get {
-                return ((int)(this["Volume"]));
+                return ((double)(this["Volume"]));
             }
             set {
                 this["Volume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RegionType {
+            get {
+                return ((string)(this["RegionType"]));
+            }
+            set {
+                this["RegionType"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string RegionName {
+            get {
+                return ((string)(this["RegionName"]));
+            }
+            set {
+                this["RegionName"] = value;
             }
         }
     }

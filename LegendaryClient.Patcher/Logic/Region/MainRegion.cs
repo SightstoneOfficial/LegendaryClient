@@ -23,6 +23,8 @@ namespace LegendaryClient.Patcher.Logic.Region
         {
             Region = Region.ToUpper();
             var t = Type.GetType("LegendaryClient.Patcher.Logic.Region." + Region);
+            if (t == null)
+                Type.GetType("LegendaryClient.Patcher.Logic.Region.Garena." + Region);
 
             return t != null ? (MainRegion)Activator.CreateInstance(t) : null;
         }
@@ -33,7 +35,6 @@ namespace LegendaryClient.Patcher.Logic.Region
         Riot,
         Garena,
         PBE,
-        KR,
-        CustomServer
+        KR
     }
 }

@@ -26,6 +26,7 @@
     </Controls:MetroWindow.RightWindowCommands>
 
     <Grid Background="#ecf0f1" ClipToBounds="True">
+        <MediaElement x:Name="Player" HorizontalAlignment="Left" Height="0" VerticalAlignment="Top" Width="0"/>
         <ContentControl x:Name="Container" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0" />
         <Grid x:Name="OverlayGrid" Panel.ZIndex="999" Visibility="Hidden">
             <Grid.RenderTransform>
