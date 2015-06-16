@@ -63,7 +63,7 @@
                         <Label Content="Region Settings:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="6" Width="966" Background="WhiteSmoke"/>
                         <ComboBox x:Name="Region" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="111,10,0,0" SelectionChanged="Region_SelectionChanged"/>
-                        <ComboBox x:Name="RegionName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="316,10,0,0" SelectionChanged="RegionName_SelectionChanged"/>
+                        <ComboBox x:Name="RegionName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="316,10,0,0" SelectionChanged="RegionName_SelectionChanged" Visibility="Hidden"/>
                     </Grid>
                 </TabItem>
                 <!--Leave this one last-->

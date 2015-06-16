@@ -17,6 +17,8 @@ namespace LegendaryClient.Patcher.Pages
         List<MainRegion> garena = new List<MainRegion>();
         MainRegion pbe;
         MainRegion kr;
+        //this name is op
+        bool doit;
         public PatcherSettingsPage(bool newsettings = false)
         {
             InitializeComponent();
@@ -37,7 +39,7 @@ namespace LegendaryClient.Patcher.Pages
             LCP2P.IsChecked = Properties.Settings.Default.LCP2P;
             LCPP2P.IsChecked = Properties.Settings.Default.LCPP2P;
             AlwaysUpdate.IsChecked = Properties.Settings.Default.AlwaysUpdate;
-            PatcherVolume.Value = Properties.Settings.Default.Volume;
+            PatcherVolume.Value = Properties.Settings.Default.Volume;            
 
             var regions = Client.GetInstances<MainRegion>();
             foreach (MainRegion region in regions)
@@ -56,6 +58,11 @@ namespace LegendaryClient.Patcher.Pages
             Region.Items.Add("PBE");
             Region.Items.Add("Korea");
             Region.Items.Add("Garena");
+            if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionType))
+            {
+                Region.SelectedItem = Properties.Settings.Default.RegionType;
+                doit = true;
+            }
         }
 
         private void Version_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -116,6 +123,7 @@ namespace LegendaryClient.Patcher.Pages
         {
             if (Region.SelectedIndex == -1)
                 return;
+            RegionName.IsEnabled = true;
             Properties.Settings.Default.RegionType = Region.SelectedItem.ToString();
             Properties.Settings.Default.Save();
             RegionName.Items.Clear();
@@ -126,16 +134,20 @@ namespace LegendaryClient.Patcher.Pages
                 {
                     RegionName.Items.Add(region.RegionName);
                 }
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName) && doit)
+                    RegionName.SelectedItem = Properties.Settings.Default.RegionName;
             }
             else if (Region.SelectedItem == "PBE")
             {
                 RegionName.Items.Add("PBE");
                 RegionName.SelectedItem = "PBE";
+                RegionName.IsEnabled = false;
             }
             else if (Region.SelectedItem == "Korea")
             {
                 RegionName.Items.Add("KR");
                 RegionName.SelectedItem = "KR";
+                RegionName.IsEnabled = false;
             }
             else if (Region.SelectedItem == "Garena")
             {
@@ -143,6 +155,8 @@ namespace LegendaryClient.Patcher.Pages
                 {
                     RegionName.Items.Add(region.RegionName);
                 }
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName) && doit)
+                    RegionName.SelectedItem = Properties.Settings.Default.RegionName;
             }
             else
             {
