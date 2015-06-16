@@ -17,8 +17,6 @@ namespace LegendaryClient.Patcher.Pages
         List<MainRegion> garena = new List<MainRegion>();
         MainRegion pbe;
         MainRegion kr;
-        //this name is op
-        bool doit;
         public PatcherSettingsPage(bool newsettings = false)
         {
             InitializeComponent();
@@ -58,10 +56,46 @@ namespace LegendaryClient.Patcher.Pages
             Region.Items.Add("PBE");
             Region.Items.Add("Korea");
             Region.Items.Add("Garena");
+            Region.SelectedIndex = -1;
             if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionType))
             {
                 Region.SelectedItem = Properties.Settings.Default.RegionType;
-                doit = true;
+                RegionName.Visibility = System.Windows.Visibility.Visible;
+                if (Region.SelectedItem == "Riot")
+                {
+                    foreach (MainRegion region in riot)
+                    {
+                        RegionName.Items.Add(region.RegionName);
+                    }
+                    if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
+                        RegionName.SelectedItem = Properties.Settings.Default.RegionName;
+                }
+                else if (Region.SelectedItem == "PBE")
+                {
+                    RegionName.Items.Add("PBE");
+                    RegionName.SelectedItem = "PBE";
+                    RegionName.IsEnabled = false;
+                }
+                else if (Region.SelectedItem == "Korea")
+                {
+                    RegionName.Items.Add("KR");
+                    RegionName.SelectedItem = "KR";
+                    RegionName.IsEnabled = false;
+                }
+                else if (Region.SelectedItem == "Garena")
+                {
+                    foreach (MainRegion region in garena)
+                    {
+                        RegionName.Items.Add(region.RegionName);
+                    }
+                    if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
+                        RegionName.SelectedItem = Properties.Settings.Default.RegionName;
+                }
+                else
+                {
+                    RegionName.SelectedIndex = -1;
+                    RegionName.Visibility = System.Windows.Visibility.Hidden;
+                }
             }
         }
 
@@ -134,7 +168,7 @@ namespace LegendaryClient.Patcher.Pages
                 {
                     RegionName.Items.Add(region.RegionName);
                 }
-                if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName) && doit)
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
                     RegionName.SelectedItem = Properties.Settings.Default.RegionName;
             }
             else if (Region.SelectedItem == "PBE")
@@ -155,7 +189,7 @@ namespace LegendaryClient.Patcher.Pages
                 {
                     RegionName.Items.Add(region.RegionName);
                 }
-                if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName) && doit)
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
                     RegionName.SelectedItem = Properties.Settings.Default.RegionName;
             }
             else
