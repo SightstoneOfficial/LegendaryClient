@@ -27,7 +27,7 @@
                         <Label Content="UpdateSettings" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                         <ComboBox x:Name="UpdateSettings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="415" Margin="260,10,0,0" SelectionChanged="Setting_SelectionChanged">
                             <Label x:Name="OnlyLoL" Content="Update only League of Legends" Tag="OnlyLOL"/>
-                            <Label x:Name="LegendaryClient" Content="Use latest Appveyor Version" Tag="LegendaryClient"/>
+                            <Label x:Name="LegendaryClient" Content="Update only what LegendaryClient Needs" Tag="LegendaryClient"/>
                         </ComboBox>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="5" Width="967"/>
                         <GridSplitter Width="5" Margin="0,-439,483,57" RenderTransformOrigin="0.5,0.5">
@@ -40,7 +40,7 @@
                                 </TransformGroup>
                             </GridSplitter.RenderTransform>
                         </GridSplitter>
-                        <Slider HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,55,0,0" Value="100" Width="415" />
+                        <Slider x:Name="PatcherVolume" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,55,0,0" Value="100" Width="415" ValueChanged="Slider_ValueChanged"/>
                         <Label Content="Patcher Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,82,0,0" Height="5" Width="966"/>
                         <GridSplitter Width="5" Margin="0,-398,483,16" RenderTransformOrigin="0.5,0.5">
@@ -53,7 +53,7 @@
                                 </TransformGroup>
                             </GridSplitter.RenderTransform>
                         </GridSplitter>
-                        <CheckBox Content="Use P2P (League of Legends) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,96,0,0"/>
+                        <CheckBox x:Name="LOLP2P" Content="Use P2P (League of Legends) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,96,0,0" MouseDown="LOLP2P_Checked"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,123,0,0" Height="5" Width="966"/>
                         <GridSplitter Width="6" Margin="0,-356,482,-25" RenderTransformOrigin="0.5,0.5">
                             <GridSplitter.RenderTransform>
@@ -67,7 +67,7 @@
                         </GridSplitter>
                         <Label Content="P2P" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,92,0,0"/>
                         <Label Content="Always Update LegendaryClient.Patcher" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,133,0,0"/>
-                        <CheckBox Content="Always Update LegendaryClient.Patcher whenever possible" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,137,0,0"/>
+                        <CheckBox x:Name="AlwaysUpdate" Content="Always Update LegendaryClient.Patcher whenever possible" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,137,0,0"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,164,0,0" Height="5" Width="966"/>
                         <GridSplitter Width="5" Margin="0,-316,483,-66" RenderTransformOrigin="0.5,0.5">
                             <GridSplitter.RenderTransform>
@@ -79,8 +79,8 @@
                                 </TransformGroup>
                             </GridSplitter.RenderTransform>
                         </GridSplitter>
-                        <CheckBox Content="Use P2P (LegendaryClient) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="475,96,0,0"/>
-                        <CheckBox Content="Use P2P (LegendaryClient.Patcher) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="675,96,0,0"/>
+                        <CheckBox x:Name="LCP2P" Content="Use P2P (LegendaryClient) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="475,96,0,0" MouseDown="LCP2P_Checked"/>
+                        <CheckBox x:Name="LCPP2P" Content="Use P2P (LegendaryClient.Patcher) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="675,96,0,0" MouseDown="LCPP2P_Checked"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="LegendaryClient">

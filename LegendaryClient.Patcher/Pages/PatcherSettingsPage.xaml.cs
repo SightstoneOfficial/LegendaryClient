@@ -19,6 +19,17 @@ namespace LegendaryClient.Patcher.Pages
                 Version.SelectedItem = Github;
             else
                 Version.SelectedItem = Appveyor;
+
+            if (Properties.Settings.Default.OnlyLOL)
+                UpdateSettings.SelectedItem = OnlyLoL;
+            else
+                UpdateSettings.SelectedItem = LegendaryClient;
+
+            LOLP2P.IsChecked = Properties.Settings.Default.LOLP2P;
+            LCP2P.IsChecked = Properties.Settings.Default.LCP2P;
+            LCPP2P.IsChecked = Properties.Settings.Default.LCPP2P;
+            AlwaysUpdate.IsChecked = Properties.Settings.Default.AlwaysUpdate;
+            PatcherVolume.Value = Properties.Settings.Default.Volume;
         }
 
         private void Version_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -27,6 +38,7 @@ namespace LegendaryClient.Patcher.Pages
                 Properties.Settings.Default.UseGithub = true;
             else
                 Properties.Settings.Default.UseGithub = false;
+            Properties.Settings.Default.Save();
         }
 
         private void Setting_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -35,6 +47,31 @@ namespace LegendaryClient.Patcher.Pages
                 Properties.Settings.Default.OnlyLOL = true;
             else
                 Properties.Settings.Default.OnlyLOL = false;
+            Properties.Settings.Default.Save();
+        }
+
+        private void Slider_ValueChanged(object sender, System.Windows.RoutedPropertyChangedEventArgs<double> e)
+        {
+            Properties.Settings.Default.Volume = (int)PatcherVolume.Value;
+            Properties.Settings.Default.Save();
+        }
+
+        private void LOLP2P_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Properties.Settings.Default.LOLP2P = (bool)LOLP2P.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void LCP2P_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Properties.Settings.Default.LCP2P = (bool)LCP2P.IsChecked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void LCPP2P_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Properties.Settings.Default.LCPP2P = (bool)LCPP2P.IsChecked;
+            Properties.Settings.Default.Save();
         }
     }
 }
