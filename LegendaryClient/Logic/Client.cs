@@ -57,7 +57,17 @@ namespace LegendaryClient.Logic
     /// </summary>
     internal static class Client
     {
-        public delegate void OnAccept(bool accept);
+		/// <summary>
+		/// Gets called when you receive a message
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="Message"></param>
+		public delegate void OnMessageReceivedPy(string sender, string Message);
+		/// <summary>
+		/// Gets called when you receive a message
+		/// </summary>
+		public static event OnMessageReceivedPy onChatMessageReceived;
+		public delegate void OnAccept(bool accept);
 
         public static event OnAccept PlayerAccepedQueue;
 
@@ -307,6 +317,8 @@ namespace LegendaryClient.Logic
 
         internal static void ChatClient_OnMessage(object sender, Message msg)
         {
+			onChatMessageReceived(msg.From.User, msg.Body);
+
             //This blocks spammers from elo bosters
             if (Client.ChatAutoBlock == null)
             {
@@ -992,15 +1004,14 @@ namespace LegendaryClient.Logic
                         if (stats.Inviter == null)
                             return;
 
-                        try
-                        {
-                            InviteInfo x = InviteData[stats.InvitationId];
-                            if (x.Inviter != null)
-                                return;
-                        }
-                        catch
-                        {
-                        }
+
+                        if (InviteData.ContainsKey(stats.InvitationId))
+                            return;
+                        InviteInfo x = InviteData[stats.InvitationId];
+
+                        if (x.Inviter != null)
+                            return;
+                        
                         MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
                             var pop = new GameInvitePopup(stats)

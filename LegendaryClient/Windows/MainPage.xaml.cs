@@ -26,6 +26,7 @@ using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Scripting_Environment;
 using Newtonsoft.Json;
 using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
@@ -134,7 +135,7 @@ namespace LegendaryClient.Windows
                 AllSummonerData playerData =
                     await RiotCalls.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
                 SummonerNameLabel.Content = playerData.Summoner.Name;
-                Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+                
 
                 SummonerActiveBoostsDTO activeBoost = await RiotCalls.GetSummonerActiveBoosts();
 
@@ -180,15 +181,19 @@ namespace LegendaryClient.Windows
                     if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + Client.Region.RegionName)))
                     {
                         Client.Dev = true;
-                        Client.UserTitleBarLabel.Content = "Dev ∙ " + Client.UserTitleBarLabel.Content;
                     }
                     CheckedDev = true;
                 }
 
                 if (Client.Dev)
                 {
-
+                    Client.UserTitleBarLabel.Content = "Dev ∙ " + playerData.Summoner.Name;
                 }
+                else
+                {
+                    Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+                }
+
                 if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
                 {
                     PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints /
@@ -861,6 +866,6 @@ namespace LegendaryClient.Windows
             ParseSpectatorGames();
         }
 
-        #endregion Featured Games
-    }
+		#endregion Featured Games
+	}
 }

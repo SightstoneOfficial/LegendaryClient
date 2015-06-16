@@ -75,6 +75,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Awesomium.Core, Version=1.7.4.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -83,6 +87,20 @@
     <Reference Include="awesomium.windows.controls, Version=1.7.4.1, Culture=neutral, PublicKeyToken=7a34e179b8b61c39, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\awesomium.windows.controls.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Modules, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.Modules.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.SQLite, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="IronPython.Wpf, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="jabber-net">
       <HintPath>..\DLLS\jabber-net.dll</HintPath>
@@ -94,6 +112,22 @@
     </Reference>
     <Reference Include="MediaToolkit">
       <HintPath>..\packages\MediaToolkit.1.0.2.0\lib\net40\MediaToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\Microsoft.Dynamic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.AspNet, Version=1.0.0.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\Microsoft.Scripting.AspNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\IronPython.2.7.5\lib\Net45\Microsoft.Scripting.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -502,6 +536,12 @@
     <Compile Include="Controls\ReplayControls\ReplayItem.xaml.cs">
       <DependentUpon>ReplayItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Scripting Environment\Interpreter.cs" />
+    <Compile Include="Scripting Environment\Logger.xaml.cs">
+      <DependentUpon>Logger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Scripting Environment\Plugin Core.cs" />
+    <Compile Include="Scripting Environment\Script.cs" />
     <Compile Include="Windows\ChampionDetailsPage.xaml.cs">
       <DependentUpon>ChampionDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -585,6 +625,9 @@
     </Compile>
     <Compile Include="Windows\SelectChampOverlay.xaml.cs">
       <DependentUpon>SelectChampOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\PluginsPage.xaml.cs">
+      <DependentUpon>PluginsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\StatusPage.xaml.cs">
       <DependentUpon>StatusPage.xaml</DependentUpon>
@@ -907,6 +950,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Scripting Environment\Logger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\ChampionDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1051,6 +1098,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\PluginsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\StatusPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1191,6 +1242,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="app.manifest" />
+    <Content Include="LIB\LIB.zip">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -1206,9 +1261,7 @@
     <Resource Include="BackTex.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="chat.png" />
     <Resource Include="Locked.png" />
-    <Resource Include="joinchat.png" />
     <Resource Include="accepted.png" />
     <Resource Include="declined.png" />
     <Content Include="BoostDlls\cg.dll">
@@ -1241,6 +1294,17 @@
     <Resource Include="trade.png" />
     <Resource Include="star.png" />
     <Resource Include="undecided.png" />
+    <Resource Include="ui\img\bar\alert.png" />
+    <Resource Include="ui\img\bar\chat.png" />
+    <Resource Include="ui\img\bar\contacts.png" />
+    <Resource Include="ui\img\menubar\home.png" />
+    <Resource Include="ui\img\menubar\logout.png" />
+    <Resource Include="ui\img\menubar\profile.png" />
+    <Resource Include="ui\img\menubar\replays.png" />
+    <Resource Include="ui\img\menubar\settings.png" />
+    <Resource Include="ui\img\menubar\shop.png" />
+    <Resource Include="ui\img\bar\plugin.png" />
+    <Resource Include="ui\img\menubar\plugins.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

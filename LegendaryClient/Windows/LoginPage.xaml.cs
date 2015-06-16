@@ -458,7 +458,10 @@ namespace LegendaryClient.Windows
             //TODO: Finish this so all calls are used
             var packetx = await RiotCalls.GetLoginDataPacketForUser();
             Client.Queues = await RiotCalls.GetAvailableQueues();
-            Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
+            if (!Client.Garena)
+                Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
+            else
+                Client.Log("Garena TW users will get stuck in GetAvailableChampions()" + Environment.NewLine + "See Issue #360");
             //var runes = await RiotCalls.GetSummonerRuneInventory(packetx.AllSummonerData.Summoner.AcctId);
             Client.StartHeartbeat();
             //var leaguePos = await RiotCalls.GetMyLeaguePositions();
@@ -556,7 +559,8 @@ namespace LegendaryClient.Windows
                 {
                     Client.ChatClient.AutoReconnect = 30;
                     Client.ChatClient.KeepAlive = 10;
-                    Client.ChatClient.NetworkHost = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
+                    //For some reason Jabber-Net sometimes cant resolve hostname, so we do it manually
+                    Client.ChatClient.NetworkHost = Dns.GetHostEntry("chat" + Client.Region.ChatName + ".lol.garenanow.com").AddressList[0].ToString();
                     Client.ChatClient.Port = 5223;
                     Client.ChatClient.Server = "pvp.net";
                     Client.ChatClient.Resource = "xiff";
