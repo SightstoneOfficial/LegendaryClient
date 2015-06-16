@@ -84,6 +84,8 @@ namespace LegendaryClient.Patcher.Logic
                     select (T)Activator.CreateInstance(t)).ToList();
         }
 
+        internal static Label regionLabel;
+
         internal static void SwitchPage<T>(bool fade = false, params object[] args)
         {
             if (CurrentPage == typeof (T))

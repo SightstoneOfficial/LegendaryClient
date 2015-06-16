@@ -61,7 +61,7 @@ namespace LegendaryClient.Patcher.Pages
             {
                 Region.SelectedItem = Properties.Settings.Default.RegionType;
                 RegionName.Visibility = System.Windows.Visibility.Visible;
-                if (Region.SelectedItem == "Riot")
+                if (Region.SelectedItem.ToString() == "Riot")
                 {
                     foreach (MainRegion region in riot)
                     {
@@ -70,19 +70,19 @@ namespace LegendaryClient.Patcher.Pages
                     if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
                         RegionName.SelectedItem = Properties.Settings.Default.RegionName;
                 }
-                else if (Region.SelectedItem == "PBE")
+                else if (Region.SelectedItem.ToString() == "PBE")
                 {
                     RegionName.Items.Add("PBE");
                     RegionName.SelectedItem = "PBE";
                     RegionName.IsEnabled = false;
                 }
-                else if (Region.SelectedItem == "Korea")
+                else if (Region.SelectedItem.ToString() == "Korea")
                 {
                     RegionName.Items.Add("KR");
                     RegionName.SelectedItem = "KR";
                     RegionName.IsEnabled = false;
                 }
-                else if (Region.SelectedItem == "Garena")
+                else if (Region.SelectedItem.ToString() == "Garena")
                 {
                     foreach (MainRegion region in garena)
                     {
@@ -162,7 +162,7 @@ namespace LegendaryClient.Patcher.Pages
             Properties.Settings.Default.Save();
             RegionName.Items.Clear();
             RegionName.Visibility = System.Windows.Visibility.Visible;
-            if (Region.SelectedItem == "Riot")
+            if (Region.SelectedItem.ToString() == "Riot")
             {
                 foreach (MainRegion region in riot)
                 {
@@ -171,19 +171,19 @@ namespace LegendaryClient.Patcher.Pages
                 if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
                     RegionName.SelectedItem = Properties.Settings.Default.RegionName;
             }
-            else if (Region.SelectedItem == "PBE")
+            else if (Region.SelectedItem.ToString() == "PBE")
             {
                 RegionName.Items.Add("PBE");
                 RegionName.SelectedItem = "PBE";
                 RegionName.IsEnabled = false;
             }
-            else if (Region.SelectedItem == "Korea")
+            else if (Region.SelectedItem.ToString() == "Korea")
             {
                 RegionName.Items.Add("KR");
                 RegionName.SelectedItem = "KR";
                 RegionName.IsEnabled = false;
             }
-            else if (Region.SelectedItem == "Garena")
+            else if (Region.SelectedItem.ToString() == "Garena")
             {
                 foreach (MainRegion region in garena)
                 {
@@ -205,6 +205,12 @@ namespace LegendaryClient.Patcher.Pages
                 return;
             Properties.Settings.Default.RegionName = RegionName.SelectedItem.ToString();
             Properties.Settings.Default.Save();
+
+            var region = Properties.Settings.Default.RegionName;
+            if (!string.IsNullOrEmpty(region))
+                Client.regionLabel.Content = "Connected to: " + region;
+            else
+                Client.regionLabel.Content = "Not connected to any regions";
         }
     }
 }

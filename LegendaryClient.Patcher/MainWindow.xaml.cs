@@ -28,7 +28,12 @@ namespace LegendaryClient.Patcher
             Client.Win = this;
             Player.Volume = Properties.Settings.Default.Volume / 100;
             Client.SoundPlayer = Player;
-
+            var region = Properties.Settings.Default.RegionName;
+            if (!string.IsNullOrEmpty(region))
+                RegionLabel.Content = "Connected to: " + region;
+            else
+                RegionLabel.Content = "Not connected to any regions";
+            Client.regionLabel = RegionLabel;
             Client.OverlayContainer = OverlayContainer;
             Client.OverlayGrid = OverlayGrid;
             OverlayContainer.Content = new PatcherSettingsPage(Properties.Settings.Default.FirstStart).Content;
