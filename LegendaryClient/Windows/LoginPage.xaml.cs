@@ -1,4 +1,4 @@
-﻿using jabber.client;
+using jabber.client;
 using jabber.connection;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.JSON;
@@ -680,7 +680,6 @@ namespace LegendaryClient.Windows
 
         private async Task garenaLogin()
         {
-            Client.Garena = true;
             WindowsIdentity winIdentity = WindowsIdentity.GetCurrent();
             WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
             if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
