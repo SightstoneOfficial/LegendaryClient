@@ -9,7 +9,7 @@ LegendaryClient
 
 Download the lastest version here: https://ci.appveyor.com/project/EddyV/legendaryclient/build/3.0.1.284/artifacts
 
-    #Making a switch from jabber-net to agsxmpp so if you do use the latest version IT MAY NOT WORK
+    Making a switch from jabber-net to agsxmpp so if you do use the latest version IT MAY NOT WORK
 
 LegendaryClient does not compile correctly under VS15. You need to manually replace the rtmp-sharp.dll in the output!
 
