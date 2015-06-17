@@ -1,4 +1,5 @@
-﻿using agsXMPP.protocol.client;
+﻿using agsXMPP;
+using agsXMPP.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
@@ -170,7 +171,7 @@ namespace LegendaryClient.Windows
                     {
                         var currentName = (string)Client.ChatItem.PlayerLabelName.Content;
                         Client.MainGrid.Children.Remove(Client.ChatItem);
-                        Client.XmppConnection.OnMessage -= Client.ChatItem.XmppConnection_OnMessage;
+                        Client.XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
                         Client.ChatItem = null;
                         Client.PlayerChatIsShown = false;
                         if (currentName != (string)item.PlayerLabelName.Content)

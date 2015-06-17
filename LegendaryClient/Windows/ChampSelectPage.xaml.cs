@@ -28,6 +28,7 @@ using Timer = System.Windows.Forms.Timer;
 using agsXMPP.protocol.client;
 using agsXMPP.protocol.x.muc;
 using agsXMPP;
+using agsXMPP.Collections;
 
 namespace LegendaryClient.Windows
 {
@@ -136,7 +137,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
             Chatroom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+            Client.XmppConnection.MessageGrabber.Add(jid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             jid = new Jid(Jid);
             Chatroom.AcceptDefaultConfiguration(jid);
@@ -187,7 +188,7 @@ namespace LegendaryClient.Windows
                 {
                     if (firstPlayer == pres.From.User)
                     {
-                        Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
+                        Client.XmppConnection.MessageGrabber.Remove(jid);
                         Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
                     }
                 }
@@ -208,10 +209,8 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg)
+        void XmppConnection_OnMessage(object sender, Message msg, object data)
         {
-            if (msg.To.Bare != jid.Bare)
-                return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Ignore the message that is always sent when joining
@@ -1519,7 +1518,7 @@ namespace LegendaryClient.Windows
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
+                Client.XmppConnection.Send(new Message(jid, MessageType.chat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }

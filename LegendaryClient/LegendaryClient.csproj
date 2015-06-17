@@ -206,7 +206,6 @@
     <Compile Include="Controls\GameScouter\TinyRuneMasteryData.xaml.cs">
       <DependentUpon>TinyRuneMasteryData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Mucmanager.cs" />
     <Compile Include="Controls\PlayerStatisticsChampSelect.xaml.cs">
       <DependentUpon>PlayerStatisticsChampSelect.xaml</DependentUpon>
     </Compile>

@@ -28,6 +28,7 @@ using RtmpSharp.Messaging;
 using agsXMPP;
 using agsXMPP.protocol.x.muc;
 using agsXMPP.protocol.client;
+using agsXMPP.Collections;
 
 namespace LegendaryClient.Windows
 {
@@ -126,7 +127,7 @@ namespace LegendaryClient.Windows
         {
             string Jid = Client.GetChatroomJid(ChatJid, Pass, false);
             newRoom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+            Client.XmppConnection.MessageGrabber.Add(jid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             jid = new Jid(ChatJid);
             newRoom.AcceptDefaultConfiguration(jid);
@@ -146,11 +147,8 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg)
+        void XmppConnection_OnMessage(object sender, Message msg, object data)
         {
-            if (msg.To.Bare != jid.Bare)
-                return;
-
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body != "This room is not anonymous")
@@ -173,7 +171,7 @@ namespace LegendaryClient.Windows
         {
             newRoom.LeaveRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name);
             //We no longer want to receive messages from teambuilder chat lobby if we want to leave that team
-            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
+            Client.XmppConnection.MessageGrabber.Remove(jid);
             Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
         }
 
@@ -1021,7 +1019,7 @@ namespace LegendaryClient.Windows
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
+                Client.XmppConnection.Send(new Message(jid, MessageType.chat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
             }
             else if (connectedToChat == false)

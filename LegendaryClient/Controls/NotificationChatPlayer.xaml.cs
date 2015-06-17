@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Media.Animation;
 using LegendaryClient.Logic;
+using agsXMPP;
 
 #endregion
 
@@ -50,7 +51,7 @@ namespace LegendaryClient.Controls
             if (Client.ChatItem != null)
             {
                 Client.MainGrid.Children.Remove(Client.ChatItem);
-                Client.XmppConnection.OnMessage -= Client.ChatItem.XmppConnection_OnMessage;
+                Client.XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
                 Client.ChatItem = null;
             }
 

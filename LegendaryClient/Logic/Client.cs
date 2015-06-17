@@ -307,12 +307,14 @@ namespace LegendaryClient.Logic
 
         internal static void XmppConnection_OnMessage(object sender, agsXMPP.protocol.client.Message msg)
         {
+
+            onChatMessageReceived(msg.From.User, msg.Body);
             //This means that it is not for the user
+            Log(JsonConvert.SerializeObject(msg));
             if (!msg.To.User.Contains(LoginPacket.AllSummonerData.Summoner.Name))
                 return;
 
 
-			onChatMessageReceived(msg.From.User, msg.Body);
 
             //This blocks spammers from elo bosters
             if (Client.ChatAutoBlock == null)
@@ -358,68 +360,16 @@ namespace LegendaryClient.Logic
 
         internal static bool loadedGroups = false;
 
-        internal static void XmppConnectionConnect()
+        internal static void ChatClientConnect(object sender)
         {
             loadedGroups = false;
             Groups.Add(new Group("Online"));
 
             //Get all groups
-            //var manager = sender as RosterManager;
-            RosterIq riq = new RosterIq();
-            /*
-            foreach (RosterItem item in items)
+            var manager = sender as RosterManager;
+            if (manager != null)
             {
-
-            }
-            //*/
-            if (riq != null)
-            {
-                RosterItem[] items = riq.Query.GetRoster();
-                var stringHackOne = new List<string>(items.ToString().Split(new[] { "@pvp.net=" }, StringSplitOptions.None));
-                stringHackOne.RemoveAt(0);
-                foreach (
-                    string Parse in
-                        stringHackOne.Select(stringHack => Regex.Split(stringHack, @"</item>,"))
-                            .Select(StringHackTwo => StringHackTwo[0]))
-                {
-                    string temp;
-                    if (!Parse.Contains("</item>"))
-                        temp = Parse + "</item>";
-                    else
-                        temp = Parse;
-                    var xmlDocument = new XmlDocument();
-                    xmlDocument.LoadXml(temp);
-                    string PlayerJson = JsonConvert.SerializeXmlNode(xmlDocument).Replace("#", "").Replace("@", "");
-                    try
-                    {
-                        if (PlayerJson.Contains(":{\"priority\":"))
-                        {
-                            RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
-
-                            if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
-                                PlayerNote.Add(root.item.name, root.item.note);
-
-                            if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
-                                Groups.Add(new Group(root.item.group.text));
-                        }
-                        else
-                        {
-                            RootObject2 root = JsonConvert.DeserializeObject<RootObject2>(PlayerJson);
-
-                            if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
-                                PlayerNote.Add(root.item.name, root.item.note);
-
-                            if (root.item.group != "**Default" && Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
-                                Groups.Add(new Group(root.item.group));
-                        }
-                    }
-                    catch
-                    {
-                        Log("Can't load friends", "ERROR");
-                    }
-
-                
-                /*
+                string ParseString = manager.ToString();
                 var stringHackOne = new List<string>(ParseString.Split(new[] { "@pvp.net=" }, StringSplitOptions.None));
                 stringHackOne.RemoveAt(0);
                 foreach (
@@ -462,13 +412,47 @@ namespace LegendaryClient.Logic
                     {
                         Log("Can't load friends", "ERROR");
                     }
-                    //*/
                 }
             }
 
             Groups.Add(new Group("Offline"));
             SetChatHover();
             loadedGroups = true;
+            Client.XmppConnection.OnRosterEnd -= Client.ChatClientConnect; //only update groups on login
+        }
+
+        internal static void RostManager_OnRosterItem(object sender, RosterItem ri)
+        {
+            UpdatePlayers = true;
+            if (AllPlayers.ContainsKey(ri.Jid.User))
+                return;
+
+            var player = new ChatPlayerItem
+            {
+                Id = ri.Jid.User,
+                Group = "Online"
+            };
+            //using (XmlReader reader = XmlReader.Create(new StringReader(ri.OuterXml)))
+            using (XmlReader reader = XmlReader.Create(new StringReader(ri.ToString())))
+            {
+                while (reader.Read())
+                {
+                    if (!reader.IsStartElement())
+                        continue;
+
+                    switch (reader.Name)
+                    {
+                        case "group":
+                            reader.Read();
+                            string TempGroup = reader.Value;
+                            if (TempGroup != "**Default")
+                                player.Group = TempGroup;
+                            break;
+                    }
+                }
+            }
+            player.Username = ri.Name;
+            AllPlayers.Add(ri.Jid.User, player);
         }
 
         internal static void SendMessage(string User, string Message)
