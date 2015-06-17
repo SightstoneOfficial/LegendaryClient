@@ -20,6 +20,7 @@ namespace LegendaryClient.Controls
     public partial class GroupChatItem
     {
         private readonly MucManager newRoom;
+        private string roomName;
 
         public GroupChatItem(string id, string title)
         {
@@ -37,13 +38,28 @@ namespace LegendaryClient.Controls
             {
                 return;
             }
-            newRoom.OnRoomMessage += GroupXmppConnection_OnMessage;
+            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             newRoom.OnParticipantJoin += GroupXmppConnection_OnParticipantJoin;
             newRoom.OnParticipantLeave += GroupXmppConnection_OnParticipantLeave;
             newRoom.AcceptDefaultConfiguration(new Jid(ChatId));
+            roomName = ChatId;
             newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
 
             RefreshRoom();
+        }
+
+        void XmppConnection_OnMessage(object sender, Message msg)
+        {
+            if(msg.To.Resource.Contains(roomName))
+            {
+                GroupXmppConnection_OnMessage(sender, msg);
+            }
+        }
+
+        void XmppConnection_OnPresence(object sender, Presence pres)
+        {
+            
         }
 
         public string ChatId { get; set; }
@@ -135,7 +151,7 @@ namespace LegendaryClient.Controls
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            newRoom.OnRoomMessage -= GroupXmppConnection_OnMessage;
+            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
             newRoom.OnParticipantJoin -= GroupXmppConnection_OnParticipantJoin;
             newRoom.OnParticipantLeave -= GroupXmppConnection_OnParticipantLeave;
             newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
@@ -144,7 +160,7 @@ namespace LegendaryClient.Controls
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            newRoom.OnRoomMessage -= GroupXmppConnection_OnMessage;
+            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
             newRoom.OnParticipantJoin -= GroupXmppConnection_OnParticipantJoin;
             newRoom.OnParticipantLeave -= GroupXmppConnection_OnParticipantLeave;
             newRoom.LeaveRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
@@ -168,7 +184,7 @@ namespace LegendaryClient.Controls
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
-            newRoom.PublicMessage(ChatTextBox.Text);
+            Client.XmppConnection.Send(new Message(new Jid(roomName), ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;
             ChatText.ScrollToEnd();
         }

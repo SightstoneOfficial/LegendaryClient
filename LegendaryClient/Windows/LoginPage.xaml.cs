@@ -18,8 +18,6 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
-using System.SecUrity.Cryptography;
-using System.SecUrity.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,6 +40,8 @@ using Point = System.Windows.Point;
 using RiotPatcher = LegendaryClient.Logic.Patcher.RiotPatcher;
 using agsXMPP.protocol.iq.roster;
 using agsXMPP.protocol.client;
+using System.Security.Principal;
+using System.Security.Cryptography;
 
 namespace LegendaryClient.Windows
 {
@@ -567,6 +567,7 @@ namespace LegendaryClient.Windows
                 //Client.RostManager.OnRosterEnd += Client.XmppConnectionConnect;
 
                 Client.PresManager = new PresenceManager(Client.XmppConnection);
+                Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
 
                 //Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
                 /*

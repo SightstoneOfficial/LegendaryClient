@@ -26,6 +26,8 @@ using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using ListViewItem = System.Windows.Controls.ListViewItem;
 using Timer = System.Windows.Forms.Timer;
 using agsXMPP.protocol.client;
+using agsXMPP.protocol.x.muc;
+using agsXMPP;
 
 namespace LegendaryClient.Windows
 {
@@ -41,7 +43,7 @@ namespace LegendaryClient.Windows
         private PotentialTradersDTO CanTradeWith;
         private List<ChampionDTO> ChampList;
         private List<ChampionBanInfoDTO> ChampionsForBan;
-        private Room Chatroom;
+        private MucManager Chatroom;
         private Timer CountdownTimer;
         private bool HasLaunchedGame;
         private bool HasLockedIn;
@@ -128,16 +130,16 @@ namespace LegendaryClient.Windows
         };
 
         #endregion champs
-
+        private readonly Jid jid;
         public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
             var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
-            Chatroom = Client.ConfManager.GetRoom(new Jid(Jid));
-            Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            Chatroom = new MucManager(Client.XmppConnection);
             Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
             Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
-            Chatroom.Join(RoomPassword);
+            jid = new Jid(Jid);
+            Chatroom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, RoomPassword);
         }
 
         public ChampSelectPage Load(Page previousPage)
@@ -1424,7 +1426,7 @@ namespace LegendaryClient.Windows
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                Chatroom.PublicMessage(ChatTextBox.Text);
+                Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }

@@ -23,6 +23,8 @@ using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Riot.Team;
 using RtmpSharp.Messaging;
 using agsXMPP;
+using agsXMPP.protocol.x.muc;
+using agsXMPP.protocol.client;
 
 namespace LegendaryClient.Windows
 {
@@ -32,7 +34,8 @@ namespace LegendaryClient.Windows
     public partial class TeamQueuePage
     {
         //long InviteId = 0;
-        private Room newRoom;
+        private MucManager newRoom;
+        private Jid jid;
         private bool IsOwner;
         private Button LastSender;
         private int i;
@@ -96,11 +99,11 @@ namespace LegendaryClient.Windows
                     Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.ToLower(),
                         ChatPrefixes.Arranging_Game);
                 string Jid = Client.GetChatroomJid(ObfuscatedName, CurrentLobby.ChatKey, false);
-                newRoom = Client.ConfManager.GetRoom(new Jid(Jid));
-                newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                newRoom = new MucManager(Client.XmppConnection);
+                jid = new Jid(Jid);
                 newRoom.OnRoomMessage += newRoom_OnRoomMessage;
                 newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-                newRoom.Join(CurrentLobby.ChatKey);
+                newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, CurrentLobby.ChatKey);
 
                 RenderLobbyData();
             }
@@ -537,10 +540,10 @@ namespace LegendaryClient.Windows
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (Client.Filter)
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                                   Environment.NewLine;
                     else
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     ChatText.ScrollToEnd();
                 }

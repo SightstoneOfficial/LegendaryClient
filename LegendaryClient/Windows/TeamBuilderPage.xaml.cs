@@ -26,6 +26,8 @@ using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 using RtmpSharp.Messaging;
 using agsXMPP;
+using agsXMPP.protocol.x.muc;
+using agsXMPP.protocol.client;
 
 namespace LegendaryClient.Windows
 {
@@ -48,7 +50,8 @@ namespace LegendaryClient.Windows
         internal List<int> availableSpells = new List<int>();
         internal bool connectedToChat = false;
         private long inQueueTimer;
-        private Room newRoom;
+        private MucManager newRoom;
+        private Jid jid;
 
         /// <summary>
         ///     TOP
@@ -122,17 +125,17 @@ namespace LegendaryClient.Windows
         private void ConnectToChat(string ChatJid, string Pass)
         {
             string Jid = Client.GetChatroomJid(ChatJid, Pass, false);
-            newRoom = Client.ConfManager.GetRoom(new Jid(Jid));
-            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            newRoom = new MucManager(Client.XmppConnection);
             newRoom.OnRoomMessage += newRoom_OnRoomMessage;
             newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-            newRoom.Join(Pass);
+            jid = new Jid(ChatJid);
+            newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, Pass);
             connectedToChat = true;
         }
 
         private void LeaveChat()
         {
-            newRoom.Leave("Player Quit TeamBuilder Lobby");
+            newRoom.LeaveRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name);
             //We no longer want to receive messages from teambuilder chat lobby if we want to leave that team
             newRoom.OnRoomMessage -= newRoom_OnRoomMessage;
             newRoom.OnParticipantJoin -= newRoom_OnParticipantJoin;
@@ -984,10 +987,10 @@ namespace LegendaryClient.Windows
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (Client.Filter)
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                                   Environment.NewLine;
                     else
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 }
             }));
@@ -1012,7 +1015,7 @@ namespace LegendaryClient.Windows
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                newRoom.PublicMessage(ChatTextBox.Text);
+                Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
                 ChatTextBox.Text = "";
             }
             else if (connectedToChat == false)

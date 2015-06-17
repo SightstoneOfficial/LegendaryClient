@@ -17,6 +17,7 @@ using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
 using agsXMPP;
 using agsXMPP.protocol.client;
+using agsXMPP.protocol.x.muc;
 
 namespace LegendaryClient.Windows
 {
@@ -31,7 +32,8 @@ namespace LegendaryClient.Windows
         private bool IsOwner;
         private bool LaunchedTeamSelect;
         private double OptomisticLock;
-        private Room newRoom;
+        private MucManager newRoom;
+        private Jid jid;
 
         public FactionsGameLobbyPage()
         {
@@ -94,11 +96,11 @@ namespace LegendaryClient.Windows
                         Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id),
                             ChatPrefixes.Arranging_Practice);
                     string Jid = Client.GetChatroomJid(obfuscatedName, dto.RoomPassword, false);
-                    newRoom = Client.ConfManager.GetRoom(new Jid(Jid));
-                    newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                    newRoom = new MucManager(Client.XmppConnection);
                     newRoom.OnRoomMessage += newRoom_OnRoomMessage;
                     newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-                    newRoom.Join(dto.RoomPassword);
+                    jid = new Jid(dto.RoomName);
+                    newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, dto.RoomPassword);
                 }
                 switch (dto.GameState)
                 {
@@ -217,7 +219,7 @@ namespace LegendaryClient.Windows
                 tr.Text = ChatTextBox.Text + Environment.NewLine;
 
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            newRoom.PublicMessage(ChatTextBox.Text);
+            Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
             ChatTextBox.Text = "";
         }
 

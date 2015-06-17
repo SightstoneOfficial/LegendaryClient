@@ -16,12 +16,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using LegendaryClient.Properties;
-using System.SecUrity.Principal;
 using System.Windows.Threading;
 using System.Net;
 using Microsoft.Win32;
 using LegendaryClient.Logic.Riot;
 using agsXMPP.protocol.client;
+using System.Security.Principal;
 
 namespace LegendaryClient
 {
