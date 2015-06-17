@@ -307,6 +307,11 @@ namespace LegendaryClient.Logic
 
         internal static void XmppConnection_OnMessage(object sender, agsXMPP.protocol.client.Message msg)
         {
+            //This means that it is not for the user
+            if (!msg.To.User.Contains(LoginPacket.AllSummonerData.Summoner.Name))
+                return;
+
+
 			onChatMessageReceived(msg.From.User, msg.Body);
 
             //This blocks spammers from elo bosters

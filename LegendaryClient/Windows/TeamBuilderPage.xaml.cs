@@ -126,18 +126,42 @@ namespace LegendaryClient.Windows
         {
             string Jid = Client.GetChatroomJid(ChatJid, Pass, false);
             newRoom = new MucManager(Client.XmppConnection);
-            newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
             jid = new Jid(ChatJid);
+            newRoom.AcceptDefaultConfiguration(jid);
             newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, Pass);
             connectedToChat = true;
+        }
+
+        void XmppConnection_OnMessage(object sender, Message msg)
+        {
+            if (msg.To.Bare != jid.Bare)
+                return;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if (msg.Body != "This room is not anonymous")
+                {
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.From.Resource + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    if (Client.Filter)
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                                  Environment.NewLine;
+                    else
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                }
+            }));
         }
 
         private void LeaveChat()
         {
             newRoom.LeaveRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name);
             //We no longer want to receive messages from teambuilder chat lobby if we want to leave that team
-            newRoom.OnRoomMessage -= newRoom_OnRoomMessage;
+            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
             newRoom.OnParticipantJoin -= newRoom_OnParticipantJoin;
         }
 
@@ -973,26 +997,6 @@ namespace LegendaryClient.Windows
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-            }));
-        }
-
-        private void newRoom_OnRoomMessage(object sender, Message msg)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                if (msg.Body != "This room is not anonymous")
-                {
-                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = msg.From.Resource + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
-                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    if (Client.Filter)
-                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
-                                  Environment.NewLine;
-                    else
-                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                }
             }));
         }
 

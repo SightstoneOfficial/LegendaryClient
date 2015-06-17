@@ -51,10 +51,28 @@ namespace LegendaryClient.Controls
 
         void XmppConnection_OnMessage(object sender, Message msg)
         {
-            if(msg.To.Resource.Contains(roomName))
+            if (msg.To.Bare != roomName)
+                return;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                GroupXmppConnection_OnMessage(sender, msg);
-            }
+                if (msg.Body == "This room is not anonymous")
+                    return;
+
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = msg.From.Resource + ": "
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+
+                tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", string.Empty) + Environment.NewLine
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+
+                ChatText.ScrollToEnd();
+            }));
         }
 
         void XmppConnection_OnPresence(object sender, Presence pres)
@@ -123,29 +141,6 @@ namespace LegendaryClient.Controls
                 x.SIcon.Source = Client.GetImage(UriSource);
                 ParticipantList.Items.Add(x);
                 ParticipantList.Items.Refresh();
-            }));
-        }
-
-        public void GroupXmppConnection_OnMessage(object sender, Message msg)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                if (msg.Body == "This room is not anonymous")
-                    return;
-
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                {
-                    Text = msg.From.Resource + ": "
-                };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
-
-                tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                {
-                    Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", string.Empty) + Environment.NewLine
-                };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-
-                ChatText.ScrollToEnd();
             }));
         }
 

@@ -41,28 +41,17 @@ namespace LegendaryClient.Windows
             RoomJid = Client.GetChatroomJid(statistics.RoomName, statistics.RoomPassword, false);
             
             newRoom = new MucManager(Client.XmppConnection);
-            newRoom.OnRoomMessage += newRoom_OnRoomMessage;
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
             newRoom.AcceptDefaultConfiguration(new Jid(RoomJid));
             newRoom.JoinRoom(new Jid(RoomJid), Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
-        private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                {
-                    Text = participant.Nick + " joined the room." + Environment.NewLine
-                };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            if (msg.To.Bare != RoomJid)
+                return;
 
-                ChatText.ScrollToEnd();
-            }));
-        }
-
-        private void newRoom_OnRoomMessage(object sender, Message msg)
-        {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body == "This room is not anonymous")
@@ -81,6 +70,20 @@ namespace LegendaryClient.Windows
                     tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+
+                ChatText.ScrollToEnd();
+            }));
+        }
+
+        private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
+        {
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = participant.Nick + " joined the room." + Environment.NewLine
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
 
                 ChatText.ScrollToEnd();
             }));
