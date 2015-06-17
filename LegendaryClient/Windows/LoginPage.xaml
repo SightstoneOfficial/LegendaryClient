@@ -43,7 +43,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid x:Name="MouseGrid" Margin="0" Background="Black">
+    <Grid x:Name="MouseGrid" Margin="0" Background="Black" Loaded="MouseGrid_Loaded">
         <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-2"
                Stretch="UniformToFill" />
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
@@ -75,7 +75,7 @@
                     <CheckBox x:Name="RememberPasswordCheckbox" Margin="0,146,0,0" HorizontalAlignment="Right"
                                   VerticalAlignment="Top" Content="Remember Password" Foreground="White" />
                     <CheckBox x:Name="AutoLoginCheckBox" Margin="0,146,0,0" HorizontalAlignment="Left"
-                          VerticalAlignment="Top" Content="Auto-Login" Foreground="White" />
+                          VerticalAlignment="Top" Content="Auto-Login" Foreground="White" Checked="AutoLoginCheckBox_CheckChanged" Unchecked="AutoLoginCheckBox_CheckChanged" />
                     <CheckBox x:Name="invisibleLoginCheckBox" Margin="98,146,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Sign-in invisible" Foreground="White" />
                     <Button x:Name="LoginButton" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Top"

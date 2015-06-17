@@ -275,9 +275,6 @@ namespace LegendaryClient.Windows
             if (string.IsNullOrWhiteSpace(Settings.Default.SavedPassword) ||
                 string.IsNullOrWhiteSpace(Settings.Default.Region) || !Settings.Default.AutoLogin)
                 return;
-
-            AutoLoginCheckBox.IsChecked = true;
-            LoginButton_Click(null, null);
         }
 
         private void LoginPic_MediaEnded(object sender, RoutedEventArgs e)
@@ -372,9 +369,6 @@ namespace LegendaryClient.Windows
                 Settings.Default.SavedPassword = "";
 
             Settings.Default.SavedUsername = RememberUsernameCheckbox.IsChecked == true ? LoginUsernameBox.Text : "";
-
-            if (AutoLoginCheckBox.IsChecked != null)
-                Settings.Default.AutoLogin = (bool)AutoLoginCheckBox.IsChecked;
 
             if (invisibleLoginCheckBox.IsChecked != null)
                 Settings.Default.incognitoLogin = (bool)invisibleLoginCheckBox.IsChecked;
@@ -846,6 +840,50 @@ namespace LegendaryClient.Windows
             s1 = s1.Replace("=", "%3D");
 
             return s1;
+        }
+
+        private void AutoLoginCheckBox_CheckChanged(object sender, RoutedEventArgs e)
+        {
+            if ((AutoLoginCheckBox.IsChecked == true && RememberUsernameCheckbox.IsChecked == true && RememberPasswordCheckbox.IsChecked == true) || Client.Garena || (string)UpdateRegionComboBox.SelectedValue == "Garena")
+            {
+                Settings.Default.AutoLogin = true;
+            }
+            else
+            {
+                RememberPasswordCheckbox.IsChecked = true;
+                RememberUsernameCheckbox.IsChecked = true;
+                Settings.Default.AutoLogin = true;
+            }
+
+            Settings.Default.Save();
+        }
+
+        private void MouseGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.BeginInvoke(new ThreadStart(() => {
+                AutoLoginCheckBox.IsChecked = Settings.Default.AutoLogin;
+            }), DispatcherPriority.Input);
+
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 3000; 
+            timer.Elapsed += (s, a) =>
+            {
+                timer.Stop();
+
+                bool autoLogin = false;
+                Dispatcher.Invoke(() => {
+                    autoLogin = (bool)AutoLoginCheckBox.IsChecked;
+                });
+
+                if (autoLogin)
+                {
+                    Client.Log("Auto login");
+                    this.Dispatcher.BeginInvoke(new ThreadStart(() => {
+                        LoginButton_Click(null, null);
+                    }), DispatcherPriority.Input);
+                }
+            };
+            timer.Start();
         }
     }
 }
