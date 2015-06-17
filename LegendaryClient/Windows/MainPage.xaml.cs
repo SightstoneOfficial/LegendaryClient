@@ -37,6 +37,7 @@ using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
+using agsXMPP.protocol.client;
 
 #endregion
 
@@ -67,7 +68,7 @@ namespace LegendaryClient.Windows
             };
             update.Elapsed +=
                 (o, e) =>
-                    Client.XmppConnection.Presence(Client.CurrentPresence, Client.GetPresence(), Client.presenceStatus, 0);
+                    Client.XmppConnection.Send(new Presence(Client.presenceStatus, Client.GetPresence(), 0));
             timer.Interval = (5000);
             //timer.Start();
 

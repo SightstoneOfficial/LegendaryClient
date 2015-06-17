@@ -36,9 +36,9 @@ namespace LegendaryClient.Windows
 
         public async void RefreshBrowser()
         {
-            var System.Uri = await RiotCalls.GetStoreUrl();
-            ShopBrowser.Source = new System.Uri(Uri);
-            Debug.WriteLine(Uri);
+            var uri = await RiotCalls.GetStoreUrl();
+            ShopBrowser.Source = new System.Uri(uri);
+            Debug.WriteLine(uri);
             //Client.Log(await RiotCalls.GetStoreUrl());
 
         }
