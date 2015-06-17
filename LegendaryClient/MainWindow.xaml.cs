@@ -44,6 +44,7 @@ namespace LegendaryClient
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             //Keep this this way that way the auto updator knows what to update
             var ExecutingDirectory = Directory.GetParent(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+            Client.XmppConnection = new agsXMPP.XmppClientConnection();
 
             Client.ExecutingDirectory = ExecutingDirectory.ToString().Replace("file:\\", "");
             var key = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("LegendaryClient");
