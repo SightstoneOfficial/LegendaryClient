@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LegendaryClient.Scripting_Environment"
         mc:Ignorable="d"
-        Title="Logger" Height="336" Width="341">
+        Title="Logger" Height="387" Width="458">
 	<Grid>
-		<TextBox x:Name="textBox" HorizontalAlignment="Left" Height="305" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="333" />
+		<TextBox x:Name="textBox" HorizontalAlignment="Left" Height="356" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="450" />
 	</Grid>
 </Window>

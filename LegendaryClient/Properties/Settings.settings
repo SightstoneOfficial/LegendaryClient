@@ -92,7 +92,7 @@
     <Setting Name="DisableClientSound" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="FavouriteChamps" Type="System.Int32[]" Scope="User">
+    <Setting Name="FavoUriteChamps" Type="System.Int32[]" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="UpgradeRequired" Type="System.Boolean" Scope="User">

@@ -1,7 +1,4 @@
-﻿using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Controls.TeamBuilder;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
@@ -28,6 +25,9 @@ using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 using RtmpSharp.Messaging;
+using agsXMPP;
+using agsXMPP.protocol.x.muc;
+using agsXMPP.protocol.client;
 
 namespace LegendaryClient.Windows
 {
@@ -50,7 +50,8 @@ namespace LegendaryClient.Windows
         internal List<int> availableSpells = new List<int>();
         internal bool connectedToChat = false;
         private long inQueueTimer;
-        private Room newRoom;
+        private MucManager newRoom;
+        private Jid jid;
 
         /// <summary>
         ///     TOP
@@ -119,22 +120,22 @@ namespace LegendaryClient.Windows
         /// <summary>
         ///     Use this to connect to chat
         /// </summary>
-        /// <param name="ChatJID"></param>
+        /// <param name="ChatJid"></param>
         /// <param name="Pass"></param>
-        private void ConnectToChat(string ChatJID, string Pass)
+        private void ConnectToChat(string ChatJid, string Pass)
         {
-            string JID = Client.GetChatroomJID(ChatJID, Pass, false);
-            newRoom = Client.ConfManager.GetRoom(new JID(JID));
-            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            string Jid = Client.GetChatroomJid(ChatJid, Pass, false);
+            newRoom = new MucManager(Client.XmppConnection);
             newRoom.OnRoomMessage += newRoom_OnRoomMessage;
             newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-            newRoom.Join(Pass);
+            jid = new Jid(ChatJid);
+            newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, Pass);
             connectedToChat = true;
         }
 
         private void LeaveChat()
         {
-            newRoom.Leave("Player Quit TeamBuilder Lobby");
+            newRoom.LeaveRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name);
             //We no longer want to receive messages from teambuilder chat lobby if we want to leave that team
             newRoom.OnRoomMessage -= newRoom_OnRoomMessage;
             newRoom.OnParticipantJoin -= newRoom_OnParticipantJoin;
@@ -447,9 +448,9 @@ namespace LegendaryClient.Windows
                 var tbc = new TeamBuilderChoose();
                 tbc.PlayerName.Content = slot.summonerName;
                 tbc.PlayerName.Visibility = Visibility.Visible;
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                     champions.GetChampion(slot.championId).iconPath);
-                tbc.Champion.Source = Client.GetImage(uriSource);
+                tbc.Champion.Source = Client.GetImage(UriSource);
                 tbc.Role.Items.Add(new Item(slot.role));
                 tbc.Role.SelectedIndex = 0;
                 tbc.Role.IsEnabled = false;
@@ -457,13 +458,13 @@ namespace LegendaryClient.Windows
                 tbc.Position.SelectedIndex = 0;
                 tbc.Position.IsEnabled = false;
                 tbc.Position.Visibility = Visibility.Visible;
-                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName(slot.spell1Id));
-                tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
+                tbc.SummonerSpell1Image.Source = Client.GetImage(UriSource);
                 tbc.SummonerSpell1.Visibility = Visibility.Visible;
-                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName(slot.spell2Id));
-                tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
+                tbc.SummonerSpell2Image.Source = Client.GetImage(UriSource);
                 tbc.SummonerSpell2.Visibility = Visibility.Visible;
                 if (slot.slotId == teambuilderSlotId)
                 {
@@ -511,17 +512,17 @@ namespace LegendaryClient.Windows
                 var tbc = new TeamBuilderPlayer();
                 tbc.Height = 50;
                 tbc.PlayerName.Content = slot.summonerName;
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                     champions.GetChampion(slot.championId).iconPath);
-                tbc.Champion.Source = Client.GetImage(uriSource);
+                tbc.Champion.Source = Client.GetImage(UriSource);
                 tbc.Role.Content = slot.role;
                 tbc.Position.Content = slot.position;
-                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName(slot.spell1Id));
-                tbc.SummonerSpell1Image.Source = Client.GetImage(uriSource);
-                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                tbc.SummonerSpell1Image.Source = Client.GetImage(UriSource);
+                UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName(slot.spell2Id));
-                tbc.SummonerSpell2Image.Source = Client.GetImage(uriSource);
+                tbc.SummonerSpell2Image.Source = Client.GetImage(UriSource);
                 PlayerListView.Items.Insert(slot.slotId, tbc);
             }
             //just for now, need2know what other statuses are there
@@ -606,12 +607,12 @@ namespace LegendaryClient.Windows
             {
                 TeamPlayer.Champion.Source = champions.GetChampion(ChampionId).icon;
             }
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                 SummonerSpell.GetSpellImageName(spell1));
-            TeamPlayer.SummonerSpell1Image.Source = Client.GetImage(uriSource);
-            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+            TeamPlayer.SummonerSpell1Image.Source = Client.GetImage(UriSource);
+            UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                 SummonerSpell.GetSpellImageName(spell2));
-            TeamPlayer.SummonerSpell2Image.Source = Client.GetImage(uriSource);
+            TeamPlayer.SummonerSpell2Image.Source = Client.GetImage(UriSource);
         }
 
 
@@ -686,9 +687,9 @@ namespace LegendaryClient.Windows
 
         private void LockIn_Click(object sender, RoutedEventArgs e)
         {
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                 champions.GetChampion(ChampionId).iconPath);
-            TeamPlayer.Champion.Source = Client.GetImage(uriSource);
+            TeamPlayer.Champion.Source = Client.GetImage(UriSource);
             ChampAndSkinGrid.Visibility = Visibility.Hidden;
         }
 
@@ -901,9 +902,9 @@ namespace LegendaryClient.Windows
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             champions Champion = champions.GetChampion(ChampionId);
 
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
+            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
 
-            skinImage.Source = Client.GetImage(uriSource);
+            skinImage.Source = Client.GetImage(UriSource);
             skinImage.Width = 191;
             skinImage.Stretch = Stretch.UniformToFill;
             item.Tag = "0:" + Champion.id;
@@ -920,9 +921,9 @@ namespace LegendaryClient.Windows
                         {
                             item = new ListViewItem();
                             skinImage = new Image();
-                            uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                            UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                                 championSkins.GetSkin(skin.SkinId).portraitPath);
-                            skinImage.Source = Client.GetImage(uriSource);
+                            skinImage.Source = Client.GetImage(UriSource);
                             skinImage.Width = 191;
                             skinImage.Stretch = Stretch.UniformToFill;
                             item.Tag = skin.SkinId;
@@ -947,9 +948,9 @@ namespace LegendaryClient.Windows
             fadingAnimation.Duration = new Duration(TimeSpan.FromSeconds(0.2));
             fadingAnimation.Completed += (eSender, eArgs) =>
             {
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                     champions.GetChampion((int)item.Tag).splashPath);
-                ChampAndSkinBackgroundImage.Source = Client.GetImage(uriSource);
+                ChampAndSkinBackgroundImage.Source = Client.GetImage(UriSource);
                 fadingAnimation = new DoubleAnimation();
                 fadingAnimation.From = 0;
                 fadingAnimation.To = 1;
@@ -986,10 +987,10 @@ namespace LegendaryClient.Windows
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (Client.Filter)
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                                   Environment.NewLine;
                     else
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 }
             }));
@@ -1014,7 +1015,7 @@ namespace LegendaryClient.Windows
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                newRoom.PublicMessage(ChatTextBox.Text);
+                Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
                 ChatTextBox.Text = "";
             }
             else if (connectedToChat == false)
@@ -1037,10 +1038,10 @@ namespace LegendaryClient.Windows
                 champImage.Height = 64;
                 champImage.Width = 64;
                 champImage.Margin = new Thickness(5, 5, 5, 5);
-                var uriSource =
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + Spell + ".png"),
+                var UriSource =
+                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + Spell + ".png"),
                         UriKind.Absolute);
-                champImage.Source = new BitmapImage(uriSource);
+                champImage.Source = new BitmapImage(UriSource);
                 champImage.Tag = (int)Spell;
                 SummonerSpellListView.Items.Add(champImage);
             }
@@ -1055,19 +1056,19 @@ namespace LegendaryClient.Windows
                 var item = (Image)SummonerSpellListView.SelectedItem;
                 int spellId = Convert.ToInt32(item.Tag);
                 var spellName = (NameToImage)spellId;
-                var uriSource =
-                    new Uri(
+                var UriSource =
+                    new System.Uri(
                         Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spellName + ".png"),
                         UriKind.Absolute);
                 if (SelectedSpell1 == 0)
                 {
-                    SummonerSpell1.Source = new BitmapImage(uriSource);
+                    SummonerSpell1.Source = new BitmapImage(UriSource);
                     SummonerSpellListView.Items.Remove(item);
                     SelectedSpell1 = spellId;
                 }
                 else
                 {
-                    SummonerSpell2.Source = new BitmapImage(uriSource);
+                    SummonerSpell2.Source = new BitmapImage(UriSource);
                     SelectSpells(SelectedSpell1, spellId);
                     SelectedSpell1 = 0;
                     SpellsGrid.Visibility = Visibility.Hidden;

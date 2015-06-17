@@ -36,15 +36,15 @@ namespace LegendaryClient.Windows
 
             championSkins skin = championSkins.GetSkin(skinId);
             SkinName.Content = skin.displayName;
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath);
-            ChampionImage.Source = Client.GetImage(uriSource);
+            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath);
+            ChampionImage.Source = Client.GetImage(UriSource);
         }
 
         public void RenderChampions(int championId)
         {
             champions champ = champions.GetChampion(championId);
             TheChamp = champ;
-            FavouriteLabel.Content = TheChamp.IsFavourite ? "Unfavourite" : "Favourite";
+            FavoUriteLabel.Content = TheChamp.IsFavoUrite ? "UnfavoUrite" : "FavoUrite";
             ChampionName.Content = champ.displayName;
             ChampionTitle.Content = champ.title;
             ChampionProfileImage.Source = champ.icon;
@@ -73,9 +73,9 @@ namespace LegendaryClient.Windows
                     int skin = Convert.ToInt32(skins["id"]);
                     var item = new ListViewItem();
                     var skinImage = new Image();
-                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                         championSkins.GetSkin(skin).portraitPath);
-                    skinImage.Source = Client.GetImage(uriSource);
+                    skinImage.Source = Client.GetImage(UriSource);
                     skinImage.Width = 96.25;
                     skinImage.Height = 175;
                     skinImage.Stretch = Stretch.UniformToFill;
@@ -86,10 +86,10 @@ namespace LegendaryClient.Windows
 
             if (champ.Spells != null)
                 foreach (ChampionDetailAbility detailAbility in from sp in champ.Spells
-                    let uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", sp.Image)
+                    let UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell", sp.Image)
                     select new ChampionDetailAbility
                     {
-                        AbilityImage = {Source = Client.GetImage(uriSource)},
+                        AbilityImage = {Source = Client.GetImage(UriSource)},
                         AbilityName = {Content = sp.Name},
                         AbilityDescription = {Text = sp.Description.Replace("<br>", Environment.NewLine)}
                     })
@@ -125,9 +125,9 @@ namespace LegendaryClient.Windows
             };
             fadingAnimation.Completed += (eSender, eArgs) =>
             {
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                     skin.splashPath);
-                ChampionImage.Source = Client.GetImage(uriSource);
+                ChampionImage.Source = Client.GetImage(UriSource);
                 fadingAnimation = new DoubleAnimation
                 {
                     From = 0,
@@ -146,26 +146,26 @@ namespace LegendaryClient.Windows
             Client.OverlayContainer.Visibility = Visibility.Hidden;
         }
 
-        private void FavouriteButton_Click(object sender, RoutedEventArgs e)
+        private void FavoUriteButton_Click(object sender, RoutedEventArgs e)
         {
-            TheChamp.IsFavourite = !TheChamp.IsFavourite;
-            if (Settings.Default.FavouriteChamps == null)
+            TheChamp.IsFavoUrite = !TheChamp.IsFavoUrite;
+            if (Settings.Default.FavoUriteChamps == null)
             {
                 var noNull = new List<int> {0};
-                Settings.Default.FavouriteChamps = noNull.ToArray();
+                Settings.Default.FavoUriteChamps = noNull.ToArray();
                 Settings.Default.Save();
             }
 
-            var tempList = new List<int>(Settings.Default.FavouriteChamps);
+            var tempList = new List<int>(Settings.Default.FavoUriteChamps);
             if (tempList.Contains(TheChamp.id))
                 tempList.Remove(TheChamp.id);
             else
                 tempList.Add(TheChamp.id);
 
-            Settings.Default.FavouriteChamps = tempList.ToArray();
+            Settings.Default.FavoUriteChamps = tempList.ToArray();
             Settings.Default.Save();
 
-            FavouriteLabel.Content = TheChamp.IsFavourite ? "Unfavourite" : "Favourite";
+            FavoUriteLabel.Content = TheChamp.IsFavoUrite ? "UnfavoUrite" : "FavoUrite";
         }
 
         //Cool way to allow user to drag the grid arround

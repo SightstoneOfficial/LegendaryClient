@@ -35,10 +35,10 @@ namespace LegendaryClient.Windows
                     Width = 64,
                     Margin = new Thickness(5, 5, 5, 5)
                 };
-                var uriSource =
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spell + ".png"),
+                var UriSource =
+                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spell + ".png"),
                         UriKind.Absolute);
-                champImage.Source = new BitmapImage(uriSource);
+                champImage.Source = new BitmapImage(UriSource);
                 champImage.Tag = (int) spell;
                 SummonerSpellListView.Items.Add(champImage);
             }
@@ -52,19 +52,19 @@ namespace LegendaryClient.Windows
             var item = (Image) SummonerSpellListView.SelectedItem;
             int spellId = Convert.ToInt32(item.Tag);
             var spellName = (NameToImage) spellId;
-            var uriSource =
-                new Uri(
+            var UriSource =
+                new System.Uri(
                     Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spellName + ".png"),
                     UriKind.Absolute);
             if (SelectedSpell1 == 0)
             {
-                SummonerSpell1.Source = new BitmapImage(uriSource);
+                SummonerSpell1.Source = new BitmapImage(UriSource);
                 SummonerSpellListView.Items.Remove(item);
                 SelectedSpell1 = spellId;
             }
             else
             {
-                SummonerSpell2.Source = new BitmapImage(uriSource);
+                SummonerSpell2.Source = new BitmapImage(UriSource);
                 await RiotCalls.SelectSpells(SelectedSpell1, spellId);
                 Client.OverlayContainer.Visibility = Visibility.Hidden;
             }

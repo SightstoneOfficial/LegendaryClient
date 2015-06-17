@@ -40,9 +40,9 @@ namespace LegendaryClient.Logic.Region
             get { return "en_GB"; }
         }
 
-        public override Uri NewsAddress
+        public override System.Uri NewsAddress
         {
-            get { return new Uri("http://eune.leagueoflegends.com/en/rss.xml"); }
+            get { return new System.Uri("http://eune.leagueoflegends.com/en/rss.xml"); }
         }
 
         public override IPAddress[] PingAddresses
@@ -61,9 +61,9 @@ namespace LegendaryClient.Logic.Region
             get { return null; }
         }
 
-        public override Uri SpectatorLink
+        public override System.Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest/"); }
+            get { return new System.Uri("http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest/"); }
             //http://spectator.eu.lol.riotgames.com:8088/observer-mode/rest/featured
         }
 

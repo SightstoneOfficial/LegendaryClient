@@ -1,4 +1,4 @@
-﻿using jabber.protocol.client;
+﻿using agsXMPP.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
@@ -24,11 +24,11 @@ namespace LegendaryClient.Windows
             Client.StatusLabel = StatusLabel;
             Change();
             Client.ChatListView = ChatListView;
-            Client.ChatClient.OnMessage += ChatClient_OnMessage;
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
         }
 
         //Blink and add to notification list if messaged
-        private void ChatClient_OnMessage(object sender, Message msg)
+        private void XmppConnection_OnMessage(object sender, Message msg)
         {
             //If is special message, don't show popup
             if (msg.Subject != null)
@@ -170,7 +170,7 @@ namespace LegendaryClient.Windows
                     {
                         var currentName = (string)Client.ChatItem.PlayerLabelName.Content;
                         Client.MainGrid.Children.Remove(Client.ChatItem);
-                        Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
+                        Client.XmppConnection.OnMessage -= Client.ChatItem.XmppConnection_OnMessage;
                         Client.ChatItem = null;
                         Client.PlayerChatIsShown = false;
                         if (currentName != (string)item.PlayerLabelName.Content)

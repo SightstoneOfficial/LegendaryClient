@@ -1,6 +1,4 @@
-﻿using jabber;
-using jabber.connection;
-using LegendaryClient.Controls;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.Replays;
@@ -26,8 +24,10 @@ using RtmpSharp.Messaging;
 using Color = System.Drawing.Color;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 using ListViewItem = System.Windows.Controls.ListViewItem;
-using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
+using agsXMPP.protocol.client;
+using agsXMPP.protocol.x.muc;
+using agsXMPP;
 
 namespace LegendaryClient.Windows
 {
@@ -43,7 +43,7 @@ namespace LegendaryClient.Windows
         private PotentialTradersDTO CanTradeWith;
         private List<ChampionDTO> ChampList;
         private List<ChampionBanInfoDTO> ChampionsForBan;
-        private Room Chatroom;
+        private MucManager Chatroom;
         private Timer CountdownTimer;
         private bool HasLaunchedGame;
         private bool HasLockedIn;
@@ -115,7 +115,7 @@ namespace LegendaryClient.Windows
             "Mordekaiser", "Nocturne", "Thresh", "Yorick", "Urgot"
         };
 
-        private readonly string[] shurimaChampions =
+        private readonly string[] shUrimaChampions =
         {
             "Amumu", "Malzahar", "Nasus", "Renekton", "Sivir", "Skarner",
             "Xerath", "Zilean", "Azir"
@@ -130,16 +130,16 @@ namespace LegendaryClient.Windows
         };
 
         #endregion champs
-
+        private readonly Jid jid;
         public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
-            var jid = Client.GetChatroomJID(RoomName.Replace("@sec", ""), RoomPassword, false);
-            Chatroom = Client.ConfManager.GetRoom(new JID(jid));
-            Chatroom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
+            Chatroom = new MucManager(Client.XmppConnection);
             Chatroom.OnRoomMessage += Chatroom_OnRoomMessage;
             Chatroom.OnParticipantJoin += Chatroom_OnParticipantJoin;
-            Chatroom.Join(RoomPassword);
+            jid = new Jid(Jid);
+            Chatroom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, RoomPassword);
         }
 
         public ChampSelectPage Load(Page previousPage)
@@ -863,8 +863,8 @@ namespace LegendaryClient.Windows
             var skinImage = new Image();
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champion.portraitPath)))
             {
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champion.portraitPath);
-                skinImage.Source = Client.GetImage(uriSource);
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champion.portraitPath);
+                skinImage.Source = Client.GetImage(UriSource);
                 skinImage.Width = 191;
                 skinImage.Stretch = Stretch.UniformToFill;
                 item.Tag = "0:" + champion.id; //Hack
@@ -876,9 +876,9 @@ namespace LegendaryClient.Windows
                 foreach (championAbilities ability in Abilities)
                 {
                     var championAbility = new ChampionAbility();
-                    uriSource = Path.Combine(Client.ExecutingDirectory, "Assets",
+                    UriSource = Path.Combine(Client.ExecutingDirectory, "Assets",
                         ability.iconPath.ToLower().Contains("passive") ? "passive" : "spell", ability.iconPath);
-                    championAbility.AbilityImage.Source = Client.GetImage(uriSource);
+                    championAbility.AbilityImage.Source = Client.GetImage(UriSource);
                     if (!string.IsNullOrEmpty(ability.hotkey))
                         championAbility.AbilityHotKey.Content = ability.hotkey;
 
@@ -922,9 +922,9 @@ namespace LegendaryClient.Windows
                 {
                     item = new ListViewItem();
                     skinImage = new Image();
-                    uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                    UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                         championSkins.GetSkin(skin.SkinId).portraitPath);
-                    skinImage.Source = Client.GetImage(uriSource);
+                    skinImage.Source = Client.GetImage(UriSource);
                     skinImage.Width = 191;
                     skinImage.Stretch = Stretch.UniformToFill;
                     item.Tag = skin.SkinId;
@@ -988,8 +988,8 @@ namespace LegendaryClient.Windows
                                 case "Void":
                                     if (!voidChampions.Contains(getChamp.displayName)) continue;
                                     break;
-                                case "Shurima":
-                                    if (!shurimaChampions.Contains(getChamp.displayName)) continue;
+                                case "ShUrima":
+                                    if (!shUrimaChampions.Contains(getChamp.displayName)) continue;
                                     break;
                                 case "Discord":
                                     if (!discordChampions.Contains(getChamp.displayName)) continue;
@@ -1068,29 +1068,29 @@ namespace LegendaryClient.Windows
             //Render summoner spells
             if (selection.Spell1Id != 0)
             {
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName((int)selection.Spell1Id));
-                control.SummonerSpell1.Source = Client.GetImage(uriSource);
-                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                control.SummonerSpell1.Source = Client.GetImage(UriSource);
+                UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName((int)selection.Spell2Id));
-                control.SummonerSpell2.Source = Client.GetImage(uriSource);
+                control.SummonerSpell2.Source = Client.GetImage(UriSource);
             }
             //Set our summoner spells in client
             if (player.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
             {
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName((int)selection.Spell1Id));
-                SummonerSpell1Image.Source = Client.GetImage(uriSource);
-                uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
+                SummonerSpell1Image.Source = Client.GetImage(UriSource);
+                UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName((int)selection.Spell2Id));
-                SummonerSpell2Image.Source = Client.GetImage(uriSource);
+                SummonerSpell2Image.Source = Client.GetImage(UriSource);
                 MyChampId = selection.ChampionId;
             }
             //Has locked in
             if (player.PickMode == 2)
             {
-                const string uriSource = "/LegendaryClient;component/Locked.png";
-                control.LockedInIcon.Source = Client.GetImage(uriSource);
+                const string UriSource = "/LegendaryClient;component/Locked.png";
+                control.LockedInIcon.Source = Client.GetImage(UriSource);
             }
             //Make obvious whos pick turn it is
             if (player.PickTurn != LatestDto.PickTurn &&
@@ -1169,9 +1169,9 @@ namespace LegendaryClient.Windows
                 };
                 fadingAnimation.Completed += (eSender, eArgs) =>
                 {
-                    string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                         champions.GetChampion((int)item.Tag).splashPath);
-                    BackgroundSplash.Source = Client.GetImage(uriSource);
+                    BackgroundSplash.Source = Client.GetImage(UriSource);
                     fadingAnimation = new DoubleAnimation
                     {
                         From = 0,
@@ -1426,7 +1426,7 @@ namespace LegendaryClient.Windows
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                Chatroom.PublicMessage(ChatTextBox.Text);
+                Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }
@@ -1447,10 +1447,10 @@ namespace LegendaryClient.Windows
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (Client.Filter)
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                    tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                               Environment.NewLine;
                 else
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 ChatText.ScrollToEnd();

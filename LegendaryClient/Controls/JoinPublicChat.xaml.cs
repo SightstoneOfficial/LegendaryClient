@@ -16,11 +16,11 @@ namespace LegendaryClient.Controls
 
         private void JoinButton_Click(object sender, RoutedEventArgs e)
         {
-            var jid =
-                Client.GetChatroomJID(
+            var Jid =
+                Client.GetChatroomJid(
                     Client.GetObfuscatedChatroomName(ChatNameTextBox.Text.ToLower(), ChatPrefixes.Public), string.Empty,
                     true);
-            var item = new GroupChatItem(jid, ChatNameTextBox.Text);
+            var item = new GroupChatItem(Jid, ChatNameTextBox.Text);
             var chatGroup = new NotificationChatGroup
             {
                 Tag = item,

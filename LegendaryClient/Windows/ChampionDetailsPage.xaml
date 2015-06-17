@@ -134,13 +134,13 @@
                                    VerticalAlignment="Top" Content="Speed: 325" Foreground="White" FontSize="20"
                                    FontWeight="ExtraLight" />
                         </Grid>
-                        <Button x:Name="FavouriteButton" Width="280"
+                        <Button x:Name="FavoUriteButton" Width="280"
                                 Height="50" Margin="20,310,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                                 FontSize="16"
-                                FontWeight="ExtraLight" Click="FavouriteButton_Click">
+                                FontWeight="ExtraLight" Click="FavoUriteButton_Click">
                             <StackPanel>
                                 <Image Source="/LegendaryClient;component/star.png" Stretch="None" />
-                                <Label x:Name="FavouriteLabel" Content="Favourite" Foreground="Black" />
+                                <Label x:Name="FavoUriteLabel" Content="FavoUrite" Foreground="Black" />
                             </StackPanel>
                         </Button>
                     </Grid>

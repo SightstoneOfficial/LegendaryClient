@@ -92,7 +92,7 @@ namespace LegendaryClient.Logic.SQLite
 
         public List<Spell> Spells { get; set; }
 
-        public bool IsFavourite { get; set; }
+        public bool IsFavoUrite { get; set; }
         public bool IsFreeToPlay { get; set; }
 
         public static champions GetChampion(int id)

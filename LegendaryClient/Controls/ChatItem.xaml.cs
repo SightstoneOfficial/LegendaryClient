@@ -5,9 +5,10 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
-using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Properties;
+using agsXMPP.protocol.client;
+using agsXMPP;
 
 namespace LegendaryClient.Controls
 {
@@ -20,10 +21,10 @@ namespace LegendaryClient.Controls
         {
             InitializeComponent();
 
-            Client.ChatClient.OnMessage += ChatClient_OnMessage;
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
         }
 
-        public void ChatClient_OnMessage(object sender, Message msg)
+        public void XmppConnection_OnMessage(object sender, Message msg)
         {
             if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
@@ -87,13 +88,13 @@ namespace LegendaryClient.Controls
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
             ChatPlayerItem tempItem = null;
-            var jid = string.Empty;
+            var Jid = string.Empty;
             foreach (
                 var x in
                     Client.AllPlayers.Where(x => x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content))
             {
                 tempItem = x.Value;
-                jid = x.Key + "@pvp.net";
+                Jid = x.Key + "@pvp.net";
 
                 break;
             }
@@ -101,7 +102,7 @@ namespace LegendaryClient.Controls
                 tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
 
             ChatText.ScrollToEnd();
-            Client.ChatClient.Message(jid, ChatTextBox.Text);
+            Client.XmppConnection.Send(new Message(new Jid(Jid), ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;
         }
     }

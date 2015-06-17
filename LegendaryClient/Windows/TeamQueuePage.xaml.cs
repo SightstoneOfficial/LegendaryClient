@@ -1,7 +1,4 @@
-﻿using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
@@ -25,6 +22,9 @@ using RtmpSharp.IO;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Riot.Team;
 using RtmpSharp.Messaging;
+using agsXMPP;
+using agsXMPP.protocol.x.muc;
+using agsXMPP.protocol.client;
 
 namespace LegendaryClient.Windows
 {
@@ -34,7 +34,8 @@ namespace LegendaryClient.Windows
     public partial class TeamQueuePage
     {
         //long InviteId = 0;
-        private Room newRoom;
+        private MucManager newRoom;
+        private Jid jid;
         private bool IsOwner;
         private Button LastSender;
         private int i;
@@ -97,12 +98,12 @@ namespace LegendaryClient.Windows
                 string ObfuscatedName =
                     Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.ToLower(),
                         ChatPrefixes.Arranging_Game);
-                string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
-                newRoom = Client.ConfManager.GetRoom(new JID(JID));
-                newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                string Jid = Client.GetChatroomJid(ObfuscatedName, CurrentLobby.ChatKey, false);
+                newRoom = new MucManager(Client.XmppConnection);
+                jid = new Jid(Jid);
                 newRoom.OnRoomMessage += newRoom_OnRoomMessage;
                 newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-                newRoom.Join(CurrentLobby.ChatKey);
+                newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, CurrentLobby.ChatKey);
 
                 RenderLobbyData();
             }
@@ -340,10 +341,10 @@ namespace LegendaryClient.Windows
 
                         //Populate the ProfileIcon
                         int ProfileIconID = Summoner.ProfileIconId;
-                        string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                        string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                             ProfileIconID + ".png");
 
-                        TeamPlayer.ProfileIcon.Source = Client.GetImage(uriSource);
+                        TeamPlayer.ProfileIcon.Source = Client.GetImage(UriSource);
 
                         //Make it so you cant kick yourself
                         if (stats.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
@@ -539,10 +540,10 @@ namespace LegendaryClient.Windows
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     if (Client.Filter)
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                                   Environment.NewLine;
                     else
-                        tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                     ChatText.ScrollToEnd();
                 }

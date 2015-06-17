@@ -1,6 +1,4 @@
-﻿using jabber;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
@@ -19,6 +17,8 @@ using LegendaryClient.Logic.Riot.Platform;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Riot;
 using System.Threading.Tasks;
+using agsXMPP;
+using agsXMPP.protocol.client;
 
 namespace LegendaryClient.Windows
 {
@@ -55,15 +55,15 @@ namespace LegendaryClient.Windows
             {
                 case "Online":
                     Client.CurrentPresence = PresenceType.available;
-                    Client.presenceStatus = "chat";
+                    Client.presenceStatus = ShowType.chat;
                     break;
                 case "Busy":
                     //TODO: fix away status, for some reason its not doing anything but there is a function depending on presenceStatus being "away" or not so...
                     Client.CurrentPresence = PresenceType.available;
-                    Client.presenceStatus = "away";
+                    Client.presenceStatus = ShowType.away;
                     break;
                 case "Invisible":
-                    Client.presenceStatus = "";
+                    Client.presenceStatus = ShowType.NONE;
                     Client.CurrentPresence = PresenceType.invisible;
                     break;
             }
@@ -132,9 +132,9 @@ namespace LegendaryClient.Windows
                             bc = new BrushConverter();
                             brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
                             player.PlayerStatus.Foreground = brush;
-                            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                                 chatPlayerPair.Value.ProfileIcon + ".png");
-                            player.ProfileImage.Source = Client.GetImage(uriSource);
+                            player.ProfileImage.Source = Client.GetImage(UriSource);
 
                             if (chatPlayerPair.Value.GameStatus != "outOfGame")
                             {
@@ -309,9 +309,9 @@ namespace LegendaryClient.Windows
                     : Visibility.Hidden;
 
                 //PlayerItem.Dev.Visibility = playerItem.IsLegendaryDev ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-                string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                     playerItem.ProfileIcon + ".png");
-                PlayerItem.ProfileImage.Source = Client.GetImage(uriSource);
+                PlayerItem.ProfileImage.Source = Client.GetImage(UriSource);
                 if (playerItem.Status != null)
                 {
                 }
@@ -416,10 +416,9 @@ namespace LegendaryClient.Windows
 
         private async void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
-            PublicSummoner JID = await RiotCalls.GetSummonerByName(FriendAddBox.Text);
-            var jid = new JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
-            string[] groups = new List<string>(new[] { "**Default" }).ToArray();
-            Client.ChatClient.Subscribe(jid, "", groups);
+            PublicSummoner user = await RiotCalls.GetSummonerByName(FriendAddBox.Text);
+            var Jid = new Jid("sum" + user.SummonerId, Client.XmppConnection.Server, "");
+            Client.PresManager.Subscribe(Jid);
             FriendAddBox.Text = "";
         }
 
@@ -460,11 +459,11 @@ namespace LegendaryClient.Windows
         {
             if (LastPlayerItem != null)
             {
-                PublicSummoner JID = await RiotCalls.GetSummonerByName(LastPlayerItem.Username);
-                var jid = new JID("sum" + JID.SummonerId, Client.ChatClient.Server, "");
-                Client.ChatClient.RemoveRosterItem(jid);
-                Client.RostManager.Remove(jid);
-                Client.AllPlayers.Remove(jid.User);
+                PublicSummoner sum = await RiotCalls.GetSummonerByName(LastPlayerItem.Username);
+                var Jid = new Jid("sum" + sum.SummonerId, Client.XmppConnection.Server, "");
+                Client.PresManager.Unsubscribe(Jid);
+                //Client.PresManager.Remove(Jid);
+                Client.AllPlayers.Remove(Jid.User);
                 Client.UpdatePlayers = true;
                 UpdateChat(null, null);
             }

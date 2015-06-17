@@ -48,9 +48,9 @@ namespace LegendaryClient.Logic.Region
             get { return vals["host"].Split('.')[1]; }
         }
 
-        public override Uri NewsAddress
+        public override System.Uri NewsAddress
         {
-            get { return new Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //Guess
+            get { return new System.Uri("http://ll.leagueoflegends.com/landingpage/data/br/en_US.js"); } //Guess
         }
 
         public override string Locale
@@ -66,9 +66,9 @@ namespace LegendaryClient.Logic.Region
             }
         }
 
-        public override Uri SpectatorLink
+        public override System.Uri SpectatorLink
         {
-            get { return new Uri(vals["featuredGamesURL"].Replace("featured", "")); }
+            get { return new System.Uri(vals["featuredGamesURL"].Replace("featured", "")); }
         }
 
         public override string SpectatorIpAddress

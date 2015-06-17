@@ -89,8 +89,8 @@ namespace LegendaryClient.Windows
 
 
             int profileIconId = summoner.ProfileIconId;
-            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png");
-            ProfileImage.Source = Client.GetImage(uriSource);
+            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png");
+            ProfileImage.Source = Client.GetImage(UriSource);
 
             PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(s);
             if (n != null && n.GameName != null)

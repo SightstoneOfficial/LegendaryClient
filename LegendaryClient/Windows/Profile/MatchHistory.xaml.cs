@@ -234,10 +234,10 @@ namespace LegendaryClient.Windows.Profile
 
                     if (((string) item.Key).StartsWith("Item"))
                     {
-                        var uriSource =
-                            new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"),
+                        var UriSource =
+                            new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"),
                                 UriKind.Absolute);
-                        if (!File.Exists(uriSource.AbsolutePath))
+                        if (!File.Exists(UriSource.AbsolutePath))
                         {
                             continue;
                         }
@@ -246,7 +246,7 @@ namespace LegendaryClient.Windows.Profile
                         {
                             Width = 58,
                             Height = 58,
-                            Source = new BitmapImage(uriSource),
+                            Source = new BitmapImage(UriSource),
                             Tag = item
                         };
                         img.MouseMove += img_MouseMove;
@@ -313,9 +313,9 @@ namespace LegendaryClient.Windows.Profile
                 parsedDescription = Regex.Replace(parsedDescription, "<.*?>", string.Empty);
                 this.playerItem.PlayerStatus.Text = parsedDescription;
 
-                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"),
+                var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"),
                     UriKind.RelativeOrAbsolute);
-                this.playerItem.ProfileImage.Source = new BitmapImage(uriSource);
+                this.playerItem.ProfileImage.Source = new BitmapImage(UriSource);
 
                 this.playerItem.HorizontalAlignment = HorizontalAlignment.Left;
                 this.playerItem.VerticalAlignment = VerticalAlignment.Top;

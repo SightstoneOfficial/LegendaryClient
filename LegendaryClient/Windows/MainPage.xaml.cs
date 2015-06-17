@@ -67,17 +67,17 @@ namespace LegendaryClient.Windows
             };
             update.Elapsed +=
                 (o, e) =>
-                    Client.ChatClient.Presence(Client.CurrentPresence, Client.GetPresence(), Client.presenceStatus, 0);
+                    Client.XmppConnection.Presence(Client.CurrentPresence, Client.GetPresence(), Client.presenceStatus, 0);
             timer.Interval = (5000);
             //timer.Start();
 
             timer.Elapsed += (o, e) => Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                string jid =
-                    Client.GetChatroomJID(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public),
+                string Jid =
+                    Client.GetChatroomJid(Client.GetObfuscatedChatroomName("legendaryclient", ChatPrefixes.Public),
                         string.Empty, true);
 
-                GroupChatItem item = Join(jid, "LegendaryClient");
+                GroupChatItem item = Join(Jid, "LegendaryClient");
                 var chatGroup = new NotificationChatGroup
                 {
                     Tag = item,
@@ -117,9 +117,9 @@ namespace LegendaryClient.Windows
         }
 
         [STAThread]
-        private GroupChatItem Join(string jid, string chat)
+        private GroupChatItem Join(string Jid, string chat)
         {
-            return new GroupChatItem(jid, chat);
+            return new GroupChatItem(Jid, chat);
         }
 
         private void GotPlayerData(LoginDataPacket packet)
@@ -135,7 +135,7 @@ namespace LegendaryClient.Windows
                 AllSummonerData playerData =
                     await RiotCalls.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
                 SummonerNameLabel.Content = playerData.Summoner.Name;
-                Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+                
 
                 SummonerActiveBoostsDTO activeBoost = await RiotCalls.GetSummonerActiveBoosts();
 
@@ -181,15 +181,19 @@ namespace LegendaryClient.Windows
                     if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + Client.Region.RegionName)))
                     {
                         Client.Dev = true;
-                        Client.UserTitleBarLabel.Content = "Dev ∙ " + Client.UserTitleBarLabel.Content;
                     }
                     CheckedDev = true;
                 }
 
                 if (Client.Dev)
                 {
-                    LoadScript.Visibility = Visibility.Visible;
+                    Client.UserTitleBarLabel.Content = "Dev ∙ " + playerData.Summoner.Name;
                 }
+                else
+                {
+                    Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
+                }
+
                 if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
                 {
                     PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints /
@@ -231,13 +235,13 @@ namespace LegendaryClient.Windows
 
                 Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
                 int profileIconId = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
-                var uriSource =
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png"),
+                var UriSource =
+                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png"),
                     UriKind.RelativeOrAbsolute);
                 try
                 {
-                    ProfileImage.Source = new BitmapImage(uriSource);
-                    Client.UserTitleBarImage.Source = new BitmapImage(uriSource);
+                    ProfileImage.Source = new BitmapImage(UriSource);
+                    Client.UserTitleBarImage.Source = new BitmapImage(UriSource);
                 }
                 catch
                 {
@@ -469,7 +473,7 @@ namespace LegendaryClient.Windows
             if (NewsList.Count <= 0)
                 return;
 
-            string imageUri = string.Empty;
+            string imageSystem.Uri = string.Empty;
             foreach (Dictionary<string, object> pair in NewsList)
             {
                 var item = new NewsItem
@@ -486,11 +490,11 @@ namespace LegendaryClient.Windows
                         if ((string)kvPair.Value == string.Empty)
                             continue;
 
-                        imageUri =
+                        imageSystem.Uri =
                             ((string)kvPair.Value).Substring(
                                 ((string)kvPair.Value).IndexOf("src", StringComparison.Ordinal) + 6);
                         if (imageUri.IndexOf("?itok", StringComparison.Ordinal) > 0)
-                            imageUri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
+                            imageSystem.Uri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
 
                         string noHtml = Regex.Replace(((string)kvPair.Value), @"<[^>]+>|&nbsp;", "").Trim();
                         string noHtmlNormalised = Regex.Replace(noHtml, @"\s{2,}", " ");
@@ -505,7 +509,7 @@ namespace LegendaryClient.Windows
                     // Image
                     if (!string.IsNullOrEmpty(imageUri))
                     {
-                        var promoImage = new BitmapImage(new Uri("http://" + region.RegionName + ".leagueoflegends.com/" + imageUri, UriKind.Absolute));
+                        var promoImage = new BitmapImage(new System.Uri("http://" + region.RegionName + ".leagueoflegends.com/" + imageUri, UriKind.Absolute));
                         item.PromoImage.Stretch = Stretch.Fill;
                         item.PromoImage.Source = promoImage;
                     }
@@ -639,16 +643,16 @@ namespace LegendaryClient.Windows
                                                 sumName = playerName,
                                                 KnownPar = true
                                             };
-                                            var uriSource =
-                                                new Uri(
+                                            var UriSource =
+                                                new System.Uri(
                                                     Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                                                         SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
-                                            control.SummonerSpell1.Source = new BitmapImage(uriSource);
-                                            uriSource =
-                                                new Uri(
+                                            control.SummonerSpell1.Source = new BitmapImage(UriSource);
+                                            UriSource =
+                                                new System.Uri(
                                                     Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                                                         SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
-                                            control.SummonerSpell2.Source = new BitmapImage(uriSource);
+                                            control.SummonerSpell2.Source = new BitmapImage(UriSource);
                                             control.PlayerName.Content = playerName;
                                             control.Tag = new List<object> { playerName, championId };
 
@@ -863,14 +867,5 @@ namespace LegendaryClient.Windows
         }
 
 		#endregion Featured Games
-
-		private void LoadScript_Click(object sender, RoutedEventArgs e)
-		{
-			Microsoft.Win32.OpenFileDialog myFile = new Microsoft.Win32.OpenFileDialog();
-			myFile.ShowDialog();
-			var PluginPath = myFile.FileName;
-			Plugin_Core.LoadScript(PluginPath, myFile.SafeFileName);
-			Plugin_Core.runAll();
-		}
 	}
 }

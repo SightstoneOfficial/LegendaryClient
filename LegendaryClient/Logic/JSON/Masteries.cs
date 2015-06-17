@@ -36,9 +36,9 @@ namespace LegendaryClient.Logic.JSON
                         var imageData = singularMasteryData["image"] as Dictionary<string, object>;
                         if (imageData != null)
                         {
-                            string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "mastery",
+                            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "mastery",
                                 (string) imageData["full"]);
-                            newMastery.icon = Client.GetImage(uriSource);
+                            newMastery.icon = Client.GetImage(UriSource);
                         }
                     }
 

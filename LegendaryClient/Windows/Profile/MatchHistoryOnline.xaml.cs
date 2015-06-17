@@ -149,7 +149,7 @@ namespace LegendaryClient.Windows.Profile
             var stats = gameStats[GamesListView.SelectedIndex];
             Browser.Focusable = false;
             Browser.Source =
-                new Uri(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview", 
+                new System.Uri(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview", 
                     Client.Region.InternalName,
                     (int)Math.Round(stats.Game.GameId),
                     stats.Game.UserId));

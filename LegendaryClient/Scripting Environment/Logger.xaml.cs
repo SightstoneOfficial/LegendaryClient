@@ -27,6 +27,11 @@ namespace LegendaryClient.Scripting_Environment
 			Closing += Logger_Closing;
 		}
 
+		public void Clear()
+		{
+			textBox.Text = "";
+		}
+
 		private void Logger_Closing(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			e.Cancel = true;
