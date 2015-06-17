@@ -40,10 +40,14 @@ namespace LegendaryClient.Controls
         {
             InitializeComponent();
             Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
-            try
+
+            if (!Client.InviteData.ContainsKey(stats.InvitationId))
             {
-                if (!Client.InviteData.ContainsKey(stats.InvitationId))
-                    return;
+                LoadGamePopupData(stats);
+                Unlock();
+            }
+            else
+            {
                 var info = Client.InviteData[stats.InvitationId];
                 Client.Log("Tried to find a popup that existed but should have been blocked. ", "Error");
                 if (info == null)
@@ -53,11 +57,6 @@ namespace LegendaryClient.Controls
 
                 //This should be hidden
                 //Visibility = Visibility.Hidden;
-            }
-            catch
-            {
-                LoadGamePopupData(stats);
-                Unlock();
             }
         }
 
