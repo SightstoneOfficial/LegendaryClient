@@ -128,7 +128,7 @@ namespace LegendaryClient.Controls
         public string GroupTitle { get; set; }
 
         //TO FIX
-        private async void RefreshRoom()
+        private void RefreshRoom()
         {
 
             /*

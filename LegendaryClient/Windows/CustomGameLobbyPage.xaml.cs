@@ -90,9 +90,10 @@ namespace LegendaryClient.Windows
                     string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
                     string Jid = Client.GetChatroomJid(obfuscatedName, dto.RoomPassword, false);
                     newRoom = new MucManager(Client.XmppConnection);
-                    newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-                    newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                    Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+                    Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
                     roomJid = new Jid(Jid);
+                    newRoom.AcceptDefaultConfiguration(roomJid);
                     newRoom.JoinRoom(roomJid, Client.LoginPacket.AllSummonerData.Summoner.Name);
                 }
                 switch (dto.GameState)
@@ -204,26 +205,25 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
+        void XmppConnection_OnPresence(object sender, Presence pres)
         {
+            if (pres.To.Bare != roomJid.Bare)
+                return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    Text = participant.Nick + " joined the room." + Environment.NewLine
+                    Text = pres.From.User + " joined the room." + Environment.NewLine
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             }));
         }
 
-        public void Invite_Click(object sender, RoutedEventArgs e)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
-            Client.OverlayContainer.Content = new InvitePlayersPage().Content;
-            Client.OverlayContainer.Visibility = Visibility.Visible;
-        }
+            if (msg.To.Bare != roomJid.Bare)
+                return;
 
-        private void newRoom_OnRoomMessage(object sender, Message msg)
-        {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body == "This room is not anonymous")
@@ -242,6 +242,12 @@ namespace LegendaryClient.Windows
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
             }));
+        }
+
+        public void Invite_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new InvitePlayersPage().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)

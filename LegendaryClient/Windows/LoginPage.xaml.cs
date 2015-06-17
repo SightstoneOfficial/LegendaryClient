@@ -801,8 +801,8 @@ namespace LegendaryClient.Windows
         public string getGas()
         {
 
-            string begin = "{\"signature\":\"";
-            string end = "}";
+            //string begin = "{\"signature\":\"";
+            //string end = "}";
             string gas = Client.Gas;
             gas = gas.Replace("\r\n  ", "");
             byte[] encbuff = Encoding.UTF8.GetBytes(gas);

@@ -101,10 +101,10 @@ namespace LegendaryClient.Windows
                 string Jid = Client.GetChatroomJid(ObfuscatedName, CurrentLobby.ChatKey, false);
                 newRoom = new MucManager(Client.XmppConnection);
                 jid = new Jid(Jid);
-                newRoom.OnRoomMessage += newRoom_OnRoomMessage;
-                newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+                Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
+                newRoom.AcceptDefaultConfiguration(jid);
                 newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, CurrentLobby.ChatKey);
-
                 RenderLobbyData();
             }
             else
@@ -115,6 +115,43 @@ namespace LegendaryClient.Windows
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.Log("Failed to join room.");
             }
+        }
+
+        void XmppConnection_OnPresence(object sender, Presence pres)
+        {
+            if (pres.To.Bare != jid.Bare)
+                return;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = pres.From.User + " joined the room." + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                ChatText.ScrollToEnd();
+            }));
+        }
+
+        void XmppConnection_OnMessage(object sender, Message msg)
+        {
+            if (msg.To.Bare != jid.Bare)
+                return;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if (msg.Body != "This room is not anonymous")
+                {
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    tr.Text = msg.From.Resource + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                    if (Client.Filter)
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                                  Environment.NewLine;
+                    else
+                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    ChatText.ScrollToEnd();
+                }
+            }));
         }
 
         private void Profile_Click(object sender, RoutedEventArgs e)
@@ -506,48 +543,15 @@ namespace LegendaryClient.Windows
             await RiotCalls.Leave();
             await RiotCalls.PurgeFromQueues();
             inQueue = false;
-#pragma warning disable CS4014
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-#pragma warning restore CS4014
-                Client.inQueueTimer.Visibility = Visibility.Hidden));
+//#pragma warning disable CS4014
+            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => Client.inQueueTimer.Visibility = Visibility.Hidden));
+//#pragma warning restore CS4014
             PingTimer.Stop();
             Client.GameStatus = "outOfGame";
             Client.SetChatHover();
             Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(TeamQueuePage));
             Client.ReturnButton.Visibility = Visibility.Hidden;
-        }
-
-        private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-                ChatText.ScrollToEnd();
-            }));
-        }
-
-        private void newRoom_OnRoomMessage(object sender, Message msg)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                if (msg.Body != "This room is not anonymous")
-                {
-                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = msg.From.Resource + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
-                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    if (Client.Filter)
-                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
-                                  Environment.NewLine;
-                    else
-                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                    ChatText.ScrollToEnd();
-                }
-            }));
         }
 
         private void GotQueuePop(object sender, MessageReceivedEventArgs message)
@@ -623,7 +627,7 @@ namespace LegendaryClient.Windows
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 if (string.IsNullOrEmpty(ChatTextBox.Text))
                     return;
-                newRoom.PublicMessage(ChatTextBox.Text);
+                Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }
