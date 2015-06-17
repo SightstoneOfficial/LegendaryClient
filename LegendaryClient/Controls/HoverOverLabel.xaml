@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="#33000000">
-        <Label x:Name="HoverLabel" Content="Hover" HorizontalAlignment="Center" FontSize="20" FontWeight="ExtraLight"
+        <Label x:Name="HoverLabel" Content="Hover" HorizontalAlignment="Center" FontSize="18" FontWeight="ExtraLight"
                VerticalAlignment="Center" Background="#7F000000" />
     </Grid>
 </UserControl>
