@@ -1,5 +1,5 @@
 ﻿using System;
-using System.SecUrity.Cryptography;
+using System.Security.Cryptography;
 
 namespace LegendaryClient.Logic.Crypto
 {
