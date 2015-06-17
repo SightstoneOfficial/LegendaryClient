@@ -473,7 +473,7 @@ namespace LegendaryClient.Windows
             if (NewsList.Count <= 0)
                 return;
 
-            string imageSystem.Uri = string.Empty;
+            string imageUri = string.Empty;
             foreach (Dictionary<string, object> pair in NewsList)
             {
                 var item = new NewsItem
@@ -490,11 +490,11 @@ namespace LegendaryClient.Windows
                         if ((string)kvPair.Value == string.Empty)
                             continue;
 
-                        imageSystem.Uri =
+                        imageUri =
                             ((string)kvPair.Value).Substring(
                                 ((string)kvPair.Value).IndexOf("src", StringComparison.Ordinal) + 6);
                         if (imageUri.IndexOf("?itok", StringComparison.Ordinal) > 0)
-                            imageSystem.Uri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
+                            imageUri = imageUri.Remove(imageUri.IndexOf("?itok", StringComparison.Ordinal));
 
                         string noHtml = Regex.Replace(((string)kvPair.Value), @"<[^>]+>|&nbsp;", "").Trim();
                         string noHtmlNormalised = Regex.Replace(noHtml, @"\s{2,}", " ");
