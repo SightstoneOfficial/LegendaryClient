@@ -42,9 +42,26 @@ namespace LegendaryClient.Windows
             
             newRoom = new MucManager(Client.XmppConnection);
             Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-            newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             newRoom.AcceptDefaultConfiguration(new Jid(RoomJid));
             newRoom.JoinRoom(new Jid(RoomJid), Client.LoginPacket.AllSummonerData.Summoner.Name);
+        }
+
+        void XmppConnection_OnPresence(object sender, Presence pres)
+        {
+            if (pres.To.Bare != RoomJid)
+                return;
+
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = pres.From.User + " joined the room." + Environment.NewLine
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+
+                ChatText.ScrollToEnd();
+            }));
         }
 
         void XmppConnection_OnMessage(object sender, Message msg)
@@ -70,20 +87,6 @@ namespace LegendaryClient.Windows
                     tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-
-                ChatText.ScrollToEnd();
-            }));
-        }
-
-        private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                {
-                    Text = participant.Nick + " joined the room." + Environment.NewLine
-                };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
 
                 ChatText.ScrollToEnd();
             }));

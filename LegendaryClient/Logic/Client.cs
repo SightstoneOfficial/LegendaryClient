@@ -358,16 +358,68 @@ namespace LegendaryClient.Logic
 
         internal static bool loadedGroups = false;
 
-        internal static void XmppConnectionConnect(object sender)
+        internal static void XmppConnectionConnect()
         {
             loadedGroups = false;
             Groups.Add(new Group("Online"));
 
             //Get all groups
-            var manager = sender as RosterManager;
-            if (manager != null)
+            //var manager = sender as RosterManager;
+            RosterIq riq = new RosterIq();
+            /*
+            foreach (RosterItem item in items)
             {
-                string ParseString = manager.ToString();
+
+            }
+            //*/
+            if (riq != null)
+            {
+                RosterItem[] items = riq.Query.GetRoster();
+                var stringHackOne = new List<string>(items.ToString().Split(new[] { "@pvp.net=" }, StringSplitOptions.None));
+                stringHackOne.RemoveAt(0);
+                foreach (
+                    string Parse in
+                        stringHackOne.Select(stringHack => Regex.Split(stringHack, @"</item>,"))
+                            .Select(StringHackTwo => StringHackTwo[0]))
+                {
+                    string temp;
+                    if (!Parse.Contains("</item>"))
+                        temp = Parse + "</item>";
+                    else
+                        temp = Parse;
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.LoadXml(temp);
+                    string PlayerJson = JsonConvert.SerializeXmlNode(xmlDocument).Replace("#", "").Replace("@", "");
+                    try
+                    {
+                        if (PlayerJson.Contains(":{\"priority\":"))
+                        {
+                            RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
+
+                            if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
+                                PlayerNote.Add(root.item.name, root.item.note);
+
+                            if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
+                                Groups.Add(new Group(root.item.group.text));
+                        }
+                        else
+                        {
+                            RootObject2 root = JsonConvert.DeserializeObject<RootObject2>(PlayerJson);
+
+                            if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
+                                PlayerNote.Add(root.item.name, root.item.note);
+
+                            if (root.item.group != "**Default" && Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
+                                Groups.Add(new Group(root.item.group));
+                        }
+                    }
+                    catch
+                    {
+                        Log("Can't load friends", "ERROR");
+                    }
+
+                
+                /*
                 var stringHackOne = new List<string>(ParseString.Split(new[] { "@pvp.net=" }, StringSplitOptions.None));
                 stringHackOne.RemoveAt(0);
                 foreach (
@@ -410,13 +462,13 @@ namespace LegendaryClient.Logic
                     {
                         Log("Can't load friends", "ERROR");
                     }
+                    //*/
                 }
             }
 
             Groups.Add(new Group("Offline"));
             SetChatHover();
             loadedGroups = true;
-            //RostManager.OnRosterEnd -= Client.XmppConnectionConnect; //Cri when this happens
         }
 
         internal static void SendMessage(string User, string Message)

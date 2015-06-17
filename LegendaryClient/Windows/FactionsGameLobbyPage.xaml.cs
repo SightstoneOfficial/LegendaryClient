@@ -98,7 +98,7 @@ namespace LegendaryClient.Windows
                     string Jid = Client.GetChatroomJid(obfuscatedName, dto.RoomPassword, false);
                     newRoom = new MucManager(Client.XmppConnection);
                     Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-                    newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+                    Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
                     jid = new Jid(dto.RoomName);
                     newRoom.AcceptDefaultConfiguration(jid);
                     newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, dto.RoomPassword);
@@ -165,6 +165,21 @@ namespace LegendaryClient.Windows
             }));
         }
 
+        void XmppConnection_OnPresence(object sender, Presence pres)
+        {
+            if (pres.To.Bare != jid.Bare)
+                return;
+            //It doesn't matter if they leave
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = pres.From.User + " joined the room." + Environment.NewLine
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            }));
+        }
+
         void XmppConnection_OnMessage(object sender, Message msg)
         {
             if (msg.To.Bare != jid.Bare)
@@ -188,18 +203,6 @@ namespace LegendaryClient.Windows
                     tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            }));
-        }
-
-        private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                {
-                    Text = participant.Nick + " joined the room." + Environment.NewLine
-                };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             }));
         }
 

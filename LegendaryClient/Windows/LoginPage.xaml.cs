@@ -523,6 +523,7 @@ namespace LegendaryClient.Windows
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
+                MessageBox.Show("Do not play ANY games. I am not sure if they will work ~eddy", "XMPP", MessageBoxButton.OK, MessageBoxImage.Warning);
                 Client.StatusContainer.Visibility = Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
                 //You have to hand implement this
@@ -551,10 +552,10 @@ namespace LegendaryClient.Windows
                     Client.XmppConnection.Open(Client.UID, "AIR_" + "AIR_" + gas);
                     Client.userpass = new KeyValuePair<string, string>(Client.UID, "AIR_" + gas);
                 }
-
+                Client.XmppConnectionConnect();
                 Client.RostManager = new RosterManager(Client.XmppConnection);
                 //Client.RostManager.OnRosterItem += Client.RostManager_OnRosterItem;
-                //Client.RostManager.OnRosterEnd += Client.XmppConnectionConnect;
+                //Client.RostManager += Client.XmppConnectionConnect;
 
                 Client.PresManager = new PresenceManager(Client.XmppConnection);
                 Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;

@@ -40,8 +40,6 @@ namespace LegendaryClient.Controls
             }
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-            newRoom.OnParticipantJoin += GroupXmppConnection_OnParticipantJoin;
-            newRoom.OnParticipantLeave += GroupXmppConnection_OnParticipantLeave;
             newRoom.AcceptDefaultConfiguration(new Jid(ChatId));
             roomName = ChatId;
             newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
@@ -75,18 +73,67 @@ namespace LegendaryClient.Controls
             }));
         }
 
-        void XmppConnection_OnPresence(object sender, Presence pres)
+        async void XmppConnection_OnPresence(object sender, Presence pres)
         {
+            if (pres.To.Bare != roomName)
+                return;
+                        
+            if (pres.Type != PresenceType.available)
+            {
+                await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                    {
+                        Text = pres.From.User + " left the room." + Environment.NewLine
+                    };
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+
+                    ChatText.ScrollToEnd();
+                    foreach (
+                        var x in
+                            from GroupChatPlayer x in ParticipantList.Items
+                            where pres.From.User == (string)x.SName.Content
+                            select x)
+                    {
+                        ParticipantList.Items.Remove(x);
+                        ParticipantList.Items.Refresh();
+                        break;
+                    }
+                }));
+            }
+            else
+            {
+                await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
+                {
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                    {
+                        Text = pres.From.User + " joined the room." + Environment.NewLine
+                    };
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+
+                    ChatText.ScrollToEnd();
+                    var x = new GroupChatPlayer { SName = { Content = pres.From.User } };
+                    var summoner = await RiotCalls.GetSummonerByName(pres.From.User);
+                    var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                        summoner.ProfileIconId + ".png");
+                    x.SIcon.Source = Client.GetImage(UriSource);
+                    ParticipantList.Items.Add(x);
+                    ParticipantList.Items.Refresh();
+                }));
+            }
             
         }
 
         public string ChatId { get; set; }
         public string GroupTitle { get; set; }
 
+        //TO FIX
         private async void RefreshRoom()
         {
+
+            /*
             ParticipantList.Items.Clear();
-            foreach (RoomParticipant par in newRoom.Participants)
+            foreach (RoomParticipant par in newRoom.RequestMemberList(new Jid(roomName))
             {
                 var player = new GroupChatPlayer {SName = {Content = par.Nick}};
                 var summoner = await RiotCalls.GetSummonerByName(par.Nick);
@@ -97,58 +144,13 @@ namespace LegendaryClient.Controls
                 //add to ParticipantList
             }
             ParticipantList.Items.Refresh();
-        }
-
-        private void GroupXmppConnection_OnParticipantLeave(Room room, RoomParticipant participant)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                {
-                    Text = participant.Nick + " left the room." + Environment.NewLine
-                };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-
-                ChatText.ScrollToEnd();
-                foreach (
-                    var x in
-                        from GroupChatPlayer x in ParticipantList.Items
-                        where participant.Nick == (string) x.SName.Content
-                        select x)
-                {
-                    ParticipantList.Items.Remove(x);
-                    ParticipantList.Items.Refresh();
-                    break;
-                }
-            }));
-        }
-
-        private async void GroupXmppConnection_OnParticipantJoin(Room room, RoomParticipant participant)
-        {
-            await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
-            {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-                {
-                    Text = participant.Nick + " joined the room." + Environment.NewLine
-                };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-
-                ChatText.ScrollToEnd();
-                var x = new GroupChatPlayer {SName = {Content = participant.Nick}};
-                var summoner = await RiotCalls.GetSummonerByName(participant.Nick);
-                var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                    summoner.ProfileIconId + ".png");
-                x.SIcon.Source = Client.GetImage(UriSource);
-                ParticipantList.Items.Add(x);
-                ParticipantList.Items.Refresh();
-            }));
+            //*/
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
             Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
-            newRoom.OnParticipantJoin -= GroupXmppConnection_OnParticipantJoin;
-            newRoom.OnParticipantLeave -= GroupXmppConnection_OnParticipantLeave;
+            Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
             newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
             Client.ClearMainGrid(typeof (GroupChatItem));
         }
@@ -156,8 +158,7 @@ namespace LegendaryClient.Controls
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
-            newRoom.OnParticipantJoin -= GroupXmppConnection_OnParticipantJoin;
-            newRoom.OnParticipantLeave -= GroupXmppConnection_OnParticipantLeave;
+            Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
             newRoom.LeaveRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
             Client.ClearMainGrid(typeof (GroupChatItem));
         }

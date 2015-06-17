@@ -127,11 +127,23 @@ namespace LegendaryClient.Windows
             string Jid = Client.GetChatroomJid(ChatJid, Pass, false);
             newRoom = new MucManager(Client.XmppConnection);
             Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-            newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
+            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             jid = new Jid(ChatJid);
             newRoom.AcceptDefaultConfiguration(jid);
             newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, Pass);
             connectedToChat = true;
+        }
+
+        void XmppConnection_OnPresence(object sender, Presence pres)
+        {
+            if (pres.To.Bare != jid.Bare)
+                return;
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                tr.Text = pres.From.User + " joined the room." + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            }));
         }
 
         void XmppConnection_OnMessage(object sender, Message msg)
@@ -162,7 +174,7 @@ namespace LegendaryClient.Windows
             newRoom.LeaveRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name);
             //We no longer want to receive messages from teambuilder chat lobby if we want to leave that team
             Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
-            newRoom.OnParticipantJoin -= newRoom_OnParticipantJoin;
+            Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
         }
 
         private void PVPNet_OnMessageReceived(object sender, MessageReceivedEventArgs message)
@@ -988,16 +1000,6 @@ namespace LegendaryClient.Windows
         public async void CallWithArgs(string UUID, string GameMode, string ProcedureCall, string Parameters)
         {
             await RiotCalls.CallLCDS(UUID, GameMode, ProcedureCall, Parameters);
-        }
-
-        private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
-        {
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-            {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = participant.Nick + " joined the room." + Environment.NewLine;
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
-            }));
         }
 
 
