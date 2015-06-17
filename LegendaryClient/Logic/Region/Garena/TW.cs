@@ -66,7 +66,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string SpectatorIpAddress
         {
-            get { return ""; }
+            get { return "112.121.84.194:8088"; }
             set { }
         }
     }
