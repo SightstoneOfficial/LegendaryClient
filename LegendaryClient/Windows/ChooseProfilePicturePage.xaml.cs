@@ -32,10 +32,10 @@ namespace LegendaryClient.Windows
                     Width = 64,
                     Margin = new Thickness(5, 5, 5, 5)
                 };
-                var uriSource =
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ic.IconId + ".png"),
+                var UriSource =
+                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ic.IconId + ".png"),
                         UriKind.Absolute);
-                champImage.Source = new BitmapImage(uriSource);
+                champImage.Source = new BitmapImage(UriSource);
                 champImage.Tag = ic.IconId;
                 SummonerIconListView.Items.Add(champImage);
             }
@@ -47,9 +47,9 @@ namespace LegendaryClient.Windows
                     Width = 64,
                     Margin = new Thickness(5, 5, 5, 5)
                 };
-                var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", i + ".png"),
+                var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", i + ".png"),
                     UriKind.Absolute);
-                champImage.Source = new BitmapImage(uriSource);
+                champImage.Source = new BitmapImage(UriSource);
                 champImage.Tag = i;
                 SummonerIconListView.Items.Add(champImage);
             }
@@ -69,11 +69,11 @@ namespace LegendaryClient.Windows
                 await RiotCalls.UpdateProfileIconId(summonerIcon);
                 Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId = summonerIcon;
                 Client.SetChatHover();
-                var uriSource =
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summonerIcon + ".png"),
+                var UriSource =
+                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summonerIcon + ".png"),
                         UriKind.RelativeOrAbsolute);
-                Client.UserTitleBarImage.Source = new BitmapImage(uriSource);
-                Client.MainPageProfileImage.Source = new BitmapImage(uriSource);            
+                Client.UserTitleBarImage.Source = new BitmapImage(UriSource);
+                Client.MainPageProfileImage.Source = new BitmapImage(UriSource);            
             }
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             Client.done = true;

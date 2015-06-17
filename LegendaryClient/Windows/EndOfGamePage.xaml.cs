@@ -1,7 +1,4 @@
-﻿using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.PlayerSpell;
 using LegendaryClient.Logic.SQLite;
@@ -19,6 +16,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot.Platform;
+using agsXMPP;
+using agsXMPP.protocol.client;
+using agsXMPP.protocol.x.muc;
 
 namespace LegendaryClient.Windows
 {
@@ -27,8 +27,9 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class EndOfGamePage
     {
-        private readonly Room newRoom;
+        private readonly MucManager newRoom;
         private string MatchStatsOnline;
+        private readonly string RoomJid;
         
         public EndOfGamePage(EndOfGameStats statistics)
         {
@@ -37,12 +38,13 @@ namespace LegendaryClient.Windows
             Client.SwitchPage(Client.MainPage);
             Client.runonce = false;
             Client.ChampId = -1;
-            string jid = Client.GetChatroomJID(statistics.RoomName, statistics.RoomPassword, false);
-            newRoom = Client.ConfManager.GetRoom(new JID(jid));
-            newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            RoomJid = Client.GetChatroomJid(statistics.RoomName, statistics.RoomPassword, false);
+            
+            newRoom = new MucManager(Client.XmppConnection);
             newRoom.OnRoomMessage += newRoom_OnRoomMessage;
             newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-            newRoom.Join(statistics.RoomPassword);
+            newRoom.AcceptDefaultConfiguration(new Jid(RoomJid));
+            newRoom.JoinRoom(new Jid(RoomJid), Client.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
         private void newRoom_OnParticipantJoin(Room room, RoomParticipant participant)
@@ -73,10 +75,10 @@ namespace LegendaryClient.Windows
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (Client.Filter)
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                    tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                               Environment.NewLine;
                 else
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
@@ -101,7 +103,7 @@ namespace LegendaryClient.Windows
             if (string.IsNullOrEmpty(ChatTextBox.Text))
                 return;
 
-            newRoom.PublicMessage(ChatTextBox.Text);
+            Client.XmppConnection.Send(new Message(new Jid(RoomJid), ChatTextBox.Text));
             ChatTextBox.Text = "";
             ChatText.ScrollToEnd();
         }
@@ -133,15 +135,15 @@ namespace LegendaryClient.Windows
                 playerStats.PlayerLabel.Content = summary.SummonerName;
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id))))
                 {
-                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id)), UriKind.Absolute);
-                    playerStats.Spell1Image.Source = new BitmapImage(uriSource);
+                    var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id)), UriKind.Absolute);
+                    playerStats.Spell1Image.Source = new BitmapImage(UriSource);
                 }
                 else
                     Client.Log(SummonerSpell.GetSpellImageName((int)summary.Spell1Id) + " is missing");
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id))))
                 {
-                    var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id)), UriKind.Absolute);
-                    playerStats.Spell2Image.Source = new BitmapImage(uriSource);
+                    var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id)), UriKind.Absolute);
+                    playerStats.Spell2Image.Source = new BitmapImage(UriSource);
                 }
                 else
                     Client.Log(SummonerSpell.GetSpellImageName((int)summary.Spell2Id) + " is missing");
@@ -186,8 +188,8 @@ namespace LegendaryClient.Windows
                         var item = new Image();
                         if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png")))
                         {
-                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"), UriKind.Absolute);
-                            item.Source = new BitmapImage(uriSource);
+                            var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"), UriKind.Absolute);
+                            item.Source = new BitmapImage(UriSource);
                         }
                         else
                             Client.Log(stat.Value + ".png is missing");
@@ -234,7 +236,7 @@ namespace LegendaryClient.Windows
                     return;
 
                 var skinSource =
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath),
+                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath),
                         UriKind.Absolute);
                 SkinImage.Source = new BitmapImage(skinSource);
             }
@@ -245,7 +247,7 @@ namespace LegendaryClient.Windows
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            newRoom.Leave(null);
+            newRoom.LeaveRoom(new Jid(RoomJid), Client.LoginPacket.AllSummonerData.Summoner.Name);
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             Client.ClearPage(typeof(EndOfGamePage));
         }

@@ -133,13 +133,13 @@ namespace LegendaryClient
                         control.ChampIcon.Source = champions.GetChampion(championSelect.ChampionId).icon;
                         if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id)))))
                         {
-                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
-                            control.SumIcon1.Source = new BitmapImage(uriSource);
+                            var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))), UriKind.Absolute);
+                            control.SumIcon1.Source = new BitmapImage(UriSource);
                         }
                         if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id)))))
                         {
-                            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
-                            control.SumIcon2.Source = new BitmapImage(uriSource);
+                            var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))), UriKind.Absolute);
+                            control.SumIcon2.Source = new BitmapImage(UriSource);
                         }
                         GameStats.Clear();
                         try

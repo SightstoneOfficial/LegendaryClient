@@ -1,5 +1,4 @@
-﻿using jabber.client;
-using LegendaryClient.Logic;
+﻿using LegendaryClient.Logic;
 using LegendaryClient.Windows;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
@@ -10,7 +9,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using jabber.protocol.client;
 using System.Threading;
 using System.IO.Pipes;
 using System.Reflection;
@@ -18,11 +16,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using LegendaryClient.Properties;
-using System.Security.Principal;
+using System.SecUrity.Principal;
 using System.Windows.Threading;
 using System.Net;
 using Microsoft.Win32;
 using LegendaryClient.Logic.Riot;
+using agsXMPP.protocol.client;
 
 namespace LegendaryClient
 {
@@ -95,22 +94,20 @@ namespace LegendaryClient
             }
             if (string.IsNullOrEmpty(Settings.Default.Theme))
                 Properties.Settings.Default.Theme = "pack://application:,,,/LegendaryClient;component/Controls/Steel.xaml";
-            myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
+            myAccent = new Accent("AccentName", new System.Uri(Settings.Default.Theme));
             ThemeManager.ChangeAppStyle(this, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));//,
 
-
-            Client.ChatClient = new JabberClient();
             Client.FriendList = new FriendList();
             if (Properties.Settings.Default.incognitoLogin)
             {
                 Client.FriendList.PresenceChanger.SelectedItem = "Invisible";
-                Client.presenceStatus = "";
+                Client.presenceStatus = ShowType.NONE;
                 Client.CurrentPresence = PresenceType.invisible;
             }
             else
             {
                 Client.FriendList.PresenceChanger.SelectedItem = "Online";
-                Client.presenceStatus = "chat";
+                Client.presenceStatus = ShowType.chat;
                 Client.CurrentPresence = PresenceType.available;
             }
             ChatContainer.Content = Client.FriendList.Content;
@@ -149,7 +146,7 @@ namespace LegendaryClient
             if (!string.IsNullOrEmpty(Settings.Default.LoginPageImage) && Properties.Settings.Default.UseAsBackgroundImage)
             {
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage.Replace("\r\n", ""))))
-                    Client.BackgroundImage.Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
+                    Client.BackgroundImage.Source = new BitmapImage(new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Properties.Settings.Default.LoginPageImage), UriKind.Absolute));
             }
             // screen resolution fix: because MainWindow height is bigger than some screen height
             if(SystemParameters.WorkArea.Height < this.Height)
@@ -175,10 +172,10 @@ namespace LegendaryClient
 
         public void ChangeTheme()
         {
-            Accent myAccent = new Accent("AccentName", new Uri(Settings.Default.Theme));
+            Accent myAccent = new Accent("AccentName", new System.Uri(Settings.Default.Theme));
             ThemeManager.ChangeAppStyle(Application.Current, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
             var random = new Random().Next(-9000, 9000);
-            myAccent = new Accent(random.ToString(), new Uri(Settings.Default.Theme));
+            myAccent = new Accent(random.ToString(), new System.Uri(Settings.Default.Theme));
             ThemeManager.ChangeAppStyle(Application.Current, myAccent, (Settings.Default.DarkTheme) ? ThemeManager.GetAppTheme("BaseDark") : ThemeManager.GetAppTheme("BaseLight"));
             Client.CurrentAccent = myAccent;
         }
@@ -293,10 +290,9 @@ namespace LegendaryClient
                 RiotCalls.QuitGame();
                 Client.RiotConnection.Disconnected -= Client.RiotConnection_Disconnected;
                 Client.RiotConnection.Close();
-                Client.ChatClient.OnError -= Client.ChatClient_OnError;
-                Client.ChatClient.Close();
-                Client.ChatClient = null;
-                Client.ChatClient = new JabberClient();
+                Client.XmppConnection.OnError -= Client.XmppConnection_OnError;
+                Client.XmppConnection.Close();
+                Client.XmppConnection = null;
                 Client.chatlistview.Children.Clear();
                 Client.IsLoggedIn = false;
                 Client.StatusContainer.Visibility = Visibility.Hidden;
@@ -377,7 +373,7 @@ namespace LegendaryClient
         private void ServerThread(object data)
         {
             NamedPipeServerStream pipeServer =
-                new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, numThreads);
+                new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifJidafd", PipeDirection.InOut, numThreads);
             int threadId = Thread.CurrentThread.ManagedThreadId;
             pipeServer.WaitForConnection();
             Client.SendPIPE = new StreamString(pipeServer);
@@ -390,7 +386,7 @@ namespace LegendaryClient
             Client.SendPIPE.WriteString("AwaitStart");
 
 
-            NamedPipeClientStream output = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifjidafdOUTPUT", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            NamedPipeClientStream output = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifJidafdOUTPUT", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
             output.Connect();
             StreamString ss = new StreamString(output);
             Client.InPIPE = ss;

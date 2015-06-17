@@ -49,10 +49,10 @@ namespace LegendaryClient.Logic.Region
             get { return "kr"; }
         }
 
-        //No known news URI for Korea
-        public override Uri NewsAddress
+        //No known news System.Uri for Korea
+        public override System.Uri NewsAddress
         {
-            get { return new Uri(""); }
+            get { return new System.Uri(""); }
         }
 
         public override IPAddress[] PingAddresses
@@ -63,9 +63,9 @@ namespace LegendaryClient.Logic.Region
             }
         }
 
-        public override Uri SpectatorLink
+        public override System.Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.kr.lol.riotgames.com:80/observer-mode/rest/"); }
+            get { return new System.Uri("http://spectator.kr.lol.riotgames.com:80/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress

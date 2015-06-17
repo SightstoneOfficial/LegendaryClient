@@ -265,7 +265,7 @@ A code signing license (So you know that you are using LegendaryClient)
                                                           Settings.Default.LoginPageImage.Replace("\r\n", "")))))
                 Client.BackgroundImage.Source =
                     new BitmapImage(
-                        new Uri(
+                        new System.Uri(
                             Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                                 Settings.Default.LoginPageImage), UriKind.Absolute));
         }
@@ -281,7 +281,7 @@ A code signing license (So you know that you are using LegendaryClient)
                                                           Settings.Default.LoginPageImage.Replace("\r\n", "")))))
                 Client.BackgroundImage.Source =
                     new BitmapImage(
-                        new Uri(
+                        new System.Uri(
                             Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                                 Settings.Default.LoginPageImage), UriKind.Absolute));
         }
@@ -330,7 +330,7 @@ A code signing license (So you know that you are using LegendaryClient)
                 Client.BackgroundImage.Visibility = Visibility.Visible;
                 Client.BackgroundImage.Source =
                     new BitmapImage(
-                        new Uri(
+                        new System.Uri(
                             Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                                 Settings.Default.LoginPageImage), UriKind.Absolute));
             }
@@ -350,7 +350,7 @@ A code signing license (So you know that you are using LegendaryClient)
             if (!x.Contains("http://leaguecraft.com/uimods/"))
             {
                 ResultTextbox.Content =
-                    "Invalid Uri. Please try a different Uri. Be sure that the Uri is from LeagueCraft.com (Easy hud only works with Leaguecraft currently)";
+                    "Invalid Uri. Please try a different Uri. Be sure that the System.Uri is from LeagueCraft.com (Easy hud only works with Leaguecraft currently)";
                 ResultTextbox.Visibility = Visibility.Visible;
                 return;
             }
@@ -360,7 +360,7 @@ A code signing license (So you know that you are using LegendaryClient)
             {
                 try
                 {
-                    client.DownloadFileAsync(new Uri("http://leaguecraft.com/uimods/download/?id=" + y),
+                    client.DownloadFileAsync(new System.Uri("http://leaguecraft.com/uimods/download/?id=" + y),
                         Path.Combine(Client.ExecutingDirectory, "LCHudFile.zip"));
                     client.DownloadFileCompleted += (o, xm) =>
                     {

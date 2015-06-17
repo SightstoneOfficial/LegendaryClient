@@ -4,12 +4,12 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Xml;
-using jabber.protocol.client;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Windows;
 using LegendaryClient.Logic.Riot.Team;
+using agsXMPP.protocol.client;
 
 #endregion
 
@@ -32,7 +32,7 @@ namespace LegendaryClient.Controls
         private int _inviteId;
         private int _queueId;
 
-        public NotificationPopup(ChatSubjects subject, Message message)
+        public NotificationPopup(ChatSubjects subject, agsXMPP.protocol.client.Message message)
         {
             InitializeComponent();
             _subject = subject;
@@ -100,8 +100,8 @@ namespace LegendaryClient.Controls
                 }
             }
 
-            var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", _profileIconId + ".png");
-            ProfileImage.Source = Client.GetImage(uriSource);
+            var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", _profileIconId + ".png");
+            ProfileImage.Source = Client.GetImage(UriSource);
 
             if (name == "RANKED_TEAM_UPDATE")
             {

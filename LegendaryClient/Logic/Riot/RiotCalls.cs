@@ -748,7 +748,7 @@ namespace LegendaryClient.Logic.Riot
         }
 
         /// <summary>
-        /// Bans a champion from the game (must be during PRE_CHAMP_SELECT and the users PickTurn)
+        /// Bans a champion from the game (must be dUring PRE_CHAMP_SELECT and the users PickTurn)
         /// </summary>
         /// <param name="ChampionId">The champion id</param>
         public static Task<object> BanChampion(int ChampionId)

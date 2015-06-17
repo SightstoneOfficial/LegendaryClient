@@ -1,9 +1,4 @@
-﻿using jabber;
-using jabber.client;
-using jabber.connection;
-using jabber.protocol.client;
-using jabber.protocol.iq;
-using LCLog;
+﻿using LCLog;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Region;
@@ -22,9 +17,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -40,13 +32,16 @@ using Button = System.Windows.Controls.Button;
 using Image = System.Windows.Controls.Image;
 using Label = System.Windows.Controls.Label;
 using ListView = System.Windows.Controls.ListView;
-using Message = jabber.protocol.client.Message;
 using Timer = System.Windows.Forms.Timer;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform.Messaging.Persistence;
 using RtmpSharp.Messaging;
 using System.Threading.Tasks;
 using System.Net.NetworkInformation;
+using agsXMPP.protocol.client;
+using agsXMPP.protocol.iq.roster;
+using agsXMPP;
+using System.Security.Cryptography;
 
 //using LegendaryClient.Logic.AutoReplayRecorder;
 
@@ -161,6 +156,8 @@ namespace LegendaryClient.Logic
 
         internal static double QueueId = 0;
 
+        internal static agsXMPP.XmppClientConnection XmppConnection;
+
         /// <summary>
         ///     The database of all runes
         /// </summary>
@@ -257,7 +254,6 @@ namespace LegendaryClient.Logic
 
         #region Chat
 
-        internal static JabberClient ChatClient;
 
         //Fix for invitations
         public delegate void OnMessageHandler(object sender, Message e);
@@ -267,7 +263,7 @@ namespace LegendaryClient.Logic
         public static Dictionary<string, string> PlayerNote = new Dictionary<string, string>();
         internal static RosterManager RostManager;
         internal static PresenceManager PresManager;
-        internal static ConferenceManager ConfManager;
+        //internal static ConferenceManager ConfManager;
         internal static bool UpdatePlayers = true;
         internal static Dictionary<string, ChatPlayerItem> AllPlayers = new Dictionary<string, ChatPlayerItem>();
 
@@ -282,10 +278,10 @@ namespace LegendaryClient.Logic
                     return;
 
                 _CurrentPresence = value;
-                if (ChatClient == null)
+                if (XmppConnection == null)
                     return;
 
-                if (ChatClient.IsAuthenticated)
+                if (XmppConnection.Authenticated)
                     SetChatHover();
             }
         }
@@ -301,21 +297,15 @@ namespace LegendaryClient.Logic
                     return;
 
                 _CurrentStatus = value;
-                if (ChatClient == null)
+                if (XmppConnection == null)
                     return;
 
-                if (ChatClient.IsAuthenticated)
+                if (XmppConnection.Authenticated)
                     SetChatHover();
             }
         }
 
-        internal static bool ChatClient_OnInvalidCertificate(object sender, X509Certificate certificate, X509Chain chain,
-            SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
-
-        internal static void ChatClient_OnMessage(object sender, Message msg)
+        internal static void XmppConnection_OnMessage(object sender, agsXMPP.protocol.client.Message msg)
         {
 			onChatMessageReceived(msg.From.User, msg.Body);
 
@@ -363,7 +353,7 @@ namespace LegendaryClient.Logic
 
         internal static bool loadedGroups = false;
 
-        internal static void ChatClientConnect(object sender)
+        internal static void XmppConnectionConnect(object sender)
         {
             loadedGroups = false;
             Groups.Add(new Group("Online"));
@@ -421,18 +411,18 @@ namespace LegendaryClient.Logic
             Groups.Add(new Group("Offline"));
             SetChatHover();
             loadedGroups = true;
-            Client.RostManager.OnRosterEnd -= Client.ChatClientConnect; //only update groups on login
+            //RostManager.OnRosterEnd -= Client.XmppConnectionConnect; //Cri when this happens
         }
 
         internal static void SendMessage(string User, string Message)
         {
-            ChatClient.Message(User, Message);
+            XmppConnection.Send(new Message(User, Message));
         }
 
         internal static void SetChatHover()
         {
-            if (ChatClient.IsAuthenticated)
-                ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
+            if (XmppConnection.Authenticated)
+                XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0));
         }
 
         internal static bool hidelegendaryaddition = false;
@@ -457,10 +447,10 @@ namespace LegendaryClient.Logic
                     case "inQueue":
                     case "championSelect":
                     case "inGame":
-                        presenceStatus = "dnd";
+                        presenceStatus = ShowType.dnd;
                         break;
                     case "outOfGame":
-                        presenceStatus = "chat";
+                        presenceStatus = ShowType.chat;
                         break;
                 }
             }
@@ -524,15 +514,16 @@ namespace LegendaryClient.Logic
             return sb.ToString();
         }
 
+        /*
         internal static void RostManager_OnRosterItem(object sender, Item ri)
         {
             UpdatePlayers = true;
-            if (AllPlayers.ContainsKey(ri.JID.User))
+            if (AllPlayers.ContainsKey(ri.Jid.User))
                 return;
 
             var player = new ChatPlayerItem
             {
-                Id = ri.JID.User,
+                Id = ri.Jid.User,
                 Group = "Online"
             };
             using (XmlReader reader = XmlReader.Create(new StringReader(ri.OuterXml)))
@@ -554,13 +545,14 @@ namespace LegendaryClient.Logic
                 }
             }
             player.Username = ri.Nickname;
-            AllPlayers.Add(ri.JID.User, player);
-        }
+            AllPlayers.Add(ri.Jid.User, player);
+        }//*/
 
 
         internal static StackPanel chatlistview;
-
-        internal static void PresManager_OnPrimarySessionChange(object sender, JID bare)
+        //Re-add this later
+        /*
+        internal static void PresManager_OnPrimarySessionChange(object sender, Jid bare)
         {
             if (!AllPlayers.ContainsKey(bare.User))
                 return;
@@ -568,7 +560,7 @@ namespace LegendaryClient.Logic
             ChatPlayerItem Player = AllPlayers[bare.User];
             Player.IsOnline = false;
             UpdatePlayers = true;
-            Presence[] s = PresManager.GetAll(bare);
+            //Presence[] s = PresManager.GetAll(bare);
             if (s.Length == 0)
                 return;
 
@@ -670,18 +662,18 @@ namespace LegendaryClient.Logic
             if (string.IsNullOrWhiteSpace(Player.Status))
                 Player.Status = "Online";
         }
+        //*/
 
         internal static void Message(string To, string Message, ChatSubjects Subject)
         {
-            var msg = new Message(ChatClient.Document)
+            var msg = new Message(new Jid(To + "@pvp.net"))
             {
                 Type = MessageType.normal,
-                To = To + "@pvp.net",
                 Subject = Subject.ToString(),
                 Body = Message
             };
 
-            ChatClient.Write(msg);
+            XmppConnection.Send(msg);
         }
 
         internal static string GetObfuscatedChatroomName(string Subject, string Type)
@@ -706,7 +698,7 @@ namespace LegendaryClient.Logic
 
         internal static bool runonce = false;
 
-        internal static string GetChatroomJID(string ObfuscatedChatroomName, string password, bool IsTypePublic)
+        internal static string GetChatroomJid(string ObfuscatedChatroomName, string password, bool IsTypePublic)
         {
             if (!IsTypePublic)
                 return ObfuscatedChatroomName + "@sec.pvp.net";
@@ -723,7 +715,7 @@ namespace LegendaryClient.Logic
         internal static string Tier;
         internal static string LeagueName;
         internal static string GameStatus = "outOfGame";
-        internal static string presenceStatus = "chat";
+        internal static ShowType presenceStatus = ShowType.chat;
         internal static double timeStampSince = 0;
 
         #endregion Chat
@@ -1317,23 +1309,23 @@ namespace LegendaryClient.Logic
         //Get Image
         public static BitmapImage GetImage(string address)
         {
-            var uriSource = new Uri(address, UriKind.RelativeOrAbsolute);
+            var UriSource = new System.Uri(address, UriKind.RelativeOrAbsolute);
             if (File.Exists(address) || address.StartsWith("/LegendaryClient;component"))
-                return new BitmapImage(uriSource);
+                return new BitmapImage(UriSource);
 
             Log("Cannot find " + address, "WARN");
-            uriSource = new Uri("/LegendaryClient;component/NONE.png", UriKind.RelativeOrAbsolute);
+            UriSource = new System.Uri("/LegendaryClient;component/NONE.png", UriKind.RelativeOrAbsolute);
 
-            return new BitmapImage(uriSource);
+            return new BitmapImage(UriSource);
         }
         #endregion Public Helper Methods
 
         public static Accent CurrentAccent { get; set; }
 
-        internal static void ChatClient_OnPresence(object sender, Presence pres)
+        internal static void XmppConnection_OnPresence(object sender, Presence pres)
         {
-            if (pres.InnerText == string.Empty)
-                ChatClient.Presence(CurrentPresence, GetPresence(), presenceStatus, 0);
+            if (pres.GetAttribute("InnerText") == string.Empty)
+                XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0));
         }
 
         internal static string EncryptStringAES(this string input, string secret)
@@ -1524,7 +1516,7 @@ namespace LegendaryClient.Logic
         }
         public static Thread connectionCheck;
 
-        internal static void ChatClient_OnError(object sender, Exception ex)
+        internal static void XmppConnection_OnError(object sender, Exception ex)
         {
             Client.Log("Error with chat connection");
             if (connectionCheck == null)
@@ -1541,8 +1533,7 @@ namespace LegendaryClient.Logic
             while (!isInternetAvailable)
                 Task.Delay(100);
 
-            ChatClient.Connect();
-            ChatClient.Login();
+            XmppConnection.Open();
             SetChatHover();
         }
 
@@ -1616,7 +1607,7 @@ namespace LegendaryClient.Logic
     public class JsonItems
     {
         public string subscription { get; set; }
-        public string jid { get; set; }
+        public string Jid { get; set; }
         public string name { get; set; }
         public string xmlns { get; set; }
         public string note { get; set; }
@@ -1631,7 +1622,7 @@ namespace LegendaryClient.Logic
     public class JsonItems2
     {
         public string subscription { get; set; }
-        public string jid { get; set; }
+        public string Jid { get; set; }
         public string name { get; set; }
         public string xmlns { get; set; }
         public string note { get; set; }

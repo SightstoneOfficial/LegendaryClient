@@ -30,9 +30,9 @@ namespace LegendaryClient.Logic.Region
             get { return "la2"; }
         }
 
-        public override Uri NewsAddress
+        public override System.Uri NewsAddress
         {
-            get { return new Uri("http://las.leagueoflegends.com/es/rss.xml"); }
+            get { return new System.Uri("http://las.leagueoflegends.com/es/rss.xml"); }
         }
 
         public override bool Garena
@@ -58,9 +58,9 @@ namespace LegendaryClient.Logic.Region
             }
         }
 
-        public override Uri SpectatorLink
+        public override System.Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.la2.lol.riotgames.com:80/observer-mode/rest/"); }
+            get { return new System.Uri("http://spectator.la2.lol.riotgames.com:80/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress

@@ -1,7 +1,4 @@
-﻿using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.SQLite;
@@ -20,6 +17,9 @@ using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
+using agsXMPP.protocol.x.muc;
+using agsXMPP;
+using agsXMPP.protocol.client;
 
 namespace LegendaryClient.Windows
 {
@@ -34,7 +34,8 @@ namespace LegendaryClient.Windows
 
         private bool LaunchedTeamSelect;
         private double OptomisticLock;
-        private Room newRoom;
+        private MucManager newRoom;
+        private Jid roomJid;
 
         public CustomGameLobbyPage(GameDTO gameLobby = null)
         {
@@ -87,12 +88,12 @@ namespace LegendaryClient.Windows
                     HasConnectedToChat = true;
 
                     string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
-                    string jid = Client.GetChatroomJID(obfuscatedName, dto.RoomPassword, false);
-                    newRoom = Client.ConfManager.GetRoom(new JID(jid));
-                    newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                    string Jid = Client.GetChatroomJid(obfuscatedName, dto.RoomPassword, false);
+                    newRoom = new MucManager(Client.XmppConnection);
                     newRoom.OnRoomMessage += newRoom_OnRoomMessage;
                     newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
-                    newRoom.Join(dto.RoomPassword);
+                    roomJid = new Jid(Jid);
+                    newRoom.JoinRoom(roomJid, Client.LoginPacket.AllSummonerData.Summoner.Name);
                 }
                 switch (dto.GameState)
                 {
@@ -235,9 +236,9 @@ namespace LegendaryClient.Windows
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (Client.Filter)
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "").Filter() + Environment.NewLine;
+                    tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() + Environment.NewLine;
                 else
-                    tr.Text = msg.InnerText.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                    tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
             }));
@@ -257,7 +258,7 @@ namespace LegendaryClient.Windows
                 tr.Text = ChatTextBox.Text + Environment.NewLine;
 
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            newRoom.PublicMessage(ChatTextBox.Text);
+            Client.XmppConnection.Send(new Message(roomJid, ChatTextBox.Text));
             ChatTextBox.Text = "";
         }
 
@@ -270,8 +271,8 @@ namespace LegendaryClient.Windows
                     Content = player.SummonerName
                 }
             };
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", player.ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
-            lobbyPlayer.ProfileImage.Source = new BitmapImage(uriSource);
+            var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", player.ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
+            lobbyPlayer.ProfileImage.Source = new BitmapImage(UriSource);
             if (IsOwner)
                 lobbyPlayer.OwnerLabel.Visibility = Visibility.Visible;
 
@@ -290,12 +291,12 @@ namespace LegendaryClient.Windows
         {
             var botPlayer = new BotControl();
             champions champ = champions.GetChampion(BotPlayer.SummonerInternalName.Split('_')[1]);
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", champ.name + ".png"));
+            var Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", champ.name + ".png"));
 
             botPlayer.Width = 400;
             botPlayer.Margin = new Thickness(0, 0, 0, 5);
             botPlayer.PlayerName.Content = BotPlayer.SummonerName;
-            botPlayer.ProfileImage.Source = new BitmapImage(uriSource);
+            botPlayer.ProfileImage.Source = new BitmapImage(Source);
             botPlayer.blueSide = BotPlayer.SummonerInternalName.Split('_')[2] == "100";
             botPlayer.difficulty = BotPlayer.BotSkillLevel;
             botPlayer.cmbSelectDificulty.Visibility = Client.isOwnerOfGame ? Visibility.Visible : Visibility.Hidden;
@@ -337,8 +338,8 @@ namespace LegendaryClient.Windows
                     Content = observer.SummonerName
                 }
             };
-            var uriSource = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", observer.ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
-            lobbyPlayer.ProfileImage.Source = new BitmapImage(uriSource);
+            var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", observer.ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
+            lobbyPlayer.ProfileImage.Source = new BitmapImage(UriSource);
 
             lobbyPlayer.Width = 250;
             lobbyPlayer.Margin = new Thickness(0, 0, 0, 5);

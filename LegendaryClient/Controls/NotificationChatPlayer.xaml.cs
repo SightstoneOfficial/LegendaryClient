@@ -50,7 +50,7 @@ namespace LegendaryClient.Controls
             if (Client.ChatItem != null)
             {
                 Client.MainGrid.Children.Remove(Client.ChatItem);
-                Client.ChatClient.OnMessage -= Client.ChatItem.ChatClient_OnMessage;
+                Client.XmppConnection.OnMessage -= Client.ChatItem.XmppConnection_OnMessage;
                 Client.ChatItem = null;
             }
 

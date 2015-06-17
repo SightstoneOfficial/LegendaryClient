@@ -385,12 +385,12 @@ namespace LegendaryClient.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public int[] FavouriteChamps {
+        public int[] FavoUriteChamps {
             get {
-                return ((int[])(this["FavouriteChamps"]));
+                return ((int[])(this["FavoUriteChamps"]));
             }
             set {
-                this["FavouriteChamps"] = value;
+                this["FavoUriteChamps"] = value;
             }
         }
         

@@ -13,8 +13,8 @@ namespace LegendaryClient.Logic.Riot.Platform
         [SerializedName("username")]
         public String Username { get; set; }
 
-        [SerializedName("securityAnswer")]
-        public object SecurityAnswer { get; set; }
+        [SerializedName("secUrityAnswer")]
+        public object SecUrityAnswer { get; set; }
 
         [SerializedName("password")]
         public String Password { get; set; }

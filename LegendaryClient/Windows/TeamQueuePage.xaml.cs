@@ -1,7 +1,4 @@
-﻿using jabber;
-using jabber.connection;
-using jabber.protocol.client;
-using LegendaryClient.Controls;
+﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
@@ -25,6 +22,7 @@ using RtmpSharp.IO;
 using Timer = System.Timers.Timer;
 using LegendaryClient.Logic.Riot.Team;
 using RtmpSharp.Messaging;
+using agsXMPP;
 
 namespace LegendaryClient.Windows
 {
@@ -97,8 +95,8 @@ namespace LegendaryClient.Windows
                 string ObfuscatedName =
                     Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.ToLower(),
                         ChatPrefixes.Arranging_Game);
-                string JID = Client.GetChatroomJID(ObfuscatedName, CurrentLobby.ChatKey, false);
-                newRoom = Client.ConfManager.GetRoom(new JID(JID));
+                string Jid = Client.GetChatroomJid(ObfuscatedName, CurrentLobby.ChatKey, false);
+                newRoom = Client.ConfManager.GetRoom(new Jid(Jid));
                 newRoom.Nickname = Client.LoginPacket.AllSummonerData.Summoner.Name;
                 newRoom.OnRoomMessage += newRoom_OnRoomMessage;
                 newRoom.OnParticipantJoin += newRoom_OnParticipantJoin;
@@ -340,10 +338,10 @@ namespace LegendaryClient.Windows
 
                         //Populate the ProfileIcon
                         int ProfileIconID = Summoner.ProfileIconId;
-                        string uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
+                        string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                             ProfileIconID + ".png");
 
-                        TeamPlayer.ProfileIcon.Source = Client.GetImage(uriSource);
+                        TeamPlayer.ProfileIcon.Source = Client.GetImage(UriSource);
 
                         //Make it so you cant kick yourself
                         if (stats.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)

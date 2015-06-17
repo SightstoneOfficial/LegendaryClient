@@ -13,7 +13,7 @@ namespace LegendaryClient.Logic.Region
 
         public abstract string ChatName { get; }
 
-        public abstract Uri NewsAddress { get; }
+        public abstract System.Uri NewsAddress { get; }
 
         public abstract string Locale { get; }
 
@@ -23,7 +23,7 @@ namespace LegendaryClient.Logic.Region
 
         public abstract IPAddress[] PingAddresses { get; }
 
-        public abstract Uri SpectatorLink { get; }
+        public abstract System.Uri SpectatorLink { get; }
 
         public abstract string SpectatorIpAddress { get; set; }
 

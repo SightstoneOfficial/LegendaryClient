@@ -42,9 +42,9 @@ namespace LegendaryClient.Logic.JSON
                 var imageData = singularRuneData["image"] as Dictionary<string, object>;
                 if (imageData != null)
                 {
-                    var uriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune",
+                    var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "rune",
                         (string) imageData["full"]);
-                    newRune.icon = Client.GetImage(uriSource);
+                    newRune.icon = Client.GetImage(UriSource);
                 }
 
                 runeList.Add(newRune);

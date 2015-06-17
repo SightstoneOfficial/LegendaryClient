@@ -1,5 +1,3 @@
-using jabber.client;
-using jabber.connection;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Region;
@@ -20,8 +18,8 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Net;
-using System.Security.Cryptography;
-using System.Security.Principal;
+using System.SecUrity.Cryptography;
+using System.SecUrity.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,6 +40,8 @@ using RtmpSharp.Net;
 using Brush = System.Windows.Media.Brush;
 using Point = System.Windows.Point;
 using RiotPatcher = LegendaryClient.Logic.Patcher.RiotPatcher;
+using agsXMPP.protocol.iq.roster;
+using agsXMPP.protocol.client;
 
 namespace LegendaryClient.Windows
 {
@@ -118,7 +118,7 @@ namespace LegendaryClient.Windows
                 {
                     music = Directory.GetFiles(themeLocation, "*.mp3");
                 }
-                SoundPlayer.Source = new Uri(Path.Combine(themeLocation, music[0]));
+                SoundPlayer.Source = new System.Uri(Path.Combine(themeLocation, music[0]));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
             }
@@ -130,14 +130,14 @@ namespace LegendaryClient.Windows
                     "Teemo_Splash_" + new Random().Next(0, 8) + ".jpg");
                 if (File.Exists(SkinPath))
                 {
-                    LoginImage.Source = new BitmapImage(new Uri(SkinPath, UriKind.Absolute));
+                    LoginImage.Source = new BitmapImage(new System.Uri(SkinPath, UriKind.Absolute));
                 }
             }
             else if (Settings.Default.LoginPageImage == "")
             {
                 string[] videos = Directory.GetFiles(themeLocation, "*.mp4");
                 if (videos.Length > 0 && File.Exists(videos[0]))
-                    LoginPic.Source = new Uri(videos[0]);
+                    LoginPic.Source = new System.Uri(videos[0]);
                 LoginPic.LoadedBehavior = MediaState.Manual;
                 LoginPic.MediaEnded += LoginPic_MediaEnded;
                 SoundPlayer.MediaEnded += SoundPlayer_MediaEnded;
@@ -150,7 +150,7 @@ namespace LegendaryClient.Windows
                         Settings.Default.LoginPageImage.Replace("\r\n", ""))))
                     LoginImage.Source =
                         new BitmapImage(
-                            new Uri(
+                            new System.Uri(
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                                     Settings.Default.LoginPageImage), UriKind.Absolute));
             }
@@ -193,7 +193,7 @@ namespace LegendaryClient.Windows
 
             foreach (champions c in Client.Champions)
             {
-                var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
+                var source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
                     UriKind.Absolute);
                 c.icon = new BitmapImage(source);
 
@@ -227,7 +227,7 @@ namespace LegendaryClient.Windows
                     string usestring in
                         packages.Select(package => package.Split(',')[0])
                             .Where(usestring => usestring.Contains("ClientLibCommon.dat")))
-                    new WebClient().DownloadFile(new Uri(updateRegion.BaseLink + usestring),
+                    new WebClient().DownloadFile(new System.Uri(updateRegion.BaseLink + usestring),
                         Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
             }
             var reader = new SWFReader(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
@@ -303,7 +303,7 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                SoundPlayer.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
+                SoundPlayer.Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
                 playingSound = true;
@@ -328,11 +328,11 @@ namespace LegendaryClient.Windows
                 {
                     Video.IsChecked = true;
                     playingVideo = false;
-                    LoginPic.Source = new Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
+                    LoginPic.Source = new System.Uri("http://eddy5641.github.io/LegendaryClient/Login/Login.png");
                 }
                 else
                 {
-                    LoginPic.Source = new Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
+                    LoginPic.Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
                     LoginPic.LoadedBehavior = MediaState.Manual;
                     LoginPic.MediaEnded += LoginPic_MediaEnded;
                     LoginPic.Play();
@@ -418,7 +418,7 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Visibility = Visibility.Collapsed;
                 return;
             }
-            Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
+            Client.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
             Client.RiotConnection.CallbackException += client_CallbackException;
             Client.RiotConnection.MessageReceived += client_MessageReceived;
             await Client.RiotConnection.ConnectAsync();
@@ -535,65 +535,46 @@ namespace LegendaryClient.Windows
             {
                 Client.StatusContainer.Visibility = Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
+                //You have to hand implement this
+                //Client.XmppConnection.AutoReconnect = 30;
+                Client.XmppConnection = new agsXMPP.XmppClientConnection("pvp.net", 5223);
+                Client.XmppConnection.ConnectServer = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
+                Client.XmppConnection.Resource = "xiff";
+                Client.XmppConnection.UseSSL = true;
+                Client.XmppConnection.KeepAliveInterval = 10;
+                Client.XmppConnection.KeepAlive = true;
+                Client.XmppConnection.OnMessage += Client.XmppConnection_OnMessage;
+                Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
+                Client.XmppConnection.OnError += Client.XmppConnection_OnError;
                 if (!Client.Garena)
                 {
-                    Client.ChatClient.AutoReconnect = 30;
-                    Client.ChatClient.KeepAlive = 10;
-                    //For some reason Jabber-Net sometimes cant resolve hostname, so we do it manually
-                    Client.ChatClient.NetworkHost = Dns.GetHostEntry("chat." + Client.Region.ChatName + ".lol.riotgames.com").AddressList[0].ToString();
-                    Client.ChatClient.Port = 5223;
-                    Client.ChatClient.Server = "pvp.net";
-                    Client.ChatClient.Resource = "xiff";
-                    Client.ChatClient.SSL = true;
-                    Client.ChatClient.User = LoginUsernameBox.Text;
-                    Client.ChatClient.Password = "AIR_" + LoginPasswordBox.Password;
                     Client.userpass = new KeyValuePair<string, string>(LoginUsernameBox.Text,
                         "AIR_" + LoginPasswordBox.Password);
-                    Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
-                    Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
-                    Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
-                    Client.ChatClient.Connect();
-                    Client.ChatClient.OnError += Client.ChatClient_OnError;
+                    
+                    Client.XmppConnection.Open(LoginUsernameBox.Text, "AIR_" + LoginPasswordBox.Password);
+
+                    //Client.XmppConnection.OnInvalidCertificate += Client.XmppConnection_OnInvalidCertificate;
                 }
                 else
-                {
-                    Client.ChatClient.AutoReconnect = 30;
-                    Client.ChatClient.KeepAlive = 10;
-                    //For some reason Jabber-Net sometimes cant resolve hostname, so we do it manually
-                    Client.ChatClient.NetworkHost = Dns.GetHostEntry("chat" + Client.Region.ChatName + ".lol.garenanow.com").AddressList[0].ToString();
-                    Client.ChatClient.Port = 5223;
-                    Client.ChatClient.Server = "pvp.net";
-                    Client.ChatClient.Resource = "xiff";
-                    Client.ChatClient.SSL = true;
-                    Client.ChatClient.User = Client.UID;
+                {                    
                     var gas = getGas();
-                    Client.ChatClient.Password = "AIR_" + gas;
+                    Client.XmppConnection.Open(Client.UID, "AIR_" + "AIR_" + gas);
                     Client.userpass = new KeyValuePair<string, string>(Client.UID, "AIR_" + gas);
-                    Client.ChatClient.OnInvalidCertificate += Client.ChatClient_OnInvalidCertificate;
-                    Client.ChatClient.OnMessage += Client.ChatClient_OnMessage;
-                    Client.ChatClient.OnPresence += Client.ChatClient_OnPresence;
-                    Client.ChatClient.Connect();
-                    Client.ChatClient.OnError += Client.ChatClient_OnError;
                 }
 
-                Client.RostManager = new RosterManager
-                {
-                    Stream = Client.ChatClient,
-                    AutoAllow = AutoSubscriptionHanding.AllowAll
-                };
-                Client.RostManager.OnRosterItem += Client.RostManager_OnRosterItem;
-                Client.RostManager.OnRosterEnd += Client.ChatClientConnect;
+                Client.RostManager = new RosterManager(Client.XmppConnection);
+                //Client.RostManager.OnRosterItem += Client.RostManager_OnRosterItem;
+                //Client.RostManager.OnRosterEnd += Client.XmppConnectionConnect;
 
-                Client.PresManager = new PresenceManager
-                {
-                    Stream = Client.ChatClient
-                };
-                Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
+                Client.PresManager = new PresenceManager(Client.XmppConnection);
 
+                //Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
+                /*
                 Client.ConfManager = new ConferenceManager
                 {
-                    Stream = Client.ChatClient
+                    Stream = Client.XmppConnection
                 };
+                //*/
                 //switch
                 Client.Log("Connected to " + Client.Region.RegionName + " and logged in as " +
                            Client.LoginPacket.AllSummonerData.Summoner.Name);
@@ -728,7 +709,7 @@ namespace LegendaryClient.Windows
                                 LoggingInProgressRing.Visibility = Visibility.Visible;
                             }));
                     var context = RiotCalls.RegisterObjects();
-                    Client.RiotConnection = new RtmpClient(new Uri("rtmps://" + garenaregion.Server + ":2099"), context, ObjectEncoding.Amf3);
+                    Client.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + garenaregion.Server + ":2099"), context, ObjectEncoding.Amf3);
                     Client.RiotConnection.CallbackException += client_CallbackException;
                     Client.RiotConnection.MessageReceived += client_MessageReceived;
                     await Client.RiotConnection.ConnectAsync();

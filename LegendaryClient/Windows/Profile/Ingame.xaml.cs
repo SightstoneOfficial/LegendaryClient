@@ -70,18 +70,18 @@ namespace LegendaryClient.Windows.Profile
                         control.sumName = participant.SummonerInternalName;
                         control.champID = championSelect.ChampionId;
                         control.ChampionImage.Source = champions.GetChampion(championSelect.ChampionId).icon;
-                        var uriSource =
-                            new Uri(
+                        var UriSource =
+                            new System.Uri(
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                                     SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))),
                                 UriKind.Absolute);
-                        control.SummonerSpell1.Source = new BitmapImage(uriSource);
-                        uriSource =
-                            new Uri(
+                        control.SummonerSpell1.Source = new BitmapImage(UriSource);
+                        UriSource =
+                            new System.Uri(
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                                     SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))),
                                 UriKind.Absolute);
-                        control.SummonerSpell2.Source = new BitmapImage(uriSource);
+                        control.SummonerSpell2.Source = new BitmapImage(UriSource);
 
                         var m = new Image();
                         Panel.SetZIndex(m, -2);

@@ -40,9 +40,9 @@ namespace LegendaryClient.Logic.Region
             get { return "br"; }
         }
 
-        public override Uri NewsAddress
+        public override System.Uri NewsAddress
         {
-            get { return new Uri("http://br.leagueoflegends.com/pt/rss.xml"); }
+            get { return new System.Uri("http://br.leagueoflegends.com/pt/rss.xml"); }
             //This returns english (not spanish) characters
         }
 
@@ -59,9 +59,9 @@ namespace LegendaryClient.Logic.Region
             }
         }
 
-        public override Uri SpectatorLink
+        public override System.Uri SpectatorLink
         {
-            get { return new Uri("http://spectator.br.lol.riotgames.com:80/observer-mode/rest/"); }
+            get { return new System.Uri("http://spectator.br.lol.riotgames.com:80/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress
