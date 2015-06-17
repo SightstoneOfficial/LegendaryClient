@@ -271,10 +271,6 @@ namespace LegendaryClient.Windows
                 RegionComboBox.SelectedValue = Settings.Default.Region;
 
             invisibleLoginCheckBox.IsChecked = Settings.Default.incognitoLogin;
-
-            if (string.IsNullOrWhiteSpace(Settings.Default.SavedPassword) ||
-                string.IsNullOrWhiteSpace(Settings.Default.Region) || !Settings.Default.AutoLogin)
-                return;
         }
 
         private void LoginPic_MediaEnded(object sender, RoutedEventArgs e)
