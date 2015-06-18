@@ -1121,7 +1121,16 @@ namespace LegendaryClient.Logic
             {
                 using (WebClient client = new WebClient())
                 {
-                    string names = client.DownloadString("http://legendaryclient.net/QueueName");
+                    string names = "";
+                    try
+                    {
+                        names = client.DownloadString("http://legendaryclient.net/QueueName");
+                    }
+                    catch
+                    {
+                        //Try to download from Github
+                        names = client.DownloadString("https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/gh-pages/QueueName");
+                    }
                     string[] queues = names.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
                     queueNames = queues.Select(x => x.Split('|')).ToDictionary(x => x[0], x => x[1]);
                 }
