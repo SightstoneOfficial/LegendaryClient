@@ -307,14 +307,10 @@ namespace LegendaryClient.Logic
 
         internal static void XmppConnection_OnMessage(object sender, agsXMPP.protocol.client.Message msg)
         {
-
+            Log(string.Format("Received chat msg \"{0}\" from the user \"{1}\"", msg.Body, msg.From.User));
             onChatMessageReceived(msg.From.User, msg.Body);
             //This means that it is not for the user
             Log(JsonConvert.SerializeObject(msg));
-            if (!msg.To.User.Contains(LoginPacket.AllSummonerData.Summoner.Name))
-                return;
-
-
 
             //This blocks spammers from elo bosters
             if (Client.ChatAutoBlock == null)
@@ -463,7 +459,13 @@ namespace LegendaryClient.Logic
         internal static void SetChatHover()
         {
             if (XmppConnection.Authenticated)
-                XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0));
+            {
+                if (presenceStatus != ShowType.NONE)
+                    XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.available });
+                else
+                    XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.invisible });
+            }
+            
         }
 
         internal static bool hidelegendaryaddition = false;
@@ -1366,7 +1368,12 @@ namespace LegendaryClient.Logic
         internal static void XmppConnection_OnPresence(object sender, Presence pres)
         {
             if (pres.GetAttribute("InnerText") == string.Empty)
-                XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0));
+            {
+                if (presenceStatus != ShowType.NONE)
+                    XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.available });
+                else
+                    XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.invisible });
+            }
         }
 
         internal static string EncryptStringAES(this string input, string secret)
