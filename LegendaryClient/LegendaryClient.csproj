@@ -264,6 +264,7 @@
     <Compile Include="Logic\Crypto\Sha1.cs" />
     <Compile Include="Logic\DevUsers.cs" />
     <Compile Include="Logic\Crypto\Crypto.cs" />
+    <Compile Include="Logic\JSON\ChampionMastery.cs" />
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
     <Compile Include="Logic\JSON\LeaguePromote.cs" />
     <Compile Include="Logic\JSON\PromoteItem.cs" />
