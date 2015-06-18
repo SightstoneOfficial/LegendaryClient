@@ -59,6 +59,7 @@ namespace LegendaryClient.Windows
         private int counter;
         private List<int> disabledCharacters = new List<int>();
         private string firstPlayer = null;
+        private Jid jid;
 
         #region champs
 
@@ -131,15 +132,15 @@ namespace LegendaryClient.Windows
         };
 
         #endregion champs
-        private readonly Jid jid;
+
         public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
             var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
+            jid = new Jid(Jid);
             Chatroom = new MucManager(Client.XmppConnection);
             Client.XmppConnection.MessageGrabber.Add(jid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
-            jid = new Jid(Jid);
             Chatroom.AcceptDefaultConfiguration(jid);
             Chatroom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, RoomPassword);
         }
