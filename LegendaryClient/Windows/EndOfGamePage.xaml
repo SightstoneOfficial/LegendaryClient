@@ -62,6 +62,18 @@
                    Content="+50 XP"
                    FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" />
             <Button Content="History online" HorizontalAlignment="Right" Margin="0,5,55,0" VerticalAlignment="Top" Width="141" Click="OnlineHistory_Click"/>
+            <Grid x:Name="ChampionMasteryGrid" HorizontalAlignment="Left" Height="120" Visibility="Hidden" VerticalAlignment="Top" Width="136" Margin="179,151,0,0">
+                <Label Content="A+" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="40" Foreground="YellowGreen"/>
+                <Label x:Name="NextLvlChampionXP" Margin="10,70,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                	Content="1000 to Next Lvl"
+                	FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+                <Label x:Name="GainedChampionXP" Margin="10,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                	Content="+50 CP"
+                	FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" />
+                <Label x:Name="TotalChampionXP" Margin="10,89,0,-9" HorizontalAlignment="Left" VerticalAlignment="Top"
+                	Content="1000 CP Total"
+                	FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+            </Grid>
         </Grid>
 
         <RichTextBox x:Name="ChatText" Width="300" Margin="30,305,0,65" HorizontalAlignment="Left"

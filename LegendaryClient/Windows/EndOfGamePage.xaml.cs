@@ -19,6 +19,9 @@ using LegendaryClient.Logic.Riot.Platform;
 using agsXMPP;
 using agsXMPP.protocol.client;
 using agsXMPP.protocol.x.muc;
+using LegendaryClient.Logic.Riot.Platform.Messaging.Persistence;
+using Newtonsoft.Json;
+using LegendaryClient.Logic.JSON;
 
 namespace LegendaryClient.Windows
 {
@@ -43,8 +46,31 @@ namespace LegendaryClient.Windows
             newRoom = new MucManager(Client.XmppConnection);
             Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
+            Client.RiotConnection.MessageReceived += RiotConnection_MessageReceived;
             newRoom.AcceptDefaultConfiguration(new Jid(RoomJid));
             newRoom.JoinRoom(new Jid(RoomJid), Client.LoginPacket.AllSummonerData.Summoner.Name);
+        }
+
+        void RiotConnection_MessageReceived(object sender, RtmpSharp.Messaging.MessageReceivedEventArgs e)
+        {
+            if (e.Body is SimpleDialogMessage)
+            {
+                var item = e.Body as SimpleDialogMessage;
+                if (item.Type == "championMastery")
+                {
+                    var mastery = JsonConvert.DeserializeObject<ChampionMastery>(item.Params.ToString());
+                    GotChampionMasteryPoints(mastery);
+                }
+            }
+        }
+
+        private void GotChampionMasteryPoints(ChampionMastery item)
+        {
+            int gainedChampionMasteryPoints = item.championPointsUntilNextLevelAfterGame - item.championPointsUntilNextLevelBeforeGame;
+            TotalChampionXP.Content = (item.championPointsBeforeGame + gainedChampionMasteryPoints).ToString() + "Total CP";
+            GainedChampionXP.Content = "+" + gainedChampionMasteryPoints + " CP";
+            NextLvlChampionXP.Content = item.championPointsUntilNextLevelAfterGame.ToString() + " to Next Lvl";
+            ChampionMasteryGrid.Visibility = Visibility.Visible;
         }
 
         void XmppConnection_OnPresence(object sender, Presence pres)
@@ -253,6 +279,7 @@ namespace LegendaryClient.Windows
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.RiotConnection.MessageReceived -= RiotConnection_MessageReceived;
             newRoom.LeaveRoom(new Jid(RoomJid), Client.LoginPacket.AllSummonerData.Summoner.Name);
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             Client.ClearPage(typeof(EndOfGamePage));
