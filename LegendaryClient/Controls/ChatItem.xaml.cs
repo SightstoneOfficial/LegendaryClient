@@ -9,6 +9,7 @@ using LegendaryClient.Logic;
 using LegendaryClient.Properties;
 using agsXMPP.protocol.client;
 using agsXMPP;
+using agsXMPP.Collections;
 
 namespace LegendaryClient.Controls
 {
@@ -20,11 +21,22 @@ namespace LegendaryClient.Controls
         public ChatItem()
         {
             InitializeComponent();
+            ChatPlayerItem tempItem = null;
+            var Jid = string.Empty;
+            foreach (
+                var x in
+                    Client.AllPlayers.Where(x => x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content))
+            {
+                tempItem = x.Value;
+                Jid = x.Key + "@pvp.net";
 
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+                break;
+            }
+            Client.XmppConnection.MessageGrabber.Add(new Jid(Jid), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+            Tag = Jid;
         }
 
-        public void XmppConnection_OnMessage(object sender, Message msg)
+        public void XmppConnection_OnMessage(object sender, Message msg, object body)
         {
             if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
@@ -102,7 +114,7 @@ namespace LegendaryClient.Controls
                 tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
 
             ChatText.ScrollToEnd();
-            Client.XmppConnection.Send(new Message(new Jid(Jid), ChatTextBox.Text));
+            Client.XmppConnection.Send(new Message(new Jid(Jid), MessageType.chat, ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;
         }
     }

@@ -241,7 +241,13 @@ namespace LegendaryClient.Windows
             var player = (ChatPlayer)selection.AddedItems[0];
             ((ListView)e.Source).SelectedIndex = -1;
             var playerItem = (ChatPlayerItem)player.Tag;
-            if (Client.ChatListView.Items.Cast<NotificationChatPlayer>().Any(x => (string)x.PlayerLabelName.Content == playerItem.Username))
+            List<NotificationChatPlayer> items = new List<NotificationChatPlayer>();
+            foreach (object x in Client.ChatListView.Items)
+            {
+                if (x.GetType() == typeof(NotificationChatPlayer))
+                    items.Add((NotificationChatPlayer)x);
+            }
+            if (items.Any(x => (string)x.PlayerLabelName.Content == playerItem.Username))
                 return;
 
             var chatPlayer = new NotificationChatPlayer

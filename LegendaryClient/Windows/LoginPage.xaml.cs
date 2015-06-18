@@ -424,8 +424,20 @@ namespace LegendaryClient.Windows
                 Domain = "lolclient.lol.riotgames.com",
                 AuthToken = authToken
             };
-
             Session login = await RiotCalls.Login(newCredentials);
+            if (login == null)
+            {
+                Client.Log("Login session is null.");
+                var overlay = new MessageOverlay
+                {
+                    MessageTextBox = { Text = "Login session is null. That means login failed. Click OK to exit LegendaryClient." },
+                    MessageTitle = { Content = "Login session is null." }
+                };
+                overlay.AcceptButton.Click += (o, i) => { Environment.Exit(0); };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+                return;
+            }
             Client.PlayerSession = login;
             var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
             var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
@@ -448,7 +460,7 @@ namespace LegendaryClient.Windows
             //TODO: Finish this so all calls are used
             var packetx = await RiotCalls.GetLoginDataPacketForUser();
             Client.Queues = await RiotCalls.GetAvailableQueues();
-            if (!(Client.Garena && UpdateRegionComboBox.Text == "TW"))
+            if (!(Client.Garena && RegionComboBox.Text == "TW"))
                 Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
             else
                 Client.Log("Garena TW users will get stuck in GetAvailableChampions()" + Environment.NewLine + "See Issue #360");
@@ -529,6 +541,7 @@ namespace LegendaryClient.Windows
                 //You have to hand implement this
                 //Client.XmppConnection.AutoReconnect = 30;
                 Client.XmppConnection = new agsXMPP.XmppClientConnection("pvp.net", 5223);
+                Client.XmppConnection.AutoResolveConnectServer = false;
                 Client.XmppConnection.ConnectServer = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
                 Client.XmppConnection.Resource = "xiff";
                 Client.XmppConnection.UseSSL = true;
@@ -537,6 +550,7 @@ namespace LegendaryClient.Windows
                 Client.XmppConnection.OnMessage += Client.XmppConnection_OnMessage;
                 Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
                 Client.XmppConnection.OnError += Client.XmppConnection_OnError;
+                Client.XmppConnection.OnLogin += (o) => Client.Log("Connected to XMPP Server");
                 if (!Client.Garena)
                 {
                     Client.userpass = new KeyValuePair<string, string>(LoginUsernameBox.Text,
@@ -547,15 +561,15 @@ namespace LegendaryClient.Windows
                     //Client.XmppConnection.OnInvalidCertificate += Client.XmppConnection_OnInvalidCertificate;
                 }
                 else
-                {                    
+                {
+                    Client.XmppConnection.ConnectServer = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
                     var gas = getGas();
                     Client.XmppConnection.Open(Client.UID, "AIR_" + "AIR_" + gas);
                     Client.userpass = new KeyValuePair<string, string>(Client.UID, "AIR_" + gas);
                 }
-                Client.XmppConnectionConnect();
                 Client.RostManager = new RosterManager(Client.XmppConnection);
-                //Client.RostManager.OnRosterItem += Client.RostManager_OnRosterItem;
-                //Client.RostManager += Client.XmppConnectionConnect;
+                Client.XmppConnection.OnRosterItem += Client.RostManager_OnRosterItem;
+                Client.XmppConnection.OnRosterEnd += Client.ChatClientConnect;
 
                 Client.PresManager = new PresenceManager(Client.XmppConnection);
                 Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;

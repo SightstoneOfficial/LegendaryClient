@@ -11,6 +11,7 @@ using LegendaryClient.Logic.Riot;
 using agsXMPP.protocol.client;
 using agsXMPP;
 using agsXMPP.protocol.x.muc;
+using agsXMPP.Collections;
 
 namespace LegendaryClient.Controls
 {
@@ -39,7 +40,7 @@ namespace LegendaryClient.Controls
                 return;
             }
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+            Client.XmppConnection.MessageGrabber.Add(new Jid(ChatId), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
             newRoom.AcceptDefaultConfiguration(new Jid(ChatId));
             roomName = ChatId;
             newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
@@ -47,7 +48,7 @@ namespace LegendaryClient.Controls
             RefreshRoom();
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg)
+        void XmppConnection_OnMessage(object sender, Message msg, object data)
         {
             if (msg.To.Bare != roomName)
                 return;
@@ -149,7 +150,7 @@ namespace LegendaryClient.Controls
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
+            Client.XmppConnection.MessageGrabber.Remove(new Jid(ChatId));
             Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
             newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
             Client.ClearMainGrid(typeof (GroupChatItem));
@@ -157,7 +158,7 @@ namespace LegendaryClient.Controls
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
+            Client.XmppConnection.MessageGrabber.Remove(new Jid(ChatId));
             Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
             newRoom.LeaveRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
             Client.ClearMainGrid(typeof (GroupChatItem));
@@ -180,7 +181,7 @@ namespace LegendaryClient.Controls
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
-            Client.XmppConnection.Send(new Message(new Jid(roomName), ChatTextBox.Text));
+            Client.XmppConnection.Send(new Message(new Jid(roomName), MessageType.chat, ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;
             ChatText.ScrollToEnd();
         }

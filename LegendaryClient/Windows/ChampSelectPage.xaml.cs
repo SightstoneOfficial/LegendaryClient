@@ -28,6 +28,7 @@ using Timer = System.Windows.Forms.Timer;
 using agsXMPP.protocol.client;
 using agsXMPP.protocol.x.muc;
 using agsXMPP;
+using agsXMPP.Collections;
 
 namespace LegendaryClient.Windows
 {
@@ -58,6 +59,7 @@ namespace LegendaryClient.Windows
         private int counter;
         private List<int> disabledCharacters = new List<int>();
         private string firstPlayer = null;
+        private Jid jid;
 
         #region champs
 
@@ -130,15 +132,15 @@ namespace LegendaryClient.Windows
         };
 
         #endregion champs
-        private readonly Jid jid;
+
         public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
             var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
-            Chatroom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             jid = new Jid(Jid);
+            Chatroom = new MucManager(Client.XmppConnection);
+            Client.XmppConnection.MessageGrabber.Add(jid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             Chatroom.AcceptDefaultConfiguration(jid);
             Chatroom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, RoomPassword);
         }
@@ -187,7 +189,7 @@ namespace LegendaryClient.Windows
                 {
                     if (firstPlayer == pres.From.User)
                     {
-                        Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
+                        Client.XmppConnection.MessageGrabber.Remove(jid);
                         Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
                     }
                 }
@@ -208,10 +210,8 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg)
+        void XmppConnection_OnMessage(object sender, Message msg, object data)
         {
-            if (msg.To.Bare != jid.Bare)
-                return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Ignore the message that is always sent when joining
@@ -1390,6 +1390,8 @@ namespace LegendaryClient.Windows
 
                 await RiotCalls.ChampionSelectCompleted();
                 HasLockedIn = true;
+                this.LockInButton.IsEnabled = false;
+                this.LockInButton.Background = Brushes.Gray;
             }
             else
             {
@@ -1519,7 +1521,7 @@ namespace LegendaryClient.Windows
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                Client.XmppConnection.Send(new Message(jid, ChatTextBox.Text));
+                Client.XmppConnection.Send(new Message(jid, MessageType.chat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }
