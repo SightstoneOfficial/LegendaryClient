@@ -5,6 +5,7 @@
         /// <summary>
         /// Hack, doesn't use the enum value
         /// </summary>
+        XMPP_SUBSCRIBE,
         PRACTICE_GAME_OWNER_CHANGE,
         GAME_INVITE_REJECT,
         NORMAL_GAME_USER_QUIT,

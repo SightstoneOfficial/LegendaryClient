@@ -548,9 +548,13 @@ namespace LegendaryClient.Windows
                 Client.XmppConnection.KeepAliveInterval = 10;
                 Client.XmppConnection.KeepAlive = true;
                 Client.XmppConnection.OnMessage += Client.XmppConnection_OnMessage;
-                Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
                 Client.XmppConnection.OnError += Client.XmppConnection_OnError;
                 Client.XmppConnection.OnLogin += (o) => Client.Log("Connected to XMPP Server");
+                Client.RostManager = new RosterManager(Client.XmppConnection);
+                Client.XmppConnection.OnRosterItem += Client.RostManager_OnRosterItem;
+                Client.XmppConnection.OnRosterEnd += Client.ChatClientConnect;
+                Client.PresManager = new PresenceManager(Client.XmppConnection);
+                Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
                 if (!Client.Garena)
                 {
                     Client.userpass = new KeyValuePair<string, string>(LoginUsernameBox.Text,
@@ -567,12 +571,6 @@ namespace LegendaryClient.Windows
                     Client.XmppConnection.Open(Client.UID, "AIR_" + "AIR_" + gas);
                     Client.userpass = new KeyValuePair<string, string>(Client.UID, "AIR_" + gas);
                 }
-                Client.RostManager = new RosterManager(Client.XmppConnection);
-                Client.XmppConnection.OnRosterItem += Client.RostManager_OnRosterItem;
-                Client.XmppConnection.OnRosterEnd += Client.ChatClientConnect;
-
-                Client.PresManager = new PresenceManager(Client.XmppConnection);
-                Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
 
                 //Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
                 /*

@@ -417,6 +417,23 @@ namespace LegendaryClient.Logic
             Client.XmppConnection.OnRosterEnd -= Client.ChatClientConnect; //only update groups on login
         }
 
+        internal static void XmppConnection_OnPresence(object sender, Presence pres)
+        {
+            switch (pres.Type)
+            {
+                case PresenceType.subscribe:
+                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        FriendInvite pop = new FriendInvite(ChatSubjects.XMPP_SUBSCRIBE, pres);
+                        pop.Height = 230;
+                        pop.HorizontalAlignment = HorizontalAlignment.Right;
+                        pop.VerticalAlignment = VerticalAlignment.Bottom;
+                        NotificationGrid.Children.Add(pop);
+                    }));
+                    break;
+            }
+        }
+        
         internal static void RostManager_OnRosterItem(object sender, RosterItem ri)
         {
             UpdatePlayers = true;
@@ -1374,16 +1391,8 @@ namespace LegendaryClient.Logic
 
         public static Accent CurrentAccent { get; set; }
 
-        internal static void XmppConnection_OnPresence(object sender, Presence pres)
-        {
-            if (pres.GetAttribute("InnerText") == string.Empty)
-            {
-                if (presenceStatus != ShowType.NONE)
-                    XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.available });
-                else
-                    XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.invisible });
-            }
-        }
+        
+
 
         internal static string EncryptStringAES(this string input, string secret)
         {

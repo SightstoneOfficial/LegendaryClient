@@ -206,6 +206,9 @@
     <Compile Include="Controls\GameScouter\TinyRuneMasteryData.xaml.cs">
       <DependentUpon>TinyRuneMasteryData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FriendInvite.xaml.cs">
+      <DependentUpon>FriendInvite.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PlayerStatisticsChampSelect.xaml.cs">
       <DependentUpon>PlayerStatisticsChampSelect.xaml</DependentUpon>
     </Compile>
@@ -717,6 +720,10 @@
     <Page Include="Controls\GameScouter\TinyRuneMasteryData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FriendInvite.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\PlayerStatisticsChampSelect.xaml">
       <Generator>MSBuild:Compile</Generator>
