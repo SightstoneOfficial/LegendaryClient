@@ -448,7 +448,7 @@ namespace LegendaryClient.Windows
             //TODO: Finish this so all calls are used
             var packetx = await RiotCalls.GetLoginDataPacketForUser();
             Client.Queues = await RiotCalls.GetAvailableQueues();
-            if (!(Client.Garena && UpdateRegionComboBox.Text == "TW"))
+            if (!(Client.Garena && RegionComboBox.Text == "TW"))
                 Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
             else
                 Client.Log("Garena TW users will get stuck in GetAvailableChampions()" + Environment.NewLine + "See Issue #360");
