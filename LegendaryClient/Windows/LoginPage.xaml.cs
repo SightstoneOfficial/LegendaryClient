@@ -424,8 +424,20 @@ namespace LegendaryClient.Windows
                 Domain = "lolclient.lol.riotgames.com",
                 AuthToken = authToken
             };
-
             Session login = await RiotCalls.Login(newCredentials);
+            if (login == null)
+            {
+                Client.Log("Login session is null.");
+                var overlay = new MessageOverlay
+                {
+                    MessageTextBox = { Text = "Login session is null. That means login failed. Click OK to exit LegendaryClient." },
+                    MessageTitle = { Content = "Login session is null." }
+                };
+                overlay.AcceptButton.Click += (o, i) => { Environment.Exit(0); };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+                return;
+            }
             Client.PlayerSession = login;
             var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
             var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
