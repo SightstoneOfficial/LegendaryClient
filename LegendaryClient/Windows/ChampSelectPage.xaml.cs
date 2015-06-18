@@ -1390,6 +1390,8 @@ namespace LegendaryClient.Windows
 
                 await RiotCalls.ChampionSelectCompleted();
                 HasLockedIn = true;
+                this.LockInButton.IsEnabled = false;
+                this.LockInButton.Background = Brushes.Gray;
             }
             else
             {
