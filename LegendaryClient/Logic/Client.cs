@@ -431,8 +431,13 @@ namespace LegendaryClient.Logic
             return Client.AllPlayers[Jid].Username;
         }
 
-        internal static void XmppConnection_OnPresence(object sender, Presence pres)
+        internal async void XmppConnection_OnPresence(object sender, Presence pres)
         {
+            Log("Received pres (Bare): " + pres.From.Bare);
+            Log("From user: " + pres.From.User);
+            Log("Pres Type: " + pres.Type);
+            if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
+                return;
             switch (pres.Type)
             {
                 case PresenceType.subscribe:
@@ -453,7 +458,7 @@ namespace LegendaryClient.Logic
                     break;
                 case PresenceType.unsubscribe:
                 case PresenceType.unsubscribed:
-                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    await MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         NotifyPlayerPopup notify = new NotifyPlayerPopup("Friends", string.Format("{0} is no longer your friend", pres.From.User));
                     }));
@@ -461,7 +466,39 @@ namespace LegendaryClient.Logic
                     break;
                 case PresenceType.available:
                     if (!AllPlayers.ContainsKey(pres.From.User))
-                        return;
+                    {
+                        UpdatePlayers = true;
+                        if (AllPlayers.ContainsKey(pres.From.User))
+                            return;
+
+                        var player = new ChatPlayerItem
+                        {
+                            Id = pres.From.User,
+                            Group = "Online"
+                        };
+                        //using (XmlReader reader = XmlReader.Create(new StringReader(ri.OuterXml)))
+                        using (XmlReader reader = XmlReader.Create(new StringReader(pres.InnerXml)))
+                        {
+                            while (reader.Read())
+                            {
+                                if (!reader.IsStartElement())
+                                    continue;
+
+                                switch (reader.Name)
+                                {
+                                    case "group":
+                                        reader.Read();
+                                        string TempGroup = reader.Value;
+                                        if (TempGroup != "**Default")
+                                            player.Group = TempGroup;
+                                        break;
+                                }
+                            }
+                        }
+                        var x = await RiotCalls.GetAllPublicSummonerDataByAccount(pres.From.User.Replace("sum", "").ToInt())
+                        player.Username = x.Summoner.Name;
+                        AllPlayers.Add(pres.From.User, player);
+                    }
 
                     ChatPlayerItem Player = AllPlayers[pres.From.User];
                     Player.IsOnline = false;
