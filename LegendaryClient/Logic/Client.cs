@@ -457,6 +457,7 @@ namespace LegendaryClient.Logic
                     {
                         NotifyPlayerPopup notify = new NotifyPlayerPopup("Friends", string.Format("{0} is no longer your friend", pres.From.User));
                     }));
+                    AllPlayers.Remove(pres.From.User);
                     break;
                 case PresenceType.available:
                     if (!AllPlayers.ContainsKey(pres.From.User))
@@ -568,9 +569,13 @@ namespace LegendaryClient.Logic
                 case PresenceType.invisible:
                     if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
                         return;
-                    ChatPlayerItem x = AllPlayers[pres.From.User];
-                    x.IsOnline = false;
-                    UpdatePlayers = true;
+                    try
+                    {
+                        ChatPlayerItem x = AllPlayers[pres.From.User];
+                        x.IsOnline = false;
+                        UpdatePlayers = true;
+                    }
+                    catch { }
                     break;
             }
         }

@@ -549,7 +549,18 @@ namespace LegendaryClient.Windows
                 Client.XmppConnection.KeepAlive = true;
                 Client.XmppConnection.OnMessage += Client.XmppConnection_OnMessage;
                 Client.XmppConnection.OnError += Client.XmppConnection_OnError;
-                Client.XmppConnection.OnLogin += (o) => Client.Log("Connected to XMPP Server");
+                Client.XmppConnection.OnLogin += (o) => 
+                {
+                    Client.Log("Connected to XMPP Server");
+                    //Set up chat
+                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        if (invisibleLoginCheckBox.IsChecked != true)
+                            Client.XmppConnection.Send(new Presence(ShowType.chat, Client.GetPresence(), 0) { Type = PresenceType.available });
+                        else
+                            Client.XmppConnection.Send(new Presence(ShowType.NONE, Client.GetPresence(), 0) { Type = PresenceType.invisible });
+                    }));
+                };
                 Client.RostManager = new RosterManager(Client.XmppConnection);
                 Client.XmppConnection.OnRosterItem += Client.RostManager_OnRosterItem;
                 Client.XmppConnection.OnRosterEnd += Client.ChatClientConnect;
