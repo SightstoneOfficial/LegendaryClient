@@ -45,7 +45,7 @@ Rank: {2}", message.From.User, x.SummonerLevel, RiotCalls.GetAllLeaguesForPlayer
             }
             catch 
             {
-                NotificationTextBox.Text = string.Format(@"{0} would like to have you as a friend", message.From.User;
+                NotificationTextBox.Text = string.Format(@"{0} would like to have you as a friend", message.From.User);
             }
         }
 
