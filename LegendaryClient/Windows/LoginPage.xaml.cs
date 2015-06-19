@@ -175,10 +175,10 @@ namespace LegendaryClient.Windows
             }
             catch (Exception e) // Database broken?
             {
-                Client.Log("Database was broken : \r\n" + e.Message + "\r\n" + e.Source);
+                Client.Log("Database is broken : \r\n" + e.Message + "\r\n" + e.Source);
                 var overlay = new MessageOverlay
                 {
-                    MessageTextBox = { Text = "Database broken. Click OK to exit LegendaryClient." },
+                    MessageTextBox = { Text = "Database is broken. Click OK to exit LegendaryClient." },
                     MessageTitle = { Content = "Database Error" }
                 };
                 Client.SQLiteDatabase.Close();
