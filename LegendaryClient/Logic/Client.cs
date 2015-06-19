@@ -439,12 +439,16 @@ namespace LegendaryClient.Logic
                 case PresenceType.subscribed:
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        AllPlayers.Add(pres.From.User, new ChatPlayerItem());
                         FriendInvite pop = new FriendInvite(ChatSubjects.XMPP_SUBSCRIBE, pres);
                         pop.Height = 230;
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
                         NotificationGrid.Children.Add(pop);
+                        try
+                        {
+                            AllPlayers.Add(pres.From.User, new ChatPlayerItem());
+                        }
+                        catch { }
                     }));
                     break;
                 case PresenceType.unsubscribe:
@@ -452,7 +456,6 @@ namespace LegendaryClient.Logic
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         NotifyPlayerPopup notify = new NotifyPlayerPopup("Friends", string.Format("{0} is no longer your friend", pres.From.User));
-
                     }));
                     break;
                 case PresenceType.available:
@@ -563,6 +566,8 @@ namespace LegendaryClient.Logic
                     break;
                 case PresenceType.unavailable:
                 case PresenceType.invisible:
+                    if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
+                        return;
                     ChatPlayerItem x = AllPlayers[pres.From.User];
                     x.IsOnline = false;
                     UpdatePlayers = true;
@@ -1280,6 +1285,11 @@ namespace LegendaryClient.Logic
         internal static string[] args;
 
         #region Public Helper Methods
+
+        internal static int ToInt(this object convert)
+        {
+            return Convert.ToInt32(convert);
+        }
 
         internal static void FocusClient()
         {

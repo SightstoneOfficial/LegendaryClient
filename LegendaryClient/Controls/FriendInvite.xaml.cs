@@ -37,11 +37,11 @@ namespace LegendaryClient.Controls
         {
             try
             {
-                var x = await RiotCalls.GetSummonerByName(message.From.User);
+                var x = await RiotCalls.GetAllPublicSummonerDataByAccount(message.From.User.Replace("sum", string.Empty).ToInt());
                 NotificationTextBox.Text = string.Format(
                     @"{0} would like to have you as a friend
 Level: {1}
-Rank: {2}", message.From.User, x.SummonerLevel, RiotCalls.GetAllLeaguesForPlayer(x.SummonerId));
+Rank: {2}", x.Summoner.Name, x.SummonerLevel.Level, RiotCalls.GetAllLeaguesForPlayer(x.Summoner.AcctId));
             }
             catch 
             {
