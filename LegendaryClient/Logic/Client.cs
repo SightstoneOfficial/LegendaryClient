@@ -431,7 +431,7 @@ namespace LegendaryClient.Logic
             return Client.AllPlayers[Jid].Username;
         }
 
-        internal async void XmppConnection_OnPresence(object sender, Presence pres)
+        internal async static void XmppConnection_OnPresence(object sender, Presence pres)
         {
             Log("Received pres (Bare): " + pres.From.Bare);
             Log("From user: " + pres.From.User);
@@ -495,7 +495,7 @@ namespace LegendaryClient.Logic
                                 }
                             }
                         }
-                        var x = await RiotCalls.GetAllPublicSummonerDataByAccount(pres.From.User.Replace("sum", "").ToInt())
+                        var x = await RiotCalls.GetAllPublicSummonerDataByAccount(pres.From.User.Replace("sum", "").ToInt());
                         player.Username = x.Summoner.Name;
                         AllPlayers.Add(pres.From.User, player);
                     }
