@@ -23,17 +23,38 @@ namespace LegendaryClient.Controls
             InitializeComponent();
             ChatPlayerItem tempItem = null;
             var Jid = string.Empty;
-            foreach (
-                var x in
-                    Client.AllPlayers.Where(x => x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content))
+            try
             {
-                tempItem = x.Value;
-                Jid = x.Key + "@pvp.net";
 
-                break;
+                foreach (
+                    var x in
+                        Client.AllPlayers.Where(x => x.Value.Username == this.PlayerLabelName.Content))
+                {
+                    tempItem = x.Value;
+                    Jid = x.Key + "@pvp.net";
+
+                    break;
+                }
+                Client.XmppConnection.MessageGrabber.Add(new Jid(Jid), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+                Tag = Jid;
             }
-            Client.XmppConnection.MessageGrabber.Add(new Jid(Jid), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
-            Tag = Jid;
+            catch
+            {
+                Client.Log("Failed Chat");
+                Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+            }
+        }
+        public void XmppConnection_OnMessage(object sender, Message msg)
+        {
+            if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
+                return;
+
+            var chatItem = Client.AllPlayers[msg.From.User];
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            {
+                if ((string)Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
+                    Update();
+            }));
         }
 
         public void XmppConnection_OnMessage(object sender, Message msg, object body)

@@ -270,9 +270,17 @@ namespace RtmpSharp.Net
                 case "rtmp":
                     return stream;
                 case "rtmps":
-                    var ssl = new SslStream(stream, false, certificateValidator);
-                    await ssl.AuthenticateAsClientAsync(uri.Host);
-                    return ssl;
+                    try
+                    {
+                        //This causes a crash sometimes
+                        var ssl = new SslStream(stream, false, certificateValidator);
+                        await ssl.AuthenticateAsClientAsync(uri.Host);
+                        return ssl;
+                    }
+                    catch
+                    {
+                        throw new ArgumentException("Failed to get ssl");
+                    }
                 default:
                     throw new ArgumentException("The specified scheme is not supported.");
             }

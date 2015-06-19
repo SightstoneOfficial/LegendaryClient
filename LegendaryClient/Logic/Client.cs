@@ -308,7 +308,7 @@ namespace LegendaryClient.Logic
         internal static void XmppConnection_OnMessage(object sender, agsXMPP.protocol.client.Message msg)
         {
             Log(string.Format("Received chat msg \"{0}\" from the user \"{1}\"", msg.Body, msg.From.User));
-            onChatMessageReceived(msg.From.User, msg.Body);
+            
             //This means that it is not for the user
             Log(JsonConvert.SerializeObject(msg));
 
@@ -350,6 +350,11 @@ namespace LegendaryClient.Logic
             else
                 chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
             MainWin.FlashWindow();
+            try
+            {
+                onChatMessageReceived(msg.From.User, msg.Body);
+            }
+            catch { }
         }
 
         internal static bool autoBlock = true;
