@@ -35,11 +35,18 @@ namespace LegendaryClient.Controls
         }
         private async void load(agsXMPP.protocol.client.Presence message)
         {
-            var x = await RiotCalls.GetSummonerByName(message.From.User);
-            NotificationTextBox.Text = string.Format(
-                @"{0} would like to have you as a friend
+            try
+            {
+                var x = await RiotCalls.GetSummonerByName(message.From.User);
+                NotificationTextBox.Text = string.Format(
+                    @"{0} would like to have you as a friend
 Level: {1}
 Rank: {2}", message.From.User, x.SummonerLevel, RiotCalls.GetAllLeaguesForPlayer(x.SummonerId));
+            }
+            catch 
+            {
+                NotificationTextBox.Text = string.Format(@"{0} would like to have you as a friend", message.From.User;
+            }
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)

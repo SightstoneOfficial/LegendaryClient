@@ -417,19 +417,150 @@ namespace LegendaryClient.Logic
             Client.XmppConnection.OnRosterEnd -= Client.ChatClientConnect; //only update groups on login
         }
 
+        internal static string GetUserFromJid(string Jid)
+        {
+            if (Jid.Contains("@"))
+                Jid = Jid.Split('@')[0];
+            if (!Client.AllPlayers.ContainsKey(Jid))
+                return string.Empty;
+            return Client.AllPlayers[Jid].Username;
+        }
+
         internal static void XmppConnection_OnPresence(object sender, Presence pres)
         {
             switch (pres.Type)
             {
                 case PresenceType.subscribe:
+                case PresenceType.subscribed:
                     MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
+                        AllPlayers.Add(pres.From.User, new ChatPlayerItem());
                         FriendInvite pop = new FriendInvite(ChatSubjects.XMPP_SUBSCRIBE, pres);
                         pop.Height = 230;
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
                         NotificationGrid.Children.Add(pop);
                     }));
+                    break;
+                case PresenceType.unsubscribe:
+                case PresenceType.unsubscribed:
+                    MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    {
+                        NotifyPlayerPopup notify = new NotifyPlayerPopup("Friends", string.Format("{0} is no longer your friend", pres.From.User));
+
+                    }));
+                    break;
+                case PresenceType.available:
+                    if (!AllPlayers.ContainsKey(pres.From.User))
+                        return;
+
+                    ChatPlayerItem Player = AllPlayers[pres.From.User];
+                    Player.IsOnline = false;
+                    UpdatePlayers = true;
+
+                    string Presence = pres.Status;
+                    if (Presence == null)
+                        return;
+
+                    Player.RawPresence = Presence; //For debugging
+                    Player.IsOnline = true;
+                    using (XmlReader reader = XmlReader.Create(new StringReader(Presence)))
+                    {
+                        try
+                        {
+                            while (reader.Read())
+                            {
+                                if (!reader.IsStartElement() || reader.IsEmptyElement)
+                                    continue;
+
+                                #region Parse Presence
+
+                                switch (reader.Name)
+                                {
+                                    case "profileIcon":
+                                        reader.Read();
+                                        Player.ProfileIcon = Convert.ToInt32(reader.Value);
+                                        break;
+
+                                    case "level":
+                                        reader.Read();
+                                        Player.Level = Convert.ToInt32(reader.Value);
+                                        break;
+
+                                    case "wins":
+                                        reader.Read();
+                                        Player.Wins = Convert.ToInt32(reader.Value);
+                                        break;
+
+                                    case "leaves":
+                                        reader.Read();
+                                        Player.Leaves = Convert.ToInt32(reader.Value);
+                                        break;
+
+                                    case "rankedWins":
+                                        reader.Read();
+                                        Player.RankedWins = Convert.ToInt32(reader.Value);
+                                        break;
+
+                                    case "timeStamp":
+                                        reader.Read();
+                                        Player.Timestamp = Convert.ToInt64(reader.Value);
+                                        break;
+
+                                    case "statusMsg":
+                                        reader.Read();
+                                        Player.Status = reader.Value;
+                                        break;
+
+                                    case "dev":
+                                        reader.Read();
+                                        Player.UsingLegendary = true;
+                                        if (reader.Value == "true")
+                                            Player.IsLegendaryDev = true;
+                                        break;
+
+                                    case "gameStatus":
+                                        reader.Read();
+                                        Player.GameStatus = reader.Value;
+                                        break;
+
+                                    case "skinname":
+                                        reader.Read();
+                                        Player.Champion = reader.Value;
+                                        break;
+
+                                    case "rankedLeagueName":
+                                        reader.Read();
+                                        Player.LeagueName = reader.Value;
+                                        break;
+
+                                    case "rankedLeagueTier":
+                                        reader.Read();
+                                        Player.LeagueTier = reader.Value;
+                                        break;
+
+                                    case "rankedLeagueDivision":
+                                        reader.Read();
+                                        Player.LeagueDivision = reader.Value;
+                                        break;
+                                }
+
+                                #endregion Parse Presence
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
+                        }
+                    }
+                    if (string.IsNullOrWhiteSpace(Player.Status))
+                        Player.Status = "Online";
+                    break;
+                case PresenceType.unavailable:
+                case PresenceType.invisible:
+                    ChatPlayerItem x = AllPlayers[pres.From.User];
+                    x.IsOnline = false;
+                    UpdatePlayers = true;
                     break;
             }
         }
@@ -574,155 +705,8 @@ namespace LegendaryClient.Logic
             return sb.ToString();
         }
 
-        /*
-        internal static void RostManager_OnRosterItem(object sender, Item ri)
-        {
-            UpdatePlayers = true;
-            if (AllPlayers.ContainsKey(ri.Jid.User))
-                return;
-
-            var player = new ChatPlayerItem
-            {
-                Id = ri.Jid.User,
-                Group = "Online"
-            };
-            using (XmlReader reader = XmlReader.Create(new StringReader(ri.OuterXml)))
-            {
-                while (reader.Read())
-                {
-                    if (!reader.IsStartElement())
-                        continue;
-
-                    switch (reader.Name)
-                    {
-                        case "group":
-                            reader.Read();
-                            string TempGroup = reader.Value;
-                            if (TempGroup != "**Default")
-                                player.Group = TempGroup;
-                            break;
-                    }
-                }
-            }
-            player.Username = ri.Nickname;
-            AllPlayers.Add(ri.Jid.User, player);
-        }//*/
-
 
         internal static StackPanel chatlistview;
-        //Re-add this later
-        /*
-        internal static void PresManager_OnPrimarySessionChange(object sender, Jid bare)
-        {
-            if (!AllPlayers.ContainsKey(bare.User))
-                return;
-
-            ChatPlayerItem Player = AllPlayers[bare.User];
-            Player.IsOnline = false;
-            UpdatePlayers = true;
-            //Presence[] s = PresManager.GetAll(bare);
-            if (s.Length == 0)
-                return;
-
-            string Presence = s[0].Status;
-            if (Presence == null)
-                return;
-
-            Player.RawPresence = Presence; //For debugging
-            Player.IsOnline = true;
-            using (XmlReader reader = XmlReader.Create(new StringReader(Presence)))
-            {
-                try
-                {
-                    while (reader.Read())
-                    {
-                        if (!reader.IsStartElement() || reader.IsEmptyElement)
-                            continue;
-
-                        #region Parse Presence
-
-                        switch (reader.Name)
-                        {
-                            case "profileIcon":
-                                reader.Read();
-                                Player.ProfileIcon = Convert.ToInt32(reader.Value);
-                                break;
-
-                            case "level":
-                                reader.Read();
-                                Player.Level = Convert.ToInt32(reader.Value);
-                                break;
-
-                            case "wins":
-                                reader.Read();
-                                Player.Wins = Convert.ToInt32(reader.Value);
-                                break;
-
-                            case "leaves":
-                                reader.Read();
-                                Player.Leaves = Convert.ToInt32(reader.Value);
-                                break;
-
-                            case "rankedWins":
-                                reader.Read();
-                                Player.RankedWins = Convert.ToInt32(reader.Value);
-                                break;
-
-                            case "timeStamp":
-                                reader.Read();
-                                Player.Timestamp = Convert.ToInt64(reader.Value);
-                                break;
-
-                            case "statusMsg":
-                                reader.Read();
-                                Player.Status = reader.Value;
-                                break;
-
-                            case "dev":
-                                reader.Read();
-                                Player.UsingLegendary = true;
-                                if (reader.Value == "true")
-                                    Player.IsLegendaryDev = true;
-                                break;
-
-                            case "gameStatus":
-                                reader.Read();
-                                Player.GameStatus = reader.Value;
-                                break;
-
-                            case "skinname":
-                                reader.Read();
-                                Player.Champion = reader.Value;
-                                break;
-
-                            case "rankedLeagueName":
-                                reader.Read();
-                                Player.LeagueName = reader.Value;
-                                break;
-
-                            case "rankedLeagueTier":
-                                reader.Read();
-                                Player.LeagueTier = reader.Value;
-                                break;
-
-                            case "rankedLeagueDivision":
-                                reader.Read();
-                                Player.LeagueDivision = reader.Value;
-                                break;
-                        }
-
-                        #endregion Parse Presence
-                    }
-                }
-                catch (Exception e)
-                {
-                    Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
-                }
-            }
-            if (string.IsNullOrWhiteSpace(Player.Status))
-                Player.Status = "Online";
-        }
-        //*/
 
         internal static void Message(string To, string Message, ChatSubjects Subject)
         {
