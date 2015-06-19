@@ -1,28 +1,16 @@
 ﻿using LCDevWindow.Commands;
 using LCDevWindow.Commands.LegendaryClient;
-using MahApps.Metro.Controls;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.IO.Pipes;
 using System.Linq;
-using System.Reflection;
 using System.Security.Principal;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using Timer = System.Timers.Timer;
 
@@ -31,11 +19,11 @@ namespace LCDevWindow
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow
     {
-        bool pipe = true;
-        Timer shutdown = new Timer();
-        int shutdownint = 0;
+        bool _pipe = true;
+        readonly Timer _shutdown = new Timer();
+        int _shutdownint;
 
         public MainWindow()
         {
@@ -47,63 +35,67 @@ namespace LCDevWindow
             Main.inPipeClient.Connect();
             Main.inPipeStream = new StreamString(Main.inPipeClient);
             Log("Pipe to LegendaryClient Created! Logging has started", Brushes.Green);
-            Thread xls = new Thread(() =>
+            var xls = new Thread(() =>
                 {
-                    while (pipe)
+                    while (_pipe)
                     {
-                        string x = Main.inPipeStream.ReadString();
+                        var x = Main.inPipeStream.ReadString();
 
-                        if (x == "191537514598135486vneaoifjidafd")
+                        switch (x)
                         {
-                            pipe = false;
-                            Log("LegendaryClient has closed and the pipe has been shut down!", Brushes.Red);
-                            Log("This window will now close in 30 seconds, do \"-abortShutdown\" to stop the shutdown", Brushes.Red);
-                            shutdown.Interval = 1000;
-                            shutdownint = 0;
-                            shutdown.Elapsed += (A, B) =>
+                            case "191537514598135486vneaoifjidafd":
+                                _pipe = false;
+                                Log("LegendaryClient has closed and the pipe has been shut down!", Brushes.Red);
+                                Log("This window will now close in 30 seconds, do \"-abortShutdown\" to stop the shutdown", Brushes.Red);
+                                _shutdown.Interval = 1000;
+                                _shutdownint = 0;
+                                _shutdown.Elapsed += (a, b) =>
                                 {
-                                    shutdownint++;
-                                    if (shutdownint == 30)
+                                    _shutdownint++;
+                                    if (_shutdownint == 30)
                                         Environment.Exit(0);
-                                    else if (!((decimal)shutdownint / 5).ToString().Contains("."))
-                                        Log("Shutdown in " + (30 - shutdownint) + " seconds", Brushes.OrangeRed);
-                                    if (shutdownint == 30)
+                                    else if (!((decimal)_shutdownint / 5).ToString(CultureInfo.CurrentCulture).Contains("."))
+                                        Log("Shutdown in " + (30 - _shutdownint) + " seconds", Brushes.OrangeRed);
+                                    if (_shutdownint == 30)
                                         Log("Shutting down... Please wait", Brushes.OrangeRed);
                                 };
-                            shutdown.Start();
-                            Main.inPipeClient.Close();
-                        }
-                        else if (x == "AwaitStart")
-                        {
+                                _shutdown.Start();
+                                Main.inPipeClient.Close();
+                                break;
+                            case "AwaitStart":
 
-                            StartPipe();
-                            Log("Starting another pipe to LegendaryClient for sending data", Brushes.Blue);
+                                StartPipe();
+                                Log("Starting another pipe to LegendaryClient for sending data", Brushes.Blue);
+                                break;
+                            default:
+                                if (!x.ToLower().Contains("exception"))
+                                    Log(x, Brushes.Orange);
+                                else if (x.ToLower().Contains("unhandled"))
+                                    Log(x, Brushes.Red);
+                                else Log(x, Brushes.Green);
+                                break;
                         }
-                        else if (!x.ToLower().Contains("exception"))
-                            Log(x, Brushes.Orange);
-                        else if (x.ToLower().Contains("unhandled"))
-                            Log(x, Brushes.Red);
-                        else Log(x, Brushes.Green);
                     }
                 });
             xls.Start();
         }
 
-        private static int numThreads = 4;
+        private const int NumThreads = 4;
+
         public static void StartPipe()
         {
-            int i = 0;
-            Thread[] servers = new Thread[numThreads];
-            if (i < numThreads)
+            var i = 0;
+            var servers = new Thread[NumThreads];
+            if (i < NumThreads)
                 i++;
             servers[i] = new Thread(ServerThread);
             servers[i].Start();
         }
         private static void ServerThread(object data)
         {
-            NamedPipeServerStream pipeServer =
-                new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifjidafdOUTPUT", PipeDirection.InOut, numThreads);
-            int threadId = Thread.CurrentThread.ManagedThreadId;
+            var pipeServer =
+                new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifjidafdOUTPUT", PipeDirection.InOut, NumThreads);
+            //var threadId = Thread.CurrentThread.ManagedThreadId;
             pipeServer.WaitForConnection();
             try
             {
@@ -112,14 +104,17 @@ namespace LCDevWindow
             }
             catch
             {
+                // ignored
             }
         }
         public void Log(string text, SolidColorBrush color)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    var tr = new TextRange(LogWindow.Document.ContentEnd, LogWindow.Document.ContentEnd);
-                    tr.Text = text + Environment.NewLine;
+                    var tr = new TextRange(LogWindow.Document.ContentEnd, LogWindow.Document.ContentEnd)
+                    {
+                        Text = text + Environment.NewLine
+                    };
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
                     LogWindow.ScrollToEnd();
                 }));
@@ -127,23 +122,23 @@ namespace LCDevWindow
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string m = DevCommand.Text;
+            var m = DevCommand.Text;
             if (m == "-abortShutdown")
-                shutdown.Stop();
+            {
+                _shutdown.Stop();
+                return;
+            }
             if (m.Contains("(") && m.Contains(")"))
             {
                 DevCommand.Text = "";
-                string[] tempsplit = m.Split('(');
+                var tempsplit = m.Split('(');
 
-                object x = Command.GetCommand(tempsplit[0]);
+                var x = Command.GetCommand(tempsplit[0]);
                 if (x != null)
                 {
-                    List<string> splittwo = new List<string>();
+                    var xm = tempsplit[1].Replace(")", "").Split(',');
 
-                    string[] xm = tempsplit[1].Replace(")", "").Split(',');
-                    
-                    foreach (string xd in xm)
-                        splittwo.Add(xd);
+                    var splittwo = xm.ToList();
                     if (!x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient") && x.GetType().ToString().Contains("LCDevWindow.Commands"))
                         ((Command)x).ActivateCommand(splittwo.ToArray());
                     else if (x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient"))
@@ -161,26 +156,25 @@ namespace LCDevWindow
        } 
         public class StreamString
         {
-            private Stream ioStream;
-            private UnicodeEncoding streamEncoding;
+            private readonly Stream _ioStream;
+            private readonly UnicodeEncoding _streamEncoding;
 
             public StreamString(Stream ioStream)
             {
-                this.ioStream = ioStream;
-                streamEncoding = new UnicodeEncoding();
+                _ioStream = ioStream;
+                _streamEncoding = new UnicodeEncoding();
             }
 
             public string ReadString()
             {
                 try
                 {
-                    int len;
-                    len = ioStream.ReadByte() * 256;
-                    len += ioStream.ReadByte();
-                    byte[] inBuffer = new byte[len];
-                    ioStream.Read(inBuffer, 0, len);
+                    var len = _ioStream.ReadByte() * 256;
+                    len += _ioStream.ReadByte();
+                    var inBuffer = new byte[len];
+                    _ioStream.Read(inBuffer, 0, len);
 
-                    return streamEncoding.GetString(inBuffer);
+                    return _streamEncoding.GetString(inBuffer);
                 }
                 catch
                 {
@@ -190,16 +184,16 @@ namespace LCDevWindow
 
             public int WriteString(string outString)
             {
-                byte[] outBuffer = streamEncoding.GetBytes(outString);
-                int len = outBuffer.Length;
+                var outBuffer = _streamEncoding.GetBytes(outString);
+                var len = outBuffer.Length;
                 if (len > ushort.MaxValue)
                 {
-                    len = (int)ushort.MaxValue;
+                    len = ushort.MaxValue;
                 }
-                ioStream.WriteByte((byte)(len / 256));
-                ioStream.WriteByte((byte)(len & 255));
-                ioStream.Write(outBuffer, 0, len);
-                ioStream.Flush();
+                _ioStream.WriteByte((byte)(len / 256));
+                _ioStream.WriteByte((byte)(len & 255));
+                _ioStream.Write(outBuffer, 0, len);
+                _ioStream.Flush();
 
                 return outBuffer.Length + 2;
             }

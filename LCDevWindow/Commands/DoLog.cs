@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Media;
 
 namespace LCDevWindow.Commands
@@ -15,14 +11,16 @@ namespace LCDevWindow.Commands
         }
         public override List<string> HelpTips()
         {
-            List<string> tips = new List<string>();
-            tips.Add("Adds text to the local Log window");
-            tips.Add("Usage: DoLog(string) -> string is the text to be added");
+            var tips = new List<string>
+            {
+                "Adds text to the local Log window",
+                "Usage: DoLog(string) -> string is the text to be added"
+            };
             return tips;
         }
         public override object ActivateCommand(string[] args)
         {
-            Main.win.Log((string)args[0], Brushes.Black);
+            Main.win.Log(args[0], Brushes.Black);
             return null;
         }
     }

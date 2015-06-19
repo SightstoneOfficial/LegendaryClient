@@ -112,7 +112,7 @@ namespace LegendaryClient.Windows
                             wc.DownloadFile("http://images.wikia.com/leagueoflegends/images/1/10/Teemo.laugh3.ogg", soundpath);
                         }
                     }
-                    music = new string[] { soundpath };
+                    music = new[] { soundpath };
                 }
                 else
                 {
@@ -411,7 +411,16 @@ namespace LegendaryClient.Windows
             Client.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
             Client.RiotConnection.CallbackException += client_CallbackException;
             Client.RiotConnection.MessageReceived += client_MessageReceived;
-            await Client.RiotConnection.ConnectAsync();
+            try
+            {
+
+                await Client.RiotConnection.ConnectAsync();
+            }
+            catch
+            {
+
+            }
+
             Client.RiotConnection.SetChunkSize(2147483647);
             AuthenticationCredentials newCredentials = new AuthenticationCredentials
             {

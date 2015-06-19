@@ -1,9 +1,6 @@
 ﻿using LCDevWindow.Commands.LegendaryClient;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LCDevWindow.Commands
 {
@@ -15,13 +12,13 @@ namespace LCDevWindow.Commands
 
         public abstract string CommandName { get; }
 
-        public static object GetCommand(string Command)
+        public static object GetCommand(string command)
         {
-            Type t = Type.GetType("LCDevWindow.Commands." + Command);
+            var t = Type.GetType("LCDevWindow.Commands." + command);
 
             if (t != null)
                 return (Command)Activator.CreateInstance(t);
-            t = Type.GetType("LCDevWindow.Commands.LegendaryClient." + Command);
+            t = Type.GetType("LCDevWindow.Commands.LegendaryClient." + command);
 
             if (t != null)
                 return (LCCommand)Activator.CreateInstance(t);

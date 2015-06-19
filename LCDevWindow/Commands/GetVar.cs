@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Windows.Media;
 
@@ -25,9 +21,11 @@ namespace LCDevWindow.Commands
         }
         public override List<string> HelpTips()
         {
-            List<string> tips = new List<string>();
-            tips.Add("Sees if a var contains a certain value");
-            tips.Add("Usage: GetVar(string) -> The Var name");
+            List<string> tips = new List<string>
+            {
+                "Sees if a var contains a certain value",
+                "Usage: GetVar(string) -> The Var name"
+            };
             return tips;
         }
     }

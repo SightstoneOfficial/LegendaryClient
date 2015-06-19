@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LCDevWindow.Commands.LegendaryClient
 {
+    // ReSharper disable once InconsistentNaming
     public abstract class LCCommand
     {
         public abstract object ActivateCommand(string[] args);
@@ -14,13 +12,13 @@ namespace LCDevWindow.Commands.LegendaryClient
 
         public abstract string CommandName { get; }
 
-        public static Command GetCommand(string Command)
+        public static Command GetCommand(string command)
         {
-            Type t = Type.GetType("LCDevWindow.Commands." + Command);
+            var t = Type.GetType("LCDevWindow.Commands." + command);
 
             if (t != null)
                 return (Command)Activator.CreateInstance(t);
-            t = Type.GetType("LCDevWindow.Commands.LegendaryClient." + Command);
+            t = Type.GetType("LCDevWindow.Commands.LegendaryClient." + command);
 
             if (t != null)
                 return (Command)Activator.CreateInstance(t);

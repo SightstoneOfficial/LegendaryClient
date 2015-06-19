@@ -35,9 +35,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-  <Reference Include="MahApps.Metro">
-    <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
-  </Reference>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net45\MahApps.Metro.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web.Extensions" />
@@ -75,7 +75,9 @@
     <Compile Include="Commands\GetVar.cs" />
     <Compile Include="Commands\Help.cs" />
     <Compile Include="Commands\LegendaryClient\LCCommand.cs" />
+    <Compile Include="Commands\LegendaryClient\MessageReceived.cs" />
     <Compile Include="Commands\LegendaryClient\SendOverlay.cs" />
+    <Compile Include="Commands\LegendaryClient\SendRtmpObject.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

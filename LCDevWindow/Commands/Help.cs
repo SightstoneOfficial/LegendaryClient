@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
 namespace LCDevWindow.Commands
@@ -13,9 +11,7 @@ namespace LCDevWindow.Commands
     {
         public override List<string> HelpTips()
         {
-            List<string> result = new List<string>();
-            result.Add("Displays all commands for LCDevWindow.exe");
-            result.Add("Usage: Help() -> No args");
+            var result = new List<string> {"Displays all commands for LCDevWindow.exe", "Usage: Help() -> No args"};
             return result;
         }
         public override string CommandName
