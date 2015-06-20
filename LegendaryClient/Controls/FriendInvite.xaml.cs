@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Xml;
+using System.Linq;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Maps;
 using LegendaryClient.Logic.Riot;
@@ -11,6 +12,8 @@ using LegendaryClient.Windows;
 using LegendaryClient.Logic.Riot.Team;
 using agsXMPP.protocol.client;
 using agsXMPP;
+using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.Riot.Leagues;
 
 #endregion
 
@@ -38,13 +41,21 @@ namespace LegendaryClient.Controls
         {
             try
             {
+                Client.Log("FriendRequest stuff coming");
                 Client.Log(message.From.User.Replace("sum", string.Empty));
                 var x = await RiotCalls.GetAllPublicSummonerDataByAccount(message.From.User.Replace("sum", string.Empty).ToInt());
                 Client.Log(x.Summoner.InternalName);
-                NotificationTextBox.Text = string.Format(
-                    @"{0} would like to have you as a friend
+
+                SummonerLeaguesDTO playerLeagues =
+                        await RiotCalls.GetAllLeaguesForPlayer(x.Summoner.AcctId);
+                string rank = string.Empty;
+                foreach (LeagueListDTO l in playerLeagues.SummonerLeagues.Where(l => l.Queue == "RANKED_SOLO_5x5"))
+                    rank = l.Tier + " " + l.RequestorsRank;
+                if (string.IsNullOrEmpty(rank))
+                    rank = "Unranked";
+                NotificationTextBox.Text = string.Format(@"{0} would like to have you as a friend
 Level: {1}
-Rank: {2}", x.Summoner.InternalName, x.SummonerLevel.Level, x.Summoner.SeasonTwoTier);
+Rank: {2}", x.Summoner.InternalName, x.SummonerLevel.Level, rank);
             }
             catch 
             {
