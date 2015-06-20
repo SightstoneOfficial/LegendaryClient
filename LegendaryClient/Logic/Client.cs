@@ -439,6 +439,7 @@ namespace LegendaryClient.Logic
             //Log("Other stuff: " + pres.InnerXml);
             if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
                 return;
+            SetChatHover();
             switch (pres.Type)
             {
                 case PresenceType.subscribe:
@@ -652,8 +653,7 @@ namespace LegendaryClient.Logic
                     XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.available });
                 else
                     XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.invisible });
-            }
-            
+            }            
         }
 
         internal static bool hidelegendaryaddition = false;
