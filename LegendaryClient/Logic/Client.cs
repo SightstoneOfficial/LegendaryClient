@@ -61,7 +61,7 @@ namespace LegendaryClient.Logic
 		/// <summary>
 		/// Gets called when you receive a message
 		/// </summary>
-		public static event OnMessageReceivedPy onChatMessageReceived;
+        public static event OnMessageReceivedPy onChatMessageReceived;
 		public delegate void OnAccept(bool accept);
 
         public static event OnAccept PlayerAccepedQueue;
@@ -310,7 +310,7 @@ namespace LegendaryClient.Logic
             Log(string.Format("Received chat msg \"{0}\" from the user \"{1}\"", msg.Body, msg.From.User));
             
             //This means that it is not for the user
-            Log(JsonConvert.SerializeObject(msg));
+            Log(msg.InnerXml);
 
             //This blocks spammers from elo bosters
             if (Client.ChatAutoBlock == null)
@@ -433,10 +433,10 @@ namespace LegendaryClient.Logic
 
         internal async static void XmppConnection_OnPresence(object sender, Presence pres)
         {
-            Log("Received pres (Bare): " + pres.From.Bare);
-            Log("From user: " + pres.From.User);
-            Log("Pres Type: " + pres.Type);
-            Log("Other stuff: " + pres.InnerXml);
+            //Log("Received pres (Bare): " + pres.From.Bare);
+            //Log("From user: " + pres.From.User);
+            //Log("Pres Type: " + pres.Type);
+            //Log("Other stuff: " + pres.InnerXml);
             if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
                 return;
             switch (pres.Type)
@@ -468,44 +468,10 @@ namespace LegendaryClient.Logic
                 case PresenceType.available:
                     if (!AllPlayers.ContainsKey(pres.From.User))
                     {
-                        UpdatePlayers = true;
-                        if (AllPlayers.ContainsKey(pres.From.User))
-                            return;
-
-                        var player = new ChatPlayerItem
+                        if (pres.InnerXml.Contains("profileIcon"))
                         {
-                            Id = pres.From.User,
-                            Group = "Online"
-                        };
-                        //using (XmlReader reader = XmlReader.Create(new StringReader(ri.OuterXml)))
-                        using (XmlReader reader = XmlReader.Create(new StringReader(pres.InnerXml.OuterXml())))
-                        {
-                            try
-                            {
-                                while (reader.Read())
-                                {
-                                    if (!reader.IsStartElement())
-                                        continue;
-
-                                    switch (reader.Name)
-                                    {
-                                        case "group":
-                                            reader.Read();
-                                            string TempGroup = reader.Value;
-                                            if (TempGroup != "**Default")
-                                                player.Group = TempGroup;
-                                            break;
-                                    }
-                                }
-                            }
-                            catch
-                            {
-                                player.Group = "**Default";
-                            }
+                            AllPlayers.Add(pres.From.User, new ChatPlayerItem());
                         }
-                        var x = await RiotCalls.GetAllPublicSummonerDataByAccount(pres.From.User.Replace("sum", "").ToInt());
-                        player.Username = x.Summoner.Name;
-                        AllPlayers.Add(pres.From.User, player);
                     }
 
                     ChatPlayerItem Player = AllPlayers[pres.From.User];

@@ -29,6 +29,7 @@ namespace LegendaryClient.Controls
             if (subject == ChatSubjects.XMPP_SUBSCRIBE)
             {
                 jid = message.From;
+                Client.Log(jid.Bare);
                 load(message);
             }
 
@@ -37,11 +38,13 @@ namespace LegendaryClient.Controls
         {
             try
             {
+                Client.Log(message.From.User.Replace("sum", string.Empty));
                 var x = await RiotCalls.GetAllPublicSummonerDataByAccount(message.From.User.Replace("sum", string.Empty).ToInt());
+                Client.Log(x.Summoner.InternalName);
                 NotificationTextBox.Text = string.Format(
                     @"{0} would like to have you as a friend
 Level: {1}
-Rank: {2}", x.Summoner.Name, x.SummonerLevel.Level, RiotCalls.GetAllLeaguesForPlayer(x.Summoner.AcctId));
+Rank: {2}", x.Summoner.InternalName, x.SummonerLevel.Level, x.Summoner.SeasonTwoTier);
             }
             catch 
             {
@@ -57,12 +60,14 @@ Rank: {2}", x.Summoner.Name, x.SummonerLevel.Level, RiotCalls.GetAllLeaguesForPl
         private void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
             Client.PresManager.RefuseSubscriptionRequest(jid);
+            Client.PresManager.Unsubscribe(jid);
             Visibility = Visibility.Hidden;
         }
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
             Client.PresManager.ApproveSubscriptionRequest(jid);
+            Client.PresManager.Subscribe(jid);
             Visibility = Visibility.Hidden;
         }
     }
