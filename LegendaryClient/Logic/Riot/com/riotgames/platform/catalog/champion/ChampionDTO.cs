@@ -60,6 +60,6 @@ namespace LegendaryClient.Logic.Riot.Platform
         public double PurchaseDate { get; set; }
 
         [SerializedName("endDate")]
-        public int EndDate { get; set; }
+        public Int64 EndDate { get; set; }
     }
 }
