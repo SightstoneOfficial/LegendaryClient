@@ -279,7 +279,7 @@ namespace RtmpSharp.Net
                     }
                     catch
                     {
-                        return stream;
+                        throw new ArgumentException("SSL error");
                     }
                 default:
                     throw new ArgumentException("The specified scheme is not supported.");

@@ -418,7 +418,12 @@ namespace LegendaryClient.Windows
             }
             catch
             {
-
+                ErrorTextBox.Text = "Failed to login. SSL error.";
+                HideGrid.Visibility = Visibility.Visible;
+                ErrorTextBox.Visibility = Visibility.Visible;
+                LoggingInLabel.Visibility = Visibility.Hidden;
+                LoggingInProgressRing.Visibility = Visibility.Collapsed;
+                return;
             }
 
             Client.RiotConnection.SetChunkSize(2147483647);

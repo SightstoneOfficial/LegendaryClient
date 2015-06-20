@@ -436,6 +436,7 @@ namespace LegendaryClient.Logic
             Log("Received pres (Bare): " + pres.From.Bare);
             Log("From user: " + pres.From.User);
             Log("Pres Type: " + pres.Type);
+            Log("Other stuff: " + pres.InnerXml);
             if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
                 return;
             switch (pres.Type)
@@ -477,22 +478,29 @@ namespace LegendaryClient.Logic
                             Group = "Online"
                         };
                         //using (XmlReader reader = XmlReader.Create(new StringReader(ri.OuterXml)))
-                        using (XmlReader reader = XmlReader.Create(new StringReader(pres.InnerXml)))
+                        using (XmlReader reader = XmlReader.Create(new StringReader(pres.InnerXml.OuterXml())))
                         {
-                            while (reader.Read())
+                            try
                             {
-                                if (!reader.IsStartElement())
-                                    continue;
-
-                                switch (reader.Name)
+                                while (reader.Read())
                                 {
-                                    case "group":
-                                        reader.Read();
-                                        string TempGroup = reader.Value;
-                                        if (TempGroup != "**Default")
-                                            player.Group = TempGroup;
-                                        break;
+                                    if (!reader.IsStartElement())
+                                        continue;
+
+                                    switch (reader.Name)
+                                    {
+                                        case "group":
+                                            reader.Read();
+                                            string TempGroup = reader.Value;
+                                            if (TempGroup != "**Default")
+                                                player.Group = TempGroup;
+                                            break;
+                                    }
                                 }
+                            }
+                            catch
+                            {
+                                player.Group = "**Default";
                             }
                         }
                         var x = await RiotCalls.GetAllPublicSummonerDataByAccount(pres.From.User.Replace("sum", "").ToInt());
@@ -615,6 +623,20 @@ namespace LegendaryClient.Logic
                     catch { }
                     break;
             }
+        }
+
+        internal static string OuterXml(this string outer)
+        {
+            outer = outer.Replace("&amp;", "&");
+            outer = outer.Replace("&#092;", "\\");
+            outer = outer.Replace("&#33;", "!");
+            outer = outer.Replace("&#036;", "$");
+            outer = outer.Replace("&quot;", "\"");
+            outer = outer.Replace("&quot;", "\"");
+            outer = outer.Replace("&lt;", "<");
+            outer = outer.Replace("&gt;", ">");
+            outer = outer.Replace("&#39;", "'");
+            return outer;
         }
         
         internal static void RostManager_OnRosterItem(object sender, RosterItem ri)
