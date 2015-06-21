@@ -433,10 +433,10 @@ namespace LegendaryClient.Logic
 
         internal async static void XmppConnection_OnPresence(object sender, Presence pres)
         {
-            //Log("Received pres (Bare): " + pres.From.Bare);
-            //Log("From user: " + pres.From.User);
-            //Log("Pres Type: " + pres.Type);
-            //Log("Other stuff: " + pres.InnerXml);
+            Log("Received pres (Bare): " + pres.From.Bare);
+            Log("From user: " + pres.From.User);
+            Log("Pres Type: " + pres.Type);
+            Log("Other stuff: " + pres.InnerXml);
             if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
                 return;
             SetChatHover();
