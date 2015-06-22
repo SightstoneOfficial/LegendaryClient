@@ -7,11 +7,13 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Xml;
 using LegendaryClient.Logic.Riot;
 using agsXMPP.protocol.client;
 using agsXMPP;
 using agsXMPP.protocol.x.muc;
 using agsXMPP.Collections;
+using LegendaryClient.Logic.Riot.Platform;
 
 namespace LegendaryClient.Controls
 {
@@ -40,17 +42,15 @@ namespace LegendaryClient.Controls
                 return;
             }
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
-            Client.XmppConnection.MessageGrabber.Add(new Jid(ChatId), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             newRoom.AcceptDefaultConfiguration(new Jid(ChatId));
             roomName = ChatId;
             newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
-
-            RefreshRoom();
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
-            if (msg.To.Bare != roomName)
+            if (msg.From.Bare == roomName)
                 return;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -76,18 +76,49 @@ namespace LegendaryClient.Controls
 
         async void XmppConnection_OnPresence(object sender, Presence pres)
         {
-            if (pres.To.Bare != roomName)
+            if (pres.From.Bare != roomName)
                 return;
                         
             if (pres.Type != PresenceType.available)
             {
                 await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                    using (XmlReader reader = XmlReader.Create(new StringReader(pres.InnerXml)))
                     {
-                        Text = pres.From.User + " left the room." + Environment.NewLine
-                    };
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        try
+                        {
+                            string jid = string.Empty;
+                            while (reader.Read())
+                            {
+                                if (!reader.IsStartElement() || reader.IsEmptyElement)
+                                    continue;
+
+                                #region Parse Presence
+
+                                switch (reader.Name)
+                                {
+                                    case "jid":
+                                        reader.Read();
+                                        jid = reader.Value;
+                                        break;
+                                }
+
+                                #endregion Parse Presence
+                            }
+                            var user = Client.GetUserFromJid(jid);
+
+                            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                            {
+                                Text = user + " left the room." + Environment.NewLine
+                            };
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                           
+                        }
+                        catch (Exception e)
+                        {
+                            Client.Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
+                        }
+                    }
 
                     ChatText.ScrollToEnd();
                     foreach (
@@ -106,17 +137,75 @@ namespace LegendaryClient.Controls
             {
                 await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
-                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                    using (XmlReader reader = XmlReader.Create(new StringReader(pres.InnerXml)))
                     {
-                        Text = pres.From.User + " joined the room." + Environment.NewLine
-                    };
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        try
+                        {
+                            string jid = string.Empty;
+                            while (reader.Read())
+                            {
+                                if (!reader.IsStartElement() || reader.IsEmptyElement)
+                                    continue;
 
-                    ChatText.ScrollToEnd();
-                    var x = new GroupChatPlayer { SName = { Content = pres.From.User } };
-                    var summoner = await RiotCalls.GetSummonerByName(pres.From.User);
+                                #region Parse Presence
+
+                                switch (reader.Name)
+                                {
+                                    case "jid":
+                                        reader.Read();
+                                        jid = reader.Value;
+                                        break;
+                                }
+
+                                #endregion Parse Presence
+                            }
+                            var user = Client.GetUserFromJid(jid);
+
+                            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                            {
+                                Text = user + " joined the room." + Environment.NewLine
+                            };
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+
+                        }
+                        catch (Exception e)
+                        {
+                            Client.Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
+                        }
+                    }
+
+                    int ProfileIcon = 0;
+                    var x = new GroupChatPlayer();
+                    x.SName.Content = pres.From.User;
+                    using (XmlReader reader = XmlReader.Create(new StringReader(pres.Status)))
+                    {
+                        try
+                        {
+                            while (reader.Read())
+                            {
+                                if (!reader.IsStartElement() || reader.IsEmptyElement)
+                                    continue;
+
+                                #region Parse Presence
+
+                                switch (reader.Name)
+                                {
+                                    case "profileIcon":
+                                        reader.Read();
+                                        ProfileIcon = Convert.ToInt32(reader.Value);
+                                        break;
+                                }
+
+                                #endregion Parse Presence
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Client.Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
+                        }
+                    }
                     var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                        summoner.ProfileIconId + ".png");
+                        ProfileIcon + ".png");
                     x.SIcon.Source = Client.GetImage(UriSource);
                     ParticipantList.Items.Add(x);
                     ParticipantList.Items.Refresh();
@@ -128,25 +217,6 @@ namespace LegendaryClient.Controls
         public string ChatId { get; set; }
         public string GroupTitle { get; set; }
 
-        //TO FIX
-        private void RefreshRoom()
-        {
-
-            /*
-            ParticipantList.Items.Clear();
-            foreach (RoomParticipant par in newRoom.RequestMemberList(new Jid(roomName))
-            {
-                var player = new GroupChatPlayer {SName = {Content = par.Nick}};
-                var summoner = await RiotCalls.GetSummonerByName(par.Nick);
-                var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                    summoner.ProfileIconId + ".png");
-                player.SIcon.Source = Client.GetImage(UriSource);
-                ParticipantList.Items.Add(player);
-                //add to ParticipantList
-            }
-            ParticipantList.Items.Refresh();
-            //*/
-        }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {

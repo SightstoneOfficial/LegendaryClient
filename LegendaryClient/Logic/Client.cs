@@ -308,20 +308,28 @@ namespace LegendaryClient.Logic
         internal static void XmppConnection_OnMessage(object sender, agsXMPP.protocol.client.Message msg)
         {
             Log(string.Format("Received chat msg \"{0}\" from the user \"{1}\"", msg.Body, msg.From.User));
-            
+            Log("Sent to: " + msg.To.User);
+            Log("Other: " + msg);
             //This means that it is not for the user
             Log(msg.InnerXml);
 
             //This blocks spammers from elo bosters
-            if (Client.ChatAutoBlock == null)
+            if (ChatAutoBlock == null)
             {
                 using (var client = new WebClient())
                 {
-                    var banned = client.DownloadString("http://legendaryclient.net/Autoblock.txt");
-                    Client.ChatAutoBlock = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    try
+                    {
+                        var banned = client.DownloadString("http://legendaryclient.net/Autoblock.txt");
+                        ChatAutoBlock = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    }
+                    catch
+                    {
+                        // ignored
+                    }
                 }
             }
-            if (Client.ChatAutoBlock.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
+            if (ChatAutoBlock.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
                 return;
             if (msg.Body.ToLower().Contains("elo") && msg.Body.ToLower().Contains("boost"))
                 return;
@@ -331,10 +339,12 @@ namespace LegendaryClient.Logic
                 MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     var subject = (ChatSubjects)Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
-                    NotificationPopup pop = new NotificationPopup(subject, msg);
-                    pop.Height = 230;
-                    pop.HorizontalAlignment = HorizontalAlignment.Right;
-                    pop.VerticalAlignment = VerticalAlignment.Bottom;
+                    NotificationPopup pop = new NotificationPopup(subject, msg)
+                    {
+                        Height = 230,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Bottom
+                    };
                     NotificationGrid.Children.Add(pop);
                 }));
 
@@ -422,13 +432,13 @@ namespace LegendaryClient.Logic
             Client.XmppConnection.OnRosterEnd -= Client.ChatClientConnect; //only update groups on login
         }
 
-        internal static string GetUserFromJid(string Jid)
+
+        internal static async Task<string> GetUserFromJid(string Jid)
         {
             if (Jid.Contains("@"))
                 Jid = Jid.Split('@')[0];
-            if (!Client.AllPlayers.ContainsKey(Jid))
-                return string.Empty;
-            return Client.AllPlayers[Jid].Username;
+            var names = await RiotCalls.GetSummonerNames(new double[] {Jid.Replace("sum", "").ToInt()});
+            return names[0];
         }
 
         internal async static void XmppConnection_OnPresence(object sender, Presence pres)
@@ -438,6 +448,8 @@ namespace LegendaryClient.Logic
             Log("Pres Type: " + pres.Type);
             Log("Other stuff: " + pres.InnerXml);
             if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
+                return;
+            if (pres.From.Bare.EndsWith("@sec.pvp.net") || pres.From.Bare.EndsWith("@lvl.pvp.net") || pres.From.Bare.EndsWith("@conference.pvp.net"))
                 return;
             SetChatHover();
             switch (pres.Type)
