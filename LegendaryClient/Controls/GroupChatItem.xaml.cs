@@ -176,7 +176,13 @@ namespace LegendaryClient.Controls
 
                     int ProfileIcon = 0;
                     var x = new GroupChatPlayer();
+                    foreach (var m in from object m in ParticipantList.Items where ((GroupChatPlayer) m).SName.Content == pres.From.User select m)
+                    {
+                        x = (GroupChatPlayer)m;
+                    }
                     x.SName.Content = pres.From.User;
+                    if (pres.Status == null)
+                        pres.Status = "<profileIcon>3</profileIcon>";
                     using (XmlReader reader = XmlReader.Create(new StringReader(pres.Status)))
                     {
                         try
