@@ -162,6 +162,8 @@ namespace LegendaryClient.Windows
                 var overview = TeamsContainer.Content as Teams;
                 overview.Update(teams);
             }
+            else
+                TeamsHeader.Visibility = Visibility.Collapsed;
         }
 
 
