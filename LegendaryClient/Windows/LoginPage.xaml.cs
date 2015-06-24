@@ -357,7 +357,10 @@ namespace LegendaryClient.Windows
                 if (RegionComboBox.SelectedIndex == -1)
                     return;
                 if (!string.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
+                {
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
+                    Settings.Default.Save();
+                }
                 Client.Garena = true;
                 await garenaLogin();
                 return;
@@ -456,12 +459,16 @@ namespace LegendaryClient.Windows
                 Client.Log("Login session is null.");
                 var overlay = new MessageOverlay
                 {
-                    MessageTextBox = { Text = "Login session is null. That means login failed. Click OK to exit LegendaryClient." },
+                    MessageTextBox = { Text = "Login session is null. Login failed. Please check whether the version number is correct or not.", IsReadOnly = true },
                     MessageTitle = { Content = "Login session is null." }
                 };
-                overlay.AcceptButton.Click += (o, i) => { Environment.Exit(0); };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
+                ErrorTextBox.Text = "Failed to login. Login session is null.";
+                HideGrid.Visibility = Visibility.Visible;
+                ErrorTextBox.Visibility = Visibility.Visible;
+                LoggingInLabel.Visibility = Visibility.Hidden;
+                LoggingInProgressRing.Visibility = Visibility.Collapsed;
                 return;
             }
             Client.PlayerSession = login;
@@ -602,7 +609,7 @@ namespace LegendaryClient.Windows
                 {
                     Client.XmppConnection.ConnectServer = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
                     var gas = getGas();
-                    Client.XmppConnection.Open(Client.UID, "AIR_" + "AIR_" + gas);
+                    Client.XmppConnection.Open(Client.UID, "AIR_" + gas);
                     Client.userpass = new KeyValuePair<string, string>(Client.UID, "AIR_" + gas);
                 }
 

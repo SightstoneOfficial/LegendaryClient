@@ -659,6 +659,7 @@ namespace LegendaryClient.Logic
 
         internal static void SetChatHover()
         {
+            if (XmppConnection == null) return;
             if (XmppConnection.Authenticated)
             {
                 if (presenceStatus != ShowType.NONE)
