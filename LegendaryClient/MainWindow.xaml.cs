@@ -23,6 +23,20 @@ using LegendaryClient.Logic.Riot;
 using agsXMPP.protocol.client;
 using System.Security.Principal;
 
+namespace MaterialDesignThemes.Wpf
+{
+    /// <summary>
+    /// A card is a content control, styled according to Material Design guidelines.
+    /// </summary>
+    public class Card : ContentControl
+    {
+        static Card()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(Card), new FrameworkPropertyMetadata(typeof(Card)));
+        }
+    }
+}
+
 namespace LegendaryClient
 {
 

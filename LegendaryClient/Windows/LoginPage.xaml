@@ -18,6 +18,13 @@
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
         <MediaElement x:Name="LoginPic" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1" />
 
+        <!-- Floating Button -->
+        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Viewbox Width="24" Height="24">
+                <Label FontSize="50">+</Label>
+            </Viewbox>
+        </Button>
+
         <!-- Card Template Start -->
         <Grid x:Name="LoginGrid">
         <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp">
