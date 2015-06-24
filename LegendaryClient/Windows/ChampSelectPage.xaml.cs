@@ -60,6 +60,7 @@ namespace LegendaryClient.Windows
         private List<int> disabledCharacters = new List<int>();
         private string firstPlayer = null;
         private Jid jid;
+        private List<int> Skins;
 
         #region champs
 
@@ -944,6 +945,8 @@ namespace LegendaryClient.Windows
 
         internal void ChangeSelectedChampionSkins(int selectedChampionId)
         {
+            Skins = null;
+            Skins = new List<int>();
             champions champion = champions.GetChampion(selectedChampionId);
             if (champion == null)
                 return;
@@ -952,7 +955,7 @@ namespace LegendaryClient.Windows
             AbilityListView.Items.Clear();
 
             //Render default skin
-            var item = new ListViewItem();
+            var defaultSkinItem = new ListViewItem();
             var skinImage = new Image();
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champion.portraitPath)))
             {
@@ -960,9 +963,9 @@ namespace LegendaryClient.Windows
                 skinImage.Source = Client.GetImage(UriSource);
                 skinImage.Width = 191;
                 skinImage.Stretch = Stretch.UniformToFill;
-                item.Tag = "0:" + champion.id; //Hack
-                item.Content = skinImage;
-                SkinSelectListView.Items.Add(item);
+                defaultSkinItem.Tag = "0:" + champion.id; //Hack
+                defaultSkinItem.Content = skinImage;
+                SkinSelectListView.Items.Add(defaultSkinItem);
                 //Render abilities
                 List<championAbilities> Abilities = championAbilities.GetAbilities(selectedChampionId);
                 var abilities = new List<ChampionAbility>();
@@ -1013,16 +1016,31 @@ namespace LegendaryClient.Windows
                                                  where skin.Owned
                                                  select skin)
                 {
-                    item = new ListViewItem();
+                    ListViewItem skinItem = new ListViewItem();
                     skinImage = new Image();
                     UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
                         championSkins.GetSkin(skin.SkinId).portraitPath);
                     skinImage.Source = Client.GetImage(UriSource);
                     skinImage.Width = 191;
                     skinImage.Stretch = Stretch.UniformToFill;
-                    item.Tag = skin.SkinId;
-                    item.Content = skinImage;
-                    SkinSelectListView.Items.Add(item);
+                    skinItem.Tag = skin.SkinId;
+                    skinItem.Content = skinImage;
+                    SkinSelectListView.Items.Add(skinItem);
+                    Skins.Add(skin.SkinId);
+                }
+
+                if (Skins.Count > 0)
+                {
+                    int index = SkinSelectListView.Items.IndexOf((ListViewItem)defaultSkinItem);
+                    ListViewItem randomSkinItem = new ListViewItem();
+                    Image randomSkinImage = new Image();
+                    var src = "/LegendaryClient;component/NONE.png";
+                    randomSkinImage.Source = Client.GetImage(src);
+                    randomSkinImage.Width = 191;
+                    randomSkinImage.Stretch = Stretch.UniformToFill;
+                    randomSkinItem.Tag = "random";
+                    randomSkinItem.Content = randomSkinImage;
+                    SkinSelectListView.Items.Insert(index, randomSkinItem);
                 }
             }
             else
@@ -1295,7 +1313,20 @@ namespace LegendaryClient.Windows
                 return;
 
             var s = item.Tag as string;
-            if (s != null)
+            if (s!= null && s == "random")
+            {
+                int index = new Random().Next(0, Skins.Count);
+                int skinId = Skins[index];
+                championSkins skin = championSkins.GetSkin(skinId);
+                await RiotCalls.SelectChampionSkin(skin.championId, skin.id);
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = "Selected a random skin" + Environment.NewLine
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                if (Client.Dev) Client.Log("Selected " + skin.displayName + " as skin");
+            }
+            else if (s != null)
             {
                 string[] splitItem = s.Split(':');
                 int championId = Convert.ToInt32(splitItem[1]);
