@@ -597,7 +597,7 @@ namespace LegendaryClient.Windows
                 {
                     Client.XmppConnection.ConnectServer = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
                     var gas = getGas();
-                    Client.XmppConnection.Open(Client.UID, "AIR_" + "AIR_" + gas);
+                    Client.XmppConnection.Open(Client.UID, "AIR_" + gas);
                     Client.userpass = new KeyValuePair<string, string>(Client.UID, "AIR_" + gas);
                 }
 
