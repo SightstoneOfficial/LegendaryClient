@@ -148,8 +148,9 @@ namespace LegendaryClient.Windows
 
         void XmppConnection_OnPresence(object sender, Presence pres)
         {
-            if (pres.To.Bare != jid.Bare)
+            if (jid.Bare.Contains(pres.From.User))
                 return;
+
 
             if (Client.InstaCall)
             {
@@ -202,7 +203,7 @@ namespace LegendaryClient.Windows
 
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    Text = pres.From.User + " joined the room." + Environment.NewLine
+                    Text = pres.From.Resource + " joined the room." + Environment.NewLine
                 };
 
                 PreviousPlayers.Add(pres.From.User);
@@ -213,8 +214,12 @@ namespace LegendaryClient.Windows
 
         void XmppConnection_OnMessage(object sender, Message msg)
         {
-            if (msg.From.Bare == jid.Bare)
+            if (jid.Bare.Contains(msg.From.User))
                 return;
+
+            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                return;
+
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Ignore the message that is always sent when joining

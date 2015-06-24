@@ -558,13 +558,16 @@ namespace LegendaryClient.Windows
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
                 //You have to hand implement this
                 //Client.XmppConnection.AutoReconnect = 30;
-                Client.XmppConnection = new agsXMPP.XmppClientConnection("pvp.net", 5223);
-                Client.XmppConnection.AutoResolveConnectServer = false;
-                Client.XmppConnection.ConnectServer = "chat." + Client.Region.ChatName + ".lol.riotgames.com";
-                Client.XmppConnection.Resource = "xiff";
-                Client.XmppConnection.UseSSL = true;
-                Client.XmppConnection.KeepAliveInterval = 10;
-                Client.XmppConnection.KeepAlive = true;
+                Client.XmppConnection = new agsXMPP.XmppClientConnection("pvp.net", 5223)
+                {
+                    AutoResolveConnectServer = false,
+                    ConnectServer = "chat." + Client.Region.ChatName + ".lol.riotgames.com",
+                    Resource = "xiff",
+                    UseSSL = true,
+                    KeepAliveInterval = 10,
+                    KeepAlive = true
+                };
+                Client.XmppConnection.UseCompression = true;
                 Client.XmppConnection.OnMessage += Client.XmppConnection_OnMessage;
                 Client.XmppConnection.OnError += Client.XmppConnection_OnError;
                 Client.XmppConnection.OnLogin += (o) => 

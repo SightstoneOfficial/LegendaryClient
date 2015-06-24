@@ -142,13 +142,19 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = pres.From.User + " joined the room." + Environment.NewLine;
+                tr.Text = pres.From.Resource + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             }));
         }
 
         void XmppConnection_OnMessage(object sender, Message msg)
         {
+            if (jid.Bare.Contains(msg.From.User))
+                return;
+
+            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                return;
+
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body != "This room is not anonymous")

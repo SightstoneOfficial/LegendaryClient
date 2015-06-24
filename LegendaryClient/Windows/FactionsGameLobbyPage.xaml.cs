@@ -168,14 +168,15 @@ namespace LegendaryClient.Windows
 
         void XmppConnection_OnPresence(object sender, Presence pres)
         {
-            if (pres.To.Bare != jid.Bare)
+            if (jid.Bare.Contains(pres.From.User))
                 return;
+
             //It doesn't matter if they leave
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    Text = pres.From.User + " joined the room." + Environment.NewLine
+                    Text = pres.From.Resource + " joined the room." + Environment.NewLine
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             }));
@@ -183,7 +184,10 @@ namespace LegendaryClient.Windows
 
         void XmppConnection_OnMessage(object sender, Message msg)
         {
-            if (msg.From.Bare == jid.Bare)
+            if (jid.Bare.Contains(msg.From.User))
+                return;
+
+            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
                 return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
