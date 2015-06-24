@@ -139,7 +139,7 @@ namespace LegendaryClient.Windows
             var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
             jid = new Jid(Jid);
             Chatroom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.MessageGrabber.Add(jid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             Chatroom.AcceptDefaultConfiguration(jid);
             Chatroom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, RoomPassword);
@@ -210,8 +210,10 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
+            if (msg.From.Bare == jid.Bare)
+                return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Ignore the message that is always sent when joining

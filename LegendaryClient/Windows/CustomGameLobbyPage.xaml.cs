@@ -91,7 +91,7 @@ namespace LegendaryClient.Windows
                     string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
                     string Jid = Client.GetChatroomJid(obfuscatedName, dto.RoomPassword, false);
                     newRoom = new MucManager(Client.XmppConnection);
-                    Client.XmppConnection.MessageGrabber.Add(new Jid(Jid), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+                    Client.XmppConnection.OnMessage +=XmppConnection_OnMessage;
                     Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
                     roomJid = new Jid(Jid);
                     newRoom.AcceptDefaultConfiguration(roomJid);
@@ -220,8 +220,10 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
+            if (msg.From.Bare == roomJid.Bare)
+                return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body == "This room is not anonymous")
@@ -262,7 +264,7 @@ namespace LegendaryClient.Windows
                 tr.Text = ChatTextBox.Text + Environment.NewLine;
 
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            Client.XmppConnection.Send(new Message(roomJid, MessageType.chat, ChatTextBox.Text));
+            Client.XmppConnection.Send(new Message(roomJid, MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = "";
         }
 

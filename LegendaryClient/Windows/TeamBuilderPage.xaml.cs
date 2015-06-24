@@ -127,7 +127,7 @@ namespace LegendaryClient.Windows
         {
             string Jid = Client.GetChatroomJid(ChatJid, Pass, false);
             newRoom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.MessageGrabber.Add(jid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             jid = new Jid(ChatJid);
             newRoom.AcceptDefaultConfiguration(jid);
@@ -147,7 +147,7 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
@@ -1019,7 +1019,7 @@ namespace LegendaryClient.Windows
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                Client.XmppConnection.Send(new Message(jid, MessageType.chat, ChatTextBox.Text));
+                Client.XmppConnection.Send(new Message(jid, MessageType.groupchat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
             }
             else if (connectedToChat == false)

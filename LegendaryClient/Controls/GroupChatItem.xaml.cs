@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
@@ -50,7 +51,7 @@ namespace LegendaryClient.Controls
 
         void XmppConnection_OnMessage(object sender, Message msg)
         {
-            if (msg.From.Bare == roomName)
+            if (!roomName.Contains(msg.From.User))
                 return;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -137,6 +138,11 @@ namespace LegendaryClient.Controls
             {
                 await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
+                    //ugly hack
+                    var user = Regex.Split(pres.InnerXml, "jid=\"")[1].Split('\"')[0];
+                    user = await Client.GetUserFromJid(user);
+
+                    /*
                     using (XmlReader reader = XmlReader.Create(new StringReader(pres.InnerXml)))
                     {
                         try
@@ -159,7 +165,7 @@ namespace LegendaryClient.Controls
 
                                 #endregion Parse Presence
                             }
-                            var user = Client.GetUserFromJid(jid);
+                            user = await Client.GetUserFromJid(jid);
 
                             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                             {
@@ -173,16 +179,21 @@ namespace LegendaryClient.Controls
                             Client.Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
                         }
                     }
+                    //*/
 
                     int ProfileIcon = 0;
                     var x = new GroupChatPlayer();
-                    foreach (var m in from object m in ParticipantList.Items where ((GroupChatPlayer) m).SName.Content == pres.From.User select m)
+                    bool exists = false;
+                    foreach (var m in from GroupChatPlayer m in ParticipantList.Items where (m).SName.Content.ToString() == user select m)
                     {
-                        x = (GroupChatPlayer)m;
+                        x = m;
+                        exists = true;
                     }
-                    x.SName.Content = pres.From.User;
+                    x.SName.Content = user;
                     if (pres.Status == null)
                         pres.Status = "<profileIcon>3</profileIcon>";
+                    ProfileIcon = Regex.Split(pres.Status, "<profileIcon>")[1].Split(new[] { "</profileIcon>" }, StringSplitOptions.None)[0].ToInt();
+                    /*
                     using (XmlReader reader = XmlReader.Create(new StringReader(pres.Status)))
                     {
                         try
@@ -210,10 +221,20 @@ namespace LegendaryClient.Controls
                             Client.Log(e.Message + " - remember to fix this later instead of avoiding the problem.");
                         }
                     }
+                    //*/
                     var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                         ProfileIcon + ".png");
                     x.SIcon.Source = Client.GetImage(UriSource);
-                    ParticipantList.Items.Add(x);
+                    if (exists)
+                    {
+                        ParticipantList.Items.Add(x);
+                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                        {
+                            Text = user + " joined the room." + Environment.NewLine
+                        };
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                    }
+
                     ParticipantList.Items.Refresh();
                 }));
             }
@@ -226,7 +247,7 @@ namespace LegendaryClient.Controls
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.XmppConnection.MessageGrabber.Remove(new Jid(ChatId));
+            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
             Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
             newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
             Client.ClearMainGrid(typeof (GroupChatItem));
@@ -234,7 +255,7 @@ namespace LegendaryClient.Controls
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.XmppConnection.MessageGrabber.Remove(new Jid(ChatId));
+            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
             Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
             newRoom.LeaveRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
             Client.ClearMainGrid(typeof (GroupChatItem));
@@ -257,7 +278,7 @@ namespace LegendaryClient.Controls
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
-            Client.XmppConnection.Send(new Message(new Jid(roomName), MessageType.chat, ChatTextBox.Text));
+            Client.XmppConnection.Send(new Message(new Jid(roomName), MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;
             ChatText.ScrollToEnd();
         }

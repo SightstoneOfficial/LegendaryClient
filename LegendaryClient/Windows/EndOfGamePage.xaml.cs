@@ -45,7 +45,7 @@ namespace LegendaryClient.Windows
             RoomJid = Client.GetChatroomJid(statistics.RoomName, statistics.RoomPassword, false);
             
             newRoom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.MessageGrabber.Add(RoomJid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             Client.RiotConnection.MessageReceived += RiotConnection_MessageReceived;
             newRoom.AcceptDefaultConfiguration(new Jid(RoomJid));
@@ -91,8 +91,10 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
+            if (msg.From.Bare == RoomJid)
+                return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body == "This room is not anonymous")
@@ -133,7 +135,7 @@ namespace LegendaryClient.Windows
             if (string.IsNullOrEmpty(ChatTextBox.Text))
                 return;
 
-            Client.XmppConnection.Send(new Message(new Jid(RoomJid), MessageType.chat, ChatTextBox.Text));
+            Client.XmppConnection.Send(new Message(new Jid(RoomJid), MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = "";
             ChatText.ScrollToEnd();
         }
