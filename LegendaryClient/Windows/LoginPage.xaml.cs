@@ -345,7 +345,10 @@ namespace LegendaryClient.Windows
                 if (RegionComboBox.SelectedIndex == -1)
                     return;
                 if (!string.IsNullOrEmpty(RegionComboBox.SelectedValue.ToString()))
+                {
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
+                    Settings.Default.Save();
+                }
                 Client.Garena = true;
                 await garenaLogin();
                 return;
