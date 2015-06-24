@@ -447,12 +447,16 @@ namespace LegendaryClient.Windows
                 Client.Log("Login session is null.");
                 var overlay = new MessageOverlay
                 {
-                    MessageTextBox = { Text = "Login session is null. That means login failed. Click OK to exit LegendaryClient." },
+                    MessageTextBox = { Text = "Login session is null. Login failed. Please check whether the version number is correct or not.", IsReadOnly = true },
                     MessageTitle = { Content = "Login session is null." }
                 };
-                overlay.AcceptButton.Click += (o, i) => { Environment.Exit(0); };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
+                ErrorTextBox.Text = "Failed to login. Login session is null.";
+                HideGrid.Visibility = Visibility.Visible;
+                ErrorTextBox.Visibility = Visibility.Visible;
+                LoggingInLabel.Visibility = Visibility.Hidden;
+                LoggingInProgressRing.Visibility = Visibility.Collapsed;
                 return;
             }
             Client.PlayerSession = login;
