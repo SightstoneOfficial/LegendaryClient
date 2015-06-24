@@ -335,6 +335,18 @@ namespace LegendaryClient.Windows
             }
         }
 
+        private void ShowLogin_Click(object sender, RoutedEventArgs e)
+        {
+            if (LoginGrid.IsVisible)
+            {
+                LoginGrid.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else
+            {
+                LoginGrid.Visibility = System.Windows.Visibility.Visible;
+            }
+        }
+
         private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             if (RegionComboBox.SelectedIndex == -1)

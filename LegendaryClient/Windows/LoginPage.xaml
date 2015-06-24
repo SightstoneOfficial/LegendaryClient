@@ -16,7 +16,10 @@
         <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-2"
                Stretch="UniformToFill" />
         <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
-        <MediaElement x:Name="LoginPic" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1" />
+        <MediaElement x:Name="LoginPic" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1">
+
+        </MediaElement>
+       
 
         <!-- Floating Button -->
         <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
@@ -25,14 +28,22 @@
             </Viewbox>
         </Button>
 
+        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="90,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="ShowLogin_Click">
+            <Viewbox Width="30" Height="30">
+                <Image Source="C:\Users\Martin\Source\GitHub\LegendaryClient\LegendaryClient\ui\img\icons\ic_account_circle_black_36dp.png" Grid.Column="0" VerticalAlignment="Top"></Image>
+            </Viewbox>
+        </Button>
+
+
         <!-- Card Template Start -->
-        <Grid x:Name="LoginGrid">
-        <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp">
+        <Grid x:Name="LoginGrid" Visibility="Hidden" Panel.ZIndex="1000">
+            
+        <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp">
         <wpf:Card>
             <Grid>
                 <!-- Top Header / Button / Whatever you want -->
                     <Grid VerticalAlignment="Top">
-                            <Button Height="50" VerticalAlignment="Top" FontSize="14" Style="{DynamicResource MaterialDesignFlatButton}">Sightstone</Button>
+                            <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{DynamicResource MaterialDesignFlatButton}">Sightstone</Button>
                     </Grid>
 
                     <!-- Content -->
@@ -92,11 +103,12 @@
 
                 <!-- Bottom Footer / Button / Whatever you want -->
                 <Grid VerticalAlignment="Bottom">
-                    <Button x:Name="LoginButton" Click="LoginButton_Click" IsDefault="True" Height="50" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3">Login</Button>
+                    <Button x:Name="LoginButton" Click="LoginButton_Click" IsDefault="True" Height="40" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3">Login</Button>
                 </Grid>
             </Grid>
         </wpf:Card>
         </Grid>
+        
         </Grid>
         
         <controls:ProgressRing x:Name="LoggingInProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="True" Visibility="Collapsed">
