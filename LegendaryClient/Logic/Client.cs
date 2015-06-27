@@ -867,27 +867,26 @@ namespace LegendaryClient.Logic
         internal static void SwitchPage(Page page)
         {
             Log("Switching to the page: " + page.GetType());
-            IsOnPlayPage = page.GetType() == typeof(PlayPage);
-            BackgroundImage.Visibility = page.GetType() == typeof(ChampSelectPage)
+            IsOnPlayPage = page is PlayPage;
+            BackgroundImage.Visibility = page is ChampSelectPage
                 ? Visibility.Hidden
                 : Visibility.Visible;
-            if (page.GetType() == typeof(MainPage))
-            {
-                Page p = Pages.FirstOrDefault(x => x.GetType() == typeof(MainPage));
 
+            if (page is MainPage)
+            {
+                Page p = Pages.FirstOrDefault(x => x is MainPage);
                 var mainPage = p as MainPage;
                 if (mainPage != null)
                     mainPage.UpdateSummonerInformation();
             }
 
             TrueCurrentPage = page;
-
             foreach (Page p in Pages.Where(p => p.GetType() == page.GetType()))
             {
                 Container.Content = p.Content;
-
                 return;
             }
+
             Container.Content = page.Content;
             Pages.Add(page);
         }
