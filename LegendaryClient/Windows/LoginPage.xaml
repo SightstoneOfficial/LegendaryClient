@@ -19,101 +19,100 @@
         <MediaElement x:Name="LoginPic" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1">
 
         </MediaElement>
-       
+
 
         <!-- Floating Button -->
-        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsDefault="False">
             <Viewbox Width="24" Height="24">
                 <Label FontSize="50">+</Label>
             </Viewbox>
         </Button>
 
-        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="90,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="ShowLogin_Click">
+        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="90,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="ShowLogin_Click" IsDefault="False">
             <Viewbox Width="30" Height="30">
-                <Image Source="C:\Users\Martin\Source\GitHub\LegendaryClient\LegendaryClient\ui\img\icons\ic_account_circle_black_36dp.png" Grid.Column="0" VerticalAlignment="Top"></Image>
+                <Image Source="/LegendaryClient;component/ui\img\icons\ic_account_circle_black_36dp.png" Grid.Column="0" VerticalAlignment="Top"></Image>
             </Viewbox>
         </Button>
 
 
         <!-- Card Template Start -->
-        <Grid x:Name="LoginGrid" Visibility="Hidden" Panel.ZIndex="1000">
-            
-        <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp">
-        <wpf:Card>
-            <Grid>
-                <!-- Top Header / Button / Whatever you want -->
-                    <Grid VerticalAlignment="Top">
-                            <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{DynamicResource MaterialDesignFlatButton}">Sightstone</Button>
-                    </Grid>
-
-                    <!-- Content -->
-                <Grid Margin="0,50,0,50">
-                        <Grid.RenderTransform>
-                            <TranslateTransform x:Name="Tt" />
-                        </Grid.RenderTransform>
-                        
-                        <!-- Region and Server -->
-                        <Grid Margin="50,8,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="10"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="RegionComboBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{DynamicResource LiveRegions}" SelectedIndex="3" Grid.Column="0" />
-                            <ComboBox x:Name="UpdateRegionComboBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}" SelectionChanged="UpdateRegionComboBox_SelectionChanged" Grid.Column="2"/>
+        <Grid x:Name="LoginGrid" Panel.ZIndex="1000">
+            <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp">
+                <wpf:Card>
+                    <Grid>
+                        <!-- Top Header / Button / Whatever you want -->
+                        <Grid VerticalAlignment="Top">
+                            <Button Height="40" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignFlatButton}" VerticalContentAlignment="Center" FontSize="14" Content="Sightstone"/>
                         </Grid>
 
-                        <!-- Username -->
-                        <Grid Margin="10,58,8,0" Height="60" Width="330" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image Source="C:\Users\Martin\Source\GitHub\LegendaryClient\LegendaryClient\ui\img\icons\ic_account_circle_black_36dp.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
-                            <TextBox x:Name="LoginUsernameBox" controls:TextBoxHelper.Watermark="Username" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
-                            <CheckBox x:Name="RememberUsernameCheckbox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Username" IsChecked="True" Grid.Column="1"/>
-                        </Grid>
-                    
-                        <!-- Password -->
-                        <Grid Margin="10,141,8,0" Height="60" Width="330" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="40"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image Source="C:\Users\Martin\Source\GitHub\LegendaryClient\LegendaryClient\ui\img\icons\ic_vpn_key_36pt.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
-                            <PasswordBox x:Name="LoginPasswordBox" controls:TextBoxHelper.Watermark="Password" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
-                            <CheckBox x:Name="RememberPasswordCheckbox"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Password" Grid.Column="1"/>
-                        </Grid>
+                        <!-- Content -->
+                        <Grid Margin="0,50,0,50">
+                            <Grid.RenderTransform>
+                                <TranslateTransform x:Name="Tt" />
+                            </Grid.RenderTransform>
+
+                            <!-- Region and Server -->
+                            <Grid Margin="50,8,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox x:Name="RegionComboBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{DynamicResource LiveRegions}" SelectedIndex="3" Grid.Column="0" />
+                                <ComboBox x:Name="UpdateRegionComboBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}" SelectionChanged="UpdateRegionComboBox_SelectionChanged" Grid.Column="2"/>
+                            </Grid>
+
+                            <!-- Username -->
+                            <Grid Margin="10,58,8,0" Height="60" Width="330" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="C:\Users\Martin\Source\GitHub\LegendaryClient\LegendaryClient\ui\img\icons\ic_account_circle_black_36dp.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
+                                <TextBox x:Name="LoginUsernameBox" controls:TextBoxHelper.Watermark="Username" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
+                                <CheckBox x:Name="RememberUsernameCheckbox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Username" IsChecked="True" Grid.Column="1"/>
+                            </Grid>
+
+                            <!-- Password -->
+                            <Grid Margin="10,141,8,0" Height="60" Width="330" HorizontalAlignment="Right" VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image Source="C:\Users\Martin\Source\GitHub\LegendaryClient\LegendaryClient\ui\img\icons\ic_vpn_key_36pt.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
+                                <PasswordBox x:Name="LoginPasswordBox" controls:TextBoxHelper.Watermark="Password" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
+                                <CheckBox x:Name="RememberPasswordCheckbox"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Password" Grid.Column="1"/>
+                            </Grid>
 
                             <CheckBox x:Name="AutoLoginCheckBox" Margin="50,229,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Auto-Login" Checked="AutoLoginCheckBox_CheckChanged" Unchecked="AutoLoginCheckBox_CheckChanged" />
-                        <CheckBox x:Name="invisibleLoginCheckBox" Margin="50,206,0,0" HorizontalAlignment="Left"
+                            <CheckBox x:Name="invisibleLoginCheckBox" Margin="50,206,0,0" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Sign-in invisible" />
 
-                        <Grid Margin="50,30,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                            <TextBox x:Name="Version" controls:TextBoxHelper.Watermark="Client Version Override" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontSize="16" Height="35"/>
-                        </Grid>
-                        <CheckBox x:Name="Sound" Margin="50,0,0,103" HorizontalAlignment="Left"
+                            <Grid Margin="50,30,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBox x:Name="Version" controls:TextBoxHelper.Watermark="Client Version Override" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontSize="16" Height="35"/>
+                            </Grid>
+                            <CheckBox x:Name="Sound" Margin="50,0,0,103" HorizontalAlignment="Left"
                           VerticalAlignment="Bottom" Click="DisableSound_Click" Content="Disable Login Music"
                           IsChecked="False" />
-                        <CheckBox x:Name="Video" Margin="0,0,140,80" HorizontalAlignment="Right"
+                            <CheckBox x:Name="Video" Margin="0,0,140,80" HorizontalAlignment="Right"
                           VerticalAlignment="Bottom" Click="DisableVideo_Click" Content="Disable Menu Animations"
                           IsChecked="False" />
-                    </Grid>
+                        </Grid>
 
-                <!-- Bottom Footer / Button / Whatever you want -->
-                <Grid VerticalAlignment="Bottom">
-                    <Button x:Name="LoginButton" Click="LoginButton_Click" IsDefault="True" Height="40" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3">Login</Button>
-                </Grid>
+                        <!-- Bottom Footer / Button / Whatever you want -->
+                        <Grid VerticalAlignment="Bottom">
+                            <Button x:Name="LoginButton" Click="LoginButton_Click" IsDefault="True" Height="40" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3">Login</Button>
+                        </Grid>
+                    </Grid>
+                </wpf:Card>
             </Grid>
-        </wpf:Card>
+
         </Grid>
-        
-        </Grid>
-        
+
         <controls:ProgressRing x:Name="LoggingInProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="True" Visibility="Collapsed">
         </controls:ProgressRing>
-        
+
         <Label x:Name="LoggingInLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Signing in"
                FontSize="36" FontWeight="ExtraLight" Foreground="White" Visibility="Hidden">
         </Label>

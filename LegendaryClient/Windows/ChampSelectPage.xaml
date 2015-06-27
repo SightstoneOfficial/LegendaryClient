@@ -50,6 +50,11 @@
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0 0 0 10" />
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
 
         <Label x:Name="BlueBansLabel" Content="Blue Bans" HorizontalAlignment="Center" Margin="0,579,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="15" Visibility="Hidden" Grid.Column="1" />
@@ -74,6 +79,11 @@
                     <WrapPanel />
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0 0 0 10" />
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
 
         <Label x:Name="PurpleBansLabel" Content="Purple Bans" HorizontalAlignment="Center" Margin="0,579,0,0" VerticalAlignment="Top" FontWeight="ExtraLight" FontSize="14" Visibility="Hidden" Grid.Column="5" />

@@ -4,17 +4,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d"
-             d:DesignHeight="100" d:DesignWidth="255"
+             d:DesignHeight="90" d:DesignWidth="255"
              MouseDown="ChampPlayer_MouseOver" MouseLeave="ChampPlayer_MouseLeave">
 
     <Grid>
-        <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Left" Margin="87,14,0,0" VerticalAlignment="Top"
-                       Width="136" Foreground="White" FontSize="14" FontWeight="ExtraLight" />
-        <Rectangle Fill="{DynamicResource AccentColorBrush}" Width="255" HorizontalAlignment="Left" Visibility="Visible" Height="90" Margin="0,0,0,10" Panel.ZIndex="-1" Opacity="0.7" />
-        <Rectangle x:Name="TeamRectangle" Fill="#FF535353" Width="2" HorizontalAlignment="Left" Visibility="Hidden" Height="90" VerticalAlignment="Top" Margin="0,0,0,10" />
-        <Image x:Name="ChampionImage" HorizontalAlignment="Left" Height="70" Margin="10,10,0,0" VerticalAlignment="Top"
-               Width="70" Source="/LegendaryClient;component/NONE.png" />
+        <wpf:Card Width="255" Padding="8" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueMidBrush}" Height="90">
+            <Grid>
+                <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Stretch" Margin="82,0,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="ExtraLight" Foreground="{StaticResource PrimaryHueMidForegroundBrush}" />
+                <wpf:Card Width="74" Height="74" HorizontalAlignment="Left">
+                    <Grid Margin="0">
+                        <Image Margin="-4" x:Name="ChampionImage" Stretch="UniformToFill" Source="/LegendaryClient;component/NONE.png"/>
+                        <Border Visibility="Hidden" Margin="0" x:Name="TeamRectangle" BorderBrush="Bisque" BorderThickness="2" Panel.ZIndex="50"></Border>
+                    </Grid>
+                </wpf:Card>
+            </Grid>
+        </wpf:Card>
+        
+        
+               
         <Image x:Name="SummonerSpell1" HorizontalAlignment="Left" Height="30" Margin="90,50,0,0"
                VerticalAlignment="Top" Width="30" />
         <Image x:Name="SummonerSpell2" HorizontalAlignment="Left" Height="30" Margin="130,50,0,0"
@@ -27,5 +36,6 @@
         </Button>
         <Image x:Name="LockedInIcon" HorizontalAlignment="Right" Height="22" Margin="0,45,10,0" VerticalAlignment="Top"
                Width="22" Visibility="Hidden" />
+
     </Grid>
 </UserControl>

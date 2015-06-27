@@ -1230,7 +1230,7 @@ namespace LegendaryClient.Windows
 
                 var converter = new BrushConverter();
                 var brush = (Brush)converter.ConvertFromString("#" + myColor.Name);
-                control.TeamRectangle.Fill = brush;
+                control.TeamRectangle.BorderBrush = brush;
                 control.TeamRectangle.Visibility = Visibility.Visible;
             }
             control.LockedInIcon.Visibility = Visibility.Visible;

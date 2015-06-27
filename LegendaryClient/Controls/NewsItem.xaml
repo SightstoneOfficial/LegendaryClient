@@ -3,19 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d"
-             d:DesignHeight="110" d:DesignWidth="800">
+             d:DesignHeight="110" d:DesignMaxWidth="960" d:DesignMinWidth="300">
 
-    <Grid Background="#66505050">
-        <Image x:Name="PromoImage" Width="160" Height="90" Margin="10,10,0,0" HorizontalAlignment="Left"
-               VerticalAlignment="Top" Stretch="UniformToFill" />
-        <Label x:Name="NewsTitle" Margin="175,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Content="Announcing Season 3 Rewards!" FontSize="28" FontWeight="ExtraLight" />
-        <Label Height="65" MaxWidth="790" Margin="175,50,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Top"
-               FontSize="18" FontWeight="ExtraLight">
-            <TextBlock x:Name="DescriptionLabel"
-                       Text="Learn more about how you nab end-of-season rewards, and check out a sneak peek of what you can earn."
-                       TextWrapping="WrapWithOverflow" />
-        </Label>
+    <Grid HorizontalAlignment="Stretch">
+        <wpf:Card HorizontalAlignment="Stretch" Margin="0">
+            <Grid>
+                <Image x:Name="PromoImage" Width="160" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="UniformToFill" />
+                <Label x:Name="NewsTitle" Margin="168,8,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Heading" FontSize="14" Foreground="Black" />
+                <Label Margin="168,38,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="12" Foreground="Black">
+                    <TextBlock x:Name="DescriptionLabel" Text="Caption" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" />
+                </Label>
+            </Grid>
+        </wpf:Card>
     </Grid>
 </UserControl>

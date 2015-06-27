@@ -2,50 +2,69 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Startup="Application_Startup"
-             xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz">
+             xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+             xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
 
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- MahApps -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
                 
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
-                <!-- standard templates -->
+                <!-- Material Theme-->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
 
-                <!-- primary color -->
+                <!-- Primary Color -->
                 <ResourceDictionary>
-                    <!-- include your primary palette -->
+                    <!-- Primary Palette -->
                     <ResourceDictionary.MergedDictionaries>
                         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.BlueGrey.xaml" />
                     </ResourceDictionary.MergedDictionaries>
+                    
+                    <!-- Material Brushes -->
                     <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource Primary100}"/>
                     <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource Primary100Foreground}"/>
                     <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource Primary500}"/>
                     <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource Primary500Foreground}"/>
                     <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource Primary700}"/>
                     <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource Primary700Foreground}"/>
-                </ResourceDictionary>
 
-                
+                    <!-- MahApps Brushes -->
+                    <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource Primary700}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="AccentColorBrush" Color="{StaticResource Primary500}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="AccentColorBrush2" Color="{StaticResource Primary400}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="AccentColorBrush3" Color="{StaticResource Primary300}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="AccentColorBrush4" Color="{StaticResource Primary200}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="WindowTitleColorBrush" Color="{StaticResource Primary700}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="AccentSelectedColorBrush" Color="{StaticResource Primary500Foreground}" options:Freeze="True" />
+                    <LinearGradientBrush x:Key="ProgressBrush" EndPoint="0.001,0.5" StartPoint="1.002,0.5" options:Freeze="True">
+                        <GradientStop Color="{StaticResource Primary700}" Offset="0" />
+                        <GradientStop Color="{StaticResource Primary300}" Offset="1" />
+                    </LinearGradientBrush>
+                    <SolidColorBrush x:Key="CheckmarkFill" Color="{StaticResource Primary500}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="RightArrowFill" Color="{StaticResource Primary500}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{StaticResource Primary500Foreground}" options:Freeze="True" />
+                    <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{StaticResource Primary500}" Opacity="0.4" options:Freeze="True" />
+                </ResourceDictionary>
+     
                 <!-- secondary colour -->
                 <ResourceDictionary>
-                    <!-- include your secondary pallette -->
+                    <!-- Secondary Pallette -->
                     <ResourceDictionary.MergedDictionaries>
                         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Orange.xaml" />
                     </ResourceDictionary.MergedDictionaries>
 
-                    <!-- include a single secondary accent color (and the associated forecolour) -->
+                    <!-- Secondary Accent Color (and the associated forecolour) -->
                     <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{StaticResource Accent700}"/>
                     <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{StaticResource Accent700Foreground}"/>
                 </ResourceDictionary>
 
                 <!-- Include the Dragablz Material Design style -->
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml"/>
-                
             </ResourceDictionary.MergedDictionaries>
 
             <!-- tell Dragablz tab control to use the Material Design theme -->

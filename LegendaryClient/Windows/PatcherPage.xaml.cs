@@ -337,6 +337,7 @@ namespace LegendaryClient.Windows
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
                             SkipPatchButton.IsEnabled = true;
+                            SkipPatchButton.Style = Application.Current.Resources["MaterialDesignRaisedButton"] as Style;
                             CurrentProgressLabel.Content = "Retrieving Air Assets";
                         }));
 
@@ -426,10 +427,11 @@ namespace LegendaryClient.Windows
                     {
                         TotalProgressLabel.Content = "100%";
                         TotalProgessBar.Value = 100;
-                        SkipPatchButton.Content = "Play";
+                        SkipPatchButtonLabel.Content = "Play";
                         CurrentProgressLabel.Content = "Finished Patching";
                         CurrentStatusLabel.Content = "Ready To Play";
                         SkipPatchButton.IsEnabled = true;
+                        SkipPatchButton.Style = Application.Current.Resources["MaterialDesignRaisedButton"] as Style;
                         //SkipPatchButton_Click(null, null);
 
                         if (Settings.Default.AutoPlay)
@@ -778,6 +780,18 @@ namespace LegendaryClient.Windows
         private void FindClient_Click(object sender, RoutedEventArgs e)
         {
             GetLolRootPath(true);
+        }
+
+        private void ShowLog_Click(object sender, RoutedEventArgs e)
+        {
+            if (PatchTextBox.IsVisible)
+            {
+                PatchTextBox.Visibility = System.Windows.Visibility.Hidden;
+            }
+            else
+            {
+                PatchTextBox.Visibility = System.Windows.Visibility.Visible;
+            }
         }
 
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
