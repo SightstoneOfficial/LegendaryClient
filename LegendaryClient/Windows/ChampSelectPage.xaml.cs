@@ -319,6 +319,7 @@ namespace LegendaryClient.Windows
             Client.FocusClient();
             //Get champions and sort alphabetically
 
+            CanLockIn = false;
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort(
                 (x, y) =>
