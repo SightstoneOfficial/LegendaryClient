@@ -37,7 +37,6 @@ using RtmpSharp.Messaging;
 using RtmpSharp.Net;
 using Brush = System.Windows.Media.Brush;
 using Point = System.Windows.Point;
-using RiotPatcher = LegendaryClient.Logic.Patcher.RiotPatcher;
 using agsXMPP.protocol.iq.roster;
 using agsXMPP.protocol.client;
 using System.Security.Principal;
@@ -215,42 +214,34 @@ namespace LegendaryClient.Windows
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
-            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
-            var patcher = new RiotPatcher();
             if (Client.UpdateRegion != "Garena")
             {
-                string tempString = patcher.GetListing(updateRegion.AirListing);
+                var reader = new SWFReader(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
+                foreach (var tag in reader.Tags)
+                {
+                    if (!(tag is DoABC))
+                        continue;
 
-                string[] packages = patcher.GetManifest(
-                    updateRegion.AirManifest + "releases/" + tempString + "/packages/files/packagemanifest");
-                foreach (
-                    string usestring in
-                        packages.Select(package => package.Split(',')[0])
-                            .Where(usestring => usestring.Contains("ClientLibCommon.dat")))
-                    new WebClient().DownloadFile(new System.Uri(updateRegion.BaseLink + usestring),
-                        Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
+                    var abcTag = (DoABC) tag;
+
+                    if (!abcTag.Name.Contains("riotgames/platform/gameclient/application/Version"))
+                        continue;
+
+                    var str = Encoding.Default.GetString(abcTag.ABCData);
+                    var firstSplit = str.Split((char) 6);
+                    var secondSplit = firstSplit[0].Split((char) 18);
+
+                    if (secondSplit.Count() > 1)
+                    {
+                        Client.Version = secondSplit[1];
+                    }
+                    else
+                    {
+                        var thirdSplit = secondSplit[0].Split((char)19);
+                        Client.Version = thirdSplit[1];
+                    }
+                }
             }
-            var reader = new SWFReader(Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"));
-            foreach (var secondSplit in from abcTag in reader.Tags.OfType<DoABC>()
-                                        where abcTag.Name.Contains("riotgames/platform/gameclient/application/Version")
-                                        select Encoding.Default.GetString(abcTag.ABCData)
-                                            into str
-                                            select str.Split((char)6)
-                                                into firstSplit
-
-                                                select firstSplit[0].Split((char)18))
-
-
-                if (secondSplit.Count() > 1)
-                {
-                    Client.Version = secondSplit[1];
-                }
-                else
-                {
-                    var thirdSplit = secondSplit[0].Split((char)19);
-                    Client.Version = thirdSplit[1];
-                }
-
 
             Version.Text = Client.Version;
 

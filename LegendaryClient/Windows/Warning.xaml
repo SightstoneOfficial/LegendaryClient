@@ -12,16 +12,18 @@
               Background="#FF2B2B2B">
             <Label x:Name="Header" Width="430" Margin="10,10,0,0" HorizontalAlignment="Left"
                    VerticalAlignment="Top" Content="Warning" FontWeight="ExtraLight" FontSize="30" />
-            <Button x:Name="AcceptButton" Height="30" Margin="10,0,10,10" HorizontalAlignment="Stretch"
+            <Button x:Name="ExitButton" Height="30" Margin="10,0,10,10" HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom" Content="Exit" />
             <TextBox x:Name="MessageText"
                    Width="430"
-                   Height="255" Margin="10,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Height="255" 
+                   IsReadOnly="True"
+                   Margin="10,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                    FontWeight="ExtraLight" FontSize="30" Foreground="White"
                    Background="#66505050" BorderBrush="{x:Null}" TextWrapping="Wrap"/>
-            <Button x:Name="backtochampselect" Height="30" Margin="10,0,10,45"
+            <Button x:Name="ReturnButton" Height="30" Margin="10,0,10,45"
                     HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="Return to Client" />
-            <Button x:Name="hide" Height="37" Margin="703,10,10,0" HorizontalAlignment="Stretch"
+            <Button x:Name="HideButton" Height="37" Margin="703,10,10,0" HorizontalAlignment="Stretch"
                     VerticalAlignment="Top" Content="X" FontSize="16" />
         </Grid>
     </Grid>

@@ -1126,11 +1126,11 @@ namespace LegendaryClient.Logic
                             Header = { Content = "Kicked from server" },
                             MessageText = { Text = "This account has been logged in from another location" }
                         };
-                        Warn.backtochampselect.Click += (MainWin as MainWindow).LogoutButton_Click;
-                        Warn.AcceptButton.Click += QuitClient;
-                        Warn.hide.Visibility = Visibility.Hidden;
-                        Warn.backtochampselect.Content = "Logout(Work in progress)";
-                        Warn.AcceptButton.Content = "Quit";
+                        Warn.ReturnButton.Click += (MainWin as MainWindow).LogoutButton_Click;
+                        Warn.ExitButton.Click += QuitClient;
+                        Warn.HideButton.Visibility = Visibility.Hidden;
+                        Warn.ReturnButton.Content = "Logout(Work in progress)";
+                        Warn.ExitButton.Content = "Quit";
                         FullNotificationOverlayContainer.Content = Warn.Content;
                         FullNotificationOverlayContainer.Visibility = Visibility.Visible;
                     }

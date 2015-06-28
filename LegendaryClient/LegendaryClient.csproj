@@ -404,7 +404,6 @@
     <Compile Include="Logic\Riot\com\riotgames\team\TeamId.cs" />
     <Compile Include="Logic\Riot\com\riotgames\team\TeamInfo.cs" />
     <Compile Include="Logic\Riot\RiotCalls.cs" />
-    <Compile Include="Logic\Riot\RiotPatcher.cs" />
     <Compile Include="Logic\SoundLogic\QueuePopSound.cs" />
     <Compile Include="Logic\FilterChat.cs" />
     <Compile Include="Logic\GameClientSettings\General.cs" />
@@ -508,7 +507,6 @@
     <Compile Include="Logic\Maps\Map8.cs" />
     <Compile Include="Logic\Maps\Map12.cs" />
     <Compile Include="Logic\Maps\BaseMap.cs" />
-    <Compile Include="Logic\Patcher\RiotPatcher.cs" />
     <Compile Include="Logic\SQLite\championAbilities.cs" />
     <Compile Include="Logic\SQLite\champions.cs" />
     <Compile Include="Logic\SQLite\championSearchTags.cs" />
