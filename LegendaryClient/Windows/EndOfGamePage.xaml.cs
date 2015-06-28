@@ -45,7 +45,7 @@ namespace LegendaryClient.Windows
             RoomJid = Client.GetChatroomJid(statistics.RoomName, statistics.RoomPassword, false);
             
             newRoom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.MessageGrabber.Add(RoomJid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             Client.RiotConnection.MessageReceived += RiotConnection_MessageReceived;
             newRoom.AcceptDefaultConfiguration(new Jid(RoomJid));
@@ -83,7 +83,7 @@ namespace LegendaryClient.Windows
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    Text = pres.From.User + " joined the room." + Environment.NewLine
+                    Text = pres.From.Resource + " joined the room." + Environment.NewLine
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
 
@@ -91,8 +91,13 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
+            if (RoomJid.Contains(msg.From.User))
+                return;
+
+            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body == "This room is not anonymous")
@@ -133,7 +138,7 @@ namespace LegendaryClient.Windows
             if (string.IsNullOrEmpty(ChatTextBox.Text))
                 return;
 
-            Client.XmppConnection.Send(new Message(new Jid(RoomJid), MessageType.chat, ChatTextBox.Text));
+            Client.XmppConnection.Send(new Message(new Jid(RoomJid), MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = "";
             ChatText.ScrollToEnd();
         }

@@ -36,7 +36,7 @@ namespace LegendaryClient.Windows
         private bool LaunchedTeamSelect;
         private double OptomisticLock;
         private MucManager newRoom;
-        private Jid roomJid;
+        private static Jid roomJid;
 
         public CustomGameLobbyPage(GameDTO gameLobby = null)
         {
@@ -88,10 +88,10 @@ namespace LegendaryClient.Windows
 
                     HasConnectedToChat = true;
 
-                    string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
+                    string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt64(dto.Id), ChatPrefixes.Arranging_Practice);
                     string Jid = Client.GetChatroomJid(obfuscatedName, dto.RoomPassword, false);
                     newRoom = new MucManager(Client.XmppConnection);
-                    Client.XmppConnection.MessageGrabber.Add(new Jid(Jid), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+                    Client.XmppConnection.OnMessage +=XmppConnection_OnMessage;
                     Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
                     roomJid = new Jid(Jid);
                     newRoom.AcceptDefaultConfiguration(roomJid);
@@ -214,14 +214,20 @@ namespace LegendaryClient.Windows
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    Text = pres.From.User + " joined the room." + Environment.NewLine
+                    Text = pres.From.Resource + " joined the room." + Environment.NewLine
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
+            if (roomJid.Bare.Contains(msg.From.User))
+                return;
+
+            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                return;
+
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body == "This room is not anonymous")
@@ -262,7 +268,7 @@ namespace LegendaryClient.Windows
                 tr.Text = ChatTextBox.Text + Environment.NewLine;
 
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            Client.XmppConnection.Send(new Message(roomJid, MessageType.chat, ChatTextBox.Text));
+            Client.XmppConnection.Send(new Message(roomJid, MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = "";
         }
 

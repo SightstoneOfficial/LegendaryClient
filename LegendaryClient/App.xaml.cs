@@ -20,10 +20,10 @@ namespace LegendaryClient
                 if (e.Args[0] == "EnableGarena=true")
                     Client.Garena = true;
                 Client.args = e.Args;
-                new MainWindow(e).Show();
+                new MainWindow().Show();
             }
             else
-                new MainWindow(e).Show();
+                new MainWindow().Show();
         }
     }
 }

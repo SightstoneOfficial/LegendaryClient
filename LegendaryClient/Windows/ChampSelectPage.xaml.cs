@@ -48,6 +48,7 @@ namespace LegendaryClient.Windows
         private Timer CountdownTimer;
         private bool HasLaunchedGame;
         private bool HasLockedIn;
+        private bool CanLockIn;
         private GameDTO LatestDto;
         private MasteryBookDTO MyMasteries;
         private SpellBookDTO MyRunes;
@@ -140,7 +141,7 @@ namespace LegendaryClient.Windows
             var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
             jid = new Jid(Jid);
             Chatroom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.MessageGrabber.Add(jid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
             Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
             Chatroom.AcceptDefaultConfiguration(jid);
             Chatroom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, RoomPassword);
@@ -148,8 +149,9 @@ namespace LegendaryClient.Windows
 
         void XmppConnection_OnPresence(object sender, Presence pres)
         {
-            if (pres.To.Bare != jid.Bare)
+            if (jid.Bare.Contains(pres.From.User))
                 return;
+
 
             if (Client.InstaCall)
             {
@@ -202,7 +204,7 @@ namespace LegendaryClient.Windows
 
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    Text = pres.From.User + " joined the room." + Environment.NewLine
+                    Text = pres.From.Resource + " joined the room." + Environment.NewLine
                 };
 
                 PreviousPlayers.Add(pres.From.User);
@@ -211,8 +213,14 @@ namespace LegendaryClient.Windows
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
+            if (jid.Bare.Contains(msg.From.User))
+                return;
+
+            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                return;
+
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 //Ignore the message that is always sent when joining
@@ -311,6 +319,7 @@ namespace LegendaryClient.Windows
             Client.FocusClient();
             //Get champions and sort alphabetically
 
+            CanLockIn = false;
             ChampList = new List<ChampionDTO>(Client.PlayerChampions);
             ChampList.Sort(
                 (x, y) =>
@@ -1270,6 +1279,7 @@ namespace LegendaryClient.Windows
                     return;
                 //SelectChampion.SelectChampion(selection.ChampionId)*/
                 await RiotCalls.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
+                CanLockIn = true;
                 Client.ChampId = (int)item.Tag;
                 //TODO: Fix stupid animation glitch on left hand side
                 var fadingAnimation = new DoubleAnimation
@@ -1416,11 +1426,12 @@ namespace LegendaryClient.Windows
         {
             if (configType.PickMode != "AllRandomPickStrategy")
             {
-                if (ChampionSelectListView.SelectedItems.Count <= 0)
+                if (!CanLockIn)
                     return;
 
                 await RiotCalls.ChampionSelectCompleted();
                 HasLockedIn = true;
+                CanLockIn = false;
                 this.LockInButton.IsEnabled = false;
                 this.LockInButton.Background = Brushes.Gray;
             }

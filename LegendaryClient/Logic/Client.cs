@@ -443,13 +443,15 @@ namespace LegendaryClient.Logic
 
         internal async static void XmppConnection_OnPresence(object sender, Presence pres)
         {
+            /*
             Log("Received pres (Bare): " + pres.From.Bare);
             Log("From user: " + pres.From.User);
             Log("Pres Type: " + pres.Type);
             Log("Other stuff: " + pres.InnerXml);
+            //*/
             if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
                 return;
-            if (pres.From.Bare.EndsWith("@sec.pvp.net") || pres.From.Bare.EndsWith("@lvl.pvp.net") || pres.From.Bare.EndsWith("@conference.pvp.net"))
+            if (pres.From.Bare.Contains("@sec.pvp.net") || pres.From.Bare.Contains("@lvl.pvp.net") || pres.From.Bare.Contains("@conference.pvp.net"))
                 return;
             SetChatHover();
             switch (pres.Type)
@@ -865,27 +867,26 @@ namespace LegendaryClient.Logic
         internal static void SwitchPage(Page page)
         {
             Log("Switching to the page: " + page.GetType());
-            IsOnPlayPage = page.GetType() == typeof(PlayPage);
-            BackgroundImage.Visibility = page.GetType() == typeof(ChampSelectPage)
+            IsOnPlayPage = page is PlayPage;
+            BackgroundImage.Visibility = page is ChampSelectPage
                 ? Visibility.Hidden
                 : Visibility.Visible;
-            if (page.GetType() == typeof(MainPage))
-            {
-                Page p = Pages.FirstOrDefault(x => x.GetType() == typeof(MainPage));
 
+            if (page is MainPage)
+            {
+                Page p = Pages.FirstOrDefault(x => x is MainPage);
                 var mainPage = p as MainPage;
                 if (mainPage != null)
                     mainPage.UpdateSummonerInformation();
             }
 
             TrueCurrentPage = page;
-
             foreach (Page p in Pages.Where(p => p.GetType() == page.GetType()))
             {
                 Container.Content = p.Content;
-
                 return;
             }
+
             Container.Content = page.Content;
             Pages.Add(page);
         }
@@ -1095,11 +1096,11 @@ namespace LegendaryClient.Logic
 
 
                         if (InviteData.ContainsKey(stats.InvitationId))
-                            return;
-                        InviteInfo x = InviteData[stats.InvitationId];
-
-                        if (x.Inviter != null)
-                            return;
+                        {
+                            InviteInfo x = InviteData[stats.InvitationId];
+                            if (x.Inviter != null)
+                                return;
+                        }
                         
                         MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {

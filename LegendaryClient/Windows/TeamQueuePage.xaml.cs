@@ -102,7 +102,7 @@ namespace LegendaryClient.Windows
                 string Jid = Client.GetChatroomJid(ObfuscatedName, CurrentLobby.ChatKey, false);
                 newRoom = new MucManager(Client.XmppConnection);
                 jid = new Jid(Jid);
-                Client.XmppConnection.MessageGrabber.Add(jid, new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+                Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
                 Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
                 newRoom.AcceptDefaultConfiguration(jid);
                 newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, CurrentLobby.ChatKey);
@@ -126,14 +126,20 @@ namespace LegendaryClient.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = pres.From.User + " joined the room." + Environment.NewLine;
+                tr.Text = pres.From.Resource + " joined the room." + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatText.ScrollToEnd();
             }));
         }
 
-        void XmppConnection_OnMessage(object sender, Message msg, object data)
+        void XmppConnection_OnMessage(object sender, Message msg)
         {
+            if (jid.Bare.Contains(msg.From.User))
+                return;
+
+            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                return;
+
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (msg.Body != "This room is not anonymous")
@@ -626,7 +632,7 @@ namespace LegendaryClient.Windows
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 if (string.IsNullOrEmpty(ChatTextBox.Text))
                     return;
-                Client.XmppConnection.Send(new Message(jid, MessageType.chat, ChatTextBox.Text));
+                Client.XmppConnection.Send(new Message(jid, MessageType.groupchat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }
