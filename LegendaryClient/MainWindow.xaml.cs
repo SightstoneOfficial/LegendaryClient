@@ -114,7 +114,7 @@ namespace LegendaryClient
                 // resize LC to MinHeight -- a UI designer may edit this
                 SizeToContent = SizeToContent.Manual;
                 Width = MinWidth;
-                MinHeight = Height;
+                Height = MinHeight;
             }
         }
 
