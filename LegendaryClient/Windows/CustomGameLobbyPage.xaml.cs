@@ -88,7 +88,7 @@ namespace LegendaryClient.Windows
 
                     HasConnectedToChat = true;
 
-                    string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt32(dto.Id), ChatPrefixes.Arranging_Practice);
+                    string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt64(dto.Id), ChatPrefixes.Arranging_Practice);
                     string Jid = Client.GetChatroomJid(obfuscatedName, dto.RoomPassword, false);
                     newRoom = new MucManager(Client.XmppConnection);
                     Client.XmppConnection.OnMessage +=XmppConnection_OnMessage;
