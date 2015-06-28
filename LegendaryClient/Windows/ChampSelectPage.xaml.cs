@@ -48,6 +48,7 @@ namespace LegendaryClient.Windows
         private Timer CountdownTimer;
         private bool HasLaunchedGame;
         private bool HasLockedIn;
+        private bool CanLockIn;
         private GameDTO LatestDto;
         private MasteryBookDTO MyMasteries;
         private SpellBookDTO MyRunes;
@@ -1277,6 +1278,7 @@ namespace LegendaryClient.Windows
                     return;
                 //SelectChampion.SelectChampion(selection.ChampionId)*/
                 await RiotCalls.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
+                CanLockIn = true;
                 Client.ChampId = (int)item.Tag;
                 //TODO: Fix stupid animation glitch on left hand side
                 var fadingAnimation = new DoubleAnimation
@@ -1423,11 +1425,12 @@ namespace LegendaryClient.Windows
         {
             if (configType.PickMode != "AllRandomPickStrategy")
             {
-                if (ChampionSelectListView.SelectedItems.Count <= 0)
+                if (!CanLockIn)
                     return;
 
                 await RiotCalls.ChampionSelectCompleted();
                 HasLockedIn = true;
+                CanLockIn = false;
                 this.LockInButton.IsEnabled = false;
                 this.LockInButton.Background = Brushes.Gray;
             }
