@@ -46,8 +46,20 @@ namespace LegendaryClient.Windows
     /// <summary>
     ///     Interaction logic for MainPage.xaml
     /// </summary>
+    /// 
+
     public partial class MainPage
     {
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scrollviewer = sender as ScrollViewer;
+            if (e.Delta > 0)
+                scrollviewer.LineLeft();
+            else
+                scrollviewer.LineRight();
+            e.Handled = true;
+        }
+
         internal static Timer timer = new Timer();
         internal ArrayList GameList;
         internal ArrayList NewsList;
@@ -637,24 +649,15 @@ namespace LegendaryClient.Windows
                                                         break;
                                                 }
                                             }
-                                            var control = new ChampSelectPlayer
+                                            var control = new MainPagePlayer
                                             {
                                                 ChampionImage = { Source = champions.GetChampion(championId).icon },
                                                 champID = championId,
                                                 sumName = playerName,
                                                 KnownPar = true
                                             };
-                                            var UriSource =
-                                                new System.Uri(
-                                                    Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                                                        SummonerSpell.GetSpellImageName(spell1Id)), UriKind.Absolute);
-                                            control.SummonerSpell1.Source = new BitmapImage(UriSource);
-                                            UriSource =
-                                                new System.Uri(
-                                                    Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                                                        SummonerSpell.GetSpellImageName(spell2Id)), UriKind.Absolute);
-                                            control.SummonerSpell2.Source = new BitmapImage(UriSource);
-                                            control.PlayerName.Content = playerName;
+
+
                                             control.Tag = new List<object> { playerName, championId };
 
                                             var m = new Image();

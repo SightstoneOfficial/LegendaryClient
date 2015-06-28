@@ -5,17 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d"
-             d:DesignHeight="110" d:DesignMaxWidth="960" d:DesignMinWidth="300">
+             d:DesignHeight="90" d:DesignMinWidth="Auto">
 
     <Grid HorizontalAlignment="Stretch">
-        <wpf:Card HorizontalAlignment="Stretch" Margin="0">
-            <Grid>
                 <Image x:Name="PromoImage" Width="160" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="UniformToFill" />
                 <Label x:Name="NewsTitle" Margin="168,8,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Heading" FontSize="14" Foreground="Black" />
                 <Label Margin="168,38,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="12" Foreground="Black">
                     <TextBlock x:Name="DescriptionLabel" Text="Caption" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" />
                 </Label>
-            </Grid>
-        </wpf:Card>
     </Grid>
 </UserControl>

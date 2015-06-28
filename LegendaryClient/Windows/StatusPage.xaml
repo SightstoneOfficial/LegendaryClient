@@ -5,11 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     Title="StatusPage"
     Width="1252.6"
     mc:Ignorable="d" d:DesignHeight="40">
 
-    <Grid x:Name="BackBar" Background="#FF141414">
+    <Grid x:Name="BackBar" Background="{StaticResource PrimaryHueMidBrush}">
         <ListView x:Name="ChatListView" Margin="1,0,374,0"
                   HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   Background="{x:Null}"
@@ -25,7 +26,6 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-
         <Grid Width="135" Margin="0,0,115,0" HorizontalAlignment="Right"
               ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#4C000000" Visibility="Collapsed">
             <Label x:Name="StatusLabel" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -35,14 +35,12 @@
             <Button Width="25" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{x:Null}"
                     Content="←" Foreground="Black" />
         </Grid>
-
         <Button x:Name="PluginButton" Width="50" Margin="0,4,170,4" HorizontalAlignment="Right"
-                VerticalAlignment="Stretch" Style="{x:Null}">
+                VerticalAlignment="Stretch" Style="{x:Null}" Visibility="Hidden">
             <StackPanel>
                 <Image Source="/LegendaryClient;component/ui/img/bar/plugin.png" Stretch="None" />
             </StackPanel>
         </Button>
-
         <Button x:Name="ChatButton" Width="50" Margin="0,4,115,4" HorizontalAlignment="Right"
                 VerticalAlignment="Stretch" Style="{x:Null}" Click="ChatButton_Click">
             <StackPanel>

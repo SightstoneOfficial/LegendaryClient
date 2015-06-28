@@ -41,12 +41,13 @@
                 <wpf:Card>
                     <Grid>
                         <!-- Top Header / Button / Whatever you want -->
-                        <Grid VerticalAlignment="Top">
+                        <Grid VerticalAlignment="Top" Height="41">
                             <Button Height="40" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignFlatButton}" VerticalContentAlignment="Center" FontSize="14" Content="Sightstone"/>
+                            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
                         </Grid>
 
                         <!-- Content -->
-                        <Grid Margin="0,50,0,50">
+                        <Grid Margin="0,48,0,48">
                             <Grid.RenderTransform>
                                 <TranslateTransform x:Name="Tt" />
                             </Grid.RenderTransform>

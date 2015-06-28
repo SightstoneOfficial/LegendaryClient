@@ -44,7 +44,7 @@
 
                     <!-- Content -->
                     <Grid Margin="0,40,0,40" VerticalAlignment="Stretch">
-                        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource PrimaryHueLightBrush}"></Border>
+                        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
                         <Label x:Name="CurrentProgressLabel" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="0%" Margin="18,18,18,48" Foreground="{StaticResource PrimaryHueDarkBrush}"/>
                         <Label x:Name="TotalProgressLabel" HorizontalAlignment="Center" VerticalAlignment="Bottom" Content="Total Progress: 0%" Panel.ZIndex="10" Foreground="{StaticResource PrimaryHueDarkBrush}" Margin="18"/>
                     </Grid>
