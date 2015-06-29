@@ -32,7 +32,7 @@
         <Controls:WindowCommands>
             <Label x:Name="inQueueTimer" Content="00:00" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" Visibility="Hidden"/>
             <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click"/>
-            <Label x:Name="InfoLabel" Content="Not Logged In" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" />
+            <Label x:Name="InfoLabel" Content="Not Logged In" FontWeight="Light" Margin="0,3,0,0"/>
             <Button x:Name="HomeButton" Click="HomeButton_Click">
                 <Image Source="/LegendaryClient;component/ui/img/menubar/home.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
             </Button>
@@ -59,7 +59,7 @@
     </Controls:MetroWindow.RightWindowCommands>
 
     <Grid x:Name="MainGrid">
-        <Image x:Name="UserTitleBarImage" Source="/LegendaryClient;component/NONE.png" Width="30" Margin="0,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" />
+        <Image x:Name="UserTitleBarImage" Source="/LegendaryClient;component/NONE.png" Width="31" Margin="0,-31,0,0" HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" />
         <Label x:Name="UserTitleBarLabel" Content="Username" FontWeight="Light" Margin="33,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" FontSize="15" Foreground="WhiteSmoke" />
 
         <ContentControl x:Name="FullNotificationOverlayContainer" HorizontalAlignment="Stretch"

@@ -599,17 +599,11 @@ namespace LegendaryClient.Windows
 
                     if (GameList.Count <= 0)
                         return;
-
-                    BlueBansLabel.Visibility = Visibility.Hidden;
-                    PurpleBansLabel.Visibility = Visibility.Hidden;
-                    BlueBanListView.Items.Clear();
-                    PurpleBanListView.Items.Clear();
                     BlueListView.Items.Clear();
                     PurpleListView.Items.Clear();
                     int gameId = 0;
                     object objectGame = GameList[SelectedGame];
-                    var spectatorGame = objectGame as Dictionary<string, object>;
-                    ImageGrid.Children.Clear();
+                    var spectatorGame = objectGame as Dictionary<string, object>;;
                     if (spectatorGame != null)
                         foreach (var pair in spectatorGame)
                         {
@@ -681,7 +675,6 @@ namespace LegendaryClient.Windows
                                                     GraphicsUnit.Pixel);
 
                                             m.Source = Client.ToWpfBitmap(target);
-                                            ImageGrid.Children.Add(m);
                                             if (teamId == 100)
                                                 BlueListView.Items.Add(control);
                                             else
@@ -723,53 +716,6 @@ namespace LegendaryClient.Windows
                                     break;
                                 case "bannedChampions":
                                     {
-                                        //ArrayList players = pair.Value as ArrayList;
-                                        //Dictionary<string, object> playerInfo = objectPlayer as Dictionary<string, object>;
-                                        //foreach (KeyValuePair<string, object> playerPair in playerInfo)
-                                        var keyArray = pair.Value as ArrayList;
-                                        if (keyArray.Count > 0)
-                                        {
-                                            BlueBansLabel.Visibility = Visibility.Visible;
-                                            PurpleBansLabel.Visibility = Visibility.Visible;
-                                        }
-                                        foreach (Dictionary<string, object> keyArrayP in keyArray)
-                                        //Dictionary<string, object> keyArrayP = keyArray as Dictionary<string, object>;
-                                        {
-                                            int cid = 0;
-                                            int teamId = 100;
-                                            foreach (var keyArrayPair in keyArrayP)
-                                            {
-                                                switch (keyArrayPair.Key)
-                                                {
-                                                    case "championId":
-                                                        cid = (int)keyArrayPair.Value;
-                                                        break;
-                                                    case "teamId":
-                                                        teamId = (int)keyArrayPair.Value;
-                                                        break;
-                                                }
-                                            }
-                                            var item = new ListViewItem();
-                                            var champImage = new Image
-                                            {
-                                                Height = 58,
-                                                Width = 58
-                                            };
-                                            //temp
-                                            try
-                                            {
-                                                champImage.Source = champions.GetChampion(cid).icon;
-                                            }
-                                            catch
-                                            {
-                                            }
-
-                                            item.Content = champImage;
-                                            if (teamId == 100)
-                                                BlueBanListView.Items.Add(item);
-                                            else
-                                                PurpleBanListView.Items.Add(item);
-                                        }
                                     }
                                     break;
                             }

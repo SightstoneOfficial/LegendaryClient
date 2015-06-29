@@ -6,6 +6,8 @@
       xmlns:local="clr-namespace:LegendaryClient.Controls"
       xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
       xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Background="{DynamicResource MaterialDesignPaper}"
       Title="MainPage"
       mc:Ignorable="d" d:DesignHeight="768"
       d:DesignWidth="1280">
@@ -20,7 +22,7 @@
 
     <Grid>
 
-        <dragablz:TabablzControl BorderThickness="0">
+        <dragablz:TabablzControl BorderThickness="0" Background="{DynamicResource MaterialDesignPaper}">
             <dragablz:TabablzControl.InterTabController>
                 <dragablz:InterTabController />
             </dragablz:TabablzControl.InterTabController>
@@ -82,7 +84,7 @@
 
                                         <!-- Content -->
 
-                                        <Grid Background="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Height="40" Margin="0,41,0,0">
+                                        <Grid Background="{StaticResource PrimaryHueMidBrush}" VerticalAlignment="Top" Height="40" Margin="0,41,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
@@ -185,50 +187,7 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-
-            <TabItem Header="Stuff">
-                <Grid>
-
-                    <wpf:Card  HorizontalAlignment="Left">
-
-                    </wpf:Card>
-
-                    <Grid Width="358" >
-
-                        <Grid x:Name="ImageGrid" Margin="0,0,0,10" Background="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-
-                        <Label x:Name="BlueBansLabel" Margin="315,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                           Content="Blue Bans" FontWeight="Bold" Foreground="White" />
-                        <ListView x:Name="BlueBanListView" Width="65" Height="195"
-                              Margin="315,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}"
-                              Background="{x:Null}">
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-                        </ListView>
-
-
-
-
-                        <Label x:Name="PurpleBansLabel" Margin="0,4,309,0" HorizontalAlignment="Right"
-                           VerticalAlignment="Top" Content="Purple Bans" FontWeight="Bold" Foreground="White" />
-                        <ListView x:Name="PurpleBanListView" Width="65" Height="200"
-                              Margin="0,30,316,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-                              ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}"
-                              Background="{x:Null}">
-                            <ListView.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <WrapPanel />
-                                </ItemsPanelTemplate>
-                            </ListView.ItemsPanel>
-                        </ListView>
-                    </Grid>
-                </Grid>
-            </TabItem>
-
+           
             <TabItem Header="About">
                 <Grid>
                     <Grid.RowDefinitions>

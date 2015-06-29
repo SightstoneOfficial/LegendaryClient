@@ -18,7 +18,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid Background="{StaticResource AccentColorBrush}">
+    <Grid Background="{StaticResource AccentColorBrush3}">
 
         <Image Source="/LegendaryClient;component/ui\img\icons\sightstone_main_w.png" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.7"/>
 
@@ -99,7 +99,7 @@
             </Label.Effect>
         </Label>
         <CheckBox x:Name="autoPlayCheckBox" HorizontalAlignment="Right" VerticalAlignment="Top" Checked="AutoPlay_Changed" Unchecked="AutoPlay_Changed" Margin="10,15,10,10">
-            <TextBlock Text="Skip Patcher Page" Margin="0,-1,0,0"/>
+            <TextBlock Text="Skip Patcher Page" Margin="0,0,0,0"/>
         </CheckBox>
     </Grid>
 </Page>
