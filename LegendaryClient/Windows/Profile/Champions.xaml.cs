@@ -35,7 +35,13 @@ namespace LegendaryClient.Windows.Profile
                 (x, y) =>
                     string.Compare(champions.GetChampion(x.ChampionId)
                         .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
-
+            if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level <= Client.LoginPacket.ClientSystemStates.freeToPlayChampionsForNewPlayersMaxLevel)
+            {
+                _championList.ForEach(x => x.FreeToPlay = false);
+                _championList.FindAll(x => 
+                    Client.LoginPacket.ClientSystemStates.freeToPlayChampionForNewPlayersIdList.Contains(x.ChampionId)).
+                        ForEach(x => x.FreeToPlay = true);
+            }
             FilterChampions();
         }
 

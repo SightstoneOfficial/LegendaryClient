@@ -719,7 +719,21 @@ namespace LegendaryClient.Windows
                     {
                         lolclient.Kill();
                     }
-                    s1 = s1.Substring(1);
+                    if (s1.StartsWith("\""))
+                    {
+                        try
+                        {
+                            s1 = s1.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)[1];
+                        }
+                        catch
+                        {
+                            Client.Log("Error splitting path from command line.");
+                        }
+                    }
+                    else
+                    {
+                        s1 = s1.Substring(1);
+                    }
                     Client.Log("Received token, it is: " + s1);
                     Client.Region = garenaregion;
                     Dispatcher.BeginInvoke(
