@@ -1,9 +1,21 @@
-If you are sending a bug report please copy the log file and tell me where it crashed
-Please read all bugs (both issues and known bugs in readme) before posting. I do not want duplicates [waste my time to read them]
-Please also read the TODO. It will help save time
+#Reporting Bugs
 
-Please insure that you are using the latest version before posting. If you are not please download it.
-If you are using the Auto-Updater, ensure that you are using the latest verion and replace it if you are not
+When reporting bugs, make sure you do all of this before reporting.
+
+- Make sure you are using the latest development build. If you don't, download it and reproduce the same bug to see if it's fixed.
+- Look for the same bug in the repo's issues page. Comment on it. We don't want duplicate issues.
+- Take note on how to reproduce the bug and tell us. If we can't reproduce it, your issue might be marked as "Can't Reproduce"
+- Upload the log file on pastebin.com or similiar site to help us identify root cause of the bug.
+
+#Pull Requests
+- Does your changes fit our goals? No? Don't bother submitting it.
+- Tell us exactly what does it do.
+- Don't include changes with refactoring. Commit it on a separate commit.
+- We don't always reject ugly code. But ugly code makes it more likely to be rejected.
+- Follow C# code standards.
+- Commenting hacky codes is appreciated.
+
+Failing to follow above guidelines will make your PR rejected.
 
 We will also be in this IRC if you need help: http://kiwiirc.com/client/irc.freenode.net/#LegendaryClient
 
