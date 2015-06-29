@@ -41,27 +41,29 @@
                 <Image Source="/LegendaryClient;component/ui/img/bar/plugin.png" Stretch="None" />
             </StackPanel>
         </Button>
-        <Button x:Name="ChatButton" Width="50" Margin="0,4,115,4" HorizontalAlignment="Right"
-                VerticalAlignment="Stretch" Style="{x:Null}" Click="ChatButton_Click">
-            <StackPanel>
-                <Image Source="/LegendaryClient;component/ui/img/bar/contacts.png" Stretch="None" />
-            </StackPanel>
-        </Button>
-        <Button x:Name="NotificationButton" Width="50" Margin="0,4,5,4" HorizontalAlignment="Right"
-                VerticalAlignment="Stretch" Style="{x:Null}" Click="NotificationButton_Click">
-            <StackPanel>
-                <Image Source="/LegendaryClient;component/ui/img/bar/alert.png" Stretch="None" />
-            </StackPanel>
-        </Button>
         <TextBox x:Name="DevCommand" Width="254" Height="32"
                  Margin="0,0,115,4" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  TextWrapping="Wrap" controls:TextBoxHelper.Watermark="Enter Dev Command here" FontSize="20"
                  Visibility="Hidden" />
-        <Button x:Name="JoinChat" Width="50" Margin="0,4,60,4" HorizontalAlignment="Right"
-                VerticalAlignment="Stretch" Style="{x:Null}" Click="JoinChatButton_Click">
-            <StackPanel>
+        
+        <Grid Width="Auto" HorizontalAlignment="Right" Margin="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button x:Name="ChatButton" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="ChatButton_Click" Grid.Column="0" Style="{StaticResource MaterialDesignRaisedLightButton}" MinWidth="75">
+                <Image Source="/LegendaryClient;component/ui/img/bar/contacts.png" Stretch="None" />
+            </Button>
+            <Button x:Name="NotificationButton" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="NotificationButton_Click" Grid.Column="1" Style="{StaticResource MaterialDesignRaisedLightButton}" MinWidth="75" Panel.ZIndex="5">
+                <Image Source="/LegendaryClient;component/ui/img/bar/alert.png" Stretch="None" />
+            </Button>
+            <Button x:Name="JoinChat" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="JoinChatButton_Click" Grid.Column="2" Style="{StaticResource MaterialDesignRaisedLightButton}" MinWidth="75">
                 <Image Width="28" Height="24" Source="/LegendaryClient;component/ui/img/bar/chat.png" Stretch="Fill" />
-            </StackPanel>
-        </Button>
+            </Button>
+
+        </Grid>
+
     </Grid>
 </Page>

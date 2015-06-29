@@ -44,123 +44,122 @@
 
                     <ScrollViewer Name="MyScrollViewer" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0,140,0,0" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                         <Grid>
-
-                        <!-- Card 1 -->
-                        <Grid Width="550" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="30,30,30,30">
-                            <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <Grid>
-                                    <!-- Top Header / Button / Whatever you want -->
-                                    <Grid VerticalAlignment="Top" Height="41">
-                                        <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{StaticResource MaterialDesignFlatButton}">News</Button>
-                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
-                                    </Grid>
+                            <!-- Card 1 -->
+                            <Grid Width="550" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="30,30,30,30">
+                                <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Grid>
+                                        <!-- Top Header / Button / Whatever you want -->
+                                        <Grid VerticalAlignment="Top" Height="41">
+                                            <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{StaticResource MaterialDesignFlatButton}">News</Button>
+                                            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
+                                        </Grid>
                                 
-                                    <!-- CARD1 -->
-                                    <Grid Margin="0,40,0,0">
-                                        <ListView x:Name="NewsItemListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="NewsItemListView_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black">
-                                            <ListView.View>
-                                                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                                                    <GridViewColumn />
-                                                </GridView>
-                                            </ListView.View>
-                                        </ListView>
-                                    </Grid>
-
-                                </Grid>
-                            </wpf:Card>
-                        </Grid>
-                        <!-- Card 2 -->
-                        <Grid Width="410" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="610,30,30,30">
-                            <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                <Grid>
-                                    <!-- Top Header / Button / Whatever you want -->
-                                    <Grid VerticalAlignment="Top" Height="41">
-                                        <Button Height="40" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignFlatButton}" VerticalContentAlignment="Center" FontSize="14" Padding="0">
-                                            <ComboBox x:Name="SpectatorComboBox" HorizontalAlignment="Stretch" Margin="8" VerticalAlignment="Top" ItemsSource="{DynamicResource SpectateRegions}" Foreground="{StaticResource MaterialDesignBody}" SelectionChanged="SpectatorComboBox_SelectionChanged"/>
-                                        </Button>
-                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
-                                    </Grid>
-
-                                    <!-- Content -->
-                                    <Grid x:Name="SpectatorRegionGrid" Margin="8,40,8,8">
-                                        <Grid Margin="8,8,8,8" VerticalAlignment="Top">
-                                            <Label x:Name="MMRLabel" Margin="0,8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="MMR" FontSize="26" Foreground="{StaticResource MaterialDesignBody}"/>
-                                            <Label x:Name="MapLabel" Margin="0,48,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Summoners Rift" FontSize="16" Foreground="{StaticResource MaterialDesignBody}"/>
-                                            <Label x:Name="GameTimeLabel" Margin="0,78,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Time Running" FontSize="16" Foreground="{StaticResource MaterialDesignBody}"/>
+                                        <!-- CARD1 -->
+                                        <Grid Margin="0,40,0,0">
+                                            <ListView x:Name="NewsItemListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="NewsItemListView_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black">
+                                                <ListView.View>
+                                                    <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                                                        <GridViewColumn />
+                                                    </GridView>
+                                                </ListView.View>
+                                            </ListView>
                                         </Grid>
-                                        <Grid Margin="8,158,8,8" VerticalAlignment="Top">
-                                                <ListView x:Name="BlueListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}"  Style="{x:Null}">
-                                                    <ListView.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <WrapPanel />
-                                                        </ItemsPanelTemplate>
-                                                    </ListView.ItemsPanel>
-                                                    <ListView.ItemContainerStyle>
-                                                        <Style TargetType="ListViewItem">
-                                                            <Setter Property="Margin" Value="5" />
-                                                        </Style>
-                                                    </ListView.ItemContainerStyle>
-                                                </ListView>
-                                                <Label Margin="88" HorizontalAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="20" VerticalAlignment="Center">VS</Label>
-                                                <ListView x:Name="PurpleListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}">
-                                                    <ListView.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <WrapPanel />
-                                                        </ItemsPanelTemplate>
-                                                    </ListView.ItemsPanel>
-                                                    <ListView.ItemContainerStyle>
-                                                        <Style TargetType="ListViewItem">
-                                                            <Setter Property="Margin" Value="5" />
-                                                        </Style>
-                                                    </ListView.ItemContainerStyle>
-                                                </ListView>
 
+                                    </Grid>
+                                </wpf:Card>
+                            </Grid>
+                            <!-- Card 2 -->
+                            <Grid Width="410" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="610,30,30,30">
+                                <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                    <Grid>
+                                        <!-- Top Header / Button / Whatever you want -->
+                                        <Grid VerticalAlignment="Top" Height="41">
+                                            <Button Height="40" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignFlatButton}" VerticalContentAlignment="Center" FontSize="14" Padding="0">
+                                                <ComboBox x:Name="SpectatorComboBox" HorizontalAlignment="Stretch" Margin="8" VerticalAlignment="Top" ItemsSource="{DynamicResource SpectateRegions}" Foreground="{StaticResource MaterialDesignBody}" SelectionChanged="SpectatorComboBox_SelectionChanged"/>
+                                            </Button>
+                                            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
+                                        </Grid>
+
+                                        <!-- Content -->
+                                        <Grid x:Name="SpectatorRegionGrid" Margin="8,40,8,8">
+                                            <Grid Margin="8,8,8,8" VerticalAlignment="Top">
+                                                <Label x:Name="MMRLabel" Margin="0,8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="MMR" FontSize="26" Foreground="{StaticResource MaterialDesignBody}"/>
+                                                <Label x:Name="MapLabel" Margin="0,48,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Summoners Rift" FontSize="16" Foreground="{StaticResource MaterialDesignBody}"/>
+                                                <Label x:Name="GameTimeLabel" Margin="0,78,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Time Running" FontSize="16" Foreground="{StaticResource MaterialDesignBody}"/>
                                             </Grid>
-                                    </Grid>
+                                            <Grid Margin="8,158,8,8" VerticalAlignment="Top">
+                                                    <ListView x:Name="BlueListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}"  Style="{x:Null}">
+                                                        <ListView.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel />
+                                                            </ItemsPanelTemplate>
+                                                        </ListView.ItemsPanel>
+                                                        <ListView.ItemContainerStyle>
+                                                            <Style TargetType="ListViewItem">
+                                                                <Setter Property="Margin" Value="5" />
+                                                            </Style>
+                                                        </ListView.ItemContainerStyle>
+                                                    </ListView>
+                                                    <Label Margin="88" HorizontalAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="20" VerticalAlignment="Center">VS</Label>
+                                                    <ListView x:Name="PurpleListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}">
+                                                        <ListView.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <WrapPanel />
+                                                            </ItemsPanelTemplate>
+                                                        </ListView.ItemsPanel>
+                                                        <ListView.ItemContainerStyle>
+                                                            <Style TargetType="ListViewItem">
+                                                                <Setter Property="Margin" Value="5" />
+                                                            </Style>
+                                                        </ListView.ItemContainerStyle>
+                                                    </ListView>
 
-                                    <!-- Control Panel -->
-                                    <Grid VerticalAlignment="Bottom">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Button x:Name="PrevGameButton" Click="PrevGameButton_Click" Height="40" HorizontalAlignment="Stretch" Grid.Column="0" Style="{StaticResource MaterialDesignRaisedLightButton}">Prev</Button>
-                                        <Button x:Name="SpectateButton" Click="SpectateButton_Click" Height="40" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3" Style="{StaticResource MaterialDesignRaisedDarkButton}">Spectate</Button>
-                                        <Button x:Name="RecordButton" Click="RecordButton_Click" Height="40" HorizontalAlignment="Stretch" Grid.Column="2">Record</Button>
-                                        <Button x:Name="NextGameButton" Click="NextGameButton_Click" Height="40" HorizontalAlignment="Stretch" Grid.Column="3" Style="{StaticResource MaterialDesignRaisedLightButton}">Next</Button>
-                                    </Grid>
-
-                                </Grid>
-                            </wpf:Card>
-                        </Grid>
-                        <!-- Card 3 -->
-                        <Grid Width="330" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="1050,30,30,30">
-                            <wpf:Card>
-                                <Grid>
-                                    <!-- Top Header / Button / Whatever you want -->
-                                    <Grid VerticalAlignment="Top" Height="41">
-                                        <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{StaticResource MaterialDesignFlatButton}">League Info</Button>
-                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
-                                    </Grid>
-
-                                    <!-- CARD1 -->
-                                    <Grid Margin="0,40,0,0">
-                                        <Grid Width="250" VerticalAlignment="Center" HorizontalAlignment="Right" Height="30" Margin="0,0,40,0">
-                                            <ProgressBar x:Name="PlayerProgressBar" Height="Auto" Value="0"/>
-
-                                            <Label x:Name="PlayerCurrentProgressLabel" VerticalAlignment="Center" HorizontalAlignment="Left" Content="0LP" Foreground="Black" FontSize="16" Padding="0" Margin="5,0,0,0"/>
-
-                                            <Label x:Name="PlayerProgressLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Silver II" Foreground="Black" FontSize="16" Padding="0" />
-                                            <Label x:Name="PlayerAimProgressLabel" HorizontalAlignment="Right" VerticalAlignment="Center" Content="100LP" Foreground="Black" FontSize="16" Padding="0" Margin="0,0,5,0"/>
+                                                </Grid>
                                         </Grid>
-                                    </Grid>
 
-                                </Grid>
-                            </wpf:Card>
+                                        <!-- Control Panel -->
+                                        <Grid VerticalAlignment="Bottom">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Button x:Name="PrevGameButton" Click="PrevGameButton_Click" Height="40" HorizontalAlignment="Stretch" Grid.Column="0" Style="{StaticResource MaterialDesignRaisedLightButton}">Prev</Button>
+                                            <Button x:Name="SpectateButton" Click="SpectateButton_Click" Height="40" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3" Style="{StaticResource MaterialDesignRaisedDarkButton}">Spectate</Button>
+                                            <Button x:Name="RecordButton" Click="RecordButton_Click" Height="40" HorizontalAlignment="Stretch" Grid.Column="2">Record</Button>
+                                            <Button x:Name="NextGameButton" Click="NextGameButton_Click" Height="40" HorizontalAlignment="Stretch" Grid.Column="3" Style="{StaticResource MaterialDesignRaisedLightButton}">Next</Button>
+                                        </Grid>
+
+                                    </Grid>
+                                </wpf:Card>
+                            </Grid>
+                            <!-- Card 3 -->
+                            <Grid Width="330" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="1050,30,30,30">
+                                <wpf:Card>
+                                    <Grid>
+                                        <!-- Top Header / Button / Whatever you want -->
+                                        <Grid VerticalAlignment="Top" Height="41">
+                                            <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{StaticResource MaterialDesignFlatButton}">League Info</Button>
+                                            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
+                                        </Grid>
+
+                                        <!-- CARD1 -->
+                                        <Grid Margin="0,40,0,0">
+                                            <Grid Width="250" VerticalAlignment="Center" HorizontalAlignment="Right" Height="30" Margin="0,0,40,0">
+                                                <ProgressBar x:Name="PlayerProgressBar" Height="Auto" Value="0"/>
+
+                                                <Label x:Name="PlayerCurrentProgressLabel" VerticalAlignment="Center" HorizontalAlignment="Left" Content="0LP" Foreground="Black" FontSize="16" Padding="0" Margin="5,0,0,0"/>
+
+                                                <Label x:Name="PlayerProgressLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Silver II" Foreground="Black" FontSize="16" Padding="0" />
+                                                <Label x:Name="PlayerAimProgressLabel" HorizontalAlignment="Right" VerticalAlignment="Center" Content="100LP" Foreground="Black" FontSize="16" Padding="0" Margin="0,0,5,0"/>
+                                            </Grid>
+                                        </Grid>
+
+                                    </Grid>
+                                </wpf:Card>
+                            </Grid>
                         </Grid>
-                    </Grid>
                     </ScrollViewer> 
                 </Grid>
             </TabItem>
