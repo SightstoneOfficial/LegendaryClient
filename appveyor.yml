@@ -44,8 +44,8 @@
     # shut up
     verbosity: minimal
   artifacts:
-    - path: LegendaryClient.zip
-      name: LegendaryClient-Full
+    - path: LegendaryClient-beta4.zip
+      name: LegendaryClient-Full-beta4
     - path: LegendaryClient.exe
       name: LegendaryClient-Executable
   notifications:
