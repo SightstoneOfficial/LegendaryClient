@@ -37,7 +37,7 @@
 
         <!-- Card Template Start -->
         <Grid x:Name="LoginGrid" Panel.ZIndex="1000">
-            <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30" MouseDown="Grid_MouseDown" MouseMove="Grid_MouseMove" MouseUp="Grid_MouseUp">
+            <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30">
                 <wpf:Card>
                     <Grid>
                         <!-- Top Header / Button / Whatever you want -->
@@ -48,10 +48,6 @@
 
                         <!-- Content -->
                         <Grid Margin="0,48,0,48">
-                            <Grid.RenderTransform>
-                                <TranslateTransform x:Name="Tt" />
-                            </Grid.RenderTransform>
-
                             <!-- Region and Server -->
                             <Grid Margin="50,8,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Top">
                                 <Grid.ColumnDefinitions>
@@ -69,7 +65,7 @@
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Image Source="C:\Users\Martin\Source\GitHub\LegendaryClient\LegendaryClient\ui\img\icons\ic_account_circle_black_36dp.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
+                                <Image Source="/LegendaryClient;component/ui\img\icons\ic_account_circle_black_36dp.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
                                 <TextBox x:Name="LoginUsernameBox" controls:TextBoxHelper.Watermark="Username" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
                                 <CheckBox x:Name="RememberUsernameCheckbox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Username" IsChecked="True" Grid.Column="1"/>
                             </Grid>
@@ -80,7 +76,7 @@
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Image Source="C:\Users\Martin\Source\GitHub\LegendaryClient\LegendaryClient\ui\img\icons\ic_vpn_key_36pt.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
+                                <Image Source="/LegendaryClient;component/ui\img\icons\ic_vpn_key_36pt.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
                                 <PasswordBox x:Name="LoginPasswordBox" controls:TextBoxHelper.Watermark="Password" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
                                 <CheckBox x:Name="RememberPasswordCheckbox"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Password" Grid.Column="1"/>
                             </Grid>

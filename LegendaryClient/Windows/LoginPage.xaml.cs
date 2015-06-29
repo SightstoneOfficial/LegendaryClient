@@ -682,31 +682,6 @@ namespace LegendaryClient.Windows
         private Vector moveOffset;
         private Point _currentLocation;
 
-        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (Mouse.LeftButton != MouseButtonState.Pressed)
-                return;
-
-            _currentLocation = Mouse.GetPosition(MouseGrid);
-            moveOffset = new Vector(Tt.X, Tt.Y);
-            HideGrid.CaptureMouse();
-        }
-
-        private void Grid_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (!HideGrid.IsMouseCaptured)
-                return;
-
-            Vector offset = Point.Subtract(e.GetPosition(MouseGrid), _currentLocation);
-            Tt.X = moveOffset.X + offset.X;
-            Tt.Y = moveOffset.Y + offset.Y;
-        }
-
-        private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            HideGrid.ReleaseMouseCapture();
-        }
-
         private async Task garenaLogin()
         {
             WindowsIdentity winIdentity = WindowsIdentity.GetCurrent();

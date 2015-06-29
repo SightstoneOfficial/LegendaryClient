@@ -64,7 +64,7 @@
 
         <TextBox Visibility="Hidden" x:Name="PatchTextBox" Padding="8" Margin="0,65,0,235" Background="{StaticResource AccentColorBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="NoWrap" BorderBrush="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}"/>
 
-        <Label Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Sightstone Updater" FontSize="22" Foreground="{StaticResource PrimaryHueDarkBrush}"/>
+        <Label Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Sightstone Updater" FontSize="22" Foreground="{StaticResource MaterialDesignBody}"/>
        
         <TextBox x:Name="DevKey" Margin="10,0,10,136" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" controls:TextBoxHelper.Watermark="Type Your Dev Key Here" TextWrapping="NoWrap" Background="#FF2E2E2E" Visibility="Hidden">
             <TextBox.BorderBrush>
@@ -81,9 +81,9 @@
         <TextBlock x:Name="Welcome" Width="1004" Height="22" Margin="10,0,0,136" HorizontalAlignment="Left"
                    VerticalAlignment="Bottom" TextWrapping="Wrap" Text="" FontSize="14" Visibility="Hidden"
                    Background="#FF2E2E2E" />
-        <Button x:Name="FindClientButton" Width="150" Height="30" Margin="0,10,165,0"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Content="Find LoL Client" Click="FindClient_Click"
-                Visibility="Hidden" />
+        <Button x:Name="FindClientButton" Height="30" Margin="10"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Content="Find LoL Client" Click="FindClient_Click"
+                Visibility="Hidden" Style="{StaticResource MaterialDesignRaisedAccentButton}" />
         <ComboBox x:Name="UpdateRegionComboBox" Width="120" Margin="10,10,140,10"
                 HorizontalAlignment="Right" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}" SelectionChanged="UpdateRegionComboBox_SelectionChanged" />
         <controls:ProgressRing x:Name="ExtractingProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center"

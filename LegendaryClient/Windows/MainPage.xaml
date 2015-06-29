@@ -36,7 +36,7 @@
                                 </Grid>
                             </wpf:Card>
                         </Grid>
-                        <Label x:Name="SummonerNameLabel" Margin="145,36,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Summoner Name" FontSize="30" Foreground="{StaticResource PrimaryHueLightBrush}" />
+                        <Label x:Name="SummonerNameLabel" Margin="150,36,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Summoner Name" FontSize="30" Foreground="{StaticResource PrimaryHueLightBrush}" />
 
                         <Label x:Name="XPBoost" Content="Xp Boost 99 Day. 99 Win" HorizontalAlignment="Left" Height="31" Margin="755,38,0,0" VerticalAlignment="Top" Width="260"/>
                         <Label x:Name="IPBoost" Content="Ip Boost 99 Day. 99 Win" HorizontalAlignment="Left" Height="31" Margin="1020,38,0,0" VerticalAlignment="Top" Width="260"/>
@@ -53,7 +53,7 @@
                                             <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{StaticResource MaterialDesignFlatButton}">News</Button>
                                             <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
                                         </Grid>
-                                
+
                                         <!-- CARD1 -->
                                         <Grid Margin="0,40,0,0">
                                             <ListView x:Name="NewsItemListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="NewsItemListView_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black">
@@ -81,40 +81,62 @@
                                         </Grid>
 
                                         <!-- Content -->
-                                        <Grid x:Name="SpectatorRegionGrid" Margin="8,40,8,8">
-                                            <Grid Margin="8,8,8,8" VerticalAlignment="Top">
-                                                <Label x:Name="MMRLabel" Margin="0,8,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="MMR" FontSize="26" Foreground="{StaticResource MaterialDesignBody}"/>
-                                                <Label x:Name="MapLabel" Margin="0,48,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Summoners Rift" FontSize="16" Foreground="{StaticResource MaterialDesignBody}"/>
-                                                <Label x:Name="GameTimeLabel" Margin="0,78,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Time Running" FontSize="16" Foreground="{StaticResource MaterialDesignBody}"/>
-                                            </Grid>
-                                            <Grid Margin="8,158,8,8" VerticalAlignment="Top">
-                                                    <ListView x:Name="BlueListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}"  Style="{x:Null}">
-                                                        <ListView.ItemsPanel>
-                                                            <ItemsPanelTemplate>
-                                                                <WrapPanel />
-                                                            </ItemsPanelTemplate>
-                                                        </ListView.ItemsPanel>
-                                                        <ListView.ItemContainerStyle>
-                                                            <Style TargetType="ListViewItem">
-                                                                <Setter Property="Margin" Value="5" />
-                                                            </Style>
-                                                        </ListView.ItemContainerStyle>
-                                                    </ListView>
-                                                    <Label Margin="88" HorizontalAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="20" VerticalAlignment="Center">VS</Label>
-                                                    <ListView x:Name="PurpleListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}">
-                                                        <ListView.ItemsPanel>
-                                                            <ItemsPanelTemplate>
-                                                                <WrapPanel />
-                                                            </ItemsPanelTemplate>
-                                                        </ListView.ItemsPanel>
-                                                        <ListView.ItemContainerStyle>
-                                                            <Style TargetType="ListViewItem">
-                                                                <Setter Property="Margin" Value="5" />
-                                                            </Style>
-                                                        </ListView.ItemContainerStyle>
-                                                    </ListView>
 
-                                                </Grid>
+                                        <Grid Background="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Height="40" Margin="0,41,0,0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Label x:Name="MMRLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="MMR" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Grid.Column="0"/>
+                                            <Label x:Name="MapLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Summoners Rift" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Grid.Column="1"/>
+                                            <Label x:Name="GameTimeLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Time Running" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Grid.Column="2"/>
+                                        </Grid>
+
+                                        <Grid x:Name="SpectatorRegionGrid" Margin="0,81,0,40">
+
+
+                                            <Grid VerticalAlignment="Stretch">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="10"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="70"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="40"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="70"/>
+                                                    <RowDefinition Height="*"/>
+                                                    <RowDefinition Height="10"/>
+                                                </Grid.RowDefinitions>
+                                                <Rectangle Height="4" Fill="#FF1E88E5" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="0"/>
+                                                <ListView x:Name="BlueListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}"  Style="{x:Null}" Grid.Row="2">
+                                                    <ListView.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel />
+                                                        </ItemsPanelTemplate>
+                                                    </ListView.ItemsPanel>
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="Margin" Value="5" />
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                </ListView>
+                                                <Label Background="{StaticResource MaterialDesignPaper}" Panel.ZIndex="2" Width="70" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="20" VerticalAlignment="Center" Grid.Row="4">VS</Label>
+                                                <Rectangle Height="2" Margin="25,0" Fill="{StaticResource PrimaryHueMidBrush}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Row="4"/>
+                                                <ListView x:Name="PurpleListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}" Grid.Row="6">
+                                                    <ListView.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <WrapPanel />
+                                                        </ItemsPanelTemplate>
+                                                    </ListView.ItemsPanel>
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="Margin" Value="5" />
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                </ListView>
+                                                <Rectangle Height="4" Fill="#FF5E35B1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="8"/>
+                                            </Grid>
                                         </Grid>
 
                                         <!-- Control Panel -->
@@ -160,21 +182,21 @@
                                 </wpf:Card>
                             </Grid>
                         </Grid>
-                    </ScrollViewer> 
+                    </ScrollViewer>
                 </Grid>
             </TabItem>
 
             <TabItem Header="Stuff">
                 <Grid>
-                    
+
                     <wpf:Card  HorizontalAlignment="Left">
-                        
+
                     </wpf:Card>
 
                     <Grid Width="358" >
 
                         <Grid x:Name="ImageGrid" Margin="0,0,0,10" Background="Black" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                        
+
                         <Label x:Name="BlueBansLabel" Margin="315,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                            Content="Blue Bans" FontWeight="Bold" Foreground="White" />
                         <ListView x:Name="BlueBanListView" Width="65" Height="195"
@@ -186,11 +208,11 @@
                                     <WrapPanel />
                                 </ItemsPanelTemplate>
                             </ListView.ItemsPanel>
-                        </ListView>                        
-                        
-                        
-                        
-                        
+                        </ListView>
+
+
+
+
                         <Label x:Name="PurpleBansLabel" Margin="0,4,309,0" HorizontalAlignment="Right"
                            VerticalAlignment="Top" Content="Purple Bans" FontWeight="Bold" Foreground="White" />
                         <ListView x:Name="PurpleBanListView" Width="65" Height="200"
