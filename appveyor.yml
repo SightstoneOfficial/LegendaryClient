@@ -1,39 +1,57 @@
-# version format
-version: 3.0.1.{build}
+#master
+-
+  branches:
+    only:
+      - master
+  version: 3.0.1.{build}
+  configuration: Release
+  skip_commits:
+    message: /Update.*\.(md|txt|mp3|png|jpg|jpeg|bmp|gif)/
+  before_build:
+  - nuget restore
+  after_build:
+  - 7z a LegendaryClient.zip LegendaryClient\bin\Release
+  - move LegendaryClient\bin\Release\Client\LegendaryClient.exe LegendaryClient.exe
+  build:
+    project: LegendaryClient.sln
+    # shut up
+    verbosity: minimal
+  artifacts:
+    - path: LegendaryClient.zip
+      name: LegendaryClient-Full
+    - path: LegendaryClient.exe
+      name: LegendaryClient-Executable
+  notifications:
+    - provider: Webhook
+      url: https://webhooks.gitter.im/e/7794e768f0946077fb12
 
-# branches to build
-branches:
-  # only build master
-  only:
-    - master
+#material-design
+-
+  branches:
+    only:
+      - material-design
+  version: beta-4.0.{build}
+  configuration: Release
+  skip_commits:
+    message: /Update.*\.(md|txt|mp3|png|jpg|jpeg|bmp|gif)/
+  before_build:
+  - nuget restore
+  after_build:
+  - 7z a LegendaryClient.zip LegendaryClient\bin\Release
+  - move LegendaryClient\bin\Release\Client\LegendaryClient.exe LegendaryClient.exe
+  build:
+    project: LegendaryClient.sln
+    # shut up
+    verbosity: minimal
+  artifacts:
+    - path: LegendaryClient.zip
+      name: LegendaryClient-Full
+    - path: LegendaryClient.exe
+      name: LegendaryClient-Executable
+  notifications:
+    - provider: Webhook
+      url: https://webhooks.gitter.im/e/7794e768f0946077fb12
 
-# build Release	
-configuration: Release
-
-skip_commits:
-  message: /Update.*\.(md|txt|mp3|png|jpg|jpeg|bmp|gif)/
-
-# restore NuGet packages before building
-before_build:
-- nuget restore
-
-# sigh *zip*
-after_build:
-- 7z a LegendaryClient.zip LegendaryClient\bin\Release
-- move LegendaryClient\bin\Release\Client\LegendaryClient.exe LegendaryClient.exe
-
-# define solution file
-build:
-  project: LegendaryClient.sln
-  # shut up
-  verbosity: minimal
-
-artifacts:
-  - path: LegendaryClient.zip
-    name: LegendaryClient-Full
-  - path: LegendaryClient.exe
-    name: LegendaryClient-Executable
-
-notifications:
-  - provider: Webhook
-    url: https://webhooks.gitter.im/e/7794e768f0946077fb12
+#fallback
+-
+  configuration: Debug
