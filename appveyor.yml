@@ -6,6 +6,7 @@ branches:
   # only build master
   only:
     - master
+    - material-design
 
 # build Release	
 configuration: Release
