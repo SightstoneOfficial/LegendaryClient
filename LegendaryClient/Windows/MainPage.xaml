@@ -23,15 +23,11 @@
     <Grid>
 
         <dragablz:TabablzControl BorderThickness="0" Background="{DynamicResource MaterialDesignPaper}">
-            <dragablz:TabablzControl.InterTabController>
-                <dragablz:InterTabController />
-            </dragablz:TabablzControl.InterTabController>
-
             <TabItem Header="Home">
                 <Grid>
                     <Grid Height="90" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{StaticResource AccentColorBrush2}">
                         <Grid Height="110" Width="110" Margin="30,30,0,-50" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="9001">
-                            <wpf:Card>
+                            <wpf:Card UniformCornerRadius="3">
                                 <Grid>
                                     <Image x:Name="ProfileImage" Margin="0" Source="/LegendaryClient;component/NONE.png" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
                                     <local:HoverOverLabel x:Name="HoverLabel" MouseDown="HoverLabel_MouseDown" MouseEnter="HoverLabel_MouseEnter" MouseLeave="HoverLabel_MouseLeave" Opacity="0" FontSize="12" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
@@ -48,7 +44,7 @@
                         <Grid>
                             <!-- Card 1 -->
                             <Grid Width="550" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="30,30,30,30">
-                                <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch" UniformCornerRadius="3">
                                     <Grid>
                                         <!-- Top Header / Button / Whatever you want -->
                                         <Grid VerticalAlignment="Top" Height="41">
@@ -72,7 +68,7 @@
                             </Grid>
                             <!-- Card 2 -->
                             <Grid Width="410" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="610,30,30,30">
-                                <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch" UniformCornerRadius="3">
                                     <Grid>
                                         <!-- Top Header / Button / Whatever you want -->
                                         <Grid VerticalAlignment="Top" Height="41">
@@ -110,7 +106,6 @@
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="10"/>
                                                 </Grid.RowDefinitions>
-                                                <Rectangle Height="4" Fill="#FF1E88E5" HorizontalAlignment="Stretch" VerticalAlignment="Top" Grid.Row="0"/>
                                                 <ListView x:Name="BlueListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}"  Style="{x:Null}" Grid.Row="2">
                                                     <ListView.ItemsPanel>
                                                         <ItemsPanelTemplate>
@@ -137,7 +132,6 @@
                                                         </Style>
                                                     </ListView.ItemContainerStyle>
                                                 </ListView>
-                                                <Rectangle Height="4" Fill="#FF5E35B1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Grid.Row="8"/>
                                             </Grid>
                                         </Grid>
 
@@ -160,7 +154,7 @@
                             </Grid>
                             <!-- Card 3 -->
                             <Grid Width="330" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="1050,30,30,30">
-                                <wpf:Card>
+                                <wpf:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch" UniformCornerRadius="3">
                                     <Grid>
                                         <!-- Top Header / Button / Whatever you want -->
                                         <Grid VerticalAlignment="Top" Height="41">

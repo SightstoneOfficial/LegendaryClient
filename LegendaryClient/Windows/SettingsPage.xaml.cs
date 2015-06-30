@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using CheckBox = System.Windows.Controls.CheckBox;
+using ToggleButton = System.Windows.Controls.Primitives.ToggleButton;
 
 namespace LegendaryClient.Windows
 {
@@ -111,31 +112,31 @@ namespace LegendaryClient.Windows
                 user = "you the user";
             }
             AboutTextBox.Text =
-                @"Copyright (c) 2013-2014, Eddy5641 (Eddy V)
+                @"Copyright (c) 2013-2014, Eddy5641 (Eddy V) and the Github Team
 All rights reserved.
 
-
-
-Thanks to " + user + @". Using this client means the most to me. Thank you very much!
+Thanks to " + user + @". Using this client means the most to us. Thank you very much!
 
 Big thanks to Snowl. Created the foundation of this custom client.
 Thanks to all the people at #riotcontrol, especially raler (for providing PVPNetConnect).
 Thanks to all the people who done the RTMPS work. Your help has been invaluable.
 
-Thanks Riot for providing a pretty awesome game. It might not be perfect, but I have wasted many hours on it.
+Thanks Riot for providing a pretty awesome game.
 
-Thanks to all the people who have supported me.
+Thanks to all the people who have supported us.
 
 Uses Data Dragon QA Interface & l3cdn.
 
 This product is not endorsed, certified or otherwise approved in any way by Riot Games, Inc. or any of its affiliates.
 
 External libraries:
+MaterialDesignXamlResources
+MaterialDesignColors
+Dragablz
 Awesomium
-jabber-net
+AGSXMPP
 MahApps.Metro
 Rtmp-sharp
-PVPNetConnect
 SharpZipLib
 sqlite
 zlib
@@ -143,11 +144,10 @@ zlib
 Donations are accepted at:
 Press the donate button
 
-Donations will be used in ways that support LegendaryClient. Examples are:
-Domain name (LegendaryClient.ca|LegendaryClient.gg)
-A code signing license (So you know that you are using LegendaryClient)
-
-";
+Donations will be used in ways that support LegendaryClient. 
+Examples are:
+* A domain
+* A code signing license (So you know that you are using LegendaryClient)";
 
             #endregion AboutTextbox
 
@@ -232,9 +232,9 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void warnExitCheckbox_Checked(object sender, RoutedEventArgs e)
         {
-            var cb = (CheckBox)sender;
-            if (cb.IsChecked != null)
-                Settings.Default.warnClose = (bool)cb.IsChecked;
+            var tb = (ToggleButton)sender;
+            if (tb.IsChecked != null)
+                Settings.Default.warnClose = (bool)tb.IsChecked;
 
             Settings.Default.Save();
         }
@@ -477,7 +477,7 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void AutoRecordCheckbox_Changed(object sender, RoutedEventArgs e)
         {
-            var cb = (CheckBox)sender;
+            var cb = (ToggleButton)sender;
             if (cb.IsChecked != null)
                 Settings.Default.AutoRecordGames = (bool)cb.IsChecked;
 
@@ -496,7 +496,7 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void PickBanCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            var cb = (CheckBox)sender;
+            var cb = (ToggleButton)sender;
             if (cb.IsChecked != null)
                 Settings.Default.PickBanFocus = (bool)cb.IsChecked;
 
@@ -505,7 +505,7 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void PickBanCheckBoxFlash_Checked(object sender, RoutedEventArgs e)
         {
-            var cb = (CheckBox)sender;
+            var cb = (ToggleButton)sender;
             if (cb.IsChecked != null)
                 Settings.Default.PickBanFlash = (bool)cb.IsChecked;
 
@@ -514,9 +514,9 @@ A code signing license (So you know that you are using LegendaryClient)
 
         private void ServerReplayCheckbox_Checked(object sender, RoutedEventArgs e)
         {
-            if ((sender as CheckBox).IsChecked != null)
+            if ((sender as ToggleButton).IsChecked != null)
             {
-                Settings.Default.ReplayServer = (bool)(sender as CheckBox).IsChecked;
+                Settings.Default.ReplayServer = (bool)(sender as ToggleButton).IsChecked;
                 Settings.Default.Save();
             }
         }

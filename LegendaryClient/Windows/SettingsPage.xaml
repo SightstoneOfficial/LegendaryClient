@@ -5,52 +5,72 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     Title="SettingsPage"
-    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-    Background="{DynamicResource MaterialDesignPaper}"
     mc:Ignorable="d" d:DesignHeight="672"
-    d:DesignWidth="1024">
+    d:DesignWidth="1024"
+    TextElement.Foreground="{StaticResource MaterialDesignBody}">
 
     <Grid>
-        <TabControl Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <TabItem Header="LegendaryClient">
+        <dragablz:TabablzControl Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <TabItem Header="Client">
                 <Grid>
-                    <CheckBox x:Name="WarnExitCheckbox" Margin="10,10,0,0"
-                              HorizontalAlignment="Left" VerticalAlignment="Top"
-                              Checked="warnExitCheckbox_Checked" Unchecked="warnExitCheckbox_Checked">
-                        <TextBlock Text="Show exit confirmation" Margin="-2,-2,0,0" />
-                    </CheckBox>
-                    <CheckBox x:Name="StatsCheckbox" Margin="10,31,0,0"
-                              HorizontalAlignment="Left" VerticalAlignment="Top"
-                              Checked="StatsCheckbox_Checked" IsEnabled="False">
-                        <TextBlock Text="Gather Statistics to enhance LegendaryClient" Margin="-2,-2,0,0" />
-                    </CheckBox>
-                    <CheckBox x:Name="ErrorCheckbox"
-                              Margin="10,53,0,0"
-                              HorizontalAlignment="Left" VerticalAlignment="Top"
-                              Checked="ErrorCheckbox_Checked" IsEnabled="False">
-                        <TextBlock Text="Send Errors to LegendaryClient's developers to help fix bugs" Margin="-2,-2,0,0" />
-                    </CheckBox>
-                    <TextBox x:Name="AboutTextBox" Height="200"
-                             HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-                             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                             ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" Background="{x:Null}"
-                             BorderBrush="{x:Null}" />
-                    <Button Width="994" Margin="10,0,10,205"
-                            HorizontalAlignment="Stretch" VerticalAlignment="Bottom"
-                            Content="Donate to help LegendaryClient's work" Click="Button_Click_1" />
-                    <CheckBox x:Name="PickBanCheckBox" Margin="10,75,0,0"
-                    	HorizontalAlignment="Left" VerticalAlignment="Top" IsEnabled="False">
-                        <TextBlock Text="Move window to front when picking/baning" Margin="-2, -2, 0, 0"/>
-                    </CheckBox>
-                    <CheckBox x:Name="PickBanCheckBoxFlash" Margin="10,97,0,0"
-                    	HorizontalAlignment="Left" VerticalAlignment="Top" Checked="PickBanCheckBoxFlash_Checked" Unchecked="PickBanCheckBoxFlash_Checked">
-                        <TextBlock Text="Flash window when picking/baning" Margin="-2, -2, 0, 0"/>
-                    </CheckBox>
-                    <CheckBox x:Name="ServerReplayCheckbox" Margin="10,119,0,0"
-                    	HorizontalAlignment="Left" VerticalAlignment="Top" Checked="ServerReplayCheckbox_Checked" Unchecked="ServerReplayCheckbox_Checked">
-                        <TextBlock Text="Allow all of my games to be recorded by eddy's replay server" Margin="-2,-2,0,0" />
-                    </CheckBox>
+
+                    <wpf:Card Width="450" Margin="15" UniformCornerRadius="3">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="360"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid Height="41" VerticalAlignment="Top" Margin="0,0,0.2,0">
+                                <Button Style="{StaticResource MaterialDesignFlatButton}" Height="40" VerticalAlignment="Top" HorizontalAlignment="Stretch">Client Settings</Button>
+                                <Border BorderBrush="{StaticResource PrimaryHueLightBrush}" BorderThickness="0,0,0,1"/>
+                            </Grid>
+                            <Grid Margin="8,42,8,8" Grid.RowSpan="1">
+                                <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Padding="0,8">
+                                    <Grid>
+                                        <ToggleButton Width="50" x:Name="WarnExitCheckbox" HorizontalAlignment="Right" VerticalAlignment="Center" Checked="warnExitCheckbox_Checked" Unchecked="warnExitCheckbox_Checked"/>
+                                        <Label Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Left" VerticalAlignment="Center">Show exit confirmation</Label>
+                                    </Grid>
+                                </Border>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Margin="0,43,0,0" Padding="0,8">
+                                    <Grid>
+                                        <ToggleButton Width="50" x:Name="StatsCheckbox" HorizontalAlignment="Right" VerticalAlignment="Center" Checked="StatsCheckbox_Checked" IsEnabled="False"/>
+                                        <Label Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Left" VerticalAlignment="Center">Gather Statistics to enhance LegendaryClient</Label>
+                                    </Grid>
+                                </Border>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Margin="0,86,0,0" Padding="0,8">
+                                    <Grid>
+                                        <ToggleButton Width="50" x:Name="ErrorCheckbox" HorizontalAlignment="Right" VerticalAlignment="Center" Checked="ErrorCheckbox_Checked" IsEnabled="False"/>
+                                        <Label Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Left" VerticalAlignment="Center">Send Errors to LegendaryClient's Developers</Label>
+                                    </Grid>
+                                </Border>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Margin="0,129,0,0" Padding="0,8">
+                                    <Grid>
+                                        <ToggleButton Width="50" x:Name="PickBanCheckBoxFlash" HorizontalAlignment="Right" VerticalAlignment="Center" Checked="PickBanCheckBoxFlash_Checked" Unchecked="PickBanCheckBoxFlash_Checked"/>
+                                        <Label Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Left" VerticalAlignment="Center">Flash window when picking/baning</Label>
+                                    </Grid>
+                                </Border>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Margin="0,172,0,0" Padding="0,8">
+                                    <Grid>
+                                        <ToggleButton Width="50" x:Name="PickBanCheckBox" HorizontalAlignment="Right" VerticalAlignment="Center" IsEnabled="False"/>
+                                        <Label Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Left" VerticalAlignment="Center">Move window to front when picking/baning</Label>
+
+                                    </Grid>
+                                </Border>
+                                <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Margin="0,215,0,0" Padding="0,8">
+                                    <Grid>
+                                        <ToggleButton Width="50" x:Name="ServerReplayCheckbox" HorizontalAlignment="Right" VerticalAlignment="Center" Checked="ServerReplayCheckbox_Checked" Unchecked="ServerReplayCheckbox_Checked"/>
+                                        <Label Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Left" VerticalAlignment="Center">Allow games to be recorded by eddy's replay server</Label>
+                                    </Grid>
+                                </Border>
+                                <Button Margin="8,272,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Donate to help LegendaryClient's work" Click="Button_Click_1" />
+                            </Grid>
+                            <TextBox Foreground="{StaticResource MaterialDesignBody}" x:Name="AboutTextBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="8" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" Background="{x:Null}" BorderBrush="{x:Null}" Grid.Row="1"/>
+
+                        </Grid>
+                    </wpf:Card>
                 </Grid>
             </TabItem>
             <TabItem Header="Video">
@@ -149,7 +169,7 @@
                              VerticalAlignment="Top"
                              TextWrapping="Wrap"
                              controls:TextBoxHelper.Watermark="Enter your LeagueCraft HUD URL here (http://leaguecraft.com/uimods/2433-cloud-9-themed-ui.xhtml) and click install HUD" />
-                    <Button Grid.Column="1" Width="75" Margin="0,58,10,0" HorizontalAlignment="Right"
+                    <Button Grid.Column="1" Margin="0,58,10,0" HorizontalAlignment="Right"
                             VerticalAlignment="Top" Content="Install HUD" Click="Button_Click" />
                     <Label x:Name="ResultTextbox"
                            Grid.ColumnSpan="2"
@@ -162,11 +182,11 @@
                         Margin="116,4,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
                         Content="Ever wanted a hud of LeagueCraft except you didn't know how to do it. Well now just copy the hud. Please note that not all huds work."
                         FontSize="9" />
-                    <Button Grid.Column="1" Width="200" Margin="0,58,90,0"
+                    <Button Grid.Column="1" Margin="0,58,120,0"
                             HorizontalAlignment="Right" VerticalAlignment="Top" Content="Uninstall All Huds"
                             Click="Button2_Click" />
                 </Grid>
             </TabItem>
-        </TabControl>
+        </dragablz:TabablzControl>
     </Grid>
 </Page>

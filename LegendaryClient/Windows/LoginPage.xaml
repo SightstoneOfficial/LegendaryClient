@@ -20,15 +20,7 @@
 
         </MediaElement>
 
-
-        <!-- Floating Button -->
-        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsDefault="False">
-            <Viewbox Width="24" Height="24">
-                <Label FontSize="50">+</Label>
-            </Viewbox>
-        </Button>
-
-        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="90,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="ShowLogin_Click" IsDefault="False">
+        <Button Visibility="Hidden" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="30,30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Click="ShowLogin_Click" IsDefault="False">
             <Viewbox Width="30" Height="30">
                 <Image Source="/LegendaryClient;component/ui\img\icons\ic_account_circle_black_36dp.png" Grid.Column="0" VerticalAlignment="Top"></Image>
             </Viewbox>
@@ -38,7 +30,7 @@
         <!-- Card Template Start -->
         <Grid x:Name="LoginGrid" Panel.ZIndex="1000">
             <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30">
-                <wpf:Card>
+                <wpf:Card UniformCornerRadius="3">
                     <Grid>
                         <!-- Top Header / Button / Whatever you want -->
                         <Grid VerticalAlignment="Top" Height="41">

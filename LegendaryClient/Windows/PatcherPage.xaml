@@ -30,14 +30,14 @@
         </Button>
 
         <Grid Height="Auto" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="30" Width="458" Panel.ZIndex="100">
-            <wpf:Card>
+            <wpf:Card UniformCornerRadius="3">
                 <Grid>
                     <!-- Top Header / Button / Whatever you want -->
                     <Grid VerticalAlignment="Top">
                         <Button Height="40" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignFlatButton}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="0">
                             <Grid>
                                 <Label x:Name="CurrentStatusLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Checking for updates..." Foreground="{StaticResource PrimaryHueMidBrush}"/>
-                                <ProgressBar x:Name="CurrentProgressBar" Height="40" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{x:Null}" Background="{x:Null}" BorderThickness="0" Foreground="{StaticResource PrimaryHueLightBrush}"/>
+                                <ProgressBar x:Name="CurrentProgressBar" Height="40" Margin="0,0,0.4,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{x:Null}" Background="{x:Null}" BorderThickness="0" Foreground="{StaticResource PrimaryHueLightBrush}"/>
                             </Grid>
                         </Button>
                     </Grid>
@@ -64,7 +64,7 @@
 
         <TextBox Visibility="Hidden" x:Name="PatchTextBox" Padding="8" Margin="0,65,0,235" Background="{StaticResource AccentColorBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" TextWrapping="NoWrap" BorderBrush="{x:Null}" Foreground="{StaticResource IdealForegroundColorBrush}"/>
 
-        <Label Margin="10" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Sightstone Updater" FontSize="22" Foreground="{StaticResource MaterialDesignBody}"/>
+        <Label Margin="10" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Sightstone Updater" Foreground="{StaticResource MaterialDesignBody}"/>
        
         <TextBox x:Name="DevKey" Margin="10,0,10,136" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" controls:TextBoxHelper.Watermark="Type Your Dev Key Here" TextWrapping="NoWrap" Background="#FF2E2E2E" Visibility="Hidden">
             <TextBox.BorderBrush>
