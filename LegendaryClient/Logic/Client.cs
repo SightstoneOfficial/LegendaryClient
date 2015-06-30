@@ -842,7 +842,7 @@ namespace LegendaryClient.Logic
         internal static ListView InviteListView;
         internal static Image MainPageProfileImage;
 
-        internal static Label UserTitleBarLabel;
+        internal static ComboBoxItem UserTitleBarLabel;
         internal static Image UserTitleBarImage;
 
         #region WPF Tab Change

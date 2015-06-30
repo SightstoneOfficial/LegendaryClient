@@ -60,7 +60,10 @@
 
     <Grid x:Name="MainGrid">
         <Image x:Name="UserTitleBarImage" Source="/LegendaryClient;component/NONE.png" Width="31" Margin="0,-31,0,0" HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" />
-        <Label x:Name="UserTitleBarLabel" Content="Username" FontWeight="Light" Margin="33,-30,0,0" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" FontSize="15" Foreground="WhiteSmoke" />
+        <ComboBox Foreground="{StaticResource PrimaryHueLightBrush}" FontSize="15" SelectedIndex="0" Margin="38,-28,0,0" Width="Auto" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <ComboBoxItem IsEnabled="True" x:Name="UserTitleBarLabel" Content="Username"></ComboBoxItem>
+            <ComboBoxItem IsEnabled="True" Content="Username 2"></ComboBoxItem>
+        </ComboBox>
 
         <ContentControl x:Name="FullNotificationOverlayContainer" HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch" Panel.ZIndex="999" >
