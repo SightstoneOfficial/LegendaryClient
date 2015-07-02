@@ -23,7 +23,7 @@
         <Image Source="/LegendaryClient;component/ui\img\icons\sightstone_main_w.png" Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0.7"/>
 
         <!-- Floating Button -->
-        <Button x:Name="ShowLogButton" Click="ShowLog_Click" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" IsDefault="False">
+        <Button x:Name="ShowLogButton" Click="ShowLog_Click" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Viewbox Width="24" Height="24">
                 <Label FontSize="50">Log</Label>
             </Viewbox>
@@ -88,15 +88,9 @@
                 HorizontalAlignment="Right" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}" SelectionChanged="UpdateRegionComboBox_SelectionChanged" />
         <controls:ProgressRing x:Name="ExtractingProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center"
                                VerticalAlignment="Center" IsActive="True" Visibility="Hidden">
-            <controls:ProgressRing.Effect>
-                <DropShadowEffect />
-            </controls:ProgressRing.Effect>
         </controls:ProgressRing>
         <Label x:Name="ExtractingLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Extracting..."
                FontSize="30" FontWeight="Bold" Foreground="White" Visibility="Hidden">
-            <Label.Effect>
-                <DropShadowEffect />
-            </Label.Effect>
         </Label>
         <CheckBox x:Name="autoPlayCheckBox" HorizontalAlignment="Right" VerticalAlignment="Top" Checked="AutoPlay_Changed" Unchecked="AutoPlay_Changed" Margin="10,15,10,10">
             <TextBlock Text="Skip Patcher Page" Margin="0,0,0,0"/>
