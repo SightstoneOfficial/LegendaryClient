@@ -4,23 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             Height="50" Width="250">
+             Height="60" Width="250"
+             Foreground="{StaticResource MaterialDesignBody}">
     <Grid>
         <Rectangle Fill="#02000000" />
         <!-- Allow entire control to be hovered over -->
-        <Image x:Name="ProfileImage" HorizontalAlignment="Left" Height="40" Margin="5,5,0,0" VerticalAlignment="Top"
-               Width="40" Source="/LegendaryClient;component/Icon.ico" />
-        <Label x:Name="LevelLabel" Content="30" HorizontalAlignment="Left" Margin="5,20,0,0" VerticalAlignment="Top"
-               Foreground="White" FontWeight="SemiBold">
-            <Label.Effect>
-                <DropShadowEffect ShadowDepth="2" BlurRadius="1" />
-            </Label.Effect>
-        </Label>
 
-        <Label x:Name="PlayerName" Content="Eddy5641" HorizontalAlignment="Left" Margin="45,0,0,0"
-               VerticalAlignment="Top" FontWeight="Bold" Foreground="White" />
-        <Label x:Name="PlayerStatus" Content="Super Hot Fire" HorizontalAlignment="Left" Margin="45,20,0,0"
-               VerticalAlignment="Top" Foreground="White" />
+        <Button x:Name="ProfileImageContainer" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Width="44" Height="44" Margin="8" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <Viewbox Width="44" Height="44">
+                <Image x:Name="ProfileImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-3" Source="/LegendaryClient;component/Icon.ico"/>
+            </Viewbox>
+        </Button>
+
+        <Grid x:Name="PlayerInfoContainer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="60,12,10,12">
+            
+            <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label x:Name="RegionLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
+                    <Border CornerRadius="3,0,0,3" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0">
+                        <Label x:Name="RegionLabel" Padding="2,1" FontSize="10" Foreground="{StaticResource PrimaryHueLightBrush}" Content="REGION" VerticalContentAlignment="Center"/>
+                    </Border>
+                </Label>
+                <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Margin="0,0,3,0">
+                    <Border CornerRadius="0,3,3,0" Background="Black" BorderThickness="0">
+                        <Label Padding="2,1" FontSize="10" Foreground="LightGray" x:Name="LevelLabel" VerticalContentAlignment="Center" Content="30" VerticalAlignment="Center">
+                        </Label>
+                    </Border>
+                </Label>
+                <Label x:Name="PlayerName" Content="mhn23" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Stretch" Padding="0" Grid.Column="2" />
+            </Grid>
+            
+            
+            <Label x:Name="PlayerStatus" FontStyle="Italic" Content="Super Hot Fire" HorizontalAlignment="Stretch" Padding="0" VerticalAlignment="Bottom"/>
+        </Grid>
+
+        
         <Label x:Name="PlayerId" Content="41284010" HorizontalAlignment="Left" Margin="188,0,0,0"
                VerticalAlignment="Top" Foreground="White" Visibility="Hidden" />
     </Grid>

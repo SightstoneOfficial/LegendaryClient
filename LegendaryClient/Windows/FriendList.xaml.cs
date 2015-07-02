@@ -193,8 +193,15 @@ namespace LegendaryClient.Windows
                             player.Width = 250;
                             player.Height = 30;
                             player.PlayerName.Margin = new Thickness(5, 2.5, 0, 0);
-                            player.LevelLabel.Visibility = Visibility.Hidden;
+                            player.PlayerName.SetValue(Grid.ColumnProperty, 0);
                             player.ProfileImage.Visibility = Visibility.Hidden;
+                            player.ProfileImageContainer.Visibility = Visibility.Hidden;
+                            player.LevelLabel.Visibility = Visibility.Hidden;
+                            player.LevelLabelContainer.Visibility = Visibility.Hidden;
+                            player.RegionLabel.Visibility = Visibility.Hidden;
+                            player.RegionLabelContainer.Visibility = Visibility.Hidden;
+                            player.PlayerInfoContainer.Margin = new Thickness(5, 5, 5, 5);
+                            player.PlayerInfoContainer.HorizontalAlignment = HorizontalAlignment.Left;
                             playersListView.Items.Add(player);
                             players++;
                         }
@@ -302,8 +309,11 @@ namespace LegendaryClient.Windows
                     PlayerItem.Note.Visibility = Visibility.Visible;
                 }
                 PlayerItem.PlayerName.Content = playerItem.Username;
-                PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;
-                PlayerItem.PlayerStatus.Text = playerItem.Status;
+                if (string.IsNullOrEmpty(playerItem.LeagueTier))
+                    PlayerItem.PlayerLeague.Content = "Unranked";
+                else
+                    PlayerItem.PlayerLeague.Content = playerItem.LeagueTier + " " + playerItem.LeagueDivision;
+                PlayerItem.PlayerStatus.Content = playerItem.Status;
                 if (playerItem.RankedWins == 0)
                     PlayerItem.PlayerWins.Content = playerItem.Wins + " Normal Wins";
                 else
@@ -318,6 +328,7 @@ namespace LegendaryClient.Windows
                 string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
                     playerItem.ProfileIcon + ".png");
                 PlayerItem.ProfileImage.Source = Client.GetImage(UriSource);
+                PlayerItem.BlurBackground.Source = Client.GetImage(UriSource);
                 if (playerItem.Status != null)
                 {
                 }
@@ -327,7 +338,7 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    PlayerItem.PlayerStatus.Text = "";
+                    PlayerItem.PlayerStatus.Content = "";
                 }
 
                 if (playerItem.GameStatus != "outOfGame")
@@ -341,9 +352,7 @@ namespace LegendaryClient.Windows
                         case "inGame":
                             champions inGameChamp = champions.GetChampion(playerItem.Champion);
                             if (inGameChamp != null)
-                                PlayerItem.InGameStatus.Text = "In Game" + Environment.NewLine +
-                                                               "Playing as " + inGameChamp.displayName +
-                                                               Environment.NewLine +
+                                PlayerItem.InGameStatus.Text = "In Game as " + inGameChamp.displayName + Environment.NewLine +
                                                                "For " +
                                                                string.Format("{0} Minutes and {1} Seconds",
                                                                    elapsed.Minutes, elapsed.Seconds);
@@ -390,7 +399,7 @@ namespace LegendaryClient.Windows
                     PlayerItem.InGameStatus.Visibility = Visibility.Visible;
                 }
 
-                PlayerItem.Width = 300;
+                PlayerItem.Width = 360;
                 PlayerItem.HorizontalAlignment = HorizontalAlignment.Right;
                 PlayerItem.VerticalAlignment = VerticalAlignment.Top;
             }
@@ -398,7 +407,7 @@ namespace LegendaryClient.Windows
             Point mouseLocation = e.GetPosition(Client.MainGrid);
             double yMargin = mouseLocation.Y;
             if (yMargin + 195 > Client.MainGrid.ActualHeight)
-                yMargin = Client.MainGrid.ActualHeight - 195;
+                yMargin = Client.MainGrid.ActualHeight - 95;
             PlayerItem.Margin = new Thickness(0, yMargin, 250, 0);
         }
 

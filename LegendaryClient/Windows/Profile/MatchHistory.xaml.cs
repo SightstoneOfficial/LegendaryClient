@@ -311,7 +311,7 @@ namespace LegendaryClient.Windows.Profile
                 var parsedDescription = Item.description;
                 parsedDescription = parsedDescription.Replace("<br>", Environment.NewLine);
                 parsedDescription = Regex.Replace(parsedDescription, "<.*?>", string.Empty);
-                this.playerItem.PlayerStatus.Text = parsedDescription;
+                this.playerItem.PlayerStatus.Content = parsedDescription;
 
                 var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"),
                     UriKind.RelativeOrAbsolute);

@@ -298,7 +298,7 @@ namespace LegendaryClient.Windows.Profile
                 this.playerItem.UsingLegendary.Visibility = Visibility.Hidden;
 
                 this.playerItem.PlayerWins.Content = playerItem.description.Replace("<br>", Environment.NewLine);
-                this.playerItem.PlayerStatus.Text = string.Empty;
+                this.playerItem.PlayerStatus.Content = string.Empty;
                 this.playerItem.LevelLabel.Content = string.Empty;
                 this.playerItem.HorizontalAlignment = HorizontalAlignment.Left;
                 this.playerItem.VerticalAlignment = VerticalAlignment.Top;

@@ -339,7 +339,7 @@ namespace LegendaryClient.Windows.Profile
                     selectedRank = 1;
                 }
 
-                _playerItem.PlayerStatus.Text = ((string) playerItem.description[selectedRank - 1]).Replace("<br>",
+                _playerItem.PlayerStatus.Content = ((string) playerItem.description[selectedRank - 1]).Replace("<br>",
                     Environment.NewLine);
 
                 _playerItem.HorizontalAlignment = HorizontalAlignment.Left;

@@ -4,15 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
-             Foreground="{DynamicResource MaterialDesignBody}"
+             Foreground="{StaticResource MaterialDesignBody}"
              mc:Ignorable="d"
              d:DesignHeight="90" d:DesignMinWidth="Auto">
 
     <Grid HorizontalAlignment="Stretch">
-                <Image x:Name="PromoImage" Width="160" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="UniformToFill" />
-        <Label x:Name="NewsTitle" Margin="168,8,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Heading" FontSize="14" />
-                <Label Margin="168,38,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="12" >
-                    <TextBlock x:Name="DescriptionLabel" Text="Caption" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" />
-                </Label>
+        <Image x:Name="PromoImage" Width="160" Margin="0" HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="UniformToFill" />
+        <Label x:Name="NewsTitle" Margin="168,8,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Heading" FontSize="14" Foreground="{StaticResource MaterialDesignBody}" />
+        <Label Margin="168,38,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="12" >
+            <TextBlock x:Name="DescriptionLabel" Text="Caption" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" Foreground="{StaticResource MaterialDesignBody}" />
+        </Label>
     </Grid>
 </UserControl>

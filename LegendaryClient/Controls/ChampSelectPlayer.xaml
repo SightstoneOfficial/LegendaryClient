@@ -10,7 +10,7 @@
              MouseDown="ChampPlayer_MouseOver" MouseLeave="ChampPlayer_MouseLeave">
 
     <Grid>
-        <wpf:Card Width="255" Padding="8" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueMidBrush}" Height="90">
+        <wpf:Card Width="255" Padding="8" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueMidBrush}" Height="90" UniformCornerRadius="3">
             <Grid>
                 <Label x:Name="PlayerName" Content="Name" HorizontalAlignment="Stretch" Margin="82,0,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="ExtraLight" Foreground="{StaticResource PrimaryHueMidForegroundBrush}" />
                 <wpf:Card Width="74" Height="74" HorizontalAlignment="Left">

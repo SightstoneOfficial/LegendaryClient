@@ -414,7 +414,7 @@ namespace LegendaryClient.Windows
                 string parsedDescription = item.description;
                 parsedDescription = parsedDescription.Replace("<br>", Environment.NewLine);
                 parsedDescription = Regex.Replace(parsedDescription, "<.*?>", string.Empty);
-                playerItem.PlayerStatus.Text = parsedDescription;
+                playerItem.PlayerStatus.Content = parsedDescription;
 
                 playerItem.ProfileImage.Source = img;
                 playerItem.HorizontalAlignment = HorizontalAlignment.Left;
