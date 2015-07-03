@@ -15,11 +15,13 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <!-- Profile Image -->
+                
+                <!-- Username -->
                 <Grid Grid.Row="0">
                     <Label x:Name="PlayerName" FontSize="14" Content="mhn23" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Center" Padding="0" Margin="0,9,0,0" Grid.Row="0"/>
                 </Grid>
                 
+                <!-- Profile Image + Region Label + Level Label -->
                 <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -49,8 +51,7 @@
                     </Grid>
                 </Grid>
 
-                
-
+                <!-- Status Label -->
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -58,7 +59,6 @@
                     </Grid.RowDefinitions>
                     <Label x:Name="PlayerStatus" FontSize="12" FontStyle="Italic" Content="Last Status" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0" Margin="0,0,0,5" Grid.Row="1"/>
                 </Grid>
-                
             </Grid>
         </wpf:Card>
     </Grid>

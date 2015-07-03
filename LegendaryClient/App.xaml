@@ -4,7 +4,7 @@
              Startup="Application_Startup"
              xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
              xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
-
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,11 +17,16 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
 
+                <!-- Roboto Font -->
+                <ResourceDictionary>
+                    <FontFamily x:Key="{x:Static SystemFonts.MenuFontFamilyKey}">pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto</FontFamily>
+                </ResourceDictionary>
+                
                 <!-- Primary Color -->
                 <ResourceDictionary>
                     <!-- Primary Palette -->
                     <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Teal.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Brown.xaml" />
                     </ResourceDictionary.MergedDictionaries>
                     
                     <!-- Material Brushes -->
@@ -49,12 +54,12 @@
                     <SolidColorBrush x:Key="IdealForegroundColorBrush" Color="{StaticResource Primary500Foreground}" options:Freeze="True" />
                     <SolidColorBrush x:Key="IdealForegroundDisabledBrush" Color="{StaticResource Primary500}" Opacity="0.4" options:Freeze="True" />
                 </ResourceDictionary>
-     
+
                 <!-- secondary colour -->
                 <ResourceDictionary>
                     <!-- Secondary Pallette -->
                     <ResourceDictionary.MergedDictionaries>
-                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Teal.xaml" />
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Yellow.xaml" />
                     </ResourceDictionary.MergedDictionaries>
 
                     <!-- Secondary Accent Color (and the associated forecolour) -->
@@ -68,7 +73,7 @@
 
             <!-- tell Dragablz tab control to use the Material Design theme -->
             <Style TargetType="{x:Type dragablz:TabablzControl}" BasedOn="{StaticResource MaterialDesignTabablzControlStyle}" />
-
+            
             <x:Array xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="WindowStates"
                  Type="sys:String">
                 <sys:String>Fullscreen</sys:String>

@@ -32,11 +32,12 @@
         <Controls:WindowCommands>
             <Label x:Name="inQueueTimer" Content="00:00" FontWeight="Light" FontSize="15" Foreground="WhiteSmoke" Visibility="Hidden"/>
             <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click"/>
-            <Label x:Name="InfoLabel" Content="Not Logged In" FontWeight="Light" Margin="0,3,0,0"/>
+            <Label x:Name="InfoLabel" Content="Not logged in" Opacity="0.50" Margin="0,3,0,0"/>
+            
+            <Button x:Name="PlayButton" Content="PLAY" Click="PlayButton_Click" Foreground="White" />
             <Button x:Name="HomeButton" Click="HomeButton_Click">
                 <Image Source="/LegendaryClient;component/ui/img/menubar/home.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
             </Button>
-            <Button x:Name="PlayButton" Content="play" Click="PlayButton_Click" Foreground="Orange" />
             <Button x:Name="ProfileButton" Click="ProfileButton_Click" MouseDoubleClick="ProfileButton_MouseDoubleClick">
                 <Image Source="/LegendaryClient;component/ui/img/menubar/profile.png" Stretch="Uniform" SnapsToDevicePixels="True" Height="14" Width="14"/>
             </Button>
@@ -60,7 +61,7 @@
 
     <Grid x:Name="MainGrid">
         <Image x:Name="UserTitleBarImage" Source="/LegendaryClient;component/NONE.png" Width="31" Margin="0,-31,0,0" HorizontalAlignment="Left" Height="31" VerticalAlignment="Top" />
-        <ComboBox BorderBrush="{x:Null}" BorderThickness="0" Foreground="{StaticResource PrimaryHueLightBrush}" FontSize="15" SelectedIndex="0" Margin="38,-28,0,0" Width="Auto" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" >
+        <ComboBox BorderBrush="{x:Null}" BorderThickness="0" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="15" SelectedIndex="0" Margin="38,-28,0,0" Width="Auto" Height="30" HorizontalAlignment="Left" VerticalAlignment="Top" >
             <ComboBoxItem IsEnabled="True" x:Name="UserTitleBarLabel" Content="Username"></ComboBoxItem>
             <ComboBoxItem IsEnabled="True" Content="Username 2"></ComboBoxItem>
         </ComboBox>
