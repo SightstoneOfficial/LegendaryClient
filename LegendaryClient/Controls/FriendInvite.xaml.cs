@@ -43,11 +43,13 @@ namespace LegendaryClient.Controls
             {
                 Client.Log("FriendRequest stuff coming");
                 Client.Log(message.From.User.Replace("sum", string.Empty));
-                var x = await RiotCalls.GetAllPublicSummonerDataByAccount(message.From.User.Replace("sum", string.Empty).ToInt());
-                Client.Log(x.Summoner.InternalName);
+                var summonerId = message.From.User.Replace("sum", string.Empty).ToInt();
+                var summonerName = await RiotCalls.GetSummonerNames(new double[] {summonerId});
+                var playerInfo = await RiotCalls.GetSummonerByName(summonerName[0]);
+                Client.Log(playerInfo.Name);
 
                 SummonerLeaguesDTO playerLeagues =
-                        await RiotCalls.GetAllLeaguesForPlayer(x.Summoner.AcctId);
+                        await RiotCalls.GetAllLeaguesForPlayer(summonerId);
                 string rank = string.Empty;
                 foreach (LeagueListDTO l in playerLeagues.SummonerLeagues.Where(l => l.Queue == "RANKED_SOLO_5x5"))
                     rank = l.Tier + " " + l.RequestorsRank;
@@ -55,7 +57,7 @@ namespace LegendaryClient.Controls
                     rank = "Unranked";
                 NotificationTextBox.Text = string.Format(@"{0} would like to have you as a friend
 Level: {1}
-Rank: {2}", x.Summoner.InternalName, x.SummonerLevel.Level, rank);
+Rank: {2}", playerInfo.Name, playerInfo.SummonerLevel, rank);
             }
             catch 
             {
