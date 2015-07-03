@@ -599,6 +599,7 @@ namespace LegendaryClient.Windows
                 Client.XmppConnection.OnRosterEnd += Client.ChatClientConnect;
                 Client.PresManager = new PresenceManager(Client.XmppConnection);
                 Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
+                Client.XmppConnection.OnMessage += Client.statusPage.XmppConnection_OnMessage;
                 if (!Client.Garena)
                 {
                     Client.userpass = new KeyValuePair<string, string>(LoginUsernameBox.Text,

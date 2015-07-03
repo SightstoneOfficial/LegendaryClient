@@ -20,7 +20,9 @@
         <RichTextBox x:Name="ChatText" Width="273" Margin="1,41,1,27" HorizontalAlignment="Left"
                      VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{x:Null}" Background="#E5505050"
-                     BorderThickness="0" Padding="0,3,0,3" Panel.ZIndex="1" />
+                     BorderThickness="0" Padding="0,3,0,3" Panel.ZIndex="1" >
+            <FlowDocument LineHeight="2" />
+        </RichTextBox>
 
         <TextBox x:Name="ChatTextBox" Width="197" Height="23" Margin="1,0,0,1" HorizontalAlignment="Left"
                  VerticalAlignment="Bottom" TextWrapping="Wrap" BorderThickness="0" />

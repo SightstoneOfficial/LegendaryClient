@@ -20,7 +20,7 @@
                     <wpf:Card Width="450" Margin="15" UniformCornerRadius="3">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="360"/>
+                                <RowDefinition Height="500"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Grid Height="41" VerticalAlignment="Top" Margin="0,0,0.2,0">
@@ -65,7 +65,13 @@
                                         <Label Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Left" VerticalAlignment="Center">Allow games to be recorded by eddy's replay server</Label>
                                     </Grid>
                                 </Border>
-                                <Button Margin="8,272,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Donate to help LegendaryClient's work" Click="Button_Click_1" />
+                                <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Top" Margin="0,258,0,0" Padding="0,8">
+                                    <Grid>
+                                        <ToggleButton Width="50" x:Name="ChatTimestampCheckbox" HorizontalAlignment="Right" VerticalAlignment="Center" Checked="ChatTimestampCheckbox_Checked" Unchecked="ChatTimestampCheckbox_Checked"/>
+                                        <Label Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Left" VerticalAlignment="Center">Always show timestamp in chat</Label>
+                                    </Grid>
+                                </Border>
+                                <Button Margin="8,315,8,8" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="Donate to help LegendaryClient's work" Click="Button_Click_1" />
                             </Grid>
                             <TextBox Foreground="{StaticResource MaterialDesignBody}" x:Name="AboutTextBox" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="8" ScrollViewer.VerticalScrollBarVisibility="Auto" TextWrapping="Wrap" Background="{x:Null}" BorderBrush="{x:Null}" Grid.Row="1"/>
 

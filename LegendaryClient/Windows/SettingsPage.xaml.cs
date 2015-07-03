@@ -99,6 +99,7 @@ namespace LegendaryClient.Windows
             PickBanCheckBox.IsChecked = Settings.Default.PickBanFocus;
             PickBanCheckBoxFlash.IsChecked = Settings.Default.PickBanFlash;
             MuteAllSoundCheckBox.IsChecked = Settings.Default.DisableClientSound;
+            ChatTimestampCheckbox.IsChecked = Settings.Default.AlwaysChatTimestamp;
 
             #region AboutTextbox
 
@@ -190,7 +191,7 @@ Examples are:
             }
             catch (Exception e)
             {
-                Client.Log("Can't load settings from config file.", "ERROR" + Environment.NewLine + e.Message);
+                Client.Log("Can't load settings from config file." + Environment.NewLine + e.Message, "ERROR");
             }
         }
 
@@ -609,6 +610,15 @@ Examples are:
                 DirectoryCopy(subdir.FullName, temppath);
             }
 
+        }
+
+        private void ChatTimestampCheckbox_Checked(object sender, RoutedEventArgs e)
+        {
+            var cb = (ToggleButton)sender;
+            if (cb.IsChecked != null)
+                Settings.Default.AlwaysChatTimestamp = (bool)cb.IsChecked;
+
+            Settings.Default.Save();
         }
     }
 

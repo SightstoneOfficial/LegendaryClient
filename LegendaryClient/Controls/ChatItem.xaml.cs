@@ -10,6 +10,7 @@ using LegendaryClient.Properties;
 using agsXMPP.protocol.client;
 using agsXMPP;
 using agsXMPP.Collections;
+using System.Text;
 
 namespace LegendaryClient.Controls
 {
@@ -78,28 +79,49 @@ namespace LegendaryClient.Controls
                  where x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content
                  select x.Value).FirstOrDefault();
 
+
             if (tempItem != null)
-                foreach (var x in tempItem.Messages.ToArray())
+                for (int i = 0; i < tempItem.Messages.Count(); i++)
                 {
-                    var message = x.Split('|');
                     var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    if (message[0] == tempItem.Username)
+                    if (i > 0)
                     {
-                        tr.Text = DateTime.Now.ToString("[HH:mm] ") + tempItem.Username + ": ";
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+
+                        if (tempItem.Messages[i].time.ToShortTimeString() != tempItem.Messages[i - 1].time.ToShortTimeString() ||
+                            tempItem.Messages[i].name != (tempItem.Messages[i - 1].name) || 
+                            Settings.Default.AlwaysChatTimestamp)
+                        {
+                            if (tempItem.Messages[i].name == tempItem.Username)
+                            {
+                                tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Username + ": ";
+                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+                            }
+                            else
+                            {
+                                tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Messages[i].name + ": ";
+                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                            }
+                        }
                     }
                     else
                     {
-                        tr.Text = DateTime.Now.ToString("[HH:mm] ") + message[0] + ": ";
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        if (tempItem.Messages[i].name == tempItem.Username)
+                        {
+                            tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Username + ": ";
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+                        }
+                        else
+                        {
+                            tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Messages[i].name + ": ";
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        }
                     }
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                     {
-                        Text = x.Replace(message[0] + "|", string.Empty) + Environment.NewLine
+                        Text = tempItem.Messages[i].message + Environment.NewLine
                     };
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 }
-
             ChatText.ScrollToEnd();
         }
 
@@ -108,32 +130,55 @@ namespace LegendaryClient.Controls
             if (string.IsNullOrWhiteSpace(ChatTextBox.Text))
                 return;
 
-            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
-            {
-                Text = DateTime.Now.ToString("[HH:mm] ") + Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
-            };
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            var tempItem =
+                (from x in Client.AllPlayers
+                 where x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content
+                 select x.Value).FirstOrDefault();
 
-            tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+            if (tempItem.Messages.Count() == 0)
             {
-                Text = ChatTextBox.Text + Environment.NewLine
-            };
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                {
+                    tr.Text = DateTime.Now.ToString("[HH:mm] ") + Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                }
 
-            ChatPlayerItem tempItem = null;
-            var Jid = string.Empty;
-            foreach (
-                var x in
-                    Client.AllPlayers.Where(x => x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content))
-            {
-                tempItem = x.Value;
-                Jid = x.Key + "@pvp.net";
-
-                break;
+                tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = ChatTextBox.Text + Environment.NewLine
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
             }
-            if (tempItem != null)
-                tempItem.Messages.Add(Client.LoginPacket.AllSummonerData.Summoner.Name + "|" + ChatTextBox.Text);
+            else
+            {
+                if (tempItem.Messages.Last().name != Client.LoginPacket.AllSummonerData.Summoner.Name || 
+                    tempItem.Messages.Last().time.ToString("[HH:mm]") != DateTime.Now.ToString("[HH:mm]") || 
+                    Settings.Default.AlwaysChatTimestamp)
+                {
+                    tr.Text = DateTime.Now.ToString("[HH:mm] ") + Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                }
 
+                tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = ChatTextBox.Text + Environment.NewLine
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+            }
+
+
+            var Jid = tempItem.Id + "@pvp.net";
+
+            if (tempItem != null)
+            {
+                var item = new AllMessageInfo()
+                {
+                    message = ChatTextBox.Text,
+                    time = DateTime.Now,
+                    name = Client.LoginPacket.AllSummonerData.Summoner.Name
+                };
+                tempItem.Messages.Add(item);
+            }
             ChatText.ScrollToEnd();
             Client.XmppConnection.Send(new Message(new Jid(Jid), MessageType.chat, ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;

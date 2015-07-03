@@ -356,13 +356,31 @@ namespace LegendaryClient.Logic
 
             var chatItem = AllPlayers[msg.From.User];
             if (Filter)
-                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body.Filter());
+            {
+                var item = new AllMessageInfo()
+                {
+                    message = msg.Body.Filter(),
+                    time = DateTime.Now,
+                    name = chatItem.Username
+                };
+                chatItem.Messages.Add(item);
+            }
             else
-                chatItem.Messages.Add(chatItem.Username + "|" + msg.Body);
+            {
+                var item = new AllMessageInfo()
+                {
+                    message = msg.Body,
+                    time = DateTime.Now,
+                    name = chatItem.Username
+                };
+                chatItem.Messages.Add(item);
+            }
+
             MainWin.FlashWindow();
             try
             {
-                onChatMessageReceived(msg.From.User, msg.Body);
+                if (onChatMessageReceived != null)
+                    onChatMessageReceived(msg.From.User, msg.Body);
             }
             catch { }
         }
@@ -1652,7 +1670,7 @@ namespace LegendaryClient.Logic
 
     public class ChatPlayerItem
     {
-        public List<string> Messages = new List<string>();
+        public List<AllMessageInfo> Messages = new List<AllMessageInfo>();
 
         public string Group { get; set; }
 
@@ -1693,6 +1711,15 @@ namespace LegendaryClient.Logic
         public string RawPresence { get; set; }
 
         public bool IsLegendaryDev { get; set; }
+    }
+
+    public class AllMessageInfo
+    {
+        public DateTime time { get; set; }
+
+        public string name { get; set; }
+
+        public string message { get; set; }
     }
 
     public class Group
