@@ -13,7 +13,9 @@
         <wpf:Card Margin="2" UniformCornerRadius="3" HorizontalAlignment="Stretch">
             <Grid>
 
+                <!-- Profile Image + Rank Grid -->
                 <Grid Margin="0" Width="95" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                    <!-- Blurred Image -->
                     <Border BorderThickness="0">
                         <Grid>
                             <Grid.OpacityMask>
@@ -27,6 +29,14 @@
                             </Image>
                         </Grid>
                     </Border>
+
+                    <Button x:Name="UsingLegendary" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Width="16" Margin="3" Height="16" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0">
+                        <Viewbox Width="16" Height="16">
+                            <Image  Width="16" Height="16" Stretch="UniformToFill" Visibility="Visible" Source="/LegendaryClient;component/Icon.ico"/>
+                        </Viewbox>
+                    </Button>
+
+                    <!-- Profile Image + Rank -->
                     <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -40,7 +50,7 @@
                         <Grid VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Center" Margin="2,5,2,0">
                             <Label x:Name="PlayerLeagueContainer" Padding="0">
                                 <Border CornerRadius="3" Background="Black" BorderThickness="0">
-                                    <Label  x:Name="PlayerLeague" Padding="2,1" FontSize="14" Foreground="LightGray" Content="Diamond IV"/>
+                                    <Label  x:Name="PlayerLeague" Padding="2,1" FontSize="14" Foreground="LightGray" Content="Rank"/>
                                 </Border>
                             </Label>
                         </Grid>
@@ -48,57 +58,53 @@
                     
                 </Grid>
                 
+                <!-- Info Grid -->
                 <Grid Margin="95,0,0,0" HorizontalAlignment="Stretch">
-                    
-                    <!-- Username -->
-                    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        
-
-                    </Grid>
-
-                    
-                    <!-- Tags -->
-                    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                     
+                    <!-- Username + Status + Wins -->
+                    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                     
-                        <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="8,6,8,8" Grid.Row="0" >
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        
-                        <Label x:Name="RegionLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
-                            <Border CornerRadius="3,0,0,3" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0">
-                                <Label x:Name="RegionLabel" Padding="2,1" FontSize="12" Foreground="{StaticResource PrimaryHueLightBrush}" Content="REGION" VerticalContentAlignment="Center"/>
-                            </Border>
-                        </Label>
-                        <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Margin="0,0,4,0">
-                            <Border CornerRadius="0,3,3,0" Background="Black" BorderThickness="0">
-                                <Label x:Name="LevelLabel" Padding="2,1" FontSize="12" Foreground="LightGray"  VerticalContentAlignment="Center" VerticalAlignment="Center">Level</Label>
-                            </Border>
-                        </Label>
-                        <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" Grid.Column="2" VerticalAlignment="Top" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Stretch" Padding="0">Username</Label>
-                        <Image x:Name="UsingLegendary" Grid.Column="3" HorizontalAlignment="Left" Height="20" VerticalAlignment="Center" Width="18" Visibility="Visible" Source="/LegendaryClient;component/Icon.ico"/>
-                    </Grid>
-                        <Label x:Name="PlayerStatus" Foreground="{StaticResource MaterialDesignBody}" HorizontalContentAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1">this is my stupid long status</Label>
-                        <Label x:Name="PlayerWins" HorizontalContentAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" Content="1000 Normal Wins" VerticalAlignment="Bottom" FontSize="15" FontWeight="SemiBold" Grid.Row="2" />
-                    </Grid>
-                    <Label HorizontalAlignment="Stretch" Margin="0,100,0,0" VerticalAlignment="Top" Foreground="Green" Height="28">
-                        
-            <TextBlock x:Name="Note" Visibility="Hidden" Text="So Op" TextWrapping="WrapWithOverflow" />
-        </Label>
+                        <Grid VerticalAlignment="Top" HorizontalAlignment="Center" Margin="8,6,8,8" Grid.Row="0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                            <Label x:Name="RegionLabelContainer" Padding="0" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Column="0">
+                                <Border CornerRadius="3,0,0,3" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0">
+                                    <Label x:Name="RegionLabel" Padding="2,1" FontSize="12" Foreground="{StaticResource PrimaryHueLightBrush}" Content="REGION" VerticalContentAlignment="Center"/>
+                                </Border>
+                            </Label>
+                            <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Margin="0,0,4,0">
+                                <Border CornerRadius="0,3,3,0" Background="Black" BorderThickness="0">
+                                    <Label x:Name="LevelLabel" Padding="2,1" FontSize="12" Foreground="LightGray"  VerticalContentAlignment="Center" VerticalAlignment="Center">Level</Label>
+                                </Border>
+                            </Label>
+                            <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" Grid.Column="2" VerticalAlignment="Top" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Stretch" Padding="0">Username</Label>
+                        </Grid>
+                        <Label x:Name="PlayerStatus" Foreground="{StaticResource MaterialDesignBody}" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1" Content="Status"/>
+                        <Label x:Name="Note" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="Green" Grid.Row="2" HorizontalContentAlignment="Center">
+                            <TextBlock x:Name="NoteContent" Visibility="Visible" Text="Note" TextWrapping="WrapWithOverflow" />
+                        </Label>
+                        <Label x:Name="PlayerWins" HorizontalContentAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" Content="Wins" VerticalAlignment="Bottom" FontSize="15" FontWeight="SemiBold" Grid.Row="3" />
+                    </Grid>
+                    
+                    <!-- Note -->
+                    
+
+                    <!-- Activity -->
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom"  Grid.Row="1">
                         <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
                         <Label HorizontalAlignment="Stretch" Margin="8" Padding="0">
                             <TextBlock Padding="0" x:Name="InGameStatus" TextWrapping="WrapWithOverflow" Foreground="{StaticResource MaterialDesignBody}">Lobby</TextBlock>

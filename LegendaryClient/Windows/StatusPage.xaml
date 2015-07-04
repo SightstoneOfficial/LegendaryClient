@@ -11,7 +11,7 @@
     mc:Ignorable="d" d:DesignHeight="40">
 
     <Grid x:Name="BackBar" Background="{StaticResource PrimaryHueMidBrush}">
-        <ListView x:Name="ChatListView" Margin="1,0,374,0"
+        <ListView x:Name="ChatListView" Margin="0,0,350,0" VerticalContentAlignment="Center" Padding="0"
                   HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                   Background="{x:Null}"
                   Foreground="{x:Null}" BorderBrush="{x:Null}">

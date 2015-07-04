@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d"
-             Height="210" Width="160"
+             Height="220" Width="160"
              Foreground="{StaticResource MaterialDesignBody}">
     <Grid>
-        <wpf:Card UniformCornerRadius="3" Height="200" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+        <wpf:Card UniformCornerRadius="3" Height="210" VerticalAlignment="Center" HorizontalAlignment="Stretch">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -18,7 +18,7 @@
                 
                 <!-- Username -->
                 <Grid Grid.Row="0">
-                    <Label x:Name="PlayerName" FontSize="14" Content="mhn23" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Center" Padding="0" Margin="0,9,0,0" Grid.Row="0"/>
+                    <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="14" Content="Username" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Center" Padding="0" Margin="0,9,0,0" Grid.Row="0"/>
                 </Grid>
                 
                 <!-- Profile Image + Region Label + Level Label -->
@@ -57,7 +57,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Label x:Name="PlayerStatus" FontSize="12" FontStyle="Italic" Content="Last Status" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0" Margin="0,0,0,5" Grid.Row="1"/>
+                    <Label x:Name="PlayerStatus" Foreground="{StaticResource MaterialDesignBody}" FontSize="12" Content="Last Status" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0" Margin="0,2,0,5" Grid.Row="1"/>
                 </Grid>
             </Grid>
         </wpf:Card>

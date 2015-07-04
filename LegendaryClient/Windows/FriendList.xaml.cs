@@ -304,7 +304,7 @@ namespace LegendaryClient.Windows
                 PlayerItem.Tag = playerItem;
                 if (Client.PlayerNote.Any(x => x.Key == playerItem.Username))
                 {
-                    PlayerItem.Note.Text = Client.PlayerNote[playerItem.Username];
+                    PlayerItem.NoteContent.Text = Client.PlayerNote[playerItem.Username];
                     PlayerItem.Note.Foreground = Brushes.Green;
                     PlayerItem.Note.Visibility = Visibility.Visible;
                 }

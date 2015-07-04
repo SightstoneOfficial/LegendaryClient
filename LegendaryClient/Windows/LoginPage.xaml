@@ -41,20 +41,22 @@
         <!-- Accounts -->
         <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="50,0">
             <ListView Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" >
-                <ListViewItem Width="160" Height="210" Padding="0">
+                <ListViewItem Width="160" Height="220" Padding="0">
 
-                    <wpf:Card UniformCornerRadius="3" Height="200" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                    <wpf:Card UniformCornerRadius="3" Height="210" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <!-- Profile Image -->
+
+                            <!-- Username -->
                             <Grid Grid.Row="0">
-                                <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="12" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Center" Padding="0" Margin="0,9,0,0" Grid.Row="0">ULTRALONGUSERNAME</Label>
+                                <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="14" Content="mhn23" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Center" Padding="0" Margin="0,9,0,0" Grid.Row="0"/>
                             </Grid>
 
+                            <!-- Profile Image + Region Label + Level Label -->
                             <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
@@ -84,16 +86,14 @@
                                 </Grid>
                             </Grid>
 
-
-
+                            <!-- Status Label -->
                             <Grid Grid.Row="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="*"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Label x:Name="PlayerStatus" Foreground="{StaticResource MaterialDesignBody}" FontSize="12" FontStyle="Italic" Content="Last Status" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0" Margin="0,0,0,5" Grid.Row="1"/>
+                                <Label x:Name="PlayerStatus" Foreground="{StaticResource MaterialDesignBody}" FontSize="12" FontStyle="Italic" Content="Last Status" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0" Margin="0,2,0,5" Grid.Row="1"/>
                             </Grid>
-
                         </Grid>
                     </wpf:Card>
 
