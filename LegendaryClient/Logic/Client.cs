@@ -512,7 +512,7 @@ namespace LegendaryClient.Logic
                     UpdatePlayers = true;
 
                     string Presence = pres.Status;
-                    if (Presence == null)
+                    if (string.IsNullOrEmpty(Presence))
                         return;
 
                     Player.RawPresence = Presence; //For debugging
