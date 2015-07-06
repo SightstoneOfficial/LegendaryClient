@@ -86,9 +86,9 @@
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Label x:Name="MMRLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="MMR" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Grid.Column="0"/>
-                                            <Label x:Name="MapLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Summoners Rift" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Grid.Column="1"/>
-                                            <Label x:Name="GameTimeLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Time Running" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" Grid.Column="2"/>
+                                            <Label x:Name="MMRLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="MMR" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" Grid.Column="0"/>
+                                            <Label x:Name="MapLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Summoners Rift" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" Grid.Column="1"/>
+                                            <Label x:Name="GameTimeLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Time Running" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" Grid.Column="2"/>
                                         </Grid>
 
                                         <Grid x:Name="SpectatorRegionGrid" Margin="0,81,0,40">
