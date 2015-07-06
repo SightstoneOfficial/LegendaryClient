@@ -595,8 +595,7 @@ namespace LegendaryClient.Windows
                     }));
                 };
                 Client.RostManager = new RosterManager(Client.XmppConnection);
-                Client.XmppConnection.OnRosterItem += Client.RostManager_OnRosterItem;
-                Client.XmppConnection.OnRosterEnd += Client.ChatClientConnect;
+                Client.XmppConnection.OnRosterStart += RosterManagment.XmppConnection_OnRosterStart;
                 Client.PresManager = new PresenceManager(Client.XmppConnection);
                 Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
                 Client.XmppConnection.OnMessage += Client.statusPage.XmppConnection_OnMessage;
