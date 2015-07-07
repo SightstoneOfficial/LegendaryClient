@@ -290,6 +290,9 @@
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
     <Compile Include="Logic\JSON\LeaguePromote.cs" />
     <Compile Include="Logic\JSON\PromoteItem.cs" />
+    <Compile Include="Logic\MultiUser\Client.cs" />
+    <Compile Include="Logic\MultiUser\UserClient.cs" />
+    <Compile Include="Logic\MultiUser\UserList.cs" />
     <Compile Include="Logic\Patcher\DownloadAir.cs" />
     <Compile Include="Logic\Player\ChampStats.cs" />
     <Compile Include="Logic\Player\GetKDA.cs" />
@@ -531,7 +534,6 @@
     <Compile Include="Logic\SQLite\champions.cs" />
     <Compile Include="Logic\SQLite\championSearchTags.cs" />
     <Compile Include="Logic\SQLite\championSkins.cs" />
-    <Compile Include="Logic\Client.cs" />
     <Compile Include="Logic\Region\BaseRegion.cs" />
     <Compile Include="Logic\Region\BR.cs" />
     <Compile Include="Logic\Region\EUW.cs" />

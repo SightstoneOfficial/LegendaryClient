@@ -10,6 +10,7 @@ using LegendaryClient.Logic.Riot;
 using LegendaryClient.Windows;
 using LegendaryClient.Logic.Riot.Team;
 using agsXMPP.protocol.client;
+using LegendaryClient.Logic.MultiUser;
 
 #endregion
 

@@ -11,6 +11,7 @@ using agsXMPP.protocol.client;
 using agsXMPP;
 using agsXMPP.Collections;
 using System.Text;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Controls
 {
@@ -19,9 +20,12 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class ChatItem
     {
-        public ChatItem()
+        UserClient user;
+        public ChatItem(UserClient client)
         {
             InitializeComponent();
+            user = client;
+            MahApps.Metro.Controls.TextBoxHelper.SetWatermark(ChatTextBox, "Sending message from " + user.LoginPacket.AllSummonerData.Summoner.InternalName);
             ChatPlayerItem tempItem = null;
             var Jid = string.Empty;
             try
@@ -29,44 +33,44 @@ namespace LegendaryClient.Controls
 
                 foreach (
                     var x in
-                        Client.AllPlayers.Where(x => x.Value.Username == this.PlayerLabelName.Content))
+                        user.AllPlayers.Where(x => x.Value.Username == this.PlayerLabelName.Content))
                 {
                     tempItem = x.Value;
                     Jid = x.Key + "@pvp.net";
 
                     break;
                 }
-                Client.XmppConnection.MessageGrabber.Add(new Jid(Jid), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
+                user.XmppConnection.MessageGrabber.Add(new Jid(Jid), new BareJidComparer(), new MessageCB(XmppConnection_OnMessage), null);
                 Tag = Jid;
             }
             catch
             {
-                Client.Log("Failed Chat");
-                Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+                LegendaryClient.Logic.MultiUser.Client.Log("Failed Chat");
+                user.XmppConnection.OnMessage += XmppConnection_OnMessage;
             }
         }
         public void XmppConnection_OnMessage(object sender, Message msg)
         {
-            if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
+            if (!user.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
 
-            var chatItem = Client.AllPlayers[msg.From.User];
+            var chatItem = user.AllPlayers[msg.From.User];
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                if ((string)Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
+                if ((string)LegendaryClient.Logic.MultiUser.Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
                     Update();
             }));
         }
 
         public void XmppConnection_OnMessage(object sender, Message msg, object body)
         {
-            if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
+            if (!user.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
 
-            var chatItem = Client.AllPlayers[msg.From.User];
+            var chatItem = user.AllPlayers[msg.From.User];
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                if ((string)Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
+                if ((string)LegendaryClient.Logic.MultiUser.Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
                     Update();
             }));
         }
@@ -75,8 +79,8 @@ namespace LegendaryClient.Controls
         {
             ChatText.Document.Blocks.Clear();
             var tempItem =
-                (from x in Client.AllPlayers
-                 where x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content
+                (from x in user.AllPlayers
+                 where x.Value.Username == (string)LegendaryClient.Logic.MultiUser.Client.ChatItem.PlayerLabelName.Content
                  select x.Value).FirstOrDefault();
 
 
@@ -131,15 +135,15 @@ namespace LegendaryClient.Controls
                 return;
 
             var tempItem =
-                (from x in Client.AllPlayers
-                 where x.Value.Username == (string)Client.ChatItem.PlayerLabelName.Content
+                (from x in user.AllPlayers
+                 where x.Value.Username == (string)LegendaryClient.Logic.MultiUser.Client.ChatItem.PlayerLabelName.Content
                  select x.Value).FirstOrDefault();
 
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
             if (tempItem.Messages.Count() == 0)
             {
                 {
-                    tr.Text = DateTime.Now.ToString("[HH:mm] ") + Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                    tr.Text = DateTime.Now.ToString("[HH:mm] ") + user.LoginPacket.AllSummonerData.Summoner.Name + ": ";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 }
 
@@ -151,11 +155,11 @@ namespace LegendaryClient.Controls
             }
             else
             {
-                if (tempItem.Messages.Last().name != Client.LoginPacket.AllSummonerData.Summoner.Name || 
+                if (tempItem.Messages.Last().name != user.LoginPacket.AllSummonerData.Summoner.Name || 
                     tempItem.Messages.Last().time.ToString("[HH:mm]") != DateTime.Now.ToString("[HH:mm]") || 
                     Settings.Default.AlwaysChatTimestamp)
                 {
-                    tr.Text = DateTime.Now.ToString("[HH:mm] ") + Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                    tr.Text = DateTime.Now.ToString("[HH:mm] ") + user.LoginPacket.AllSummonerData.Summoner.Name + ": ";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 }
 
@@ -175,12 +179,12 @@ namespace LegendaryClient.Controls
                 {
                     message = ChatTextBox.Text,
                     time = DateTime.Now,
-                    name = Client.LoginPacket.AllSummonerData.Summoner.Name
+                    name = user.LoginPacket.AllSummonerData.Summoner.Name
                 };
                 tempItem.Messages.Add(item);
             }
             ChatText.ScrollToEnd();
-            Client.XmppConnection.Send(new Message(new Jid(Jid), MessageType.chat, ChatTextBox.Text));
+            user.XmppConnection.Send(new Message(new Jid(Jid), MessageType.chat, ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;
         }
     }
