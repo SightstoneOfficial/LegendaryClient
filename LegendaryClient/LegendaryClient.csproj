@@ -89,6 +89,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\awesomium.windows.controls.dll</HintPath>
     </Reference>
+    <Reference Include="BouncyCastle.Crypto">
+      <HintPath>..\packages\BouncyCastle.1.7.0\lib\Net40-Client\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="Dragablz, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Dragablz.0.0.2.113\lib\net45\Dragablz.dll</HintPath>
@@ -283,6 +286,7 @@
     <Compile Include="GameScouter.xaml.cs">
       <DependentUpon>GameScouter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\Crypto\RSAWrapper.cs" />
     <Compile Include="Logic\Crypto\Sha1.cs" />
     <Compile Include="Logic\DevUsers.cs" />
     <Compile Include="Logic\Crypto\Crypto.cs" />
