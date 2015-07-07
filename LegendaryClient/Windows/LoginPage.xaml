@@ -5,6 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+	xmlns:user="clr-namespace:LegendaryClient.Controls;assembly=LegendaryClient"
     xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
     Title="LoginPage"
     mc:Ignorable="d" d:DesignHeight="672"
@@ -13,7 +14,7 @@
     Background="{DynamicResource MaterialDesignPaper}">
 
     <Grid x:Name="MouseGrid" Margin="0" Background="Black" Loaded="MouseGrid_Loaded">
-        
+
         <!-- Background Image -->
         <Grid>
             <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-2"
@@ -21,14 +22,14 @@
             <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/LegendaryClient;component/cs_bg_champions.png"/>-->
             <MediaElement x:Name="LoginPic" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1" Margin="-15">
                 <MediaElement.Effect>
-                    <BlurEffect Radius="50" KernelType="Gaussian"></BlurEffect> 
+                    <BlurEffect Radius="50" KernelType="Gaussian"></BlurEffect>
                 </MediaElement.Effect>
                 <MediaElement.Clip>
                     <RectangleGeometry Rect="15,15,5000,2500"/>
                 </MediaElement.Clip>
             </MediaElement>
         </Grid>
-        
+
         <!-- Floating Action Button -->
         <Grid Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="ShowLogin_Click" IsDefault="False">
@@ -37,69 +38,13 @@
                 </Viewbox>
             </Button>
         </Grid>
-        
+
         <!-- Accounts -->
-        <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="50,0">
-            <ListView Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" >
-                <ListViewItem Width="160" Height="210" Padding="0">
-
-                    <wpf:Card UniformCornerRadius="3" Height="200" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <!-- Profile Image -->
-                            <Grid Grid.Row="0">
-                                <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="12" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Center" Padding="0" Margin="0,9,0,0" Grid.Row="0">ULTRALONGUSERNAME</Label>
-                            </Grid>
-
-                            <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Button Grid.Row="0" x:Name="ProfileImageContainer" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Width="110" Height="110" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                    <Viewbox Width="110" Height="110">
-                                        <Image x:Name="ProfileImage" Margin="-4" Stretch="UniformToFill" Source="/LegendaryClient;component/NONE.png"/>
-                                    </Viewbox>
-                                </Button>
-                                <Grid Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Panel.ZIndex="1" Margin="0,7,0,0" >
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Label x:Name="RegionLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
-                                        <Border CornerRadius="3,0,0,3" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0">
-                                            <Label x:Name="RegionLabel" Padding="2,1" FontSize="10" Foreground="{StaticResource PrimaryHueLightBrush}" Content="REGION" VerticalContentAlignment="Center"/>
-                                        </Border>
-                                    </Label>
-                                    <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Margin="0,0,3,0">
-                                        <Border CornerRadius="0,3,3,0" Background="Black" BorderThickness="0">
-                                            <Label Padding="2,1" FontSize="10" Foreground="LightGray" x:Name="LevelLabel" VerticalContentAlignment="Center" Content="30" VerticalAlignment="Center">
-                                            </Label>
-                                        </Border>
-                                    </Label>
-                                </Grid>
-                            </Grid>
-
-
-
-                            <Grid Grid.Row="2">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Label x:Name="PlayerStatus" Foreground="{StaticResource MaterialDesignBody}" FontSize="12" FontStyle="Italic" Content="Last Status" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="0" Margin="0,0,0,5" Grid.Row="1"/>
-                            </Grid>
-
-                        </Grid>
-                    </wpf:Card>
-
-                </ListViewItem>
+        <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,10,10,75" Height="590">
+            <ListView Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                <user:UserAccount/>
             </ListView>
-            
+
         </Grid>
 
         <!-- Card Template Start -->

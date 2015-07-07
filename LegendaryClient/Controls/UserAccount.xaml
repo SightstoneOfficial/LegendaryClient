@@ -23,6 +23,7 @@
                 
                 <!-- Profile Image + Region Label + Level Label -->
                 <Grid Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+					<Ellipse x:Name="StatusColour" Fill="Green" Height="115" Width="115"/>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
