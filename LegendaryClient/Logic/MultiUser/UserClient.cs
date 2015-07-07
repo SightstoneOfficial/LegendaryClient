@@ -3,12 +3,10 @@ using LegendaryClient.Controls;
 using LegendaryClient.Logic.JSON;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.Replays;
-using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using Newtonsoft.Json;
-using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,14 +41,12 @@ using agsXMPP.protocol.iq.roster;
 using agsXMPP;
 using System.Security.Cryptography;
 using LegendaryClient.Logic.MultiUser;
-using LegendaryClient.Logic.Riot.Platform;
-using LegendaryClient.Logic.Region;
 
 
 namespace LegendaryClient.Logic.MultiUser
 {
-    
-    internal class UserClient
+
+    public class UserClient
     {
 		/// <summary>
 		/// Gets called when you receive a message
@@ -66,7 +62,7 @@ namespace LegendaryClient.Logic.MultiUser
 		public delegate void OnAccept(bool accept);
         public event OnAccept PlayerAccepedQueue;
 
-        
+        public RiotCalls calls;
 
         public void SendAccept(bool accept)
         {
@@ -74,27 +70,14 @@ namespace LegendaryClient.Logic.MultiUser
                 PlayerAccepedQueue(accept);
         }
 
-        
-
-
-        internal List<Group> Groups = new List<Group>();
-
         internal string UID;
 
         public bool InstaCall = false;
         public string CallString = string.Empty;
 
         internal bool Filter = true;
-
-        /// <summary>
-        ///     Use this to play sounds
-        /// </summary>
-        internal MediaElement SoundPlayer;
-
-        /// <summary>
-        ///     Use this to play sounds in the background only
-        /// </summary>
-        internal MediaElement AmbientSoundPlayer;
+        
+        internal bool Garena = false;
 
         internal bool isOwnerOfGame = false;
 
@@ -102,10 +85,6 @@ namespace LegendaryClient.Logic.MultiUser
 
         internal agsXMPP.XmppClientConnection XmppConnection;
 
-        /// <summary>
-        ///     The database of all runes
-        /// </summary>
-        internal List<runes> Runes;
 
         /// <summary>
         ///     Button For Lobby
@@ -131,64 +110,17 @@ namespace LegendaryClient.Logic.MultiUser
         ///     If Player is creating an account
         /// </summary>
         internal bool done = true;
-
-        /// <summary>
-        ///     Sets Sqlite Version
-        ///     Like the language pack
-        /// </summary>
-        internal string sqlite = "gameStats_en_US.sqlite";
-
-        /// <summary>
-        ///     Latest version of League of Legends. Retrieved from ClientLibCommon.dat
-        /// </summary>
-        internal string Version = "4.21.14";
-
+                
         /// <summary>
         ///     To see if the user is a dev
         /// </summary>
         internal bool Dev = false;
-
-        /// <summary>
-        ///     The current directory the client is running from
-        /// </summary>
-        internal string ExecutingDirectory = string.Empty;
-
-        /// <summary>
-        ///     Riot's database with all the client data
-        /// </summary>
-        internal SQLiteConnection SQLiteDatabase;
-
-        /// <summary>
-        ///     The database of all the champions
-        /// </summary>
-        internal List<champions> Champions;
-
-        /// <summary>
-        ///     The database of all the champion abilities
-        /// </summary>
-        internal List<championAbilities> ChampionAbilities;
-
-        /// <summary>
-        ///     The database of all the champion skins
-        /// </summary>
-        internal List<championSkins> ChampionSkins;
-
-        /// <summary>
-        ///     The database of all the items
-        /// </summary>
-        internal List<items> Items;
-
-        /// <summary>
-        ///     The database of all masteries
-        /// </summary>
-        internal List<masteries> Masteries;
-
-        /// <summary>
+        
+                /// <summary>
         ///     All of players who have been invited
         /// </summary>
         internal Dictionary<string, InviteInfo> InviteData = new Dictionary<string, InviteInfo>();
 
-        internal string Theme;
 
         internal ChampionDTO[] PlayerChampions;
 
@@ -209,8 +141,7 @@ namespace LegendaryClient.Logic.MultiUser
         internal PresenceManager PresManager;
         //internal ConferenceManager ConfManager;
         internal bool UpdatePlayers = true;
-        internal Dictionary<string, ChatPlayerItem> AllPlayers = new Dictionary<string, ChatPlayerItem>();
-
+        
         internal PresenceType _CurrentPresence;
 
         internal PresenceType CurrentPresence
@@ -292,10 +223,10 @@ namespace LegendaryClient.Logic.MultiUser
                 return;
             }
 
-            if (!AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
+            if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
 
-            var chatItem = AllPlayers[msg.From.User];
+            var chatItem = Client.AllPlayers[msg.From.User];
             if (Filter)
             {
                 var item = new AllMessageInfo()
@@ -333,7 +264,7 @@ namespace LegendaryClient.Logic.MultiUser
         internal void ChatClientConnect(object sender)
         {
             loadedGroups = false;
-            Groups.Add(new Group("Online"));
+            Client.Groups.Add(new Group(LoginPacket.AllSummonerData.Summoner.InternalName));
 
             //Get all groups
             var manager = sender as RosterManager;
@@ -364,8 +295,8 @@ namespace LegendaryClient.Logic.MultiUser
                             if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
                                 PlayerNote.Add(root.item.name, root.item.note);
 
-                            if (root.item.group.text != "**Default" && Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
-                                Groups.Add(new Group(root.item.group.text));
+                            if (root.item.group.text != "**Default" && Client.Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
+                                Client.Groups.Add(new Group(root.item.group.text));
                         }
                         else
                         {
@@ -374,8 +305,8 @@ namespace LegendaryClient.Logic.MultiUser
                             if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
                                 PlayerNote.Add(root.item.name, root.item.note);
 
-                            if (root.item.group != "**Default" && Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
-                                Groups.Add(new Group(root.item.group));
+                            if (root.item.group != "**Default" && Client.Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
+                                Client.Groups.Add(new Group(root.item.group));
                         }
                     }
                     catch
@@ -385,7 +316,7 @@ namespace LegendaryClient.Logic.MultiUser
                 }
             }
 
-            Groups.Add(new Group("Offline"));
+            Client.Groups.Add(new Group("Offline"));
             SetChatHover();
             loadedGroups = true;
             XmppConnection.OnRosterEnd -= ChatClientConnect; //only update groups on Client.Login
@@ -426,7 +357,7 @@ namespace LegendaryClient.Logic.MultiUser
                         Client.NotificationGrid.Children.Add(pop);
                         try
                         {
-                            AllPlayers.Add(pres.From.User, new ChatPlayerItem());
+                            Client.AllPlayers.Add(pres.From.User, new ChatPlayerItem());
                         }
                         catch { }
                     }));
@@ -437,18 +368,18 @@ namespace LegendaryClient.Logic.MultiUser
                     {
                         NotifyPlayerPopup notify = new NotifyPlayerPopup("Friends", string.Format("{0} is no longer your friend", pres.From.User));
                     }));
-                    AllPlayers.Remove(pres.From.User);
+                    Client.AllPlayers.Remove(pres.From.User);
                     break;
                 case PresenceType.available:
-                    if (!AllPlayers.ContainsKey(pres.From.User))
+                    if (!Client.AllPlayers.ContainsKey(pres.From.User))
                     {
                         if (pres.InnerXml.Contains("profileIcon"))
                         {
-                            AllPlayers.Add(pres.From.User, new ChatPlayerItem());
+                            Client.AllPlayers.Add(pres.From.User, new ChatPlayerItem());
                         }
                     }
 
-                    ChatPlayerItem Player = AllPlayers[pres.From.User];
+                    ChatPlayerItem Player = Client.AllPlayers[pres.From.User];
                     Player.IsOnline = false;
                     UpdatePlayers = true;
 
@@ -556,7 +487,7 @@ namespace LegendaryClient.Logic.MultiUser
                         return;
                     try
                     {
-                        ChatPlayerItem x = AllPlayers[pres.From.User];
+                        ChatPlayerItem x = Client.AllPlayers[pres.From.User];
                         x.IsOnline = false;
                         UpdatePlayers = true;
                     }
@@ -564,25 +495,11 @@ namespace LegendaryClient.Logic.MultiUser
                     break;
             }
         }
-
-        internal string OuterXml(this string outer)
-        {
-            outer = outer.Replace("&amp;", "&");
-            outer = outer.Replace("&#092;", "\\");
-            outer = outer.Replace("&#33;", "!");
-            outer = outer.Replace("&#036;", "$");
-            outer = outer.Replace("&quot;", "\"");
-            outer = outer.Replace("&quot;", "\"");
-            outer = outer.Replace("&lt;", "<");
-            outer = outer.Replace("&gt;", ">");
-            outer = outer.Replace("&#39;", "'");
-            return outer;
-        }
         
         internal void RostManager_OnRosterItem(object sender, RosterItem ri)
         {
             UpdatePlayers = true;
-            if (AllPlayers.ContainsKey(ri.Jid.User))
+            if (Client.AllPlayers.ContainsKey(ri.Jid.User))
                 return;
 
             var player = new ChatPlayerItem
@@ -605,12 +522,14 @@ namespace LegendaryClient.Logic.MultiUser
                             string TempGroup = reader.Value;
                             if (TempGroup != "**Default")
                                 player.Group = TempGroup;
+                            else
+                                player.Group = LoginPacket.AllSummonerData.Summoner.InternalName;
                             break;
                     }
                 }
             }
             player.Username = ri.Name;
-            AllPlayers.Add(ri.Jid.User, player);
+            Client.AllPlayers.Add(ri.Jid.User, player);
         }
 
         internal void SendMessage(string User, string Message)
@@ -634,16 +553,6 @@ namespace LegendaryClient.Logic.MultiUser
         internal int ChampId = -1;
         internal string GetPresence()
         {
-            //<dev>true</dev> == lc dev
-            //<dev>false</dev> == lc user
-
-            //Queue types
-            //NONE,NORMAL,NORMAL_3x3,ODIN_UNRANKED,ARAM_UNRANKED_5x5,BOT,BOT_3x3,RANKED_SOLO_5x5,RANKED_TEAM_3x3,RANKED_TEAM_5x5,
-            //ONEFORALL_5x5,FIRSTBLOOD_1x1,FIRSTBLOOD_2x2,SR_6x6,CAP_5x5,URF,URF_BOT,NIGHTMARE_BOT
-
-            //TODO: GameStatus values:
-            //"teamSelect","hostingNormalGame","hostingPracticeGame","hostingRankedGame","hostingCoopVsAIGame","inQueue"
-            //"spectating","outOfGame","championSelect","inGame","inTeamBuilder","tutorial"
             int level = Convert.ToInt32(LoginPacket.AllSummonerData.SummonerLevel.Level);
             if (GameStatus != "busy")
             {
@@ -720,7 +629,7 @@ namespace LegendaryClient.Logic.MultiUser
         }
 
 
-        internal StackPanel chatlistview;
+        
 
         internal void Message(string To, string Message, ChatSubjects Subject)
         {
@@ -755,18 +664,7 @@ namespace LegendaryClient.Logic.MultiUser
         }
 
         internal bool runonce = false;
-
-        internal string GetChatroomJid(string ObfuscatedChatroomName, string password, bool IsTypePublic)
-        {
-            if (!IsTypePublic)
-                return ObfuscatedChatroomName + "@sec.pvp.net";
-
-            if (string.IsNullOrEmpty(password))
-                return ObfuscatedChatroomName + "@lvl.pvp.net";
-
-            return ObfuscatedChatroomName + "@conference.pvp.net";
-        }
-
+        
         internal int AmountOfWins; //Calculate wins for presence
         internal bool IsRanked;
         internal string TierName;
@@ -777,11 +675,7 @@ namespace LegendaryClient.Logic.MultiUser
         internal double timeStampSince = 0;
 
         #endregion Chat
-
         
-
-        
-
         #region League Of Legends Client.Logic
 
         private System.Timers.Timer HeartbeatTimer;
@@ -855,12 +749,7 @@ namespace LegendaryClient.Logic.MultiUser
         ///     The DTO of the game lobby when connected to a custom game
         /// </summary>
         internal GameDTO GameLobbyDTO;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        internal bool donepatch = false;
-
+        
         /// <summary>
         ///     A recorder
         /// </summary>
@@ -1022,11 +911,6 @@ namespace LegendaryClient.Logic.MultiUser
 
         }
 
-
-        
-
-        
-
         internal async void QuitCurrentGame()
         {
             if (OnMessage != null)
@@ -1058,29 +942,11 @@ namespace LegendaryClient.Logic.MultiUser
         }
 
         #endregion League Of Legends Client.Logic
-
-        
+                
 
         #region Public Helper Methods
 
-        public DateTime JavaTimeStampToDateTime(double javaTimeStamp)
-        {
-            // Java timestamp is millisecods past epoch
-            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp / 1000)).ToLocalTime();
-            return dtDateTime;
-        }
-        public BitmapImage GetImage(string address)
-        {
-            var UriSource = new System.Uri(address, UriKind.RelativeOrAbsolute);
-            if (File.Exists(address) || address.StartsWith("/LegendaryClient;component"))
-                return new BitmapImage(UriSource);
-
-            Client.Log("Cannot find " + address, "WARN");
-            UriSource = new System.Uri("/LegendaryClient;component/NONE.png", UriKind.RelativeOrAbsolute);
-
-            return new BitmapImage(UriSource);
-        }
+        
         #endregion Public Helper Methods
 
         public Accent CurrentAccent { get; set; }
@@ -1097,14 +963,7 @@ namespace LegendaryClient.Logic.MultiUser
 
         public Dictionary<string, string> LocalRunePages = new Dictionary<string, string>();
 
-        
-
         public GameQueueConfig[] Queues;
-
-        public int MathRound(this double toRound)
-        {
-            return (int)Math.Round(toRound);
-        }
 
         public bool isConnectedToRTMP = true;
 

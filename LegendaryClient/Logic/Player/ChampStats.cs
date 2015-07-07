@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Logic.Player
 {
@@ -55,7 +56,6 @@ namespace LegendaryClient.Logic.Player
             LoadName(playerName);
         }
 
-#pragma warning disable CS4014
 
         public ChampStats(string champName, int playerName)
         {

@@ -42,6 +42,7 @@ using agsXMPP.protocol.iq.roster;
 using agsXMPP.protocol.client;
 using System.Security.Principal;
 using System.Security.Cryptography;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -52,11 +53,14 @@ namespace LegendaryClient.Windows
     {
         private bool shouldExit = false;
 
+        Deletable<UserClient> user;
+
         public LoginPage()
         {
             InitializeComponent();
             Client.donepatch = true;
             Client.patching = false;
+            Client.ClearPage(typeof(PatcherPage));
             Version.TextChanged += WaterTextbox_TextChanged;
             bool x = Settings.Default.DarkTheme;
             if (!x)
@@ -66,8 +70,8 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
             //#B2C8C8C8
-            UpdateRegionComboBox.SelectedValue = Client.UpdateRegion;
-            switch (Client.UpdateRegion)
+            UpdateRegionComboBox.SelectedValue = user.Instance.UpdateRegion;
+            switch (user.Instance.UpdateRegion)
             {
                 case "PBE":
                     RegionComboBox.ItemsSource = new[] { "PBE" };
@@ -159,7 +163,7 @@ namespace LegendaryClient.Windows
 
             //Get client data after patcher completed
 
-            Client.SQLiteDatabase = new SQLiteConnection(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
+            Client.SQLiteDatabase = new SQLiteConnection(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
 
             // Check database error
             try
@@ -182,7 +186,7 @@ namespace LegendaryClient.Windows
                     MessageTitle = { Content = "Database Error" }
                 };
                 Client.SQLiteDatabase.Close();
-                File.Delete(Path.Combine(Client.ExecutingDirectory, Client.sqlite));
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
                 overlay.AcceptButton.Click += (o, i) => { Environment.Exit(0); };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -215,9 +219,9 @@ namespace LegendaryClient.Windows
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
-            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
+            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(user.Instance.UpdateRegion);
             var patcher = new RiotPatcher();
-            if (Client.UpdateRegion != "Garena")
+            if (user.Instance.UpdateRegion != "Garena")
             {
                 string tempString = patcher.GetListing(updateRegion.AirListing);
 
@@ -351,7 +355,7 @@ namespace LegendaryClient.Windows
         {
             if (RegionComboBox.SelectedIndex == -1)
                 return;
-
+            user = new UserClient();
             if ((string)UpdateRegionComboBox.SelectedValue == "Garena")
             {
                 if (RegionComboBox.SelectedIndex == -1)
@@ -361,7 +365,7 @@ namespace LegendaryClient.Windows
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                     Settings.Default.Save();
                 }
-                Client.Garena = true;
+                user.Instance.Garena = true;
                 await garenaLogin();
                 return;
             }
@@ -393,7 +397,7 @@ namespace LegendaryClient.Windows
             LoggingInProgressRing.Visibility = Visibility.Visible;
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
-            Client.Region = selectedRegion;
+            user.Instance.Region = selectedRegion;
             var context = RiotCalls.RegisterObjects();
             Login();
         }
@@ -417,19 +421,20 @@ namespace LegendaryClient.Windows
             if (authToken == "invalid_credentials")
             {
                 ErrorTextBox.Text = "Wrong login data";
+                user.Delete();
                 HideGrid.Visibility = Visibility.Visible;
                 ErrorTextBox.Visibility = Visibility.Visible;
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 LoggingInProgressRing.Visibility = Visibility.Collapsed;
                 return;
             }
-            Client.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
-            Client.RiotConnection.CallbackException += client_CallbackException;
-            Client.RiotConnection.MessageReceived += client_MessageReceived;
+            user.Instance.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
+            user.Instance.RiotConnection.CallbackException += client_CallbackException;
+            user.Instance.RiotConnection.MessageReceived += client_MessageReceived;
             try
             {
 
-                await Client.RiotConnection.ConnectAsync();
+                await user.Instance.RiotConnection.ConnectAsync();
             }
             catch
             {
@@ -441,7 +446,7 @@ namespace LegendaryClient.Windows
                 return;
             }
 
-            Client.RiotConnection.SetChunkSize(2147483647);
+            user.Instance.RiotConnection.SetChunkSize(2147483647);
             AuthenticationCredentials newCredentials = new AuthenticationCredentials
             {
                 Username = LoginUsernameBox.Text,
@@ -471,20 +476,20 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Visibility = Visibility.Collapsed;
                 return;
             }
-            Client.PlayerSession = login;
+            user.Instance.PlayerSession = login;
             var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
             var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
             var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
-            Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
-                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
-                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+            Task<bool>[] taskArray = { user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                                 user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                                 user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
 
             await Task.WhenAll(taskArray);
             //Riot added this for no reason but make it look like the riot client we have to do this
             var plainTextbytes = Encoding.UTF8.GetBytes(login.AccountSummary.Username + ":" + login.Token);
-            Client.reconnectToken = Convert.ToBase64String(plainTextbytes);
+            user.Instance.reconnectToken = Convert.ToBase64String(plainTextbytes);
             //await RiotCalls.Login(result);
-            var LoggedIn = await Client.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
+            var LoggedIn = await user.Instance.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
             DoGetOnLoginPacket();
         }
 
@@ -492,10 +497,10 @@ namespace LegendaryClient.Windows
         {
             //TODO: Finish this so all calls are used
             var packetx = await RiotCalls.GetLoginDataPacketForUser();
-            Client.Queues = await RiotCalls.GetAvailableQueues();
-            Client.PlayerChampions = await RiotCalls.GetAvailableChampions();
+            user.Instance.Queues = await RiotCalls.GetAvailableQueues();
+            user.Instance.PlayerChampions = await RiotCalls.GetAvailableChampions();
             //var runes = await RiotCalls.GetSummonerRuneInventory(packetx.AllSummonerData.Summoner.AcctId);
-            Client.StartHeartbeat();
+            user.Instance.StartHeartbeat();
             //var leaguePos = await RiotCalls.GetMyLeaguePositions();
             //var preferences = await RiotCalls.LoadPreferencesByKey();
             //var masterybook = await RiotCalls.GetMasteryBook(packetx.AllSummonerData.Summoner.AcctId);
@@ -515,41 +520,41 @@ namespace LegendaryClient.Windows
             if (invites.Length != 0)
                 Client.MainWin.FlashWindow();
 
-            Client.LoginPacket = packetx;
+            user.Instance.LoginPacket = packetx;
         }
 
         private void GotLoginPacket(LoginDataPacket packet)
         {
             if (packet.AllSummonerData == null)
             {
-                Client.RiotConnection.CallbackException -= client_CallbackException;
-                Client.RiotConnection.MessageReceived -= client_MessageReceived;
+                user.Instance.RiotConnection.CallbackException -= client_CallbackException;
+                user.Instance.RiotConnection.MessageReceived -= client_MessageReceived;
                 //Just Created Account, need to put logic here.
-                Client.done = false;
+                user.Instance.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     var createSummoner = new CreateSummonerNameOverlay();
                     Client.OverlayContainer.Content = createSummoner.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                while (!Client.done)
+                while (!user.Instance.done)
                 {
                 }
                 Login();
                 return;
             }
-            Client.LoginPacket = packet;
+            user.Instance.LoginPacket = packet;
             if (packet.AllSummonerData.Summoner.ProfileIconId == -1)
             {
-                Client.RiotConnection.CallbackException -= client_CallbackException;
-                Client.RiotConnection.MessageReceived -= client_MessageReceived;
-                Client.done = false;
+                user.Instance.RiotConnection.CallbackException -= client_CallbackException;
+                user.Instance.RiotConnection.MessageReceived -= client_MessageReceived;
+                user.Instance.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     Client.OverlayContainer.Content = new ChooseProfilePicturePage().Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
-                while (!Client.done)
+                while (!user.Instance.done)
                 {
                 }
                 Login();
@@ -557,10 +562,10 @@ namespace LegendaryClient.Windows
                 return;
             }
 
-            Client.RiotConnection.MessageReceived += Client.OnMessageReceived;
-            Client.RiotConnection.Disconnected += Client.RiotConnection_Disconnected;
-            Client.GameConfigs = packet.GameTypeConfigs;
-            Client.IsLoggedIn = true;
+            user.Instance.RiotConnection.MessageReceived += user.Instance.OnMessageReceived;
+            user.Instance.RiotConnection.Disconnected += user.Instance.RiotConnection_Disconnected;
+            user.Instance.GameConfigs = packet.GameTypeConfigs;
+            user.Instance.IsLoggedIn = true;
 
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -570,51 +575,51 @@ namespace LegendaryClient.Windows
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
                 //You have to hand implement this
                 //Client.XmppConnection.AutoReconnect = 30;
-                Client.XmppConnection = new agsXMPP.XmppClientConnection("pvp.net", 5223)
+                user.Instance.XmppConnection = new agsXMPP.XmppClientConnection("pvp.net", 5223)
                 {
                     AutoResolveConnectServer = false,
-                    ConnectServer = "chat." + Client.Region.ChatName + ".lol.riotgames.com",
+                    ConnectServer = "chat." + user.Instance.Region.ChatName + ".lol.riotgames.com",
                     Resource = "xiff",
                     UseSSL = true,
                     KeepAliveInterval = 10,
                     KeepAlive = true
                 };
-                Client.XmppConnection.UseCompression = true;
-                Client.XmppConnection.OnMessage += Client.XmppConnection_OnMessage;
-                Client.XmppConnection.OnError += Client.XmppConnection_OnError;
-                Client.XmppConnection.OnLogin += (o) => 
+                user.Instance.XmppConnection.UseCompression = true;
+                user.Instance.XmppConnection.OnMessage += user.Instance.XmppConnection_OnMessage;
+                user.Instance.XmppConnection.OnError += user.Instance.XmppConnection_OnError;
+                user.Instance.XmppConnection.OnLogin += (o) => 
                 {
                     Client.Log("Connected to XMPP Server");
                     //Set up chat
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         if (invisibleLoginCheckBox.IsChecked != true)
-                            Client.XmppConnection.Send(new Presence(ShowType.chat, Client.GetPresence(), 0) { Type = PresenceType.available });
+                            user.Instance.XmppConnection.Send(new Presence(ShowType.chat, user.Instance.GetPresence(), 0) { Type = PresenceType.available });
                         else
-                            Client.XmppConnection.Send(new Presence(ShowType.NONE, Client.GetPresence(), 0) { Type = PresenceType.invisible });
+                            user.Instance.XmppConnection.Send(new Presence(ShowType.NONE, user.Instance.GetPresence(), 0) { Type = PresenceType.invisible });
                     }));
                 };
-                Client.RostManager = new RosterManager(Client.XmppConnection);
-                Client.XmppConnection.OnRosterItem += Client.RostManager_OnRosterItem;
-                Client.XmppConnection.OnRosterEnd += Client.ChatClientConnect;
-                Client.PresManager = new PresenceManager(Client.XmppConnection);
-                Client.XmppConnection.OnPresence += Client.XmppConnection_OnPresence;
-                Client.XmppConnection.OnMessage += Client.statusPage.XmppConnection_OnMessage;
-                if (!Client.Garena)
+                user.Instance.RostManager = new RosterManager(user.Instance.XmppConnection);
+                user.Instance.XmppConnection.OnRosterItem += user.Instance.RostManager_OnRosterItem;
+                user.Instance.XmppConnection.OnRosterEnd += user.Instance.ChatClientConnect;
+                user.Instance.PresManager = new PresenceManager(user.Instance.XmppConnection);
+                user.Instance.XmppConnection.OnPresence += user.Instance.XmppConnection_OnPresence;
+                user.Instance.XmppConnection.OnMessage += Client.statusPage.XmppConnection_OnMessage;
+                if (!user.Instance.Garena)
                 {
-                    Client.userpass = new KeyValuePair<string, string>(LoginUsernameBox.Text,
+                    user.Instance.userpass = new KeyValuePair<string, string>(LoginUsernameBox.Text,
                         "AIR_" + LoginPasswordBox.Password);
-                    
-                    Client.XmppConnection.Open(LoginUsernameBox.Text, "AIR_" + LoginPasswordBox.Password);
+
+                    user.Instance.XmppConnection.Open(LoginUsernameBox.Text, "AIR_" + LoginPasswordBox.Password);
 
                     //Client.XmppConnection.OnInvalidCertificate += Client.XmppConnection_OnInvalidCertificate;
                 }
                 else
                 {
-                    Client.XmppConnection.ConnectServer = "chat" + Client.Region.ChatName + ".lol.garenanow.com";
+                    user.Instance.XmppConnection.ConnectServer = "chat" + user.Instance.Region.ChatName + ".lol.garenanow.com";
                     var gas = getGas();
-                    Client.XmppConnection.Open(Client.UID, "AIR_" + gas);
-                    Client.userpass = new KeyValuePair<string, string>(Client.UID, "AIR_" + gas);
+                    user.Instance.XmppConnection.Open(user.Instance.UID, "AIR_" + gas);
+                    user.Instance.userpass = new KeyValuePair<string, string>(user.Instance.UID, "AIR_" + gas);
                 }
 
                 //Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
@@ -625,18 +630,18 @@ namespace LegendaryClient.Windows
                 };
                 //*/
                 //switch
-                Client.Log("Connected to " + Client.Region.RegionName + " and logged in as " +
-                           Client.LoginPacket.AllSummonerData.Summoner.Name);
+                Client.Log("Connected to " + user.Instance.Region.RegionName + " and logged in as " +
+                           user.Instance.LoginPacket.AllSummonerData.Summoner.Name);
 
                 //Gather data and convert it that way that it does not cause errors
-                PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)Client.LoginPacket.ReconnectInfo;
+                PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)user.Instance.LoginPacket.ReconnectInfo;
 
                 Client.MainPage = new MainPage();
                 if (data != null && data.Game != null)
                 {
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
-                    Client.CurrentGame = data.PlayerCredentials;
-                    Client.GameType = data.Game.GameType;
+                    user.Instance.CurrentGame = data.PlayerCredentials;
+                    user.Instance.GameType = data.Game.GameType;
                     Client.SwitchPage(new InGame());
                 }
                 else
@@ -736,7 +741,7 @@ namespace LegendaryClient.Windows
                         s1 = s1.Substring(1);
                     }
                     Client.Log("Received token, it is: " + s1);
-                    Client.Region = garenaregion;
+                    user.Instance.Region = garenaregion;
                     Dispatcher.BeginInvoke(
                         DispatcherPriority.Input, new ThreadStart(() =>
                             {
@@ -747,17 +752,17 @@ namespace LegendaryClient.Windows
                                 LoggingInProgressRing.Visibility = Visibility.Visible;
                             }));
                     var context = RiotCalls.RegisterObjects();
-                    Client.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + garenaregion.Server + ":2099"), context, ObjectEncoding.Amf3);
-                    Client.RiotConnection.CallbackException += client_CallbackException;
-                    Client.RiotConnection.MessageReceived += client_MessageReceived;
-                    await Client.RiotConnection.ConnectAsync();
-                    Client.RiotConnection.SetChunkSize(2147483647);
+                    user.Instance.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + garenaregion.Server + ":2099"), context, ObjectEncoding.Amf3);
+                    user.Instance.RiotConnection.CallbackException += client_CallbackException;
+                    user.Instance.RiotConnection.MessageReceived += client_MessageReceived;
+                    await user.Instance.RiotConnection.ConnectAsync();
+                    user.Instance.RiotConnection.SetChunkSize(2147483647);
 
                     AuthenticationCredentials newCredentials = new AuthenticationCredentials
                     {
                         AuthToken = await
                             RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
-                        Username = Client.UID,
+                        Username = user.Instance.UID,
                         Password = null,
                         ClientVersion = Client.Version,
                         IpAddress = RiotCalls.GetIpAddress(),
@@ -767,16 +772,16 @@ namespace LegendaryClient.Windows
                         Domain = "lolclient.lol.riotgames.com",
                     };
                     Session login = await RiotCalls.Login(newCredentials);
-                    Client.PlayerSession = login;
+                    user.Instance.PlayerSession = login;
                     var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
                     var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
                     var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
-                    Task<bool>[] taskArray = { Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
-                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
-                                                 Client.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
+                    Task<bool>[] taskArray = { user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
+                                                 user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                                                 user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
 
                     await Task.WhenAll(taskArray);
-                    var LoggedIn = await Client.RiotConnection.LoginAsync(Client.UID, login.Token);
+                    var LoggedIn = await user.Instance.RiotConnection.LoginAsync(user.Instance.UID, login.Token);
                     //var packet = await RiotCalls.GetLoginDataPacketForUser();
                     DoGetOnLoginPacket();
                 }
@@ -805,13 +810,13 @@ namespace LegendaryClient.Windows
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
 
 
-                Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
+                user.Instance.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
                 if (!RegionComboBox.Items.IsInUse)
                 {
                     RegionComboBox.Items.Clear();
                     Thread.Sleep(100);
                 }
-                switch (Client.UpdateRegion)
+                switch (user.Instance.UpdateRegion)
                 {
                     case "PBE":
                         RegionComboBox.ItemsSource = new[] { "PBE" };
@@ -849,7 +854,7 @@ namespace LegendaryClient.Windows
 
             //string begin = "{\"signature\":\"";
             //string end = "}";
-            string gas = Client.Gas;
+            string gas = user.Instance.Gas;
             gas = gas.Replace("\r\n  ", "");
             byte[] encbuff = Encoding.UTF8.GetBytes(gas);
             gas = HttpServerUtility.UrlTokenEncode(encbuff);
@@ -868,7 +873,7 @@ namespace LegendaryClient.Windows
 
         private void AutoLoginCheckBox_CheckChanged(object sender, RoutedEventArgs e)
         {
-            if ((AutoLoginCheckBox.IsChecked == true && RememberUsernameCheckbox.IsChecked == true && RememberPasswordCheckbox.IsChecked == true) || Client.Garena || (string)UpdateRegionComboBox.SelectedValue == "Garena")
+            if ((AutoLoginCheckBox.IsChecked == true && RememberUsernameCheckbox.IsChecked == true && RememberPasswordCheckbox.IsChecked == true) || user.Instance.Garena || (string)UpdateRegionComboBox.SelectedValue == "Garena")
             {
                 Settings.Default.AutoLogin = true;
             }

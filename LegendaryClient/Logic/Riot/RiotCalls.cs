@@ -18,11 +18,18 @@ using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
 using RtmpSharp.Messaging;
 using Formatting = Newtonsoft.Json.Formatting;
+using LegendaryClient.Logic.MultiUser;
+using RtmpSharp.Net;
 
 namespace LegendaryClient.Logic.Riot
 {
     public class RiotCalls
     {
+        private static UserClient client;
+        public RiotCalls(UserClient _client)
+        {
+            client = _client;
+        }
         public delegate void OnInvocationErrorHandler(object sender, Exception error);
         public static event OnInvocationErrorHandler OnInvocationError;
 
@@ -1077,11 +1084,11 @@ namespace LegendaryClient.Logic.Riot
 
         public static Task<T> InvokeAsync<T>(string destination, string method, params object[] arguments)
         {
-            while (Client.isConnectedToRTMP == false)
+            while (client.isConnectedToRTMP == false)
                 Task.Delay(100);
             try
             {
-                return Client.RiotConnection.InvokeAsync<T>("my-rtmps", destination, method, arguments);
+                return client.RiotConnection.InvokeAsync<T>("my-rtmps", destination, method, arguments);
             }
             catch (InvocationException e)
             {
@@ -1179,7 +1186,7 @@ namespace LegendaryClient.Logic.Riot
                 try
                 {
                     var str = string.Format("user={0},password={1}", HttpUtility.UrlEncode(username), HttpUtility.UrlEncode(password));
-                    if (Client.Garena && gtoken != null)
+                    if (client.Garena && gtoken != null)
                     {
                         str = gtoken;
                     }
@@ -1188,7 +1195,7 @@ namespace LegendaryClient.Logic.Riot
                     httpWebRequest.Method = "POST";
                     using (var streamWriter = new StreamWriter(await httpWebRequest.GetRequestStreamAsync()))
                     {
-                        if (Client.Garena)
+                        if (client.Garena)
                         {
                             await streamWriter.WriteAsync(string.Concat("payload=8393%20", str));
                         }
@@ -1212,10 +1219,10 @@ namespace LegendaryClient.Logic.Riot
                         }
                         Func<string> func = () => jObjects["token"].ToString(); //lqt
                         string ss;
-                        if (Client.Garena)
+                        if (client.Garena)
                         {
-                            Client.UID = jObjects["user"].ToString(Formatting.Indented).Substring(1,jObjects["user"].ToString(Formatting.None).Length-2);
-                            Client.Gas = jObjects["gasToken"].ToString();
+                            client.UID = jObjects["user"].ToString(Formatting.Indented).Substring(1,jObjects["user"].ToString(Formatting.None).Length-2);
+                            client.Gas = jObjects["gasToken"].ToString();
                         }
                         JArray item = (JArray) jObjects["tickers"];
                         if (item != null)

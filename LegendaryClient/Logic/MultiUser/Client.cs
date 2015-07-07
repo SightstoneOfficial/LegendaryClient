@@ -1,8 +1,10 @@
 ﻿using LCLog;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic.Region;
+using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
 using MahApps.Metro.Controls;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,6 +28,14 @@ namespace LegendaryClient.Logic.MultiUser
 {
     public static class Client
     {
+        #region version
+        internal static string Version = "4.21.14";
+        #endregion version
+
+        #region Current
+        internal static string Current = "";
+        #endregion Current
+
         #region pipes
         public static StreamString SendPIPE;
         public static StreamString InPIPE;
@@ -281,9 +291,13 @@ namespace LegendaryClient.Logic.MultiUser
         //todo: Remove this
         #region lcPatcher
         internal static bool patching = true;
+
+        internal static bool donepatch = false;
         #endregion lcPatcher
 
         #region lcLogic
+        internal static string Theme;
+
         public static string GameClientVersion;
 
         internal static Grid MainGrid;
@@ -349,10 +363,51 @@ namespace LegendaryClient.Logic.MultiUser
         internal static bool PlayerChatIsShown;
 
         internal static Page TrueCurrentPage;
+        
+        internal MediaElement SoundPlayer;
 
-        internal static bool Garena = false;
+        internal MediaElement AmbientSoundPlayer;
+
+        internal StackPanel chatlistview;
 
         internal static string[] args;
+        
+        internal static string ExecutingDirectory = string.Empty;
+
+        /// <summary>
+        ///     Riot's database with all the client data
+        /// </summary>
+        internal static SQLiteConnection SQLiteDatabase;
+
+        /// <summary>
+        ///     The database of all the champions
+        /// </summary>
+        internal static List<champions> Champions;
+
+        /// <summary>
+        ///     The database of all the champion abilities
+        /// </summary>
+        internal static List<championAbilities> ChampionAbilities;
+
+        /// <summary>
+        ///     The database of all the champion skins
+        /// </summary>
+        internal static List<championSkins> ChampionSkins;
+
+        /// <summary>
+        ///     The database of all the items
+        /// </summary>
+        internal static List<items> Items;
+
+        /// <summary>
+        ///     The database of all masteries
+        /// </summary>
+        internal static List<masteries> Masteries;
+
+        /// <summary>
+        ///     The database of all runes
+        /// </summary>
+        internal static List<runes> Runes;
 
         internal static void FocusClient()
         {
@@ -447,7 +502,43 @@ namespace LegendaryClient.Logic.MultiUser
         #endregion WPF Tab Change
         #endregion lcLogic
 
-        #region text
+        #region queues
+        internal static Dictionary<string, string> queueNames;
+        internal static string InternalQueueToPretty(string internalQueue)
+        {
+            if (queueNames == null)
+            {
+                using (WebClient client = new WebClient())
+                {
+                    string names = "";
+                    try
+                    {
+                        client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+                        client.Headers.Add("Content-Type", "text/html; charset=UTF-8");
+                        names = client.DownloadString("http://legendaryclient.net/QueueName");
+                    }
+                    catch
+                    {
+                        //Try to download from Github
+                        names = client.DownloadString("https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/gh-pages/QueueName");
+                    }
+                    string[] queues = names.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                    queueNames = queues.Select(x => x.Split('|')).ToDictionary(x => x[0], x => x[1]);
+                }
+            }
+            if (queueNames.ContainsKey(internalQueue))
+                return queueNames[internalQueue];
+
+            Log(internalQueue);
+            return internalQueue;
+        }
+        #endregion queues
+
+        #region converters
+        public static int MathRound(this double toRound)
+        {
+            return (int)Math.Round(toRound);
+        }
         public static string TitleCaseString(string s)
         {
             if (s == null) return s;
@@ -487,42 +578,46 @@ namespace LegendaryClient.Logic.MultiUser
             }
         }
 
+        public DateTime JavaTimeStampToDateTime(double javaTimeStamp)
+        {
+            // Java timestamp is millisecods past epoch
+            var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp / 1000)).ToLocalTime();
+            return dtDateTime;
+        }
+        public BitmapImage GetImage(string address)
+        {
+            var UriSource = new System.Uri(address, UriKind.RelativeOrAbsolute);
+            if (File.Exists(address) || address.StartsWith("/LegendaryClient;component"))
+                return new BitmapImage(UriSource);
+
+            Client.Log("Cannot find " + address, "WARN");
+            UriSource = new System.Uri("/LegendaryClient;component/NONE.png", UriKind.RelativeOrAbsolute);
+
+            return new BitmapImage(UriSource);
+        }
+
         internal static int ToInt(this object convert)
         {
             return Convert.ToInt32(convert);
         }
-        #endregion text
+        #endregion converters
 
-        #region queues
-        internal static Dictionary<string, string> queueNames;
-        internal static string InternalQueueToPretty(string internalQueue)
+        #region chat
+        internal static List<Group> Groups = new List<Group>();
+        
+        internal string GetChatroomJid(string ObfuscatedChatroomName, string password, bool IsTypePublic)
         {
-            if (queueNames == null)
-            {
-                using (WebClient client = new WebClient())
-                {
-                    string names = "";
-                    try
-                    {
-                        client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
-                        client.Headers.Add("Content-Type", "text/html; charset=UTF-8");
-                        names = client.DownloadString("http://legendaryclient.net/QueueName");
-                    }
-                    catch
-                    {
-                        //Try to download from Github
-                        names = client.DownloadString("https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/gh-pages/QueueName");
-                    }
-                    string[] queues = names.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                    queueNames = queues.Select(x => x.Split('|')).ToDictionary(x => x[0], x => x[1]);
-                }
-            }
-            if (queueNames.ContainsKey(internalQueue))
-                return queueNames[internalQueue];
+            if (!IsTypePublic)
+                return ObfuscatedChatroomName + "@sec.pvp.net";
 
-            Log(internalQueue);
-            return internalQueue;
+            if (string.IsNullOrEmpty(password))
+                return ObfuscatedChatroomName + "@lvl.pvp.net";
+
+            return ObfuscatedChatroomName + "@conference.pvp.net";
         }
-        #endregion queues
+
+        internal static Dictionary<string, ChatPlayerItem> AllPlayers = new Dictionary<string, ChatPlayerItem>();
+        #endregion chat
     }
 }

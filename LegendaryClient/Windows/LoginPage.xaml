@@ -42,7 +42,7 @@
         <!-- Accounts -->
         <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,10,10,75" Height="590">
             <ListView Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                <user:UserAccount/>
+                <!--<user:UserAccount/>-->
             </ListView>
 
         </Grid>

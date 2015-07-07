@@ -291,6 +291,7 @@
     <Compile Include="Logic\JSON\LeaguePromote.cs" />
     <Compile Include="Logic\JSON\PromoteItem.cs" />
     <Compile Include="Logic\MultiUser\Client.cs" />
+    <Compile Include="Logic\MultiUser\Deletable.cs" />
     <Compile Include="Logic\MultiUser\UserClient.cs" />
     <Compile Include="Logic\MultiUser\UserList.cs" />
     <Compile Include="Logic\Patcher\DownloadAir.cs" />

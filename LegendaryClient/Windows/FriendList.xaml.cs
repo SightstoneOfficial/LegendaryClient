@@ -19,6 +19,7 @@ using LegendaryClient.Logic.Riot;
 using System.Threading.Tasks;
 using agsXMPP;
 using agsXMPP.protocol.client;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -35,7 +36,6 @@ namespace LegendaryClient.Windows
 
         public FriendList()
         {
-
             InitializeComponent();
             if (Settings.Default.StatusMsg != "Set your status message")
                 StatusBox.Text = Settings.Default.StatusMsg;
