@@ -33,7 +33,7 @@ namespace LegendaryClient.Controls
 
                 foreach (
                     var x in
-                        user.AllPlayers.Where(x => x.Value.Username == this.PlayerLabelName.Content))
+                        Client.AllPlayers.Where(x => x.Value.Username == this.PlayerLabelName.Content))
                 {
                     tempItem = x.Value;
                     Jid = x.Key + "@pvp.net";
@@ -51,10 +51,10 @@ namespace LegendaryClient.Controls
         }
         public void XmppConnection_OnMessage(object sender, Message msg)
         {
-            if (!user.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
+            if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
 
-            var chatItem = user.AllPlayers[msg.From.User];
+            var chatItem = Client.AllPlayers[msg.From.User];
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if ((string)LegendaryClient.Logic.MultiUser.Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
@@ -64,10 +64,10 @@ namespace LegendaryClient.Controls
 
         public void XmppConnection_OnMessage(object sender, Message msg, object body)
         {
-            if (!user.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
+            if (!Client.AllPlayers.ContainsKey(msg.From.User) || string.IsNullOrWhiteSpace(msg.Body))
                 return;
 
-            var chatItem = user.AllPlayers[msg.From.User];
+            var chatItem = Client.AllPlayers[msg.From.User];
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if ((string)LegendaryClient.Logic.MultiUser.Client.ChatItem.PlayerLabelName.Content == chatItem.Username)
@@ -79,7 +79,7 @@ namespace LegendaryClient.Controls
         {
             ChatText.Document.Blocks.Clear();
             var tempItem =
-                (from x in user.AllPlayers
+                (from x in Client.AllPlayers
                  where x.Value.Username == (string)LegendaryClient.Logic.MultiUser.Client.ChatItem.PlayerLabelName.Content
                  select x.Value).FirstOrDefault();
 
@@ -135,7 +135,7 @@ namespace LegendaryClient.Controls
                 return;
 
             var tempItem =
-                (from x in user.AllPlayers
+                (from x in Client.AllPlayers
                  where x.Value.Username == (string)LegendaryClient.Logic.MultiUser.Client.ChatItem.PlayerLabelName.Content
                  select x.Value).FirstOrDefault();
 

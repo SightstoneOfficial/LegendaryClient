@@ -9,6 +9,5 @@ namespace LegendaryClient.Logic.MultiUser
     public static class UserList
     {
         internal static Dictionary<string, UserClient> users = new Dictionary<string, UserClient>();
-        
     }
 }

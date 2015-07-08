@@ -41,6 +41,7 @@ using agsXMPP.protocol.iq.roster;
 using agsXMPP;
 using System.Security.Cryptography;
 using LegendaryClient.Logic.MultiUser;
+using LegendaryClient.Logic.SQLite;
 
 
 namespace LegendaryClient.Logic.MultiUser
@@ -87,26 +88,6 @@ namespace LegendaryClient.Logic.MultiUser
 
 
         /// <summary>
-        ///     Button For Lobby
-        /// </summary>
-        internal Button ReturnButton;
-
-        /// <summary>
-        ///     spectatorTimer
-        /// </summary>
-        internal System.Timers.Timer spectatorTimer = new System.Timers.Timer();
-
-        /// <summary>
-        ///     inQueueTimer
-        /// </summary>
-        internal Label inQueueTimer;
-
-        /// <summary>
-        ///     Check if on Champion Select or Team Queue Lobby Page
-        /// </summary>
-        internal Page CurrentPage;
-
-        /// <summary>
         ///     If Player is creating an account
         /// </summary>
         internal bool done = true;
@@ -133,15 +114,12 @@ namespace LegendaryClient.Logic.MultiUser
 
         //Fix for invitations
         public delegate void OnMessageHandler(object sender, Message e);
-
         public event OnMessageHandler OnMessage;
 
         public Dictionary<string, string> PlayerNote = new Dictionary<string, string>();
         internal RosterManager RostManager;
         internal PresenceManager PresManager;
-        //internal ConferenceManager ConfManager;
-        internal bool UpdatePlayers = true;
-        
+
         internal PresenceType _CurrentPresence;
 
         internal PresenceType CurrentPresence
@@ -259,11 +237,10 @@ namespace LegendaryClient.Logic.MultiUser
 
         internal bool autoBlock = true;
 
-        internal bool loadedGroups = false;
 
         internal void ChatClientConnect(object sender)
         {
-            loadedGroups = false;
+            Client.loadedGroups = false;
             Client.Groups.Add(new Group(LoginPacket.AllSummonerData.Summoner.InternalName));
 
             //Get all groups
@@ -318,7 +295,7 @@ namespace LegendaryClient.Logic.MultiUser
 
             Client.Groups.Add(new Group("Offline"));
             SetChatHover();
-            loadedGroups = true;
+            Client.loadedGroups = true;
             XmppConnection.OnRosterEnd -= ChatClientConnect; //only update groups on Client.Login
         }
 
@@ -327,7 +304,7 @@ namespace LegendaryClient.Logic.MultiUser
         {
             if (Jid.Contains("@"))
                 Jid = Jid.Split('@')[0];
-            var names = await RiotCalls.GetSummonerNames(new double[] {Jid.Replace("sum", "").ToInt() });
+            var names = await calls.GetSummonerNames(new double[] {Jid.Replace("sum", "").ToInt() });
             return names[0];
         }
 
@@ -381,7 +358,7 @@ namespace LegendaryClient.Logic.MultiUser
 
                     ChatPlayerItem Player = Client.AllPlayers[pres.From.User];
                     Player.IsOnline = false;
-                    UpdatePlayers = true;
+                    Client.UpdatePlayers = true;
 
                     string Presence = pres.Status;
                     if (Presence == null)
@@ -489,7 +466,7 @@ namespace LegendaryClient.Logic.MultiUser
                     {
                         ChatPlayerItem x = Client.AllPlayers[pres.From.User];
                         x.IsOnline = false;
-                        UpdatePlayers = true;
+                        Client.UpdatePlayers = true;
                     }
                     catch { }
                     break;
@@ -498,7 +475,7 @@ namespace LegendaryClient.Logic.MultiUser
         
         internal void RostManager_OnRosterItem(object sender, RosterItem ri)
         {
-            UpdatePlayers = true;
+            Client.UpdatePlayers = true;
             if (Client.AllPlayers.ContainsKey(ri.Jid.User))
                 return;
 
@@ -663,7 +640,7 @@ namespace LegendaryClient.Logic.MultiUser
             return Type + "~" + obfuscatedName;
         }
 
-        internal bool runonce = false;
+        
         
         internal int AmountOfWins; //Calculate wins for presence
         internal bool IsRanked;
@@ -695,7 +672,7 @@ namespace LegendaryClient.Logic.MultiUser
         {
             if (IsLoggedIn)
             {
-                string result = await RiotCalls.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId),
+                string result = await calls.PerformLCDSHeartBeat(Convert.ToInt32(LoginPacket.AllSummonerData.Summoner.AcctId),
                     PlayerSession.Token,
                     HeartbeatCount,
                     DateTime.Now.ToString("ddd MMM d yyyy HH:mm:ss 'GMT-0700'"));
@@ -767,7 +744,7 @@ namespace LegendaryClient.Logic.MultiUser
 
         internal bool AutoAcceptQueue = false;
         internal object LobbyContent;
-        internal object LastPageContent;
+        
         internal bool IsInGame;
         internal bool RunonePop = false;
 #pragma warning disable 4014
@@ -800,7 +777,7 @@ namespace LegendaryClient.Logic.MultiUser
                                 break;
                             case "PLAYER_QUIT":
                                 messageOver.MessageTitle.Content = "Player quit";
-                                var name = await RiotCalls.GetSummonerNames(new[] { Convert.ToDouble(notification.MessageArgument) });
+                                var name = await calls.GetSummonerNames(new[] { Convert.ToDouble(notification.MessageArgument) });
                                 messageOver.MessageTextBox.Text = name[0] + " quit from queue!";
                                 break;
                             default:
@@ -824,7 +801,7 @@ namespace LegendaryClient.Logic.MultiUser
                     }
                     else if (message.Body is StoreFulfillmentNotification)
                     {
-                        PlayerChampions = await RiotCalls.GetAvailableChampions();
+                        PlayerChampions = await calls.GetAvailableChampions();
                     }
                     else if (message.Body is Inviter)
                     {
@@ -892,7 +869,7 @@ namespace LegendaryClient.Logic.MultiUser
                                 AccountId = leagueInfo.AccountId,
                                 MessageId = leagueInfo.MessageId
                             };
-                            messageOver.AcceptButton.Click += (o, e) => { RiotCalls.CallPersistenceMessaging(response); };
+                            messageOver.AcceptButton.Click += (o, e) => { calls.CallPersistenceMessaging(response); };
                         }
                     }
                 }
@@ -903,12 +880,11 @@ namespace LegendaryClient.Logic.MultiUser
         {
             if (IsLoggedIn)
             {
-                RiotCalls.PurgeFromQueues();
-                RiotCalls.Leave();
+                calls.PurgeFromQueues();
+                calls.Leave();
                 RiotConnection.Close();
             }
             Environment.Exit(0);
-
         }
 
         internal async void QuitCurrentGame()
@@ -921,7 +897,7 @@ namespace LegendaryClient.Logic.MultiUser
             FixLobby();
             IsInGame = false;
 
-            await RiotCalls.QuitGame();
+            await calls.QuitGame();
             Client.StatusGrid.Visibility = Visibility.Hidden;
             Client.PlayButton.Visibility = Visibility.Visible;
             LobbyContent = null;

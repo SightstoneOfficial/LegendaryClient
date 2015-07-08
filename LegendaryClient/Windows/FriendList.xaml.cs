@@ -33,7 +33,7 @@ namespace LegendaryClient.Windows
         private ChatPlayerItem LastPlayerItem;
         private SelectionChangedEventArgs selection;
         bool loaded = false;
-
+        UserClient client;
         public FriendList()
         {
             InitializeComponent();
@@ -44,27 +44,29 @@ namespace LegendaryClient.Windows
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
             Client.chatlistview = ChatListView;
+
+            client = UserList.users[Client.Current];
         }
 
         private void PresenceChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (PresenceChanger.SelectedIndex == -1)
                 return;
-
+            
             switch ((string)PresenceChanger.SelectedValue)
             {
                 case "Online":
-                    Client.CurrentPresence = PresenceType.available;
-                    Client.presenceStatus = ShowType.chat;
+                    client.CurrentPresence = PresenceType.available;
+                    client.presenceStatus = ShowType.chat;
                     break;
                 case "Busy":
                     //TODO: fix away status, for some reason its not doing anything but there is a function depending on presenceStatus being "away" or not so...
-                    Client.CurrentPresence = PresenceType.available;
-                    Client.presenceStatus = ShowType.away;
+                    client.CurrentPresence = PresenceType.available;
+                    client.presenceStatus = ShowType.away;
                     break;
                 case "Invisible":
-                    Client.presenceStatus = ShowType.NONE;
-                    Client.CurrentPresence = PresenceType.invisible;
+                    client.presenceStatus = ShowType.NONE;
+                    client.CurrentPresence = PresenceType.invisible;
                     break;
             }
         }
@@ -73,10 +75,10 @@ namespace LegendaryClient.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
-                if (Client.CurrentStatus != StatusBox.Text && StatusBox.Text != "Set your status message")
-                    Client.CurrentStatus = StatusBox.Text;
+                if (client.CurrentStatus != StatusBox.Text && StatusBox.Text != "Set your status message")
+                    client.CurrentStatus = StatusBox.Text;
                 else if (StatusBox.Text == "Set your status message")
-                    Client.CurrentStatus = "Online";
+                    client.CurrentStatus = "Online";
 
                 Settings.Default.StatusMsg = StatusBox.Text;
                 Settings.Default.Save();
@@ -302,9 +304,9 @@ namespace LegendaryClient.Windows
                 Client.MainGrid.Children.Add(PlayerItem);
                 Panel.SetZIndex(PlayerItem, 5);
                 PlayerItem.Tag = playerItem;
-                if (Client.PlayerNote.Any(x => x.Key == playerItem.Username))
+                if (client.PlayerNote.Any(x => x.Key == playerItem.Username))
                 {
-                    PlayerItem.Note.Text = Client.PlayerNote[playerItem.Username];
+                    PlayerItem.Note.Text = client.PlayerNote[playerItem.Username];
                     PlayerItem.Note.Foreground = Brushes.Green;
                     PlayerItem.Note.Visibility = Visibility.Visible;
                 }
@@ -334,7 +336,7 @@ namespace LegendaryClient.Windows
                 }
                 else if (playerItem.Status == null)
                 {
-                    Client.hidelegendaryaddition = true;
+                    client.hidelegendaryaddition = true;
                 }
                 else
                 {
@@ -425,15 +427,15 @@ namespace LegendaryClient.Windows
 
         private async void Invite_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.isOwnerOfGame)
-                await RiotCalls.Invite(LastPlayerItem.Id.Replace("sum", ""));
+            if (client.isOwnerOfGame)
+                await client.calls.Invite(LastPlayerItem.Id.Replace("sum", ""));
         }
 
         private async void AddFriendButton_Click(object sender, RoutedEventArgs e)
         {
-            PublicSummoner user = await RiotCalls.GetSummonerByName(FriendAddBox.Text);
-            var Jid = new Jid("sum" + user.SummonerId, Client.XmppConnection.Server, "");
-            Client.PresManager.Subscribe(Jid);
+            PublicSummoner user = await client.calls.GetSummonerByName(FriendAddBox.Text);
+            var Jid = new Jid("sum" + user.SummonerId, client.XmppConnection.Server, "");
+            client.PresManager.Subscribe(Jid);
             FriendAddBox.Text = "";
         }
 
@@ -444,11 +446,11 @@ namespace LegendaryClient.Windows
                 case "inGame":
                     {
                         PlatformGameLifecycleDTO n =
-                            await RiotCalls.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
+                            await client.calls.RetrieveInProgressSpectatorGameInfo(LastPlayerItem.Username);
                         if (n.GameName != null)
-                            Client.LaunchSpectatorGame(Client.Region.SpectatorIpAddress,
+                            Client.LaunchSpectatorGame(client.Region.SpectatorIpAddress,
                                 n.PlayerCredentials.ObserverEncryptionKey, (int)n.PlayerCredentials.GameId,
-                                Client.Region.InternalName);
+                                client.Region.InternalName);
                     }
                     break;
                 case "spectating":
@@ -458,10 +460,10 @@ namespace LegendaryClient.Windows
 
         private void RankedStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Client.Dev)
+            if (client.Dev)
             {
-                Client.TierName = RankedStatus.SelectedItem.ToString().ToUpper();
-                Client.SetChatHover();
+                client.TierName = RankedStatus.SelectedItem.ToString().ToUpper();
+                client.SetChatHover();
             }
         }
 
@@ -474,9 +476,9 @@ namespace LegendaryClient.Windows
         {
             if (LastPlayerItem != null)
             {
-                PublicSummoner sum = await RiotCalls.GetSummonerByName(LastPlayerItem.Username);
-                var Jid = new Jid("sum" + sum.SummonerId, Client.XmppConnection.Server, "");
-                Client.PresManager.Unsubscribe(Jid);
+                PublicSummoner sum = await client.calls.GetSummonerByName(LastPlayerItem.Username);
+                var Jid = new Jid("sum" + sum.SummonerId, client.XmppConnection.Server, "");
+                client.PresManager.Unsubscribe(Jid);
                 //Client.PresManager.Remove(Jid);
                 Client.AllPlayers.Remove(Jid.User);
                 Client.UpdatePlayers = true;

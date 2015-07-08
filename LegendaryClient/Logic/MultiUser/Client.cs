@@ -364,15 +364,21 @@ namespace LegendaryClient.Logic.MultiUser
 
         internal static Page TrueCurrentPage;
         
-        internal MediaElement SoundPlayer;
+        internal static MediaElement SoundPlayer;
 
-        internal MediaElement AmbientSoundPlayer;
+        internal static MediaElement AmbientSoundPlayer;
 
-        internal StackPanel chatlistview;
+        internal static StackPanel chatlistview;
 
         internal static string[] args;
         
         internal static string ExecutingDirectory = string.Empty;
+
+        internal static bool HasPopped = false;
+
+        internal static bool runonce = false;
+
+        internal static object LastPageContent;
 
         /// <summary>
         ///     Riot's database with all the client data
@@ -408,6 +414,26 @@ namespace LegendaryClient.Logic.MultiUser
         ///     The database of all runes
         /// </summary>
         internal static List<runes> Runes;
+
+        /// <summary>
+        ///     Button For Lobby
+        /// </summary>
+        internal static Button ReturnButton;
+
+        /// <summary>
+        ///     spectatorTimer
+        /// </summary>
+        internal static System.Timers.Timer spectatorTimer = new System.Timers.Timer();
+
+        /// <summary>
+        ///     inQueueTimer
+        /// </summary>
+        internal static Label inQueueTimer;
+
+        /// <summary>
+        ///     Check if on Champion Select or Team Queue Lobby Page
+        /// </summary>
+        internal static Page CurrentPage;
 
         internal static void FocusClient()
         {
@@ -578,14 +604,14 @@ namespace LegendaryClient.Logic.MultiUser
             }
         }
 
-        public DateTime JavaTimeStampToDateTime(double javaTimeStamp)
+        public static DateTime JavaTimeStampToDateTime(double javaTimeStamp)
         {
             // Java timestamp is millisecods past epoch
             var dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             dtDateTime = dtDateTime.AddSeconds(Math.Round(javaTimeStamp / 1000)).ToLocalTime();
             return dtDateTime;
         }
-        public BitmapImage GetImage(string address)
+        public static BitmapImage GetImage(string address)
         {
             var UriSource = new System.Uri(address, UriKind.RelativeOrAbsolute);
             if (File.Exists(address) || address.StartsWith("/LegendaryClient;component"))
@@ -605,8 +631,12 @@ namespace LegendaryClient.Logic.MultiUser
 
         #region chat
         internal static List<Group> Groups = new List<Group>();
+
+        internal static bool UpdatePlayers = true;
         
-        internal string GetChatroomJid(string ObfuscatedChatroomName, string password, bool IsTypePublic)
+        internal static bool loadedGroups = false;
+
+        internal static string GetChatroomJid(string ObfuscatedChatroomName, string password, bool IsTypePublic)
         {
             if (!IsTypePublic)
                 return ObfuscatedChatroomName + "@sec.pvp.net";

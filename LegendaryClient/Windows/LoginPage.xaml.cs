@@ -356,6 +356,7 @@ namespace LegendaryClient.Windows
             if (RegionComboBox.SelectedIndex == -1)
                 return;
             user = new UserClient();
+            user.Instance.calls = new RiotCalls(user.Instance);
             if ((string)UpdateRegionComboBox.SelectedValue == "Garena")
             {
                 if (RegionComboBox.SelectedIndex == -1)
@@ -398,7 +399,7 @@ namespace LegendaryClient.Windows
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
             user.Instance.Region = selectedRegion;
-            var context = RiotCalls.RegisterObjects();
+            var context = user.Instance.calls.RegisterObjects();
             Login();
         }
 
@@ -416,7 +417,7 @@ namespace LegendaryClient.Windows
         async void Login()
         {
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
-            var authToken = await RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue);
+            var authToken = await user.Instance.calls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue);
 
             if (authToken == "invalid_credentials")
             {
@@ -428,7 +429,7 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Visibility = Visibility.Collapsed;
                 return;
             }
-            user.Instance.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + selectedRegion.Server + ":2099"), RiotCalls.RegisterObjects(), ObjectEncoding.Amf3);
+            user.Instance.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + selectedRegion.Server + ":2099"), user.Instance.calls.RegisterObjects(), ObjectEncoding.Amf3);
             user.Instance.RiotConnection.CallbackException += client_CallbackException;
             user.Instance.RiotConnection.MessageReceived += client_MessageReceived;
             try
@@ -452,13 +453,13 @@ namespace LegendaryClient.Windows
                 Username = LoginUsernameBox.Text,
                 Password = LoginPasswordBox.Password,
                 ClientVersion = Client.Version,
-                IpAddress = RiotCalls.GetIpAddress(),
+                IpAddress = user.Instance.calls.GetIpAddress(),
                 Locale = selectedRegion.Locale,
                 OperatingSystem = "Windows 7",
                 Domain = "lolclient.lol.riotgames.com",
                 AuthToken = authToken
             };
-            Session login = await RiotCalls.Login(newCredentials);
+            Session login = await user.Instance.calls.Login(newCredentials);
             if (login == null)
             {
                 Client.Log("Login session is null.");
@@ -477,6 +478,7 @@ namespace LegendaryClient.Windows
                 return;
             }
             user.Instance.PlayerSession = login;
+            
             var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
             var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
             var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
@@ -496,16 +498,16 @@ namespace LegendaryClient.Windows
         private async void DoGetOnLoginPacket()
         {
             //TODO: Finish this so all calls are used
-            var packetx = await RiotCalls.GetLoginDataPacketForUser();
-            user.Instance.Queues = await RiotCalls.GetAvailableQueues();
-            user.Instance.PlayerChampions = await RiotCalls.GetAvailableChampions();
+            var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
+            user.Instance.Queues = await user.Instance.calls.GetAvailableQueues();
+            user.Instance.PlayerChampions = await user.Instance.calls.GetAvailableChampions();
             //var runes = await RiotCalls.GetSummonerRuneInventory(packetx.AllSummonerData.Summoner.AcctId);
             user.Instance.StartHeartbeat();
             //var leaguePos = await RiotCalls.GetMyLeaguePositions();
             //var preferences = await RiotCalls.LoadPreferencesByKey();
             //var masterybook = await RiotCalls.GetMasteryBook(packetx.AllSummonerData.Summoner.AcctId);
             //var lobby = await RiotCalls.CheckLobbyStatus();
-            var invites = await RiotCalls.GetPendingInvitations();
+            var invites = await user.Instance.calls.GetPendingInvitations();
             //var player = await RiotCalls.CreatePlayer();
             GotLoginPacket(packetx);
 
@@ -544,6 +546,8 @@ namespace LegendaryClient.Windows
                 return;
             }
             user.Instance.LoginPacket = packet;
+
+            UserList.users.Add(packet.AllSummonerData.Summoner.InternalName, user.Instance);
             if (packet.AllSummonerData.Summoner.ProfileIconId == -1)
             {
                 user.Instance.RiotConnection.CallbackException -= client_CallbackException;
@@ -646,7 +650,7 @@ namespace LegendaryClient.Windows
                 }
                 else
                     Client.SwitchPage(Client.MainPage);
-
+                Client.Current = packet.AllSummonerData.Summoner.InternalName;
                 Client.ClearPage(typeof(LoginPage));
             }));
         }
@@ -751,7 +755,7 @@ namespace LegendaryClient.Windows
                                 LoggingInLabel.Content = "Logging in...";
                                 LoggingInProgressRing.Visibility = Visibility.Visible;
                             }));
-                    var context = RiotCalls.RegisterObjects();
+                    var context = user.Instance.calls.RegisterObjects();
                     user.Instance.RiotConnection = new RtmpClient(new System.Uri("rtmps://" + garenaregion.Server + ":2099"), context, ObjectEncoding.Amf3);
                     user.Instance.RiotConnection.CallbackException += client_CallbackException;
                     user.Instance.RiotConnection.MessageReceived += client_MessageReceived;
@@ -761,17 +765,17 @@ namespace LegendaryClient.Windows
                     AuthenticationCredentials newCredentials = new AuthenticationCredentials
                     {
                         AuthToken = await
-                            RiotCalls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
+                            user.Instance.calls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, garenaregion.LoginQueue, reToken(s1)),
                         Username = user.Instance.UID,
                         Password = null,
                         ClientVersion = Client.Version,
-                        IpAddress = RiotCalls.GetIpAddress(),
+                        IpAddress = user.Instance.calls.GetIpAddress(),
                         Locale = garenaregion.Locale,
                         PartnerCredentials = "8393 " + s1,
                         OperatingSystem = "Windows 7",
                         Domain = "lolclient.lol.riotgames.com",
                     };
-                    Session login = await RiotCalls.Login(newCredentials);
+                    Session login = await user.Instance.calls.Login(newCredentials);
                     user.Instance.PlayerSession = login;
                     var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
                     var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);

@@ -29,6 +29,7 @@ using agsXMPP.protocol.client;
 using agsXMPP.protocol.x.muc;
 using agsXMPP;
 using agsXMPP.Collections;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -62,7 +63,8 @@ namespace LegendaryClient.Windows
         private string firstPlayer = null;
         private Jid jid;
         private List<int> Skins;
-
+        private RiotCalls RiotCalls;
+        private UserClient UserClient;
         #region champs
 
         private readonly string[] bandleCityChampions =
@@ -138,13 +140,14 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
+            UserClient = UserList.users[Client.Current];
             var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
             jid = new Jid(Jid);
-            Chatroom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
+            Chatroom = new MucManager(UserClient.XmppConnection);
+            UserClient.XmppConnection.OnMessage += XmppConnection_OnMessage;
+            UserClient.XmppConnection.OnPresence += XmppConnection_OnPresence;
             Chatroom.AcceptDefaultConfiguration(jid);
-            Chatroom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, RoomPassword);
+            Chatroom.JoinRoom(jid, UserClient.LoginPacket.AllSummonerData.Summoner.Name, RoomPassword);
         }
 
         void XmppConnection_OnPresence(object sender, Presence pres)
@@ -153,23 +156,23 @@ namespace LegendaryClient.Windows
                 return;
 
 
-            if (Client.InstaCall)
+            if (UserClient.InstaCall)
             {
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                     {
-                        Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
+                        Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + ": "
                     };
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.OrangeRed);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    if (Client.Filter)
-                        tr.Text = Client.CallString.Filter() + Environment.NewLine;
+                    if (UserClient.Filter)
+                        tr.Text = UserClient.CallString.Filter() + Environment.NewLine;
                     else
-                        tr.Text = Client.CallString + Environment.NewLine;
+                        tr.Text = UserClient.CallString + Environment.NewLine;
 
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                    Client.XmppConnection.Send(new Message(jid, Client.CallString));
+                    UserClient.XmppConnection.Send(new Message(jid, UserClient.CallString));
                     ChatText.ScrollToEnd();
                     var t = new Timer
                     {
@@ -178,7 +181,7 @@ namespace LegendaryClient.Windows
                     t.Start();
                     t.Tick += (o, e) =>
                     {
-                        Client.InstaCall = false;
+                        UserClient.InstaCall = false;
                         t.Stop();
                     };
                 }));
@@ -192,8 +195,8 @@ namespace LegendaryClient.Windows
                 {
                     if (firstPlayer == pres.From.User)
                     {
-                        Client.XmppConnection.MessageGrabber.Remove(jid);
-                        Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
+                        UserClient.XmppConnection.MessageGrabber.Remove(jid);
+                        UserClient.XmppConnection.OnPresence -= XmppConnection_OnPresence;
                     }
                 }
 
@@ -218,7 +221,7 @@ namespace LegendaryClient.Windows
             if (jid.Bare.Contains(msg.From.User))
                 return;
 
-            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (msg.From.Resource == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                 return;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -233,7 +236,7 @@ namespace LegendaryClient.Windows
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                if (Client.Filter)
+                if (UserClient.Filter)
                     tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                               Environment.NewLine;
                 else
@@ -253,7 +256,7 @@ namespace LegendaryClient.Windows
             StartChampSelect();
             if (!Settings.Default.DisableClientSound)
             {
-                var sound = AmbientChampSelect.CurrentQueueToSoundFile(Client.QueueId);
+                var sound = AmbientChampSelect.CurrentQueueToSoundFile(UserClient.QueueId);
                 AmbientChampSelect.PlayAmbientChampSelectSound(sound);
             }
             Client.LastPageContent = Content;
@@ -268,7 +271,7 @@ namespace LegendaryClient.Windows
 
         private void GetLocalRunePages()
         {
-            foreach (var item in Client.LocalRunePages)
+            foreach (var item in UserClient.LocalRunePages)
             {
                 LocalRuneComboBox.Items.Add(item.Key);
             }
@@ -320,24 +323,24 @@ namespace LegendaryClient.Windows
             //Get champions and sort alphabetically
 
             CanLockIn = false;
-            ChampList = new List<ChampionDTO>(Client.PlayerChampions);
+            ChampList = new List<ChampionDTO>(UserClient.PlayerChampions);
             ChampList.Sort(
                 (x, y) =>
                     string.Compare(champions.GetChampion(x.ChampionId)
                         .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
-            if (Client.LoginPacket.ClientSystemStates.freeToPlayChampionsForNewPlayersMaxLevel >=
-                Client.LoginPacket.AllSummonerData.SummonerLevel.Level)
+            if (UserClient.LoginPacket.ClientSystemStates.freeToPlayChampionsForNewPlayersMaxLevel >=
+                UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level)
                 foreach (var item in ChampList)
                 {
-                    if (Client.LoginPacket.ClientSystemStates.freeToPlayChampionIdList.Contains(item.ChampionId))
+                    if (UserClient.LoginPacket.ClientSystemStates.freeToPlayChampionIdList.Contains(item.ChampionId))
                         item.FreeToPlay = true;
                     else
                         item.FreeToPlay = false;
                 }
 
             //Retrieve masteries and runes
-            MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
-            MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
+            MyMasteries = UserClient.LoginPacket.AllSummonerData.MasteryBook;
+            MyRunes = UserClient.LoginPacket.AllSummonerData.SpellBook;
 
             //Put masteries & runes into combo boxes
             int i = 0;
@@ -368,13 +371,13 @@ namespace LegendaryClient.Windows
             QuickLoad = true;
 
             //Signal to the server we are in champion select
-            await RiotCalls.SetClientReceivedGameMessage(Client.GameID, "CHAMP_SELECT_CLIENT");
+            await RiotCalls.SetClientReceivedGameMessage(UserClient.GameID, "CHAMP_SELECT_CLIENT");
             GameDTO latestDto =
                 await
-                    RiotCalls.GetLatestGameTimerState(Client.GameID, Client.ChampSelectDTO.GameState,
-                        Client.ChampSelectDTO.PickTurn);
+                    RiotCalls.GetLatestGameTimerState(UserClient.GameID, UserClient.ChampSelectDTO.GameState,
+                        UserClient.ChampSelectDTO.PickTurn);
             //Find the game config for timers
-            configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDto.GameTypeConfigId);
+            configType = UserClient.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDto.GameTypeConfigId);
             if (configType == null) //Invalid config... abort!
             {
                 QuitCurrentGame();
@@ -419,7 +422,7 @@ namespace LegendaryClient.Windows
                 //Start recieving champ select
                 Select_OnMessageReceived(this, latestDto);
                 //Client.OnFixChampSelect += ChampSelect_OnMessageReceived;
-                Client.RiotConnection.MessageReceived += ChampSelect_OnMessageReceived;
+                UserClient.RiotConnection.MessageReceived += ChampSelect_OnMessageReceived;
             }
         }
 
@@ -474,7 +477,7 @@ namespace LegendaryClient.Windows
 
                     if (LatestDto.QueueTypeName == "COUNTER_PICK") //fix for nemesis draft, get your champ from GameDTO
                     {
-                        var selectedChamp = champDto.PlayerChampionSelections.Find(item => item.SummonerInternalName == Client.LoginPacket.AllSummonerData.Summoner.InternalName);
+                        var selectedChamp = champDto.PlayerChampionSelections.Find(item => item.SummonerInternalName == UserClient.LoginPacket.AllSummonerData.Summoner.InternalName);
                         ChangeSelectedChampionSkins(selectedChamp.ChampionId);
                     }
                     foreach (PlayerParticipant participant in allParticipants.Select(p => p as PlayerParticipant))
@@ -485,14 +488,14 @@ namespace LegendaryClient.Windows
                             //If it is our turn to pick
                             if (play.PickTurn == champDto.PickTurn)
                             {
-                                if (play.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId)
+                                if (play.SummonerId == UserClient.LoginPacket.AllSummonerData.Summoner.SumId)
                                 {
                                     if (Settings.Default.PickBanFocus)
                                         Client.MainWin.Focus();
                                     if (Settings.Default.PickBanFlash)
                                         Client.MainWin.FlashWindow();
                                     //Allows us to instapick any champ we own. 
-                                    if (Client.usingInstaPick)
+                                    if (UserClient.usingInstaPick)
                                     {
                                         bool champbanned = false;
                                         //disallow picking banned champs
@@ -501,24 +504,24 @@ namespace LegendaryClient.Windows
                                             foreach (
                                                 BannedChampion x in
                                                     champDto.BannedChampions.Where(
-                                                        x => x.ChampionId == Client.SelectChamp))
+                                                        x => x.ChampionId == UserClient.SelectChamp))
                                                 champbanned = true;
 
                                             //disallow picking picked champs
                                             foreach (
                                                 PlayerChampionSelectionDTO selection in
                                                     champDto.PlayerChampionSelections.Where(
-                                                        selection => selection.ChampionId == Client.SelectChamp))
+                                                        selection => selection.ChampionId == UserClient.SelectChamp))
                                                 champbanned = true;
 
                                             var temp = new ListViewItem
                                             {
-                                                Tag = Client.SelectChamp
+                                                Tag = UserClient.SelectChamp
                                             };
                                             if (!champbanned)
                                                 ListViewItem_PreviewMouseDown(temp, null);
 
-                                            Client.usingInstaPick = false;
+                                            UserClient.usingInstaPick = false;
                                         }
                                         catch
                                         {
@@ -540,7 +543,7 @@ namespace LegendaryClient.Windows
                             }
                         }
                         //Otherwise block selection of champions unless in dev mode
-                        if (!Client.Dev)
+                        if (!UserClient.Dev)
                         {
                             ChampionSelectListView.IsHitTestVisible = false;
                             ChampionSelectListView.Opacity = 0.5;
@@ -556,7 +559,7 @@ namespace LegendaryClient.Windows
                         if (CountdownTimer != null)
                             CountdownTimer.Stop();
 
-                        Client.FixChampSelect();
+                        UserClient.FixChampSelect();
 
                         return;
                     }
@@ -652,10 +655,10 @@ namespace LegendaryClient.Windows
                         Client.ReturnButton.Visibility = Visibility.Visible;
                         Client.inQueueTimer.Visibility = Visibility.Visible;
                         Client.NotificationGrid.Children.Add(pop);
-                        Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
+                        UserClient.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
                         //Client.OnFixChampSelect -= ChampSelect_OnMessageReceived;
-                        Client.GameStatus = "inQueue";
-                        Client.SetChatHover();
+                        UserClient.GameStatus = "inQueue";
+                        UserClient.SetChatHover();
                         Client.SwitchPage(previousPage);
                         Client.ClearPage(typeof(ChampSelectPage));
 
@@ -746,7 +749,7 @@ namespace LegendaryClient.Windows
                                 //If we have locked in render skin select
                                 if (!HasLockedIn ||
                                     selection.SummonerInternalName !=
-                                    Client.LoginPacket.AllSummonerData.Summoner.InternalName || (Client.Dev && champDto.MapId != 12))
+                                    UserClient.LoginPacket.AllSummonerData.Summoner.InternalName || (UserClient.Dev && champDto.MapId != 12))
                                     continue;
 
                                 if (purpleSide)
@@ -835,12 +838,12 @@ namespace LegendaryClient.Windows
             }
             else if (message is PlayerCredentialsDto)
             {
-                Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
+                UserClient.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
 
                 #region Launching Game
 
                 var dto = message as PlayerCredentialsDto;
-                Client.CurrentGame = dto;
+                UserClient.CurrentGame = dto;
 
                 if (HasLaunchedGame)
                     return;
@@ -855,14 +858,14 @@ namespace LegendaryClient.Windows
                         PlatformGameLifecycleDTO n =
                             await
                                 RiotCalls.RetrieveInProgressSpectatorGameInfo(
-                                    Client.LoginPacket.AllSummonerData.Summoner.Name);
+                                    UserClient.LoginPacket.AllSummonerData.Summoner.Name);
                         if (n.GameName != null)
                         {
                             string ip = n.PlayerCredentials.ObserverServerIp + ":" +
                                         n.PlayerCredentials.ObserverServerPort;
                             string key = n.PlayerCredentials.ObserverEncryptionKey;
                             var gameId = (int)n.PlayerCredentials.GameId;
-                            new ReplayRecorder(ip, gameId, Client.Region.InternalName, key);
+                            new ReplayRecorder(ip, gameId, UserClient.Region.InternalName, key);
                         }
                     });
                 }
@@ -1196,7 +1199,7 @@ namespace LegendaryClient.Windows
                 control.SummonerSpell2.Source = Client.GetImage(UriSource);
             }
             //Set our summoner spells in client
-            if (player.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (player.SummonerName == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
             {
                 string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
                     SummonerSpell.GetSpellImageName((int)selection.Spell1Id));
@@ -1221,7 +1224,7 @@ namespace LegendaryClient.Windows
                 control.Opacity = 1;
 
             //If trading with this player is possible
-            if (CanTradeWith != null && (CanTradeWith.PotentialTraders.Contains(player.SummonerInternalName) || Client.Dev))
+            if (CanTradeWith != null && (CanTradeWith.PotentialTraders.Contains(player.SummonerInternalName) || UserClient.Dev))
                 control.TradeButton.Visibility = Visibility.Visible;
 
             //If this player is duo/trio/quadra queued with players
@@ -1280,7 +1283,7 @@ namespace LegendaryClient.Windows
                 //SelectChampion.SelectChampion(selection.ChampionId)*/
                 await RiotCalls.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
                 CanLockIn = true;
-                Client.ChampId = (int)item.Tag;
+                UserClient.ChampId = (int)item.Tag;
                 //TODO: Fix stupid animation glitch on left hand side
                 var fadingAnimation = new DoubleAnimation
                 {
@@ -1334,7 +1337,7 @@ namespace LegendaryClient.Windows
                     Text = "Selected a random skin" + Environment.NewLine
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                if (Client.Dev) Client.Log("Selected " + skin.displayName + " as skin");
+                if (UserClient.Dev) Client.Log("Selected " + skin.displayName + " as skin");
             }
             else if (s != null)
             {
@@ -1396,11 +1399,11 @@ namespace LegendaryClient.Windows
         {
             Client.AmbientSoundPlayer.Stop();
             await RiotCalls.QuitGame();
-            Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
+            UserClient.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
-            Client.GameStatus = "outOfGame";
-            Client.SetChatHover();
+            UserClient.GameStatus = "outOfGame";
+            UserClient.SetChatHover();
             Client.ReturnButton.Visibility = Visibility.Hidden;
             Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(ChampSelectPage));
@@ -1409,14 +1412,14 @@ namespace LegendaryClient.Windows
         private async void InGame()
         {
             await RiotCalls.QuitGame();
-            Client.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
+            UserClient.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
             Client.ClearPage(typeof(FactionsCreateGamePage));
-            Client.GameStatus = "inGame";
-            Client.timeStampSince =
+            UserClient.GameStatus = "inGame";
+            UserClient.timeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
-            Client.SetChatHover();
+            UserClient.SetChatHover();
 
             Client.SwitchPage(new InGame(true));
             Client.ClearPage(typeof(ChampSelectPage));
@@ -1474,7 +1477,7 @@ namespace LegendaryClient.Windows
             int i = 0;
             var bookDto = new MasteryBookDTO
             {
-                SummonerId = Client.LoginPacket.AllSummonerData.Summoner.SumId,
+                SummonerId = UserClient.LoginPacket.AllSummonerData.Summoner.SumId,
                 BookPages = new List<MasteryBookPageDTO>()
             };
             foreach (MasteryBookPageDTO masteryPage in MyMasteries.BookPages)
@@ -1539,7 +1542,7 @@ namespace LegendaryClient.Windows
             //Enable dev mode if !~dev is typed in chat
             if (ChatTextBox.Text == "!~dev")
             {
-                if (!Client.Dev)
+                if (!UserClient.Dev)
                 {
                     var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                     {
@@ -1553,17 +1556,17 @@ namespace LegendaryClient.Windows
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
+                    Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + ": "
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                if (Client.Filter)
+                if (UserClient.Filter)
                     tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                Client.XmppConnection.Send(new Message(jid, MessageType.chat, ChatTextBox.Text));
+                UserClient.XmppConnection.Send(new Message(jid, MessageType.chat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }
@@ -1594,21 +1597,21 @@ namespace LegendaryClient.Windows
                 return;
 
             int i = 0;
-            string[] runeIds = Client.LocalRunePages[LocalRuneComboBox.SelectedItem.ToString()].Split(',');
+            string[] runeIds = UserClient.LocalRunePages[LocalRuneComboBox.SelectedItem.ToString()].Split(',');
 
-            var failsafe = Client.LoginPacket.AllSummonerData.SpellBook;
+            var failsafe = UserClient.LoginPacket.AllSummonerData.SpellBook;
             try
             {
                 foreach (string item in runeIds)
                 {
-                    Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RuneComboBox.SelectedIndex].SlotEntries[i].RuneId = Convert.ToInt32(item);
+                    UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages[RuneComboBox.SelectedIndex].SlotEntries[i].RuneId = Convert.ToInt32(item);
                     i++;
                 }
 
 
-                if ((await RiotCalls.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook)).DefaultPage == null)
+                if ((await RiotCalls.SaveSpellBook(UserClient.LoginPacket.AllSummonerData.SpellBook)).DefaultPage == null)
                 {
-                    Client.LoginPacket.AllSummonerData.SpellBook = failsafe;
+                    UserClient.LoginPacket.AllSummonerData.SpellBook = failsafe;
                     var pop = new NotifyPlayerPopup("Save failed", "Failed to use local rune page.")
                     {
                         HorizontalAlignment = HorizontalAlignment.Right,
@@ -1619,7 +1622,7 @@ namespace LegendaryClient.Windows
             }
             catch
             {
-                Client.LoginPacket.AllSummonerData.SpellBook = failsafe;
+                UserClient.LoginPacket.AllSummonerData.SpellBook = failsafe;
                 var pop = new NotifyPlayerPopup("Save failed", "Failed to use local rune page.")
                 {
                     HorizontalAlignment = HorizontalAlignment.Right,
