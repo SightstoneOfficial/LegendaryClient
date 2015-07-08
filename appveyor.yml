@@ -7,6 +7,7 @@ branches:
   only:
     - master
     - material-design
+    - multiuser-client
 
 # build Release	
 configuration: Release
