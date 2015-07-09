@@ -23,6 +23,7 @@ using LegendaryClient.Logic.Riot.Platform.Messaging.Persistence;
 using Newtonsoft.Json;
 using LegendaryClient.Logic.JSON;
 using agsXMPP.Collections;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -34,6 +35,7 @@ namespace LegendaryClient.Windows
         private readonly MucManager newRoom;
         private string MatchStatsOnline;
         private readonly string RoomJid;
+        static UserClient UserClient = UserList.users[Client.Current];
         
         public EndOfGamePage(EndOfGameStats statistics)
         {
@@ -41,15 +43,15 @@ namespace LegendaryClient.Windows
             RenderStats(statistics);
             Client.SwitchPage(Client.MainPage);
             Client.runonce = false;
-            Client.ChampId = -1;
+            UserClient.ChampId = -1;
             RoomJid = Client.GetChatroomJid(statistics.RoomName, statistics.RoomPassword, false);
             
-            newRoom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
-            Client.RiotConnection.MessageReceived += RiotConnection_MessageReceived;
+            newRoom = new MucManager(UserClient.XmppConnection);
+            UserClient.XmppConnection.OnMessage += XmppConnection_OnMessage;
+            UserClient.XmppConnection.OnPresence += XmppConnection_OnPresence;
+            UserClient.RiotConnection.MessageReceived += RiotConnection_MessageReceived;
             newRoom.AcceptDefaultConfiguration(new Jid(RoomJid));
-            newRoom.JoinRoom(new Jid(RoomJid), Client.LoginPacket.AllSummonerData.Summoner.Name);
+            newRoom.JoinRoom(new Jid(RoomJid), UserClient.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
         void RiotConnection_MessageReceived(object sender, RtmpSharp.Messaging.MessageReceivedEventArgs e)
@@ -96,7 +98,7 @@ namespace LegendaryClient.Windows
             if (RoomJid.Contains(msg.From.User))
                 return;
 
-            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (msg.From.Resource == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                 return;
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
@@ -109,7 +111,7 @@ namespace LegendaryClient.Windows
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                if (Client.Filter)
+                if (UserClient.Filter)
                     tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                               Environment.NewLine;
                 else
@@ -125,11 +127,11 @@ namespace LegendaryClient.Windows
         {
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
-                Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
+                Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + ": "
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-            if (Client.Filter)
+            if (UserClient.Filter)
                 tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
             else
                 tr.Text = ChatTextBox.Text + Environment.NewLine;
@@ -138,7 +140,7 @@ namespace LegendaryClient.Windows
             if (string.IsNullOrEmpty(ChatTextBox.Text))
                 return;
 
-            Client.XmppConnection.Send(new Message(new Jid(RoomJid), MessageType.groupchat, ChatTextBox.Text));
+            UserClient.XmppConnection.Send(new Message(new Jid(RoomJid), MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = "";
             ChatText.ScrollToEnd();
         }
@@ -150,10 +152,10 @@ namespace LegendaryClient.Windows
             ModeLabel.Content = statistics.GameMode;
             TypeLabel.Content = statistics.GameType;
             // Add Garena TW match history
-            if (Client.Garena && !string.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion) && Settings.Default.DefaultGarenaRegion == "TW")
+            if (UserClient.Garena && !string.IsNullOrEmpty(Settings.Default.DefaultGarenaRegion) && Settings.Default.DefaultGarenaRegion == "TW")
                 MatchStatsOnline = string.Format("http://lol.moa.tw/summoner/show/{0}#tabs-recentgame2", statistics.SummonerName.Replace(" ", "_"));
             else
-                MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + Client.Region.InternalName + "/" + statistics.ReportGameId + "/" + statistics.UserId;
+                MatchStatsOnline = "http://matchhistory.na.leagueoflegends.com/en/#match-details/" + UserClient.Region.InternalName + "/" + statistics.ReportGameId + "/" + statistics.UserId;
 
             GainedIP.Content = "+" + statistics.IpEarned + " IP";
             TotalIP.Content = statistics.IpTotal.ToString(CultureInfo.InvariantCulture).Replace(".0", "") + " IP Total";
@@ -188,7 +190,7 @@ namespace LegendaryClient.Windows
                 bool victory = false;
                 foreach (RawStatDTO stat in summary.Statistics.Where(stat => stat.StatTypeName.ToLower() == "win"))
                 {
-                    if (summary.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                    if (summary.SummonerName == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                     {
                         victory = true;
                         GameResultLabel.Content = "Victory";
@@ -204,7 +206,7 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
+                    if (UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
                     {
                         GainedXP.Content = "+" + statistics.ExperienceEarned + game;
                         TotalXP.Content = statistics.ExperienceTotal + game;
@@ -282,8 +284,8 @@ namespace LegendaryClient.Windows
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.RiotConnection.MessageReceived -= RiotConnection_MessageReceived;
-            newRoom.LeaveRoom(new Jid(RoomJid), Client.LoginPacket.AllSummonerData.Summoner.Name);
+            UserClient.RiotConnection.MessageReceived -= RiotConnection_MessageReceived;
+            newRoom.LeaveRoom(new Jid(RoomJid), UserClient.LoginPacket.AllSummonerData.Summoner.Name);
             Client.OverlayContainer.Visibility = Visibility.Hidden;
             Client.ClearPage(typeof(EndOfGamePage));
         }

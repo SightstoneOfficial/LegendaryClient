@@ -28,6 +28,8 @@
                     <RectangleGeometry Rect="15,15,5000,2500"/>
                 </MediaElement.Clip>
             </MediaElement>
+            <PasswordBox x:Name="Encrypt" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" Margin="10,635,0,0" controls:TextBoxHelper.Watermark="EncryptKey"/>
+            <Button x:Name="EncryptCheck" Click="Button_Click" Content="Check key" HorizontalAlignment="Left" VerticalAlignment="Top" Width="96" Margin="315,635,0,0" Height="27"/>
         </Grid>
 
         <!-- Floating Action Button -->

@@ -19,6 +19,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient
 {
@@ -30,16 +31,18 @@ namespace LegendaryClient
         string GSUsername;
         Point mouseLocation;
         KeyValuePair<bool, TinyRuneMasteryData> mouseEntered;
+        static UserClient UserClient;
 
         public GameScouter()
         {
             InitializeComponent();
+            UserClient = UserList.users[Client.Current];
             Client.win = this;
         }
         public async void LoadScouter(string User = null)
         {
             if (string.IsNullOrEmpty(User))
-                User = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                User = UserClient.LoginPacket.AllSummonerData.Summoner.Name;
 
             GSUsername = User;
 
@@ -54,7 +57,7 @@ namespace LegendaryClient
         }
         private static async Task<bool> IsUserValid(string Username)
         {
-            PublicSummoner sum = await RiotCalls.GetSummonerByName(Username);
+            PublicSummoner sum = await UserClient.calls.GetSummonerByName(Username);
             if (string.IsNullOrEmpty(sum.Name))
                 return false;
             else
@@ -63,7 +66,7 @@ namespace LegendaryClient
 
         private async void LoadStats(string user)
         {
-            PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(user);
+            PlatformGameLifecycleDTO n = await UserClient.calls.RetrieveInProgressSpectatorGameInfo(user);
             if (n.GameName != null)
             {
                 LoadPar(new List<Participant>(n.Game.TeamOne.ToArray()), n, BlueTeam);
@@ -92,7 +95,7 @@ namespace LegendaryClient
             try
             {
                 string mmrJson;
-                string url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName +
+                string url = UserClient.Region.SpectatorLink + "consumer/getGameMetaData/" + UserClient.Region.InternalName +
                              "/" + n.Game.Id + "/token";
                 using (var client = new WebClient())
                     mmrJson = client.DownloadString(url);
@@ -110,7 +113,7 @@ namespace LegendaryClient
             {
                 if (par is PlayerParticipant)
                 {
-                    PublicSummoner scoutersum = await RiotCalls.GetSummonerByName(GSUsername);
+                    PublicSummoner scoutersum = await UserClient.calls.GetSummonerByName(GSUsername);
                     if ((par as PlayerParticipant).AccountId == scoutersum.AcctId)
                         isYourTeam = true;
                 }
@@ -144,10 +147,10 @@ namespace LegendaryClient
                         GameStats.Clear();
                         try
                         {
-                            PublicSummoner summoner = await RiotCalls.GetSummonerByName(championSelect.SummonerInternalName.Replace("summoner", string.Empty));
+                            PublicSummoner summoner = await UserClient.calls.GetSummonerByName(championSelect.SummonerInternalName.Replace("summoner", string.Empty));
                             if(File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png")))
                                 control.ProfileIcon.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png"));
-                            RecentGames result = await RiotCalls.GetRecentGames(summoner.AcctId);
+                            RecentGames result = await UserClient.calls.GetRecentGames(summoner.AcctId);
                             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
                             foreach (PlayerGameStats game in result.GameStatistics)
                             {
@@ -418,16 +421,16 @@ namespace LegendaryClient
         }
         private async Task<SummonerRuneInventory> GetUserRunesPage(string User)
         {
-            PublicSummoner summoner = await RiotCalls.GetSummonerByName(User);
-            SummonerRuneInventory runes = await RiotCalls.GetSummonerRuneInventory(summoner.SummonerId);
+            PublicSummoner summoner = await UserClient.calls.GetSummonerByName(User);
+            SummonerRuneInventory runes = await UserClient.calls.GetSummonerRuneInventory(summoner.SummonerId);
             return runes;
 
 
         }
         private async Task<MasteryBookDTO> GetUserMasterPage(string User)
         {
-            PublicSummoner summoner = await RiotCalls.GetSummonerByName(User);
-            MasteryBookDTO page = await RiotCalls.GetMasteryBook(summoner.SummonerId);
+            PublicSummoner summoner = await UserClient.calls.GetSummonerByName(User);
+            MasteryBookDTO page = await UserClient.calls.GetMasteryBook(summoner.SummonerId);
             return page;
         }
     }

@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -19,6 +20,7 @@ namespace LegendaryClient.Windows
     {
         private readonly List<ChampionDTO> ChampList;
         private readonly TeamQueuePage teamQueuePage;
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public SelectChampOverlay(TeamQueuePage tqp)
         {
@@ -27,7 +29,7 @@ namespace LegendaryClient.Windows
             ChampionSelectListView.Items.Clear();
             if (true)
             {
-                ChampList = new List<ChampionDTO>(Client.PlayerChampions);
+                ChampList = new List<ChampionDTO>(UserClient.PlayerChampions);
                 ChampList.Sort(
                     (x, y) =>
                         string.Compare(champions.GetChampion(x.ChampionId)
@@ -72,25 +74,25 @@ namespace LegendaryClient.Windows
 
             if (item != null && (int) item.Tag == 0)
             {
-                Client.usingInstaPick = false;
+                UserClient.usingInstaPick = false;
                 try
                 {
                     teamQueuePage.CreateText(
                         "You will no longer attempt to auto select: " +
-                        champions.GetChampion(Client.SelectChamp).displayName, Brushes.OrangeRed);
+                        champions.GetChampion(UserClient.SelectChamp).displayName, Brushes.OrangeRed);
                 }
                 catch
                 {
                     teamQueuePage.CreateText(
                            "You will not try to auto select any champ you didn't even pick one to instalock. This is not the random button... yet", Brushes.OrangeRed);
                 }
-                Client.SelectChamp = 0;
+                UserClient.SelectChamp = 0;
                 return;
             }
             if (item != null)
             {
-                Client.SelectChamp = ((int) item.Tag);
-                Client.usingInstaPick = true;
+                UserClient.SelectChamp = ((int) item.Tag);
+                UserClient.usingInstaPick = true;
 
                 teamQueuePage.CreateText("You will attempt to auto select: " + champions.GetChampion((int) item.Tag).displayName,
                     Brushes.OrangeRed);

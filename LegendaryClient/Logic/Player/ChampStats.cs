@@ -42,8 +42,11 @@ namespace LegendaryClient.Logic.Player
         /// </summary>
         public int GamesWithChamp;
 
+        public UserClient UserClient;
+
         public ChampStats(int champId, string playerName)
         {
+            UserClient = UserList.users[Client.Current];
             Champ = champions.GetChampion(champId);
             ChampID = Champ.id;
             LoadName(playerName);
@@ -51,6 +54,7 @@ namespace LegendaryClient.Logic.Player
 
         public ChampStats(string champName, string playerName)
         {
+            UserClient = UserList.users[Client.Current];
             Champ = champions.GetChampion(champName);
             ChampID = Champ.id;
             LoadName(playerName);
@@ -59,6 +63,7 @@ namespace LegendaryClient.Logic.Player
 
         public ChampStats(string champName, int playerName)
         {
+            UserClient = UserList.users[Client.Current];
             Champ = champions.GetChampion(champName);
             ChampID = Champ.id;
             Load(playerName);
@@ -66,6 +71,7 @@ namespace LegendaryClient.Logic.Player
 
         public ChampStats(int champName, int playerName)
         {
+            UserClient = UserList.users[Client.Current];
             Champ = champions.GetChampion(champName);
             ChampID = Champ.id;
             Load(playerName);
@@ -73,7 +79,7 @@ namespace LegendaryClient.Logic.Player
 
         async void LoadName(string Name)
         {
-            PublicSummoner summoner = await RiotCalls.GetSummonerByName(Name);
+            PublicSummoner summoner = await UserClient.calls.GetSummonerByName(Name);
             await Load(summoner.AcctId);
         }
 
@@ -82,7 +88,7 @@ namespace LegendaryClient.Logic.Player
 
         public async Task<string[]> Load(double ID)
         {
-            RecentGames result = await RiotCalls.GetRecentGames(ID);
+            RecentGames result = await UserClient.calls.GetRecentGames(ID);
             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
             GamesWithChamp = 0;
             foreach (PlayerGameStats game in result.GameStatistics)

@@ -4,6 +4,7 @@ using System.Windows;
 using LegendaryClient.Logic;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 #endregion
 
@@ -14,6 +15,7 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class TradeControl
     {
+        static UserClient UserClient = UserList.users[Client.Current];
         public TradeControl()
         {
             InitializeComponent();
@@ -24,12 +26,12 @@ namespace LegendaryClient.Controls
             var tradeDTO = Tag as TradeContractDTO;
             if (tradeDTO != null)
                 await
-                    RiotCalls.AcceptTrade(tradeDTO.RequesterInternalSummonerName, (int) tradeDTO.RequesterChampionId);
+                    UserClient.calls.AcceptTrade(tradeDTO.RequesterInternalSummonerName, (int)tradeDTO.RequesterChampionId);
         }
 
         private async void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.DeclineTrade();
+            await UserClient.calls.DeclineTrade();
             Visibility = Visibility.Hidden;
         }
     }

@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Controls
 {
@@ -35,20 +36,22 @@ namespace LegendaryClient.Controls
         private string rankedTeamName;
         private string type;
         private GameDTO tempDTO;
+        private static UserClient UserClient;
 
-        public GameInvitePopup(InvitationRequest stats)
+        public GameInvitePopup(InvitationRequest stats, UserClient userClient)
         {
             InitializeComponent();
-            Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
+            UserClient = userClient;
+            UserClient.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
 
-            if (!Client.InviteData.ContainsKey(stats.InvitationId))
+            if (!UserClient.InviteData.ContainsKey(stats.InvitationId))
             {
                 LoadGamePopupData(stats);
                 Unlock();
             }
             else
             {
-                var info = Client.InviteData[stats.InvitationId];
+                var info = UserClient.InviteData[stats.InvitationId];
                 Client.Log("Tried to find a popup that existed but should have been blocked. ", "Error");
                 if (info == null)
                     throw new NullReferenceException("Tried to find a nonexistant popup");
@@ -72,7 +75,7 @@ namespace LegendaryClient.Controls
                 var stats = (InvitationRequest)message;
                 try
                 {
-                    var info = Client.InviteData[stats.InvitationId];
+                    var info = UserClient.InviteData[stats.InvitationId];
                     //Data about this popup has changed. We want to set this
                     if (!Equals(info.popup, this))
                         return;
@@ -210,7 +213,7 @@ namespace LegendaryClient.Controls
                 Inviter = inviter
             };
 
-            Client.InviteData.Add(stats.InvitationId, y);
+            UserClient.InviteData.Add(stats.InvitationId, y);
         }
 
         private async void Accept_Click(object sender, RoutedEventArgs e)
@@ -218,7 +221,7 @@ namespace LegendaryClient.Controls
             if (gameType == "PRACTICE_GAME")
             {
 #pragma warning disable 4014
-                RiotCalls.AcceptInvite(invitationID);
+                UserClient.calls.AcceptInvite(invitationID);
                 Client.SwitchPage(new CustomGameLobbyPage(tempDTO));
             }
             //goddammit teambuilder
@@ -228,7 +231,7 @@ namespace LegendaryClient.Controls
             }
             else if (gameType == "NORMAL_GAME" && queueId == 61)
             {
-                Client.SwitchPage(new TeamBuilderPage(false, await RiotCalls.AcceptInvite(invitationID)));
+                Client.SwitchPage(new TeamBuilderPage(false, await UserClient.calls.AcceptInvite(invitationID)));
             }
             else if (gameType == "RANKED_GAME")
             {
@@ -239,21 +242,21 @@ namespace LegendaryClient.Controls
                 Client.SwitchPage(new TeamQueuePage(invitationID));
             }
             Visibility = Visibility.Hidden;
-            Client.InviteData.Remove(invitationID);
+            UserClient.InviteData.Remove(invitationID);
         }
 
         private void Decline_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => { Visibility = Visibility.Hidden; }));
 #pragma warning disable 4014
-            RiotCalls.DeclineInvite(invitationID);
-            Client.InviteData.Remove(invitationID);
+            UserClient.calls.DeclineInvite(invitationID);
+            UserClient.InviteData.Remove(invitationID);
         }
 
         private void Hide_Click(object sender, RoutedEventArgs e)
         {
             Visibility = Visibility.Hidden;
-            var x = Client.InviteData[invitationID];
+            var x = UserClient.InviteData[invitationID];
             x.PopupVisible = false;
         }
     }

@@ -12,6 +12,7 @@ using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot.Team;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -20,11 +21,12 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ProfilePage
     {
+        static UserClient UserClient;
         public ProfilePage()
         {
             InitializeComponent();
-
-            if (Client.Dev)
+            UserClient = UserList.users[Client.Current];
+            if (UserClient.Dev)
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     MatchHistoryBetaTab.Visibility = Visibility.Visible;
@@ -44,8 +46,8 @@ namespace LegendaryClient.Windows
             getFirstWinOfTheDay();
             //Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             //Auto get summoner profile when created instance.
-            if (Client.IsLoggedIn)
-                GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+            if (UserClient.IsLoggedIn)
+                GetSummonerProfile(UserClient.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -57,8 +59,8 @@ namespace LegendaryClient.Windows
         {
             PublicSummoner summoner =
                 await
-                    RiotCalls.GetSummonerByName(string.IsNullOrWhiteSpace(s)
-                        ? Client.LoginPacket.AllSummonerData.Summoner.Name
+                    UserClient.calls.GetSummonerByName(string.IsNullOrWhiteSpace(s)
+                        ? UserClient.LoginPacket.AllSummonerData.Summoner.Name
                         : s);
             if (string.IsNullOrWhiteSpace(summoner.Name))
             {
@@ -82,8 +84,8 @@ namespace LegendaryClient.Windows
             }
             else
             {
-                GotLeaguesForPlayer(await RiotCalls.GetAllLeaguesForPlayer(summoner.SummonerId));
-                PlayerDTO playerTeams = await RiotCalls.FindPlayer(summoner.SummonerId);
+                GotLeaguesForPlayer(await UserClient.calls.GetAllLeaguesForPlayer(summoner.SummonerId));
+                PlayerDTO playerTeams = await UserClient.calls.FindPlayer(summoner.SummonerId);
                 GotPlayerTeams(playerTeams);
             }
 
@@ -92,7 +94,7 @@ namespace LegendaryClient.Windows
             string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png");
             ProfileImage.Source = Client.GetImage(UriSource);
 
-            PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(s);
+            PlatformGameLifecycleDTO n = await UserClient.calls.RetrieveInProgressSpectatorGameInfo(s);
             if (n != null && n.GameName != null)
             {
                 InGameHeader.Visibility = Visibility.Visible;
@@ -108,7 +110,7 @@ namespace LegendaryClient.Windows
                 OverviewHeader.IsSelected = true;
             }
 
-            if (summoner.Name == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (summoner.Name == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
             {
                 ChampionsTab.Visibility = Visibility.Visible;
                 SkinsTab.Visibility = Visibility.Visible;
@@ -187,13 +189,13 @@ namespace LegendaryClient.Windows
 
         private void getFirstWinOfTheDay()
         {
-            if (Client.LoginPacket.TimeUntilFirstWinOfDay < 1)
+            if (UserClient.LoginPacket.TimeUntilFirstWinOfDay < 1)
             {
                 FirstWinOfTheDayLabel.Content = "Ready";
             }
             else
             {
-                TimeSpan time = TimeSpan.FromMilliseconds(Client.LoginPacket.TimeUntilFirstWinOfDay);
+                TimeSpan time = TimeSpan.FromMilliseconds(UserClient.LoginPacket.TimeUntilFirstWinOfDay);
                 FirstWinOfTheDayLabel.Content = "" + time.Hours + "h " + time.Minutes + "m " + time.Seconds + "s";
             }
 

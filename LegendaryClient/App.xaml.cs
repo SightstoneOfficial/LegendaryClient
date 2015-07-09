@@ -1,4 +1,5 @@
 ﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Properties;
 using MahApps.Metro;
 using System;
@@ -15,6 +16,8 @@ namespace LegendaryClient
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            new MainWindow().Show();
+            /*
             if (e.Args.Any())
             {
                 if (e.Args[0] == "EnableGarena=true")
@@ -24,6 +27,7 @@ namespace LegendaryClient
             }
             else
                 new MainWindow().Show();
+            //*/
         }
     }
 }

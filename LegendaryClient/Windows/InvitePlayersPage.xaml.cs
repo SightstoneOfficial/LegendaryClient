@@ -1,5 +1,6 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Logic.Riot;
 using System.Collections.Generic;
 using System.IO;
@@ -119,7 +120,7 @@ namespace LegendaryClient.Windows
             foreach (string player in invitedPlayers)
             {
                 //This invites the player
-                await RiotCalls.Invite(player.Replace("sum", ""));
+                await UserList.users[Client.Current].calls.Invite(player.Replace("sum", ""));
 
                 ChatPlayerItem playerInfo = Client.AllPlayers[player];
 

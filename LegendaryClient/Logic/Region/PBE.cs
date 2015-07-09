@@ -73,10 +73,5 @@ namespace LegendaryClient.Logic.Region
             get { return "spectator.pbe1.lol.riotgames.com:80"; }
             set { }
         }
-
-        public void NASqlite()
-        {
-            Client.sqlite = "gameStats_en_US.sqlite";
-        }
     }
 }

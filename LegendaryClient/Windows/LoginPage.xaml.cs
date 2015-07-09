@@ -70,8 +70,9 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
             //#B2C8C8C8
-            UpdateRegionComboBox.SelectedValue = user.Instance.UpdateRegion;
-            switch (user.Instance.UpdateRegion)
+            //UpdateRegionComboBox.SelectedValue = user.Instance.UpdateRegion;
+            //switch (user.Instance.UpdateRegion)
+            switch ("Live")
             {
                 case "PBE":
                     RegionComboBox.ItemsSource = new[] { "PBE" };
@@ -219,9 +220,11 @@ namespace LegendaryClient.Windows
             Client.Items = Items.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries();
             Client.Runes = Runes.PopulateRunes();
-            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(user.Instance.UpdateRegion);
+            //BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(user.Instance.UpdateRegion);
+            BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion("Live");
             var patcher = new RiotPatcher();
-            if (user.Instance.UpdateRegion != "Garena")
+            //if (user.Instance.UpdateRegion != "Garena")
+            if ("Live" != "Garena")
             {
                 string tempString = patcher.GetListing(updateRegion.AirListing);
 
@@ -400,7 +403,7 @@ namespace LegendaryClient.Windows
 
             user.Instance.Region = selectedRegion;
             var context = user.Instance.calls.RegisterObjects();
-            Login();
+            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion);
         }
 
         void client_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -414,10 +417,10 @@ namespace LegendaryClient.Windows
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
-        async void Login()
+        async void Login(string username, string pass, BaseRegion selectedRegion)
         {
-            BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
-            var authToken = await user.Instance.calls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion.LoginQueue);
+            //BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+            var authToken = await user.Instance.calls.GetRestToken(username, pass, selectedRegion.LoginQueue);
 
             if (authToken == "invalid_credentials")
             {
@@ -492,10 +495,10 @@ namespace LegendaryClient.Windows
             user.Instance.reconnectToken = Convert.ToBase64String(plainTextbytes);
             //await RiotCalls.Login(result);
             var LoggedIn = await user.Instance.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
-            DoGetOnLoginPacket();
+            DoGetOnLoginPacket(username, pass, selectedRegion);
         }
 
-        private async void DoGetOnLoginPacket()
+        private async void DoGetOnLoginPacket(string username, string pass, BaseRegion selectedRegion)
         {
             //TODO: Finish this so all calls are used
             var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
@@ -509,10 +512,10 @@ namespace LegendaryClient.Windows
             //var lobby = await RiotCalls.CheckLobbyStatus();
             var invites = await user.Instance.calls.GetPendingInvitations();
             //var player = await RiotCalls.CreatePlayer();
-            GotLoginPacket(packetx);
+            GotLoginPacket(packetx, username, pass, selectedRegion);
 
             foreach (var pop in from InvitationRequest invite in invites
-                                select new GameInvitePopup(invite)
+                                select new GameInvitePopup(invite, user.Instance)
                                 {
                                     HorizontalAlignment = HorizontalAlignment.Right,
                                     VerticalAlignment = VerticalAlignment.Bottom,
@@ -525,7 +528,7 @@ namespace LegendaryClient.Windows
             user.Instance.LoginPacket = packetx;
         }
 
-        private void GotLoginPacket(LoginDataPacket packet)
+        private void GotLoginPacket(LoginDataPacket packet, string username, string pass, BaseRegion selectedRegion)
         {
             if (packet.AllSummonerData == null)
             {
@@ -535,14 +538,14 @@ namespace LegendaryClient.Windows
                 user.Instance.done = false;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
-                    var createSummoner = new CreateSummonerNameOverlay();
+                    var createSummoner = new CreateSummonerNameOverlay(user.Instance);
                     Client.OverlayContainer.Content = createSummoner.Content;
                     Client.OverlayContainer.Visibility = Visibility.Visible;
                 }));
                 while (!user.Instance.done)
                 {
                 }
-                Login();
+                Login(username, pass, selectedRegion);
                 return;
             }
             user.Instance.LoginPacket = packet;
@@ -561,7 +564,7 @@ namespace LegendaryClient.Windows
                 while (!user.Instance.done)
                 {
                 }
-                Login();
+                Login(username, pass, selectedRegion);
 
                 return;
             }
@@ -646,12 +649,14 @@ namespace LegendaryClient.Windows
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
                     user.Instance.CurrentGame = data.PlayerCredentials;
                     user.Instance.GameType = data.Game.GameType;
-                    Client.SwitchPage(new InGame());
+                    //Client.SwitchPage(new InGame());
                 }
+                    /*
                 else
                     Client.SwitchPage(Client.MainPage);
+                //*/
                 Client.Current = packet.AllSummonerData.Summoner.InternalName;
-                Client.ClearPage(typeof(LoginPage));
+                //Client.ClearPage(typeof(LoginPage));
             }));
         }
 
@@ -787,7 +792,7 @@ namespace LegendaryClient.Windows
                     await Task.WhenAll(taskArray);
                     var LoggedIn = await user.Instance.RiotConnection.LoginAsync(user.Instance.UID, login.Token);
                     //var packet = await RiotCalls.GetLoginDataPacketForUser();
-                    DoGetOnLoginPacket();
+                    DoGetOnLoginPacket(user.Instance.UID, null, garenaregion);
                 }
             }
         }
@@ -814,13 +819,13 @@ namespace LegendaryClient.Windows
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
 
 
-                user.Instance.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
+                //user.Instance.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
                 if (!RegionComboBox.Items.IsInUse)
                 {
                     RegionComboBox.Items.Clear();
                     Thread.Sleep(100);
                 }
-                switch (user.Instance.UpdateRegion)
+                switch ((string)UpdateRegionComboBox.SelectedValue)
                 {
                     case "PBE":
                         RegionComboBox.ItemsSource = new[] { "PBE" };
@@ -917,6 +922,18 @@ namespace LegendaryClient.Windows
                 }
             };
             timer.Start();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!UserList.verifyEncrypt(Encrypt.Password))
+            {
+                MessageBox.Show("Encryption is WRONG");
+                return;
+            }
+            List<LoginData> data = UserList.GetAllUsers(Encrypt.Password);
+            Encrypt.Visibility = Visibility.Hidden;
+            EncryptCheck.Visibility = Visibility.Hidden;
         }
     }
 }

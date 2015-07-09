@@ -6,6 +6,7 @@ using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -14,21 +15,23 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class InGame
     {
+        static UserClient UserClient = UserList.users[Client.Current];
         public InGame(bool start = false)
         {
             InitializeComponent();
-            if (Client.GameType == "PRACTICE_GAME")
+            if (UserClient.GameType == "PRACTICE_GAME")
                 QuitButton.Visibility = Visibility.Visible;
 
             if (start)
             {
                 Process[] lol = Process.GetProcessesByName("League of Legends.exe");
                 if (lol.Length == 0)
-                    Client.LaunchGame();
+                    Client.LaunchGame(UserClient.CurrentGame.ServerIp, UserClient.CurrentGame.ServerPort.ToString(), UserClient.CurrentGame.EncryptionKey,
+                        UserClient.CurrentGame.SummonerId.ToString(), UserClient.CurrentGame.SummonerName, UserClient.Region);
             }
 
-            Client.RiotConnection.MessageReceived += Update_OnMessageReceived;
-            Client.IsInGame = true;
+            UserClient.RiotConnection.MessageReceived += Update_OnMessageReceived;
+            UserClient.IsInGame = true;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Reconnect Page";
@@ -42,13 +45,13 @@ namespace LegendaryClient.Windows
             if (((GameDTO)message.Body).GameState != "TERMINATED")
                 return;
 
-            Client.GameStatus = "outOfGame";
-            Client.SetChatHover();
+            UserClient.GameStatus = "outOfGame";
+            UserClient.SetChatHover();
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
-                Client.IsInGame = false;
-                Client.RiotConnection.MessageReceived -= Update_OnMessageReceived;
+                UserClient.IsInGame = false;
+                UserClient.RiotConnection.MessageReceived -= Update_OnMessageReceived;
                 Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(InGame));
             }));
@@ -56,18 +59,19 @@ namespace LegendaryClient.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Client.LaunchGame();
+            Client.LaunchGame(UserClient.CurrentGame.ServerIp, UserClient.CurrentGame.ServerPort.ToString(), UserClient.CurrentGame.EncryptionKey,
+                        UserClient.CurrentGame.SummonerId.ToString(), UserClient.CurrentGame.SummonerName, UserClient.Region);
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.GameStatus = "outOfGame";
-            Client.SetChatHover();
+            UserClient.GameStatus = "outOfGame";
+            UserClient.SetChatHover();
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
-                Client.IsInGame = false;
-                Client.RiotConnection.MessageReceived -= Update_OnMessageReceived;
+                UserClient.IsInGame = false;
+                UserClient.RiotConnection.MessageReceived -= Update_OnMessageReceived;
                 Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(InGame));
             }));

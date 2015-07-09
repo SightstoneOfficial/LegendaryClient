@@ -3,6 +3,7 @@ using LegendaryClient.Controls;
 using LegendaryClient.Logic.Region;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Windows;
+using MahApps.Metro;
 using MahApps.Metro.Controls;
 using SQLite;
 using System;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
@@ -296,6 +298,10 @@ namespace LegendaryClient.Logic.MultiUser
         #endregion lcPatcher
 
         #region lcLogic
+        public static Accent CurrentAccent { get; set; }
+
+        internal static List<int> curentlyRecording = new List<int>();
+
         internal static string Theme;
 
         public static string GameClientVersion;
@@ -645,6 +651,26 @@ namespace LegendaryClient.Logic.MultiUser
                 return ObfuscatedChatroomName + "@lvl.pvp.net";
 
             return ObfuscatedChatroomName + "@conference.pvp.net";
+        }
+
+        internal static string GetObfuscatedChatroomName(string Subject, string Type)
+        {
+            byte[] data = Encoding.UTF8.GetBytes(Subject);
+            SHA1 sha = new SHA1CryptoServiceProvider();
+            byte[] result = sha.ComputeHash(data);
+            string obfuscatedName = string.Empty;
+            int incrementValue = 0;
+            while (incrementValue < result.Length)
+            {
+                int bitHack = result[incrementValue];
+                obfuscatedName = obfuscatedName + Convert.ToString(((uint)(bitHack & 240) >> 4), 16);
+                obfuscatedName = obfuscatedName + Convert.ToString(bitHack & 15, 16);
+                incrementValue = incrementValue + 1;
+            }
+            obfuscatedName = Regex.Replace(obfuscatedName, @"/\s+/gx", string.Empty);
+            obfuscatedName = Regex.Replace(obfuscatedName, @"/[^a-zA-Z0-9_~]/gx", string.Empty);
+
+            return Type + "~" + obfuscatedName;
         }
 
         internal static Dictionary<string, ChatPlayerItem> AllPlayers = new Dictionary<string, ChatPlayerItem>();

@@ -26,6 +26,7 @@ using agsXMPP;
 using agsXMPP.protocol.x.muc;
 using agsXMPP.protocol.client;
 using agsXMPP.Collections;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -50,6 +51,7 @@ namespace LegendaryClient.Windows
         private string rankedTeamName, gameMode, gameType, botDifficulty;
 
         private string Invite;
+        private UserClient UserClient;
 
         internal static LobbyStatus CurrentLobby;
 
@@ -59,9 +61,9 @@ namespace LegendaryClient.Windows
         public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, TeamId SelectedTeam = null, string BotDifficulty = null)
         {
             InitializeComponent();
-
+            UserClient = UserList.users[Client.Current];
             Client.InviteListView = InviteListView;
-            Client.RiotConnection.MessageReceived += Update_OnMessageReceived;
+            UserClient.RiotConnection.MessageReceived += Update_OnMessageReceived;
 
             //MainWindow Window = new MainWindow();
             //Window.Hide();
@@ -92,7 +94,7 @@ namespace LegendaryClient.Windows
 
             if (CurrentLobby == null)
             {
-                CurrentLobby = await RiotCalls.AcceptInvite(Invite);
+                CurrentLobby = await UserClient.calls.AcceptInvite(Invite);
             }
             if (CurrentLobby.InvitationID != null)
             {
@@ -100,18 +102,18 @@ namespace LegendaryClient.Windows
                     Client.GetObfuscatedChatroomName(CurrentLobby.InvitationID.ToLower(),
                         ChatPrefixes.Arranging_Game);
                 string Jid = Client.GetChatroomJid(ObfuscatedName, CurrentLobby.ChatKey, false);
-                newRoom = new MucManager(Client.XmppConnection);
+                newRoom = new MucManager(UserClient.XmppConnection);
                 jid = new Jid(Jid);
-                Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-                Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
+                UserClient.XmppConnection.OnMessage += XmppConnection_OnMessage;
+                UserClient.XmppConnection.OnPresence += XmppConnection_OnPresence;
                 newRoom.AcceptDefaultConfiguration(jid);
-                newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, CurrentLobby.ChatKey);
+                newRoom.JoinRoom(jid, UserClient.LoginPacket.AllSummonerData.Summoner.Name, CurrentLobby.ChatKey);
                 RenderLobbyData();
             }
             else
             {
-                Client.GameStatus = "outOfGame";
-                Client.SetChatHover();
+                UserClient.GameStatus = "outOfGame";
+                UserClient.SetChatHover();
                 Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.Log("Failed to join room.");
@@ -137,7 +139,7 @@ namespace LegendaryClient.Windows
             if (jid.Bare.Contains(msg.From.User))
                 return;
 
-            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (msg.From.Resource == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                 return;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -148,7 +150,7 @@ namespace LegendaryClient.Windows
                     tr.Text = msg.From.Resource + ": ";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    if (Client.Filter)
+                    if (UserClient.Filter)
                         tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                                   Environment.NewLine;
                     else
@@ -171,14 +173,14 @@ namespace LegendaryClient.Windows
         {
             LastSender = (Button)sender;
             var stats = (Member)LastSender.Tag;
-            await RiotCalls.Kick(stats.SummonerId);
+            await UserClient.calls.Kick(stats.SummonerId);
         }
 
         private async void Owner_Click(object sender, RoutedEventArgs e)
         {
             LastSender = (Button)sender;
             var stats = (Member)LastSender.Tag;
-            await RiotCalls.MakeOwner(stats.SummonerId);
+            await UserClient.calls.MakeOwner(stats.SummonerId);
         }
 
         private double startTime;
@@ -209,7 +211,7 @@ namespace LegendaryClient.Windows
                 Brush brush = null;
                 try
                 {
-                    double pingAverage = HighestPingTime(Client.Region.PingAddresses);
+                    double pingAverage = HighestPingTime(UserClient.Region.PingAddresses);
                     PingLabel.Text = Math.Round(pingAverage) + "ms";
                     if (pingAverage == 0)
                         PingLabel.Text = "Timeout";
@@ -286,7 +288,7 @@ namespace LegendaryClient.Windows
                     IsOwner = false;
 
                     if (CurrentLobby.Owner != null &&
-                        CurrentLobby.Owner.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                        CurrentLobby.Owner.SummonerName == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                     {
                         IsOwner = true;
                     }
@@ -320,13 +322,13 @@ namespace LegendaryClient.Windows
                     {
                         InviteButton.IsEnabled = true;
                         StartGameButton.IsEnabled = true;
-                        Client.isOwnerOfGame = true;
+                        UserClient.isOwnerOfGame = true;
                     }
                     else if (IsOwner == false)
                     {
                         InviteButton.IsEnabled = false;
                         StartGameButton.IsEnabled = false;
-                        Client.isOwnerOfGame = false;
+                        UserClient.isOwnerOfGame = false;
                     }
                     var m = JsonConvert.DeserializeObject<invitationRequest>(CurrentLobby.GameData);
                     queueId = m.queueId;
@@ -357,7 +359,7 @@ namespace LegendaryClient.Windows
                         {
                             LastSender = (Button)sender;
                             var s = (Member)LastSender.Tag;
-                            await RiotCalls.GrantInvite(s.SummonerId);
+                            await UserClient.calls.GrantInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Hidden;
@@ -368,7 +370,7 @@ namespace LegendaryClient.Windows
                         {
                             LastSender = (Button)sender;
                             var s = (Member)LastSender.Tag;
-                            await RiotCalls.RevokeInvite(s.SummonerId);
+                            await UserClient.calls.RevokeInvite(s.SummonerId);
                             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                             {
                                 TeamPlayer.Inviter.Visibility = Visibility.Visible;
@@ -379,7 +381,7 @@ namespace LegendaryClient.Windows
                         TeamPlayer.Owner.Click += Owner_Click;
                         Players++;
 
-                        PublicSummoner Summoner = await RiotCalls.GetSummonerByName(stats.SummonerName);
+                        PublicSummoner Summoner = await UserClient.calls.GetSummonerByName(stats.SummonerName);
 
                         //Populate the ProfileIcon
                         int ProfileIconID = Summoner.ProfileIconId;
@@ -389,7 +391,7 @@ namespace LegendaryClient.Windows
                         TeamPlayer.ProfileIcon.Source = Client.GetImage(UriSource);
 
                         //Make it so you cant kick yourself
-                        if (stats.SummonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+                        if (stats.SummonerName == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                         {
                             TeamPlayer.Kick.Visibility = Visibility.Hidden;
                             TeamPlayer.Inviter.Visibility = Visibility.Hidden;
@@ -424,7 +426,7 @@ namespace LegendaryClient.Windows
                     }
                     if (IsOwner)
                     {
-                        await RiotCalls.CallLCDS(Guid.NewGuid().ToString(), "suggestedPlayers",
+                        await UserClient.calls.CallLCDS(Guid.NewGuid().ToString(), "suggestedPlayers",
                             "retrieveOnlineFriendsOfFriends", "{\"queueId\":" + queueId + "}");
                     }
                 }));
@@ -450,7 +452,7 @@ namespace LegendaryClient.Windows
                     if (QueueDTO.GameState == "TERMINATED")
                     {
                         Client.HasPopped = false;
-                        Client.RiotConnection.MessageReceived += GotQueuePop;
+                        UserClient.RiotConnection.MessageReceived += GotQueuePop;
                     }
                 }));
             }
@@ -509,7 +511,7 @@ namespace LegendaryClient.Windows
                         invitePlayer.PlayerLabel.Content = s.summonerName;
                         invitePlayer.InviteButton.Click += async (object obj, RoutedEventArgs e) =>
                         {
-                            await RiotCalls.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
+                            await UserClient.calls.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
                             foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
                             {
                                 if ((string)item.PlayerLabel.Content == s.summonerName)
@@ -545,15 +547,15 @@ namespace LegendaryClient.Windows
 
         private async void Leave_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.Leave();
-            await RiotCalls.PurgeFromQueues();
+            await UserClient.calls.Leave();
+            await UserClient.calls.PurgeFromQueues();
             inQueue = false;
 //#pragma warning disable CS4014
             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => Client.inQueueTimer.Visibility = Visibility.Hidden));
 //#pragma warning restore CS4014
             PingTimer.Stop();
-            Client.GameStatus = "outOfGame";
-            Client.SetChatHover();
+            UserClient.GameStatus = "outOfGame";
+            UserClient.SetChatHover();
             Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(TeamQueuePage));
             Client.ReturnButton.Visibility = Visibility.Hidden;
@@ -575,8 +577,8 @@ namespace LegendaryClient.Windows
             {
                 setStartButtonText("Start Game");
                 inQueue = false;
-                Client.GameStatus = "outOfGame";
-                Client.SetChatHover();
+                UserClient.GameStatus = "outOfGame";
+                UserClient.SetChatHover();
                 Dispatcher.Invoke(() =>
                 {
                     Client.inQueueTimer.Visibility = Visibility.Hidden;
@@ -592,26 +594,26 @@ namespace LegendaryClient.Windows
                 if (queue.GameState == "TERMINATED")
                 {
                     Client.runonce = false;
-                    Client.PlayerAccepedQueue += Client_PlayerAccepedQueue;
+                    UserClient.PlayerAccepedQueue += Client_PlayerAccepedQueue;
                 }
             }
             else if (message is PlayerCredentialsDto)
             {
-                Client.RiotConnection.MessageReceived -= RestartDodgePop;
+                UserClient.RiotConnection.MessageReceived -= RestartDodgePop;
             }
         }
 
         void Client_PlayerAccepedQueue(bool accept)
         {
             if (accept)
-                Client.RiotConnection.MessageReceived += RestartDodgePop;
+                UserClient.RiotConnection.MessageReceived += RestartDodgePop;
         }
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)
         {
             if (ChatTextBox.Text == "!~dev")
             {
-                if (!Client.Dev)
+                if (!UserClient.Dev)
                 {
                     var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                     tr.Text = "You are not a dev." + Environment.NewLine;
@@ -622,17 +624,17 @@ namespace LegendaryClient.Windows
             else
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                tr.Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + ": ";
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                if (Client.Filter)
+                if (UserClient.Filter)
                     tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
                 if (string.IsNullOrEmpty(ChatTextBox.Text))
                     return;
-                Client.XmppConnection.Send(new Message(jid, MessageType.groupchat, ChatTextBox.Text));
+                UserClient.XmppConnection.Send(new Message(jid, MessageType.groupchat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }
@@ -665,15 +667,15 @@ namespace LegendaryClient.Windows
                 parameters.Team = InviteList;
                 parameters.TeamId = selectedTeamId;
                 parameters.BotDifficulty = botDifficulty;
-                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters));
+                EnteredQueue(await UserClient.calls.AttachTeamToQueue(parameters));
             }
             else
             {
-                RiotCalls.PurgeFromQueues();
+                UserClient.calls.PurgeFromQueues();
                 setStartButtonText("Start Game");
                 inQueue = false;
-                Client.GameStatus = "outOfGame";
-                Client.SetChatHover();
+                UserClient.GameStatus = "outOfGame";
+                UserClient.SetChatHover();
                 Dispatcher.Invoke(() =>
                 {
                     Client.inQueueTimer.Visibility = Visibility.Hidden;
@@ -764,11 +766,11 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                                     Client.OverlayContainer.Content = message.Content;
                                     Client.OverlayContainer.Visibility = Visibility.Visible;
                                 if (CurrentLobby.Owner.SummonerId.MathRound() !=
-                                    Client.LoginPacket.AllSummonerData.Summoner.SumId.MathRound())
+                                    UserClient.LoginPacket.AllSummonerData.Summoner.SumId.MathRound())
                                 {
                                     return;
                                 }
-                                EnteredQueue(await RiotCalls.AttachTeamToQueue(parameters, new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", xm.AccessToken } }));
+                                EnteredQueue(await UserClient.calls.AttachTeamToQueue(parameters, new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", xm.AccessToken } }));
                                 break;
                             case "RANKED_NUM_CHAMPS":
                                 messageOver.MessageTextBox.Text += " - You require at least 16 owned champions to play a Normal Draft / Ranked game.";
@@ -783,24 +785,24 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                 }));
                 return;
             }
-            Client.RiotConnection.MessageReceived += GotQueuePop;
+            UserClient.RiotConnection.MessageReceived += GotQueuePop;
             setStartButtonText("Joining Queue");
             startTime = 1;
             inQueue = true;
-            Client.GameStatus = "inQueue";
+            UserClient.GameStatus = "inQueue";
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 if (Client.inQueueTimer.Visibility == Visibility.Hidden)
                     Client.inQueueTimer.Visibility = Visibility.Visible;
                 TeamListView.Opacity = 0.3D;
             }));
-            Client.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
-            Client.SetChatHover();
+            UserClient.timeStampSince = (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
+            UserClient.SetChatHover();
         }
 
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
+            UserClient.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
         }
 
         private void SelectChamp_Click(object sender, RoutedEventArgs e)
@@ -829,16 +831,16 @@ You've been placed in a lower priority queue" + Environment.NewLine;
         {
             if (ChatTextBox.Text == string.Empty)
             {
-                if (Client.InstaCall)
+                if (UserClient.InstaCall)
                     CreateText("Insta call disabled.", Brushes.OrangeRed);
                 else
                     CreateText("Type call in textbox first.", Brushes.OrangeRed);
-                Client.InstaCall = false;
+                UserClient.InstaCall = false;
                 return;
             }
-            Client.InstaCall = true;
-            Client.CallString = ChatTextBox.Text;
-            CreateText("You will insta call: \"" + Client.CallString + "\" when you enter champ select", Brushes.OrangeRed);
+            UserClient.InstaCall = true;
+            UserClient.CallString = ChatTextBox.Text;
+            CreateText("You will insta call: \"" + UserClient.CallString + "\" when you enter champ select", Brushes.OrangeRed);
             ChatTextBox.Text = string.Empty;
         }
 
@@ -846,8 +848,8 @@ You've been placed in a lower priority queue" + Environment.NewLine;
         {
             setStartButtonText("Start Game");
             inQueue = false;
-            Client.GameStatus = "outOfGame";
-            Client.SetChatHover();
+            UserClient.GameStatus = "outOfGame";
+            UserClient.SetChatHover();
             Dispatcher.Invoke(() =>
             {
                 Client.inQueueTimer.Visibility = Visibility.Hidden;

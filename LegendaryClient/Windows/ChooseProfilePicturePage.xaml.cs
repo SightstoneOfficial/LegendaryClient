@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -14,6 +15,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ChooseProfilePicturePage
     {
+        static UserClient UserClient = UserList.users[Client.Current];
         public ChooseProfilePicturePage()
         {
             InitializeComponent();
@@ -23,7 +25,7 @@ namespace LegendaryClient.Windows
         private async void GetIcons()
         {
             SummonerIconInventoryDTO playerIcons =
-                await RiotCalls.GetSummonerIconInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+                await UserClient.calls.GetSummonerIconInventory(UserClient.LoginPacket.AllSummonerData.Summoner.SumId);
             foreach (Icon ic in playerIcons.SummonerIcons)
             {
                 var champImage = new Image
@@ -66,9 +68,9 @@ namespace LegendaryClient.Windows
             {
                 var m = (Image) SummonerIconListView.SelectedItem;
                 int summonerIcon = Convert.ToInt32(m.Tag);
-                await RiotCalls.UpdateProfileIconId(summonerIcon);
-                Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId = summonerIcon;
-                Client.SetChatHover();
+                await UserClient.calls.UpdateProfileIconId(summonerIcon);
+                UserClient.LoginPacket.AllSummonerData.Summoner.ProfileIconId = summonerIcon;
+                UserClient.SetChatHover();
                 var UriSource =
                     new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summonerIcon + ".png"),
                         UriKind.RelativeOrAbsolute);
@@ -76,7 +78,7 @@ namespace LegendaryClient.Windows
                 Client.MainPageProfileImage.Source = new BitmapImage(UriSource);            
             }
             Client.OverlayContainer.Visibility = Visibility.Hidden;
-            Client.done = true;
+            UserClient.done = true;
         }
     }
 }

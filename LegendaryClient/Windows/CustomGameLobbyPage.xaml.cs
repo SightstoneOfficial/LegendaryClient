@@ -21,6 +21,7 @@ using agsXMPP.protocol.x.muc;
 using agsXMPP;
 using agsXMPP.protocol.client;
 using agsXMPP.Collections;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -37,22 +38,23 @@ namespace LegendaryClient.Windows
         private double OptomisticLock;
         private MucManager newRoom;
         private static Jid roomJid;
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public CustomGameLobbyPage(GameDTO gameLobby = null)
         {
             InitializeComponent();
             //Hopefully this works better
-            foreach (var champs in Client.PlayerChampions.Where(champs => champs.BotEnabled))
+            foreach (var champs in UserClient.PlayerChampions.Where(champs => champs.BotEnabled))
                 bots.Add(champs.ChampionId);
-            GameName.Content = Client.GameName;
-            Client.RiotConnection.MessageReceived += GameLobby_OnMessageReceived;
+            GameName.Content = UserClient.GameName;
+            UserClient.RiotConnection.MessageReceived += GameLobby_OnMessageReceived;
             //If client has created game use initial DTO
-            if (Client.GameLobbyDTO != null)
-                Lobby_OnMessageReceived(null, Client.GameLobbyDTO);
+            if (UserClient.GameLobbyDTO != null)
+                Lobby_OnMessageReceived(null, UserClient.GameLobbyDTO);
             else
             {
-                Client.GameLobbyDTO = gameLobby;
-                Lobby_OnMessageReceived(null, Client.GameLobbyDTO);
+                UserClient.GameLobbyDTO = gameLobby;
+                Lobby_OnMessageReceived(null, UserClient.GameLobbyDTO);
             }
             Client.InviteListView = InviteListView;
             Client.CurrentPage = this;
@@ -82,7 +84,7 @@ namespace LegendaryClient.Windows
                     BaseMap map = BaseMap.GetMap(dto.MapId);
                     MapLabel.Content = map.DisplayName;
                     ModeLabel.Content = Client.TitleCaseString(dto.GameMode);
-                    GameTypeConfigDTO configType = Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
+                    GameTypeConfigDTO configType = UserClient.LoginPacket.GameTypeConfigs.Find(x => x.Id == dto.GameTypeConfigId);
                     TypeLabel.Content = GetGameMode(configType.Id);
                     SizeLabel.Content = dto.MaxNumPlayers / 2 + "v" + dto.MaxNumPlayers / 2;
 
@@ -90,12 +92,12 @@ namespace LegendaryClient.Windows
 
                     string obfuscatedName = Client.GetObfuscatedChatroomName(dto.Name.ToLower() + Convert.ToInt64(dto.Id), ChatPrefixes.Arranging_Practice);
                     string Jid = Client.GetChatroomJid(obfuscatedName, dto.RoomPassword, false);
-                    newRoom = new MucManager(Client.XmppConnection);
-                    Client.XmppConnection.OnMessage +=XmppConnection_OnMessage;
-                    Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
+                    newRoom = new MucManager(UserClient.XmppConnection);
+                    UserClient.XmppConnection.OnMessage +=XmppConnection_OnMessage;
+                    UserClient.XmppConnection.OnPresence += XmppConnection_OnPresence;
                     roomJid = new Jid(Jid);
                     newRoom.AcceptDefaultConfiguration(roomJid);
-                    newRoom.JoinRoom(roomJid, Client.LoginPacket.AllSummonerData.Summoner.Name);
+                    newRoom.JoinRoom(roomJid, UserClient.LoginPacket.AllSummonerData.Summoner.Name);
                 }
                 switch (dto.GameState)
                 {
@@ -115,18 +117,18 @@ namespace LegendaryClient.Windows
                                     var lobbyPlayer = new CustomLobbyPlayer();
                                     var player = playerTeam as PlayerParticipant;
                                     lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                    Client.isOwnerOfGame = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
-                                    StartGameButton.IsEnabled = Client.isOwnerOfGame;
-                                    AddBotBlueTeam.IsEnabled = Client.isOwnerOfGame;
-                                    AddBotPurpleTeam.IsEnabled = Client.isOwnerOfGame;
+                                    UserClient.isOwnerOfGame = dto.OwnerSummary.SummonerId == UserClient.LoginPacket.AllSummonerData.Summoner.SumId;
+                                    StartGameButton.IsEnabled = UserClient.isOwnerOfGame;
+                                    AddBotBlueTeam.IsEnabled = UserClient.isOwnerOfGame;
+                                    AddBotPurpleTeam.IsEnabled = UserClient.isOwnerOfGame;
 
                                     BlueTeamListView.Items.Add(lobbyPlayer);
 
-                                    if (Client.Whitelist.Count <= 0)
+                                    if (UserClient.Whitelist.Count <= 0)
                                         continue;
 
-                                    if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                        await RiotCalls.BanUserFromGame(Client.GameID, player.AccountId);
+                                    if (!UserClient.Whitelist.Contains(player.SummonerName.ToLower()))
+                                        await UserClient.calls.BanUserFromGame(UserClient.GameID, player.AccountId);
                                 }
                                 else if (playerTeam is BotParticipant)
                                 {
@@ -143,18 +145,18 @@ namespace LegendaryClient.Windows
                                     var lobbyPlayer = new CustomLobbyPlayer();
                                     var player = playerTeam as PlayerParticipant;
                                     lobbyPlayer = RenderPlayer(player, dto.OwnerSummary.SummonerId == player.SummonerId);
-                                    Client.isOwnerOfGame = dto.OwnerSummary.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId;
-                                    StartGameButton.IsEnabled = Client.isOwnerOfGame;
-                                    AddBotBlueTeam.IsEnabled = Client.isOwnerOfGame;
-                                    AddBotPurpleTeam.IsEnabled = Client.isOwnerOfGame;
+                                    UserClient.isOwnerOfGame = dto.OwnerSummary.SummonerId == UserClient.LoginPacket.AllSummonerData.Summoner.SumId;
+                                    StartGameButton.IsEnabled = UserClient.isOwnerOfGame;
+                                    AddBotBlueTeam.IsEnabled = UserClient.isOwnerOfGame;
+                                    AddBotPurpleTeam.IsEnabled = UserClient.isOwnerOfGame;
 
                                     PurpleTeamListView.Items.Add(lobbyPlayer);
 
-                                    if (Client.Whitelist.Count <= 0)
+                                    if (UserClient.Whitelist.Count <= 0)
                                         continue;
 
-                                    if (!Client.Whitelist.Contains(player.SummonerName.ToLower()))
-                                        await RiotCalls.BanUserFromGame(Client.GameID, player.AccountId);
+                                    if (!UserClient.Whitelist.Contains(player.SummonerName.ToLower()))
+                                        await UserClient.calls.BanUserFromGame(UserClient.GameID, player.AccountId);
                                 }
                                 else if (playerTeam is BotParticipant)
                                 {
@@ -166,7 +168,7 @@ namespace LegendaryClient.Windows
                             }
                             foreach (GameObserver observer in dto.Observers)
                             {
-                                if (observer.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId)
+                                if (observer.SummonerId == UserClient.LoginPacket.AllSummonerData.Summoner.SumId)
                                     isSpectator = true;
 
                                 var spectatorItem = new CustomLobbyObserver();
@@ -194,11 +196,11 @@ namespace LegendaryClient.Windows
                     case "CHAMP_SELECT":
                         if (!LaunchedTeamSelect)
                         {
-                            Client.ChampSelectDTO = dto;
+                            UserClient.ChampSelectDTO = dto;
                             Client.LastPageContent = Client.Container.Content;
                             Client.SwitchPage(new ChampSelectPage(dto.RoomName, dto.RoomPassword).Load(this));
-                            Client.GameStatus = "championSelect";
-                            Client.SetChatHover();
+                            UserClient.GameStatus = "championSelect";
+                            UserClient.SetChatHover();
                             LaunchedTeamSelect = true;
                         }
                         break;
@@ -225,7 +227,7 @@ namespace LegendaryClient.Windows
             if (roomJid.Bare.Contains(msg.From.User))
                 return;
 
-            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (msg.From.Resource == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                 return;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -239,7 +241,7 @@ namespace LegendaryClient.Windows
                 };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                if (Client.Filter)
+                if (UserClient.Filter)
                     tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() + Environment.NewLine;
                 else
                     tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
@@ -258,17 +260,17 @@ namespace LegendaryClient.Windows
         {
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
-                Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
+                Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + ": "
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-            if (Client.Filter)
+            if (UserClient.Filter)
                 tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
             else
                 tr.Text = ChatTextBox.Text + Environment.NewLine;
 
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-            Client.XmppConnection.Send(new Message(roomJid, MessageType.groupchat, ChatTextBox.Text));
+            UserClient.XmppConnection.Send(new Message(roomJid, MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = "";
         }
 
@@ -288,7 +290,7 @@ namespace LegendaryClient.Windows
 
             lobbyPlayer.Width = 400;
             lobbyPlayer.Margin = new Thickness(0, 0, 0, 5);
-            if ((player.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId) || (player.SummonerId != Client.LoginPacket.AllSummonerData.Summoner.SumId && !Client.isOwnerOfGame))
+            if ((player.SummonerId == UserClient.LoginPacket.AllSummonerData.Summoner.SumId) || (player.SummonerId != UserClient.LoginPacket.AllSummonerData.Summoner.SumId && !UserClient.isOwnerOfGame))
                 lobbyPlayer.BanButton.Visibility = Visibility.Hidden;
 
             lobbyPlayer.BanButton.Tag = player;
@@ -309,7 +311,7 @@ namespace LegendaryClient.Windows
             botPlayer.ProfileImage.Source = new BitmapImage(Source);
             botPlayer.blueSide = BotPlayer.SummonerInternalName.Split('_')[2] == "100";
             botPlayer.difficulty = BotPlayer.BotSkillLevel;
-            botPlayer.cmbSelectDificulty.Visibility = Client.isOwnerOfGame ? Visibility.Visible : Visibility.Hidden;
+            botPlayer.cmbSelectDificulty.Visibility = UserClient.isOwnerOfGame ? Visibility.Visible : Visibility.Hidden;
             botPlayer.cmbSelectDificulty.Items.Add("Beginner");
             botPlayer.cmbSelectDificulty.Items.Add("Intermediate");
             botPlayer.cmbSelectDificulty.Items.Add("Doom");
@@ -318,21 +320,21 @@ namespace LegendaryClient.Windows
             foreach (int bot in bots)
                 botPlayer.cmbSelectChamp.Items.Add(champions.GetChampion(bot).name);
 
-            botPlayer.cmbSelectChamp.Visibility = Client.isOwnerOfGame ? Visibility.Visible : Visibility.Hidden;
+            botPlayer.cmbSelectChamp.Visibility = UserClient.isOwnerOfGame ? Visibility.Visible : Visibility.Hidden;
             botPlayer.cmbSelectChamp.SelectedItem = champ.name;
-            botPlayer.BanButton.Visibility = Client.isOwnerOfGame ? Visibility.Visible : Visibility.Hidden;
+            botPlayer.BanButton.Visibility = UserClient.isOwnerOfGame ? Visibility.Visible : Visibility.Hidden;
             botPlayer.BanButton.Tag = BotPlayer;
             botPlayer.BanButton.Click += KickAndBan_Click;
             botPlayer.cmbSelectChamp.SelectionChanged += async (a, b) =>
             {
                 champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
-                await RiotCalls.RemoveBotChampion(champ.id, BotPlayer);
+                await UserClient.calls.RemoveBotChampion(champ.id, BotPlayer);
                 AddBot(c.id, botPlayer.blueSide, botPlayer.difficulty);
             };
             botPlayer.cmbSelectDificulty.SelectionChanged += async (a, b) =>
             {
                 champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
-                await RiotCalls.RemoveBotChampion(champ.id, BotPlayer);
+                await UserClient.calls.RemoveBotChampion(champ.id, BotPlayer);
                 AddBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex);
             };
 
@@ -353,7 +355,7 @@ namespace LegendaryClient.Windows
 
             lobbyPlayer.Width = 250;
             lobbyPlayer.Margin = new Thickness(0, 0, 0, 5);
-            if ((observer.SummonerId == Client.LoginPacket.AllSummonerData.Summoner.SumId) || (observer.SummonerId != Client.LoginPacket.AllSummonerData.Summoner.SumId && !Client.isOwnerOfGame))
+            if ((observer.SummonerId == UserClient.LoginPacket.AllSummonerData.Summoner.SumId) || (observer.SummonerId != UserClient.LoginPacket.AllSummonerData.Summoner.SumId && !UserClient.isOwnerOfGame))
                 lobbyPlayer.BanButton.Visibility = Visibility.Hidden;
 
             lobbyPlayer.BanButton.Tag = observer;
@@ -369,12 +371,12 @@ namespace LegendaryClient.Windows
                 return;
 
             var player = button.Tag as GameObserver;
-            await RiotCalls.BanObserverFromGame(Client.GameID, player.AccountId);
+            await UserClient.calls.BanObserverFromGame(UserClient.GameID, player.AccountId);
         }
 
         private async void QuitGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.QuitGame();
+            await UserClient.calls.QuitGame();
             Client.ReturnButton.Visibility = Visibility.Hidden;
             Client.SwitchPage(Client.MainPage);
             Client.ClearPage(typeof(CustomGameLobbyPage)); //Clear pages
@@ -383,7 +385,7 @@ namespace LegendaryClient.Windows
 
         private async void SwitchTeamsButton_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.SwitchTeams(Client.GameID);
+            await UserClient.calls.SwitchTeams(UserClient.GameID);
         }
 
         private static async void KickAndBan_Click(object sender, RoutedEventArgs e)
@@ -396,7 +398,7 @@ namespace LegendaryClient.Windows
             if (player != null)
             {
                 PlayerParticipant banPlayer = player;
-                await RiotCalls.BanUserFromGame(Client.GameID, banPlayer.AccountId);
+                await UserClient.calls.BanUserFromGame(UserClient.GameID, banPlayer.AccountId);
             }
             else
             {
@@ -405,13 +407,13 @@ namespace LegendaryClient.Windows
                     return;
 
                 BotParticipant banPlayer = tag;
-                await RiotCalls.RemoveBotChampion(champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
+                await UserClient.calls.RemoveBotChampion(champions.GetChampion(banPlayer.SummonerInternalName.Split('_')[1]).id, banPlayer);
             }
         }
 
         private async void StartGameButton_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.StartChampionSelection(Client.GameID, OptomisticLock);
+            await UserClient.calls.StartChampionSelection(UserClient.GameID, OptomisticLock);
         }
 
         public static string GetGameMode(int i)
@@ -447,7 +449,7 @@ namespace LegendaryClient.Windows
             return "One for All";*/
 
                 default:
-                    return Client.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;
+                    return UserClient.LoginPacket.GameTypeConfigs.Find(x => x.Id == i).Name;
             }
         }
 
@@ -523,7 +525,7 @@ namespace LegendaryClient.Windows
                     par.BotSkillLevel = difficulty;
                     break;
             }
-            await RiotCalls.SelectBotChampion(champint, par);
+            await UserClient.calls.SelectBotChampion(champint, par);
         }
 
         private void AddBotBlueTeam_Click(object sender, RoutedEventArgs e)
@@ -538,17 +540,17 @@ namespace LegendaryClient.Windows
 
         private async void SpectatorButton_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.SwitchPlayerToObserver(Client.GameID);
+            await UserClient.calls.SwitchPlayerToObserver(UserClient.GameID);
         }
 
         private async void JoinPurpleTeamFromSpectator_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.SwitchObserverToPlayer(Client.GameID, 200);
+            await UserClient.calls.SwitchObserverToPlayer(UserClient.GameID, 200);
         }
 
         private async void JoinBlueTeamFromSpectator_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.SwitchObserverToPlayer(Client.GameID, 100);
+            await UserClient.calls.SwitchObserverToPlayer(UserClient.GameID, 100);
         }
     }
 }

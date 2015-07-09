@@ -1,6 +1,7 @@
 ﻿using LegendaryClient.Logic;
 using System.Windows;
 using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -11,7 +12,7 @@ namespace LegendaryClient.Windows
     {
         private double summonerID, gameID;
         bool sameTeam;
-
+        static UserClient UserClient = UserList.users[Client.Current];
         public KudosPlayerOverlay(double summonerID, double gameID, string summonerName, bool sameTeam)
         {
             InitializeComponent();
@@ -44,17 +45,17 @@ namespace LegendaryClient.Windows
             int kudoId = KudosList.SelectedIndex + 1;
             GiveButton.IsEnabled = false;
             if (sameTeam)
-                await RiotCalls.CallKudos(
+                await UserClient.calls.CallKudos(
                     "{\"gameId\":" + gameID +
                     ",\"commandName\":\"GIVE\"" +
-                    ",\"giverId\":" + Client.LoginPacket.AllSummonerData.Summoner.SumId +
+                    ",\"giverId\":" + UserClient.LoginPacket.AllSummonerData.Summoner.SumId +
                     ",\"kudosType\":" + kudoId + 
                     ",\"receiverId\": " + summonerID + "}");
             else
-                await RiotCalls.CallKudos(
+                await UserClient.calls.CallKudos(
                     "{\"gameId\":" + gameID +
                     ",\"commandName\":\"GIVE\"" + 
-                    ",\"giverId\":" + Client.LoginPacket.AllSummonerData.Summoner.SumId +
+                    ",\"giverId\":" + UserClient.LoginPacket.AllSummonerData.Summoner.SumId +
                     ",\"kudosType\":\"4\"" + 
                     ",\"receiverId\":" + summonerID + "}");
 

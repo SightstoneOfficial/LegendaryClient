@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -15,6 +16,7 @@ namespace LegendaryClient.Windows
     public partial class CustomGameListingPage
     {
         private readonly List<GameItem> allItems = new List<GameItem>();
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public CustomGameListingPage()
         {
@@ -36,7 +38,7 @@ namespace LegendaryClient.Windows
         {
             CustomGameListView.Items.Clear();
             allItems.Clear();
-            PracticeGameSearchResult[] games = await RiotCalls.ListAllPracticeGames();
+            PracticeGameSearchResult[] games = await UserClient.calls.ListAllPracticeGames();
             foreach (GameItem item in games.Select(game => new GameItem
             {
                 GameName = game.Name,
@@ -87,12 +89,12 @@ namespace LegendaryClient.Windows
                 gameName = item.GameName;
             }
             if (!string.IsNullOrEmpty(PasswordTextBox.Text))
-                RiotCalls.JoinGame(gameId, PasswordTextBox.Text);
+                UserClient.calls.JoinGame(gameId, PasswordTextBox.Text);
             else
-                RiotCalls.JoinGame(gameId);
+                UserClient.calls.JoinGame(gameId);
 
-            Client.GameID = gameId;
-            Client.GameName = gameName;
+            UserClient.GameID = gameId;
+            UserClient.GameName = gameName;
 
             Client.SwitchPage(new CustomGameLobbyPage());
         }

@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -31,7 +32,7 @@ namespace LegendaryClient.Windows.Profile
         {
             try
             {
-                var champList = await RiotCalls.GetAvailableChampions();
+                var champList = await UserList.users[Client.Current].calls.GetAvailableChampions();
 
                 championList = new List<ChampionDTO>(champList);
 

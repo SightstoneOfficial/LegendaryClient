@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Logic.SoundLogic
 {
@@ -11,6 +12,7 @@ namespace LegendaryClient.Logic.SoundLogic
             Client.SoundPlayer.Source =
                 new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions", champions.GetChampion(champ).name + ".mp3"));
             Client.SoundPlayer.Play();
+
 
             int hi = champ;
 

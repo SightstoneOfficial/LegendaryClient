@@ -15,6 +15,7 @@ using agsXMPP;
 using agsXMPP.protocol.x.muc;
 using agsXMPP.Collections;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Controls
 {
@@ -25,10 +26,13 @@ namespace LegendaryClient.Controls
     {
         private readonly MucManager newRoom;
         private string roomName;
+        private static UserClient userClient;
 
         public GroupChatItem(string id, string title)
         {
             InitializeComponent();
+            userClient = UserList.users[Client.Current];
+            MahApps.Metro.Controls.TextBoxHelper.SetWatermark(ChatTextBox, "Sending message from " + userClient.LoginPacket.AllSummonerData.Summoner.InternalName);
             ChatId = id;
             PlayerLabelName.Content = title;
             GroupTitle = title;
@@ -36,17 +40,17 @@ namespace LegendaryClient.Controls
                 return;
             try
             {
-                newRoom = new MucManager(Client.XmppConnection);
+                newRoom = new MucManager(userClient.XmppConnection);
             }
             catch
             {
                 return;
             }
-            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
+            userClient.XmppConnection.OnPresence += XmppConnection_OnPresence;
+            userClient.XmppConnection.OnMessage += XmppConnection_OnMessage;
             newRoom.AcceptDefaultConfiguration(new Jid(ChatId));
             roomName = ChatId;
-            newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
+            newRoom.JoinRoom(new Jid(ChatId), userClient.LoginPacket.AllSummonerData.Summoner.Name);
         }
 
         void XmppConnection_OnMessage(object sender, Message msg)
@@ -54,7 +58,7 @@ namespace LegendaryClient.Controls
             if (!roomName.Contains(msg.From.User))
                 return;
 
-            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (msg.From.Resource == userClient.LoginPacket.AllSummonerData.Summoner.Name)
                 return;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -109,7 +113,7 @@ namespace LegendaryClient.Controls
 
                                 #endregion Parse Presence
                             }
-                            var user = Client.GetUserFromJid(jid);
+                            var user = userClient.GetUserFromJid(jid);
 
                             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                             {
@@ -183,17 +187,17 @@ namespace LegendaryClient.Controls
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
-            Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
-            newRoom.JoinRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
+            userClient.XmppConnection.OnMessage -= XmppConnection_OnMessage;
+            userClient.XmppConnection.OnPresence -= XmppConnection_OnPresence;
+            newRoom.JoinRoom(new Jid(ChatId), userClient.LoginPacket.AllSummonerData.Summoner.Name);
             Client.ClearMainGrid(typeof (GroupChatItem));
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.XmppConnection.OnMessage -= XmppConnection_OnMessage;
-            Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
-            newRoom.LeaveRoom(new Jid(ChatId), Client.LoginPacket.AllSummonerData.Summoner.Name);
+            userClient.XmppConnection.OnMessage -= XmppConnection_OnMessage;
+            userClient.XmppConnection.OnPresence -= XmppConnection_OnPresence;
+            newRoom.LeaveRoom(new Jid(ChatId), userClient.LoginPacket.AllSummonerData.Summoner.Name);
             Client.ClearMainGrid(typeof (GroupChatItem));
         }
 
@@ -204,7 +208,7 @@ namespace LegendaryClient.Controls
 
             var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
-                Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": "
+                Text = userClient.LoginPacket.AllSummonerData.Summoner.Name + ": "
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
 
@@ -214,7 +218,7 @@ namespace LegendaryClient.Controls
             };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
 
-            Client.XmppConnection.Send(new Message(new Jid(roomName), MessageType.groupchat, ChatTextBox.Text));
+            userClient.XmppConnection.Send(new Message(new Jid(roomName), MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;
             ChatText.ScrollToEnd();
         }

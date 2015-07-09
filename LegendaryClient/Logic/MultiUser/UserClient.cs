@@ -105,7 +105,12 @@ namespace LegendaryClient.Logic.MultiUser
 
         internal ChampionDTO[] PlayerChampions;
 
-        internal List<int> curentlyRecording = new List<int>();
+        //internal List<int> curentlyRecording = new List<int>();
+        internal List<int> curentlyRecording
+        {
+            get { return Client.curentlyRecording; }
+            set { Client.curentlyRecording = value; }
+        }
 
         internal List<string> Whitelist = new List<string>();
 
@@ -189,7 +194,7 @@ namespace LegendaryClient.Logic.MultiUser
                 Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
                     var subject = (ChatSubjects)Enum.Parse(typeof(ChatSubjects), msg.Subject, true);
-                    NotificationPopup pop = new NotificationPopup(subject, msg)
+                    NotificationPopup pop = new NotificationPopup(subject, msg, this)
                     {
                         Height = 230,
                         HorizontalAlignment = HorizontalAlignment.Right,
@@ -327,7 +332,7 @@ namespace LegendaryClient.Logic.MultiUser
                 case PresenceType.subscribed:
                     Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        FriendInvite pop = new FriendInvite(ChatSubjects.XMPP_SUBSCRIBE, pres);
+                        FriendInvite pop = new FriendInvite(ChatSubjects.XMPP_SUBSCRIBE, pres, this);
                         pop.Height = 230;
                         pop.HorizontalAlignment = HorizontalAlignment.Right;
                         pop.VerticalAlignment = VerticalAlignment.Bottom;
@@ -620,25 +625,6 @@ namespace LegendaryClient.Logic.MultiUser
             XmppConnection.Send(msg);
         }
 
-        internal string GetObfuscatedChatroomName(string Subject, string Type)
-        {
-            byte[] data = Encoding.UTF8.GetBytes(Subject);
-            SHA1 sha = new SHA1CryptoServiceProvider();
-            byte[] result = sha.ComputeHash(data);
-            string obfuscatedName = string.Empty;
-            int incrementValue = 0;
-            while (incrementValue < result.Length)
-            {
-                int bitHack = result[incrementValue];
-                obfuscatedName = obfuscatedName + Convert.ToString(((uint)(bitHack & 240) >> 4), 16);
-                obfuscatedName = obfuscatedName + Convert.ToString(bitHack & 15, 16);
-                incrementValue = incrementValue + 1;
-            }
-            obfuscatedName = Regex.Replace(obfuscatedName, @"/\s+/gx", string.Empty);
-            obfuscatedName = Regex.Replace(obfuscatedName, @"/[^a-zA-Z0-9_~]/gx", string.Empty);
-
-            return Type + "~" + obfuscatedName;
-        }
 
         
         
@@ -824,7 +810,7 @@ namespace LegendaryClient.Logic.MultiUser
 
                         Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            var pop = new GameInvitePopup(stats)
+                            var pop = new GameInvitePopup(stats, this)
                             {
                                 HorizontalAlignment = HorizontalAlignment.Right,
                                 VerticalAlignment = VerticalAlignment.Bottom,
@@ -901,7 +887,7 @@ namespace LegendaryClient.Logic.MultiUser
             Client.StatusGrid.Visibility = Visibility.Hidden;
             Client.PlayButton.Visibility = Visibility.Visible;
             LobbyContent = null;
-            LastPageContent = null;
+            Client.LastPageContent = null;
             GameStatus = "outOfGame";
             SetChatHover();
             Client.SwitchPage(Client.MainPage);
@@ -925,7 +911,7 @@ namespace LegendaryClient.Logic.MultiUser
         
         #endregion Public Helper Methods
 
-        public Accent CurrentAccent { get; set; }
+        
 
         internal int SelectChamp;
         internal bool usingInstaPick = false;
@@ -933,7 +919,7 @@ namespace LegendaryClient.Logic.MultiUser
         internal KeyValuePair<string, string> userpass;
         internal bool HasPopped = false;
 
-        public string UpdateRegion { get; set; }
+        //public string UpdateRegion { get; set; }
 
         public string GameType { get; set; }
 

@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -19,6 +20,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private string sumName;
         private readonly List<MatchStats> gameStats = new List<MatchStats>();
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public MatchHistoryOnline(string name = "")
         {
@@ -27,7 +29,7 @@ namespace LegendaryClient.Windows.Profile
             //Started work on
             if (string.IsNullOrEmpty(name))
             {
-                name = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                name = UserClient.LoginPacket.AllSummonerData.Summoner.Name;
             }
 
             sumName = name;
@@ -35,7 +37,7 @@ namespace LegendaryClient.Windows.Profile
 
         public async void Update(double accountId)
         {
-            GotRecentGames(await RiotCalls.GetRecentGames(accountId));
+            GotRecentGames(await UserClient.calls.GetRecentGames(accountId));
         }
 
         public void GotRecentGames(RecentGames result)
@@ -150,11 +152,11 @@ namespace LegendaryClient.Windows.Profile
             Browser.Focusable = false;
             Browser.Source =
                 new System.Uri(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview", 
-                    Client.Region.InternalName,
+                    UserClient.Region.InternalName,
                     (int)Math.Round(stats.Game.GameId),
                     stats.Game.UserId));
             Client.Log(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview",
-                    Client.Region.InternalName,
+                    UserClient.Region.InternalName,
                     (int)Math.Round(stats.Game.GameId),
                     stats.Game.UserId));
         }

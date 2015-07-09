@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -17,12 +18,13 @@ namespace LegendaryClient.Windows
     public partial class CreateCustomGamePage
     {
         private readonly bool initFinished;
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public CreateCustomGamePage()
         {
             InitializeComponent();
-            Client.Whitelist = new List<string>();
-            NameTextBox.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + "'s game";
+            UserClient.Whitelist = new List<string>();
+            NameTextBox.Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + "'s game";
             initFinished = true;
         }
 
@@ -30,7 +32,7 @@ namespace LegendaryClient.Windows
         {
             NameInvalidLabel.Visibility = Visibility.Hidden;
             PracticeGameConfig gameConfig = GenerateGameConfig();
-            CreatedGame(await RiotCalls.CreatePracticeGame(gameConfig));
+            CreatedGame(await UserClient.calls.CreatePracticeGame(gameConfig));
         }
 
         private PracticeGameConfig GenerateGameConfig()
@@ -135,9 +137,9 @@ namespace LegendaryClient.Windows
                 }
                 else
                 {
-                    Client.GameID = result.Id;
-                    Client.GameName = result.Name;
-                    Client.GameLobbyDTO = result;
+                    UserClient.GameID = result.Id;
+                    UserClient.GameName = result.Name;
+                    UserClient.GameLobbyDTO = result;
                     Client.SwitchPage(new CustomGameLobbyPage());
                 }
             }));
@@ -173,10 +175,10 @@ namespace LegendaryClient.Windows
             if (string.IsNullOrWhiteSpace(WhiteListTextBox.Text))
                 return;
 
-            if (Client.Whitelist.Contains(WhiteListTextBox.Text.ToLower()))
+            if (UserClient.Whitelist.Contains(WhiteListTextBox.Text.ToLower()))
                 return;
 
-            Client.Whitelist.Add(WhiteListTextBox.Text.ToLower());
+            UserClient.Whitelist.Add(WhiteListTextBox.Text.ToLower());
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 WhitelistListBox.Items.Add(WhiteListTextBox.Text);
@@ -194,10 +196,10 @@ namespace LegendaryClient.Windows
         {
             if (WhitelistListBox.SelectedIndex != -1)
             {
-                if (Client.Whitelist.Count == 1)
+                if (UserClient.Whitelist.Count == 1)
                     WhitelistRemoveButton.IsEnabled = false;
 
-                Client.Whitelist.Remove(WhitelistListBox.SelectedValue.ToString().ToLower());
+                UserClient.Whitelist.Remove(WhitelistListBox.SelectedValue.ToString().ToLower());
                 Dispatcher.BeginInvoke(DispatcherPriority.Input,
                     new ThreadStart(() => WhitelistListBox.Items.Remove(WhitelistListBox.SelectedValue)));
             }

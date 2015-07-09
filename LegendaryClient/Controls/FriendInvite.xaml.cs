@@ -14,6 +14,7 @@ using agsXMPP.protocol.client;
 using agsXMPP;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot.Leagues;
+using LegendaryClient.Logic.MultiUser;
 
 #endregion
 
@@ -26,9 +27,11 @@ namespace LegendaryClient.Controls
     {
         private readonly ChatSubjects _subject;
         private readonly Jid jid;
-        public FriendInvite(ChatSubjects subject, agsXMPP.protocol.client.Presence message)
+        private static UserClient userClient;
+        public FriendInvite(ChatSubjects subject, agsXMPP.protocol.client.Presence message, UserClient _userClient)
         {
             InitializeComponent();
+            userClient = _userClient;
             if (subject == ChatSubjects.XMPP_SUBSCRIBE)
             {
                 jid = message.From;
@@ -44,12 +47,12 @@ namespace LegendaryClient.Controls
                 Client.Log("FriendRequest stuff coming");
                 Client.Log(message.From.User.Replace("sum", string.Empty));
                 var summonerId = message.From.User.Replace("sum", string.Empty).ToInt();
-                var summonerName = await RiotCalls.GetSummonerNames(new double[] {summonerId});
-                var playerInfo = await RiotCalls.GetSummonerByName(summonerName[0]);
+                var summonerName = await userClient.calls.GetSummonerNames(new double[] { summonerId });
+                var playerInfo = await userClient.calls.GetSummonerByName(summonerName[0]);
                 Client.Log(playerInfo.Name);
 
                 SummonerLeaguesDTO playerLeagues =
-                        await RiotCalls.GetAllLeaguesForPlayer(summonerId);
+                        await userClient.calls.GetAllLeaguesForPlayer(summonerId);
                 string rank = string.Empty;
                 foreach (LeagueListDTO l in playerLeagues.SummonerLeagues.Where(l => l.Queue == "RANKED_SOLO_5x5"))
                     rank = l.Tier + " " + l.RequestorsRank;
@@ -72,15 +75,15 @@ Rank: {2}", playerInfo.Name, playerInfo.SummonerLevel, rank);
 
         private void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.PresManager.RefuseSubscriptionRequest(jid);
-            Client.PresManager.Unsubscribe(jid);
+            userClient.PresManager.RefuseSubscriptionRequest(jid);
+            userClient.PresManager.Unsubscribe(jid);
             Visibility = Visibility.Hidden;
         }
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            Client.PresManager.ApproveSubscriptionRequest(jid);
-            Client.PresManager.Subscribe(jid);
+            userClient.PresManager.ApproveSubscriptionRequest(jid);
+            userClient.PresManager.Subscribe(jid);
             Visibility = Visibility.Hidden;
         }
     }

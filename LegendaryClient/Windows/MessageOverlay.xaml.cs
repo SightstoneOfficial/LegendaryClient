@@ -1,4 +1,5 @@
 ﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using System.Windows;
 
 namespace LegendaryClient.Windows

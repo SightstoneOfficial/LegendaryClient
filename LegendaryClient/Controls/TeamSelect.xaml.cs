@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot.Team;
+using LegendaryClient.Logic.MultiUser;
 
 
 namespace LegendaryClient.Controls
@@ -15,6 +16,7 @@ namespace LegendaryClient.Controls
     public partial class TeamSelect
     {
         List<TeamId> TeamIdList = new List<TeamId>();
+        static UserClient UserClient = UserList.users[Client.Current];
         public TeamSelect()
         {
             InitializeComponent();
@@ -22,7 +24,7 @@ namespace LegendaryClient.Controls
         }
         private async void GetTeams()
         {
-            PlayerDTO allTeams = await RiotCalls.FindPlayer(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+            PlayerDTO allTeams = await UserClient.calls.FindPlayer(UserClient.LoginPacket.AllSummonerData.Summoner.SumId);
             if (allTeams.TeamsSummary != null)
             {
                 foreach (var item in allTeams.TeamsSummary)
@@ -41,7 +43,7 @@ namespace LegendaryClient.Controls
 
         private async void SelectTeam_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            LobbyStatus lobby = await RiotCalls.CreateArrangedRankedTeamLobby(Client.QueueId, TeamList.SelectedItem.ToString());
+            LobbyStatus lobby = await UserClient.calls.CreateArrangedRankedTeamLobby(UserClient.QueueId, TeamList.SelectedItem.ToString());
 
             TeamId SelectedTeamId = TeamIdList[TeamList.SelectedIndex];
             Client.ClearPage(typeof(TeamQueuePage));

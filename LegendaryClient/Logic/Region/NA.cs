@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LegendaryClient.Logic.MultiUser;
+using System;
 using System.Net;
 
 namespace LegendaryClient.Logic.Region
@@ -72,11 +73,6 @@ namespace LegendaryClient.Logic.Region
         {
             get { return "spectator.na1.lol.riotgames.com:80"; }
             set { }
-        }
-
-        public void NASqlite()
-        {
-            Client.sqlite = "gameStats_en_US.sqlite";
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using System;
+﻿using LegendaryClient.Logic.MultiUser;
+using System;
 using System.Linq;
 
 namespace LegendaryClient.Logic.PlayerSpell
 {
     public static class SummonerSpell
     {
+        static UserClient UserClient = UserList.users[Client.Current];
         public static string GetSpellName(int spellId)
         {
             var spell = (SummonerSpells) spellId;
@@ -24,23 +26,23 @@ namespace LegendaryClient.Logic.PlayerSpell
 
         public static bool CanUseSpell(int spellId, double level, string gameMode)
         {
-            if (Client.LoginPacket.ClientSystemStates.inactiveSpellIdList.Contains(spellId))
+            if (UserClient.LoginPacket.ClientSystemStates.inactiveSpellIdList.Contains(spellId))
                 return false;
 
             switch (gameMode)
             {
                 case "CLASSIC":
-                    if (Client.LoginPacket.ClientSystemStates.inactiveClassicSpellIdList.Contains(spellId))
+                    if (UserClient.LoginPacket.ClientSystemStates.inactiveClassicSpellIdList.Contains(spellId))
                         return false;
                     break;
 
                 case "ARAM":
-                    if (Client.LoginPacket.ClientSystemStates.inactiveAramSpellIdList.Contains(spellId))
+                    if (UserClient.LoginPacket.ClientSystemStates.inactiveAramSpellIdList.Contains(spellId))
                         return false;
                     break;
 
                 case "ODIN":
-                    if (Client.LoginPacket.ClientSystemStates.inactiveOdinSpellIdList.Contains(spellId))
+                    if (UserClient.LoginPacket.ClientSystemStates.inactiveOdinSpellIdList.Contains(spellId))
                         return false;
                     break;
             }

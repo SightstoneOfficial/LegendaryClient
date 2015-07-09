@@ -9,6 +9,7 @@ using System.Windows.Input;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Controls
 {

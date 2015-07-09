@@ -19,6 +19,7 @@ using Color = System.Drawing.Color;
 using Image = System.Windows.Controls.Image;
 using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -29,6 +30,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private PlatformGameLifecycleDTO game;
         private string user;
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public Ingame()
         {
@@ -170,7 +172,7 @@ namespace LegendaryClient.Windows.Profile
             try
             {
                 string mmrJson;
-                var url = Client.Region.SpectatorLink + "consumer/getGameMetaData/" + Client.Region.InternalName +
+                var url = UserClient.Region.SpectatorLink + "consumer/getGameMetaData/" + UserClient.Region.InternalName +
                           "/" + currentGame.Game.Id + "/token";
                 using (var client = new WebClient())
                 {
@@ -200,7 +202,7 @@ namespace LegendaryClient.Windows.Profile
             var ip = game.PlayerCredentials.ObserverServerIp;
             var key = game.PlayerCredentials.ObserverEncryptionKey;
             var gameId = game.PlayerCredentials.GameId;
-            Client.LaunchSpectatorGame(ip, key, (int) gameId, Client.Region.InternalName);
+            Client.LaunchSpectatorGame(ip, key, (int) gameId, UserClient.Region.InternalName);
         }
     }
 }

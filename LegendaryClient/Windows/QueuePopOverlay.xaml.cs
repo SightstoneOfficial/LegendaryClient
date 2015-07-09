@@ -15,6 +15,7 @@ using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
 using Timer = System.Timers.Timer;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -29,6 +30,7 @@ namespace LegendaryClient.Windows
         public bool ReverseString;
         public int TimeLeft = 12;
         private bool accepted;
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public QueuePopOverlay(GameDTO InitialDTO, Page previousPage)
         {
@@ -41,7 +43,7 @@ namespace LegendaryClient.Windows
             this.previousPage = previousPage;
             page = new ChampSelectPage(InitialDTO.RoomName, InitialDTO.RoomPassword);
             TimeLeft = InitialDTO.JoinTimerDuration;
-            Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
+            UserClient.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             QueueTimer = new Timer(1000);
             QueueTimer.Elapsed += QueueElapsed;
             QueueTimer.Enabled = true;
@@ -69,24 +71,24 @@ namespace LegendaryClient.Windows
                     if (QueueDTO != null && QueueDTO.GameState == "TERMINATED")
                     {
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
-                        Client.SendAccept(accepted);
+                        UserClient.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
+                        UserClient.SendAccept(accepted);
                         Client.HasPopped = false;
                         return;
                     }
                     if (QueueDTO != null &&
                         (QueueDTO.GameState == "PRE_CHAMP_SELECT" || QueueDTO.GameState == "CHAMP_SELECT"))
                     {
-                        Client.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
+                        UserClient.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
                         string s = QueueDTO.GameState;
-                        Client.ChampSelectDTO = QueueDTO;
-                        Client.GameID = QueueDTO.Id;
+                        UserClient.ChampSelectDTO = QueueDTO;
+                        UserClient.GameID = QueueDTO.Id;
                         Client.LastPageContent = Client.Container.Content;
                         Client.OverlayContainer.Visibility = Visibility.Hidden;
-                        Client.GameStatus = "championSelect";
-                        Client.SetChatHover();
+                        UserClient.GameStatus = "championSelect";
+                        UserClient.SetChatHover();
                         Client.SwitchPage(page.Load(this));
-                        Client.SendAccept(accepted);
+                        UserClient.SendAccept(accepted);
                         Client.HasPopped = false;
                     }
 
@@ -181,10 +183,10 @@ namespace LegendaryClient.Windows
                 }
             }
             GetPlayerLeagues();
-            if (!Client.AutoAcceptQueue)
+            if (!UserClient.AutoAcceptQueue)
                 return;
 
-            await RiotCalls.AcceptPoppedGame(true);
+            await UserClient.calls.AcceptPoppedGame(true);
             accepted = true;
             
         }
@@ -197,7 +199,7 @@ namespace LegendaryClient.Windows
                 await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
                     SummonerLeaguesDTO playerLeagues =
-                        await RiotCalls.GetAllLeaguesForPlayer(playerInfo.SummonerId);
+                        await UserClient.calls.GetAllLeaguesForPlayer(playerInfo.SummonerId);
 
                     foreach (
                         LeagueListDTO x in
@@ -212,13 +214,13 @@ namespace LegendaryClient.Windows
 
         private async void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.AcceptPoppedGame(true);
+            await UserClient.calls.AcceptPoppedGame(true);
             accepted = true;
         }
 
         private async void DeclineButton_Click(object sender, RoutedEventArgs e)
         {
-            await RiotCalls.AcceptPoppedGame(false);
+            await UserClient.calls.AcceptPoppedGame(false);
             accepted = false;
 
             //TODO: temp, use the Client.PlayerAccepedQueue event instead

@@ -38,6 +38,7 @@ using LegendaryClient.Logic.Riot.Leagues;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
 using agsXMPP.protocol.client;
+using LegendaryClient.Logic.MultiUser;
 
 #endregion
 
@@ -65,22 +66,23 @@ namespace LegendaryClient.Windows
         internal ArrayList NewsList;
         internal int SelectedGame = 0;
         internal bool CheckedDev = false;
+        static UserClient UserClient = UserList.users[Client.Current];
         public MainPage()
         {
             InitializeComponent();
-            GotPlayerData(Client.LoginPacket);
-            SpectatorComboBox.SelectedValue = Client.Region.RegionName.ToUpper();
-            BaseRegion region = BaseRegion.GetRegion(Client.Region.RegionName);
+            GotPlayerData(UserClient.LoginPacket);
+            SpectatorComboBox.SelectedValue = UserClient.Region.RegionName.ToUpper();
+            BaseRegion region = BaseRegion.GetRegion(UserClient.Region.RegionName);
             Client.Profile = new ProfilePage();
             GetNews(region);
-            ChangeSpectatorRegion(Client.Region);
+            ChangeSpectatorRegion(UserClient.Region);
             var update = new Timer
             {
                 Interval = 5000
             };
             update.Elapsed +=
                 (o, e) =>
-                    Client.XmppConnection.Send(new Presence(Client.presenceStatus, Client.GetPresence(), 0));
+                    UserClient.XmppConnection.Send(new Presence(UserClient.presenceStatus, UserClient.GetPresence(), 0));
             timer.Interval = (5000);
             //timer.Start();
 
@@ -137,20 +139,20 @@ namespace LegendaryClient.Windows
 
         private void GotPlayerData(LoginDataPacket packet)
         {
-            Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
+            UserClient.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             UpdateSummonerInformation();
         }
 
         internal async void UpdateSummonerInformation()
         {
-            if (Client.IsLoggedIn)
+            if (UserClient.IsLoggedIn)
             {
                 AllSummonerData playerData =
-                    await RiotCalls.GetAllSummonerDataByAccount(Client.LoginPacket.AllSummonerData.Summoner.AcctId);
+                    await UserClient.calls.GetAllSummonerDataByAccount(UserClient.LoginPacket.AllSummonerData.Summoner.AcctId);
                 SummonerNameLabel.Content = playerData.Summoner.Name;
                 
 
-                SummonerActiveBoostsDTO activeBoost = await RiotCalls.GetSummonerActiveBoosts();
+                SummonerActiveBoostsDTO activeBoost = await UserClient.calls.GetSummonerActiveBoosts();
 
                 string xpBoostTime = ConvertBoostTime(activeBoost.XpBoostEndDate);
                 if (xpBoostTime != string.Empty && activeBoost.XpBoostEndDate > 0)
@@ -191,14 +193,14 @@ namespace LegendaryClient.Windows
                 Sha1 sha1 = new Sha1();
                 if (!CheckedDev)
                 {
-                    if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + Client.Region.RegionName)))
+                    if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + UserClient.Region.RegionName)))
                     {
-                        Client.Dev = true;
+                        UserClient.Dev = true;
                     }
                     CheckedDev = true;
                 }
 
-                if (Client.Dev)
+                if (UserClient.Dev)
                 {
                     Client.UserTitleBarLabel.Content = "Dev ∙ " + playerData.Summoner.Name;
                 }
@@ -207,7 +209,7 @@ namespace LegendaryClient.Windows
                     Client.UserTitleBarLabel.Content = playerData.Summoner.Name;
                 }
 
-                if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
+                if (UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level < 30)
                 {
                     PlayerProgressBar.Value = (playerData.SummonerLevelAndPoints.ExpPoints /
                                                playerData.SummonerLevel.ExpToNextLevel) * 100;
@@ -217,37 +219,37 @@ namespace LegendaryClient.Windows
                     Client.UserTitleBarLabel.Content = Client.UserTitleBarLabel.Content + string.Format(" ∙ Level: {0}", playerData.SummonerLevel.Level);
                 }
                 else
-                    GotLeaguesForPlayer(await RiotCalls.GetAllLeaguesForPlayer(playerData.Summoner.SumId));
+                    GotLeaguesForPlayer(await UserClient.calls.GetAllLeaguesForPlayer(playerData.Summoner.SumId));
 
-                if (Client.LoginPacket.BroadcastNotification.broadcastMessages != null)
+                if (UserClient.LoginPacket.BroadcastNotification.broadcastMessages != null)
                 {
-                    var message = Client.LoginPacket.BroadcastNotification.broadcastMessages[0];
+                    var message = UserClient.LoginPacket.BroadcastNotification.broadcastMessages[0];
                     if (message != null)
                     {
                         //BroadcastMessage.Text = message.Content;
                     }
                 }
 
-                foreach (PlayerStatSummary x in Client.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
+                foreach (PlayerStatSummary x in UserClient.LoginPacket.PlayerStatSummaries.PlayerStatSummarySet)
                 {
                     if (x.PlayerStatSummaryTypeString == "Unranked")
                     {
-                        Client.IsRanked = false;
-                        Client.AmountOfWins = x.Wins;
+                        UserClient.IsRanked = false;
+                        UserClient.AmountOfWins = x.Wins;
                     }
                     if (x.PlayerStatSummaryTypeString != "RankedSolo5x5")
                         continue;
 
                     if (x.Rating != 0)
                     {
-                        Client.IsRanked = true;
-                        Client.AmountOfWins = x.Wins;
+                        UserClient.IsRanked = true;
+                        UserClient.AmountOfWins = x.Wins;
                     }
                     break;
                 }
 
-                Client.InfoLabel.Content = "IP: " + Client.LoginPacket.IpBalance + " ∙ RP: " + Client.LoginPacket.RpBalance;
-                int profileIconId = Client.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
+                Client.InfoLabel.Content = "IP: " + UserClient.LoginPacket.IpBalance + " ∙ RP: " + UserClient.LoginPacket.RpBalance;
+                int profileIconId = UserClient.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
                 var UriSource =
                     new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png"),
                     UriKind.RelativeOrAbsolute);
@@ -297,9 +299,9 @@ namespace LegendaryClient.Windows
                 {
                     var leagues = result.SummonerLeagues.Single(x => x.Queue == "RANKED_SOLO_5x5");
 
-                    Client.Tier = leagues.RequestorsRank;
-                    Client.TierName = leagues.Tier;
-                    Client.LeagueName = leagues.Name;
+                    UserClient.Tier = leagues.RequestorsRank;
+                    UserClient.TierName = leagues.Tier;
+                    UserClient.LeagueName = leagues.Name;
                     CurrentTier = leagues.Tier + " " + leagues.RequestorsRank;
                     List<LeagueItemDTO> players =
                         leagues.Entries.OrderBy(o => o.LeaguePoints)
@@ -307,7 +309,7 @@ namespace LegendaryClient.Windows
                             .ToList();
                     foreach (LeagueItemDTO player in players)
                     {
-                        if (player.PlayerOrTeamName != Client.LoginPacket.AllSummonerData.Summoner.Name)
+                        if (player.PlayerOrTeamName != UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                             continue;
 
                         string Series = "";
@@ -739,7 +741,7 @@ namespace LegendaryClient.Windows
                         MMRLabel.Content = "N/A";
                     }
 
-                    if (Client.curentlyRecording.Contains(gameId))
+                    if (UserClient.curentlyRecording.Contains(gameId))
                     {
                         RecordButton.IsEnabled = false;
                         RecordButton.Content = "Recording...";

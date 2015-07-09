@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -22,6 +23,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private double accId;
         private List<PlayerStatSummary> summaries = new List<PlayerStatSummary>();
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public Overview()
         {
@@ -32,11 +34,11 @@ namespace LegendaryClient.Windows.Profile
         {
             accId = accountId;
             var totalKudos =
-                await RiotCalls.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + summonerId + "}");
+                await UserClient.calls.CallKudos("{\"commandName\":\"TOTALS\",\"summonerId\": " + summonerId + "}");
             RenderKudos(totalKudos);
-            var topChampions = await RiotCalls.RetrieveTopPlayedChampions(accountId, "CLASSIC");
+            var topChampions = await UserClient.calls.RetrieveTopPlayedChampions(accountId, "CLASSIC");
             RenderTopPlayedChampions(topChampions);
-            GotPlayerStats(await RiotCalls.RetrievePlayerStatsByAccountId(accountId, Client.LoginPacket.ClientSystemStates.currentSeason.ToString()));
+            GotPlayerStats(await UserClient.calls.RetrievePlayerStatsByAccountId(accountId, UserClient.LoginPacket.ClientSystemStates.currentSeason.ToString()));
         }
 
         public void RenderKudos(LcdsResponseString totalKudos)
@@ -155,9 +157,9 @@ namespace LegendaryClient.Windows.Profile
 
         private async void ViewAggregatedStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            var x = await RiotCalls.GetAggregatedStats(accId, "CLASSIC", Client.LoginPacket.ClientSystemStates.currentSeason.ToString());
+            var x = await UserClient.calls.GetAggregatedStats(accId, "CLASSIC", UserClient.LoginPacket.ClientSystemStates.currentSeason.ToString());
             Client.OverlayContainer.Content =
-                new AggregatedStatsOverlay(x, accId == Client.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
+                new AggregatedStatsOverlay(x, accId == UserClient.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;
         }
     }

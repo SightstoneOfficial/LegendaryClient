@@ -1,5 +1,6 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Logic.SQLite;
 using LegendaryClient.Properties;
 using System;

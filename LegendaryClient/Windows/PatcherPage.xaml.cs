@@ -1,4 +1,5 @@
 ﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Logic.Patcher;
 using LegendaryClient.Logic.UpdateRegion;
 using LegendaryClient.Properties;
@@ -30,12 +31,13 @@ namespace LegendaryClient.Windows
     public partial class PatcherPage
     {
         private RiotPatcher patcher = new RiotPatcher();
+        static string UpdateRegion;
 
         public PatcherPage()
         {
             InitializeComponent();
             UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion != string.Empty ? Settings.Default.updateRegion : "Live";
-            Client.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
+            UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
 
             bool x = Settings.Default.DarkTheme;
             if (!x)
@@ -290,7 +292,8 @@ namespace LegendaryClient.Windows
                         versionAir.Close();
                     }
 
-                    BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
+                    //BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(UserClient.UpdateRegion);
+                    BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(UpdateRegion);
                     string latestAir = patcher.GetListing(updateRegion.AirListing);
                     LogTextBox("Newest Air Assets Version: " + latestAir);
                     string airVersion =
@@ -363,7 +366,7 @@ namespace LegendaryClient.Windows
                     LogTextBox("Checking if League of Legends is Up-To-Date");
 
                     bool toExit = false;
-                    if (Client.UpdateRegion == "Garena")
+                    if (UpdateRegion == "Garena")
                     {
                         if (Settings.Default.GarenaLocation == string.Empty)
                             ClientRegionLocation("Garena");
@@ -454,7 +457,7 @@ namespace LegendaryClient.Windows
             try
             {
                 string[] fileMetaData = manifest.Skip(1).ToArray();
-                BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
+                BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(UpdateRegion);
 
                 if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes")))
                     Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes"));
@@ -542,7 +545,7 @@ namespace LegendaryClient.Windows
         {
             if (!restart)
             {
-                switch (Client.UpdateRegion)
+                switch (UpdateRegion)
                 {
                     case "PBE": if (Settings.Default.PBELocation != string.Empty)
                             return Settings.Default.PBELocation;
@@ -707,7 +710,7 @@ namespace LegendaryClient.Windows
                 var version = new Version(location.Split(new[] { "/releases/", "/files/" }, StringSplitOptions.None)[1]);
                 if (version <= currentVersion && currentVersion != new Version("0.0.0.0"))
                     continue;
-                BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(Client.UpdateRegion);
+                BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(UpdateRegion);
 
                 string savePlace = location.Split(new[] { "/files/" }, StringSplitOptions.None)[1];
                 if (!savePlace.EndsWith(".jpg") && !savePlace.EndsWith(".png") && !savePlace.EndsWith(".mp3"))

@@ -1,4 +1,5 @@
 ﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Properties;
 using SharpCompress.Common;
 using SharpCompress.Reader;
@@ -106,7 +107,8 @@ namespace LegendaryClient.Windows
             string user;
             try
             {
-                user = Client.LoginPacket.AllSummonerData.Summoner.Name;
+                UserClient UserClient = UserList.users[Client.Current];
+                user = UserClient.LoginPacket.AllSummonerData.Summoner.Name;
             }
             catch
             {
@@ -174,7 +176,8 @@ Examples are:
             try
             {
                 Dictionary<string, string> val;
-                if (!Client.Garena)
+                UserClient UserClient = UserList.users[Client.Current];
+                if (!UserClient.Garena)
                 {
                     val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();
                 }

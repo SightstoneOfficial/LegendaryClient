@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using Timer = System.Timers.Timer;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -22,10 +23,13 @@ namespace LegendaryClient.Windows
         //ChatListView
         private const bool started = false;
         private readonly Timer timer = new Timer();
+        static UserClient UserClient = new UserClient();
 
         public NotificationPage()
         {
             InitializeComponent();
+            if (Client.Current != string.Empty)
+                UserClient = UserList.users[Client.Current];
             LoadTimer();
             UpdateData();
         }
@@ -41,7 +45,7 @@ namespace LegendaryClient.Windows
 
         private void UpdateData()
         {
-            foreach (InviteInfo data in Client.InviteData.Select(info => info.Value))
+            foreach (InviteInfo data in UserClient.InviteData.Select(info => info.Value))
             {
                 InviteInfo data2 = data;
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -52,13 +56,13 @@ namespace LegendaryClient.Windows
                     notification.Accept.Click += (s, e) =>
                     {
                         Client.SwitchPage(new TeamQueuePage(data1.stats.InvitationId));
-                        RiotCalls.AcceptInvite(data1.stats.InvitationId);
-                        Client.InviteData.Remove(data1.stats.InvitationId);
+                        UserClient.calls.AcceptInvite(data1.stats.InvitationId);
+                        UserClient.InviteData.Remove(data1.stats.InvitationId);
                     };
                     notification.Decline.Click += (s, e) =>
                     {
-                        RiotCalls.DeclineInvite(data2.stats.InvitationId);
-                        Client.InviteData.Remove(data2.stats.InvitationId);
+                        UserClient.calls.DeclineInvite(data2.stats.InvitationId);
+                        UserClient.InviteData.Remove(data2.stats.InvitationId);
                     };
                     notification.TitleLabel.Content = "Game Invite";
                     string _name;
@@ -112,7 +116,7 @@ namespace LegendaryClient.Windows
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            Client.InviteData.Clear();
+            UserClient.InviteData.Clear();
             ChatListView.Items.Clear();
         }
     }

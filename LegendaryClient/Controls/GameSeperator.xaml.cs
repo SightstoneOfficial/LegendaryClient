@@ -1,4 +1,5 @@
 ﻿using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Windows;
 using System.Collections.Generic;
@@ -76,7 +77,7 @@ namespace LegendaryClient.Controls
             {
                 foreach (var item in myItems.Where(item => item != null && Client.IsOnPlayPage))
                 {
-                    var t = await RiotCalls.GetQueueInformation(item.QueueId);
+                    var t = await UserList.users[Client.Current].calls.GetQueueInformation(item.QueueId);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                 }
 

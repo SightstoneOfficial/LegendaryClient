@@ -920,7 +920,7 @@ namespace LegendaryClient.Windows
                                 TextInfo text = new CultureInfo("en-US", false).TextInfo;
                                 var pop = new NotificationPopup(ChatSubjects.INVITE_STATUS_CHANGED,
                                     string.Format("{0} has {1} this trade", tradeDto.RequesterInternalSummonerName,
-                                        text.ToTitleCase(tradeDto.State)));
+                                        text.ToTitleCase(tradeDto.State)), UserClient);
 
                                 if (tradeDto.State == "BUSY")
                                     pop.NotificationTextBox.Text = string.Format("{0} is currently busy",

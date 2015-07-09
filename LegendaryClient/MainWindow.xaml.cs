@@ -26,6 +26,7 @@ using MahApps.Metro;
 using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using Uri = System.Uri;
+using LegendaryClient.Logic.MultiUser;
 
 namespace MaterialDesignThemes.Wpf
 {
@@ -143,16 +144,9 @@ namespace LegendaryClient
             }
 
             //Chat connection
-            Client.XmppConnection = new XmppClientConnection();
             Client.FriendList = new FriendList {PresenceChanger = {SelectedItem = Settings.Default.incognitoLogin
                 ? "Invisible"
                 : "Online"}};
-            Client.presenceStatus = Settings.Default.incognitoLogin
-                ? ShowType.NONE
-                : ShowType.chat;
-            Client.CurrentPresence = Settings.Default.incognitoLogin
-                ? PresenceType.invisible
-                : PresenceType.available;
 
             //Client.ExecutingDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             //Keep this this way that way the auto updator knows what to update
@@ -255,7 +249,7 @@ namespace LegendaryClient
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 Client.SwitchPage(Client.Profile);
             }
@@ -263,16 +257,17 @@ namespace LegendaryClient
 
         private void ProfileButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
-                Client.Profile.GetSummonerProfile(Client.LoginPacket.AllSummonerData.Summoner.Name);
+                UserClient UserClient = UserList.users[Client.Current];
+                Client.Profile.GetSummonerProfile(UserClient.LoginPacket.AllSummonerData.Summoner.Name);
                 Client.SwitchPage(Client.Profile);
             }
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 var playPage = new PlayPage();
                 Client.SwitchPage(playPage);
@@ -281,7 +276,7 @@ namespace LegendaryClient
 
         private void ShopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 var shopPage = new ShopPage();
                 Client.SwitchPage(shopPage);
@@ -299,7 +294,7 @@ namespace LegendaryClient
 
         private void PluginsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 var pluginsPage = new PluginsPage();
                 Client.SwitchPage(pluginsPage);
@@ -308,7 +303,7 @@ namespace LegendaryClient
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof (SettingsPage));
@@ -322,7 +317,7 @@ namespace LegendaryClient
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 var replayPage = new ReplayPage();
                 Client.SwitchPage(replayPage);
@@ -332,26 +327,30 @@ namespace LegendaryClient
         public void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Settings.Default.AutoLogin = false;
-            if (Client.IsLoggedIn && !string.Equals(Client.GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
+            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+                return;
+            if (string.Equals(UserList.users[Client.Current].GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 // ReSharper disable once PossibleNullReferenceException
                 (Client.MainWin as MainWindow).FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 Client.Pages.Clear();
-                RiotCalls.QuitGame();
+                UserList.users[Client.Current].calls.QuitGame();
+                /*
                 Client.RiotConnection.Disconnected -= Client.RiotConnection_Disconnected;
                 Client.RiotConnection.Close();
                 Client.XmppConnection.OnError -= Client.XmppConnection_OnError;
                 Client.XmppConnection.Close();
                 Client.XmppConnection = null;
-                Client.chatlistview.Children.Clear();
-                Client.IsLoggedIn = false;
+                //*/
+                //Client.chatlistview.Children.Clear();
+                //Client.IsLoggedIn = false;
                 Client.StatusContainer.Visibility = Visibility.Hidden;
                 Client.Container.Margin = new Thickness(0, 0, 0, 0);
                 Client.SwitchPage(new LoginPage());
                 Client.ClearPage(typeof (MainPage));
             }
-            else if (Settings.Default.warnClose && Client.IsInGame)
+            else if (Settings.Default.warnClose && UserList.users[Client.Current].IsInGame)
             {
                 _warn = new Warning {Header = {Content = "Logout while in Game"}, MessageText = {Text = "Are You Sure You Want To Quit? This will result in a dodge."}};
                 _warn.backtochampselect.Click += HideWarning;
@@ -368,7 +367,7 @@ namespace LegendaryClient
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (Settings.Default.warnClose || Client.curentlyRecording.Count > 0 || Client.IsInGame)
+            if (UserList.users.Count > 0 && String.IsNullOrWhiteSpace(Client.Current) && Settings.Default.warnClose)
             {
                 _warn = new Warning();
                 e.Cancel = true;
@@ -377,30 +376,40 @@ namespace LegendaryClient
                 _warn.backtochampselect.Click += HideWarning;
                 _warn.AcceptButton.Click += Quit;
                 _warn.hide.Click += HideWarning;
-                if (Client.curentlyRecording.Count > 0)
+                Client.FullNotificationOverlayContainer.Content = _warn.Content;
+                Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
+            }
+            else if (Settings.Default.warnClose || UserList.users[Client.Current].curentlyRecording.Count > 0 || UserList.users[Client.Current].IsInGame)
+            {
+                _warn = new Warning();
+                e.Cancel = true;
+                _warn.Header.Content = "Quit";
+                _warn.MessageText.Text = "Are You Sure You Want To Quit?";
+                _warn.backtochampselect.Click += HideWarning;
+                _warn.AcceptButton.Click += Quit;
+                _warn.hide.Click += HideWarning;
+                if (UserList.users[Client.Current].curentlyRecording.Count > 0)
                     _warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + _warn.MessageText.Text;
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
             else
             {
-                if (Client.IsLoggedIn)
-                {
-                    RiotCalls.PurgeFromQueues();
-                    RiotCalls.Leave();
-                    Client.RiotConnection.Close();
-                }
+                Quit(null, null);
                 Environment.Exit(0);
             }
         }
 
         private void Quit(object sender, RoutedEventArgs e)
         {
-            if (Client.IsLoggedIn)
+            foreach (var userclients in UserList.users)
             {
-                RiotCalls.PurgeFromQueues();
-                RiotCalls.Leave();
-                Client.RiotConnection.Close();
+                if (userclients.Value.IsLoggedIn)
+                {
+                    userclients.Value.calls.PurgeFromQueues();
+                    userclients.Value.calls.Leave();
+                    userclients.Value.RiotConnection.Close();
+                }
             }
             Environment.Exit(0);
         }

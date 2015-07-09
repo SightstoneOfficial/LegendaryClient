@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web.Script.Serialization;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Logic.JSON
 {

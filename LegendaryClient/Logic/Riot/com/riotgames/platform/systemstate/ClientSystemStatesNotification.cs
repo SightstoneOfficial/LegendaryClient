@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web.Script.Serialization;
 using System.Reflection;
 using System.Collections;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Logic.Riot.Platform
 {

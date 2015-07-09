@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 using LegendaryClient.Logic.SQLite;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Logic.JSON
 {

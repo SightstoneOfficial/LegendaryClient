@@ -29,6 +29,7 @@ using agsXMPP;
 using agsXMPP.protocol.x.muc;
 using agsXMPP.protocol.client;
 using agsXMPP.Collections;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -53,6 +54,7 @@ namespace LegendaryClient.Windows
         private long inQueueTimer;
         private MucManager newRoom;
         private Jid jid;
+        UserClient UserClient = UserList.users[Client.Current];
 
         /// <summary>
         ///     TOP
@@ -100,18 +102,18 @@ namespace LegendaryClient.Windows
 
             CurrentLobby = myLobby;
 
-            MyMasteries = Client.LoginPacket.AllSummonerData.MasteryBook;
-            MyRunes = Client.LoginPacket.AllSummonerData.SpellBook;
+            MyMasteries = UserClient.LoginPacket.AllSummonerData.MasteryBook;
+            MyRunes = UserClient.LoginPacket.AllSummonerData.SpellBook;
             LoadStats();
 
             Client.InviteListView = InvitedPlayers;
-            Client.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
+            UserClient.RiotConnection.MessageReceived += PVPNet_OnMessageReceived;
             Client.LastPageContent = Content;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to team builder";
-            Client.GameStatus = "inTeamBuilder";
-            Client.SetChatHover();
+            UserClient.GameStatus = "inTeamBuilder";
+            UserClient.SetChatHover();
             AddPlayer();
 
             CallWithArgs(Guid.NewGuid().ToString(), "cap", "retrieveFeatureToggles", "{}");
@@ -126,12 +128,12 @@ namespace LegendaryClient.Windows
         private void ConnectToChat(string ChatJid, string Pass)
         {
             string Jid = Client.GetChatroomJid(ChatJid, Pass, false);
-            newRoom = new MucManager(Client.XmppConnection);
-            Client.XmppConnection.OnMessage += XmppConnection_OnMessage;
-            Client.XmppConnection.OnPresence += XmppConnection_OnPresence;
+            newRoom = new MucManager(UserClient.XmppConnection);
+            UserClient.XmppConnection.OnMessage += XmppConnection_OnMessage;
+            UserClient.XmppConnection.OnPresence += XmppConnection_OnPresence;
             jid = new Jid(ChatJid);
             newRoom.AcceptDefaultConfiguration(jid);
-            newRoom.JoinRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name, Pass);
+            newRoom.JoinRoom(jid, UserClient.LoginPacket.AllSummonerData.Summoner.Name, Pass);
             connectedToChat = true;
         }
 
@@ -152,7 +154,7 @@ namespace LegendaryClient.Windows
             if (jid.Bare.Contains(msg.From.User))
                 return;
 
-            if (msg.From.Resource == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (msg.From.Resource == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                 return;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -163,7 +165,7 @@ namespace LegendaryClient.Windows
                     tr.Text = msg.From.Resource + ": ";
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    if (Client.Filter)
+                    if (UserClient.Filter)
                         tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
                                   Environment.NewLine;
                     else
@@ -175,10 +177,10 @@ namespace LegendaryClient.Windows
 
         private void LeaveChat()
         {
-            newRoom.LeaveRoom(jid, Client.LoginPacket.AllSummonerData.Summoner.Name);
+            newRoom.LeaveRoom(jid, UserClient.LoginPacket.AllSummonerData.Summoner.Name);
             //We no longer want to receive messages from teambuilder chat lobby if we want to leave that team
-            Client.XmppConnection.MessageGrabber.Remove(jid);
-            Client.XmppConnection.OnPresence -= XmppConnection_OnPresence;
+            UserClient.XmppConnection.MessageGrabber.Remove(jid);
+            UserClient.XmppConnection.OnPresence -= XmppConnection_OnPresence;
         }
 
         private void PVPNet_OnMessageReceived(object sender, MessageReceivedEventArgs message)
@@ -205,7 +207,7 @@ namespace LegendaryClient.Windows
                 #region Launching Game
 
                 var dto = message.Body as PlayerCredentialsDto;
-                Client.CurrentGame = dto;
+                UserClient.CurrentGame = dto;
 
                 if (!HasLaunchedGame)
                 {
@@ -216,21 +218,21 @@ namespace LegendaryClient.Windows
                         {
                             PlatformGameLifecycleDTO n =
                                 await
-                                    RiotCalls.RetrieveInProgressSpectatorGameInfo(
-                                        Client.LoginPacket.AllSummonerData.Summoner.Name);
+                                    UserClient.calls.RetrieveInProgressSpectatorGameInfo(
+                                        UserClient.LoginPacket.AllSummonerData.Summoner.Name);
                             if (n.GameName != null)
                             {
                                 string IP = n.PlayerCredentials.ObserverServerIp + ":" +
                                             n.PlayerCredentials.ObserverServerPort;
                                 string Key = n.PlayerCredentials.ObserverEncryptionKey;
                                 var GameID = (int)n.PlayerCredentials.GameId;
-                                new ReplayRecorder(IP, GameID, Client.Region.InternalName, Key);
+                                new ReplayRecorder(IP, GameID, UserClient.Region.InternalName, Key);
                             }
                         });
                     }
                     Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        Client.LaunchGame();
+                        Client.LaunchGame(dto.ServerIp, dto.ServerPort.ToString(), dto.EncryptionKey, dto.SummonerId.ToString(), dto.SummonerName, UserClient.Region);
                         InGame();
                     }));
                 }
@@ -459,11 +461,11 @@ namespace LegendaryClient.Windows
                 if (timer != null)
                     timer.Stop();
 
-                Client.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
-                Client.GameStatus = "outOfGame";
-                Client.SetChatHover();
+                UserClient.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
+                UserClient.GameStatus = "outOfGame";
+                UserClient.SetChatHover();
 #pragma warning disable 4014
-                RiotCalls.Leave();
+                UserClient.calls.Leave();
 #pragma warning restore 4014
 
                 //temp, what other reasons are there?
@@ -483,7 +485,7 @@ namespace LegendaryClient.Windows
             if (slot.championId == 0)
                 return;
             //TODO: move PlayerName label to some not so retarded place
-            if (slot.summonerName == Client.LoginPacket.AllSummonerData.Summoner.Name)
+            if (slot.summonerName == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
             {
                 var tbc = new TeamBuilderChoose();
                 tbc.PlayerName.Content = slot.summonerName;
@@ -659,7 +661,7 @@ namespace LegendaryClient.Windows
         private void AddPlayer(bool inNotInTeam = true)
         {
             ///WHY ARE THERE SO MANY ROLES NOW
-            TeamPlayer.PlayerName.Content = Client.LoginPacket.AllSummonerData.Summoner.Name;
+            TeamPlayer.PlayerName.Content = UserClient.LoginPacket.AllSummonerData.Summoner.Name;
             TeamPlayer.Role.Items.Add(new Item("Mage"));
             TeamPlayer.Role.Items.Add(new Item("Support"));
             TeamPlayer.Role.Items.Add(new Item("Assassin"));
@@ -814,7 +816,7 @@ namespace LegendaryClient.Windows
             bool HasChanged = false;
             int i = 0;
             var bookDTO = new MasteryBookDTO();
-            bookDTO.SummonerId = Client.LoginPacket.AllSummonerData.Summoner.SumId;
+            bookDTO.SummonerId = UserClient.LoginPacket.AllSummonerData.Summoner.SumId;
             bookDTO.BookPages = new List<MasteryBookPageDTO>();
             foreach (MasteryBookPageDTO MasteryPage in MyMasteries.BookPages)
             {
@@ -837,7 +839,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await RiotCalls.SaveMasteryBook(bookDTO);
+                await UserClient.calls.SaveMasteryBook(bookDTO);
             }
         }
 
@@ -881,7 +883,7 @@ namespace LegendaryClient.Windows
             }
             if (HasChanged)
             {
-                await RiotCalls.SelectDefaultSpellBookPage(SelectedRunePage);
+                await UserClient.calls.SelectDefaultSpellBookPage(SelectedRunePage);
             }
         }
 
@@ -910,7 +912,7 @@ namespace LegendaryClient.Windows
             ChampionSelectListView.Items.Clear();
             if (true)
             {
-                ChampList = new List<ChampionDTO>(Client.PlayerChampions);
+                ChampList = new List<ChampionDTO>(UserClient.PlayerChampions);
                 foreach (ChampionDTO champ in ChampList)
                 {
                     champions getChamp = champions.GetChampion(champ.ChampionId);
@@ -939,7 +941,7 @@ namespace LegendaryClient.Windows
             SkinSelectListView.Items.Clear();
             var item = new ListViewItem();
             var skinImage = new Image();
-            ChampList = new List<ChampionDTO>(Client.PlayerChampions);
+            ChampList = new List<ChampionDTO>(UserClient.PlayerChampions);
             champions Champion = champions.GetChampion(ChampionId);
 
             string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Champion.portraitPath);
@@ -1001,9 +1003,16 @@ namespace LegendaryClient.Windows
             ChampAndSkinBackgroundImage.BeginAnimation(OpacityProperty, fadingAnimation);
         }
 
+        /// <summary>
+        /// I AM SO HAPPY WE USED THIS INSTEAD :D :D :D :D :D
+        /// </summary>
+        /// <param name="UUID"></param>
+        /// <param name="GameMode"></param>
+        /// <param name="ProcedureCall"></param>
+        /// <param name="Parameters"></param>
         public async void CallWithArgs(string UUID, string GameMode, string ProcedureCall, string Parameters)
         {
-            await RiotCalls.CallLCDS(UUID, GameMode, ProcedureCall, Parameters);
+            await UserClient.calls.CallLCDS(UUID, GameMode, ProcedureCall, Parameters);
         }
 
 
@@ -1017,15 +1026,15 @@ namespace LegendaryClient.Windows
             if (connectedToChat)
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = Client.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                tr.Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + ": ";
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                if (Client.Filter)
+                if (UserClient.Filter)
                     tr.Text = ChatTextBox.Text.Filter() + Environment.NewLine;
                 else
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                Client.XmppConnection.Send(new Message(jid, MessageType.groupchat, ChatTextBox.Text));
+                UserClient.XmppConnection.Send(new Message(jid, MessageType.groupchat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
             }
             else if (connectedToChat == false)
@@ -1095,12 +1104,12 @@ namespace LegendaryClient.Windows
 
         private async void InGame()
         {
-            await RiotCalls.Leave();
-            Client.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
-            Client.GameStatus = "inGame";
-            Client.timeStampSince =
+            await UserClient.calls.Leave();
+            UserClient.RiotConnection.MessageReceived -= PVPNet_OnMessageReceived;
+            UserClient.GameStatus = "inGame";
+            UserClient.timeStampSince =
                 (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
-            Client.SetChatHover();
+            UserClient.SetChatHover();
 
             Client.SwitchPage(new InGame());
             Client.ClearPage(typeof(TeamBuilderPage));

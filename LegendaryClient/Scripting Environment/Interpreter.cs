@@ -2,6 +2,7 @@
 using Microsoft.Scripting.Hosting;
 using IronPython.Hosting;
 using System.IO;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Scripting_Environment
 {
@@ -19,7 +20,7 @@ namespace LegendaryClient.Scripting_Environment
 			pyRuntime = pyEngine.Runtime;
 			pyScope = pyEngine.CreateScope();
 			var paths = pyEngine.GetSearchPaths();
-			paths.Add(Path.Combine(Logic.Client.ExecutingDirectory, "Client", "LIB"));
+			paths.Add(Path.Combine(Client.ExecutingDirectory, "Client", "LIB"));
 			pyEngine.SetSearchPaths(paths);
 		}
 

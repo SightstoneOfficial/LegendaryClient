@@ -7,6 +7,7 @@ using IronPython.Runtime;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
 using System.Threading.Tasks;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Scripting_Environment
 {
@@ -15,8 +16,8 @@ namespace LegendaryClient.Scripting_Environment
 		public Dictionary<string, object> variables;
         public Plugin_Core()
 		{
-			Logic.Client.onChatMessageReceived += Client_onChatMessageReceived;
-			variables = new Dictionary<string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", Logic.Client.LoginPacket.AllSummonerData.Summoner.Name }, { "sendMessage", new Action<string, string>(Logic.Client.SendMessage) } };
+			//Client.onChatMessageReceived += Client_onChatMessageReceived;
+			//variables = new Dictionary<string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", Client.LoginPacket.AllSummonerData.Summoner.Name }, { "sendMessage", new Action<string, string>(Client.SendMessage) } };
 
 		}
 

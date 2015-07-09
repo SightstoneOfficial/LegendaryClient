@@ -3,6 +3,7 @@
 using System.Linq;
 using System.Windows;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 
 #endregion
 

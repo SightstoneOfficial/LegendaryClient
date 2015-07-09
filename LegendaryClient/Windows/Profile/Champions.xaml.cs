@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -19,7 +20,7 @@ namespace LegendaryClient.Windows.Profile
         private List<ChampionDTO> _championList;
         private bool _noFilterOnLoad;
         //private static readonly ILog log = LogManager.GetLogger(typeof(Champions));
-
+        static UserClient UserClient = UserList.users[Client.Current];
         public Champions()
         {
             InitializeComponent();
@@ -27,7 +28,7 @@ namespace LegendaryClient.Windows.Profile
 
         public async void Update()
         {
-            var champList = await RiotCalls.GetAvailableChampions();
+            var champList = await UserClient.calls.GetAvailableChampions();
 
             _championList = new List<ChampionDTO>(champList);
 
@@ -35,11 +36,11 @@ namespace LegendaryClient.Windows.Profile
                 (x, y) =>
                     string.Compare(champions.GetChampion(x.ChampionId)
                         .displayName, champions.GetChampion(y.ChampionId).displayName, StringComparison.Ordinal));
-            if (Client.LoginPacket.AllSummonerData.SummonerLevel.Level <= Client.LoginPacket.ClientSystemStates.freeToPlayChampionsForNewPlayersMaxLevel)
+            if (UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level <= UserClient.LoginPacket.ClientSystemStates.freeToPlayChampionsForNewPlayersMaxLevel)
             {
                 _championList.ForEach(x => x.FreeToPlay = false);
                 _championList.FindAll(x => 
-                    Client.LoginPacket.ClientSystemStates.freeToPlayChampionForNewPlayersIdList.Contains(x.ChampionId)).
+                    UserClient.LoginPacket.ClientSystemStates.freeToPlayChampionForNewPlayersIdList.Contains(x.ChampionId)).
                         ForEach(x => x.FreeToPlay = true);
             }
             FilterChampions();

@@ -1,5 +1,6 @@
 ﻿using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Logic.Replays;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
@@ -31,10 +32,12 @@ namespace LegendaryClient.Windows
         private bool User = true;
         private ReplayRecorder recorder;
         private EndOfReplayGameStats selectedStats;
+        static UserClient UserClient;
 
         public ReplayPage()
         {
             InitializeComponent();
+            UserClient = UserList.users[Client.Current];
             Download.Visibility = Visibility.Hidden;
 
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet")))
@@ -437,7 +440,7 @@ namespace LegendaryClient.Windows
         {
             if (User)
             {
-                PublicSummoner summoner = await RiotCalls.GetSummonerByName(Command.Text);
+                PublicSummoner summoner = await UserClient.calls.GetSummonerByName(Command.Text);
                 if (string.IsNullOrWhiteSpace(summoner.Name))
                 {
                     var overlay = new MessageOverlay
@@ -454,7 +457,7 @@ namespace LegendaryClient.Windows
                 HintLabel.Visibility = Visibility.Visible;
                 var fadeLabelInAnimationx = new DoubleAnimation(1, TimeSpan.FromSeconds(0.1));
                 HintLabel.BeginAnimation(OpacityProperty, fadeLabelInAnimationx);
-                PlatformGameLifecycleDTO n = await RiotCalls.RetrieveInProgressSpectatorGameInfo(Command.Text);
+                PlatformGameLifecycleDTO n = await UserClient.calls.RetrieveInProgressSpectatorGameInfo(Command.Text);
                 if (n == null)
                 {
                     var overlay = new MessageOverlay
@@ -472,7 +475,7 @@ namespace LegendaryClient.Windows
                     string ip = n.PlayerCredentials.ObserverServerIp + ":" + n.PlayerCredentials.ObserverServerPort;
                     string key = n.PlayerCredentials.ObserverEncryptionKey;
                     var gameId = (int)n.PlayerCredentials.GameId;
-                    recorder = new ReplayRecorder(ip, gameId, Client.Region.InternalName, key);
+                    recorder = new ReplayRecorder(ip, gameId, UserClient.Region.InternalName, key);
                     recorder.OnReplayRecorded += recorder_OnReplayRecorded;
                     recorder.OnGotChunk += recorder_OnGotChunk;
 

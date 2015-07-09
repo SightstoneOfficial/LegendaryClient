@@ -17,6 +17,7 @@ using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using System.Threading.Tasks;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -29,6 +30,7 @@ namespace LegendaryClient.Windows.Profile
         private LargeChatPlayer playerItem;
         //private static readonly ILog Log = LogManager.GetLogger(typeof (MatchHistory));
         private readonly List<MatchStats> gameStats = new List<MatchStats>();
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public MatchHistory()
         {
@@ -39,7 +41,7 @@ namespace LegendaryClient.Windows.Profile
 
         public async Task<object> Update(double accountId)
         {
-            GotRecentGames(await RiotCalls.GetRecentGames(accountId));
+            GotRecentGames(await UserClient.calls.GetRecentGames(accountId));
             return null;
         }
 

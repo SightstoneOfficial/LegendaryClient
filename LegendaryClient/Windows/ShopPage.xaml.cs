@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Properties;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -15,6 +16,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ShopPage
     {
+        UserClient UserClient = UserList.users[Client.Current];
         public ShopPage()
         {
             InitializeComponent();
@@ -36,7 +38,7 @@ namespace LegendaryClient.Windows
 
         public async void RefreshBrowser()
         {
-            var uri = await RiotCalls.GetStoreUrl();
+            var uri = await UserClient.calls.GetStoreUrl();
             ShopBrowser.Source = new System.Uri(uri);
             Debug.WriteLine(uri);
             //Client.Log(await RiotCalls.GetStoreUrl());

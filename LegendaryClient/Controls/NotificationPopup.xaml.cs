@@ -32,10 +32,12 @@ namespace LegendaryClient.Controls
         private readonly string _msgType;
         private int _inviteId;
         private int _queueId;
+        private UserClient UserClient;
 
-        public NotificationPopup(ChatSubjects subject, agsXMPP.protocol.client.Message message)
+        public NotificationPopup(ChatSubjects subject, agsXMPP.protocol.client.Message message, UserClient userClient)
         {
             InitializeComponent();
+            UserClient = userClient;
             _subject = subject;
             _messageData = message;
             var name = Enum.GetName(typeof(ChatSubjects), subject);
@@ -134,9 +136,10 @@ namespace LegendaryClient.Controls
             }
         }
 
-        public NotificationPopup(ChatSubjects subject, string message)
+        public NotificationPopup(ChatSubjects subject, string message, UserClient userClient)
         {
             InitializeComponent();
+            UserClient = userClient;
             _subject = subject;
             var name = Enum.GetName(typeof(ChatSubjects), subject);
             if (name != null)
@@ -157,10 +160,10 @@ namespace LegendaryClient.Controls
             {
                 case ChatSubjects.GAME_INVITE:
                 case ChatSubjects.PRACTICE_GAME_INVITE:
-                    Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_REJECT);
+                    UserClient.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_REJECT);
                     break;
                 case ChatSubjects.RANKED_TEAM_UPDATE:
-                    RiotCalls.DeclineTeamInvite(new TeamId { FullId = _teamId });
+                    UserClient.calls.DeclineTeamInvite(new TeamId { FullId = _teamId });
                     break;
             }
             Visibility = Visibility.Hidden;
@@ -171,21 +174,21 @@ namespace LegendaryClient.Controls
             switch (_subject)
             {
                 case ChatSubjects.PRACTICE_GAME_INVITE:
-                    Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.PRACTICE_GAME_INVITE_ACCEPT);
+                    UserClient.Message(_messageData.From.User, _messageData.Body, ChatSubjects.PRACTICE_GAME_INVITE_ACCEPT);
 #pragma warning disable 4014
-                    RiotCalls.JoinGame(_gameId);
+                    UserClient.calls.JoinGame(_gameId);
 #pragma warning restore 4014
-                    Client.GameID = _gameId;
-                    Client.GameName = "Joined game";
+                    UserClient.GameID = _gameId;
+                    UserClient.GameName = "Joined game";
                     Client.SwitchPage(new CustomGameLobbyPage());
                     Visibility = Visibility.Hidden;
                     break;
                 case ChatSubjects.GAME_INVITE:
-                    Client.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_ACCEPT);
+                    UserClient.Message(_messageData.From.User, _messageData.Body, ChatSubjects.GAME_INVITE_ACCEPT);
                     Visibility = Visibility.Hidden;
                     break;
                 case ChatSubjects.RANKED_TEAM_UPDATE:
-                    RiotCalls.AcceptTeamInvite(new TeamId { FullId = _teamId });
+                    UserClient.calls.AcceptTeamInvite(new TeamId { FullId = _teamId });
                     Visibility = Visibility.Hidden;
                     break;
             }

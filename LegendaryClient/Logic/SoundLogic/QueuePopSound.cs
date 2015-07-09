@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LegendaryClient.Logic.MultiUser;
+using System;
 using System.IO;
 
 namespace LegendaryClient.Logic.SoundLogic

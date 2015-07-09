@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Controls
 {

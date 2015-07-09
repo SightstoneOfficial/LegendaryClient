@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Shapes;
 using LegendaryClient.Logic.Riot.Platform;
 using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -25,17 +26,18 @@ namespace LegendaryClient.Windows.Profile
         private int _usedPoints;
         private int _utilityUsedPoints;
         private readonly List<double> _masteryPageOrder = new List<double>();
+        static UserClient UserClient = UserList.users[Client.Current];
         public Masteries()
         {
             InitializeComponent();
             MasteryPageListView.Items.Clear();
-            for (var i = 1; i <= Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count; i++)
+            for (var i = 1; i <= UserClient.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count; i++)
             {
                 MasteryPageListView.Items.Add(i + " ");
             }
 
             double selectedPageId = 0;
-            foreach (var masteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
+            foreach (var masteryPage in UserClient.LoginPacket.AllSummonerData.MasteryBook.BookPages)
             {
                 _masteryPageOrder.Add(masteryPage.PageId);
                 if (masteryPage.Current)
@@ -168,7 +170,7 @@ namespace LegendaryClient.Windows.Profile
 
             UsedLabel.Content = "Points Used: " + _usedPoints;
             FreeLabel.Content = "Points Free: " +
-                                (Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints - _usedPoints);
+                                (UserClient.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints - _usedPoints);
             OffenseLabel.Content = "Offense: " + _offenseUsedPoints;
             DefenseLabel.Content = "Defense: " + _defenseUsedPoints;
             UtilityLabel.Content = "Utility: " + _utilityUsedPoints;
@@ -239,7 +241,7 @@ namespace LegendaryClient.Windows.Profile
                     break;
             }
             //Has enough points overall
-            if (_usedPoints >= Client.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints)
+            if (_usedPoints >= UserClient.LoginPacket.AllSummonerData.SummonerTalentsAndPoints.TalentPoints)
             {
                 return;
             }
@@ -384,13 +386,13 @@ namespace LegendaryClient.Windows.Profile
         {
             foreach (
                 var MasteryPage in
-                    Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Where(masteryPage => masteryPage.Current))
+                    UserClient.LoginPacket.AllSummonerData.MasteryBook.BookPages.Where(masteryPage => masteryPage.Current))
             {
                 MasteryPage.TalentEntries = GetCurrentTalentEntries();
                 MasteryPage.Name = MasteryTextBox.Text;
             }
 
-            await RiotCalls.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
+            await UserClient.calls.SaveMasteryBook(UserClient.LoginPacket.AllSummonerData.MasteryBook);
         }
 
         private void MasteryPageListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -400,7 +402,7 @@ namespace LegendaryClient.Windows.Profile
                 mastery.selectedRank = 0;
             }
 
-            foreach (var masteryPage in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
+            foreach (var masteryPage in UserClient.LoginPacket.AllSummonerData.MasteryBook.BookPages)
             {
                 if (masteryPage.Current)
                 {
@@ -439,7 +441,7 @@ namespace LegendaryClient.Windows.Profile
         private async void AddPageButton_Click(object sender, RoutedEventArgs e)
         {
             double pageId = 0;
-            foreach (var item in Client.LoginPacket.AllSummonerData.MasteryBook.BookPages)
+            foreach (var item in UserClient.LoginPacket.AllSummonerData.MasteryBook.BookPages)
             {
                 if (pageId <= item.PageId)
                 {
@@ -448,14 +450,14 @@ namespace LegendaryClient.Windows.Profile
                 }
             }
             MasteryBookPageDTO newPage = new MasteryBookPageDTO();
-            newPage.SummonerId = Client.LoginPacket.AllSummonerData.Summoner.SumId;
+            newPage.SummonerId = UserClient.LoginPacket.AllSummonerData.Summoner.SumId;
             newPage.Name = "@@!PaG3!@@" + pageId;
             newPage.PageId = pageId;
             newPage.TalentEntries = new List<TalentEntry>();
-            Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Add(newPage);
-            await RiotCalls.SaveMasteryBook(Client.LoginPacket.AllSummonerData.MasteryBook);
+            UserClient.LoginPacket.AllSummonerData.MasteryBook.BookPages.Add(newPage);
+            await UserClient.calls.SaveMasteryBook(UserClient.LoginPacket.AllSummonerData.MasteryBook);
             _masteryPageOrder.Add(pageId);
-            MasteryPageListView.Items.Add(Client.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count + " ");
+            MasteryPageListView.Items.Add(UserClient.LoginPacket.AllSummonerData.MasteryBook.BookPages.Count + " ");
         }
     }
 }

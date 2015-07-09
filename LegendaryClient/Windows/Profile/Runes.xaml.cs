@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -29,30 +30,32 @@ namespace LegendaryClient.Windows.Profile
         private readonly double blueRunesAvail;
         private readonly double redRunesAvail;
         private readonly double yellowRunesAvail;
+        private static UserClient UserClient;
 
         public Runes()
         {
             InitializeComponent();
-            blackRunesAvail = Math.Floor(Client.LoginPacket.AllSummonerData.SummonerLevel.Level/10.0f);
+            UserClient = UserList.users[Client.Current];
+            blackRunesAvail = Math.Floor(UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level / 10.0f);
             redRunesAvail = blackRunesAvail*3 +
-                             Math.Ceiling((Client.LoginPacket.AllSummonerData.SummonerLevel.Level - blackRunesAvail*10)/
+                             Math.Ceiling((UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level - blackRunesAvail * 10) /
                                           3.0f);
             yellowRunesAvail = blackRunesAvail*3 +
-                                Math.Ceiling((Client.LoginPacket.AllSummonerData.SummonerLevel.Level -
+                                Math.Ceiling((UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level -
                                               blackRunesAvail*10 -
                                               1)/3.0f);
             blueRunesAvail = blackRunesAvail*3 +
-                              Math.Ceiling((Client.LoginPacket.AllSummonerData.SummonerLevel.Level - blackRunesAvail*10 -
+                              Math.Ceiling((UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level - blackRunesAvail * 10 -
                                             2)/3.0f);
-            for (var i = 1; i <= Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Count; i++)
+            for (var i = 1; i <= UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages.Count; i++)
                 RunePageListBox.Items.Add(i);
 
-            Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Sort((x, y) => x.PageId.CompareTo(y.PageId));
+            UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages.Sort((x, y) => x.PageId.CompareTo(y.PageId));
             GetAvailableRunes();
             if (!Directory.Exists(Client.ExecutingDirectory + "\\RunePages\\"))
                 Directory.CreateDirectory(Client.ExecutingDirectory + "\\RunePages\\");
-            if (!Directory.Exists(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name))
-                Directory.CreateDirectory(Client.ExecutingDirectory + "\\RunePages\\" + Client.LoginPacket.AllSummonerData.Summoner.Name);
+            if (!Directory.Exists(Client.ExecutingDirectory + "\\RunePages\\" + UserClient.LoginPacket.AllSummonerData.Summoner.Name))
+                Directory.CreateDirectory(Client.ExecutingDirectory + "\\RunePages\\" + UserClient.LoginPacket.AllSummonerData.Summoner.Name);
             try
             {
                 foreach (
@@ -60,11 +63,11 @@ namespace LegendaryClient.Windows.Profile
                         Directory.GetFiles(
                             Path.Combine(
                                 Client.ExecutingDirectory,
-                                "RunePages", Client.LoginPacket.AllSummonerData.Summoner.Name)))
+                                "RunePages", UserClient.LoginPacket.AllSummonerData.Summoner.Name)))
                 {
                     //Fix this later, it is very bad (for more than one rune page)
                     foreach (var x in file.LeagueSettingsReader())
-                        Client.LocalRunePages.Add(x.Key, x.Value);
+                        UserClient.LocalRunePages.Add(x.Key, x.Value);
                 }
             }
             catch
@@ -170,12 +173,12 @@ namespace LegendaryClient.Windows.Profile
         private async void GetAvailableRunes()
         {
             var runeInven =
-                await RiotCalls.GetSummonerRuneInventory(Client.LoginPacket.AllSummonerData.Summoner.SumId);
+                await UserClient.calls.GetSummonerRuneInventory(UserClient.LoginPacket.AllSummonerData.Summoner.SumId);
             runes = runeInven.SummonerRunes;
             runes.Sort((x, y) => string.Compare(x.Rune.Name, y.Rune.Name, StringComparison.Ordinal));
             RuneFilterComboBox.SelectedIndex = 0;
-            RunePageListBox.SelectedIndex = Client.LoginPacket.AllSummonerData.SpellBook.BookPages.IndexOf(
-                Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Find(x => x.Current));
+            RunePageListBox.SelectedIndex = UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages.IndexOf(
+                UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages.Find(x => x.Current));
         }
 
         public void RenderRunes()
@@ -321,13 +324,13 @@ namespace LegendaryClient.Windows.Profile
         {
             foreach (
                 var spellPage in
-                    Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Where(spellPage => spellPage.Current))
+                    UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages.Where(spellPage => spellPage.Current))
             {
                 spellPage.Current = false;
             }
 
-            Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RunePageListBox.SelectedIndex].Current = true;
-            selectedBook = Client.LoginPacket.AllSummonerData.SpellBook.BookPages[RunePageListBox.SelectedIndex];
+            UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages[RunePageListBox.SelectedIndex].Current = true;
+            selectedBook = UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages[RunePageListBox.SelectedIndex];
             RuneTextBox.Text = selectedBook.Name;
             RefreshAvailableRunes();
             RenderRunes();
@@ -434,13 +437,13 @@ namespace LegendaryClient.Windows.Profile
         {
             foreach (
                 var runePage in
-                    Client.LoginPacket.AllSummonerData.SpellBook.BookPages.Where(runePage => runePage.Current))
+                    UserClient.LoginPacket.AllSummonerData.SpellBook.BookPages.Where(runePage => runePage.Current))
             {
                 runePage.SlotEntries = GetCurrentSlotEntries();
                 runePage.Name = RuneTextBox.Text;
             }
 
-            await RiotCalls.SaveSpellBook(Client.LoginPacket.AllSummonerData.SpellBook);
+            await UserClient.calls.SaveSpellBook(UserClient.LoginPacket.AllSummonerData.SpellBook);
         }
 
         private void ClearRunes_Click(object sender, RoutedEventArgs e)
@@ -476,19 +479,19 @@ namespace LegendaryClient.Windows.Profile
                 return;
             }
             List<string> local = GetCurrentSlotEntries().Select(id => id.RuneId.ToString()).ToList();
-            if (Client.LocalRunePages.ContainsKey(LocalName.Text))
-                Client.LocalRunePages.Remove(LocalName.Text);
+            if (UserClient.LocalRunePages.ContainsKey(LocalName.Text))
+                UserClient.LocalRunePages.Remove(LocalName.Text);
 
             //Client.LocalRunePages.Add(LocalName.Text, string.Join(",", local)); //Make to League setting like string
-            List<string> saveString = Client.LocalRunePages.Select(item => item.Key + "=" + item.Value).ToList();
+            List<string> saveString = UserClient.LocalRunePages.Select(item => item.Key + "=" + item.Value).ToList();
 
             try
             {
-                File.WriteAllLines(Path.Combine(Client.ExecutingDirectory,"RunePages",Client.LoginPacket.AllSummonerData.Summoner.Name, LocalName.Text), saveString);
+                File.WriteAllLines(Path.Combine(Client.ExecutingDirectory, "RunePages", UserClient.LoginPacket.AllSummonerData.Summoner.Name, LocalName.Text), saveString);
             }
             catch
             {
-                Client.LocalRunePages.Remove(LocalName.Text);
+                UserClient.LocalRunePages.Remove(LocalName.Text);
                 var pop = new NotifyPlayerPopup("Error", "Unable to save local rune pages.")
                         {
                             HorizontalAlignment = HorizontalAlignment.Right,

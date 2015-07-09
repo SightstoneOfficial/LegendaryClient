@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -14,6 +15,7 @@ namespace LegendaryClient.Windows
     {
         private double summonerID, gameID;
         private Button reportButton;
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public ReportPlayerOverlay(double summonerID, double gameID, string summonerName, Button reportButton)
         {
@@ -37,7 +39,7 @@ namespace LegendaryClient.Windows
                 GameID = gameID,
                 ReportingSummonerID = summonerID,
                 ReportSource = "GAME",
-                SummonerID = Client.LoginPacket.AllSummonerData.Summoner.SumId,
+                SummonerID = UserClient.LoginPacket.AllSummonerData.Summoner.SumId,
                 Comment = text.Text
             };
             string reportReason = string.Empty;
@@ -75,7 +77,7 @@ namespace LegendaryClient.Windows
                     break;
             }
             report.Offense = reportReason;
-            await RiotCalls.ReportPlayer(report);
+            await UserClient.calls.ReportPlayer(report);
             reportButton.IsEnabled = false;
             Client.OverOverlayContainer.Visibility = Visibility.Hidden;
         }

@@ -2,6 +2,7 @@
 using agsXMPP.protocol.client;
 using LegendaryClient.Controls;
 using LegendaryClient.Logic;
+using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Properties;
 using System;
 using System.Linq;
@@ -19,9 +20,12 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class StatusPage
     {
+        public static UserClient client = new UserClient();
         public StatusPage()
         {
             InitializeComponent();
+            if (Client.Current != string.Empty)
+                client = UserList.users[Client.Current];
             Client.StatusLabel = StatusLabel;
             Change();
             Client.ChatListView = ChatListView;
@@ -93,7 +97,7 @@ namespace LegendaryClient.Windows
         {
             if (Client.ChatContainer.Visibility == Visibility.Hidden)
             {
-                if (Client.Dev)
+                if (client.Dev)
                 {
                     Client.FriendList.RankedStatus.Visibility = Visibility.Visible;
                     Client.FriendList.FriendsList.Margin = new Thickness(0, 97, 0, 40);
@@ -174,7 +178,7 @@ namespace LegendaryClient.Windows
                     {
                         var currentName = (string)Client.ChatItem.PlayerLabelName.Content;
                         Client.MainGrid.Children.Remove(Client.ChatItem);
-                        Client.XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
+                        client.XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
                         Client.ChatItem = null;
                         Client.PlayerChatIsShown = false;
                         if (currentName != (string)item.PlayerLabelName.Content)

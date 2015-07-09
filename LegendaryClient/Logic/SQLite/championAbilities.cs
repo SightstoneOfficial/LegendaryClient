@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using LegendaryClient.Logic.MultiUser;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LegendaryClient.Logic.SQLite

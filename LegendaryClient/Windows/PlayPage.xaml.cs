@@ -17,6 +17,7 @@ using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.IO;
 using Timer = System.Timers.Timer;
 using RtmpSharp.Messaging;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -42,11 +43,12 @@ namespace LegendaryClient.Windows
         private int currentAmount;
         private int i;
         //JoinQueue item = new JoinQueue();
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public PlayPage()
         {
             InitializeComponent();
-            Client.PlayerAccepedQueue += Client_PlayerAccepedQueue;
+            UserClient.PlayerAccepedQueue += Client_PlayerAccepedQueue;
 
             Client.IsOnPlayPage = true;
             i = 10;
@@ -59,7 +61,7 @@ namespace LegendaryClient.Windows
         private async void Client_PlayerAccepedQueue(bool accept)
         {
             if (accept)
-                Client.RiotConnection.MessageReceived += RestartDodgePop;
+                UserClient.RiotConnection.MessageReceived += RestartDodgePop;
             else
                 await LeaveAllQueues();
         }
@@ -121,7 +123,7 @@ namespace LegendaryClient.Windows
                     Brush brush = null;
                     try
                     {
-                        double pingAverage = HighestPingTime(Client.Region.PingAddresses);
+                        double pingAverage = HighestPingTime(UserClient.Region.PingAddresses);
                         PingLabel.Content = Math.Round(pingAverage) + "ms";
                         if (pingAverage == 0)
                             PingLabel.Content = "Timeout";
@@ -154,7 +156,7 @@ namespace LegendaryClient.Windows
                         PingRectangle.Fill = brush;
                     }
                     //Queues
-                    GameQueueConfig[] openQueues = Client.Queues;
+                    GameQueueConfig[] openQueues = UserClient.Queues;
                     Array.Sort(openQueues,
                         (config, config2) =>
                             string.Compare(config.CacheName, config2.CacheName, StringComparison.Ordinal));
@@ -183,7 +185,7 @@ namespace LegendaryClient.Windows
                         item.TeamQueueButton.Click += TeamQueueButton_Click;
                         item.QueueLabel.Content = Client.InternalQueueToPretty(config.CacheName);
                         item.QueueId = config.Id;
-                        QueueInfo t = await RiotCalls.GetQueueInformation(config.Id);
+                        QueueInfo t = await UserClient.calls.GetQueueInformation(config.Id);
                         item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                         TimeSpan time = TimeSpan.FromMilliseconds(t.WaitTime);
                         string answer = string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds);
@@ -228,7 +230,7 @@ namespace LegendaryClient.Windows
 
                             seperators[0].Add(item2);
 
-                            if(!Client.Dev)
+                            if(!UserClient.Dev)
                                 item2.QueueButton.IsEnabled = false;
                         }
                         
@@ -266,7 +268,7 @@ namespace LegendaryClient.Windows
                     return;
 
                 Queues.Add(config.Id);
-                Client.QueueId = config.Id;
+                UserClient.QueueId = config.Id;
                 TeamSelect teamSelectWindow = new TeamSelect();
 
                 Client.FullNotificationOverlayContainer.Content = teamSelectWindow.Content;
@@ -278,8 +280,8 @@ namespace LegendaryClient.Windows
                     return;
 
                 Queues.Add(config.Id);
-                Client.QueueId = config.Id;
-                LobbyStatus lobby = await RiotCalls.CreateArrangedTeamLobby(config.Id);
+                UserClient.QueueId = config.Id;
+                LobbyStatus lobby = await UserClient.calls.CreateArrangedTeamLobby(config.Id);
 
                 Client.ClearPage(typeof (TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby));
@@ -287,14 +289,14 @@ namespace LegendaryClient.Windows
             else if (config.TypeString.Contains("BOT"))
             {
                 Queues.Add(config.Id);
-                LobbyStatus lobby = await RiotCalls.CreateArrangedBotTeamLobby(config.Id, settings.BotLevel);
+                LobbyStatus lobby = await UserClient.calls.CreateArrangedBotTeamLobby(config.Id, settings.BotLevel);
 
                 Client.ClearPage(typeof(TeamQueuePage));
                 Client.SwitchPage(new TeamQueuePage(lobby.InvitationID, lobby, false, null, settings.BotLevel));
             }
             else
             {
-                LobbyStatus lobby = await RiotCalls.CreateArrangedTeamLobby(config.Id);
+                LobbyStatus lobby = await UserClient.calls.CreateArrangedTeamLobby(config.Id);
                 Client.SwitchPage(new TeamBuilderPage(true, lobby));
             }
         }
@@ -327,10 +329,10 @@ namespace LegendaryClient.Windows
                         },
                         BotDifficulty = settings.BotLevel
                     };
-                    Client.QueueId = config.Id;
+                    UserClient.QueueId = config.Id;
 
                     param = parameters;
-                    EnteredQueue(await RiotCalls.AttachToQueue(parameters));
+                    EnteredQueue(await UserClient.calls.AttachToQueue(parameters));
                 }
                 else if (config.Id != 61)
                 {
@@ -345,13 +347,13 @@ namespace LegendaryClient.Windows
                             Convert.ToInt32(config.Id)
                         }
                     };
-                    Client.QueueId = config.Id;
+                    UserClient.QueueId = config.Id;
                     param = parameters;
-                    EnteredQueue(await RiotCalls.AttachToQueue(parameters));
+                    EnteredQueue(await UserClient.calls.AttachToQueue(parameters));
                 }
                 else if (config.Id == 61)
                 {
-                    LobbyStatus lobby = await RiotCalls.CreateArrangedTeamLobby(config.Id);
+                    LobbyStatus lobby = await UserClient.calls.CreateArrangedTeamLobby(config.Id);
                     Client.ClearPage(typeof (TeamBuilderPage));
                     Client.SwitchPage(new TeamBuilderPage(false, lobby));
                 }
@@ -367,8 +369,8 @@ namespace LegendaryClient.Windows
 
             await Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() => LastSender.Content = "Queue (Beta)"));
             InQueue = false;
-            Client.GameStatus = "outOfGame";
-            Client.SetChatHover();
+            UserClient.GameStatus = "outOfGame";
+            UserClient.SetChatHover();
             await LeaveAllQueues();
         }
 
@@ -416,7 +418,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                                             t.Stop();
                                             Client.OverlayContainer.Visibility = Visibility.Hidden;
                                             var obj = new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", x.AccessToken } };
-                                            EnteredQueue(await RiotCalls.AttachToQueue(param, obj));
+                                            EnteredQueue(await UserClient.calls.AttachToQueue(param, obj));
                                         }
                                     }));
 
@@ -492,11 +494,11 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                         new ThreadStart(() => item.Content = string.Format("{0:D2}m:{1:D2}s", timespan.Minutes, timespan.Seconds)));
                 };
                 InQueue = true;
-                Client.GameStatus = "inQueue";
-                Client.timeStampSince =
+                UserClient.GameStatus = "inQueue";
+                UserClient.timeStampSince =
                     (DateTime.Now - new DateTime(1970, 1, 1, 0, 0, 0, 0).ToLocalTime()).TotalMilliseconds;
-                Client.SetChatHover();
-                Client.RiotConnection.MessageReceived += GotQueuePop;
+                UserClient.SetChatHover();
+                UserClient.RiotConnection.MessageReceived += GotQueuePop;
                 Client.Log("Now in Queue");
             }
         }
@@ -515,7 +517,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                 Client.OverlayContainer.Content = new QueuePopOverlay(queue, this).Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
             }));
-            Client.RiotConnection.MessageReceived -= GotQueuePop;
+            UserClient.RiotConnection.MessageReceived -= GotQueuePop;
         }
 
         private void RestartDodgePop(object sender, MessageReceivedEventArgs message)
@@ -526,12 +528,12 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                 if (queue.GameState == "TERMINATED")
                 {
                     Client.HasPopped = false;
-                    Client.RiotConnection.MessageReceived += GotQueuePop;
+                    UserClient.RiotConnection.MessageReceived += GotQueuePop;
                 }
             }
             else if (message.Body is PlayerCredentialsDto)
             {
-                Client.RiotConnection.MessageReceived -= RestartDodgePop;
+                UserClient.RiotConnection.MessageReceived -= RestartDodgePop;
             }
         }
 
@@ -574,7 +576,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
 
         private bool IsInGame()
         {
-            if (!Client.IsInGame)
+            if (!UserClient.IsInGame)
                 return false;
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
@@ -605,22 +607,22 @@ You've been placed in a lower priority queue" + Environment.NewLine;
 
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Client.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) && AutoAcceptCheckBox.IsChecked.Value;
+            UserClient.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) && AutoAcceptCheckBox.IsChecked.Value;
         }
 
         private async void LeaveQueuesButton_Click(object sender, RoutedEventArgs e)
         {
             await LeaveAllQueues();
-            Client.RiotConnection.MessageReceived -= GotQueuePop;
+            UserClient.RiotConnection.MessageReceived -= GotQueuePop;
         }
 
         private async Task<bool> LeaveAllQueues()
         {
             InQueue = false;
-            await RiotCalls.PurgeFromQueues();
-            await RiotCalls.QuitGame();
+            await UserClient.calls.PurgeFromQueues();
+            await UserClient.calls.QuitGame();
             if (Client.LastPageContent is TeamQueuePage)
-                await RiotCalls.Leave();
+                await UserClient.calls.Leave();
             Client.ClearPage(typeof (CustomGameLobbyPage));
             Client.ClearPage(typeof (CreateCustomGamePage));
             Client.ClearPage(typeof (FactionsCreateGamePage));

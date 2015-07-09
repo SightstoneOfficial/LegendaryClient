@@ -1218,7 +1218,7 @@ namespace LegendaryClient.Logic.Riot
                             Client.Log(xd.Key + "+|+" + xd.Value);
                         }
                         Func<string> func = () => jObjects["token"].ToString(); //lqt
-                        string ss;
+                        //string ss;
                         if (client.Garena)
                         {
                             client.UID = jObjects["user"].ToString(Formatting.Indented).Substring(1,jObjects["user"].ToString(Formatting.None).Length-2);

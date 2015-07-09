@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows.Profile
 {
@@ -24,6 +25,7 @@ namespace LegendaryClient.Windows.Profile
         private string queue;
         private AggregatedStats selectedAggregatedStats;
         private string selectedRank;
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public Leagues()
         {
@@ -180,8 +182,8 @@ namespace LegendaryClient.Windows.Profile
             var item = (LeagueItem) LeaguesListView.SelectedItem;
             PlayerLabel.Content = item.PlayerLabel.Content;
 
-            var x = await RiotCalls.GetSummonerByName((string) item.PlayerLabel.Content);
-            GotStats(await RiotCalls.GetAggregatedStats(x.AcctId, "CLASSIC", Client.LoginPacket.ClientSystemStates.currentSeason.ToString()));
+            var x = await UserClient.calls.GetSummonerByName((string) item.PlayerLabel.Content);
+            GotStats(await UserClient.calls.GetAggregatedStats(x.AcctId, "CLASSIC", UserClient.LoginPacket.ClientSystemStates.currentSeason.ToString()));
         }
 
         private void GotStats(AggregatedStats stats)

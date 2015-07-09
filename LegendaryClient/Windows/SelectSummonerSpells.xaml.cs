@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using LegendaryClient.Logic.Riot;
+using LegendaryClient.Logic.MultiUser;
 
 namespace LegendaryClient.Windows
 {
@@ -16,6 +17,7 @@ namespace LegendaryClient.Windows
     public partial class SelectSummonerSpells
     {
         private int SelectedSpell1;
+        static UserClient UserClient = UserList.users[Client.Current];
 
         public SelectSummonerSpells(string gameMode)
         {
@@ -25,7 +27,7 @@ namespace LegendaryClient.Windows
             foreach (NameToImage spell in values)
             {
                 if (
-                    !SummonerSpell.CanUseSpell((int) spell, Client.LoginPacket.AllSummonerData.SummonerLevel.Level,
+                    !SummonerSpell.CanUseSpell((int) spell, UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level,
                         gameMode))
                     continue;
 
@@ -65,7 +67,7 @@ namespace LegendaryClient.Windows
             else
             {
                 SummonerSpell2.Source = new BitmapImage(UriSource);
-                await RiotCalls.SelectSpells(SelectedSpell1, spellId);
+                await UserClient.calls.SelectSpells(SelectedSpell1, spellId);
                 Client.OverlayContainer.Visibility = Visibility.Hidden;
             }
         }

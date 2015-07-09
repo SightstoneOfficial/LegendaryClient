@@ -33,10 +33,18 @@ namespace LegendaryClient.Windows
         private ChatPlayerItem LastPlayerItem;
         private SelectionChangedEventArgs selection;
         bool loaded = false;
-        UserClient client;
+        UserClient client = new UserClient();
+
+        /// <summary>
+        /// Work on this later
+        /// </summary>
         public FriendList()
         {
             InitializeComponent();
+            //lazy method
+            if (Client.Current != string.Empty)
+                client = UserList.users[Client.Current];
+
             if (Settings.Default.StatusMsg != "Set your status message")
                 StatusBox.Text = Settings.Default.StatusMsg;
             UpdateTimer = new Timer(5000);
@@ -44,8 +52,6 @@ namespace LegendaryClient.Windows
             UpdateTimer.Enabled = true;
             UpdateTimer.Start();
             Client.chatlistview = ChatListView;
-
-            client = UserList.users[Client.Current];
         }
 
         private void PresenceChanger_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media.Animation;
 using LegendaryClient.Logic;
 using agsXMPP;
+using LegendaryClient.Logic.MultiUser;
 
 #endregion
 
@@ -51,7 +52,7 @@ namespace LegendaryClient.Controls
             if (Client.ChatItem != null)
             {
                 Client.MainGrid.Children.Remove(Client.ChatItem);
-                Client.XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
+                UserList.users[Client.Current].XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
                 Client.ChatItem = null;
             }
 
