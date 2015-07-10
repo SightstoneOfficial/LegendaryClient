@@ -1,4 +1,5 @@
-﻿using LegendaryClient.Logic.Region;
+﻿using agsXMPP.protocol.client;
+using LegendaryClient.Logic.Region;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,19 +13,24 @@ namespace LegendaryClient.Logic.MultiUser
     {
         internal static Dictionary<string, UserClient> users = new Dictionary<string, UserClient>();
 
-        internal static void AddUser(string user, string pass, string internalname, BaseRegion region, string encrypt)
+        internal static void AddUser(string user, string pass, string internalname, string status, int icon, BaseRegion region, ShowType show, string encrypt)
         {
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
+            if (encrypt == string.Empty)
+                return;
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt")))
-            {                
-                string data = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
-                if (data.Split('|')[0] != encrypt.ToSHA1())
+            {
+                string data = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"))[0];
+                if (data != encrypt.ToSHA1())
                     return;
             }
             else
             {
-                File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt")).Close();
+                var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
+                x.Close();
                 TextWriter t = new StreamWriter(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-                t.Write(encrypt.ToSHA1() + "|");
+                t.Write(encrypt.ToSHA1());
                 t.Close();
             }
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
@@ -39,12 +45,17 @@ namespace LegendaryClient.Logic.MultiUser
             tw.WriteLine(user.EncryptStringAES(encrypt));
             tw.WriteLine(pass.EncryptStringAES(encrypt));
             tw.WriteLine(region.RegionName);
+            tw.WriteLine(status);
+            tw.WriteLine(icon);
+            tw.WriteLine(show.ToString());
             tw.Close();
-            
+            Client.Log("added user " + internalname);
         }
         
         internal static void RemoveUser(string internalname)
         {
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
             if (Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
                     File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
@@ -54,17 +65,20 @@ namespace LegendaryClient.Logic.MultiUser
         {
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt")))
             {
-                string data = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
-                if (data.Split('|')[0] != input.ToSHA1())
+                string data = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"))[0];
+                if (data != input.ToSHA1())
                     return false;
                 else
                     return true;
             }
             else
             {
-                File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt")).Close();
+                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
+                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
+                var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
+                x.Close();
                 TextWriter t = new StreamWriter(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
-                t.Write(input.ToSHA1() + "|");
+                t.Write(input.ToSHA1());
                 t.Close();
                 return true;
             }
@@ -72,10 +86,14 @@ namespace LegendaryClient.Logic.MultiUser
 
         internal static List<LoginData> GetAllUsers(string encrypt)
         {
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
+            if (encrypt == string.Empty)
+                return null;
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt")))
             {
-                string data = File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
-                if (data.Split('|')[0] != encrypt.ToSHA1())
+                string data = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"))[0];
+                if (data != encrypt.ToSHA1())
                     return null;
             }
             else
@@ -86,14 +104,15 @@ namespace LegendaryClient.Logic.MultiUser
                 string[] text = File.ReadAllLines(files);
                 try
                 {
-                    string user = text[0].DecryptStringAES(encrypt);
-                    string pass = text[1].DecryptStringAES(encrypt);
-                    BaseRegion region = BaseRegion.GetRegion(text[2].DecryptStringAES(encrypt));
                     LoginData lgn = new LoginData()
                     {
-                        User = user,
-                        Pass = pass,
-                        Region = region
+                        User = text[0].DecryptStringAES(encrypt),
+                        Pass = text[1].DecryptStringAES(encrypt),
+                        SumName = Path.GetFileName(files),
+                        Region = BaseRegion.GetRegion(text[2].DecryptStringAES(encrypt)),
+                        Status = text[3],
+                        SumIcon = text[4].ToInt(),
+                        ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
                     };
                 }
                 catch { }
@@ -105,6 +124,10 @@ namespace LegendaryClient.Logic.MultiUser
     {
         public string User { get; set; }
         public string Pass { get; set; }
+        public string SumName { get; set; }
+        public int SumIcon { get; set; }
+        public string Status { get; set; }
         public BaseRegion Region { get; set; }
+        public ShowType ShowType { get; set; }
     }
 }

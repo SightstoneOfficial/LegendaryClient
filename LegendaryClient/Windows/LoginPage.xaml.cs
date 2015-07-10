@@ -52,8 +52,10 @@ namespace LegendaryClient.Windows
     public partial class LoginPage
     {
         private bool shouldExit = false;
-
+        private bool authed = false;
         Deletable<UserClient> user;
+        bool switchpage = false;
+        Dictionary<string, LoginData> dataLogin = new Dictionary<string,LoginData>();
 
         public LoginPage()
         {
@@ -70,9 +72,11 @@ namespace LegendaryClient.Windows
                 LoggingInProgressRing.Foreground = (Brush)bc.ConvertFrom("#FFFFFFFF");
             }
             //#B2C8C8C8
-            //UpdateRegionComboBox.SelectedValue = user.Instance.UpdateRegion;
+            UpdateRegionComboBox.ItemsSource = new[] { "PBE", "Live", "Korea", "Garena" };
+
+            UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion;
             //switch (user.Instance.UpdateRegion)
-            switch ("Live")
+            switch (Settings.Default.updateRegion)
             {
                 case "PBE":
                     RegionComboBox.ItemsSource = new[] { "PBE" };
@@ -370,7 +374,7 @@ namespace LegendaryClient.Windows
                     Settings.Default.Save();
                 }
                 user.Instance.Garena = true;
-                await garenaLogin();
+                await garenaLogin(BaseRegion.GetRegion((string)RegionComboBox.SelectedValue));
                 return;
             }
             string UserName = LoginUsernameBox.Text;
@@ -404,6 +408,8 @@ namespace LegendaryClient.Windows
             user.Instance.Region = selectedRegion;
             var context = user.Instance.calls.RegisterObjects();
             Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion);
+            if (sender != null)
+                switchpage = true;
         }
 
         void client_MessageReceived(object sender, MessageReceivedEventArgs e)
@@ -594,18 +600,21 @@ namespace LegendaryClient.Windows
                 user.Instance.XmppConnection.UseCompression = true;
                 user.Instance.XmppConnection.OnMessage += user.Instance.XmppConnection_OnMessage;
                 user.Instance.XmppConnection.OnError += user.Instance.XmppConnection_OnError;
-                user.Instance.XmppConnection.OnLogin += (o) => 
+                if (switchpage)
                 {
-                    Client.Log("Connected to XMPP Server");
-                    //Set up chat
-                    Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    user.Instance.XmppConnection.OnLogin += (o) =>
                     {
-                        if (invisibleLoginCheckBox.IsChecked != true)
-                            user.Instance.XmppConnection.Send(new Presence(ShowType.chat, user.Instance.GetPresence(), 0) { Type = PresenceType.available });
-                        else
-                            user.Instance.XmppConnection.Send(new Presence(ShowType.NONE, user.Instance.GetPresence(), 0) { Type = PresenceType.invisible });
-                    }));
-                };
+                        Client.Log("Connected to XMPP Server");
+                        //Set up chat
+                        Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                        {
+                            if (invisibleLoginCheckBox.IsChecked != true)
+                                user.Instance.XmppConnection.Send(new Presence(ShowType.chat, user.Instance.GetPresence(), 0) { Type = PresenceType.available });
+                            else
+                                user.Instance.XmppConnection.Send(new Presence(ShowType.NONE, user.Instance.GetPresence(), 0) { Type = PresenceType.invisible });
+                        }));
+                    };
+                }
                 user.Instance.RostManager = new RosterManager(user.Instance.XmppConnection);
                 user.Instance.XmppConnection.OnRosterItem += user.Instance.RostManager_OnRosterItem;
                 user.Instance.XmppConnection.OnRosterEnd += user.Instance.ChatClientConnect;
@@ -642,21 +651,54 @@ namespace LegendaryClient.Windows
 
                 //Gather data and convert it that way that it does not cause errors
                 PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)user.Instance.LoginPacket.ReconnectInfo;
-
                 Client.MainPage = new MainPage();
+                if (switchpage)
+                    Client.Current = packet.AllSummonerData.Summoner.InternalName;
                 if (data != null && data.Game != null)
                 {
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
                     user.Instance.CurrentGame = data.PlayerCredentials;
                     user.Instance.GameType = data.Game.GameType;
-                    //Client.SwitchPage(new InGame());
-                }
-                    /*
+                    if (switchpage)
+                        Client.SwitchPage(new InGame());
+                }                    
                 else
-                    Client.SwitchPage(Client.MainPage);
-                //*/
-                Client.Current = packet.AllSummonerData.Summoner.InternalName;
-                //Client.ClearPage(typeof(LoginPage));
+                    if (switchpage)
+                        Client.SwitchPage(Client.MainPage);
+                if (!switchpage)
+                {
+                    var sum = dataLogin[packet.AllSummonerData.Summoner.InternalName];
+                    user.Instance.presenceStatus = sum.ShowType;
+                    if (sum.ShowType == ShowType.NONE)
+                        user.Instance.XmppConnection.Send(new Presence(sum.ShowType, user.Instance.GetPresence(), 0) { Type = PresenceType.invisible });
+                    else
+                        user.Instance.XmppConnection.Send(new Presence(sum.ShowType, user.Instance.GetPresence(), 0) { Type = PresenceType.available });
+                    UserAccount acc = new UserAccount
+                    {
+                        PlayerName = { Content = packet.AllSummonerData.Summoner.InternalName },
+                        StatusColour = { Fill = System.Windows.Media.Brushes.Green },
+                        ProfileImage =
+                        {
+                            Source = new BitmapImage(new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", sum.SumIcon + ".png"),
+                                UriKind.Absolute))
+                        },
+                        RegionLabel = { Content = sum.Region },
+                        LevelLabel = { Content = packet.AllSummonerData.SummonerLevel.Level },
+                        PlayerStatus = { Content = sum.Status }
+                    };
+                    if (user.Instance.presenceStatus == ShowType.away || user.Instance.presenceStatus == ShowType.dnd || user.Instance.presenceStatus == ShowType.xa)
+                        acc.StatusColour.Fill = System.Windows.Media.Brushes.Red;
+                    else if (user.Instance.presenceStatus == ShowType.NONE)
+                        acc.StatusColour.Fill = System.Windows.Media.Brushes.Silver;
+
+                    user.Instance.userAccount = acc;
+                    UserListView.Items.Add(acc);
+                    acc.ProfileImageContainer.Click += (o, e) =>
+                    {
+                        Client.Current = packet.AllSummonerData.Summoner.InternalName;
+                        Client.SwitchPage(Client.MainPage);
+                    };
+                }                
             }));
         }
 
@@ -697,8 +739,9 @@ namespace LegendaryClient.Windows
         private Vector moveOffset;
         private Point _currentLocation;
 
-        private async Task garenaLogin()
+        private async Task garenaLogin(BaseRegion garenaregion)
         {
+            user = new UserClient();
             WindowsIdentity winIdentity = WindowsIdentity.GetCurrent();
             WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
             if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
@@ -719,7 +762,6 @@ namespace LegendaryClient.Windows
             HideGrid.Visibility = Visibility.Hidden;
             ErrorTextBox.Visibility = Visibility.Hidden;
             LoggingInLabel.Visibility = Visibility.Visible;
-            var garenaregion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             LoggingInProgressRing.Visibility = Visibility.Visible;
             LoginPasswordBox.Visibility = Visibility.Hidden;
             shouldExit = false;
@@ -817,7 +859,7 @@ namespace LegendaryClient.Windows
             if (e.RemovedItems.Count != 0)
             {
                 Settings.Default.updateRegion = (string)UpdateRegionComboBox.SelectedValue;
-
+                Settings.Default.Save();
 
                 //user.Instance.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
                 if (!RegionComboBox.Items.IsInUse)
@@ -917,23 +959,63 @@ namespace LegendaryClient.Windows
                 {
                     Client.Log("Auto login");
                     this.Dispatcher.BeginInvoke(new ThreadStart(() => {
-                        LoginButton_Click(null, null);
+                        LoginButton_Click(1, null);
                     }), DispatcherPriority.Input);
                 }
             };
-            timer.Start();
+            //timer.Start();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            if (String.IsNullOrWhiteSpace(Encrypt.Password))
+            {
+                MessageBox.Show("Please enter an encryption password");
+                return;
+            }
             if (!UserList.verifyEncrypt(Encrypt.Password))
             {
                 MessageBox.Show("Encryption is WRONG");
                 return;
             }
             List<LoginData> data = UserList.GetAllUsers(Encrypt.Password);
+            foreach (var acc in data)
+            {
+                dataLogin.Add(acc.SumName, acc);
+                if (acc.Region.Garena)
+                    garenaLogin(acc.Region);
+                else
+                    Login(acc.User, acc.Pass, acc.Region);
+            }
+            Client.EncrytKey = Encrypt.Password;
             Encrypt.Visibility = Visibility.Hidden;
             EncryptCheck.Visibility = Visibility.Hidden;
+        }
+
+        private async void AddAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!authed)
+            {
+                ErrorTextBox.Text = "You must auth yourself first";
+                return;
+            }
+            Deletable<RiotCalls> calls = new RiotCalls(new UserClient());
+            
+            var region = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+            var authToken = await calls.Instance.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, region.LoginQueue);
+
+            if (authToken == "invalid_credentials")
+            {
+                ErrorTextBox.Text = "Wrong login data";
+                calls.Delete();
+                return;
+            }
+            var packet = await calls.Instance.GetLoginDataPacketForUser();
+            UserList.AddUser(LoginUsernameBox.Text, LoginPasswordBox.Password, packet.AllSummonerData.Summoner.InternalName, 
+                "Using LegendaryClient", packet.AllSummonerData.Summoner.ProfileIconId, region, ShowType.chat, Client.EncrytKey);
+            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, region);
+
+            calls.Delete();
         }
     }
 }

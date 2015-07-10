@@ -67,6 +67,7 @@ namespace LegendaryClient.Logic.MultiUser
         #endregion pipes
 
         #region accounts
+        public static string EncrytKey;
         public static string DecryptStringAES(this string input, string Secret)
         {
             string output = string.Empty;

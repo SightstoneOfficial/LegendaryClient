@@ -28,8 +28,7 @@
                     <RectangleGeometry Rect="15,15,5000,2500"/>
                 </MediaElement.Clip>
             </MediaElement>
-            <PasswordBox x:Name="Encrypt" HorizontalAlignment="Left" VerticalAlignment="Top" Width="300" Margin="10,635,0,0" controls:TextBoxHelper.Watermark="EncryptKey"/>
-            <Button x:Name="EncryptCheck" Click="Button_Click" Content="Check key" HorizontalAlignment="Left" VerticalAlignment="Top" Width="96" Margin="315,635,0,0" Height="27"/>
+            
         </Grid>
 
         <!-- Floating Action Button -->
@@ -41,9 +40,12 @@
             </Button>
         </Grid>
 
+        <PasswordBox Foreground="white" x:Name="Encrypt" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="300" Margin="10,0,0,10" controls:TextBoxHelper.Watermark="EncryptKey"/>
+        <Button x:Name="EncryptCheck" Click="Button_Click" Content="Check key" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="96" Margin="315,0,0,10" Height="27"/>
+
         <!-- Accounts -->
         <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,10,10,75" Height="590">
-            <ListView Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+            <ListView x:Name="UserListView" Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <!--<user:UserAccount/>-->
             </ListView>
 
@@ -117,7 +119,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="AddAccountButton" IsDefault="True" Height="40" Style="{StaticResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Stretch" Grid.Column="0" Panel.ZIndex="3">Add Account</Button>
+                            <Button x:Name="AddAccountButton" Click="AddAccountButton_Click" IsDefault="True" Height="40" Style="{StaticResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Stretch" Grid.Column="0" Panel.ZIndex="3">Add Account</Button>
                             <Button x:Name="LoginButton" Click="LoginButton_Click" IsDefault="True" Height="40" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3">Login</Button>
                         </Grid>
                     </Grid>

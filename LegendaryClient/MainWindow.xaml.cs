@@ -329,6 +329,8 @@ namespace LegendaryClient
             Settings.Default.AutoLogin = false;
             if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
                 return;
+            if (Client.Current == string.Empty)
+                return;
             if (string.Equals(UserList.users[Client.Current].GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
@@ -388,7 +390,7 @@ namespace LegendaryClient
                 _warn.backtochampselect.Click += HideWarning;
                 _warn.AcceptButton.Click += Quit;
                 _warn.hide.Click += HideWarning;
-                if (UserList.users[Client.Current].curentlyRecording.Count > 0)
+                if (Client.Current != null && UserList.users[Client.Current].curentlyRecording.Count > 0)
                     _warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + _warn.MessageText.Text;
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;

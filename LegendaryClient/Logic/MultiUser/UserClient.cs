@@ -84,6 +84,8 @@ namespace LegendaryClient.Logic.MultiUser
 
         internal double QueueId = 0;
 
+        internal UserAccount userAccount;
+
         internal agsXMPP.XmppClientConnection XmppConnection;
 
 
