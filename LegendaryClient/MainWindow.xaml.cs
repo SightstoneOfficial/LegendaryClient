@@ -390,8 +390,11 @@ namespace LegendaryClient
                 _warn.backtochampselect.Click += HideWarning;
                 _warn.AcceptButton.Click += Quit;
                 _warn.hide.Click += HideWarning;
-                if (Client.Current != null && UserList.users[Client.Current].curentlyRecording.Count > 0)
-                    _warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + _warn.MessageText.Text;
+                if (UserList.users != null && UserList.users.ContainsKey(Client.Current))
+                {
+                    if (UserList.users[Client.Current].curentlyRecording.Count > 0)
+                        _warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + _warn.MessageText.Text;
+                }
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
