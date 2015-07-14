@@ -539,7 +539,7 @@ namespace LegendaryClient.Logic
 
                                     case "timeStamp":
                                         reader.Read();
-                                        Player.Timestamp = Convert.ToInt64(reader.Value);
+                                        Player.Timestamp = Convert.ToInt64(Convert.ToDouble(reader.Value));
                                         break;
 
                                     case "statusMsg":
