@@ -53,6 +53,7 @@
 
         <!-- Card Template Start -->
         <Grid x:Name="LoginGrid" Panel.ZIndex="1000" Visibility="Hidden">
+            <!-- Visibility="Hidden"-->
             <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30">
                 <wpf:Card UniformCornerRadius="3">
                     <Grid>
@@ -119,7 +120,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Button x:Name="AddAccountButton" Click="AddAccountButton_Click" IsDefault="True" Height="40" Style="{StaticResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Stretch" Grid.Column="0" Panel.ZIndex="3">Add Account</Button>
+                            <Button x:Name="AddAccountButton" Content="Add Account"  Click="AddAccountButton_Click" IsDefault="True" Height="40" Style="{StaticResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Stretch" Grid.Column="0" Panel.ZIndex="3"/>
                             <Button x:Name="LoginButton" Click="LoginButton_Click" IsDefault="True" Height="40" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3">Login</Button>
                         </Grid>
                     </Grid>

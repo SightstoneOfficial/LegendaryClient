@@ -970,6 +970,7 @@ namespace LegendaryClient.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            authed = true;
             if (String.IsNullOrWhiteSpace(Encrypt.Password))
             {
                 MessageBox.Show("Please enter an encryption password");
@@ -996,9 +997,11 @@ namespace LegendaryClient.Windows
 
         private async void AddAccountButton_Click(object sender, RoutedEventArgs e)
         {
+            Client.Log("starting to login");
             if (!authed)
             {
                 ErrorTextBox.Text = "You must auth yourself first";
+                Client.Log("Auth first");
                 return;
             }
             Deletable<UserClient> calls = new UserClient();
@@ -1009,6 +1012,7 @@ namespace LegendaryClient.Windows
             if (authToken == "invalid_credentials")
             {
                 ErrorTextBox.Text = "Wrong login data";
+                Client.Log("Bad login");
                 calls.Delete();
                 return;
             }
@@ -1016,7 +1020,6 @@ namespace LegendaryClient.Windows
             UserList.AddUser(LoginUsernameBox.Text, LoginPasswordBox.Password, packet.AllSummonerData.Summoner.InternalName, 
                 "Using LegendaryClient", packet.AllSummonerData.Summoner.ProfileIconId, region, ShowType.chat, Client.EncrytKey);
             Login(LoginUsernameBox.Text, LoginPasswordBox.Password, region);
-
             calls.Delete();
         }
     }

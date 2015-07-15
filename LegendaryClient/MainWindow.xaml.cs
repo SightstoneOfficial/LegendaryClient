@@ -249,7 +249,7 @@ namespace LegendaryClient
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 Client.SwitchPage(Client.Profile);
             }
@@ -257,9 +257,9 @@ namespace LegendaryClient
 
         private void ProfileButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+            if (UserList.Users.Count > 0 && !string.IsNullOrWhiteSpace(Client.Current))
             {
-                UserClient UserClient = UserList.users[Client.Current];
+                UserClient UserClient = UserList.Users[Client.Current];
                 Client.Profile.GetSummonerProfile(UserClient.LoginPacket.AllSummonerData.Summoner.Name);
                 Client.SwitchPage(Client.Profile);
             }
@@ -267,7 +267,7 @@ namespace LegendaryClient
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 var playPage = new PlayPage();
                 Client.SwitchPage(playPage);
@@ -276,7 +276,7 @@ namespace LegendaryClient
 
         private void ShopButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 var shopPage = new ShopPage();
                 Client.SwitchPage(shopPage);
@@ -294,7 +294,7 @@ namespace LegendaryClient
 
         private void PluginsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 var pluginsPage = new PluginsPage();
                 Client.SwitchPage(pluginsPage);
@@ -303,7 +303,7 @@ namespace LegendaryClient
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 Client.SwitchPage(Client.MainPage);
                 Client.ClearPage(typeof (SettingsPage));
@@ -317,7 +317,7 @@ namespace LegendaryClient
 
         private void ReplayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
             {
                 var replayPage = new ReplayPage();
                 Client.SwitchPage(replayPage);
@@ -327,17 +327,17 @@ namespace LegendaryClient
         public void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Settings.Default.AutoLogin = false;
-            if (UserList.users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
+            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
                 return;
             if (Client.Current == string.Empty)
                 return;
-            if (string.Equals(UserList.users[Client.Current].GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
+            if (string.Equals(UserList.Users[Client.Current].GameStatus, "championSelect", StringComparison.CurrentCultureIgnoreCase))
             {
                 Client.ReturnButton.Visibility = Visibility.Hidden;
                 // ReSharper disable once PossibleNullReferenceException
                 (Client.MainWin as MainWindow).FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 Client.Pages.Clear();
-                UserList.users[Client.Current].calls.QuitGame();
+                UserList.Users[Client.Current].calls.QuitGame();
                 /*
                 Client.RiotConnection.Disconnected -= Client.RiotConnection_Disconnected;
                 Client.RiotConnection.Close();
@@ -352,7 +352,7 @@ namespace LegendaryClient
                 Client.SwitchPage(new LoginPage());
                 Client.ClearPage(typeof (MainPage));
             }
-            else if (Settings.Default.warnClose && UserList.users[Client.Current].IsInGame)
+            else if (Settings.Default.warnClose && UserList.Users[Client.Current].IsInGame)
             {
                 _warn = new Warning {Header = {Content = "Logout while in Game"}, MessageText = {Text = "Are You Sure You Want To Quit? This will result in a dodge."}};
                 _warn.backtochampselect.Click += HideWarning;
@@ -369,7 +369,7 @@ namespace LegendaryClient
 
         private void MainWindow_Closing(object sender, CancelEventArgs e)
         {
-            if (UserList.users.Count > 0 && String.IsNullOrWhiteSpace(Client.Current) && Settings.Default.warnClose)
+            if (UserList.Users.Count > 0 && String.IsNullOrWhiteSpace(Client.Current) && Settings.Default.warnClose)
             {
                 _warn = new Warning();
                 e.Cancel = true;
@@ -381,7 +381,7 @@ namespace LegendaryClient
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
-            else if (Settings.Default.warnClose || UserList.users[Client.Current].curentlyRecording.Count > 0 || UserList.users[Client.Current].IsInGame)
+            else if (Settings.Default.warnClose || UserList.Users[Client.Current].curentlyRecording.Count > 0 || UserList.Users[Client.Current].IsInGame)
             {
                 _warn = new Warning();
                 e.Cancel = true;
@@ -390,9 +390,9 @@ namespace LegendaryClient
                 _warn.backtochampselect.Click += HideWarning;
                 _warn.AcceptButton.Click += Quit;
                 _warn.hide.Click += HideWarning;
-                if (UserList.users != null && UserList.users.ContainsKey(Client.Current))
+                if (UserList.Users != null && UserList.Users.ContainsKey(Client.Current))
                 {
-                    if (UserList.users[Client.Current].curentlyRecording.Count > 0)
+                    if (UserList.Users[Client.Current].curentlyRecording.Count > 0)
                         _warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + _warn.MessageText.Text;
                 }
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
@@ -407,7 +407,7 @@ namespace LegendaryClient
 
         private void Quit(object sender, RoutedEventArgs e)
         {
-            foreach (var userclients in UserList.users)
+            foreach (var userclients in UserList.Users)
             {
                 if (userclients.Value.IsLoggedIn)
                 {

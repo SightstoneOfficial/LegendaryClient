@@ -18,38 +18,25 @@ namespace LegendaryClient.Logic.MultiUser
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
             if (encrypt == string.Empty)
-                return;
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt")))
+                encrypt = Client.EncrytKey;
+            if (Client.EncrytKey != null && VerifyEncrypt(encrypt))
             {
-                var data = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"))[0];
-                if (data != encrypt.ToSHA1())
-                    return;
+                Client.Log("Got this far");
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
+                    File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
+                Client.Log("Got this far");
+                var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
+                Client.Log("Got this far");
+                TextWriter tw = new StreamWriter(x); //Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)
+                tw.WriteLine(EncryptDes(user, encrypt, internalname));
+                tw.WriteLine(EncryptDes(pass, encrypt, internalname));
+                tw.WriteLine(region.RegionName);
+                tw.WriteLine(status);
+                tw.WriteLine(icon);
+                tw.WriteLine(show.ToString());
+                tw.Close();
+                Client.Log("added user " + internalname);
             }
-            else
-            {
-                var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
-                x.Close();
-                TextWriter t = new StreamWriter(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-                t.Write(encrypt.ToSHA1());
-                t.Close();
-            }
-            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
-
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-
-            File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)).Close();
-
-            TextWriter tw = new StreamWriter(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-            tw.WriteLine(EncryptDes(user, encrypt, internalname));
-            tw.WriteLine(EncryptDes(pass, encrypt, internalname));
-            tw.WriteLine(region.RegionName);
-            tw.WriteLine(status);
-            tw.WriteLine(icon);
-            tw.WriteLine(show.ToString());
-            tw.Close();
-            Client.Log("added user " + internalname);
         }
         
         internal static void RemoveUser(string internalname)
@@ -71,8 +58,7 @@ namespace LegendaryClient.Logic.MultiUser
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
             var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
-            x.Close();
-            TextWriter t = new StreamWriter(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
+            TextWriter t = new StreamWriter(x);
             t.Write(input.ToSHA1());
             t.Close();
             return true;
@@ -83,38 +69,33 @@ namespace LegendaryClient.Logic.MultiUser
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
             if (encrypt == string.Empty)
-                return null;
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt")))
-            {
-                var data = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"))[0];
-                if (data != encrypt.ToSHA1())
-                    return null;
-            }
-            else
-                return null;
+                encrypt = Client.EncrytKey;
             var login = new List<LoginData>();
-            foreach (var files in Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
+            if (Client.EncrytKey != null && VerifyEncrypt(encrypt))
             {
-                var text = File.ReadAllLines(files);
-                if (Path.GetFileName(files) == "encrypt")
-                    continue;
-                try
+                foreach (var files in Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 {
-                    var lgn = new LoginData()
+                    var text = File.ReadAllLines(files);
+                    if (Path.GetFileName(files) == "encrypt")
+                        continue;
+                    try
                     {
-                        SumName = Path.GetFileName(files),
-                        User = DecryptDes(text[0], encrypt, Path.GetFileName(files)),
-                        Pass = DecryptDes(text[1], encrypt, Path.GetFileName(files)),
-                        Region = BaseRegion.GetRegion(text[2].DecryptStringAES(encrypt)),
-                        Status = text[3],
-                        SumIcon = text[4].ToInt(),
-                        ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
-                    };
-                    login.Add(lgn);
-                    Client.Log("found account: " + Path.GetFileName(files));
+                        var lgn = new LoginData()
+                        {
+                            SumName = Path.GetFileName(files),
+                            User = DecryptDes(text[0], encrypt, Path.GetFileName(files)),
+                            Pass = DecryptDes(text[1], encrypt, Path.GetFileName(files)),
+                            Region = BaseRegion.GetRegion(text[2].DecryptStringAES(encrypt)),
+                            Status = text[3],
+                            SumIcon = text[4].ToInt(),
+                            ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
+                        };
+                        login.Add(lgn);
+                        Client.Log("found account: " + Path.GetFileName(files));
+                    }
+                    catch (Exception e) { Client.Log(e); }
                 }
-                catch (Exception e) { Client.Log(e); }
-            }
+            }                
             return login;
         }
 
@@ -159,9 +140,9 @@ namespace LegendaryClient.Logic.MultiUser
 
         public static byte[] ToSixteenBytes(this byte[] inputBytes)
         {
-            var sha1 = SHA1.Create();
-            var hash = sha1.ComputeHash(inputBytes);
-            return hash.Take(16).ToArray();
+            var md5 = MD5.Create();
+            var hash = md5.ComputeHash(inputBytes);
+            return hash.ToArray();
         }
     }
     public class LoginData
