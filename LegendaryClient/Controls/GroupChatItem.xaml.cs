@@ -31,7 +31,7 @@ namespace LegendaryClient.Controls
         public GroupChatItem(string id, string title)
         {
             InitializeComponent();
-            userClient = UserList.users[Client.Current];
+            userClient = UserList.Users[Client.Current];
             MahApps.Metro.Controls.TextBoxHelper.SetWatermark(ChatTextBox, "Sending message from " + userClient.LoginPacket.AllSummonerData.Summoner.InternalName);
             ChatId = id;
             PlayerLabelName.Content = title;

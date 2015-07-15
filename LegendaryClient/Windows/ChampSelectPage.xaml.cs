@@ -140,7 +140,7 @@ namespace LegendaryClient.Windows
         public ChampSelectPage(string RoomName, string RoomPassword)
         {
             InitializeComponent();
-            UserClient = UserList.users[Client.Current];
+            UserClient = UserList.Users[Client.Current];
             var Jid = Client.GetChatroomJid(RoomName.Replace("@sec", ""), RoomPassword, false);
             jid = new Jid(Jid);
             Chatroom = new MucManager(UserClient.XmppConnection);

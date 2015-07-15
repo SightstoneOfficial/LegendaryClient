@@ -20,7 +20,7 @@ namespace LegendaryClient.Windows
     {
         private readonly List<ChampionDTO> ChampList;
         private readonly TeamQueuePage teamQueuePage;
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
 
         public SelectChampOverlay(TeamQueuePage tqp)
         {

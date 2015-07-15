@@ -15,7 +15,7 @@ namespace LegendaryClient.Controls
     /// </summary>
     public partial class TradeControl
     {
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
         public TradeControl()
         {
             InitializeComponent();

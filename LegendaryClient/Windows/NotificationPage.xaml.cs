@@ -29,7 +29,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             if (Client.Current != string.Empty)
-                UserClient = UserList.users[Client.Current];
+                UserClient = UserList.Users[Client.Current];
             LoadTimer();
             UpdateData();
         }

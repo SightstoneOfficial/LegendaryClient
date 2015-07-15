@@ -77,7 +77,7 @@ namespace LegendaryClient.Controls
             {
                 foreach (var item in myItems.Where(item => item != null && Client.IsOnPlayPage))
                 {
-                    var t = await UserList.users[Client.Current].calls.GetQueueInformation(item.QueueId);
+                    var t = await UserList.Users[Client.Current].calls.GetQueueInformation(item.QueueId);
                     item.AmountInQueueLabel.Content = "People in queue: " + t.QueueLength;
                 }
 

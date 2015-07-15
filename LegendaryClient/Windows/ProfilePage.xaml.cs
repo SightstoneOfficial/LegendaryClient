@@ -25,7 +25,7 @@ namespace LegendaryClient.Windows
         public ProfilePage()
         {
             InitializeComponent();
-            UserClient = UserList.users[Client.Current];
+            UserClient = UserList.Users[Client.Current];
             if (UserClient.Dev)
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {

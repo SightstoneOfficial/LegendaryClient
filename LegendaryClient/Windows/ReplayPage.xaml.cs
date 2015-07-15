@@ -37,7 +37,7 @@ namespace LegendaryClient.Windows
         public ReplayPage()
         {
             InitializeComponent();
-            UserClient = UserList.users[Client.Current];
+            UserClient = UserList.Users[Client.Current];
             Download.Visibility = Visibility.Hidden;
 
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "cabinet")))

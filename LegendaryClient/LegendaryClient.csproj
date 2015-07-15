@@ -78,7 +78,8 @@
   <PropertyGroup />
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="agsXMPP">
+    <Reference Include="agsXMPP, Version=1.3.1.0, Culture=neutral, PublicKeyToken=ff839b81f1debe86, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLLS\agsXMPP.dll</HintPath>
     </Reference>
     <Reference Include="Awesomium.Core, Version=1.7.4.1, Culture=neutral, PublicKeyToken=e1a0d7c8071a5214, processorArchitecture=x86">

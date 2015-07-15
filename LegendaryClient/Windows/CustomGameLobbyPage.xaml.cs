@@ -38,7 +38,7 @@ namespace LegendaryClient.Windows
         private double OptomisticLock;
         private MucManager newRoom;
         private static Jid roomJid;
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
 
         public CustomGameLobbyPage(GameDTO gameLobby = null)
         {

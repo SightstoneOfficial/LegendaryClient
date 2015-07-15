@@ -17,7 +17,7 @@ namespace LegendaryClient.Windows
     public partial class FactionsJoinGamePage
     {
         private readonly List<GameItem> allItems = new List<GameItem>();
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
 
         public FactionsJoinGamePage()
         {

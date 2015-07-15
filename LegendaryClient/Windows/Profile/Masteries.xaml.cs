@@ -26,7 +26,7 @@ namespace LegendaryClient.Windows.Profile
         private int _usedPoints;
         private int _utilityUsedPoints;
         private readonly List<double> _masteryPageOrder = new List<double>();
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
         public Masteries()
         {
             InitializeComponent();

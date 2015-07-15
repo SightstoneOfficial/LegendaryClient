@@ -30,7 +30,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private PlatformGameLifecycleDTO game;
         private string user;
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
 
         public Ingame()
         {

@@ -25,7 +25,7 @@ namespace LegendaryClient.Windows.Profile
         private string queue;
         private AggregatedStats selectedAggregatedStats;
         private string selectedRank;
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
 
         public Leagues()
         {

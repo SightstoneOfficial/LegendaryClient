@@ -23,7 +23,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private double accId;
         private List<PlayerStatSummary> summaries = new List<PlayerStatSummary>();
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
 
         public Overview()
         {

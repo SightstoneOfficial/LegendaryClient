@@ -107,7 +107,7 @@ namespace LegendaryClient.Windows
             string user;
             try
             {
-                UserClient UserClient = UserList.users[Client.Current];
+                UserClient UserClient = UserList.Users[Client.Current];
                 user = UserClient.LoginPacket.AllSummonerData.Summoner.Name;
             }
             catch
@@ -176,7 +176,7 @@ Examples are:
             try
             {
                 Dictionary<string, string> val;
-                UserClient UserClient = UserList.users[Client.Current];
+                UserClient UserClient = UserList.Users[Client.Current];
                 if (!UserClient.Garena)
                 {
                     val = Path.Combine(Client.RootLocation, "Config", "game.cfg").LeagueSettingsReader();

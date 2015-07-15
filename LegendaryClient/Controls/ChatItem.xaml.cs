@@ -24,7 +24,7 @@ namespace LegendaryClient.Controls
         public ChatItem()
         {
             InitializeComponent();
-            user = UserList.users[Client.Current];
+            user = UserList.Users[Client.Current];
             MahApps.Metro.Controls.TextBoxHelper.SetWatermark(ChatTextBox, "Sending message from " + user.LoginPacket.AllSummonerData.Summoner.InternalName);
             ChatPlayerItem tempItem = null;
             var Jid = string.Empty;

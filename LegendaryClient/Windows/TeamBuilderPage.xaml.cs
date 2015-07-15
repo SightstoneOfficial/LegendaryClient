@@ -54,7 +54,7 @@ namespace LegendaryClient.Windows
         private long inQueueTimer;
         private MucManager newRoom;
         private Jid jid;
-        UserClient UserClient = UserList.users[Client.Current];
+        UserClient UserClient = UserList.Users[Client.Current];
 
         /// <summary>
         ///     TOP

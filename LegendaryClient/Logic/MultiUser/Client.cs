@@ -23,11 +23,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
-/// <summary>
-///     Any logic that needs to be reused over multiple pages
-/// </summary>
+
 namespace LegendaryClient.Logic.MultiUser
 {
+    /// <summary>
+    ///     Any logic that needs to be reused over multiple pages
+    /// </summary>
     public static class Client
     {
         #region version
@@ -47,7 +48,9 @@ namespace LegendaryClient.Logic.MultiUser
         public static void Log(string lines, string type = "LOG")
         {
             WriteToLog.Log(lines, type);
-
+#if DEBUG
+            Debugger.Log(0, type, lines + Environment.NewLine);
+#endif
             if (Pipe)
                 return;
             try

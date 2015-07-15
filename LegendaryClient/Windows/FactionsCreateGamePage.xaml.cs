@@ -17,7 +17,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class FactionsCreateGamePage
     {
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
         public FactionsCreateGamePage()
         {
             InitializeComponent();

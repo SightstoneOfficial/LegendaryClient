@@ -46,7 +46,7 @@ namespace LegendaryClient.Logic.Player
 
         public ChampStats(int champId, string playerName)
         {
-            UserClient = UserList.users[Client.Current];
+            UserClient = UserList.Users[Client.Current];
             Champ = champions.GetChampion(champId);
             ChampID = Champ.id;
             LoadName(playerName);
@@ -54,7 +54,7 @@ namespace LegendaryClient.Logic.Player
 
         public ChampStats(string champName, string playerName)
         {
-            UserClient = UserList.users[Client.Current];
+            UserClient = UserList.Users[Client.Current];
             Champ = champions.GetChampion(champName);
             ChampID = Champ.id;
             LoadName(playerName);
@@ -63,7 +63,7 @@ namespace LegendaryClient.Logic.Player
 
         public ChampStats(string champName, int playerName)
         {
-            UserClient = UserList.users[Client.Current];
+            UserClient = UserList.Users[Client.Current];
             Champ = champions.GetChampion(champName);
             ChampID = Champ.id;
             Load(playerName);
@@ -71,7 +71,7 @@ namespace LegendaryClient.Logic.Player
 
         public ChampStats(int champName, int playerName)
         {
-            UserClient = UserList.users[Client.Current];
+            UserClient = UserList.Users[Client.Current];
             Champ = champions.GetChampion(champName);
             ChampID = Champ.id;
             Load(playerName);

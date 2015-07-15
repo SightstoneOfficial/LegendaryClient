@@ -43,7 +43,7 @@ namespace LegendaryClient.Windows
             InitializeComponent();
             //lazy method
             if (Client.Current != string.Empty)
-                client = UserList.users[Client.Current];
+                client = UserList.Users[Client.Current];
 
             if (Settings.Default.StatusMsg != "Set your status message")
                 StatusBox.Text = Settings.Default.StatusMsg;

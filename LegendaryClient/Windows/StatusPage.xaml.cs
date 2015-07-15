@@ -25,7 +25,7 @@ namespace LegendaryClient.Windows
         {
             InitializeComponent();
             if (Client.Current != string.Empty)
-                client = UserList.users[Client.Current];
+                client = UserList.Users[Client.Current];
             Client.StatusLabel = StatusLabel;
             Change();
             Client.ChatListView = ChatListView;

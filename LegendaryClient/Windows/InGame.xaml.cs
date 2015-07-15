@@ -15,7 +15,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class InGame
     {
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
         public InGame(bool start = false)
         {
             InitializeComponent();

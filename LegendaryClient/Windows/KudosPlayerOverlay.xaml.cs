@@ -12,7 +12,7 @@ namespace LegendaryClient.Windows
     {
         private double summonerID, gameID;
         bool sameTeam;
-        static UserClient UserClient = UserList.users[Client.Current];
+        static UserClient UserClient = UserList.Users[Client.Current];
         public KudosPlayerOverlay(double summonerID, double gameID, string summonerName, bool sameTeam)
         {
             InitializeComponent();

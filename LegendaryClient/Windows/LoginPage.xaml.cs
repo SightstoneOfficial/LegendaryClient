@@ -74,9 +74,9 @@ namespace LegendaryClient.Windows
             //#B2C8C8C8
             UpdateRegionComboBox.ItemsSource = new[] { "PBE", "Live", "Korea", "Garena" };
 
-            UpdateRegionComboBox.SelectedValue = Settings.Default.updateRegion;
+            UpdateRegionComboBox.SelectedIndex = 1;
             //switch (user.Instance.UpdateRegion)
-            switch (Settings.Default.updateRegion)
+            switch (UpdateRegionComboBox.SelectedItem.ToString())
             {
                 case "PBE":
                     RegionComboBox.ItemsSource = new[] { "PBE" };
@@ -556,7 +556,7 @@ namespace LegendaryClient.Windows
             }
             user.Instance.LoginPacket = packet;
 
-            UserList.users.Add(packet.AllSummonerData.Summoner.InternalName, user.Instance);
+            UserList.Users.Add(packet.AllSummonerData.Summoner.InternalName, user.Instance);
             if (packet.AllSummonerData.Summoner.ProfileIconId == -1)
             {
                 user.Instance.RiotConnection.CallbackException -= client_CallbackException;
@@ -780,7 +780,7 @@ namespace LegendaryClient.Windows
                     {
                         try
                         {
-                            s1 = s1.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)[1];
+                            s1 = s1.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries)[1];
                         }
                         catch
                         {
@@ -862,11 +862,13 @@ namespace LegendaryClient.Windows
                 Settings.Default.Save();
 
                 //user.Instance.UpdateRegion = (string)UpdateRegionComboBox.SelectedValue;
+                /*
                 if (!RegionComboBox.Items.IsInUse)
                 {
                     RegionComboBox.Items.Clear();
                     Thread.Sleep(100);
                 }
+                //*/
                 switch ((string)UpdateRegionComboBox.SelectedValue)
                 {
                     case "PBE":
@@ -973,7 +975,7 @@ namespace LegendaryClient.Windows
                 MessageBox.Show("Please enter an encryption password");
                 return;
             }
-            if (!UserList.verifyEncrypt(Encrypt.Password))
+            if (!UserList.VerifyEncrypt(Encrypt.Password))
             {
                 MessageBox.Show("Encryption is WRONG");
                 return;
@@ -999,10 +1001,10 @@ namespace LegendaryClient.Windows
                 ErrorTextBox.Text = "You must auth yourself first";
                 return;
             }
-            Deletable<RiotCalls> calls = new RiotCalls(new UserClient());
+            Deletable<UserClient> calls = new UserClient();
             
             var region = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
-            var authToken = await calls.Instance.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, region.LoginQueue);
+            var authToken = await calls.Instance.calls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, region.LoginQueue);
 
             if (authToken == "invalid_credentials")
             {
@@ -1010,7 +1012,7 @@ namespace LegendaryClient.Windows
                 calls.Delete();
                 return;
             }
-            var packet = await calls.Instance.GetLoginDataPacketForUser();
+            var packet = await calls.Instance.calls.GetLoginDataPacketForUser();
             UserList.AddUser(LoginUsernameBox.Text, LoginPasswordBox.Password, packet.AllSummonerData.Summoner.InternalName, 
                 "Using LegendaryClient", packet.AllSummonerData.Summoner.ProfileIconId, region, ShowType.chat, Client.EncrytKey);
             Login(LoginUsernameBox.Text, LoginPasswordBox.Password, region);
