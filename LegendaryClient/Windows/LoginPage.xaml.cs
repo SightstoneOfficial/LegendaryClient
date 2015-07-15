@@ -970,7 +970,6 @@ namespace LegendaryClient.Windows
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            authed = true;
             if (String.IsNullOrWhiteSpace(Encrypt.Password))
             {
                 MessageBox.Show("Please enter an encryption password");
@@ -981,6 +980,7 @@ namespace LegendaryClient.Windows
                 MessageBox.Show("Encryption is WRONG");
                 return;
             }
+            authed = true;
             List<LoginData> data = UserList.GetAllUsers(Encrypt.Password);
             foreach (var acc in data)
             {

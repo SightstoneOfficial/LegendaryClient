@@ -21,13 +21,10 @@ namespace LegendaryClient.Logic.MultiUser
                 encrypt = Client.EncrytKey;
             if (Client.EncrytKey != null && VerifyEncrypt(encrypt))
             {
-                Client.Log("Got this far");
                 if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
                     File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-                Client.Log("Got this far");
                 var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-                Client.Log("Got this far");
-                TextWriter tw = new StreamWriter(x); //Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)
+                TextWriter tw = new StreamWriter(x);
                 tw.WriteLine(EncryptDes(user, encrypt, internalname));
                 tw.WriteLine(EncryptDes(pass, encrypt, internalname));
                 tw.WriteLine(region.RegionName);
