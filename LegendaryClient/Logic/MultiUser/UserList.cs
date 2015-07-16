@@ -52,6 +52,8 @@ namespace LegendaryClient.Logic.MultiUser
                 var data = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"))[0];
                 return data == input.ToSHA1();
             }
+            if (string.IsNullOrWhiteSpace(input))
+                return false; //the pass can not be empty or too eazy
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
             var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
@@ -68,31 +70,31 @@ namespace LegendaryClient.Logic.MultiUser
             if (encrypt == string.Empty)
                 encrypt = Client.EncrytKey;
             var login = new List<LoginData>();
-            if (Client.EncrytKey != null && VerifyEncrypt(encrypt))
+            if (!VerifyEncrypt(encrypt)) 
+                return login;
+            foreach (var files in Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
             {
-                foreach (var files in Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
+                Client.Log("Found file: " + Path.GetFileName(files));
+                var text = File.ReadAllLines(files);
+                if (Path.GetFileName(files) == "encrypt") 
+                    continue;
+                try
                 {
-                    var text = File.ReadAllLines(files);
-                    if (Path.GetFileName(files) == "encrypt")
-                        continue;
-                    try
+                    var lgn = new LoginData()
                     {
-                        var lgn = new LoginData()
-                        {
-                            SumName = Path.GetFileName(files),
-                            User = DecryptDes(text[0], encrypt, Path.GetFileName(files)),
-                            Pass = DecryptDes(text[1], encrypt, Path.GetFileName(files)),
-                            Region = BaseRegion.GetRegion(text[2].DecryptStringAES(encrypt)),
-                            Status = text[3],
-                            SumIcon = text[4].ToInt(),
-                            ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
-                        };
-                        login.Add(lgn);
-                        Client.Log("found account: " + Path.GetFileName(files));
-                    }
-                    catch (Exception e) { Client.Log(e); }
+                        SumName = Path.GetFileName(files),
+                        User = DecryptDes(text[0], encrypt, Path.GetFileName(files)),
+                        Pass = DecryptDes(text[1], encrypt, Path.GetFileName(files)),
+                        Region = BaseRegion.GetRegion(text[2].DecryptStringAES(encrypt)),
+                        Status = text[3],
+                        SumIcon = text[4].ToInt(),
+                        ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
+                    };
+                    login.Add(lgn);
+                    Client.Log("found account: " + Path.GetFileName(files));
                 }
-            }                
+                catch (Exception e) { Client.Log(e); }
+            }
             return login;
         }
 

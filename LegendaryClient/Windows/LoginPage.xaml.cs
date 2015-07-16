@@ -1012,6 +1012,7 @@ namespace LegendaryClient.Windows
                 MessageBox.Show("Encryption is WRONG");
                 return;
             }
+            Client.EncrytKey = Encrypt.Password;
             authed = true;
             List<LoginData> data = UserList.GetAllUsers(Encrypt.Password);
             foreach (var acc in data)
@@ -1022,7 +1023,6 @@ namespace LegendaryClient.Windows
                 else
                     Login(acc.User, acc.Pass, acc.Region);
             }
-            Client.EncrytKey = Encrypt.Password;
             Encrypt.Visibility = Visibility.Hidden;
             EncryptCheck.Visibility = Visibility.Hidden;
         }
