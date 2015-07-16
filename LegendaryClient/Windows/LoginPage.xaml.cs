@@ -51,11 +51,12 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class LoginPage
     {
-        private bool shouldExit = false;
-        private bool authed = false;
+        private bool shouldExit;
+        private bool authed;
         Deletable<UserClient> user;
-        bool switchpage = false;
+        bool switchpage;
         Dictionary<string, LoginData> dataLogin = new Dictionary<string,LoginData>();
+        private bool saveuser;
 
         public LoginPage()
         {
@@ -406,7 +407,6 @@ namespace LegendaryClient.Windows
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
             user.Instance.Region = selectedRegion;
-            var context = user.Instance.calls.RegisterObjects();
             Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion);
             if (sender != null)
                 switchpage = true;
@@ -425,9 +425,14 @@ namespace LegendaryClient.Windows
 #pragma warning disable 4014 //Code does not need to be awaited
         async void Login(string username, string pass, BaseRegion selectedRegion)
         {
+            if (user == null)
+            {
+                user = new UserClient();
+                user.Instance.calls = new RiotCalls(user.Instance);
+            }
             //BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             var authToken = await user.Instance.calls.GetRestToken(username, pass, selectedRegion.LoginQueue);
-
+            user.Instance.Region = selectedRegion;
             if (authToken == "invalid_credentials")
             {
                 ErrorTextBox.Text = "Wrong login data";
@@ -453,6 +458,8 @@ namespace LegendaryClient.Windows
                 ErrorTextBox.Visibility = Visibility.Visible;
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 LoggingInProgressRing.Visibility = Visibility.Collapsed;
+                user.Delete();
+                Login(username, pass, selectedRegion);
                 return;
             }
 
@@ -501,13 +508,29 @@ namespace LegendaryClient.Windows
             user.Instance.reconnectToken = Convert.ToBase64String(plainTextbytes);
             //await RiotCalls.Login(result);
             var LoggedIn = await user.Instance.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
-            DoGetOnLoginPacket(username, pass, selectedRegion);
+            
+            var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
+            if (saveuser)
+            {
+                UserList.AddUser(LoginUsernameBox.Text, LoginPasswordBox.Password, packetx.AllSummonerData.Summoner.InternalName,
+                                    "Using LegendaryClient", packetx.AllSummonerData.Summoner.ProfileIconId,
+                                    selectedRegion, ShowType.chat, Client.EncrytKey);
+                saveuser = false;
+            }
+            foreach (var data in dataLogin)
+            {
+                if (data.Value.User == username)
+                    UserList.AddUser(username, pass, packetx.AllSummonerData.Summoner.InternalName,
+                                    "Using LegendaryClient", packetx.AllSummonerData.Summoner.ProfileIconId,
+                                    selectedRegion, ShowType.chat, Client.EncrytKey);
+            }
+            DoGetOnLoginPacket(username, pass, selectedRegion, packetx);
         }
-
-        private async void DoGetOnLoginPacket(string username, string pass, BaseRegion selectedRegion)
+        
+        private async void DoGetOnLoginPacket(string username, string pass, BaseRegion selectedRegion, LoginDataPacket packetx)
         {
             //TODO: Finish this so all calls are used
-            var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
+            
             user.Instance.Queues = await user.Instance.calls.GetAvailableQueues();
             user.Instance.PlayerChampions = await user.Instance.calls.GetAvailableChampions();
             //var runes = await RiotCalls.GetSummonerRuneInventory(packetx.AllSummonerData.Summoner.AcctId);
@@ -583,11 +606,9 @@ namespace LegendaryClient.Windows
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                MessageBox.Show("Do not play ANY games. I am not sure if they will work ~eddy", "XMPP", MessageBoxButton.OK, MessageBoxImage.Warning);
+                //MessageBox.Show("Do not play ANY games. I am not sure if they will work ~eddy", "XMPP", MessageBoxButton.OK, MessageBoxImage.Warning);
                 Client.StatusContainer.Visibility = Visibility.Visible;
                 Client.Container.Margin = new Thickness(0, 0, 0, 40);
-                //You have to hand implement this
-                //Client.XmppConnection.AutoReconnect = 30;
                 user.Instance.XmppConnection = new agsXMPP.XmppClientConnection("pvp.net", 5223)
                 {
                     AutoResolveConnectServer = false,
@@ -595,9 +616,9 @@ namespace LegendaryClient.Windows
                     Resource = "xiff",
                     UseSSL = true,
                     KeepAliveInterval = 10,
-                    KeepAlive = true
+                    KeepAlive = true,
+                    UseCompression = true
                 };
-                user.Instance.XmppConnection.UseCompression = true;
                 user.Instance.XmppConnection.OnMessage += user.Instance.XmppConnection_OnMessage;
                 user.Instance.XmppConnection.OnError += user.Instance.XmppConnection_OnError;
                 if (switchpage)
@@ -608,10 +629,15 @@ namespace LegendaryClient.Windows
                         //Set up chat
                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                         {
-                            if (invisibleLoginCheckBox.IsChecked != true)
-                                user.Instance.XmppConnection.Send(new Presence(ShowType.chat, user.Instance.GetPresence(), 0) { Type = PresenceType.available });
-                            else
-                                user.Instance.XmppConnection.Send(new Presence(ShowType.NONE, user.Instance.GetPresence(), 0) { Type = PresenceType.invisible });
+                            user.Instance.XmppConnection.Send(invisibleLoginCheckBox.IsChecked != true
+                                ? new Presence(ShowType.chat, user.Instance.GetPresence(), 0)
+                                {
+                                    Type = PresenceType.available
+                                }
+                                : new Presence(ShowType.NONE, user.Instance.GetPresence(), 0)
+                                {
+                                    Type = PresenceType.invisible
+                                });
                         }));
                     };
                 }
@@ -651,9 +677,9 @@ namespace LegendaryClient.Windows
 
                 //Gather data and convert it that way that it does not cause errors
                 PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)user.Instance.LoginPacket.ReconnectInfo;
+                Client.Current = packet.AllSummonerData.Summoner.InternalName;
                 Client.MainPage = new MainPage();
-                if (switchpage)
-                    Client.Current = packet.AllSummonerData.Summoner.InternalName;
+                    
                 if (data != null && data.Game != null)
                 {
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
@@ -669,10 +695,9 @@ namespace LegendaryClient.Windows
                 {
                     var sum = dataLogin[packet.AllSummonerData.Summoner.InternalName];
                     user.Instance.presenceStatus = sum.ShowType;
-                    if (sum.ShowType == ShowType.NONE)
-                        user.Instance.XmppConnection.Send(new Presence(sum.ShowType, user.Instance.GetPresence(), 0) { Type = PresenceType.invisible });
-                    else
-                        user.Instance.XmppConnection.Send(new Presence(sum.ShowType, user.Instance.GetPresence(), 0) { Type = PresenceType.available });
+                    user.Instance.XmppConnection.Send(sum.ShowType == ShowType.NONE
+                        ? new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.invisible}
+                        : new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.available});
                     UserAccount acc = new UserAccount
                     {
                         PlayerName = { Content = packet.AllSummonerData.Summoner.InternalName },
@@ -686,10 +711,17 @@ namespace LegendaryClient.Windows
                         LevelLabel = { Content = packet.AllSummonerData.SummonerLevel.Level },
                         PlayerStatus = { Content = sum.Status }
                     };
-                    if (user.Instance.presenceStatus == ShowType.away || user.Instance.presenceStatus == ShowType.dnd || user.Instance.presenceStatus == ShowType.xa)
-                        acc.StatusColour.Fill = System.Windows.Media.Brushes.Red;
-                    else if (user.Instance.presenceStatus == ShowType.NONE)
-                        acc.StatusColour.Fill = System.Windows.Media.Brushes.Silver;
+                    switch (user.Instance.presenceStatus)
+                    {
+                        case ShowType.away:
+                        case ShowType.dnd:
+                        case ShowType.xa:
+                            acc.StatusColour.Fill = System.Windows.Media.Brushes.Red;
+                            break;
+                        case ShowType.NONE:
+                            acc.StatusColour.Fill = System.Windows.Media.Brushes.Silver;
+                            break;
+                    }
 
                     user.Instance.userAccount = acc;
                     UserListView.Items.Add(acc);
@@ -833,8 +865,8 @@ namespace LegendaryClient.Windows
 
                     await Task.WhenAll(taskArray);
                     var LoggedIn = await user.Instance.RiotConnection.LoginAsync(user.Instance.UID, login.Token);
-                    //var packet = await RiotCalls.GetLoginDataPacketForUser();
-                    DoGetOnLoginPacket(user.Instance.UID, null, garenaregion);
+                    var packet = await user.Instance.calls.GetLoginDataPacketForUser();
+                    DoGetOnLoginPacket(user.Instance.UID, null, garenaregion, packet);
                 }
             }
         }
@@ -995,7 +1027,7 @@ namespace LegendaryClient.Windows
             EncryptCheck.Visibility = Visibility.Hidden;
         }
 
-        private async void AddAccountButton_Click(object sender, RoutedEventArgs e)
+        private void AddAccountButton_Click(object sender, RoutedEventArgs e)
         {
             Client.Log("starting to login");
             if (!authed)
@@ -1004,23 +1036,11 @@ namespace LegendaryClient.Windows
                 Client.Log("Auth first");
                 return;
             }
-            Deletable<UserClient> calls = new UserClient();
-            
-            var region = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
-            var authToken = await calls.Instance.calls.GetRestToken(LoginUsernameBox.Text, LoginPasswordBox.Password, region.LoginQueue);
 
-            if (authToken == "invalid_credentials")
-            {
-                ErrorTextBox.Text = "Wrong login data";
-                Client.Log("Bad login");
-                calls.Delete();
-                return;
-            }
-            var packet = await calls.Instance.calls.GetLoginDataPacketForUser();
-            UserList.AddUser(LoginUsernameBox.Text, LoginPasswordBox.Password, packet.AllSummonerData.Summoner.InternalName, 
-                "Using LegendaryClient", packet.AllSummonerData.Summoner.ProfileIconId, region, ShowType.chat, Client.EncrytKey);
+            var region = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
+            
             Login(LoginUsernameBox.Text, LoginPasswordBox.Password, region);
-            calls.Delete();
+            saveuser = true;
         }
     }
 }

@@ -51,7 +51,7 @@ namespace SQLite
 {
     public class SQLiteException : Exception
     {
-        public SQLite3.Result Result { get; }
+        public SQLite3.Result Result { get; set; }
 
         protected SQLiteException(SQLite3.Result r, string message)
             : base(message)
@@ -107,13 +107,13 @@ namespace SQLite
 
         internal static readonly Sqlite3DatabaseHandle NullHandle = default(Sqlite3DatabaseHandle);
 
-        public string DatabasePath { get; }
+        public string DatabasePath { get; set; }
 
         public bool TimeExecution { get; set; }
 
         public bool Trace { get; set; }
 
-        public bool StoreDateTimeAsTicks { get; }
+        public bool StoreDateTimeAsTicks { get; set; }
 
         /// <summary>
         /// Constructs a new SQLiteConnection and opens a SQLite database specified by databasePath.
