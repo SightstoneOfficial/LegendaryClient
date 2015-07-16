@@ -458,7 +458,7 @@ namespace LegendaryClient.Windows
                 ErrorTextBox.Visibility = Visibility.Visible;
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 LoggingInProgressRing.Visibility = Visibility.Collapsed;
-                user.Delete();
+                //user.Delete();
                 Login(username, pass, selectedRegion);
                 return;
             }
@@ -466,8 +466,8 @@ namespace LegendaryClient.Windows
             user.Instance.RiotConnection.SetChunkSize(2147483647);
             AuthenticationCredentials newCredentials = new AuthenticationCredentials
             {
-                Username = LoginUsernameBox.Text,
-                Password = LoginPasswordBox.Password,
+                Username = username,
+                Password = pass,
                 ClientVersion = Client.Version,
                 IpAddress = user.Instance.calls.GetIpAddress(),
                 Locale = selectedRegion.Locale,
@@ -512,17 +512,16 @@ namespace LegendaryClient.Windows
             var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
             if (saveuser)
             {
-                UserList.AddUser(LoginUsernameBox.Text, LoginPasswordBox.Password, packetx.AllSummonerData.Summoner.InternalName,
+                UserList.AddUser(username, pass, packetx.AllSummonerData.Summoner.InternalName,
                                     "Using LegendaryClient", packetx.AllSummonerData.Summoner.ProfileIconId,
                                     selectedRegion, ShowType.chat, Client.EncrytKey);
                 saveuser = false;
             }
-            foreach (var data in dataLogin)
+            foreach (var data in dataLogin.Where(data => data.Value.User == username))
             {
-                if (data.Value.User == username)
-                    UserList.AddUser(username, pass, packetx.AllSummonerData.Summoner.InternalName,
-                                    "Using LegendaryClient", packetx.AllSummonerData.Summoner.ProfileIconId,
-                                    selectedRegion, ShowType.chat, Client.EncrytKey);
+                UserList.AddUser(username, pass, packetx.AllSummonerData.Summoner.InternalName,
+                    "Using LegendaryClient", packetx.AllSummonerData.Summoner.ProfileIconId,
+                    selectedRegion, ShowType.chat, Client.EncrytKey);
             }
             DoGetOnLoginPacket(username, pass, selectedRegion, packetx);
         }
@@ -649,10 +648,10 @@ namespace LegendaryClient.Windows
                 user.Instance.XmppConnection.OnMessage += Client.statusPage.XmppConnection_OnMessage;
                 if (!user.Instance.Garena)
                 {
-                    user.Instance.userpass = new KeyValuePair<string, string>(LoginUsernameBox.Text,
-                        "AIR_" + LoginPasswordBox.Password);
+                    user.Instance.userpass = new KeyValuePair<string, string>(username,
+                        "AIR_" + pass);
 
-                    user.Instance.XmppConnection.Open(LoginUsernameBox.Text, "AIR_" + LoginPasswordBox.Password);
+                    user.Instance.XmppConnection.Open(username, "AIR_" + pass);
 
                     //Client.XmppConnection.OnInvalidCertificate += Client.XmppConnection_OnInvalidCertificate;
                 }
