@@ -85,7 +85,7 @@ namespace LegendaryClient.Logic.MultiUser
                         SumName = Path.GetFileName(files),
                         User = DecryptDes(text[0], encrypt, Path.GetFileName(files)),
                         Pass = DecryptDes(text[1], encrypt, Path.GetFileName(files)),
-                        Region = BaseRegion.GetRegion(text[2].DecryptStringAES(encrypt)),
+                        Region = BaseRegion.GetRegion(text[2]),
                         Status = text[3],
                         SumIcon = text[4].ToInt(),
                         ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
