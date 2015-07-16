@@ -53,7 +53,6 @@ namespace LegendaryClient.Windows
     {
         private bool shouldExit;
         private bool authed;
-        Deletable<UserClient> user;
         bool switchpage;
         Dictionary<string, LoginData> dataLogin = new Dictionary<string,LoginData>();
         private bool saveuser;
@@ -363,8 +362,6 @@ namespace LegendaryClient.Windows
         {
             if (RegionComboBox.SelectedIndex == -1)
                 return;
-            user = new UserClient();
-            user.Instance.calls = new RiotCalls(user.Instance);
             if ((string)UpdateRegionComboBox.SelectedValue == "Garena")
             {
                 if (RegionComboBox.SelectedIndex == -1)
@@ -374,8 +371,7 @@ namespace LegendaryClient.Windows
                     Settings.Default.DefaultGarenaRegion = RegionComboBox.SelectedValue.ToString(); // Set default Garena region
                     Settings.Default.Save();
                 }
-                user.Instance.Garena = true;
-                await garenaLogin(BaseRegion.GetRegion((string)RegionComboBox.SelectedValue));
+                await garenaLogin(BaseRegion.GetRegion((string)RegionComboBox.SelectedValue), new UserClient { Garena = true });
                 return;
             }
             string UserName = LoginUsernameBox.Text;
@@ -406,8 +402,7 @@ namespace LegendaryClient.Windows
             LoggingInProgressRing.Visibility = Visibility.Visible;
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
-            user.Instance.Region = selectedRegion;
-            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion);
+            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion, new UserClient { Garena = true });
             if (sender != null)
                 switchpage = true;
         }
@@ -423,16 +418,12 @@ namespace LegendaryClient.Windows
         }
 
 #pragma warning disable 4014 //Code does not need to be awaited
-        async void Login(string username, string pass, BaseRegion selectedRegion)
+        async void Login(string username, string pass, BaseRegion selectedRegion, Deletable<UserClient> user)
         {
-            if (user == null)
-            {
-                user = new UserClient();
-                user.Instance.calls = new RiotCalls(user.Instance);
-            }
+            user.Instance.Region = selectedRegion;
+            user.Instance.calls = new RiotCalls(user.Instance);
             //BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             var authToken = await user.Instance.calls.GetRestToken(username, pass, selectedRegion.LoginQueue);
-            user.Instance.Region = selectedRegion;
             if (authToken == "invalid_credentials")
             {
                 ErrorTextBox.Text = "Wrong login data";
@@ -459,7 +450,7 @@ namespace LegendaryClient.Windows
                 LoggingInLabel.Visibility = Visibility.Hidden;
                 LoggingInProgressRing.Visibility = Visibility.Collapsed;
                 //user.Delete();
-                Login(username, pass, selectedRegion);
+                Login(username, pass, selectedRegion, user);
                 return;
             }
 
@@ -523,10 +514,10 @@ namespace LegendaryClient.Windows
                     "Using LegendaryClient", packetx.AllSummonerData.Summoner.ProfileIconId,
                     selectedRegion, ShowType.chat, Client.EncrytKey);
             }
-            DoGetOnLoginPacket(username, pass, selectedRegion, packetx);
+            DoGetOnLoginPacket(username, pass, selectedRegion, packetx, user);
         }
-        
-        private async void DoGetOnLoginPacket(string username, string pass, BaseRegion selectedRegion, LoginDataPacket packetx)
+
+        private async void DoGetOnLoginPacket(string username, string pass, BaseRegion selectedRegion, LoginDataPacket packetx, Deletable<UserClient> user)
         {
             //TODO: Finish this so all calls are used
             
@@ -540,7 +531,7 @@ namespace LegendaryClient.Windows
             //var lobby = await RiotCalls.CheckLobbyStatus();
             var invites = await user.Instance.calls.GetPendingInvitations();
             //var player = await RiotCalls.CreatePlayer();
-            GotLoginPacket(packetx, username, pass, selectedRegion);
+            GotLoginPacket(packetx, username, pass, selectedRegion, user);
 
             foreach (var pop in from InvitationRequest invite in invites
                                 select new GameInvitePopup(invite, user.Instance)
@@ -556,7 +547,7 @@ namespace LegendaryClient.Windows
             user.Instance.LoginPacket = packetx;
         }
 
-        private void GotLoginPacket(LoginDataPacket packet, string username, string pass, BaseRegion selectedRegion)
+        private void GotLoginPacket(LoginDataPacket packet, string username, string pass, BaseRegion selectedRegion, Deletable<UserClient> user)
         {
             if (packet.AllSummonerData == null)
             {
@@ -573,7 +564,7 @@ namespace LegendaryClient.Windows
                 while (!user.Instance.done)
                 {
                 }
-                Login(username, pass, selectedRegion);
+                Login(username, pass, selectedRegion, user);
                 return;
             }
             user.Instance.LoginPacket = packet;
@@ -592,7 +583,7 @@ namespace LegendaryClient.Windows
                 while (!user.Instance.done)
                 {
                 }
-                Login(username, pass, selectedRegion);
+                Login(username, pass, selectedRegion, user);
 
                 return;
             }
@@ -658,7 +649,7 @@ namespace LegendaryClient.Windows
                 else
                 {
                     user.Instance.XmppConnection.ConnectServer = "chat" + user.Instance.Region.ChatName + ".lol.garenanow.com";
-                    var gas = getGas();
+                    var gas = getGas(user);
                     user.Instance.XmppConnection.Open(user.Instance.UID, "AIR_" + gas);
                     user.Instance.userpass = new KeyValuePair<string, string>(user.Instance.UID, "AIR_" + gas);
                 }
@@ -706,7 +697,7 @@ namespace LegendaryClient.Windows
                             Source = new BitmapImage(new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", sum.SumIcon + ".png"),
                                 UriKind.Absolute))
                         },
-                        RegionLabel = { Content = sum.Region },
+                        RegionLabel = { Content = sum.Region.InternalName },
                         LevelLabel = { Content = packet.AllSummonerData.SummonerLevel.Level },
                         PlayerStatus = { Content = sum.Status }
                     };
@@ -770,9 +761,10 @@ namespace LegendaryClient.Windows
         private Vector moveOffset;
         private Point _currentLocation;
 
-        private async Task garenaLogin(BaseRegion garenaregion)
+        private async Task garenaLogin(BaseRegion garenaregion, Deletable<UserClient> user)
         {
-            user = new UserClient();
+            user.Instance.Region = garenaregion;
+            user.Instance.calls = new RiotCalls(user.Instance);
             WindowsIdentity winIdentity = WindowsIdentity.GetCurrent();
             WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
             if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
@@ -865,7 +857,7 @@ namespace LegendaryClient.Windows
                     await Task.WhenAll(taskArray);
                     var LoggedIn = await user.Instance.RiotConnection.LoginAsync(user.Instance.UID, login.Token);
                     var packet = await user.Instance.calls.GetLoginDataPacketForUser();
-                    DoGetOnLoginPacket(user.Instance.UID, null, garenaregion, packet);
+                    DoGetOnLoginPacket(user.Instance.UID, null, garenaregion, packet, user);
                 }
             }
         }
@@ -933,9 +925,8 @@ namespace LegendaryClient.Windows
             }
         }
 
-        public string getGas()
+        public string getGas(Deletable<UserClient> user)
         {
-
             //string begin = "{\"signature\":\"";
             //string end = "}";
             string gas = user.Instance.Gas;
@@ -957,7 +948,7 @@ namespace LegendaryClient.Windows
 
         private void AutoLoginCheckBox_CheckChanged(object sender, RoutedEventArgs e)
         {
-            if ((AutoLoginCheckBox.IsChecked == true && RememberUsernameCheckbox.IsChecked == true && RememberPasswordCheckbox.IsChecked == true) || user.Instance.Garena || (string)UpdateRegionComboBox.SelectedValue == "Garena")
+            if ((AutoLoginCheckBox.IsChecked == true && RememberUsernameCheckbox.IsChecked == true && RememberPasswordCheckbox.IsChecked == true) || (string)UpdateRegionComboBox.SelectedValue == "Garena")
             {
                 Settings.Default.AutoLogin = true;
             }
@@ -977,8 +968,8 @@ namespace LegendaryClient.Windows
                 AutoLoginCheckBox.IsChecked = Settings.Default.AutoLogin;
             }), DispatcherPriority.Input);
 
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 3000; 
+            System.Timers.Timer timer = new System.Timers.Timer {Interval = 3000};
+
             timer.Elapsed += (s, a) =>
             {
                 timer.Stop();
@@ -1018,9 +1009,9 @@ namespace LegendaryClient.Windows
             {
                 dataLogin.Add(acc.SumName, acc);
                 if (acc.Region.Garena)
-                    garenaLogin(acc.Region);
+                    garenaLogin(acc.Region, new UserClient{Garena = true});
                 else
-                    Login(acc.User, acc.Pass, acc.Region);
+                    Login(acc.User, acc.Pass, acc.Region, new UserClient());
             }
             Encrypt.Visibility = Visibility.Hidden;
             EncryptCheck.Visibility = Visibility.Hidden;
@@ -1037,9 +1028,11 @@ namespace LegendaryClient.Windows
             }
 
             var region = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
-            
-            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, region);
             saveuser = true;
+            if (region.Garena)
+                garenaLogin(region, new UserClient());
+            else
+                Login(LoginUsernameBox.Text, LoginPasswordBox.Password, region, new UserClient());
         }
     }
 }

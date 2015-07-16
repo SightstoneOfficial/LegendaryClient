@@ -235,7 +235,7 @@ namespace LegendaryClient.Windows
                 if (ChatListView.Children.Count > 0 && ChatListView.Children[0] is ChatGroup && loaded)
                 {
                     //Stop droping 100 times
-                    (ChatListView.Children[0] as ChatGroup).GroupGrid_MouseDown(null, null);
+                    ((ChatGroup) ChatListView.Children[0]).GroupGrid_MouseDown(null, null);
                     loaded = true;
                 }
             }));
@@ -256,12 +256,7 @@ namespace LegendaryClient.Windows
             var player = (ChatPlayer)selection.AddedItems[0];
             ((ListView)e.Source).SelectedIndex = -1;
             var playerItem = (ChatPlayerItem)player.Tag;
-            List<NotificationChatPlayer> items = new List<NotificationChatPlayer>();
-            foreach (object x in Client.ChatListView.Items)
-            {
-                if (x.GetType() == typeof(NotificationChatPlayer))
-                    items.Add((NotificationChatPlayer)x);
-            }
+            List<NotificationChatPlayer> items = (from object x in Client.ChatListView.Items where x.GetType() == typeof (NotificationChatPlayer) select x).Cast<NotificationChatPlayer>().ToList();
             if (items.Any(x => (string)x.PlayerLabelName.Content == playerItem.Username))
                 return;
 
@@ -466,11 +461,9 @@ namespace LegendaryClient.Windows
 
         private void RankedStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (client.Dev)
-            {
-                client.TierName = RankedStatus.SelectedItem.ToString().ToUpper();
-                client.SetChatHover();
-            }
+            if (!client.Dev) return;
+            client.TierName = RankedStatus.SelectedItem.ToString().ToUpper();
+            client.SetChatHover();
         }
 
         private void BlockFriend_Click(object sender, RoutedEventArgs e)
@@ -480,16 +473,14 @@ namespace LegendaryClient.Windows
 
         private async void RemoveFriend_Click(object sender, RoutedEventArgs e)
         {
-            if (LastPlayerItem != null)
-            {
-                PublicSummoner sum = await client.calls.GetSummonerByName(LastPlayerItem.Username);
-                var Jid = new Jid("sum" + sum.SummonerId, client.XmppConnection.Server, "");
-                client.PresManager.Unsubscribe(Jid);
-                //Client.PresManager.Remove(Jid);
-                Client.AllPlayers.Remove(Jid.User);
-                Client.UpdatePlayers = true;
-                UpdateChat(null, null);
-            }
+            if (LastPlayerItem == null) return;
+            PublicSummoner sum = await client.calls.GetSummonerByName(LastPlayerItem.Username);
+            var Jid = new Jid("sum" + sum.SummonerId, client.XmppConnection.Server, "");
+            client.PresManager.Unsubscribe(Jid);
+            //Client.PresManager.Remove(Jid);
+            Client.AllPlayers.Remove(Jid.User);
+            Client.UpdatePlayers = true;
+            UpdateChat(null, null);
         }
     }
 }

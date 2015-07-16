@@ -9,9 +9,6 @@ using MahApps.Metro.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -20,17 +17,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.Net;
-using Button = System.Windows.Controls.Button;
-using Image = System.Windows.Controls.Image;
-using Label = System.Windows.Controls.Label;
-using ListView = System.Windows.Controls.ListView;
-using Timer = System.Windows.Forms.Timer;
 using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform.Messaging.Persistence;
 using RtmpSharp.Messaging;
@@ -39,8 +29,6 @@ using System.Net.NetworkInformation;
 using agsXMPP.protocol.client;
 using agsXMPP.protocol.iq.roster;
 using agsXMPP;
-using System.Security.Cryptography;
-using LegendaryClient.Logic.MultiUser;
 using LegendaryClient.Logic.SQLite;
 
 
@@ -334,10 +322,12 @@ namespace LegendaryClient.Logic.MultiUser
                 case PresenceType.subscribed:
                     Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
-                        FriendInvite pop = new FriendInvite(ChatSubjects.XMPP_SUBSCRIBE, pres, this);
-                        pop.Height = 230;
-                        pop.HorizontalAlignment = HorizontalAlignment.Right;
-                        pop.VerticalAlignment = VerticalAlignment.Bottom;
+                        FriendInvite pop = new FriendInvite(ChatSubjects.XMPP_SUBSCRIBE, pres, this)
+                        {
+                            Height = 230,
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Bottom
+                        };
                         Client.NotificationGrid.Children.Add(pop);
                         try
                         {
@@ -351,6 +341,7 @@ namespace LegendaryClient.Logic.MultiUser
                     await Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         NotifyPlayerPopup notify = new NotifyPlayerPopup("Friends", string.Format("{0} is no longer your friend", pres.From.User));
+                        Client.NotificationGrid.Children.Add(notify);
                     }));
                     Client.AllPlayers.Remove(pres.From.User);
                     break;
@@ -907,11 +898,6 @@ namespace LegendaryClient.Logic.MultiUser
 
         #endregion League Of Legends Client.Logic
                 
-
-        #region Public Helper Methods
-
-        
-        #endregion Public Helper Methods
 
         
 
