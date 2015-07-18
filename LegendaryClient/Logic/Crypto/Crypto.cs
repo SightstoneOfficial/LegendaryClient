@@ -5,7 +5,7 @@ namespace LegendaryClient.Logic.Crypto
 {
     public class Crypto
     {
-        public string HashString(string data)
+        public string Hash(string data)
         {
             return Hash(Encoding.Default.GetBytes(data));
         }

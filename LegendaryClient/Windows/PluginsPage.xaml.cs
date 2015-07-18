@@ -51,7 +51,7 @@ namespace LegendaryClient.Windows
 		{
 			Logic.Crypto.Sha1 shaProvider = new Logic.Crypto.Sha1();
 			var content = File.ReadAllText(PluginPath);
-			var hash = shaProvider.HashString(content);
+			var hash = shaProvider.Hash(content);
 			if (verifiedPlugins.Contains(hash))
 				return true;
 			return false;
