@@ -424,7 +424,6 @@ namespace LegendaryClient.Windows
             user.Instance.calls = new RiotCalls(user.Instance);
             //BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             var authToken = await user.Instance.calls.GetRestToken(username, pass, selectedRegion.LoginQueue);
-			MessageBox.Show(authToken);
             if (authToken == "invalid_credentials")
             {
                 ErrorTextBox.Text = "Wrong login data";
