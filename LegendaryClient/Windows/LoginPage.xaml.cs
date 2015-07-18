@@ -402,7 +402,7 @@ namespace LegendaryClient.Windows
             LoggingInProgressRing.Visibility = Visibility.Visible;
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
-            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion, new UserClient { Garena = true });
+            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion, new UserClient());
             if (sender != null)
                 switchpage = true;
         }
@@ -424,6 +424,7 @@ namespace LegendaryClient.Windows
             user.Instance.calls = new RiotCalls(user.Instance);
             //BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
             var authToken = await user.Instance.calls.GetRestToken(username, pass, selectedRegion.LoginQueue);
+			MessageBox.Show(authToken);
             if (authToken == "invalid_credentials")
             {
                 ErrorTextBox.Text = "Wrong login data";
