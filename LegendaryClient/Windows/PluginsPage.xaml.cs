@@ -16,6 +16,7 @@ using LegendaryClient.Logic.Riot;
 using LegendaryClient.Logic.Riot.Platform;
 using RtmpSharp.IO;
 using RtmpSharp.Messaging;
+using System.IO;
 
 namespace LegendaryClient.Windows
 {
@@ -25,9 +26,11 @@ namespace LegendaryClient.Windows
     public partial class PluginsPage
     {
 		private Scripting_Environment.Plugin_Core Core = new Scripting_Environment.Plugin_Core();
+		private List<string> verifiedPlugins;
         public PluginsPage()
         {
             InitializeComponent();
+			verifiedPlugins = fetchPluginList();
         }
         private void LoadScript_Click(object sender, RoutedEventArgs e)
         {
@@ -37,6 +40,21 @@ namespace LegendaryClient.Windows
             var PluginPath = myFile.FileName;
 			Core.LoadScript(PluginPath, myFile.SafeFileName);
 			Core.runAll();
+			
         }
+		private List<string> fetchPluginList()
+		{
+			//ToDo
+			return new List<string>();
+		}
+		private bool isVerified(string PluginPath)
+		{
+			Logic.Crypto.Sha1 shaProvider = new Logic.Crypto.Sha1();
+			var content = File.ReadAllText(PluginPath);
+			var hash = shaProvider.HashString(content);
+			if (verifiedPlugins.Contains(hash))
+				return true;
+			return false;
+		}
     }
 }

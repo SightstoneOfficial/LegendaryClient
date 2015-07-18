@@ -5,11 +5,11 @@ namespace LegendaryClient.Logic.Crypto
 {
     public class Crypto
     {
-        public string EncodeString(string data)
+        public string HashString(string data)
         {
-            return Encode(Encoding.Default.GetBytes(data));
+            return Hash(Encoding.Default.GetBytes(data));
         }
-        public virtual string Encode(byte[] data)
+        public virtual string Hash(byte[] data)
         {
             throw new NotSupportedException("This algorithm does not support encrypting.");
         }
