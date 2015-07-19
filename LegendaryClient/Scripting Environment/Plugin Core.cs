@@ -16,7 +16,7 @@ namespace LegendaryClient.Scripting_Environment
         public Plugin_Core()
 		{
 			Logic.Client.onChatMessageReceived += Client_onChatMessageReceived;
-			variables = new Dictionary<string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", Logic.Client.LoginPacket.AllSummonerData.Summoner.Name }, { "sendMessage", new Action<string, string>(Logic.Client.SendMessage) } };
+			variables = new Dictionary<string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", Logic.Client.LoginPacket.AllSummonerData.Summoner.Name }, { "sendMessage", new Action<string, string>(Logic.Client.SendMessage) }, {"RealGame", !Logic.Client.LoginPacket.InGhostGame} };
 
 		}
 
