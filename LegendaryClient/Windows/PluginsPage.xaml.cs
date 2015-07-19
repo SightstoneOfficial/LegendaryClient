@@ -39,13 +39,29 @@ namespace LegendaryClient.Windows
                 return;
             var PluginPath = myFile.FileName;
 			Core.LoadScript(PluginPath, myFile.SafeFileName);
+			foreach(var Plugin in Core.getAllLoadedPlugins()) //this needs more Improvement performance wise
+			{
+				Plugin.isVerifed = isVerified(PluginPath);
+			}
 			Core.runAll();
 			
         }
 		private List<string> fetchPluginList()
 		{
-			//ToDo
-			return new List<string>();
+			try
+			{
+				WebClient client = new WebClient();
+				Stream stream = client.OpenRead("https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/gh-pages/Plugins");
+				StreamReader reader = new StreamReader(stream);
+				string content = reader.ReadToEnd();
+				var Plugins = content.Split('\n').ToList();
+				Plugins.RemoveAll(x => x.StartsWith("#"));
+				return Plugins;
+			}
+			catch
+			{
+				return new List<string>();
+			}
 		}
 		private bool isVerified(string PluginPath)
 		{

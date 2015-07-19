@@ -22,7 +22,6 @@ namespace LegendaryClient.Scripting_Environment
 
 		private List<Script> loadedScripts = new List<Script>();
 		private List<string> loadedScriptNamesIdentifier = new List<string>();
-		private List<string> loadedScriptNamesVisual = new List<string>();
 
 
 		Logger LogWindow = new Logger();
@@ -66,13 +65,12 @@ namespace LegendaryClient.Scripting_Environment
 			}
 			skript.setup();
 			loadedScriptNamesIdentifier.Add(name);
-			loadedScriptNamesVisual.Add(skript.getName());
 			loadedScripts.Add(skript);
 		}
 
-		public List<string> getAllLoadedPlugins()
+		public List<Script> getAllLoadedPlugins()
 		{
-			return loadedScriptNamesVisual;
+			return loadedScripts;
 		}
 
 		public void runAll()

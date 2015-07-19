@@ -9,17 +9,48 @@ namespace LegendaryClient.Scripting_Environment
 	public class Script
 	{
 		private Interpreter ScriptExec;
-		private string name;
+		public bool isVerifed = false;
+		public string name
+		{
+			get
+			{
+				string inName;
+                try
+				{
+					inName  = getValue<string>("PluginName");
+				}
+				finally
+				{
+					inName = FileName;
+				}
+				return inName;
+			}
+		}
+		public string Description
+		{
+			get
+			{
+				string inDesc;
+				try
+				{
+					inDesc = getValue<string>("Description");
+				}
+				finally
+				{
+					inDesc = "A generic Plugin";
+				}
+				return inDesc;
+			}
+		}
 		Plugin_Core Parent;
+		private string FileName = "undefined";
 		public Script(string path, string name, Plugin_Core refer)
 		{
 			Parent = refer;
-			this.name = name.Replace(".py", "");
+			FileName = name.Replace(".py", "");
             ScriptExec = new Interpreter();
 			ScriptExec.addVar("Log", new Action<object>(log));
 			ScriptExec.loadCode(path);
-			
-
 		}
 
 		public string getName()
@@ -27,19 +58,15 @@ namespace LegendaryClient.Scripting_Environment
 			return name;
 		}
 
+		private T getValue<T>(string name)
+		{
+			return (T) ScriptExec.getValue(name);
+		}
+
 		public void setup()
 		{
 			ScriptExec.runCode();
 			Parent.ClearConsole();
-			try
-			{
-				name = ScriptExec.getValue("PluginName");
-			}
-			catch (Exception e)
-			{
-				log("A valid name was not defined");
-
-			}
 		}
 
 		private void log(object obj)
