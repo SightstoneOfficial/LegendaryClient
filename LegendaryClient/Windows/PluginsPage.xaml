@@ -18,47 +18,34 @@
     </Page.Resources>
 
     <Grid>
-        <Grid Name="Titlebar" Height="75" VerticalAlignment="Top" Background="#66505050">
-            <Label FontSize="32" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,0,0,0">Plugins</Label>
-            <Button x:Name="LoadScript" Content="Install Pluginpackage" Margin="0,0,20,0" HorizontalAlignment="Right" VerticalAlignment="Center" Width="144" Height="31" Click="LoadScript_Click"/>
+
+
+        <Grid Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button x:Name="LoadScript" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="LoadScript_Click" IsDefault="False">
+                <Viewbox Width="24" Height="24">
+                    <Label FontWeight="SemiBold">+</Label>
+                </Viewbox>
+            </Button>
         </Grid>
-        <Grid Name="PluginSideBar" Width="350" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="0,75,0,0">
-            <!-- Sample start -->
-            <Grid Name="Sample" Height="100" Background="#20505050" VerticalAlignment="Top">
-                <Grid Margin="10">
-                    <Grid Name="Icon" Width="75" Height="75" HorizontalAlignment="Left" VerticalAlignment="Center">
-                        <Ellipse Fill="#7bbf80" Height="75" Width="75" VerticalAlignment="Center" HorizontalAlignment="Center"></Ellipse>
-                        <Ellipse Height="69" Width="69" VerticalAlignment="Center" HorizontalAlignment="Center">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="/LegendaryClient;component/NONE.png"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
-                    </Grid>
-                    <Grid Margin="85,0,0,0">
-                        <Label FontSize="20" Height="40" VerticalAlignment="Top" Content="PluginName"/>
-                        <Label Margin="0,30,0,0" Foreground="Gray">1.0.0</Label>
-                        <Label Margin="0,50,0,0">Author</Label>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <!-- Sample end -->
+        <Grid Name="Titlebar" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Plugins</Label>
+            <TextBlock Grid.Column="1" Foreground="{StaticResource IdealForegroundColorBrush}" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right">Sightstone supports Plugins, if you wish to add one press the "+" Button.</TextBlock>
         </Grid>
-        <Grid Name="DescriptionContainer" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="350,75,0,0" Background="#20505050">
-            <!-- Sample start -->
-            <Grid VerticalAlignment="Top" Height="190">
-                <Ellipse Margin="0,20,0,0" Height="69" Width="69" VerticalAlignment="Top" HorizontalAlignment="Center">
-                    <Ellipse.Fill>
-                        <ImageBrush ImageSource="/LegendaryClient;component/NONE.png"/>
-                    </Ellipse.Fill>
-                </Ellipse>
-                <Label Margin="0,95,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="32">PluginName</Label>
-                <Label Margin="0,145,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">by: Author</Label>
-            </Grid>
-            <Grid Margin="20,210,20,20" Background="#20505050">
-                <Label Margin="5,10,0,0">Description:</Label>
-                <TextBlock Foreground="WhiteSmoke" Margin="10,45,010,10">wadi dawhd awiduba wdiauwbd ajwd9uaw dja wid awjbd </TextBlock>
-            </Grid>
-            <!-- Sample end -->
+        
+        <Grid VerticalAlignment="Top" Margin="30,90,30,30">
+            <DataGrid Background="{StaticResource MaterialDesignPaper}" >
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="" Binding="{Binding State}" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" />
+                    <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="Auto" />
+                    <DataGridTextColumn Header="Author" Binding="{Binding Author}" Width="200" />
+                    <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="Auto" />
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
     </Grid>
 </Page>

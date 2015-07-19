@@ -28,7 +28,7 @@
                     <RectangleGeometry Rect="15,15,5000,2500"/>
                 </MediaElement.Clip>
             </MediaElement>
-            
+
         </Grid>
 
         <!-- Floating Action Button -->
@@ -40,8 +40,21 @@
             </Button>
         </Grid>
 
-        <PasswordBox Foreground="white" x:Name="Encrypt" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="300" Margin="10,0,0,10" controls:TextBoxHelper.Watermark="EncryptKey"/>
-        <Button x:Name="EncryptCheck" Click="Button_Click" Content="Check key" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="96" Margin="315,0,0,10" Height="27"/>
+        <!-- Encrypt Box -->
+        <Grid x:Name="EncryptBox" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="500">
+            <wpf:Card UniformCornerRadius="3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <PasswordBox x:Name="Encrypt" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="300" Grid.Column="0" controls:TextBoxHelper.Watermark="Enter your Encryptionkey here" BorderThickness="0"/>
+                    <Button x:Name="EncryptCheck" Click="Button_Click" Content="Unlock" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Grid.Column="1"/>
+                </Grid>
+            </wpf:Card>
+        </Grid>
+
+
 
         <!-- Accounts -->
         <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,10,10,75" Height="590">
