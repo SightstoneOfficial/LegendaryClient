@@ -301,15 +301,6 @@ namespace LegendaryClient
             }
         }
 
-        private void ScreenshotsButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
-            {
-                var screenshotsPage = new ScreenshotsPage();
-                Client.SwitchPage(screenshotsPage);
-            }
-        }
-
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.Current))
