@@ -501,6 +501,26 @@ namespace LegendaryClient.Windows
             var LoggedIn = await user.Instance.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
             
             var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
+
+            if (packetx.AllSummonerData == null)
+            {
+                user.Instance.RiotConnection.CallbackException -= client_CallbackException;
+                user.Instance.RiotConnection.MessageReceived -= client_MessageReceived;
+                //Just Created Account, need to put logic here.
+                user.Instance.done = false;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    var createSummoner = new CreateSummonerNameOverlay(user.Instance);
+                    Client.OverlayContainer.Content = createSummoner.Content;
+                    Client.OverlayContainer.Visibility = Visibility.Visible;
+                }));
+                while (!user.Instance.done)
+                {
+                }
+                Login(username, pass, selectedRegion, user);
+                return;
+            }
+
             if (saveuser)
             {
                 UserList.AddUser(username, pass, packetx.AllSummonerData.Summoner.InternalName,
@@ -563,24 +583,7 @@ namespace LegendaryClient.Windows
 
         private void GotLoginPacket(LoginDataPacket packet, string username, string pass, BaseRegion selectedRegion, Deletable<UserClient> user)
         {
-            if (packet.AllSummonerData == null)
-            {
-                user.Instance.RiotConnection.CallbackException -= client_CallbackException;
-                user.Instance.RiotConnection.MessageReceived -= client_MessageReceived;
-                //Just Created Account, need to put logic here.
-                user.Instance.done = false;
-                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                {
-                    var createSummoner = new CreateSummonerNameOverlay(user.Instance);
-                    Client.OverlayContainer.Content = createSummoner.Content;
-                    Client.OverlayContainer.Visibility = Visibility.Visible;
-                }));
-                while (!user.Instance.done)
-                {
-                }
-                Login(username, pass, selectedRegion, user);
-                return;
-            }
+            
             user.Instance.LoginPacket = packet;
 
             UserList.Users.Add(packet.AllSummonerData.Summoner.InternalName, user.Instance);
@@ -608,7 +611,7 @@ namespace LegendaryClient.Windows
             user.Instance.IsLoggedIn = true;
 
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
             {
                 //MessageBox.Show("Do not play ANY games. I am not sure if they will work ~eddy", "XMPP", MessageBoxButton.OK, MessageBoxImage.Warning);
                 Client.StatusContainer.Visibility = Visibility.Visible;
@@ -683,9 +686,16 @@ namespace LegendaryClient.Windows
                     if (switchpage)
                         Client.SwitchPage(new InGame());
                 }                    
-                else
-                    if (switchpage)
-                        Client.SwitchPage(Client.MainPage);
+                else if (switchpage)
+                {
+                    while (!Client.ready)
+                    {
+                        await Task.Delay(1000);
+                    }
+                    Client.SwitchPage(Client.MainPage);
+
+                    Client.loadedGroups = true;
+                }
                 if (switchpage) return;
                 var sum = dataLogin[packet.AllSummonerData.Summoner.InternalName];
                 user.Instance.presenceStatus = sum.ShowType;
@@ -726,9 +736,14 @@ namespace LegendaryClient.Windows
 
                 user.Instance.userAccount = acc;
                 UserListView.Items.Add(acc);
-                acc.ProfileImageContainer.Click += (o, e) =>
+                acc.ProfileImageContainer.Click += async (o, e) =>
                 {
                     Client.Current = packet.AllSummonerData.Summoner.InternalName;
+                    while (!Client.ready)
+                    {
+                        await Task.Delay(1000);
+                    }
+                    Client.loadedGroups = true;
                     Client.SwitchPage(Client.MainPage);
                 };
             }));
@@ -1017,6 +1032,10 @@ namespace LegendaryClient.Windows
             List<LoginData> data = UserList.GetAllUsers(Encrypt.Password);
             foreach (var acc in data)
             {
+                Client.Log("Found " + acc.SumName);
+#if DEBUG
+                Client.Log(string.Format("User: {0} Pass: {1} Region: {2}", acc.User, acc.Pass, acc.Region));
+#endif
                 dataLogin.Add(acc.SumName, acc);
                 if (acc.Region.Garena)
                     garenaLogin(acc.Region, new UserClient{Garena = true});

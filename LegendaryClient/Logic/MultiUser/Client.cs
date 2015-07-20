@@ -643,6 +643,8 @@ namespace LegendaryClient.Logic.MultiUser
         internal static List<Group> Groups = new List<Group>();
 
         internal static bool UpdatePlayers = true;
+
+        internal static bool ready = false;
         
         internal static bool loadedGroups = false;
 

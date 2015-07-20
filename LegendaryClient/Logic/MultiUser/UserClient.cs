@@ -294,7 +294,7 @@ namespace LegendaryClient.Logic.MultiUser
 
             Client.Groups.Add(new Group("Offline"));
             SetChatHover();
-            Client.loadedGroups = true;
+            Client.ready = true;
             XmppConnection.OnRosterEnd -= ChatClientConnect; //only update groups on Client.Login
         }
 

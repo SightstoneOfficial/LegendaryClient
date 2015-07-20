@@ -18,13 +18,15 @@ namespace LegendaryClient.Logic.MultiUser
         {
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName)))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName));
             if (encrypt == string.Empty)
                 encrypt = Client.EncrytKey;
             if (Client.EncrytKey == null || !VerifyEncrypt(encrypt))
             {
                 return;
             }
-            internalname = "Riot" + EncryptDes(internalname, encrypt, encrypt);
+            var filename = Path.Combine(region.InternalName, EncryptDes(internalname, encrypt, encrypt).Replace("/", "Rito"));
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion")))
             {
                 var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion"))[0];
@@ -47,9 +49,9 @@ namespace LegendaryClient.Logic.MultiUser
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName)))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName));
 
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-            var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", filename)))
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", filename));
+            var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", filename));
             using (TextWriter tw = new StreamWriter(x))
             {
                 tw.WriteLine(EncryptDes(user, encrypt, internalname));
@@ -113,7 +115,7 @@ namespace LegendaryClient.Logic.MultiUser
                     {
                         fileName =
                             fileName.TrimStart(Encoding.Default.GetChars(Encoding.Default.GetBytes(region.InternalName)));
-                        fileName = DecryptDes(fileName, encrypt, encrypt).Replace("Riot", "");
+                        fileName = DecryptDes(fileName, encrypt, encrypt).Replace("Riot", "/");
                         var lgn = new LoginData()
                         {
                             SumName = fileName,

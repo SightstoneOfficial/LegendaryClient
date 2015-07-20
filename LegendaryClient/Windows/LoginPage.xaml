@@ -46,7 +46,17 @@
         <!-- Accounts -->
         <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,10,10,75" Height="590">
             <ListView x:Name="UserListView" Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                <!--<user:UserAccount/>-->
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+                            RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+                            ItemWidth="{Binding (ListView.View).ItemWidth, 
+                            RelativeSource={RelativeSource AncestorType=ListView}}"
+                            MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+                            ItemHeight="{Binding (ListView.View).ItemHeight, 
+                            RelativeSource={RelativeSource AncestorType=ListView}}" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
             </ListView>
 
         </Grid>
