@@ -13,10 +13,14 @@ namespace LegendaryClient.Scripting_Environment
 {
 	public class Plugin_Core
 	{
-		public Dictionary<string, object> variables;
+		public Dictionary<string, object> variables = new Dictionary<string, object>();
         public Plugin_Core()
 		{
-			//Client.onChatMessageReceived += Client_onChatMessageReceived;
+            foreach (var cl in UserList.Users)
+            {
+                cl.Value.onChatMessageReceived += (ob, se) => Client_onChatMessageReceived(ob, se, cl.Key);
+                variables.Add(cl.Key, new Dictionary <string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", cl.Key }, { "sendMessage", new Action<string, string>(cl.Value.SendMessage) } });
+            }
 			//variables = new Dictionary<string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", Client.LoginPacket.AllSummonerData.Summoner.Name }, { "sendMessage", new Action<string, string>(Client.SendMessage) } };
 
 		}
@@ -41,9 +45,9 @@ namespace LegendaryClient.Scripting_Environment
 			
         }
 
-		private void Client_onChatMessageReceived(string sender, string Message)
+		private void Client_onChatMessageReceived(string sender, string Message, string user)
 		{
-			CallFunctions("onMessage", sender, Message);
+			CallFunctions("onMessage", sender, Message, user);
 		}
 
 		private void LogToFile(object var)
@@ -98,5 +102,13 @@ namespace LegendaryClient.Scripting_Environment
 				skript.callFunc(funcName, par1, par2);
 			}
 		}
-	}
+
+        public void CallFunctions(string funcName, params object[] pars)
+        {
+            foreach (var skript in loadedScripts)
+            {
+                skript.callFunc(funcName, pars);
+            }
+        }
+    }
 }

@@ -44,7 +44,7 @@ namespace LegendaryClient.Scripting_Environment
 
 		private void log(object obj)
 		{
-			Parent.log(name + ": " + obj.ToString());
+			Parent.log(name + ": " + obj);
 		}
 
 		public void run()
@@ -77,5 +77,15 @@ namespace LegendaryClient.Scripting_Environment
 				func(par1, par2);
 			}
 		}
-	}
+
+        internal void callFunc(string funcName, params object[] pars)
+        {
+            var func = ScriptExec.getValue(name);
+            if (!(func is Exception))
+            {
+                func = func as Action;
+                func(pars);
+            }
+        }
+    }
 }
