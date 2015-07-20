@@ -402,7 +402,7 @@ namespace LegendaryClient.Windows
             LoggingInProgressRing.Visibility = Visibility.Visible;
             BaseRegion selectedRegion = BaseRegion.GetRegion((string)RegionComboBox.SelectedValue);
 
-            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion, new UserClient { Garena = true });
+            Login(LoginUsernameBox.Text, LoginPasswordBox.Password, selectedRegion, new UserClient());
             if (sender != null)
                 switchpage = true;
         }
