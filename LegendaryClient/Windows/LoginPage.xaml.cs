@@ -545,6 +545,20 @@ namespace LegendaryClient.Windows
                 Client.MainWin.FlashWindow();
 
             user.Instance.LoginPacket = packetx;
+            if (!dataLogin.ContainsKey(packetx.AllSummonerData.Summoner.InternalName))
+            {
+                dataLogin.Add(packetx.AllSummonerData.Summoner.InternalName, new LoginData
+                {
+                    Pass = pass, 
+                    Region = selectedRegion,
+                    ShowType = ShowType.chat,
+                    Status = "Using LegendaryClient",
+                    SumIcon = packetx.AllSummonerData.Summoner.ProfileIconId,
+                    SumName = packetx.AllSummonerData.Summoner.InternalName,
+                    User = username
+
+                });
+            }
         }
 
         private void GotLoginPacket(LoginDataPacket packet, string username, string pass, BaseRegion selectedRegion, Deletable<UserClient> user)
