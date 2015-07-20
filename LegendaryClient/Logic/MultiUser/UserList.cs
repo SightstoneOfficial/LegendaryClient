@@ -12,6 +12,7 @@ namespace LegendaryClient.Logic.MultiUser
     public static class UserList
     {
         internal static Dictionary<string, UserClient> Users = new Dictionary<string, UserClient>();
+        private const string Version = "1.0.0.0";
 
         internal static void AddUser(string user, string pass, string internalname, string status, int icon, BaseRegion region, ShowType show, string encrypt)
         {
@@ -23,17 +24,38 @@ namespace LegendaryClient.Logic.MultiUser
             {
                 return;
             }
+            internalname = EncryptDes(internalname, encrypt, encrypt);
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion")))
+            {
+                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion"))[0];
+                if (version != Version)
+                    Directory.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers"), true);
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion"));
+            }
+            else
+            {
+                Directory.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers"), true);
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
+            }
+            var stream = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion"));
+            using (TextWriter streamReader = new StreamWriter(stream))
+            {
+                streamReader.WriteLine(Version);
+            }
+
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname)))
                 File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname));
             var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname));
-            TextWriter tw = new StreamWriter(x);
-            tw.WriteLine(EncryptDes(user, encrypt, internalname));
-            tw.WriteLine(EncryptDes(pass, encrypt, internalname));
-            tw.WriteLine(region.RegionName);
-            tw.WriteLine(status);
-            tw.WriteLine(icon);
-            tw.WriteLine(show.ToString());
-            tw.Close();
+            using (TextWriter tw = new StreamWriter(x))
+            {
+                tw.WriteLine(EncryptDes(user, encrypt, internalname));
+                tw.WriteLine(EncryptDes(pass, encrypt, internalname));
+                tw.WriteLine(region.RegionName);
+                tw.WriteLine(status);
+                tw.WriteLine(icon);
+                tw.WriteLine(show.ToString());
+            }
             Client.Log("added user " + region.InternalName + internalname);
         }
         
@@ -61,9 +83,8 @@ namespace LegendaryClient.Logic.MultiUser
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
             var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", "encrypt"));
-            TextWriter t = new StreamWriter(x);
-            t.Write(input.ToSHA1());
-            t.Close();
+            using (TextWriter t = new StreamWriter(x))
+                t.Write(input.ToSHA1());
             return true;
         }
 
@@ -84,18 +105,27 @@ namespace LegendaryClient.Logic.MultiUser
                     continue;
                 try
                 {
-                    var lgn = new LoginData()
+                    var region = BaseRegion.GetRegion(text[2]);
+                    var fileName = Path.GetFileName(files);
+                    if (fileName != null)
                     {
-                        SumName = Path.GetFileName(files),
-                        User = DecryptDes(text[0], encrypt, Path.GetFileName(files)),
-                        Pass = DecryptDes(text[1], encrypt, Path.GetFileName(files)),
-                        Region = BaseRegion.GetRegion(text[2]),
-                        Status = text[3],
-                        SumIcon = text[4].ToInt(),
-                        ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
-                    };
-                    login.Add(lgn);
-                    Client.Log("found account: " + Path.GetFileName(files));
+                        fileName =
+                            fileName.TrimStart(Encoding.Default.GetChars(Encoding.Default.GetBytes(region.InternalName)));
+                        fileName = DecryptDes(fileName, encrypt, encrypt);
+                        var lgn = new LoginData()
+                        {
+                            SumName = fileName,
+                            User = DecryptDes(text[0], encrypt, fileName),
+                            Pass = DecryptDes(text[1], encrypt, fileName),
+                            Region = region,
+                            Status = text[3],
+                            SumIcon = text[4].ToInt(),
+                            ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
+                        };
+                        login.Add(lgn);
+
+                        Client.Log("found account: " + Path.GetFileName(files));
+                    }
                 }
                 catch (Exception e) { Client.Log(e); }
             }
