@@ -12,7 +12,7 @@ namespace LegendaryClient.Logic.MultiUser
     public static class UserList
     {
         internal static Dictionary<string, UserClient> Users = new Dictionary<string, UserClient>();
-        private const string Version = "1.0.0.0";
+        private const string Version = "1.0.0.1";
 
         internal static void AddUser(string user, string pass, string internalname, string status, int icon, BaseRegion region, ShowType show, string encrypt)
         {
@@ -24,7 +24,7 @@ namespace LegendaryClient.Logic.MultiUser
             {
                 return;
             }
-            internalname = EncryptDes(internalname, encrypt, encrypt);
+            internalname = "Riot" + EncryptDes(internalname, encrypt, encrypt);
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion")))
             {
                 var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion"))[0];
@@ -44,9 +44,12 @@ namespace LegendaryClient.Logic.MultiUser
                 streamReader.WriteLine(Version);
             }
 
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname)))
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname));
-            var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname));
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName)))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName));
+
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
+            var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
             using (TextWriter tw = new StreamWriter(x))
             {
                 tw.WriteLine(EncryptDes(user, encrypt, internalname));
@@ -97,12 +100,11 @@ namespace LegendaryClient.Logic.MultiUser
             var login = new List<LoginData>();
             if (!VerifyEncrypt(encrypt)) 
                 return login;
-            foreach (var files in Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
+            foreach (var files in Directory.GetDirectories(Path.Combine(Client.ExecutingDirectory, "LCUsers")).SelectMany(Directory.GetFiles).ToList())
             {
+
                 Client.Log("Found file: " + Path.GetFileName(files));
                 var text = File.ReadAllLines(files);
-                if (Path.GetFileName(files) == "encrypt") 
-                    continue;
                 try
                 {
                     var region = BaseRegion.GetRegion(text[2]);
@@ -111,7 +113,7 @@ namespace LegendaryClient.Logic.MultiUser
                     {
                         fileName =
                             fileName.TrimStart(Encoding.Default.GetChars(Encoding.Default.GetBytes(region.InternalName)));
-                        fileName = DecryptDes(fileName, encrypt, encrypt);
+                        fileName = DecryptDes(fileName, encrypt, encrypt).Replace("Riot", "");
                         var lgn = new LoginData()
                         {
                             SumName = fileName,
