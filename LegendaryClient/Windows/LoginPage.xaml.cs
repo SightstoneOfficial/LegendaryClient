@@ -653,19 +653,10 @@ namespace LegendaryClient.Windows
                     user.Instance.XmppConnection.Open(user.Instance.UID, "AIR_" + gas);
                     user.Instance.userpass = new KeyValuePair<string, string>(user.Instance.UID, "AIR_" + gas);
                 }
-
-                //Client.PresManager.OnPrimarySessionChange += Client.PresManager_OnPrimarySessionChange;
-                /*
-                Client.ConfManager = new ConferenceManager
-                {
-                    Stream = Client.XmppConnection
-                };
-                //*/
-                //switch
+                
                 Client.Log("Connected to " + user.Instance.Region.RegionName + " and logged in as " +
                            user.Instance.LoginPacket.AllSummonerData.Summoner.Name);
-
-                //Gather data and convert it that way that it does not cause errors
+                
                 PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)user.Instance.LoginPacket.ReconnectInfo;
                 Client.Current = packet.AllSummonerData.Summoner.InternalName;
                 Client.MainPage = new MainPage();
@@ -681,46 +672,51 @@ namespace LegendaryClient.Windows
                 else
                     if (switchpage)
                         Client.SwitchPage(Client.MainPage);
-                if (!switchpage)
+                if (switchpage) return;
+                var sum = dataLogin[packet.AllSummonerData.Summoner.InternalName];
+                user.Instance.presenceStatus = sum.ShowType;
+                user.Instance.XmppConnection.Send(sum.ShowType == ShowType.NONE
+                    ? new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.invisible}
+                    : new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.available});
+                UserAccount acc = new UserAccount
                 {
-                    var sum = dataLogin[packet.AllSummonerData.Summoner.InternalName];
-                    user.Instance.presenceStatus = sum.ShowType;
-                    user.Instance.XmppConnection.Send(sum.ShowType == ShowType.NONE
+                    PlayerName = { Content = packet.AllSummonerData.Summoner.InternalName },
+                    StatusColour = { Fill = System.Windows.Media.Brushes.Green },
+                    ProfileImage =
+                    {
+                        Source = new BitmapImage(new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", sum.SumIcon + ".png"),
+                            UriKind.Absolute))
+                    },
+                    RegionLabel = { Content = sum.Region.InternalName },
+                    LevelLabel = { Content = packet.AllSummonerData.SummonerLevel.Level },
+                    PlayerStatus = { Content = sum.Status }
+                };
+                foreach (var lgndata in dataLogin.Where(lgndata => lgndata.Key == packet.AllSummonerData.Summoner.InternalName))
+                {
+                    user.Instance.presenceStatus = lgndata.Value.ShowType;
+                    user.Instance.XmppConnection.Send(lgndata.Value.ShowType == ShowType.NONE
                         ? new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.invisible}
                         : new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.available});
-                    UserAccount acc = new UserAccount
-                    {
-                        PlayerName = { Content = packet.AllSummonerData.Summoner.InternalName },
-                        StatusColour = { Fill = System.Windows.Media.Brushes.Green },
-                        ProfileImage =
-                        {
-                            Source = new BitmapImage(new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", sum.SumIcon + ".png"),
-                                UriKind.Absolute))
-                        },
-                        RegionLabel = { Content = sum.Region.InternalName },
-                        LevelLabel = { Content = packet.AllSummonerData.SummonerLevel.Level },
-                        PlayerStatus = { Content = sum.Status }
-                    };
-                    switch (user.Instance.presenceStatus)
-                    {
-                        case ShowType.away:
-                        case ShowType.dnd:
-                        case ShowType.xa:
-                            acc.StatusColour.Fill = System.Windows.Media.Brushes.Red;
-                            break;
-                        case ShowType.NONE:
-                            acc.StatusColour.Fill = System.Windows.Media.Brushes.Silver;
-                            break;
-                    }
+                }
+                switch (user.Instance.presenceStatus)
+                {
+                    case ShowType.away:
+                    case ShowType.dnd:
+                    case ShowType.xa:
+                        acc.StatusColour.Fill = System.Windows.Media.Brushes.Red;
+                        break;
+                    case ShowType.NONE:
+                        acc.StatusColour.Fill = System.Windows.Media.Brushes.Silver;
+                        break;
+                }
 
-                    user.Instance.userAccount = acc;
-                    UserListView.Items.Add(acc);
-                    acc.ProfileImageContainer.Click += (o, e) =>
-                    {
-                        Client.Current = packet.AllSummonerData.Summoner.InternalName;
-                        Client.SwitchPage(Client.MainPage);
-                    };
-                }                
+                user.Instance.userAccount = acc;
+                UserListView.Items.Add(acc);
+                acc.ProfileImageContainer.Click += (o, e) =>
+                {
+                    Client.Current = packet.AllSummonerData.Summoner.InternalName;
+                    Client.SwitchPage(Client.MainPage);
+                };
             }));
         }
 

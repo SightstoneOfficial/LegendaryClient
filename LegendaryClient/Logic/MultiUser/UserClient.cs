@@ -266,7 +266,8 @@ namespace LegendaryClient.Logic.MultiUser
 
                             if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
                                 PlayerNote.Add(root.item.name, root.item.note);
-
+                            if (root.item.group.text == "**Default")
+                                root.item.group.text = LoginPacket.AllSummonerData.Summoner.InternalName;
                             if (root.item.group.text != "**Default" && Client.Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
                                 Client.Groups.Add(new Group(root.item.group.text));
                         }
@@ -276,6 +277,9 @@ namespace LegendaryClient.Logic.MultiUser
 
                             if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
                                 PlayerNote.Add(root.item.name, root.item.note);
+
+                            if (root.item.group == "**Default")
+                                root.item.group = LoginPacket.AllSummonerData.Summoner.InternalName;
 
                             if (root.item.group != "**Default" && Client.Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
                                 Client.Groups.Add(new Group(root.item.group));
@@ -517,10 +521,9 @@ namespace LegendaryClient.Logic.MultiUser
             if (XmppConnection == null) return;
             if (XmppConnection.Authenticated)
             {
-                if (presenceStatus != ShowType.NONE)
-                    XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.available });
-                else
-                    XmppConnection.Send(new Presence(presenceStatus, GetPresence(), 0) { Type = PresenceType.invisible });
+                XmppConnection.Send(presenceStatus != ShowType.NONE
+                    ? new Presence(presenceStatus, GetPresence(), 0) {Type = PresenceType.available}
+                    : new Presence(presenceStatus, GetPresence(), 0) {Type = PresenceType.invisible});
             }            
         }
 
@@ -839,9 +842,16 @@ namespace LegendaryClient.Logic.MultiUser
                         if (leagueInfo.Type == "leagues")
                         {
                             var promote = LeaguePromote.LeaguesPromote(leagueInfo.Params.ToString());
-                            var messageOver = new MessageOverlay();
-                            messageOver.MessageTitle.Content = "Leagues updated";
-                            messageOver.MessageTextBox.Text = promote.leagueItem.PlayerOrTeamName + " have been promoted to " + promote.leagueItem.Rank;
+                            var messageOver = new MessageOverlay
+                            {
+                                MessageTitle = {Content = "Leagues updated"},
+                                MessageTextBox =
+                                {
+                                    Text =
+                                        promote.leagueItem.PlayerOrTeamName + " have been promoted to " +
+                                        promote.leagueItem.Rank
+                                }
+                            };
                             var response = new SimpleDialogMessageResponse
                             {
                                 Command = "ack",

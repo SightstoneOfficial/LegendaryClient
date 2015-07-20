@@ -19,30 +19,34 @@ namespace LegendaryClient.Logic.MultiUser
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
             if (encrypt == string.Empty)
                 encrypt = Client.EncrytKey;
-            if (Client.EncrytKey != null && VerifyEncrypt(encrypt))
+            if (Client.EncrytKey == null || !VerifyEncrypt(encrypt))
             {
-                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
-                    File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-                var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
-                TextWriter tw = new StreamWriter(x);
-                tw.WriteLine(EncryptDes(user, encrypt, internalname));
-                tw.WriteLine(EncryptDes(pass, encrypt, internalname));
-                tw.WriteLine(region.RegionName);
-                tw.WriteLine(status);
-                tw.WriteLine(icon);
-                tw.WriteLine(show.ToString());
-                tw.Close();
-                Client.Log("added user " + internalname);
+                return;
             }
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname)))
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname));
+            var x = File.Create(Path.Combine(Client.ExecutingDirectory, "LCUsers", region.InternalName + internalname));
+            TextWriter tw = new StreamWriter(x);
+            tw.WriteLine(EncryptDes(user, encrypt, internalname));
+            tw.WriteLine(EncryptDes(pass, encrypt, internalname));
+            tw.WriteLine(region.RegionName);
+            tw.WriteLine(status);
+            tw.WriteLine(icon);
+            tw.WriteLine(show.ToString());
+            tw.Close();
+            Client.Log("added user " + region.InternalName + internalname);
         }
         
         internal static void RemoveUser(string internalname)
         {
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
                 Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "LCUsers"));
-            if (Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
-                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
-                    File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers")))
+            {
+                return;
+            }
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname)))
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "LCUsers", internalname));
         }
 
         internal static bool VerifyEncrypt(string input)
