@@ -14,10 +14,7 @@ namespace LegendaryClient.Logic
         {
             try
             {
-                WebClient client = new WebClient();
-                Stream stream = client.OpenRead("http://legendaryclient.net/devs.txt");
-                StreamReader reader = new StreamReader(stream);
-                string content = reader.ReadToEnd();
+                var content = Client.DownloadString("http://legendaryclient.net/devs.txt");
                 var devs = content.Split('\n').ToList();
                 devs.RemoveAll(x => x.StartsWith("#"));
                 return devs;

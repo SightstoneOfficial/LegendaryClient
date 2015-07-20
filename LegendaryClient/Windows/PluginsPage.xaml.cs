@@ -50,11 +50,7 @@ namespace LegendaryClient.Windows
 		{
 			try
 			{
-				WebClient client = new WebClient();
-				Stream stream = client.OpenRead("https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/gh-pages/Plugins");
-				StreamReader reader = new StreamReader(stream);
-				string content = reader.ReadToEnd();
-                                reader.Dispose();
+                var content = Client.DownloadString("http://legendaryclient.net/Plugins");
 				var Plugins = content.Split('\n').ToList();
 				Plugins.RemoveAll(x => x.StartsWith("#"));
 				return Plugins;

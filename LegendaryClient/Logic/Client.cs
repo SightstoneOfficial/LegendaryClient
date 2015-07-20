@@ -1539,6 +1539,14 @@ namespace LegendaryClient.Logic
 
             return buffer;
         }
+
+        public static string DownloadString(string url)
+        {
+            using (WebClient webClient = new WebClient())
+            {
+                return webClient.DownloadString(url);
+            }
+        }
         public static bool Pipe = false;
 
         internal static int SelectChamp;
