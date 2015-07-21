@@ -498,11 +498,15 @@ namespace LegendaryClient.Windows
             var plainTextbytes = Encoding.UTF8.GetBytes(login.AccountSummary.Username + ":" + login.Token);
             user.Instance.reconnectToken = Convert.ToBase64String(plainTextbytes);
             //await RiotCalls.Login(result);
-            var LoggedIn = await user.Instance.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
+            try
+            {
+                var LoggedIn = await user.Instance.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
+            }
+            catch{}
             
             var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
 
-            if (packetx.AllSummonerData == null)
+            if (packetx == null || packetx.AllSummonerData == null)
             {
                 user.Instance.RiotConnection.CallbackException -= client_CallbackException;
                 user.Instance.RiotConnection.MessageReceived -= client_MessageReceived;
@@ -521,18 +525,12 @@ namespace LegendaryClient.Windows
                 return;
             }
 
-            if (saveuser)
+            if (saveuser || !string.IsNullOrWhiteSpace(Client.EncrytKey))
             {
                 UserList.AddUser(username, pass, packetx.AllSummonerData.Summoner.InternalName,
                                     "Using LegendaryClient", packetx.AllSummonerData.Summoner.ProfileIconId,
                                     selectedRegion, ShowType.chat, Client.EncrytKey);
                 saveuser = false;
-            }
-            foreach (var data in dataLogin.Where(data => data.Value.User == username))
-            {
-                UserList.AddUser(username, pass, packetx.AllSummonerData.Summoner.InternalName,
-                    "Using LegendaryClient", packetx.AllSummonerData.Summoner.ProfileIconId,
-                    selectedRegion, ShowType.chat, Client.EncrytKey);
             }
             DoGetOnLoginPacket(username, pass, selectedRegion, packetx, user);
         }

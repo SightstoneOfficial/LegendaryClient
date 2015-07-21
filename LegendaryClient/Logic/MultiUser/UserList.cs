@@ -113,8 +113,7 @@ namespace LegendaryClient.Logic.MultiUser
                     var fileName = Path.GetFileName(files);
                     if (fileName != null)
                     {
-                        fileName =
-                            fileName.TrimStart(Encoding.Default.GetChars(Encoding.Default.GetBytes(region.InternalName)));
+                        fileName = fileName.TrimStart(region.InternalName.ToCharArray());
                         fileName = DecryptDes(fileName, encrypt, encrypt).Replace("Riot", "/");
                         var lgn = new LoginData()
                         {
@@ -148,7 +147,7 @@ namespace LegendaryClient.Logic.MultiUser
             var cryptoProvider = new DESCryptoServiceProvider();
             var memoryStream = new MemoryStream();
             var cryptoStream = new CryptoStream(memoryStream,
-                cryptoProvider.CreateEncryptor(Encoding.ASCII.GetBytes(username), Encoding.ASCII.GetBytes(password).ToSixteenBytes()), CryptoStreamMode.Write);
+                cryptoProvider.CreateEncryptor(Encoding.ASCII.GetBytes(username).ToTwentyBytes().Take(8).ToArray(), Encoding.ASCII.GetBytes(password).ToSixteenBytes()), CryptoStreamMode.Write);
             var writer = new StreamWriter(cryptoStream);
             writer.Write(originalString);
             writer.Flush();
@@ -170,7 +169,7 @@ namespace LegendaryClient.Logic.MultiUser
             var memoryStream = new MemoryStream
                     (Convert.FromBase64String(cryptedString));
             var cryptoStream = new CryptoStream(memoryStream,
-                cryptoProvider.CreateDecryptor(Encoding.ASCII.GetBytes(username), Encoding.ASCII.GetBytes(password).ToSixteenBytes()), CryptoStreamMode.Read);
+                cryptoProvider.CreateDecryptor(Encoding.ASCII.GetBytes(username).ToTwentyBytes().Take(8).ToArray(), Encoding.ASCII.GetBytes(password).ToSixteenBytes()), CryptoStreamMode.Read);
             var reader = new StreamReader(cryptoStream);
             return reader.ReadToEnd();
         }
@@ -178,8 +177,13 @@ namespace LegendaryClient.Logic.MultiUser
         public static byte[] ToSixteenBytes(this byte[] inputBytes)
         {
             var md5 = MD5.Create();
-            var hash = md5.ComputeHash(inputBytes);
-            return hash.ToArray();
+            return md5.ComputeHash(inputBytes);
+        }
+
+        public static byte[] ToTwentyBytes(this byte[] inputBytes)
+        {
+            var sha1 = SHA1.Create();
+            return sha1.ComputeHash(inputBytes);
         }
     }
     public class LoginData
