@@ -29,8 +29,10 @@ Donations
 How To Install
 ==============
 We are working on a new install method (Which will make Sightstone eaasier to install). 
+
 Please wait until vesion 4.0.0.0 comes out (You guys will be happy with this version. Trust me)
-I will run a FULL test of Sightstone before this release. This means I will enter a ranked game, normal game, custom game, test game invites and basically every function and page will be tested.
+
+I will test Sightstone before this release. This means I will enter a ranked game, normal game, custom game, test game invites and basically every function and page will be tested to not crash (NA).
 
 ##Development Builds
 You can get the in-development bleeding edge builds from the link below.
