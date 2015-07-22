@@ -71,7 +71,7 @@ In-Client Screenshots (90-100)% complete
 This login screen has a new button (add account)
 ![Login](https://cloud.githubusercontent.com/assets/2280353/8488063/2193dd62-2108-11e5-81f7-fa1a77ec3fb0.PNG)
 ![News Screen](https://cloud.githubusercontent.com/assets/2280353/8404424/d4537a32-1e44-11e5-8798-e6d2c5fe3eae.png)
-<---
+<!---
 ![Match History](http://i.imgur.com/03K5nmC)
 -->
 ![Store](http://i.imgur.com/1Bq26WV.png)
@@ -80,7 +80,7 @@ Still-in Progress Screenshots
 =============================
 
 ![Chat](https://cloud.githubusercontent.com/assets/2280353/8467988/964f6d5c-205d-11e5-9a9f-36368d2cdae6.png)
-<---
+<!---
 ![Queue](http://i.imgur.com/yOea3kR.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)
@@ -96,7 +96,7 @@ Still-in Progress Screenshots
 
 Other Features
 ======
-<---
+<!---
 **Super lightweight footprint**
 
 ![Footprint](http://i.imgur.com/BAN9o6X.png)
