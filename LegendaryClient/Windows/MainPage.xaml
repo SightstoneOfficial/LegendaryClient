@@ -34,10 +34,16 @@
                                 </Grid>
                             </wpf:Card>
                         </Grid>
-                        <Label x:Name="SummonerNameLabel" Margin="150,36,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Summoner Name" FontSize="30" Foreground="{StaticResource PrimaryHueLightBrush}" />
-
-                        <Label x:Name="XPBoost" Content="Xp Boost 99 Day. 99 Win" HorizontalAlignment="Left" Height="31" Margin="755,38,0,0" VerticalAlignment="Top" Width="260"/>
-                        <Label x:Name="IPBoost" Content="Ip Boost 99 Day. 99 Win" HorizontalAlignment="Left" Height="31" Margin="1020,38,0,0" VerticalAlignment="Top" Width="260"/>
+                        <Label x:Name="SummonerNameLabel" Margin="150,36,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Username" FontSize="30" Foreground="{StaticResource PrimaryHueLightBrush}" />
+                        <Grid HorizontalAlignment="Left" Margin="152,100,0,-40" VerticalAlignment="Center" Panel.ZIndex="9001">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="XPBoost" Grid.Column="0" Foreground="{StaticResource PrimaryHueDarkBrush}" Content="Xp Boost 99 Day. 99 Win" VerticalAlignment="Center"/>
+                            <Label x:Name="IPBoost" Grid.Column="2" Foreground="{StaticResource PrimaryHueDarkBrush}" Content="Ip Boost 99 Day. 99 Win" VerticalAlignment="Center"/>
+                        </Grid>
                     </Grid>
 
                     <ScrollViewer Name="MyScrollViewer" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0,140,0,0" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
@@ -181,7 +187,7 @@
                     </ScrollViewer>
                 </Grid>
             </TabItem>
-           
+
             <TabItem Header="About">
                 <Grid>
                     <Grid.RowDefinitions>
