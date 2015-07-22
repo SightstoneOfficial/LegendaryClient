@@ -351,11 +351,11 @@ namespace LegendaryClient.Windows
         {
             if (LoginGrid.IsVisible)
             {
-                LoginGrid.Visibility = System.Windows.Visibility.Hidden;
+                LoginGrid.Visibility = Visibility.Hidden;
             }
             else
             {
-                LoginGrid.Visibility = System.Windows.Visibility.Visible;
+                LoginGrid.Visibility = Visibility.Visible;
             }
         }
 
@@ -397,6 +397,7 @@ namespace LegendaryClient.Windows
             Settings.Default.Region = (string)RegionComboBox.SelectedValue;
             Settings.Default.Save();
 
+            EncryptBox.Visibility = Visibility.Hidden;
             HideGrid.Visibility = Visibility.Hidden;
             ErrorTextBox.Visibility = Visibility.Hidden;
             LoggingInLabel.Visibility = Visibility.Visible;
@@ -1038,8 +1039,7 @@ namespace LegendaryClient.Windows
                 else
                     Login(acc.User, acc.Pass, acc.Region, new UserClient());
             }
-            Encrypt.Visibility = Visibility.Hidden;
-            EncryptCheck.Visibility = Visibility.Hidden;
+            EncryptBox.Visibility = Visibility.Hidden;
         }
 
         private void AddAccountButton_Click(object sender, RoutedEventArgs e)

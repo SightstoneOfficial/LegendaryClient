@@ -35,8 +35,17 @@ namespace LegendaryClient.Windows
             if (myFile.ShowDialog().GetValueOrDefault() == false)
                 return;
             var PluginPath = myFile.FileName;
-			Core.LoadScript(PluginPath, myFile.SafeFileName);
+			var loadedPlugin = Core.LoadScript(PluginPath, myFile.SafeFileName);
 			Core.runAll();
+			PluginList.Items.Add(new test { Enabled = true, Author = "", Description = loadedPlugin.Description, Name = loadedPlugin.name, Version = "1.0.0.0" });
         }
+		class test
+		{
+			public bool Enabled;
+			public string Name;
+			public string Version;
+			public string Author;
+			public string Description;
+		}
     }
 }
