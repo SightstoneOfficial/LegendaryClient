@@ -6,7 +6,7 @@ namespace LegendaryClient.Logic.PlayerSpell
 {
     public static class SummonerSpell
     {
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
         public static string GetSpellName(int spellId)
         {
             var spell = (SummonerSpells) spellId;

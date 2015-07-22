@@ -52,7 +52,7 @@ namespace LegendaryClient.Controls
             if (Client.ChatItem != null)
             {
                 Client.MainGrid.Children.Remove(Client.ChatItem);
-                UserList.Users[Client.Current].XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
+                (UserList.Users[Client.CurrentServer])[Client.CurrentUser].XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
                 Client.ChatItem = null;
             }
 

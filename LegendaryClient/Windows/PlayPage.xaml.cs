@@ -43,7 +43,7 @@ namespace LegendaryClient.Windows
         private int currentAmount;
         private int i;
         //JoinQueue item = new JoinQueue();
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
 
         public PlayPage()
         {

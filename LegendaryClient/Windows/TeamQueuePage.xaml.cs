@@ -61,7 +61,7 @@ namespace LegendaryClient.Windows
         public TeamQueuePage(string Invid, LobbyStatus NewLobby = null, bool IsReturningToLobby = false, TeamId SelectedTeam = null, string BotDifficulty = null)
         {
             InitializeComponent();
-            UserClient = UserList.Users[Client.Current];
+            UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             Client.InviteListView = InviteListView;
             UserClient.RiotConnection.MessageReceived += Update_OnMessageReceived;
 

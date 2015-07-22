@@ -16,9 +16,10 @@ namespace LegendaryClient.Scripting_Environment
 		public Dictionary<string, object> variables = new Dictionary<string, object>();
         public Plugin_Core()
 		{
-            foreach (var cl in UserList.Users)
+            foreach (var cl in UserList.Users.SelectMany(user => user.Value.Where(userclients => userclients.Value.IsLoggedIn))) 
             {
-                cl.Value.onChatMessageReceived += (ob, se) => Client_onChatMessageReceived(ob, se, cl.Key);
+                var cl1 = cl;
+                cl.Value.onChatMessageReceived += (ob, se) => Client_onChatMessageReceived(ob, se, cl1.Key);
                 variables.Add(cl.Key, new Dictionary <string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", cl.Key }, { "sendMessage", new Action<string, string>(cl.Value.SendMessage) } });
             }
 			//variables = new Dictionary<string, object> { { "LogToFile", new Action<string>(LogToFile) }, { "Username", Client.LoginPacket.AllSummonerData.Summoner.Name }, { "sendMessage", new Action<string, string>(Client.SendMessage) } };

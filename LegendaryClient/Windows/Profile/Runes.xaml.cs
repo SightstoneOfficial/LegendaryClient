@@ -35,7 +35,7 @@ namespace LegendaryClient.Windows.Profile
         public Runes()
         {
             InitializeComponent();
-            UserClient = UserList.Users[Client.Current];
+            UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             blackRunesAvail = Math.Floor(UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level / 10.0f);
             redRunesAvail = blackRunesAvail*3 +
                              Math.Ceiling((UserClient.LoginPacket.AllSummonerData.SummonerLevel.Level - blackRunesAvail * 10) /

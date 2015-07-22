@@ -24,8 +24,8 @@ namespace LegendaryClient.Windows
         public StatusPage()
         {
             InitializeComponent();
-            if (Client.Current != string.Empty)
-                client = UserList.Users[Client.Current];
+            if (Client.CurrentUser != string.Empty)
+                client = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             Client.StatusLabel = StatusLabel;
             Change();
             Client.ChatListView = ChatListView;
@@ -178,7 +178,11 @@ namespace LegendaryClient.Windows
                     {
                         var currentName = (string)Client.ChatItem.PlayerLabelName.Content;
                         Client.MainGrid.Children.Remove(Client.ChatItem);
-                        client.XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
+                        try
+                        {
+                            client.XmppConnection.MessageGrabber.Remove(new Jid((string)Client.ChatItem.Tag));
+                        }
+                        catch { }
                         Client.ChatItem = null;
                         Client.PlayerChatIsShown = false;
                         if (currentName != (string)item.PlayerLabelName.Content)

@@ -30,7 +30,7 @@ namespace LegendaryClient.Windows.Profile
         private LargeChatPlayer playerItem;
         //private static readonly ILog Log = LogManager.GetLogger(typeof (MatchHistory));
         private readonly List<MatchStats> gameStats = new List<MatchStats>();
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
 
         public MatchHistory()
         {

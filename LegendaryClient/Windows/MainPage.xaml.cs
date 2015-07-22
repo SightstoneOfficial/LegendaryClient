@@ -66,7 +66,7 @@ namespace LegendaryClient.Windows
         internal ArrayList NewsList;
         internal int SelectedGame = 0;
         internal bool CheckedDev = false;
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
         public MainPage()
         {
             InitializeComponent();

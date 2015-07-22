@@ -16,7 +16,7 @@ namespace LegendaryClient.Windows
     /// </summary>
     public partial class ShopPage
     {
-        UserClient UserClient = UserList.Users[Client.Current];
+        UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
         public ShopPage()
         {
             InitializeComponent();

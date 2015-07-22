@@ -36,7 +36,9 @@ namespace LegendaryClient.Logic.MultiUser
         #endregion version
 
         #region Current
-        internal static string Current = "";
+        internal static string CurrentUser = "";
+
+        internal static string CurrentServer = "";
         #endregion Current
 
         #region pipes

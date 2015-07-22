@@ -30,7 +30,7 @@ namespace LegendaryClient.Windows
         public bool ReverseString;
         public int TimeLeft = 12;
         private bool accepted;
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
 
         public QueuePopOverlay(GameDTO InitialDTO, Page previousPage)
         {

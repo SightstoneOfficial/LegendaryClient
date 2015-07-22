@@ -120,7 +120,7 @@ namespace LegendaryClient.Windows
             foreach (string player in invitedPlayers)
             {
                 //This invites the player
-                await UserList.Users[Client.Current].calls.Invite(player.Replace("sum", ""));
+                await (UserList.Users[Client.CurrentServer])[Client.CurrentUser].calls.Invite(player.Replace("sum", ""));
 
                 ChatPlayerItem playerInfo = Client.AllPlayers[player];
 

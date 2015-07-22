@@ -28,8 +28,8 @@ namespace LegendaryClient.Windows
         public NotificationPage()
         {
             InitializeComponent();
-            if (Client.Current != string.Empty)
-                UserClient = UserList.Users[Client.Current];
+            if (Client.CurrentUser != string.Empty)
+                UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             LoadTimer();
             UpdateData();
         }

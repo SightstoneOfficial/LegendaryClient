@@ -25,7 +25,7 @@ namespace LegendaryClient.Windows
         public ProfilePage()
         {
             InitializeComponent();
-            UserClient = UserList.Users[Client.Current];
+            UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             if (UserClient.Dev)
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                 {
@@ -158,7 +158,8 @@ namespace LegendaryClient.Windows
 
         private void GotPlayerTeams(PlayerDTO teams)
         {
-
+            if (teams == null || teams.PlayerTeams == null)
+                return;
             if (teams.PlayerTeams.Count > 0)
             {
                 var overview = TeamsContainer.Content as Teams;

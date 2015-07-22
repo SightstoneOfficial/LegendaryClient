@@ -17,7 +17,7 @@ namespace LegendaryClient.Windows
     public partial class SelectSummonerSpells
     {
         private int SelectedSpell1;
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
 
         public SelectSummonerSpells(string gameMode)
         {

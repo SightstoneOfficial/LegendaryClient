@@ -63,6 +63,7 @@ namespace LegendaryClient.Windows
             Client.donepatch = true;
             Client.patching = false;
             Client.ClearPage(typeof(PatcherPage));
+            Client.CurrentServer = "NA";
             Version.TextChanged += WaterTextbox_TextChanged;
             bool x = Settings.Default.DarkTheme;
             if (!x)
@@ -497,12 +498,8 @@ namespace LegendaryClient.Windows
             //Riot added this for no reason but make it look like the riot client we have to do this
             var plainTextbytes = Encoding.UTF8.GetBytes(login.AccountSummary.Username + ":" + login.Token);
             user.Instance.reconnectToken = Convert.ToBase64String(plainTextbytes);
-            //await RiotCalls.Login(result);
-            try
-            {
-                var LoggedIn = await user.Instance.RiotConnection.LoginAsync(LoginUsernameBox.Text.ToLower(), login.Token);
-            }
-            catch{}
+
+            var LoggedIn = await user.Instance.RiotConnection.LoginAsync(username, login.Token);
             
             var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
 
@@ -563,9 +560,9 @@ namespace LegendaryClient.Windows
                 Client.MainWin.FlashWindow();
 
             user.Instance.LoginPacket = packetx;
-            if (!dataLogin.ContainsKey(packetx.AllSummonerData.Summoner.InternalName))
+            if (!dataLogin.ContainsKey(packetx.AllSummonerData.Summoner.InternalName + ":" + selectedRegion))
             {
-                dataLogin.Add(packetx.AllSummonerData.Summoner.InternalName, new LoginData
+                dataLogin.Add(packetx.AllSummonerData.Summoner.InternalName + ":" + selectedRegion, new LoginData
                 {
                     Pass = pass, 
                     Region = selectedRegion,
@@ -583,8 +580,8 @@ namespace LegendaryClient.Windows
         {
             
             user.Instance.LoginPacket = packet;
-
-            UserList.Users.Add(packet.AllSummonerData.Summoner.InternalName, user.Instance);
+            Client.CurrentServer = selectedRegion.Server + ":" + packet.AllSummonerData.Summoner.InternalName;
+            UserList.Users.Add(selectedRegion.Server + ":" + packet.AllSummonerData.Summoner.InternalName, new Dictionary<string, UserClient> { { packet.AllSummonerData.Summoner.InternalName, user.Instance } });
             if (packet.AllSummonerData.Summoner.ProfileIconId == -1)
             {
                 user.Instance.RiotConnection.CallbackException -= client_CallbackException;
@@ -673,7 +670,7 @@ namespace LegendaryClient.Windows
                            user.Instance.LoginPacket.AllSummonerData.Summoner.Name);
                 
                 PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)user.Instance.LoginPacket.ReconnectInfo;
-                Client.Current = packet.AllSummonerData.Summoner.InternalName;
+                Client.CurrentUser = packet.AllSummonerData.Summoner.InternalName;
                 Client.MainPage = new MainPage();
                     
                 if (data != null && data.Game != null)
@@ -695,7 +692,7 @@ namespace LegendaryClient.Windows
                     Client.loadedGroups = true;
                 }
                 if (switchpage) return;
-                var sum = dataLogin[packet.AllSummonerData.Summoner.InternalName];
+                var sum = dataLogin[packet.AllSummonerData.Summoner.InternalName + ":" + selectedRegion];
                 user.Instance.presenceStatus = sum.ShowType;
                 user.Instance.XmppConnection.Send(sum.ShowType == ShowType.NONE
                     ? new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.invisible}
@@ -713,7 +710,7 @@ namespace LegendaryClient.Windows
                     LevelLabel = { Content = packet.AllSummonerData.SummonerLevel.Level },
                     PlayerStatus = { Content = sum.Status }
                 };
-                foreach (var lgndata in dataLogin.Where(lgndata => lgndata.Key == packet.AllSummonerData.Summoner.InternalName))
+                foreach (var lgndata in dataLogin.Where(lgndata => lgndata.Key == packet.AllSummonerData.Summoner.InternalName + ":" + selectedRegion))
                 {
                     user.Instance.presenceStatus = lgndata.Value.ShowType;
                     user.Instance.XmppConnection.Send(lgndata.Value.ShowType == ShowType.NONE
@@ -734,15 +731,16 @@ namespace LegendaryClient.Windows
 
                 user.Instance.userAccount = acc;
                 UserListView.Items.Add(acc);
-                acc.ProfileImageContainer.Click += async (o, e) =>
+                acc.MouseDown += async (o, e) =>
                 {
-                    Client.Current = packet.AllSummonerData.Summoner.InternalName;
+                    Client.CurrentServer = selectedRegion.Server + ":" + packet.AllSummonerData.Summoner.InternalName;
+                    Client.CurrentUser = packet.AllSummonerData.Summoner.InternalName;
+                    Client.SwitchPage(Client.MainPage);
                     while (!Client.ready)
                     {
                         await Task.Delay(1000);
                     }
                     Client.loadedGroups = true;
-                    Client.SwitchPage(Client.MainPage);
                 };
             }));
         }
@@ -1005,7 +1003,7 @@ namespace LegendaryClient.Windows
                 if (autoLogin)
                 {
                     Client.Log("Auto login");
-                    this.Dispatcher.BeginInvoke(new ThreadStart(() => {
+                    Dispatcher.BeginInvoke(new ThreadStart(() => {
                         LoginButton_Click(1, null);
                     }), DispatcherPriority.Input);
                 }
@@ -1034,7 +1032,7 @@ namespace LegendaryClient.Windows
 #if DEBUG
                 Client.Log(string.Format("User: {0} Pass: {1} Region: {2}", acc.User, acc.Pass, acc.Region));
 #endif
-                dataLogin.Add(acc.SumName, acc);
+                dataLogin.Add(acc.SumName + ":" + acc.Region, acc);
                 if (acc.Region.Garena)
                     garenaLogin(acc.Region, new UserClient{Garena = true});
                 else

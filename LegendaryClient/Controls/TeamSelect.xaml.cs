@@ -16,7 +16,7 @@ namespace LegendaryClient.Controls
     public partial class TeamSelect
     {
         List<TeamId> TeamIdList = new List<TeamId>();
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
         public TeamSelect()
         {
             InitializeComponent();

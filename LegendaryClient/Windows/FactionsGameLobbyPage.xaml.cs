@@ -41,7 +41,7 @@ namespace LegendaryClient.Windows
         public FactionsGameLobbyPage()
         {
             InitializeComponent();
-            userClient = UserList.Users[Client.Current];
+            userClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             GameName.Content = userClient.GameName;
             userClient.RiotConnection.MessageReceived += GameLobby_OnMessageReceived;
             //If client has created game use initial DTO

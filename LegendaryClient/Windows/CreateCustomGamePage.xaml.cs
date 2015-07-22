@@ -18,7 +18,7 @@ namespace LegendaryClient.Windows
     public partial class CreateCustomGamePage
     {
         private readonly bool initFinished;
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
 
         public CreateCustomGamePage()
         {

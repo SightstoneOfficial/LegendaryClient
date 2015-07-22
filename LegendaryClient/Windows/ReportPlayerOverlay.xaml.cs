@@ -15,7 +15,7 @@ namespace LegendaryClient.Windows
     {
         private double summonerID, gameID;
         private Button reportButton;
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
 
         public ReportPlayerOverlay(double summonerID, double gameID, string summonerName, Button reportButton)
         {

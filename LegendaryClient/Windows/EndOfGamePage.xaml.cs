@@ -35,7 +35,7 @@ namespace LegendaryClient.Windows
         private readonly MucManager newRoom;
         private string MatchStatsOnline;
         private readonly string RoomJid;
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
         
         public EndOfGamePage(EndOfGameStats statistics)
         {

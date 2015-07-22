@@ -36,7 +36,7 @@ namespace LegendaryClient
         public GameScouter()
         {
             InitializeComponent();
-            UserClient = UserList.Users[Client.Current];
+            UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             Client.win = this;
         }
         public async void LoadScouter(string User = null)

@@ -20,7 +20,7 @@ namespace LegendaryClient.Windows.Profile
     {
         private string sumName;
         private readonly List<MatchStats> gameStats = new List<MatchStats>();
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
 
         public MatchHistoryOnline(string name = "")
         {

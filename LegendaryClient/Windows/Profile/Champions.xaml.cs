@@ -20,7 +20,7 @@ namespace LegendaryClient.Windows.Profile
         private List<ChampionDTO> _championList;
         private bool _noFilterOnLoad;
         //private static readonly ILog log = LogManager.GetLogger(typeof(Champions));
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
         public Champions()
         {
             InitializeComponent();

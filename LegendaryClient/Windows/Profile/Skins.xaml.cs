@@ -32,7 +32,7 @@ namespace LegendaryClient.Windows.Profile
         {
             try
             {
-                var champList = await UserList.Users[Client.Current].calls.GetAvailableChampions();
+                var champList = await (UserList.Users[Client.CurrentServer])[Client.CurrentUser].calls.GetAvailableChampions();
 
                 championList = new List<ChampionDTO>(champList);
 

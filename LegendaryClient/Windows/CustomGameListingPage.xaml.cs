@@ -16,7 +16,7 @@ namespace LegendaryClient.Windows
     public partial class CustomGameListingPage
     {
         private readonly List<GameItem> allItems = new List<GameItem>();
-        static UserClient UserClient = UserList.Users[Client.Current];
+        static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
 
         public CustomGameListingPage()
         {
