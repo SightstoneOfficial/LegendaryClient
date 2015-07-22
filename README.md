@@ -1,16 +1,10 @@
 Sightstone
-===============
-#####The new LegendaryClient is out
-###Current Status: 
-
-[![Build status](https://img.shields.io/appveyor/ci/EddyV/legendaryclient.svg?style=flat-square)](https://ci.appveyor.com/project/EddyV/legendaryclient/branch/master)
-[![Issues](https://img.shields.io/github/issues/LegendaryClient/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/issues)
-[![Releases](https://img.shields.io/github/release/LegendaryClient/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
-[![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/LegendaryClient/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+==========
+#####LegendaryClient Revised
 
 Beautiful, fully-featured League of Legends client.
 
-Still under heavy development! 
+Still under heavy development (Some things are going great)!
 Things are starting to work well and thanks to mhn things are starting to look awesome
 
 Working on a patcher to patch Sightstone and League of Legends (You will no longer need riot's patcher)
@@ -18,12 +12,24 @@ Working on a patcher to patch Sightstone and League of Legends (You will no long
 
 #####LEGENDARYCLIENT IS NOW OVER 1 YEAR OLD SINCE FIRST CODE COMMENT BY SNOWL!!!
 
-#Donations
+Current Status 
+==============
+```
+READ THE LICENSE AT THE BOTTOM OF THE PAGE BEFORE INSTALLING
+```
+[![Build status](https://img.shields.io/appveyor/ci/EddyV/legendaryclient.svg?style=flat-square)](https://ci.appveyor.com/project/EddyV/legendaryclient/branch/master)
+[![Issues](https://img.shields.io/github/issues/LegendaryClient/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/issues)
+[![Releases](https://img.shields.io/github/release/LegendaryClient/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
+[![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/LegendaryClient/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
+Donations
+=========
 Donation Link:
 <a href='https://pledgie.com/campaigns/27549'><img alt='Click here to lend your support to: LegendaryClient and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27549.png?skin_name=chrome' border='0' ></a>
 
-#How To Install
-We are working on a new install method. 
+How To Install
+==============
+We are working on a new install method (Which will make Sightstone eaasier to install). 
 Please wait until vesion 4.0.0.0 comes out (You guys will be happy with this version. Trust me)
 I will run a FULL test of Sightstone before this release. This means I will enter a ranked game, normal game, custom game, test game invites and basically every function and page will be tested.
 
@@ -71,16 +77,15 @@ In-Client Screenshots (90-100)% complete
 This login screen has a new button (add account)
 ![Login](https://cloud.githubusercontent.com/assets/2280353/8488063/2193dd62-2108-11e5-81f7-fa1a77ec3fb0.PNG)
 ![News Screen](https://cloud.githubusercontent.com/assets/2280353/8404424/d4537a32-1e44-11e5-8798-e6d2c5fe3eae.png)
-<!---
-![Match History](http://i.imgur.com/03K5nmC)
--->
-![Store](http://i.imgur.com/1Bq26WV.png)
+![Chat](https://cloud.githubusercontent.com/assets/2280353/8467988/964f6d5c-205d-11e5-9a9f-36368d2cdae6.png)
 
 Still-in Progress Screenshots 
 =============================
-
-![Chat](https://cloud.githubusercontent.com/assets/2280353/8467988/964f6d5c-205d-11e5-9a9f-36368d2cdae6.png)
+Sorry that there is nothing here :(
+This is because we are doing a huge UI change and I haven't found time to put screens out yet
 <!---
+![Store](http://i.imgur.com/1Bq26WV.png)
+![Match History](http://i.imgur.com/03K5nmC)
 ![Queue](http://i.imgur.com/yOea3kR.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)
@@ -96,6 +101,9 @@ Still-in Progress Screenshots
 
 Other Features
 ======
+
+**Elo Boost Block**
+Automatically blocks messages from elo boosters. No more spam
 <!---
 **Super lightweight footprint**
 
@@ -113,8 +121,40 @@ Other Features
 
 ![Customizable](http://i.imgur.com/1aaZxDp.png)
 -->
-**Elo Boost Block**
-Automatically blocks messages from elo boosters. No more spam
+License
+=======
+Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com)
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Sightstone, League of Legendary custom client
+    Copyright (C) 2015  eddy5641
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Please Note
 ===========
