@@ -24,7 +24,6 @@ READ THE LICENSE AT THE BOTTOM OF THE PAGE BEFORE INSTALLING
 
 Donations
 =========
-Donation Link:
 <a href='https://pledgie.com/campaigns/27549'><img alt='Click here to lend your support to: LegendaryClient and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27549.png?skin_name=chrome' border='0' ></a>
 
 How To Install
