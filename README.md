@@ -1,5 +1,6 @@
-LegendaryClient
+Sightstone
 ===============
+#####The new LegendaryClient is out
 ###Current Status: 
 
 [![Build status](https://img.shields.io/appveyor/ci/EddyV/legendaryclient.svg?style=flat-square)](https://ci.appveyor.com/project/EddyV/legendaryclient/branch/master)
@@ -7,44 +8,33 @@ LegendaryClient
 [![Releases](https://img.shields.io/github/release/LegendaryClient/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
 [![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/LegendaryClient/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Download the lastest version here: https://ci.appveyor.com/project/EddyV/legendaryclient/build/3.0.1.284/artifacts
-
-    Making a switch from jabber-net to agsxmpp so if you do use the latest version IT MAY NOT WORK
-
-LegendaryClient does not compile correctly under VS15. You need to manually replace the rtmp-sharp.dll in the output!
-
 Beautiful, fully-featured League of Legends client.
 
-Still under heavy development! Lots of things don't work or don't look good...
+Still under heavy development! 
+Things are starting to work well and thanks to mhn things are starting to look awesome
 
-https://www.youtube.com/watch?v=rVWdHeQcGwM&feature=youtu.be
+Working on a patcher to patch Sightstone and League of Legends (You will no longer need riot's patcher)
 
-LegendaryClient Aram Game
-
-Working on a patcher to patch LC [Awesome splash though]
-I am aware of crashing
 
 #####LEGENDARYCLIENT IS NOW OVER 1 YEAR OLD SINCE FIRST CODE COMMENT BY SNOWL!!!
-Want to donate? Scroll down to the bottom
+
+#Donations
+Donation Link:
+<a href='https://pledgie.com/campaigns/27549'><img alt='Click here to lend your support to: LegendaryClient and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27549.png?skin_name=chrome' border='0' ></a>
 
 #How To Install
-https://www.youtube.com/watch?v=ZWYn_vft5Kg&feature=youtu.be
-It come with a metro-like installer [no dlls needed, a stand alone program]
-
-######Thought I would clarify this, eddydavinchi is my laptop's github account, it still is me (eddy5641) though 
+We are working on a new install method. 
+Please wait until vesion 4.0.0.0 comes out (You guys will be happy with this version. Trust me)
+I will run a FULL test of Sightstone before this release. This means I will enter a ranked game, normal game, custom game, test game invites and basically every function and page will be tested.
 
 ##Development Builds
 You can get the in-development bleeding edge builds from the link below.
 These builds are provided as-is and it might break, burn your computer or drag you down in elohell.
 We aren't responsible for whatever happens to your account or even your home-sweet-home.
 Use these builds at your risk.
+###Please note that if you start seeing smoke from your computer you shouldn't be playing league at all
 
 https://ci.appveyor.com/project/EddyV/legendaryclient/build/artifacts
-
-IRC
-===
-Most of us will be in this irc
-http://kiwiirc.com/client/irc.freenode.net/#LegendaryClient
 
 Gitter Chat
 ===========
@@ -53,45 +43,18 @@ Gitter Chat
 Known Issues / TODO
 ===================
 * Team Builder is not implemented / superbuggy
-* Need a HTML website (I am not good at html)
 * Replays are in work
 * Shop is just bad, but that's like last. (again, use official client for now if you need to purchase RP, etc.)
-* Getting invited to a game makes your status flick. (Not an issue but need to edit jabber-net)
-* Can't join custom game if invited
-* Work on more rune pages (temp storage)
-
-LegacyPVP
-=========
-[THIS PUSHED AFTER COMPLETION OF LC. DO NOT ASK QUESTIONS]
-The new rework of LegendaryClient. I will leave this here to honor Snowl's work.
-https://github.com/eddy5641/LegacyPVP
-This will still be worked on, You will not see much difference between the time I put into LegendaryClient (I finished a different project)
-LegacyPVP Is Based Of LegendaryClient, Except with more winterminty features [Sorry guys no 2/3/4 queue probably]
+* Multi user client (i can only load 3 acc after closing client and restarting)
+* FIX CHAT STUFF
 
 Prerequisites
 =============
-
 Currently you must have an up-to-date installation of League of Legends. It will not patch to the latest version(todo), but it will retrieve your current data from your current installation
 
 Build it yourself
 =================
-
-You need these DLLS:
-
-* Awesomium
-* MahApps.Metro
-* SharpZipLib
-* Sqlite
-* rtmp-sharp : Included as a project
- 
-These DLLS should be included
-
-You will also need These DLLS:
-* RAFLibPlus : https://code.google.com/p/raflib-plus/downloads/list
-* Json.net : Download this from NuGet in visual studio
-
-These DLLS are Not Included. Please Download them yourself
-
+Just download from git and compile. BTW there is appveyor if you just want to use sightstone without edits
 ##Users who want to use client features but not the client
 Check out these links:
 * https://github.com/eddy5641/LeagueTGen | League of Legends Tournament Code Gen
@@ -103,15 +66,21 @@ Check out these links:
 In-Client Screenshots (90-100)% complete
 =====================
 
-![Login](http://i.imgur.com/RWzqFKv.png)
-![News Screen](http://i.imgur.com/cqnoYXF.png)
+![Login](https://cloud.githubusercontent.com/assets/6468338/8818146/60df88c4-2ff2-11e5-86a2-f5dc5753a2eb.PNG)
+![Login](https://cloud.githubusercontent.com/assets/2280353/8393497/f467358e-1d09-11e5-9356-8fea5fa2f9d3.PNG)
+This login screen has a new button (add account)
+![Login](https://cloud.githubusercontent.com/assets/2280353/8488063/2193dd62-2108-11e5-81f7-fa1a77ec3fb0.PNG)
+![News Screen](https://cloud.githubusercontent.com/assets/2280353/8404424/d4537a32-1e44-11e5-8798-e6d2c5fe3eae.png)
+<---
 ![Match History](http://i.imgur.com/03K5nmC)
+-->
 ![Store](http://i.imgur.com/1Bq26WV.png)
 
 Still-in Progress Screenshots 
 =============================
 
-![Chat](http://puu.sh/5FVHS.png)
+![Chat](https://cloud.githubusercontent.com/assets/2280353/8467988/964f6d5c-205d-11e5-9a9f-36368d2cdae6.png)
+<---
 ![Queue](http://i.imgur.com/yOea3kR.png)
 ![QueuePop](http://i.imgur.com/KAt5KXR.png)
 ![ChampSelect](http://i.imgur.com/KEZHtw2.jpg)
@@ -123,10 +92,11 @@ Still-in Progress Screenshots
 ![AggregatedStats](http://puu.sh/5CHtN.jpg)
 ![Skins](http://i.imgur.com/Lsz3x4d.jpg)
 ![Settings](http://i.imgur.com/ZTktZTY.png)
+-->
 
 Other Features
 ======
-
+<---
 **Super lightweight footprint**
 
 ![Footprint](http://i.imgur.com/BAN9o6X.png)
@@ -142,19 +112,10 @@ Other Features
 **Customizable Client - Even use your favorite fanarts!**
 
 ![Customizable](http://i.imgur.com/1aaZxDp.png)
-
+-->
 **Elo Boost Block**
 Automatically blocks messages from elo boosters. No more spam
 
-#Donations
-Donations will be used for ONLY this project/other league related projects
-Examples include:
-* Code Signing Licence [license]
-* A domain name [.gg/(.com {Snowl has this domain, currently unpaid for})/ {any recommendations}]
-* A potential server (Online game scouting, game replays, champ stats, etc.)? [Last priority]
-Donation Link:
-<a href='https://pledgie.com/campaigns/27549'><img alt='Click here to lend your support to: LegendaryClient and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27549.png?skin_name=chrome' border='0' ></a>
-
 Please Note
-======
+===========
 LegendaryClient isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
