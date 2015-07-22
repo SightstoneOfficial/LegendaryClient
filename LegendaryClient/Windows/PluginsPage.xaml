@@ -37,13 +37,15 @@
         </Grid>
         
         <Grid VerticalAlignment="Top" Margin="30,90,30,30">
-            <DataGrid Background="{StaticResource MaterialDesignPaper}" >
+            <DataGrid Background="{StaticResource MaterialDesignPaper}" Name="PluginList">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="" Binding="{Binding State}" />
+					<DataGridTextColumn Header="Enabled" Binding="{Binding Enabled}" Width="75" />
                     <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" />
                     <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="Auto" />
                     <DataGridTextColumn Header="Author" Binding="{Binding Author}" Width="200" />
                     <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="Auto" />
+					
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>

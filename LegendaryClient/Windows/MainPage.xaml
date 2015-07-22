@@ -41,8 +41,8 @@
                                 <ColumnDefinition Width="10"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Label x:Name="XPBoost" Grid.Column="0" Foreground="{StaticResource PrimaryHueDarkBrush}" Content="Xp Boost 99 Day. 99 Win" VerticalAlignment="Center"/>
-                            <Label x:Name="IPBoost" Grid.Column="2" Foreground="{StaticResource PrimaryHueDarkBrush}" Content="Ip Boost 99 Day. 99 Win" VerticalAlignment="Center"/>
+                            <Label x:Name="XPBoost" Grid.Column="0" Foreground="{StaticResource PrimaryHueDarkBrush}" Content="Xp Boost 99 Day. 99 Win" Visibility="Hidden" VerticalAlignment="Center"/>
+                            <Label x:Name="IPBoost" Grid.Column="2" Foreground="{StaticResource PrimaryHueDarkBrush}" Content="Ip Boost 99 Day. 99 Win" Visibility="Hidden" VerticalAlignment="Center"/>
                         </Grid>
                     </Grid>
 
