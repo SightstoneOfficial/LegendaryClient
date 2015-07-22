@@ -2,10 +2,12 @@
 using LegendaryClient.Logic.Region;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace LegendaryClient.Logic.MultiUser
 {
@@ -109,31 +111,26 @@ namespace LegendaryClient.Logic.MultiUser
             foreach (var files in Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCUsers"), "*", SearchOption.AllDirectories))
             {
                 Client.Log("Found file: " + Path.GetFileName(files));
+                var fileName = Path.GetFileName(files);
+                if (fileName == null || fileName == "AccountVersion" || fileName == "encrypt")
+                    continue;
                 var text = File.ReadAllLines(files);
-                try
+                var region = BaseRegion.GetRegion(text[2]);
+                fileName = fileName.TrimStart(region.InternalName.ToCharArray());
+                fileName = DecryptDes(fileName.Replace("Rito", "/"), encrypt, encrypt).Split(':')[1];
+                var lgn = new LoginData
                 {
-                    var region = BaseRegion.GetRegion(text[2]);
-                    var fileName = Path.GetFileName(files);
-                    if (fileName != null)
-                    {
-                        fileName = fileName.TrimStart(region.InternalName.ToCharArray());
-                        fileName = DecryptDes(fileName, encrypt, encrypt).Replace("Rito", "/").Split(':')[1];
-                        var lgn = new LoginData
-                        {
-                            SumName = fileName,
-                            User = DecryptDes(text[0], encrypt, fileName),
-                            Pass = DecryptDes(text[1], encrypt, fileName),
-                            Region = region,
-                            Status = text[3],
-                            SumIcon = text[4].ToInt(),
-                            ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
-                        };
-                        login.Add(lgn);
+                    SumName = fileName,
+                    User = DecryptDes(text[0], encrypt, fileName),
+                    Pass = DecryptDes(text[1], encrypt, fileName),
+                    Region = region,
+                    Status = text[3],
+                    SumIcon = text[4].ToInt(),
+                    ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
+                };
+                login.Add(lgn);
 
-                        Client.Log(string.Format("found account: \"{0}\" on the region \"{1}\"", fileName, lgn.Region));
-                    }
-                }
-                catch (Exception e) { Client.Log(e); }
+                Client.Log(string.Format("found account: \"{0}\" on the region \"{1}\"", fileName, lgn.Region));
             }
             return login;
         }
@@ -169,8 +166,8 @@ namespace LegendaryClient.Logic.MultiUser
         public static string DecryptDes(string cryptedString, string username, string password)
         {
             var cryptoProvider = new DESCryptoServiceProvider();
-            
-            var memoryStream = new MemoryStream(Convert.FromBase64String(cryptedString));
+
+            var memoryStream = new MemoryStream(Convert.FromBase64String(cryptedString.Replace(' ', '+')));
             var cryptoStream = new CryptoStream(memoryStream,
                 cryptoProvider.CreateDecryptor(Encoding.ASCII.GetBytes(username).ToTwentyBytes().Take(8).ToArray(), Encoding.ASCII.GetBytes(password).ToSixteenBytes()), CryptoStreamMode.Read);
             using (var reader = new StreamReader(cryptoStream))
