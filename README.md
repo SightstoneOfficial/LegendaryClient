@@ -43,6 +43,29 @@ Use these builds at your risk.
 
 https://ci.appveyor.com/project/EddyV/legendaryclient/build/artifacts
 
+Q&A
+===
+Where is LegendaryClient?
+
+LegendaryClient has been renamed to Sightstone.
+---
+This client sucks, how to uninstall
+
+The installer isn't finished yet, if you could install it without this than you can uninstall without it (just delete the folder)
+---
+Where is the ranked exploit?
+
+<div class="reddit-embed" data-embed-media="www.redditmedia.com" data-embed-parent="false" data-embed-live="true" data-embed-created="2015-07-23T04:01:43.705Z"><a href="https://www.reddit.com/r/leagueoflegends/comments/323d6w/exploit_multiqueue_for_solo_ranked_matchmaking/cq85b85">Comment</a> from discussion <a href="https://www.reddit.com/r/leagueoflegends/comments/323d6w/exploit_multiqueue_for_solo_ranked_matchmaking/">[Exploit] MultiQueue for Solo Ranked Matchmaking</a>.</div><script async src="https://www.redditstatic.com/comment-embed.js"></script>
+If you still want to use this go to [region].leagueoflegends.com/PermaBanMyAccount
+---
+What bugs are there
+
+Read on to see the issues
+---
+What features are there
+
+Read on to see Sightstone's features
+
 Gitter Chat
 ===========
 [![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/eddy5641/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -124,6 +147,7 @@ Automatically blocks messages from elo boosters. No more spam
 -->
 License
 =======
+*Snowl's original license*
 Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com)
 All rights reserved.
 
@@ -140,7 +164,8 @@ AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYR
 INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
 LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
+---
+*eddy's licence*
 Sightstone, League of Legendary custom client
     Copyright (C) 2015  eddy5641
 
