@@ -60,7 +60,9 @@ The installer isn't finished yet, if you could install it without this than you 
 Where is the ranked exploit?
 
 <div class="reddit-embed" data-embed-media="www.redditmedia.com" data-embed-parent="false" data-embed-live="true" data-embed-created="2015-07-23T04:01:43.705Z"><a href="https://www.reddit.com/r/leagueoflegends/comments/323d6w/exploit_multiqueue_for_solo_ranked_matchmaking/cq85b85">We're on top of this.
-It's also extremely easy to detect, and players will permanently lose their accounts for trying this.</a> ~RiotLyte </div><script async src="https://www.redditstatic.com/comment-embed.js"></script>
+It's also extremely easy to detect, and players will permanently lose their accounts for trying this.</a> 
+~ RiotLyte </div><script async src="https://www.redditstatic.com/comment-embed.js"></script>
+
 
 If you still want to use this go to [region].leagueoflegends.com/PermaBanMyAccount
 
