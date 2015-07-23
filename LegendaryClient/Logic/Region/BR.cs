@@ -53,10 +53,7 @@ namespace LegendaryClient.Logic.Region
 
         public override IPAddress[] PingAddresses
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            get { return new[] { IPAddress.Parse("66.151.33.19") }; }
         }
 
         public override System.Uri SpectatorLink
