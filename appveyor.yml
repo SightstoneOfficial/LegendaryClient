@@ -8,6 +8,7 @@ branches:
     - master
     - material-design
     - multiuser-client
+    - NoDDragon
 
 # build Release	
 configuration: Release
