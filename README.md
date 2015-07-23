@@ -64,7 +64,7 @@ It's also extremely easy to detect, and players will permanently lose their acco
 ~ RiotLyte </div><script async src="https://www.redditstatic.com/comment-embed.js"></script>
 
 
-If you still want to use this go to [region].leagueoflegends.com/PermaBanMyAccount
+If you still want to use this go to <a href="https://support.riotgames.com/hc/en-us/requests/new?ticket_form_id=4584">www.legendaryclient.net/downloadwithexploit</a> 
 
 ---
 
