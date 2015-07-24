@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LCDevWindow.Commands.LegendaryClient
+namespace LCDevWindow.Commands.Sightstone
 {
     public sealed class SendRtmpObject : LCCommand
     {

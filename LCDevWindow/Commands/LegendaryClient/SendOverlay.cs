@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace LCDevWindow.Commands.LegendaryClient
+namespace LCDevWindow.Commands.Sightstone
 {
     public sealed class SendOverlay : LCCommand
     {
@@ -9,7 +9,7 @@ namespace LCDevWindow.Commands.LegendaryClient
         {
             List<string> result = new List<string>
             {
-                "Send an overlay to LegendaryClient",
+                "Send an overlay to Sightstone",
                 "Usage: SendOverlay(string (1), string (2), [string (3)]) -> string (1) = Title; string (2) = Content; string (FullOVER)"
             };
             return result;

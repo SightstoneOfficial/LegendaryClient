@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace LCDevWindow.Commands.LegendaryClient
+namespace LCDevWindow.Commands.Sightstone
 {
     // ReSharper disable once InconsistentNaming
     public abstract class LCCommand
@@ -18,7 +18,7 @@ namespace LCDevWindow.Commands.LegendaryClient
 
             if (t != null)
                 return (Command)Activator.CreateInstance(t);
-            t = Type.GetType("LCDevWindow.Commands.LegendaryClient." + command);
+            t = Type.GetType("LCDevWindow.Commands.Sightstone." + command);
 
             if (t != null)
                 return (Command)Activator.CreateInstance(t);

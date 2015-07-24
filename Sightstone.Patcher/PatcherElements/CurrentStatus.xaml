@@ -1,0 +1,13 @@
+﻿<UserControl x:Class="Sightstone.Patcher.PatcherElements.CurrentStatus"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="300">
+    <Grid>
+        <Label x:Name="StatusLabel" Content="Sightstone.net status" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Ellipse x:Name="StatusEllipse" Fill="#FFD21414" HorizontalAlignment="Right" Height="20" VerticalAlignment="Center" Width="20" Margin="0,2,5,3" Stroke="#FFCFCFCF"/>
+
+    </Grid>
+</UserControl>
