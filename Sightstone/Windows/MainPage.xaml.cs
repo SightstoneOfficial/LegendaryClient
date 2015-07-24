@@ -412,10 +412,10 @@ namespace Sightstone.Windows
                     return;
 
                 var Message = notif.broadcastMessages[0];
-                if (Message != null && Message.Active)
-                    BroadcastMessage.Text = Message.Content;
-                else
-                    BroadcastMessage.Text = "";
+                //if (Message != null && Message.Active)
+                //    BroadcastMessage.Text = Message.Content;
+                //else
+                //    BroadcastMessage.Text = "";
             }));
         }
 
