@@ -1,0 +1,53 @@
+﻿<Page
+    x:Class="Sightstone.Windows.PluginsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Sightstone.Controls"
+    Title="PluginsPage"
+    mc:Ignorable="d" d:DesignHeight="768"
+    d:DesignWidth="1280">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+
+
+        <Grid Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button x:Name="LoadScript" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="LoadScript_Click" IsDefault="False">
+                <Viewbox Width="24" Height="24">
+                    <Label FontWeight="SemiBold">+</Label>
+                </Viewbox>
+            </Button>
+        </Grid>
+        <Grid Name="Titlebar" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Plugins</Label>
+            <TextBlock Grid.Column="1" Foreground="{StaticResource IdealForegroundColorBrush}" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right">Sightstone supports Plugins, if you wish to add one press the "+" Button.</TextBlock>
+        </Grid>
+        
+        <Grid VerticalAlignment="Top" Margin="30,90,30,30">
+            <DataGrid Background="{StaticResource MaterialDesignPaper}" Name="PluginList">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="" Binding="{Binding State}" />
+					<DataGridTextColumn Header="Enabled" Binding="{Binding Enabled}" Width="75" />
+                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" />
+                    <DataGridTextColumn Header="Version" Binding="{Binding Version}" Width="Auto" />
+                    <DataGridTextColumn Header="Author" Binding="{Binding Author}" Width="200" />
+                    <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="Auto" />
+					
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,22 @@
+﻿<Page x:Class="Sightstone.Windows.InGame"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:Sightstone.Controls"
+      Title="MainPage"
+      mc:Ignorable="d" d:DesignHeight="768"
+      d:DesignWidth="1280">
+    
+    <Grid>
+        <Border Margin="27,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1"
+                BorderBrush="Black" />
+        <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="InGame" FontSize="48" />
+        <Label Margin="10,84,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="You are currently InGame"
+               FontSize="48" />
+        <Button Width="308" Height="62" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Re-Connect"
+                FontSize="36" Click="Button_Click" />
+        <Button Name="QuitButton" Width="308" Height="62" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Quit game"
+        	FontSize="36" Click="QuitButton_Click" Margin="486,448,486,258" Visibility="Hidden"/>
+    </Grid>
+</Page>

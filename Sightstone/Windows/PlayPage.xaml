@@ -1,0 +1,50 @@
+﻿<Page x:Class="Sightstone.Windows.PlayPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      Title="PlayPage"
+      mc:Ignorable="d" d:DesignHeight="672"
+      d:DesignWidth="1024">
+
+    <Grid>
+
+        <!--<ListView x:Name="QueueListView" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" Margin="0,100,0,70" VerticalAlignment="Stretch" Background="{x:Null}" Foreground="{x:Null}" BorderBrush="{x:Null}">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                    <GridViewColumn />
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+        <Rectangle x:Name="PingRectangle" Width="100" Height="42" Margin="0,0,10,10" HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom" Fill="#FF9B9B9B" />
+        <Label x:Name="PingLabel" Margin="0,0,120,15" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+               Content="Checking Ping..." FontWeight="ExtraLight" FontSize="20" />
+        <Button x:Name="CreateCustomGameButton" Width="140" Height="42"
+                Margin="10,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Create Custom Game"
+                Click="CreateCustomGameButton_Click" />
+        <Button x:Name="JoinCustomGameButton" Width="140" Height="42"
+                Margin="155,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Join Custom Games"
+                Click="JoinCustomGameButton_Click" />
+        <ListBox x:Name="QueueListView" Margin="0,0,0,90" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" />
+        <Button x:Name="LeaveQueuesButton" Width="96" Height="28" Margin="0,0,150,57"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Leave Queues"
+                Click="LeaveQueuesButton_Click" />
+        <CheckBox x:Name="AutoAcceptCheckBox" Margin="0,0,10,65" HorizontalAlignment="Right"
+                  VerticalAlignment="Bottom" Content="Auto Accept Queue" Checked="AutoAcceptCheckBox_Checked" />
+        <Controls:ProgressRing x:Name="WaitingForQueues" Margin="0,0,0,100" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" IsActive="True" Visibility="Hidden">
+            <Controls:ProgressRing.Effect>
+                <DropShadowEffect />
+            </Controls:ProgressRing.Effect>
+        </Controls:ProgressRing>
+        <Button x:Name="CreateFactionGameButton" Width="140" Height="42"
+                Margin="300,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                Content="Create a Faction Game"
+                Click="CreateFactionGameButton_Click" />
+        <Button x:Name="JoinFactionGameButton" Width="140" Height="42"
+                Margin="445,0,0,10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Join a Faction Game"
+                Click="JoinFactionGameButton_Click" />
+    </Grid>
+</Page>
