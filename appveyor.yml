@@ -27,9 +27,7 @@ after_build:
 
 # define solution file
 build:
-  project: 
-  - LegendaryClient.sln
-  - Sightstone.sln
+  project: LegendaryClient.sln
   
   # shut up
   verbosity: minimal
