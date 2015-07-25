@@ -558,7 +558,11 @@ namespace Sightstone.Logic.MultiUser
                     catch
                     {
                         //Try to download from Github
-                        names = client.DownloadString("https://raw.githubusercontent.com/Sightstone/Sightstone/gh-pages/QueueName");
+                        try
+                        {
+                            names = client.DownloadString("https://raw.githubusercontent.com/Sightstone/Sightstone/gh-pages/QueueName");
+                        }
+                        catch { }
                     }
                     string[] queues = names.Split(new[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
                     queueNames = queues.Select(x => x.Split('|')).ToDictionary(x => x[0], x => x[1]);
