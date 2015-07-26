@@ -17,6 +17,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Sightstone.Patcher.Logic.Region;
 using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
 using Sightstone.Patcher.Properties;
@@ -72,6 +73,7 @@ namespace Sightstone.Patcher.Pages
         {
             //Load server status
             Status();
+            Download();
             //Load Champions with this thread
             var x = new Thread(() =>
                 {
@@ -113,7 +115,7 @@ namespace Sightstone.Patcher.Pages
                         {
                             Client.Win.Visibility = Visibility.Visible;
                             Client.Win.Show();
-                            Client.splashPage.Close();
+                            Client.SplashPage.Close();
                         });
                         if (Settings.Default.FirstStart)
                         {
@@ -125,6 +127,15 @@ namespace Sightstone.Patcher.Pages
         }
 
         private bool loaded;
+
+        private void Download()
+        {
+            var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
+            if (region.RegionType == RegionType.Riot)
+            {
+                LeagueDownloadLogic
+            }
+        }
 
         private void Status()
         {
@@ -186,15 +197,16 @@ namespace Sightstone.Patcher.Pages
                         //Might as well load news
                         foreach (var n in newsJson.news)
                         {
+                            var n1 = n;
                             Client.RunOnUIThread(() =>
                                 {
                                     var item = new NewsItem
                                     {
-                                        TitleLabel = { Content = n.title },
-                                        TimeLabel = { Content = n.date },
+                                        TitleLabel = { Content = n1.title },
+                                        TimeLabel = { Content = n1.date },
                                         ContentBox = { Visibility = Visibility.Hidden },
                                         Height = 26,
-                                        Tag = new Uri(n.url.Replace(@"\/", @"/")),
+                                        Tag = new Uri(n1.url.Replace(@"\/", @"/")),
                                         Width = 300
                                     };
                                     item.MouseDown += (o, e) => Changed(o);
@@ -203,16 +215,17 @@ namespace Sightstone.Patcher.Pages
                         }
                         foreach (var x in newsJson.community)
                         {
+                            var x1 = x;
                             Client.RunOnUIThread(() =>
                             {
-                                var item = new NewsItem { TitleLabel = { Content = x.title }, Width = 300 };
-                                item.ContentBox.AppendText(x.promoText);
+                                var item = new NewsItem { TitleLabel = { Content = x1.title }, Width = 300 };
+                                item.ContentBox.AppendText(x1.promoText);
                                 item.TimeLabel.Visibility = Visibility.Hidden;
                                 item.Tag = new Dictionary<string, object>
                                 {
-                                    { "imgUrl", x.imageUrl.Replace(@"\/", @"/") },
-                                    { "thumbUrl", x.thumbUrl.Replace(@"\/", @"/") },
-                                    { "linkUrl", x.linkUrl.Replace(@"\/", @"/") }
+                                    { "imgUrl", x1.imageUrl.Replace(@"\/", @"/") },
+                                    { "thumbUrl", x1.thumbUrl.Replace(@"\/", @"/") },
+                                    { "linkUrl", x1.linkUrl.Replace(@"\/", @"/") }
                                 };
                                 item.MouseDown += (o,e) => Changed(o);
                                 NewsBox.Items.Add(item);

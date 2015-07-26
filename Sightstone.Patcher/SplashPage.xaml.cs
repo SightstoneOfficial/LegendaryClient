@@ -23,7 +23,7 @@ namespace Sightstone.Patcher
         public SplashPage()
         {
             InitializeComponent();
-            Client.splashPage = this;
+            Client.SplashPage = this;
         }
     }
 }

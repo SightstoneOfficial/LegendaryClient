@@ -23,15 +23,9 @@ namespace Sightstone.Patcher.Pages
             if (newsettings)
                 SettingsLabel.Content = "Please configure your settings before using Sightstone.Patcher!";
 
-            if (Properties.Settings.Default.UseGithub)
-                Version.SelectedItem = Github;
-            else
-                Version.SelectedItem = Appveyor;
+            Version.SelectedItem = Properties.Settings.Default.UseGithub ? Github : Appveyor;
 
-            if (Properties.Settings.Default.OnlyLOL)
-                UpdateSettings.SelectedItem = OnlyLoL;
-            else
-                UpdateSettings.SelectedItem = Sightstone;
+            UpdateSettings.SelectedItem = Properties.Settings.Default.OnlyLOL ? OnlyLoL : Sightstone;
 
             LOLP2P.IsChecked = Properties.Settings.Default.LOLP2P;
             LCP2P.IsChecked = Properties.Settings.Default.LCP2P;
@@ -40,16 +34,23 @@ namespace Sightstone.Patcher.Pages
             PatcherVolume.Value = Properties.Settings.Default.Volume;            
 
             var regions = Client.GetInstances<MainRegion>();
-            foreach (MainRegion region in regions)
+            foreach (var region in regions)
             {
-                if (region.RegionType == RegionType.Riot)
-                    riot.Add(region);
-                else if (region.RegionType == RegionType.PBE)
-                    pbe = region;
-                else if (region.RegionType == RegionType.KR)
-                    kr = region;
-                else if (region.RegionType == RegionType.Garena)
-                    garena.Add(region);
+                switch (region.RegionType)
+                {
+                    case RegionType.Riot:
+                        riot.Add(region);
+                        break;
+                    case RegionType.PBE:
+                        pbe = region;
+                        break;
+                    case RegionType.KR:
+                        kr = region;
+                        break;
+                    case RegionType.Garena:
+                        garena.Add(region);
+                        break;
+                }
             }
 
             Region.Items.Add("Riot");
@@ -57,87 +58,87 @@ namespace Sightstone.Patcher.Pages
             Region.Items.Add("Korea");
             Region.Items.Add("Garena");
             Region.SelectedIndex = -1;
-            if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionType))
-            {
-                Region.SelectedItem = Properties.Settings.Default.RegionType;
-                RegionName.Visibility = System.Windows.Visibility.Visible;
-                if (Region.SelectedItem.ToString() == "Riot")
-                {
-                    foreach (MainRegion region in riot)
+            if (string.IsNullOrEmpty(Properties.Settings.Default.RegionType))
+                return;
+            Region.SelectedItem = Properties.Settings.Default.RegionType;
+            RegionName.Visibility = System.Windows.Visibility.Visible;
+            switch (Region.SelectedItem.ToString()) {
+                case "Riot":
+                    foreach (var region in riot)
                     {
                         RegionName.Items.Add(region.RegionName);
                     }
+                    RegionName.SelectedIndex = 1;
                     if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
                         RegionName.SelectedItem = Properties.Settings.Default.RegionName;
-                }
-                else if (Region.SelectedItem.ToString() == "PBE")
-                {
+                    break;
+                case "PBE":
                     RegionName.Items.Add("PBE");
                     RegionName.SelectedItem = "PBE";
                     RegionName.IsEnabled = false;
-                }
-                else if (Region.SelectedItem.ToString() == "Korea")
-                {
+                    if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
+                        RegionName.SelectedItem = Properties.Settings.Default.RegionName;
+                    break;
+                case "Korea":
                     RegionName.Items.Add("KR");
                     RegionName.SelectedItem = "KR";
                     RegionName.IsEnabled = false;
-                }
-                else if (Region.SelectedItem.ToString() == "Garena")
-                {
-                    foreach (MainRegion region in garena)
+                    if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
+                        RegionName.SelectedItem = Properties.Settings.Default.RegionName;
+                    break;
+                case "Garena":
+                    foreach (var region in garena)
                     {
                         RegionName.Items.Add(region.RegionName);
                     }
+                    RegionName.SelectedIndex = 1;
                     if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
                         RegionName.SelectedItem = Properties.Settings.Default.RegionName;
-                }
-                else
-                {
+                    break;
+                default:
                     RegionName.SelectedIndex = -1;
                     RegionName.Visibility = System.Windows.Visibility.Hidden;
-                }
+                    break;
             }
         }
 
         private void Version_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            if (Version.SelectedItem == Github)
-                Properties.Settings.Default.UseGithub = true;
-            else
-                Properties.Settings.Default.UseGithub = false;
+            Properties.Settings.Default.UseGithub = Version.SelectedItem == Github;
             Properties.Settings.Default.Save();
         }
 
-        private void Setting_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void Setting_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (UpdateSettings.SelectedItem == OnlyLoL)
-                Properties.Settings.Default.OnlyLOL = true;
-            else
-                Properties.Settings.Default.OnlyLOL = false;
+            Properties.Settings.Default.OnlyLOL = UpdateSettings.SelectedItem == OnlyLoL;
             Properties.Settings.Default.Save();
         }
 
         private void LOLP2P_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
-            Properties.Settings.Default.LOLP2P = (bool)LOLP2P.IsChecked;
+            if (LOLP2P.IsChecked != null)
+                Properties.Settings.Default.LOLP2P = (bool)LOLP2P.IsChecked;
             Properties.Settings.Default.Save();
         }
 
         private void LCP2P_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
-            Properties.Settings.Default.LCP2P = (bool)LCP2P.IsChecked;
+            if (LCP2P.IsChecked != null)
+                Properties.Settings.Default.LCP2P = (bool)LCP2P.IsChecked;
             Properties.Settings.Default.Save();
         }
 
         private void LCPP2P_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
-            Properties.Settings.Default.LCPP2P = (bool)LCPP2P.IsChecked;
+            if (LCPP2P.IsChecked != null)
+                Properties.Settings.Default.LCPP2P = (bool)LCPP2P.IsChecked;
             Properties.Settings.Default.Save();
         }
 
         private void AlwaysUpdate_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
-            Properties.Settings.Default.AlwaysUpdate = (bool)AlwaysUpdate.IsChecked;
+            if (AlwaysUpdate.IsChecked != null)
+                Properties.Settings.Default.AlwaysUpdate = (bool)AlwaysUpdate.IsChecked;
             Properties.Settings.Default.Save();
         }
 
@@ -162,40 +163,38 @@ namespace Sightstone.Patcher.Pages
             Properties.Settings.Default.Save();
             RegionName.Items.Clear();
             RegionName.Visibility = System.Windows.Visibility.Visible;
-            if (Region.SelectedItem.ToString() == "Riot")
+            switch (Region.SelectedItem.ToString()) 
             {
-                foreach (MainRegion region in riot)
-                {
-                    RegionName.Items.Add(region.RegionName);
-                }
-                if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
-                    RegionName.SelectedItem = Properties.Settings.Default.RegionName;
-            }
-            else if (Region.SelectedItem.ToString() == "PBE")
-            {
-                RegionName.Items.Add("PBE");
-                RegionName.SelectedItem = "PBE";
-                RegionName.IsEnabled = false;
-            }
-            else if (Region.SelectedItem.ToString() == "Korea")
-            {
-                RegionName.Items.Add("KR");
-                RegionName.SelectedItem = "KR";
-                RegionName.IsEnabled = false;
-            }
-            else if (Region.SelectedItem.ToString() == "Garena")
-            {
-                foreach (MainRegion region in garena)
-                {
-                    RegionName.Items.Add(region.RegionName);
-                }
-                if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
-                    RegionName.SelectedItem = Properties.Settings.Default.RegionName;
-            }
-            else
-            {
-                RegionName.SelectedIndex = -1;
-                RegionName.Visibility = System.Windows.Visibility.Hidden;
+                case "Riot":
+                    foreach (var region in riot)
+                    {
+                        RegionName.Items.Add(region.RegionName);
+                    }
+                    if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
+                        RegionName.SelectedItem = Properties.Settings.Default.RegionName;
+                    break;
+                case "PBE":
+                    RegionName.Items.Add("PBE");
+                    RegionName.SelectedItem = "PBE";
+                    RegionName.IsEnabled = false;
+                    break;
+                case "Korea":
+                    RegionName.Items.Add("KR");
+                    RegionName.SelectedItem = "KR";
+                    RegionName.IsEnabled = false;
+                    break;
+                case "Garena":
+                    foreach (MainRegion region in garena)
+                    {
+                        RegionName.Items.Add(region.RegionName);
+                    }
+                    if (!string.IsNullOrEmpty(Properties.Settings.Default.RegionName))
+                        RegionName.SelectedItem = Properties.Settings.Default.RegionName;
+                    break;
+                default:
+                    RegionName.SelectedIndex = -1;
+                    RegionName.Visibility = System.Windows.Visibility.Hidden;
+                    break;
             }
         }
 
@@ -208,9 +207,9 @@ namespace Sightstone.Patcher.Pages
 
             var region = Properties.Settings.Default.RegionName;
             if (!string.IsNullOrEmpty(region))
-                Client.regionLabel.Content = "Connected to: " + region;
+                Client.RegionLabel.Content = "Connected to: " + region;
             else
-                Client.regionLabel.Content = "Not connected to any regions";
+                Client.RegionLabel.Content = "Not connected to any regions";
         }
     }
 }

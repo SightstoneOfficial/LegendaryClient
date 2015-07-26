@@ -33,7 +33,7 @@ namespace Sightstone.Patcher
                 RegionLabel.Content = "Connected to: " + region;
             else
                 RegionLabel.Content = "Not connected to any regions";
-            Client.regionLabel = RegionLabel;
+            Client.RegionLabel = RegionLabel;
             Client.OverlayContainer = OverlayContainer;
             Client.OverlayGrid = OverlayGrid;
             OverlayContainer.Content = new PatcherSettingsPage(Properties.Settings.Default.FirstStart).Content;

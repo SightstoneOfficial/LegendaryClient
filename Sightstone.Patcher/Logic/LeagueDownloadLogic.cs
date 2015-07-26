@@ -22,7 +22,7 @@ namespace Sightstone.Patcher.Logic
         /// <summary>
         ///     Gets the Latest LeagueOfLegends lol_game_client_sln version
         /// </summary>
-        public string[] GetLolClientSlnVersion(MainRegion Region)
+        public static string[] GetLolClientSlnVersion(MainRegion Region)
         {
             //Get the GameClientSln version
             using (new WebClient())
@@ -33,11 +33,11 @@ namespace Sightstone.Patcher.Logic
             return ReleaseListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None).Skip(1).ToArray();
         }
 
-        public string GetLatestLCLOLVersion()
+        public static string GetLatestLCLOLVersion()
         {
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")))
             {
-                return File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")).Split( new []{Environment.NewLine}, StringSplitOptions.None)[0];
+                return File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version"))[0];
             }
             var encoding = new ASCIIEncoding();
             File.Create(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
@@ -50,7 +50,7 @@ namespace Sightstone.Patcher.Logic
         /// <returns>
         ///     The SolutionManifest file from riot
         /// </returns>
-        public string CreateConfigurationManifest(MainRegion Region)
+        public static string CreateConfigurationManifest(MainRegion Region)
         {
             string latestSlnVersion = Convert.ToString(GetLolClientSlnVersion(Region));
             //Get GameClient Language files

@@ -40,7 +40,7 @@ namespace Sightstone.Patcher.Logic
         /// </summary>
         internal static MainWindow Win;
 
-        internal static SplashPage splashPage;
+        internal static SplashPage SplashPage;
 
         /// <summary>
         ///     Used to swich pages
@@ -84,7 +84,7 @@ namespace Sightstone.Patcher.Logic
                     select (T)Activator.CreateInstance(t)).ToList();
         }
 
-        internal static Label regionLabel;
+        internal static Label RegionLabel;
 
         internal static void SwitchPage<T>(bool fade = false, params object[] args)
         {
