@@ -572,8 +572,12 @@ namespace Sightstone.Windows
                     SumIcon = packetx.AllSummonerData.Summoner.ProfileIconId,
                     SumName = packetx.AllSummonerData.Summoner.InternalName,
                     User = username
-
                 });
+
+                LoggingInLabel.Visibility = Visibility.Hidden;
+                LoggingInProgressRing.Visibility = Visibility.Hidden;
+                Encrypt.Visibility = Visibility.Hidden;
+                EncryptCheck.Visibility = Visibility.Hidden;
             }
         }
 
