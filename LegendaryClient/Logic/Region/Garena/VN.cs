@@ -12,12 +12,12 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string Server
         {
-            get { return "prodvn.lol.garenanow.com"; }
+            get { return "prodvn1.lol.garenanow.com"; }
         }
 
         public override string LoginQueue
         {
-            get { return "https://lqvn.lol.garenanow.com/"; }
+            get { return "https://lqvn1.lol.garenanow.com"; }
         }
 
         public override string Location
@@ -37,7 +37,7 @@ namespace LegendaryClient.Logic.Region.Garena
 
         public override string ChatName
         {
-            get { return "vn"; }
+            get { return "vn1"; }
         }
 
         public override System.Uri NewsAddress
