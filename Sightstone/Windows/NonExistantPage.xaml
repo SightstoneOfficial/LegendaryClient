@@ -1,0 +1,79 @@
+﻿<Page x:Class="Sightstone.Windows.NonExistantPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      Title="ChampSelectPage"
+      mc:Ignorable="d" d:DesignHeight="738"
+      d:DesignWidth="1280">
+
+    <Grid>
+        <Image x:Name="BackgroundSplash" Stretch="UniformToFill" Opacity=".40" />
+
+        <Label x:Name="BlueBansLabel" Margin="10,0,0,240" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+               Content="Blue Bans" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
+        <ListView x:Name="BlueBanListView" Width="58" Height="225" Margin="5,0,0,10"
+                  HorizontalAlignment="Left" VerticalAlignment="Bottom"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <ListView x:Name="PurpleListView" Width="140" Height="400" Margin="0,80,5,10"
+                  HorizontalAlignment="Right" VerticalAlignment="Top"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent" BorderBrush="{x:Null}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <Label x:Name="PurpleBansLabel" Margin="0,0,10,240" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+               Content="Purple Bans" FontWeight="ExtraLight" FontSize="22" Visibility="Hidden" />
+        <ListView x:Name="PurpleBanListView" Width="58" Height="225" Margin="0,0,5,10"
+                  HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Background="Transparent" BorderBrush="{x:Null}" Visibility="Hidden">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <Grid x:Name="AfterChampionSelectGrid" Height="370" Margin="145,80,145,0" HorizontalAlignment="Stretch"
+              VerticalAlignment="Top" Background="#66505050" Visibility="Hidden">
+            <ListView x:Name="AbilityListView" Width="390" Margin="5,5,00,5" HorizontalAlignment="Left"
+                      VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      Background="{x:Null}" BorderBrush="{x:Null}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+            <ListView x:Name="SkinSelectListView" Margin="400,0,0,0" HorizontalAlignment="Stretch"
+                      VerticalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                      Background="#66505050" BorderBrush="{x:Null}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem" />
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </Grid>
+        <Label Width="1260" Height="738" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="That Must Suck" FontSize="48" />
+        <Label Width="1270" Height="648"
+               Margin="0,80,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="The page you tried to access can not be found" FontSize="48" />
+    </Grid>
+</Page>

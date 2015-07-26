@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="Sightstone.Controls.KudosItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="52"
+             d:DesignWidth="278">
+    
+    <Grid
+        Width="{Binding (ListView.ActualWidth), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}}"
+        Background="#66505050">
+        <Label x:Name="TypeLabel" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center"
+               Content="Friendly" FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+        <Label x:Name="AmountLabel" Margin="0,0,10,0" HorizontalAlignment="Right" VerticalAlignment="Center"
+               Content="0" FontSize="18" FontWeight="ExtraLight" Foreground="White" />
+    </Grid>
+</UserControl>

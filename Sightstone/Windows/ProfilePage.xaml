@@ -1,0 +1,63 @@
+<Page
+    x:Class="Sightstone.Windows.ProfilePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    Title="ProfilePage"
+    mc:Ignorable="d" d:DesignHeight="672"
+    d:DesignWidth="1024">
+
+    <Grid>
+        <Image x:Name="ProfileImage" Width="64" Height="64" Margin="10,10,0,0" HorizontalAlignment="Left"
+               VerticalAlignment="Top">
+            <Image.Effect>
+                <DropShadowEffect />
+            </Image.Effect>
+        </Image>
+        <Label x:Name="SummonerNameLabel" Margin="80,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Summoner" FontSize="22" />
+        <Label x:Name="SummonerLevelLabel" Margin="80,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="Level 0" FontWeight="ExtraLight" FontSize="22" />
+        <TextBox x:Name="SearchTextBox" Width="180" Height="23" Margin="0,30,90,0"
+                 HorizontalAlignment="Right" VerticalAlignment="Top" TextWrapping="NoWrap" />
+        <Button x:Name="SearchButton" Width="75" Height="26" Margin="0,30,10,0" HorizontalAlignment="Right"
+                VerticalAlignment="Top" Content="Search" IsDefault="True" Click="SearchButton_Click" />
+        <TabControl x:Name="TabContainer" Margin="10,100,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    SelectionChanged="TabContainer_SelectionChanged">
+            <TabItem x:Name="InGameHeader" Header="Ingame" Visibility="Collapsed">
+                <Frame x:Name="InGameContainer" />
+            </TabItem>
+            <TabItem x:Name="OverviewHeader" Header="Overview" IsSelected="True">
+                <Frame x:Name="OverviewContainer" />
+            </TabItem>
+            <TabItem x:Name="LeagueHeader" Header="Leagues">
+                <Frame x:Name="LeaguesContainer" />
+            </TabItem>
+            <TabItem x:Name="TeamsHeader" Header="Teams" Visibility="Collapsed">
+                <Frame x:Name="TeamsContainer" />
+            </TabItem>
+            <TabItem Header="Match History">
+                <Frame x:Name="MatchHistoryContainer" />
+            </TabItem>
+            <TabItem Header="Runes">
+                <Frame x:Name="RunesContainer" />
+            </TabItem>
+            <TabItem Header="Masteries">
+                <Frame x:Name="MasteriesContainer" />
+            </TabItem>
+            <TabItem x:Name="ChampionsTab" Header="Champions">
+                <Frame x:Name="ChampionsContainer" />
+            </TabItem>
+            <TabItem x:Name="SkinsTab" Header="Skins">
+                <Frame x:Name="SkinsContainer" />
+            </TabItem>
+            <TabItem x:Name="MatchHistoryBetaTab" Header="Match History Beta" Visibility="Collapsed">
+                <Frame x:Name="LeagueMatchHistoryBetaContainer" />
+            </TabItem>
+        </TabControl>
+        <Label Margin="0,11,303,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="First Win of the day available in:" FontSize="22" Width="321" />
+        <Label x:Name="FirstWinOfTheDayLabel" Margin="0,50,303,0" HorizontalAlignment="Right" VerticalAlignment="Top"
+        	Content="23h 59m 59s" FontSize="22" />
+    </Grid>
+</Page>

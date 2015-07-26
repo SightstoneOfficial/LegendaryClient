@@ -1,4 +1,4 @@
-﻿using LCDevWindow.Commands.LegendaryClient;
+﻿using LCDevWindow.Commands.Sightstone;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace LCDevWindow.Commands
                     Main.win.Log(help, Brushes.Black);
                 }
             }
-            Main.win.Log("LegendaryClient Commands", Brushes.LightSeaGreen);
+            Main.win.Log("Sightstone Commands", Brushes.LightSeaGreen);
             List<LCCommand> lccommands = GetInstances<LCCommand>();
             foreach (LCCommand command in lccommands)
             {

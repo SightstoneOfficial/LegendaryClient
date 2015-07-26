@@ -74,10 +74,10 @@
     <Compile Include="Commands\DoLog.cs" />
     <Compile Include="Commands\GetVar.cs" />
     <Compile Include="Commands\Help.cs" />
-    <Compile Include="Commands\LegendaryClient\LCCommand.cs" />
-    <Compile Include="Commands\LegendaryClient\MessageReceived.cs" />
-    <Compile Include="Commands\LegendaryClient\SendOverlay.cs" />
-    <Compile Include="Commands\LegendaryClient\SendRtmpObject.cs" />
+    <Compile Include="Commands\Sightstone\LCCommand.cs" />
+    <Compile Include="Commands\Sightstone\MessageReceived.cs" />
+    <Compile Include="Commands\Sightstone\SendOverlay.cs" />
+    <Compile Include="Commands\Sightstone\SendRtmpObject.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

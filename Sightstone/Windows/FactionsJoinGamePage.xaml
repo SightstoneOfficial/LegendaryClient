@@ -1,0 +1,38 @@
+﻿<Page x:Class="Sightstone.Windows.FactionsJoinGamePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      Title="FactionsJoinGamePage"
+      mc:Ignorable="d" d:DesignHeight="672"
+      d:DesignWidth="1024">
+
+    <Grid>
+        <Label Margin="10,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Join a Faction Game"
+               FontWeight="ExtraLight" FontSize="22" />
+        <TextBox x:Name="SearchTextBox" Height="23" Margin="10,50,150,0" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Top" TextWrapping="NoWrap" Foreground="White" Background="#FF646464"
+                 TextChanged="SearchTextBox_TextChanged" />
+        <Button x:Name="RefreshButton" Width="100" Height="26" Margin="0,50,10,0"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Content="Refresh" Click="RefreshButton_Click" />
+        <!--TODO Style ListView-->
+        <ListView x:Name="CustomGameListView" Margin="10,90,10,50" HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch" Style="{Binding CustomListView}" Foreground="White"
+                  Background="#FF505050"
+                  SelectionChanged="CustomGameListView_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding GameName}" />
+                    <GridViewColumn Header="Owner" DisplayMemberBinding="{Binding GameOwner}" />
+                    <GridViewColumn Header="Slots" DisplayMemberBinding="{Binding Slots}" />
+                    <GridViewColumn Header="Spectators" DisplayMemberBinding="{Binding Spectators}" />
+                    <GridViewColumn Header="Map" DisplayMemberBinding="{Binding Map}" />
+                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button x:Name="JoinGameButton" Width="150" Height="30" Margin="0,0,10,10"
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Join Game" Click="JoinGameButton_Click"
+                IsEnabled="False" />
+    </Grid>
+</Page>
