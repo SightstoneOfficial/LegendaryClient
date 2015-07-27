@@ -3,6 +3,7 @@ using Sightstone.Logic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Threading;
@@ -16,6 +17,7 @@ using Sightstone.Logic.Riot;
 using Sightstone.Logic.Riot.Platform;
 using RtmpSharp.IO;
 using RtmpSharp.Messaging;
+using Sightstone.Logic.MultiUser;
 
 namespace Sightstone.Windows
 {
@@ -24,9 +26,25 @@ namespace Sightstone.Windows
     /// </summary>
     public partial class ScreenshotsPage
     {
+        private string ScreenshotFolder;
+
         public ScreenshotsPage()
         {
             InitializeComponent();
+        }
+
+        private void Load()
+        {
+            UserClient user = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
+            if(user.Garena)
+            {
+                ScreenshotFolder = Path.Combine(Client.Location, "screenshots");
+            }
+            else
+            {
+                // TODO : Add logic for non-Garena servers.
+            }
+            // TODO : Add control for each screenshot
         }
     }
 }
