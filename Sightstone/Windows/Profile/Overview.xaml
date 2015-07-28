@@ -37,8 +37,7 @@
                 FontWeight="ExtraLight"
                 Click="ViewAggregatedStatsButton_Click" />
 
-        <ComboBox x:Name="StatsComboBox" Width="300" Margin="10,10,0,0" HorizontalAlignment="Left"
-                  VerticalAlignment="Top" SelectionChanged="StatsComboBox_SelectionChanged" />
+        <ComboBox x:Name="StatsComboBox" Width="300" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="StatsComboBox_SelectionChanged" />
         <ListView x:Name="StatsListView" Margin="10,40,300,10"
                   HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                   VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"

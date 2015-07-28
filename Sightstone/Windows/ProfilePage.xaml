@@ -4,27 +4,69 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Sightstone.Controls"
+    xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
     Title="ProfilePage"
+    Background="{StaticResource MaterialDesignPaper}"
     mc:Ignorable="d" d:DesignHeight="672"
     d:DesignWidth="1024">
 
     <Grid>
-        <Image x:Name="ProfileImage" Width="64" Height="64" Margin="10,10,0,0" HorizontalAlignment="Left"
-               VerticalAlignment="Top">
-            <Image.Effect>
-                <DropShadowEffect />
-            </Image.Effect>
-        </Image>
-        <Label x:Name="SummonerNameLabel" Margin="80,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Content="Summoner" FontSize="22" />
-        <Label x:Name="SummonerLevelLabel" Margin="80,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Content="Level 0" FontWeight="ExtraLight" FontSize="22" />
-        <TextBox x:Name="SearchTextBox" Width="180" Height="23" Margin="0,30,90,0"
-                 HorizontalAlignment="Right" VerticalAlignment="Top" TextWrapping="NoWrap" />
-        <Button x:Name="SearchButton" Width="75" Height="26" Margin="0,30,10,0" HorizontalAlignment="Right"
-                VerticalAlignment="Top" Content="Search" IsDefault="True" Click="SearchButton_Click" />
-        <TabControl x:Name="TabContainer" Margin="10,100,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                    SelectionChanged="TabContainer_SelectionChanged">
+        <Grid Name="Titlebar" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <!-- Profile Icon -->
+            <Button x:Name="ShowLogButton" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Height="40" Width="40" Margin="10" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Viewbox Width="40" Height="40">
+                    <Image x:Name="ProfileImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-3" Source="/Sightstone;component/NONE.png"/>
+                </Viewbox>
+            </Button>
+            
+            <!-- Username + Level -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label x:Name="SummonerNameLabel" Grid.Row="1" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Username</Label>
+                <Label x:Name="SummonerLevelLabel" Grid.Row="2" FontSize="10" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Level</Label>
+            </Grid>
+            
+
+            <Grid x:Name="SearchBox" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Panel.ZIndex="500" Grid.Column="4">
+                <wpf:Card UniformCornerRadius="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="300" Grid.Column="0" Foreground="{StaticResource MaterialDesignBody}" controls:TextBoxHelper.Watermark="Search" BorderThickness="0"/>
+                        <Button x:Name="SearchButton" Click="SearchButton_Click" Content="Search" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Grid.Column="1"/>
+                    </Grid>
+                </wpf:Card>
+            </Grid>
+
+            <Grid Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Border Grid.ColumnSpan="2" CornerRadius="3" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0"/>
+                <Label Grid.Column="0" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" Padding="0,0,4,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Win of the day:" Margin="7,5,0,5"/>
+                <Label x:Name="FirstWinOfTheDayLabel" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Content="23h 59m 59s" Padding="0" Margin="0,5,7,5"/>
+            </Grid>
+
+        </Grid>
+        <dragablz:TabablzControl x:Name="TabContainer" BorderThickness="0" Background="{DynamicResource MaterialDesignPaper}" Margin="0,70,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabContainer_SelectionChanged" Grid.ColumnSpan="2">
             <TabItem x:Name="InGameHeader" Header="Ingame" Visibility="Collapsed">
                 <Frame x:Name="InGameContainer" />
             </TabItem>
@@ -55,9 +97,7 @@
             <TabItem x:Name="MatchHistoryBetaTab" Header="Match History Beta" Visibility="Collapsed">
                 <Frame x:Name="LeagueMatchHistoryBetaContainer" />
             </TabItem>
-        </TabControl>
-        <Label Margin="0,11,303,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="First Win of the day available in:" FontSize="22" Width="321" />
-        <Label x:Name="FirstWinOfTheDayLabel" Margin="0,50,303,0" HorizontalAlignment="Right" VerticalAlignment="Top"
-        	Content="23h 59m 59s" FontSize="22" />
+        </dragablz:TabablzControl>
+
     </Grid>
 </Page>
