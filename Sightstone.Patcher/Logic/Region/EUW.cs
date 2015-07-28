@@ -22,7 +22,6 @@ namespace Sightstone.Patcher.Logic.Region
                 return RegionType.Riot;
             }
         }
-
         public override Uri ClientUpdateUri
         {
             get
@@ -36,7 +35,15 @@ namespace Sightstone.Patcher.Logic.Region
         {
             get
             {
-                return new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_EUW");
+                return new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_" + RegionName);
+            }
+        }
+
+        public override Uri GameClientReleaseListingUri
+        {
+            get
+            {
+                return new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_" + RegionName);
             }
         }
 
@@ -44,7 +51,8 @@ namespace Sightstone.Patcher.Logic.Region
         {
             get
             {
-                return new Uri("");
+                var x = new WebClient().DownloadString(GameClientReleaseListingUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                return new Uri(string.Format("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/{0}/packages/files/packagemanifest", x));
             }
         }
 
@@ -52,7 +60,7 @@ namespace Sightstone.Patcher.Logic.Region
         {
             get
             {
-                return new Uri("");
+                return new Uri("http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_" + RegionName);
             }
         }
     }

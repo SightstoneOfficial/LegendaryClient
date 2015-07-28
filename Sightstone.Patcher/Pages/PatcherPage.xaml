@@ -32,7 +32,7 @@
 				Margin="0,0,86,0" Width="184" />
 
         </Grid>
-        <Grid x:Name="FinishedGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" >
+        <Grid Visibility="Hidden" x:Name="FinishedGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" >
             <Image HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1000"
 				Source="/Sightstone.Patcher;component/TopBar.Png" />
             <Label Content="Finished" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Width="995" FontSize="100" VerticalContentAlignment="Top" FontFamily="/Sightstone.Patcher;component/#Lobster 1.3" Margin="0,-20,0,0"/>
@@ -63,7 +63,7 @@
 
             <ListView x:Name="StatusView" SelectionChanged="OnSelectionChanged" HorizontalAlignment="Right" Height="175" VerticalAlignment="Bottom" Width="162" Margin="0,0,10,10"/>
             <Button Click="Update_OnClick" Style="{DynamicResource HideSquare}" HorizontalAlignment="Right" Content="Update status" VerticalAlignment="Bottom" Margin="0,0,10,185" Height="35" Width="162"/>
-            <awe:WebControl x:Name="WebBrower" Source="http://Sightstone.net" HorizontalAlignment="Left" Height="384" VerticalAlignment="Top" Width="980" Margin="10,10,0,0"/>
+            <awe:WebControl x:Name="WebBrower" Source="http://LegendaryClient.net" HorizontalAlignment="Left" Height="384" VerticalAlignment="Top" Width="980" Margin="10,10,0,0"/>
 
         </Grid>
         <Grid Margin="0,155,0,0" x:Name="LogGrid" Visibility="Hidden">

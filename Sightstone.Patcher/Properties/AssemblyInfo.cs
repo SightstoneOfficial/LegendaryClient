@@ -11,7 +11,7 @@ using System.Windows;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Sightstone.Patcher")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("League of legends custom updator (that also updates sightstone)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Sightstone.Patcher")]

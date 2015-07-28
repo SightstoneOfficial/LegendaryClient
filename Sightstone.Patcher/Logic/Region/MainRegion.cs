@@ -15,6 +15,8 @@ namespace Sightstone.Patcher.Logic.Region
 
         public abstract Uri ReleaseListingUri { get; }
 
+        public abstract Uri GameClientReleaseListingUri { get; }
+
         public abstract Uri GameClientUpdateUri { get; }
 
         public abstract Uri GameReleaseListingUri { get; }

@@ -4,6 +4,7 @@
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       Title="Sightstone Patcher"
                       WindowStartupLocation="CenterScreen"
+                      Closing="MainWindow_OnClosing"
                       Width="1360" Height="768" ResizeMode="CanMinimize">
     <Window.Resources>
         <ResourceDictionary>

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -17,6 +18,7 @@ namespace Sightstone.Patcher
     /// </summary>
     public partial class MainWindow
     {
+        PatcherPage patcherPage = new PatcherPage();
         public MainWindow()
         {
             InitializeComponent();
@@ -42,7 +44,7 @@ namespace Sightstone.Patcher
             Properties.Settings.Default.FirstStart = false;
 #endif
             var waitAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
-            waitAnimation.Completed += (o, e) => { Container.Content = new PatcherPage().Content; };
+            waitAnimation.Completed += (o, e) => { Container.Content = patcherPage.Content; };
             Container.BeginAnimation(OpacityProperty, waitAnimation);
         }
 
@@ -50,9 +52,17 @@ namespace Sightstone.Patcher
         //Contains a progress for the future
         public void SlideGrid(object sender, RoutedEventArgs e)
         {
+            if (!patcherPage.downloadStarted)
+                patcherPage.Download();
             OverlayGrid.Visibility = OverlayGrid.Visibility == Visibility.Hidden
                 ? Visibility.Visible
                 : Visibility.Hidden;
+        }
+
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
+        {
+            //Close pls
+            Environment.Exit(0);
         }
     }
 }

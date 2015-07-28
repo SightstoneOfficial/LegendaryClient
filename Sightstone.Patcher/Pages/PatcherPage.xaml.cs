@@ -14,6 +14,7 @@ using Sightstone.Patcher.PatcherElements;
 using Newtonsoft.Json;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -35,6 +36,7 @@ namespace Sightstone.Patcher.Pages
     {
         private readonly string _executingDirectory;
         private bool _isLogVisible;
+        public bool downloadStarted;
 
         public PatcherPage()
         {
@@ -51,7 +53,7 @@ namespace Sightstone.Patcher.Pages
             }
             LogTextBox("You must have The following license below to use Sightstone.Patcher");
             LogTextBox(Environment.NewLine);
-            LogTextBox(@"Sightstone.Patcher, League of Legendary Custom Patcher
+            LogTextBox(@"Sightstone.Patcher, League of Legends Custom Patcher
     Copyright (C) 2015  eddy5641
 
     This program is free software: you can redistribute it and/or modify
@@ -73,7 +75,6 @@ namespace Sightstone.Patcher.Pages
         {
             //Load server status
             Status();
-            Download();
             //Load Champions with this thread
             var x = new Thread(() =>
                 {
@@ -124,17 +125,59 @@ namespace Sightstone.Patcher.Pages
                     }
                 });
             x.Start();
+
+            Download();
         }
 
         private bool loaded;
 
-        private void Download()
+        public void Download()
         {
+#if true && DEBUG
+            return;
+#endif
+            if (string.IsNullOrWhiteSpace(Settings.Default.RegionName) || downloadStarted)
+                return;
+            downloadStarted = true;
             var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
-            if (region.RegionType == RegionType.Riot)
+            var files = new List<DownloadFile>();
+            var downloader = new Downloader();
+            switch (region.RegionType)
             {
-                LeagueDownloadLogic
+                case RegionType.KR:
+                case RegionType.Riot:
+                    {
+                        files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
+                        {
+                            DownloadUri = toDl,
+                            OutputPath = Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases",
+                                LeagueDownloadLogic.GetLolClientSlnVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                    StringSplitOptions.None)[1]),
+                            OverrideFiles = true
+                        }).ToList());
+
+                    }
+                    break;
+                case RegionType.PBE:
+                    {
+                        files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
+                        {
+                            DownloadUri = toDl,
+                            OutputPath = Path.Combine(Client.ExecutingDirectory, "PBE", "RADS", "projects", "lol_game_client", "releases",
+                                LeagueDownloadLogic.GetLolClientSlnVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                    StringSplitOptions.None)[1]),
+                            OverrideFiles = true
+                        }).ToList());
+                    }
+                    break;
             }
+
+            downloader.DownloadMultipleFiles(files);
+        }
+
+        private void DownloadCompleted()
+        {
+            FinishedGrid.Visibility = Visibility.Visible;
         }
 
         private void Status()
@@ -158,14 +201,14 @@ namespace Sightstone.Patcher.Pages
                                 item.MouseDown += (o, e) => Changed(o);
                                 StatusView.Items.Add(item);
                             });
-                        var request = WebRequest.Create("http://Sightstone.net");
+                        var request = WebRequest.Create("http://legendaryclient.net");
                         var response = (HttpWebResponse)request.GetResponse();
                         Client.RunOnUIThread(() =>
                         {
                             var item = new CurrentStatus
                             {
                                 StatusLabel = { Content = "Sightstone website" },
-                                Tag = new Uri("http://Sightstone.net")
+                                Tag = new Uri("http://legendaryclient.net")
                             };
                             item.UpdateStatus(
                                 response.StatusCode != HttpStatusCode.OK
