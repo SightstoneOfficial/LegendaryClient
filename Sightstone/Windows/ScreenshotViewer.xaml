@@ -1,0 +1,81 @@
+﻿<Page x:Class="Sightstone.Windows.ScreenshotViewer"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+      Title="ScreenshotViewer"
+      mc:Ignorable="d" d:DesignHeight="768"
+      TextElement.Foreground="White"
+      d:DesignWidth="1280">
+    
+    <!-- Background -->
+    <Grid Background="#B2000000">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
+        </Grid.RowDefinitions>
+
+        <!-- Titlebar -->
+        <Grid Grid.Row="0" VerticalAlignment="Stretch" Margin="30,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <!-- Date Shot -->
+            <Grid Grid.Column="0" HorizontalAlignment="Left">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,0,5,0">Recorded:</TextBlock>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center">29. August 2015, 19:38</TextBlock>
+            </Grid>
+            <TextBlock x:Name="ScreenshotPath" Grid.Column="1" FontSize="15" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center">(Sample Path) C:\Games\League of Legends\Screenshots\Filename.jpg</TextBlock>
+            <Button x:Name="OpenScreenshotsPathButton" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+                <Border BorderThickness="1" CornerRadius="3" BorderBrush="White" Padding="14,7">
+                    <TextBlock FontSize="11">Show in Explorer</TextBlock>
+                </Border>
+            </Button>
+        </Grid>
+        
+        <!-- Image -->
+        <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Border VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Padding="10" BorderThickness="1" BorderBrush="#20FFFFFF">
+                <Image Stretch="Uniform" Source="/Sightstone;component/NONE.png"/>
+            </Border>
+        </Grid>
+        
+        <!-- Controls -->
+        <Grid Grid.Row="2" VerticalAlignment="Stretch" HorizontalAlignment="Center" Margin="30,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="PrevScreenshotButton" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+                <Viewbox Width="30" Height="30">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" Fill="White" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <Button x:Name="DeleteScreenshotButton" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+                <Viewbox Width="30" Height="30">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" Fill="White" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <Button x:Name="NextScreenshotButton" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+                <Viewbox Width="30" Height="30">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" Fill="White" />
+                    </Canvas>
+                </Viewbox>
+            </Button>            
+        </Grid>
+    </Grid>
+</Page>

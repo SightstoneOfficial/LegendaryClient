@@ -18,16 +18,12 @@
     </Page.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
 
-
-        <Grid Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button x:Name="LoadScript" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="LoadScript_Click" IsDefault="False">
-                <Viewbox Width="24" Height="24">
-                    <Label FontWeight="SemiBold">+</Label>
-                </Viewbox>
-            </Button>
-        </Grid>
-        <Grid Name="Titlebar" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
+        <Grid Name="Titlebar" Grid.Row="0" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -36,7 +32,7 @@
             <TextBlock Grid.Column="1" Foreground="{StaticResource IdealForegroundColorBrush}" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right">Sightstone supports Plugins, if you wish to add one press the "+" Button.</TextBlock>
         </Grid>
         
-        <Grid VerticalAlignment="Top" Margin="30,90,30,30">
+        <Grid VerticalAlignment="Top" Grid.Row="1" Margin="30">
             <DataGrid Name="PluginList">
                 <DataGrid.Columns>
 					<DataGridTextColumn Header="Enabled" Binding="{Binding Enabled}" Width="75" />
@@ -48,5 +44,14 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
+
+        <Grid Panel.ZIndex="10" Grid.Row="1" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button x:Name="LoadScript" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="LoadScript_Click" IsDefault="False">
+                <Viewbox Width="24" Height="24">
+                    <Label FontWeight="SemiBold">+</Label>
+                </Viewbox>
+            </Button>
+        </Grid>
+
     </Grid>
 </Page>

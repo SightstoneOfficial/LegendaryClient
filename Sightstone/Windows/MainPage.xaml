@@ -46,7 +46,7 @@
                         </Grid>
                     </Grid>
 
-                    <ScrollViewer Name="MyScrollViewer" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0,140,0,0" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                    <ScrollViewer Name="MainPageScroller" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0,140,0,0" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                         <Grid>
                             <!-- Card 1 -->
                             <Grid Width="550" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="30,30,30,30">

@@ -6,7 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Sightstone.Controls"
     Title="ScreenshotsPage"
-    mc:Ignorable="d" d:DesignHeight="768"
+    mc:Ignorable="d"
+    Background="{StaticResource MaterialDesignPaper}"
+    d:DesignHeight="768"
     d:DesignWidth="1280">
 
     <Page.Resources>
@@ -18,21 +20,51 @@
     </Page.Resources>
 
     <Grid>
-        <Grid Name="Titlebar" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+            
+        <!-- Titlebar -->
+        <Grid Name="Titlebar" Grid.Row="0" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Screenshots</Label>
-            <TextBlock Grid.Column="1" Foreground="{StaticResource IdealForegroundColorBrush}" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right"></TextBlock>
+            <Grid Grid.Column="1" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Foreground="{StaticResource IdealForegroundColorBrush}" VerticalAlignment="Center" Margin="0,0,5,0">Your Screenshots are located at:</TextBlock>
+                <TextBlock x:Name="ScreenshotsPath" Grid.Column="1" Foreground="{StaticResource IdealForegroundColorBrush}" VerticalAlignment="Center" Margin="0,0,20,0">(Sample Path) C:\Games\League of Legends\Screenshots</TextBlock>
+                <Button x:Name="OpenScreenshotsPathButton" Grid.Column="2">Open Folder</Button>
+            </Grid>
+            
         </Grid>
-        
-        <Grid VerticalAlignment="Top" Margin="30,90,30,30">
-            <ListView Style="{x:Null}" BorderThickness="0" Background="{x:Null}">
-                <ListViewItem>
-                    <Label Foreground="Wheat">dawd</Label>
-                </ListViewItem>
-            </ListView>
+
+        <!-- Screenshots Viewer -->
+        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Grid.Row="1">
+            <!-- Scroll Horizontal -->
+            <ScrollViewer x:Name="ScreenshotsPageScroller" VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+                <!-- Use Uniformgrid to make it perfect -->
+                <UniformGrid Rows="3" HorizontalAlignment="Stretch" Margin="0,0,10,10">
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                    <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
+                </UniformGrid>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>

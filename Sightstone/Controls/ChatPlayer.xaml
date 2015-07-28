@@ -12,7 +12,7 @@
 
         <Button x:Name="ProfileImageContainer" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Width="44" Height="44" Margin="8" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Viewbox Width="44" Height="44">
-                <Image x:Name="ProfileImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-3" Source="/Sightstone;component/Icon.ico"/>
+                <Image x:Name="ProfileImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-3" Source="/Sightstone;component/NONE.png"/>
             </Viewbox>
         </Button>
 

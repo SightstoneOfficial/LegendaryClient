@@ -714,6 +714,9 @@
     <Compile Include="Windows\TeamQueuePage.xaml.cs">
       <DependentUpon>TeamQueuePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\ScreenshotViewer.xaml.cs">
+      <DependentUpon>ScreenshotViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Warning.xaml.cs">
       <DependentUpon>Warning.xaml</DependentUpon>
     </Compile>
@@ -1255,6 +1258,10 @@
     <Page Include="Windows\TeamQueuePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\ScreenshotViewer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
