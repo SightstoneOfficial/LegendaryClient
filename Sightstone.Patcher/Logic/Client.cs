@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Sightstone.Patcher.Logic.Region;
 
 #endregion
 
@@ -61,6 +62,11 @@ namespace Sightstone.Patcher.Logic
         ///     Used to play sounds
         /// </summary>
         internal static MediaElement SoundPlayer;
+
+        /// <summary>
+        /// The region to patch to
+        /// </summary>
+        internal static MainRegion Region;
 
         internal static Type CurrentPage; //Stop changing to same page
         internal static List<Page> CachedPages = new List<Page>();

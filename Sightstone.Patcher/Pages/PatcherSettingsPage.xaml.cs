@@ -176,11 +176,15 @@ namespace Sightstone.Patcher.Pages
                 case "PBE":
                     RegionName.Items.Add("PBE");
                     RegionName.SelectedItem = "PBE";
+                    Properties.Settings.Default.RegionName = "PBE";
+                    RegionName_SelectionChanged(null, null);
                     RegionName.IsEnabled = false;
                     break;
                 case "Korea":
                     RegionName.Items.Add("KR");
                     RegionName.SelectedItem = "KR";
+                    Properties.Settings.Default.RegionName = "KR";
+                    RegionName_SelectionChanged(null, null);
                     RegionName.IsEnabled = false;
                     break;
                 case "Garena":
@@ -196,6 +200,7 @@ namespace Sightstone.Patcher.Pages
                     RegionName.Visibility = System.Windows.Visibility.Hidden;
                     break;
             }
+            Properties.Settings.Default.Save();
         }
 
         private void RegionName_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -206,6 +211,7 @@ namespace Sightstone.Patcher.Pages
             Properties.Settings.Default.Save();
 
             var region = Properties.Settings.Default.RegionName;
+            Client.Region = MainRegion.GetMainRegion(region);
             if (!string.IsNullOrEmpty(region))
                 Client.RegionLabel.Content = "Connected to: " + region;
             else

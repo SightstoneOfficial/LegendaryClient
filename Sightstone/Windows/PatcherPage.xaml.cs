@@ -549,22 +549,20 @@ namespace Sightstone.Windows
                 {
                     case "PBE": if (Settings.Default.PBELocation != string.Empty)
                             return Settings.Default.PBELocation;
-                        else break;
+                        break;
                     case "Live": if (Settings.Default.LiveLocation != string.Empty)
                             return Settings.Default.LiveLocation;
-                        else break;
+                        break;
                     case "Korea": if (Settings.Default.KRLocation != string.Empty)
                             return Settings.Default.KRLocation;
-                        else break;
+                        break;
                     case "Garena": if (Settings.Default.GarenaLocation != string.Empty && Settings.Default.GarenaLocation.EndsWith("lol.exe"))
                         {
                             Settings.Default.GarenaLocation = Settings.Default.GarenaLocation.Replace("lol.exe", "");
                             return Settings.Default.GarenaLocation;
                         }
-                        else if (Settings.Default.GarenaLocation != string.Empty)
+                        if (Settings.Default.GarenaLocation != string.Empty)
                             return Settings.Default.GarenaLocation;
-                        else break;
-                    default:
                         break;
                 }
                 var possiblePaths = new List<Tuple<string, string>>
@@ -586,26 +584,23 @@ namespace Sightstone.Windows
                 };
                 foreach (var tuple in possiblePaths)
                 {
-                    string path = tuple.Item1;
-                    string valueName = tuple.Item2;
+                    var path = tuple.Item1;
+                    var valueName = tuple.Item2;
                     try
                     {
                         var value = Registry.GetValue(path, valueName, string.Empty);
-                        if (value != null && value.ToString() != string.Empty)
-                        {
-                            var regKey = Registry.CurrentUser.CreateSubKey("Sightstone");
-                            if (regKey != null)
-                            {
-                                regKey.SetValue(
-                                    value.ToString().Contains("lol.exe") ? "GarenaLocation" : "LoLLocation",
-                                    value.ToString());
-                                regKey.Close();
-                            }
-                            return value.ToString();
-                        }
+                        if (value == null || value.ToString() == string.Empty) continue;
+                        var regKey = Registry.CurrentUser.CreateSubKey("Sightstone");
+                        if (regKey == null) return value.ToString();
+                        regKey.SetValue(
+                            value.ToString().Contains("lol.exe") ? "GarenaLocation" : "LoLLocation",
+                            value.ToString());
+                        regKey.Close();
+                        return value.ToString();
                     }
-                    catch
+                    catch (Exception e)
                     {
+                        Client.Log(e);
                     }
                 }
             }
@@ -621,14 +616,13 @@ namespace Sightstone.Windows
             findLeagueDialog.DefaultExt = ".exe";
             findLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
 
-            bool? result = findLeagueDialog.ShowDialog();
+            var result = findLeagueDialog.ShowDialog();
             if (result != true)
                 return string.Empty;
 
-            RegistryKey key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
-            if (key != null)
-                key.SetValue("Path",
-                    findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty));
+            var key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
+            key?.SetValue("Path",
+                findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty));
 
             if (restart)
                 LogTextBox("Saved value, please restart the client to login.");
@@ -642,7 +636,7 @@ namespace Sightstone.Windows
             {
                 PatchTextBox.Text += "[" + DateTime.Now.ToShortTimeString() + "] " + s + Environment.NewLine;
                 PatchTextBox.ScrollToEnd();
-                this.Focus();
+                Focus();
             }));
             Client.Log(s);
         }
@@ -787,14 +781,7 @@ namespace Sightstone.Windows
 
         private void ShowLog_Click(object sender, RoutedEventArgs e)
         {
-            if (PatchTextBox.IsVisible)
-            {
-                PatchTextBox.Visibility = System.Windows.Visibility.Hidden;
-            }
-            else
-            {
-                PatchTextBox.Visibility = System.Windows.Visibility.Visible;
-            }
+            PatchTextBox.Visibility = PatchTextBox.IsVisible ? Visibility.Hidden : Visibility.Visible;
         }
 
         private void UpdateRegionComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

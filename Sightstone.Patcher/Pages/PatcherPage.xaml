@@ -8,42 +8,29 @@
     mc:Ignorable="d"
     Height="760" Width="1355"
     Title="PatcherPage">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary
+                        Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
-        <Button x:Name="UnderButtonLeft" Content="" HorizontalAlignment="Left" VerticalAlignment="Top" Width="266"
-			Height="100" Style="{DynamicResource HideSquare}" />
-        <Button x:Name="UnderButtonRight" Content="" HorizontalAlignment="Right" VerticalAlignment="Top" Width="267"
-			Height="100" Style="{DynamicResource HideSquare}" Click="Play_Click" />
+        <Button x:Name="UnderButtonRight" Content="Play" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" Height="50" Click="Play_Click" Margin="0,5,1,0"  />
+        <Button x:Name="OverButtonLeft" Content="Play" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="50" Click="Play_Click" Margin="10,5,0,0"  />
         <!--This is the title grid, the bar that is at the top-->
-        <Grid x:Name="UpdateGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center">
-            <Image HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1000"
-				Source="/Sightstone.Patcher;component/TopBar.Png" />
-            <Label x:Name="StatusLabel" Content="Downloading Files. Please wait" HorizontalAlignment="Left" VerticalAlignment="Top"
-				Margin="82,0,0,0" Width="184" />
-            <Label Content="0%" HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Top"
-				Margin="0,44,86,0" Width="184" />
-            <ProgressBar x:Name="FileBar" HorizontalAlignment="Center" Height="20" VerticalAlignment="Top" Width="832"
-				Margin="82,26,86,0" />
-            <ProgressBar x:Name="TotalBar" HorizontalAlignment="Center" Height="20" VerticalAlignment="Top" Width="832"
-				Margin="82,70,86,0" />
-            <Label Content="Total Progress" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="82,44,0,0"
-				Width="184" />
-            <Label Content="0%" HorizontalContentAlignment="Right" HorizontalAlignment="Right" VerticalAlignment="Top"
-				Margin="0,0,86,0" Width="184" />
-
-        </Grid>
+        <ProgressBar x:Name="TotalBar" HorizontalAlignment="Center" Height="4" VerticalAlignment="Top" Width="1355" />
         <Grid Visibility="Hidden" x:Name="FinishedGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" >
             <Image HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1000"
 				Source="/Sightstone.Patcher;component/TopBar.Png" />
             <Label Content="Finished" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Width="995" FontSize="100" VerticalContentAlignment="Top" FontFamily="/Sightstone.Patcher;component/#Lobster 1.3" Margin="0,-20,0,0"/>
         </Grid>
-        <Button x:Name="OverButtonLeft" MouseEnter="OverButtonLeft_MouseEnter"
-			MouseLeave="ReturnButtonsToNumbers_MouseLeage" Content="Show Log TextBox" HorizontalAlignment="Left"
-			VerticalAlignment="Top" Width="266" Height="100" Style="{DynamicResource HideSquare}" Click="OverButtonLeft_OnClick"/>
-        <Button x:Name="OverButtonRight" MouseEnter="OverButtonRight_MouseEnter"
-			MouseLeave="ReturnButtonsToNumbers_MouseLeage" Content="Play" HorizontalAlignment="Left"
-			VerticalAlignment="Top" Width="267" Margin="1093,0,0,0" Height="100"
-			Style="{DynamicResource HideSquare}" />
 
         <Grid Margin="0,105,0,0" x:Name="NewsGrid" Visibility="Visible">
             <ListBox x:Name="NewsBox"  HorizontalAlignment="Left" Height="394" Margin="995,0,0,0" VerticalAlignment="Top" Width="350" SelectionChanged="OnSelectionChanged" />

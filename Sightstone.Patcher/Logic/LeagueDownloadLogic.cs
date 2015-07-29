@@ -35,6 +35,17 @@ namespace Sightstone.Patcher.Logic
             return ReleaseListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None).ToArray();
         }
 
+        public static string[] GetLolClientVersion(MainRegion Region)
+        {
+            //Get the GameClientSln version
+            using (new WebClient())
+            {
+                ReleaseListing = new WebClient().DownloadString(Region.ReleaseListingUri);
+            }
+
+            return ReleaseListing.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToArray();
+        }
+
         public static string GetLatestLCLOLVersion()
         {
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")))
@@ -43,6 +54,17 @@ namespace Sightstone.Patcher.Logic
             }
             var encoding = new ASCIIEncoding();
             File.Create(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
+            return "0.0.0.0";
+        }
+
+        public static string GetLatestLCClientVersion()
+        {
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version")))
+            {
+                return File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version"))[0];
+            }
+            var encoding = new ASCIIEncoding();
+            File.Create(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
             return "0.0.0.0";
         }
 
@@ -74,6 +96,19 @@ namespace Sightstone.Patcher.Logic
             using (var client = new WebClient())
             {
                 packagemanifest = client.DownloadString(Region.GameClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
+            }
+            var resultUris = (from uris in packagemanifest from toInstall in notInstalled where uris.Contains(toInstall) select new Uri("http://l3cdn.riotgames.com/releases/live" + uris.Split(',')[0]));
+            return resultUris.ToArray();
+        }
+
+        public static Uri[] ClientGetUris(MainRegion Region)
+        {
+            string[] packagemanifest;
+            var versions = GetLolClientVersion(Region);
+            var notInstalled = versions.TakeWhile(version => version != GetLatestLCClientVersion()).ToList();
+            using (var client = new WebClient())
+            {
+                packagemanifest = client.DownloadString(Region.ClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
             }
             var resultUris = (from uris in packagemanifest from toInstall in notInstalled where uris.Contains(toInstall) select new Uri("http://l3cdn.riotgames.com/releases/live" + uris.Split(',')[0]));
             return resultUris.ToArray();
