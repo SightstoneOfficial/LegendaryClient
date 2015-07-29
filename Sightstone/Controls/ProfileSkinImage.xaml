@@ -4,19 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             Height="279" Width="154">
+             MinWidth="155"
+             >
     
     <Grid>
-        <Rectangle Fill="#02000000" Width="154" Height="279" />
-        <Image x:Name="SkinImage" HorizontalAlignment="Left" Height="280" Margin="0,0,0,0" VerticalAlignment="Top"
-               Width="154" />
-        <Label x:Name="LimitedLabel" Content="Limited" HorizontalAlignment="Left" VerticalAlignment="Top"
-               Foreground="White" Background="#4C0C0C0C" FontWeight="SemiBold" FontSize="16" Visibility="Hidden">
-            <Label.Effect>
-                <DropShadowEffect ShadowDepth="2" BlurRadius="1" />
-            </Label.Effect>
-        </Label>
-        <Label x:Name="SkinName" Content="Definitely not Blitzcrank" HorizontalAlignment="Center" Margin="0,0,0,0"
-               Background="#4C0C0C0C" VerticalAlignment="Bottom" Foreground="White" />
+        <!-- Image -->
+        <Grid HorizontalAlignment="Stretch">
+            <Grid.OpacityMask>
+                <VisualBrush Visual="{Binding ElementName=ClipMask}" Stretch="None" />
+            </Grid.OpacityMask>
+            <Border x:Name="ClipMask" Background="White" CornerRadius="3" BorderThickness="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" BorderBrush="{StaticResource MaterialDesignPaper}"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <Label x:Name="LimitedLabel" Grid.Row="0" Panel.ZIndex="2" Padding="0" Content="Limited" Background="#4C0C0C0C" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Stretch" Foreground="White" Visibility="Hidden"/>
+                <Image Grid.RowSpan="3" x:Name="SkinImage" Panel.ZIndex="1" HorizontalAlignment="Stretch" Stretch="UniformToFill" Margin="-10" VerticalAlignment="Stretch" Source="/Sightstone;component/NONE.png"/>
+                <Label x:Name="SkinName" Grid.Row="2" Panel.ZIndex="2" Content="Skinname" Padding="0" Background="#4C0C0C0C" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Stretch" Foreground="White" />
+            </Grid>
+        </Grid>
+        <!-- Skinname -->
     </Grid>
 </UserControl>

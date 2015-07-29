@@ -51,7 +51,7 @@
         <!-- Screenshots Viewer -->
         <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0" Grid.Row="1">
             <!-- Scroll Horizontal -->
-            <ScrollViewer x:Name="ScreenshotsPageScroller" VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <ScrollViewer x:Name="ScreenshotsPageScroller" VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                 <!-- Use Uniformgrid to make it perfect -->
                 <UniformGrid Rows="3" HorizontalAlignment="Stretch" Margin="0,0,10,10">
                     <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
