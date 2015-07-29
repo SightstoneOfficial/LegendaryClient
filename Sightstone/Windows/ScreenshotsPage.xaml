@@ -19,8 +19,7 @@
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid>
-
+    <Grid x:Name="BlurMePlx">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
@@ -30,10 +29,13 @@
         <Grid Name="Titlebar" Grid.Row="0" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Label Grid.Column="0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Screenshots</Label>
-            <Grid Grid.Column="1" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+
+            <Button Grid.Column="0" Margin="10" x:Name="DevButton" VerticalAlignment="Center" HorizontalAlignment="Center" Click="DevButton_Click">Test Overlay</Button>
+            <Label Grid.Column="1" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Screenshots</Label>   
+            <Grid Grid.Column="2" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>

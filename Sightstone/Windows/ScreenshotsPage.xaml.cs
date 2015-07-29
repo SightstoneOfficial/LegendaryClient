@@ -44,6 +44,12 @@ namespace Sightstone.Windows
             InitializeComponent();
         }
 
+        private void DevButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new ScreenshotViewer().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
         private void Load()
         {
             UserClient user = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];

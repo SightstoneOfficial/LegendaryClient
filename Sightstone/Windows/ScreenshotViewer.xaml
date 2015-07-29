@@ -6,16 +6,22 @@
       xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
       Title="ScreenshotViewer"
       mc:Ignorable="d" d:DesignHeight="768"
-      TextElement.Foreground="White"
+      Foreground="White"
       d:DesignWidth="1280">
     
     <!-- Background -->
-    <Grid Background="#B2000000">
+    <Grid Background="#EE000000">
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
+
+        <Border>
+            <Border.Effect>
+                <BlurEffect Radius="20" KernelType="Gaussian"/>
+            </Border.Effect>
+        </Border>
 
         <!-- Titlebar -->
         <Grid Grid.Row="0" VerticalAlignment="Stretch" Margin="30,0">
@@ -30,11 +36,11 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,0,5,0">Recorded:</TextBlock>
-                <TextBlock Grid.Column="1" VerticalAlignment="Center">29. August 2015, 19:38</TextBlock>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" Margin="0,0,5,0" Foreground="White">Recorded:</TextBlock>
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Foreground="White">29. August 2015, 19:38</TextBlock>
             </Grid>
-            <TextBlock x:Name="ScreenshotPath" Grid.Column="1" FontSize="15" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center">(Sample Path) C:\Games\League of Legends\Screenshots\Filename.jpg</TextBlock>
-            <Button x:Name="CloseScreenshotsVierwerButton" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+            <TextBlock x:Name="ScreenshotPath" Grid.Column="1" FontSize="15" FontWeight="Medium" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White">(Sample Path) C:\Games\League of Legends\Screenshots\Filename.jpg</TextBlock>
+            <Button x:Name="CloseScreenshotsVierwerButton" Click="CloseScreenshotsVierwerButton_Click" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" Margin="0,0,-10,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
                 <Viewbox Width="30" Height="30">
                     <Canvas Width="24" Height="24">
                         <Path Data="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" Fill="White" />
@@ -45,6 +51,7 @@
         
         <!-- Image -->
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Border BorderBrush="#20FFFFFF" BorderThickness="0,1,0,1" Grid.ColumnSpan="3"/>
             <Border VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Padding="10" BorderThickness="1" BorderBrush="#20FFFFFF">
                 <Image Stretch="Uniform" Source="/Sightstone;component/NONE.png"/>
             </Border>
