@@ -37,7 +37,7 @@
                         <Button Height="40" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignFlatButton}" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Padding="0">
                             <Grid>
                                 <Label x:Name="CurrentStatusLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Checking for updates..." Foreground="{StaticResource PrimaryHueMidBrush}"/>
-                                <ProgressBar x:Name="CurrentProgressBar" Height="40" Margin="0,0,0.4,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{x:Null}" Background="{x:Null}" BorderThickness="0" Foreground="{StaticResource PrimaryHueLightBrush}"/>
+                                <ProgressBar x:Name="CurrentProgressBar" Panel.ZIndex="10" Height="40" Margin="0,0,0.4,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Style="{x:Null}" Background="{x:Null}" BorderThickness="0" Foreground="{StaticResource PrimaryHueLightBrush}"/>
                             </Grid>
                         </Button>
                     </Grid>
