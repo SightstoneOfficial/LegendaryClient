@@ -13,6 +13,7 @@ using System.Windows.Threading;
 using Sightstone.Logic.Riot;
 using Sightstone.Logic.Riot.Platform;
 using Sightstone.Logic.MultiUser;
+using System.Windows.Input;
 
 namespace Sightstone.Windows.Profile
 {
@@ -21,6 +22,16 @@ namespace Sightstone.Windows.Profile
     /// </summary>
     public partial class Skins
     {
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scrollviewer = sender as ScrollViewer;
+            if (e.Delta > 0)
+                scrollviewer.LineLeft();
+            else
+                scrollviewer.LineRight();
+            e.Handled = true;
+        }
+
         private List<ChampionDTO> championList;
 
         public Skins()
