@@ -21,7 +21,7 @@ READ THE LICENSE AT THE BOTTOM OF THE PAGE BEFORE INSTALLING
 [![Issues](https://img.shields.io/github/issues/LegendaryClient/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/issues)
 [![Releases](https://img.shields.io/github/release/LegendaryClient/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
 [![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/LegendaryClient/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square)](https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/multiuser-client/LICENSES/LegendaryClient.LICENSE)
+[![license](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/multiuser-client/LICENSES/LegendaryClient.LICENSE)
 
 Donations
 =========
