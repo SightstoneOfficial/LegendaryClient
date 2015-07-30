@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Sightstone.Logic.Riot;
 using Sightstone.Logic.Riot.Platform;
@@ -39,6 +40,7 @@ namespace Sightstone.Windows
         }
 
         private string ScreenshotFolder;
+        private string[] Screenshots;
         private UserClient user;
 
         public ScreenshotsPage()
@@ -50,7 +52,7 @@ namespace Sightstone.Windows
         private void DevButton_Click(object sender, RoutedEventArgs e)
         {
             if (!user.Dev) return;
-            Client.OverlayContainer.Content = new ScreenshotViewer().Content;
+            Client.OverlayContainer.Content = new ScreenshotViewer();
             Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
@@ -60,6 +62,7 @@ namespace Sightstone.Windows
             if(user.Garena)
             {
                 ScreenshotFolder = Path.Combine(Client.Location, "screenshots");
+                Screenshots = Directory.GetFiles(ScreenshotFolder);
                 ScreenshotsPath.Text = ScreenshotFolder;
                 if(!user.Dev)
                 {
@@ -70,9 +73,47 @@ namespace Sightstone.Windows
             {
                 // TODO : Add logic for non-Garena servers.
             }
-            // TODO : Add control for each screenshot
+            try
+            {
+                AddScreenshots();
+            }catch(UnauthorizedAccessException e)
+            {
+                Client.Log(e);
+                Client.Log("Unauthorized access to screenshot.");
+                Client.ErrorOverlay("Sightstone can't access some files in your screenshot folder.");
+            }catch(Exception e)
+            {
+                Client.Log(e);
+                Client.Log("Can't render screenshot for some reason.");
+                Client.ErrorOverlay("Sightstone encountered an unexpected error and is unable to view screenshots for you.");
+            }
         }
 
+        private void AddScreenshots()
+        {
+            SSGrid.Children.Clear();
+            foreach(var file in Screenshots)
+            {
+                var image = new Image();
+                image.Source = new BitmapImage(new Uri(file));
+                image.Stretch = Stretch.Uniform;
+                image.Margin = new Thickness(10, 10, 0, 0);
+                image.MouseDown += (s, e) =>
+                    {
+                        ViewScreenshot(file);
+                    };
+                SSGrid.Children.Add(image);
+            }
+        }
+
+        private void ViewScreenshot(string Path)
+        {
+            var ssviewer = new ScreenshotViewer(Screenshots.ToList(), Path);
+            Client.OverlayContainer = ssviewer;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
+        #region Control events
         private void OpenScreenshotsPathButton_Click(object sender, RoutedEventArgs e)
         {
             if (Directory.Exists(ScreenshotFolder))
@@ -81,10 +122,16 @@ namespace Sightstone.Windows
             }
             else
             {
-                var overlay = new MessageOverlay { MessageTitle = { Content = "Error" }, MessageTextBox = { Text = ScreenshotFolder + " does not exist." } };
-                Client.OverlayContainer.Content = overlay.Content;
-                Client.OverlayContainer.Visibility = Visibility.Visible;
+                Client.ErrorOverlay(ScreenshotFolder + " does not exist.");
             }
         }
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Visibility = Visibility.Hidden;
+            Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
+            Load();
+        }
+        #endregion
     }
 }

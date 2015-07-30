@@ -53,7 +53,7 @@
         <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Border BorderBrush="#20FFFFFF" BorderThickness="0,1,0,1" Grid.ColumnSpan="3"/>
             <Border VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10" Padding="10" BorderThickness="1" BorderBrush="#20FFFFFF">
-                <Image Stretch="Uniform" Source="/Sightstone;component/NONE.png"/>
+                <Image x:Name="ScreenshotImage" Stretch="Uniform" Source="/Sightstone;component/NONE.png"/>
             </Border>
         </Grid>
         
@@ -65,28 +65,28 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button x:Name="PrevScreenshotButton" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+            <Button x:Name="PrevScreenshotButton" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}" Click="PrevScreenshotButton_Click">
                 <Viewbox Width="30" Height="30">
                     <Canvas Width="24" Height="24">
                         <Path Data="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" Fill="White" />
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button x:Name="DeleteScreenshotButton" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+            <Button x:Name="DeleteScreenshotButton" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}" Click="DeleteScreenshotButton_Click">
                 <Viewbox Width="30" Height="30">
                     <Canvas Width="24" Height="24">
                         <Path Data="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" Fill="#FFfa5656" />
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button x:Name="OpenScreenshotPathButton" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+            <Button x:Name="OpenScreenshotPathButton" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}" Click="OpenScreenshotPathButton_Click">
                 <Viewbox Width="30" Height="30">
                     <Canvas Width="24" Height="24">
                         <Path Data="M9,18V15H5V11H9V8L14,13M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z" Fill="White" />
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button x:Name="NextScreenshotButton" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}">
+            <Button x:Name="NextScreenshotButton" Grid.Column="3" HorizontalAlignment="Right" VerticalAlignment="Stretch" Height="70" Padding="20" Margin="0,0" Foreground="White" Style="{StaticResource MaterialDesignFlatButton}" Click="NextScreenshotButton_Click">
                 <Viewbox Width="30" Height="30">
                     <Canvas Width="24" Height="24">
                         <Path Data="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z" Fill="White" />

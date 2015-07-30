@@ -34,8 +34,8 @@
             </Grid.ColumnDefinitions>
 
             <Button Grid.Column="0" Margin="10" x:Name="DevButton" VerticalAlignment="Center" HorizontalAlignment="Center" Click="DevButton_Click">Test Overlay</Button>
-            <Label Grid.Column="1" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Screenshots</Label>   
-            <Grid Grid.Column="2" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right">
+            <Label Grid.Column="1" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Screenshots</Label>
+            <Grid Grid.Column="2" Margin="0,0,120,0" VerticalAlignment="Center" HorizontalAlignment="Right">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -44,8 +44,9 @@
                 <TextBlock Grid.Column="0" Foreground="{StaticResource IdealForegroundColorBrush}" VerticalAlignment="Center" Margin="0,0,5,0">Your Screenshots are located at:</TextBlock>
                 <TextBlock x:Name="ScreenshotsPath" Grid.Column="1" Foreground="{StaticResource IdealForegroundColorBrush}" VerticalAlignment="Center" Margin="0,0,20,0">(Sample Path) C:\Games\League of Legends\Screenshots</TextBlock>
                 <Button x:Name="OpenScreenshotsPathButton" Grid.Column="2" Click="OpenScreenshotsPathButton_Click">Open Folder</Button>
+                <Button x:Name="RefreshButton" Grid.Column="2" Margin="130,0,-99,0" HorizontalAlignment="Left" Click="RefreshButton_Click">Refresh</Button>
             </Grid>
-            
+
         </Grid>
 
         <!-- Screenshots Viewer -->
@@ -53,7 +54,7 @@
             <!-- Scroll Horizontal -->
             <ScrollViewer x:Name="ScreenshotsPageScroller" VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                 <!-- Use Uniformgrid to make it perfect -->
-                <UniformGrid Rows="3" HorizontalAlignment="Stretch" Margin="0,0,10,10">
+                <UniformGrid x:Name="SSGrid" Rows="3" HorizontalAlignment="Stretch" Margin="0,0,10,10">
                     <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
                     <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
                     <Image Stretch="Uniform" Margin="10,10,0,0" Source="/Sightstone;component/champselectbg3.jpg" />
