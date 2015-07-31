@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Sightstone.Logic.Riot;
@@ -26,11 +27,27 @@ namespace Sightstone.Windows
     /// </summary>
     public partial class ScreenshotsPage
     {
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scrollviewer = sender as ScrollViewer;
+            if (e.Delta > 0)
+                scrollviewer.LineLeft();
+            else
+                scrollviewer.LineRight();
+            e.Handled = true;
+        }
+
         private string ScreenshotFolder;
 
         public ScreenshotsPage()
         {
             InitializeComponent();
+        }
+
+        private void DevButton_Click(object sender, RoutedEventArgs e)
+        {
+            Client.OverlayContainer.Content = new ScreenshotViewer().Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private void Load()

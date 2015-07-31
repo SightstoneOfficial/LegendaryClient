@@ -28,7 +28,14 @@
                     <ResourceDictionary.MergedDictionaries>
                         <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Brown.xaml" />
                     </ResourceDictionary.MergedDictionaries>
-                    
+
+                    <!-- Shadow Colors -->
+                    <Color x:Key="MaterialDesignShadow1">#40000000</Color>
+                    <Color x:Key="MaterialDesignShadow2">#50000000</Color>
+                    <Color x:Key="MaterialDesignShadow3">#60000000</Color>
+                    <Color x:Key="MaterialDesignShadow4">#60000000</Color>
+                    <Color x:Key="MaterialDesignShadow5">#60000000</Color>
+
                     <!-- Material Brushes -->
                     <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource Primary100}"/>
                     <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource Primary100Foreground}"/>

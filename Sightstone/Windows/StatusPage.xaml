@@ -45,25 +45,41 @@
                  Margin="0,0,115,4" HorizontalAlignment="Right" VerticalAlignment="Bottom"
                  TextWrapping="Wrap" controls:TextBoxHelper.Watermark="Enter Dev Command here" FontSize="20"
                  Visibility="Hidden" />
-        
+
         <Grid Width="Auto" HorizontalAlignment="Right" Margin="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <Border Padding="0" Margin="0" CornerRadius="3" BorderThickness="1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <StackPanel Background="{StaticResource PrimaryHueLightBrush}" Orientation="Horizontal">
+                    <Button x:Name="ChatButton" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="ChatButton_Click" Style="{StaticResource MaterialDesignFlatButton}" MinWidth="75">
+                        <Viewbox Width="24" Height="24">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z" Fill="{StaticResource PrimaryHueDarkBrush}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+                    <Button x:Name="NotificationButton" VerticalAlignment="Stretch" HorizontalAlignment="Center" Padding="0" BorderThickness="10,0" Margin="1,0" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="NotificationButton_Click" Style="{StaticResource MaterialDesignFlatButton}" MinWidth="75">
 
-            <Button x:Name="ChatButton" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="ChatButton_Click" Grid.Column="0" Style="{StaticResource MaterialDesignRaisedLightButton}" MinWidth="75">
-                <Image Source="/Sightstone;component/ui/img/bar/contacts.png" Stretch="None" />
-            </Button>
-            <Button x:Name="NotificationButton" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="NotificationButton_Click" Grid.Column="1" Style="{StaticResource MaterialDesignRaisedLightButton}" MinWidth="75" Panel.ZIndex="5">
-                <Image Source="/Sightstone;component/ui/img/bar/alert.png" Stretch="None" />
-            </Button>
-            <Button x:Name="JoinChat" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="JoinChatButton_Click" Grid.Column="2" Style="{StaticResource MaterialDesignRaisedLightButton}" MinWidth="75">
-                <Image Width="28" Height="24" Source="/Sightstone;component/ui/img/bar/chat.png" Stretch="Fill" />
-            </Button>
 
+
+                        <Border BorderThickness="1,0" BorderBrush="{StaticResource PrimaryHueDarkBrush}" Width="75" Height="24" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                            <Viewbox Width="24" Height="24">
+                                <Canvas Width="24" Height="24">
+                                    <Path Data="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" Fill="{StaticResource PrimaryHueDarkBrush}" />
+                                </Canvas>
+                            </Viewbox>
+                        </Border>
+
+
+                        
+                    </Button>
+                    <Button x:Name="JoinChat" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="JoinChatButton_Click" Style="{StaticResource MaterialDesignFlatButton}" MinWidth="75">
+                        <Viewbox Width="24" Height="24">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6Z" Fill="{StaticResource PrimaryHueDarkBrush}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+            </Border>
         </Grid>
-
     </Grid>
 </Page>
