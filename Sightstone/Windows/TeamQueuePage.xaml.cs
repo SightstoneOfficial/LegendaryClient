@@ -26,6 +26,7 @@ using agsXMPP;
 using agsXMPP.protocol.x.muc;
 using agsXMPP.protocol.client;
 using agsXMPP.Collections;
+using Sightstone.Logic.JSON;
 using Sightstone.Logic.MultiUser;
 
 namespace Sightstone.Windows

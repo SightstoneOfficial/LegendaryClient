@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using Sightstone.Logic.Riot;
 using Sightstone.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
+using Sightstone.Logic.JSON;
 using Sightstone.Logic.MultiUser;
 
 namespace Sightstone.Controls

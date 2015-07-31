@@ -455,7 +455,8 @@
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
     <Compile Include="Logic\SoundLogic\ChampSelectSound.cs" />
     <Compile Include="Logic\SoundLogic\SelectChampion.cs" />
-    <Compile Include="Logic\SQLite\invitationRequest.cs" />
+    <Compile Include="Logic\JSON\invitationRequest.cs" />
+    <Compile Include="Logic\SQLite\Skins.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\UpdateData.cs" />
     <Compile Include="Logic\UpdateRegion\BaseUpdateRegion.cs" />
