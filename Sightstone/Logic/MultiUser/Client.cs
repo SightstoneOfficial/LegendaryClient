@@ -457,6 +457,13 @@ namespace Sightstone.Logic.MultiUser
             MainWin.Topmost = false; // important
             MainWin.Focus(); // important
         }
+
+        internal static void ErrorOverlay(string Message)
+        {
+            var overlay = new MessageOverlay { MessageTitle = { Content = "Error" }, MessageTextBox = { Text = Message } };
+            Client.OverlayContainer.Content = overlay.Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
         #region WPF Tab Change
 
         /// <summary>

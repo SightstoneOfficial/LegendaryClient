@@ -43,16 +43,23 @@
             
 
             <Grid x:Name="SearchBox" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,10,0" Panel.ZIndex="500" Grid.Column="4">
-                <wpf:Card UniformCornerRadius="3">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="300"/>
-                            <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="300" Grid.Column="0" Foreground="{StaticResource MaterialDesignBody}" controls:TextBoxHelper.Watermark="Search" BorderThickness="0"/>
-                        <Button x:Name="SearchButton" Click="SearchButton_Click" Content="Search" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Grid.Column="1"/>
+                <Border BorderThickness="1" CornerRadius="3" Background="{StaticResource MaterialDesignPaper}">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="8" ShadowDepth="2.5" Direction="270" Color="Black" Opacity="0.22"/>
+                    </Border.Effect>
+                </Border>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="SearchTextBox" MaxLength="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Grid.Column="0" Foreground="{StaticResource MaterialDesignBody}" controls:TextBoxHelper.Watermark="Search" BorderThickness="0"/>
+                    <Button x:Name="SearchButton" Click="SearchButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Grid.Column="1">
+                        <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource PrimaryHueDarkBrush}" Width="75" Height="17" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">Search</TextBlock>
+                        </Border>
+                    </Button>
                     </Grid>
-                </wpf:Card>
             </Grid>
 
             <Grid Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -61,8 +68,8 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <Border Grid.ColumnSpan="2" CornerRadius="3" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0"/>
-                <Label Grid.Column="0" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" Padding="0,0,4,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Win of the day:" Margin="7,5,0,5"/>
-                <Label x:Name="FirstWinOfTheDayLabel" FontSize="16" Foreground="{StaticResource IdealForegroundColorBrush}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Content="23h 59m 59s" Padding="0" Margin="0,5,7,5"/>
+                <Label Grid.Column="0" FontSize="14" Foreground="{StaticResource IdealForegroundColorBrush}" Padding="0,0,4,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Win of the day:" Margin="7,5,0,5"/>
+                <Label x:Name="FirstWinOfTheDayLabel" FontSize="14" Foreground="{StaticResource IdealForegroundColorBrush}" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Content="23h 59m 59s" Padding="0" Margin="0,5,7,5"/>
             </Grid>
 
         </Grid>
