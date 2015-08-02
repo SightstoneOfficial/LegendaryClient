@@ -35,6 +35,29 @@ namespace Sightstone.Logic.MultiUser
         internal static string Version = "4.21.14";
         #endregion version
 
+        #region Language
+        /// <summary>
+        /// The language ResourceDictionary
+        /// </summary>
+        public static ResourceDictionary Dict = new ResourceDictionary();
+
+        /// <summary>
+        /// Get the text from the ResourceDictionary
+        /// </summary>
+        /// <param name="key">The key in the <see cref="Dict"/></param>
+        /// <returns>The <see cref="Dict"/> value for the key or the <see cref="key"/> if not found</returns>
+        public static string GetDictText(string key)
+        {
+            foreach (var keys in Dict.Keys.Cast<string>().Where(keys => keys == key))
+            {
+                return ((string)Dict[keys]).Replace("\n", Environment.NewLine);
+            }
+            return key;
+        }
+
+
+        #endregion Language
+
         #region Current
         internal static string CurrentUser = "";
 

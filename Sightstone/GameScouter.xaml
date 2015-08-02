@@ -55,14 +55,14 @@
 
         <Label x:Name="MMRLabel" Content="MMR" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Turquoise" Foreground="White" FontSize="22" Height="40" Width="1252" Margin="10,10,10,721"/>
 
-        <Label Content="Blue Team"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF419dff" Foreground="White" FontSize="22" Height="40" Width="1252" Margin="11,58,11,674"/>
+        <Label Content="{DynamicResource BlueTeam}"  HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF419dff" Foreground="White" FontSize="22" Height="40" Width="1252" Margin="11,58,11,674"/>
         <ListView x:Name="BlueTeam" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#404040" Height="260" Width="1252" Margin="11,97,11,415" BorderThickness="0"/>
 
-        <Label Content="Purple Team" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF9e32ff" Foreground="White" FontSize="22" Height="40" Width="1252" Margin="11,363,11,369"/>
+        <Label Content="{DynamicResource PurpleTeam}" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF9e32ff" Foreground="White" FontSize="22" Height="40" Width="1252" Margin="11,363,11,369"/>
         <ListView x:Name="PurpleTeam" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#404040 " Height="260" Width="1252" Margin="11,399,11,113" BorderThickness="0"/>
 
         <ListView x:Name="VoiceChat" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Height="80" Width="1252" Margin="11,665,11,27" Background="LightGray"/>
-        <Label Content="Curse Voice and Razer Comms Users (Not Working). Get Perm first" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,743,12,-5" Foreground="LightGray" FontSize="16" Height="34" Width="1252"/>
+        <Label Content="{DynamicResource CurseVoiceRazerComms}" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10,743,12,-5" Foreground="LightGray" FontSize="16" Height="34" Width="1252"/>
 
         <Rectangle x:Name="getpos" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="1" Stroke="Black" VerticalAlignment="Top" Width="1"/>
 

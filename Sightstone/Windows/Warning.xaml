@@ -13,7 +13,7 @@
         <Grid Width="448" Height="200" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
             <wpf:Card UniformCornerRadius="3">
                 <Grid>
-                    <Button x:Name="Header" Height="40" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Top" Content="Warning" FontSize="16"/>
+                    <Button x:Name="Header" Height="40" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Top" Content="{DynamicResource Warning}" FontSize="16"/>
                     
                     <TextBox x:Name="MessageText"  Margin="8,48" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Foreground="Black" BorderBrush="{x:Null}" TextWrapping="Wrap"/>
                     <Button x:Name="hide" Height="37" Margin="703,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="X" FontSize="16" Foreground="Black" />
@@ -22,8 +22,8 @@
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Button x:Name="backtochampselect" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="Return to Client" Grid.Column="0" />
-                        <Button x:Name="AcceptButton" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="Exit" Grid.Column="1" Style="{DynamicResource MaterialDesignRaisedAccentButton}" />
+                        <Button x:Name="backtochampselect" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="{DynamicResource ReturnToClient}" Grid.Column="0" />
+                        <Button x:Name="AcceptButton" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="{DynamicResource Exit}" Grid.Column="1" Style="{DynamicResource MaterialDesignRaisedAccentButton}" />
                     </Grid>
                     
                 </Grid>

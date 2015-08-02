@@ -212,7 +212,7 @@ namespace Sightstone.Windows
 
             foreach (var champ in Client.Champions)
             {
-                var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
+                var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.iconPath),
                     UriKind.Absolute);
                 champ.icon = new BitmapImage(source);
 
