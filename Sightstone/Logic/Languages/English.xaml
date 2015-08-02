@@ -1,11 +1,29 @@
-﻿<!-- ReSharper disable once InconsistentNaming -->
+﻿<!-- ReSharper disable InconsistentNaming -->
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!--For the copy paste-->
     <!--<system:String x:Key=""></system:String>-->
+    
+    <!--LeaverBuster-->
+    <system:String x:Key="FailedJoinQueue">Could not join the queue</system:String>
+    <system:String x:Key="LEAVER_BUSTER_TAINTED_WARNING"> - You have left a game in progress. Please go to the ingame page and finish your game before you queue again.</system:String>
+    <system:String x:Key="QUEUE_DODGER"> - {USER} is unable to join the queue as they recently dodged a game.</system:String>
+    <system:String x:Key="QUEUE_DODGER_TIME"> - You have {TIME} remaining until you may queue again</system:String>
+    <system:String x:Key="QUEUE_RESTRICTED"> - You are too far apart in ranked to queue together.</system:String>
+    <system:String x:Key="QUEUE_RESTRICTED_NOTE"> - For instance, Silvers can only queue with Bronze, Silver, or Gold players.</system:String>
+    <system:String x:Key="RANKED_RESTRICTED"> - You are not currently able to queue for ranked for: {GAMES} games. If this is inaccurate please report it as an issue on the github page. Thanks!</system:String>
+    <system:String x:Key="RANKED_MIN_LEVEL"> - Level 30 is required to played ranked games.</system:String>
+    <system:String x:Key="QUEUE_PARTICIPANTS"> - Not enough players for this queue type.</system:String>
+    <system:String x:Key="RANKED_NUM_CHAMPS"> - You require at least 16 owned champions to play a Normal Draft / Ranked game.</system:String>
+    <system:String x:Key="SubmitLeaverBusterUnknown">Please submit: - {REASON} - as an Issue on github explaining what it meant. Thanks!</system:String>
+    <system:String x:Key="LeaverBuster">LeaverBuster</system:String>
+    <system:String x:Key="LeaverBusterAbandonMatchNote">Abandoning a match or being AFK results in a negative experience for your teammates, and is a punishable offense in League of Legends.\nYou've been placed in a lower priority queue</system:String>
+    <system:String x:Key="CloseStillInQueue">You can close this window and you will still be in queue</system:String>
+
     <!--Queues-->
     <system:String x:Key="InQueue">In Queue</system:String>
+    <system:String x:Key="JoiningQueue">Joining Queue</system:String>
     
     <!--Pings-->
     <system:String x:Key="Pinging">Pinging</system:String>

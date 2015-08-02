@@ -704,42 +704,40 @@ namespace Sightstone.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
                     Client.HasPopped = false;
-                    var messageOver = new MessageOverlay();
-                    messageOver.MessageTitle.Content = "Could not join the queue";
+                    var messageOver = new MessageOverlay {MessageTitle = {Content = Client.GetDictText("FailedJoinQueue") }};
                     foreach (var item in result.PlayerJoinFailures)
                     {
-                        var x = (QueueDodger)item;
+                        var x = item;
                         TimeSpan time = TimeSpan.FromMilliseconds(x.PenaltyRemainingTime);
                         switch (x.ReasonFailed)
                         {
                             case "LEAVER_BUSTER_TAINTED_WARNING":
-                                messageOver.MessageTextBox.Text += " - You have left a game in progress. Please use the official client to remove the warning for now.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("LEAVER_BUSTER_TAINTED_WARNING");
                                 //Need to implement their new warning for leaving.
                                 break;
                             case "QUEUE_DODGER":
-                                messageOver.MessageTextBox.Text += " - " + x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
-                                messageOver.MessageTextBox.Text += " - You have " +
-                                                                   $"{time.Minutes:D2}m:{time.Seconds:D2}s" + " remaining until you may queue again";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_DODGER").Replace("{USER}", x.Summoner.Name) + Environment.NewLine;
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_DODGER_TIME").Replace("{TIME}", $"{time.Minutes:D2}m:{time.Seconds:D2}s");
                                 break;
                             case "QUEUE_RESTRICTED":
-                                messageOver.MessageTextBox.Text += " - You are too far apart in ranked to queue together.";
-                                messageOver.MessageTextBox.Text += " - For instance, Silvers can only queue with Bronze, Silver, or Gold players.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_RESTRICTED");
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_RESTRICTED_NOTE");
                                 break;
                             case "RANKED_RESTRICTED":
-                                messageOver.MessageTextBox.Text += " - You are not currently able to queue for ranked for: " + x.PenaltyRemainingTime + " games. If this is inaccurate please report it as an issue on the github page. Thanks!";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("RANKED_RESTRICTED");
                                 break;
                             case "RANKED_MIN_LEVEL":
-                                messageOver.MessageTextBox.Text += " - Level 30 is required to played ranked games.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("RANKED_MIN_LEVEL");
                                 break;
                             case "QUEUE_PARTICIPANTS":
-                                messageOver.MessageTextBox.Text += " - Not enough players for this queue type.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_PARTICIPANTS");
                                 break;
                             case "LEAVER_BUSTED":
                                 var xm = (BustedLeaver)x;
                                     Client.Log("LeaverBuster, Access token is: " + xm.AccessToken);
                                     var message = new MessageOverlay
                                     {
-                                        MessageTitle = { Content = "LeaverBuster" },
+                                        MessageTitle = { Content = Client.GetDictText("LeaverBuster") },
                                         MessageTextBox = { Text = "" }
                                     };
                                     Timer t = new Timer { Interval = 1000 };
@@ -752,14 +750,11 @@ namespace Sightstone.Windows
                                             DispatcherPriority.Input, new ThreadStart(() =>
                                             {
                                                 //Can not bypass this sadly, it just relaunches
-                                                message.MessageTextBox.Text =
-                                                    @"Abandoning a match or being AFK results in a negative experience for your teammates, and is a punishable offense in League of Legends.
-You've been placed in a lower priority queue" + Environment.NewLine;
-                                                message.MessageTextBox.Text += "You have " +
-                                                                               $"{timex.Minutes:D2}m:{timex.Seconds:D2}s" +
-                                                                               " remaining until you may queue again" + Environment.NewLine;
+                                                message.MessageTextBox.Text = Client.GetDictText("LeaverBusterAbandonMatchNote") + Environment.NewLine;
+                                                message.MessageTextBox.Text += Client.GetDictText("QUEUE_DODGER_TIME").
+                                                Replace("{TIME}", $"{timex.Minutes:D2}m:{timex.Seconds:D2}s") + Environment.NewLine;
 
-                                                message.MessageTextBox.Text += "You can close this window and you will still be in queue";
+                                                message.MessageTextBox.Text += Client.GetDictText("CloseStillInQueue");
 
                                                 Client.OverlayContainer.Content = message.Content;
                                                 if (timeleft < 0)
@@ -781,10 +776,10 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                                 EnteredQueue(await UserClient.calls.AttachTeamToQueue(parameters, new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", xm.AccessToken } }));
                                 break;
                             case "RANKED_NUM_CHAMPS":
-                                messageOver.MessageTextBox.Text += " - You require at least 16 owned champions to play a Normal Draft / Ranked game.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("RANKED_NUM_CHAMPS");
                                 break;
                             default:
-                                messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("SubmitLeaverBusterUnknown").Replace("{REASON}", x.ReasonFailed);
                                 break;
                         }
                     }
@@ -794,7 +789,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                 return;
             }
             UserClient.RiotConnection.MessageReceived += GotQueuePop;
-            setStartButtonText("Joining Queue");
+            setStartButtonText(Client.GetDictText("JoiningQueue"));
             startTime = 1;
             inQueue = true;
             UserClient.GameStatus = "inQueue";
@@ -810,7 +805,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
 
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            UserClient.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
+            UserClient.AutoAcceptQueue = AutoAcceptCheckBox.IsChecked ?? false;
         }
 
         private void SelectChamp_Click(object sender, RoutedEventArgs e)
@@ -821,8 +816,10 @@ You've been placed in a lower priority queue" + Environment.NewLine;
 
         internal void CreateText(string text, SolidColorBrush color)
         {
-            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-            tr.Text = text + Environment.NewLine;
+            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+            {
+                Text = text + Environment.NewLine
+            };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
         }
 
@@ -839,10 +836,8 @@ You've been placed in a lower priority queue" + Environment.NewLine;
         {
             if (ChatTextBox.Text == string.Empty)
             {
-                if (UserClient.InstaCall)
-                    CreateText("Insta call disabled.", Brushes.OrangeRed);
-                else
-                    CreateText("Type call in textbox first.", Brushes.OrangeRed);
+                CreateText(UserClient.InstaCall ? "Insta call disabled." : "Type call in textbox first.",
+                    Brushes.OrangeRed);
                 UserClient.InstaCall = false;
                 return;
             }
