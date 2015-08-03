@@ -35,6 +35,7 @@ namespace Sightstone.Windows
         public TeamBuilderPage(bool iscreater, LobbyStatus myLobby)
         {
             InitializeComponent();
+            Client.SwitchPage(new MainPage());
             StartUp();
         }
 
