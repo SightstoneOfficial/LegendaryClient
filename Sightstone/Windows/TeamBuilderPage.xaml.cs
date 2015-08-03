@@ -50,7 +50,7 @@ namespace Sightstone.Windows
         private TeamBuilderChoose TeamPlayer = new TeamBuilderChoose();
         private int TimeLeft = 10;
         internal List<int> availableSpells = new List<int>();
-        internal bool connectedToChat = false;
+        internal bool connectedToChat;
         private long inQueueTimer;
         private MucManager newRoom;
         private Jid jid;
@@ -111,7 +111,7 @@ namespace Sightstone.Windows
             Client.LastPageContent = Content;
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
-            Client.ReturnButton.Content = "Return to team builder";
+            Client.ReturnButton.Content = Client.GetDictText("ReturnTeambuilder");
             UserClient.GameStatus = "inTeamBuilder";
             UserClient.SetChatHover();
             AddPlayer();
@@ -250,13 +250,13 @@ namespace Sightstone.Windows
         {
             if (spell1 == 0 || spell2 == 0)
                 return;
-            string roleUp = string.Format(role.ToUpper());
-            string posUp = string.Format(position.ToUpper());
-            string Json =
+            var roleUp = role.ToUpper();
+            var posUp = position.ToUpper();
+            var json =
                 string.Format(
                     "\"skinId\":{0},\"position\":\"{1}\",\"role\":\"{2}\",\"championId\":{3},\"spell2Id\":{4},\"queueId\":61,\"spell1Id\":{5}",
                     skinId, posUp, roleUp, ChampionId, spell2, spell1);
-            CallWithArgs(Guid.NewGuid().ToString(), "cap", "createSoloQueryV4", "{" + Json + "}");
+            CallWithArgs(Guid.NewGuid().ToString(), "cap", "createSoloQueryV4", "{" + json + "}");
         }
 
         private void HandleProxyResponse(LcdsServiceProxyResponse Response)

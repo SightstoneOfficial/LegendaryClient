@@ -44,16 +44,30 @@
     <system:String x:Key="DisallowInvites">You may no longer invite players to this game.</system:String>
     <system:String x:Key="Invited">Invited</system:String>
     <system:String x:Key="Invite">Invite</system:String>
-    
+    <system:String x:Key="InstaCallDisabled">Insta call disabled.</system:String>
+    <system:String x:Key="InstaCallTypeCall">Type call in textbox first.</system:String>
+    <system:String x:Key="InstaCallNotify">You will insta call: "{CHAMP}" when you enter champ select</system:String>
+    <system:String x:Key="ReturnTeambuilder">Return to team builder</system:String>
+
     <!--Chat-->
     <system:String x:Key="Send">Send</system:String>
-    
+    <system:String x:Key="UserJoinRoomNotify">{USER} joined the room.</system:String>
+
     <!--MetroWindow Right Window Commands-->
     <system:String x:Key="ReturnToLobby">Return To Lobby</system:String>
     <system:String x:Key="NotLoggedIn">Not logged in</system:String>
     <system:String x:Key="PLAY">PLAY</system:String>
     <system:String x:Key="ReClickLeave">Re-Click To Leave</system:String>
-    
+    <!--MetroWindow Right Window Command Button Tooltips-->
+    <system:String x:Key="HomeButtonToolTip">Return to main page</system:String>
+    <system:String x:Key="PlayButtonToolTip">Select the queue you would like to join</system:String>
+    <system:String x:Key="ProfileButtonToolTip">View profiles or make changes to your own</system:String>
+    <system:String x:Key="ShopButtonToolTip">Buy some items in the store</system:String>
+    <system:String x:Key="ReplayButtonToolTip">Watch previous recorded games</system:String>
+    <system:String x:Key="ScreenshotButtonToolTip">View screenshots you took while in game</system:String>
+    <system:String x:Key="SettingsButtonToolTip">Change your settings here</system:String>
+    <system:String x:Key="PluginButtonToolTip">Change your settings here</system:String>
+
     <!--Warnings-->
     <system:String x:Key="Warning">Warning</system:String>
     <system:String x:Key="ReturnToClient">Return to Client</system:String>

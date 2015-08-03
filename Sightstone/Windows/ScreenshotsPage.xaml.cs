@@ -52,8 +52,8 @@ namespace Sightstone.Windows
         private void DevButton_Click(object sender, RoutedEventArgs e)
         {
             if (!user.Dev) return;
-            Client.OverlayContainer.Content = new ScreenshotViewer();
-            Client.OverlayContainer.Visibility = Visibility.Visible;
+            //Client.OverlayContainer.Content = new ScreenshotViewer();
+            //Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         private void Load()
@@ -109,7 +109,7 @@ namespace Sightstone.Windows
         private void ViewScreenshot(string Path)
         {
             var ssviewer = new ScreenshotViewer(Screenshots.ToList(), Path);
-            Client.OverlayContainer = ssviewer;
+            Client.OverlayContainer.Content = ssviewer;
             Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 

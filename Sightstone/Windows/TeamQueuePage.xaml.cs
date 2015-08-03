@@ -129,7 +129,7 @@ namespace Sightstone.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = pres.From.Resource + " joined the room." + Environment.NewLine;
+                tr.Text = Client.GetDictText("UserJoinRoomNotify").Replace("{USER}", pres.From.Resource) + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatText.ScrollToEnd();
             }));
@@ -757,11 +757,12 @@ namespace Sightstone.Windows
                                                 message.MessageTextBox.Text += Client.GetDictText("CloseStillInQueue");
 
                                                 Client.OverlayContainer.Content = message.Content;
-                                                if (timeleft < 0)
+                                                if (!(timeleft < 0))
                                                 {
-                                                    t.Stop();
-                                                    Client.OverlayContainer.Visibility = Visibility.Hidden;
+                                                    return;
                                                 }
+                                                t.Stop();
+                                                Client.OverlayContainer.Visibility = Visibility.Hidden;
                                             }));
 
                                     };
@@ -836,20 +837,20 @@ namespace Sightstone.Windows
         {
             if (ChatTextBox.Text == string.Empty)
             {
-                CreateText(UserClient.InstaCall ? "Insta call disabled." : "Type call in textbox first.",
+                CreateText(UserClient.InstaCall ? Client.GetDictText("InstaCallDisabled") : Client.GetDictText("InstaCallTypeCall"),
                     Brushes.OrangeRed);
                 UserClient.InstaCall = false;
                 return;
             }
             UserClient.InstaCall = true;
             UserClient.CallString = ChatTextBox.Text;
-            CreateText("You will insta call: \"" + UserClient.CallString + "\" when you enter champ select", Brushes.OrangeRed);
+            CreateText(Client.GetDictText("InstaCallNotify").Replace("{CHAMP}", UserClient.CallString), Brushes.OrangeRed);
             ChatTextBox.Text = string.Empty;
         }
 
         public void VisualQueueLeave()
         {
-            setStartButtonText("Start Game");
+            setStartButtonText(Client.GetDictText("StartGame"));
             inQueue = false;
             UserClient.GameStatus = "outOfGame";
             UserClient.SetChatHover();

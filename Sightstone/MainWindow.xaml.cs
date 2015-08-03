@@ -69,9 +69,9 @@ namespace Sightstone
         /// </summary>
         private static void InitializeLanguage()
         {
-            switch (Thread.CurrentThread.CurrentCulture.ToString())
+            switch (Thread.CurrentThread.CurrentCulture.ToString().Split('-')[0])
             {
-                case "en-US":
+                case "en":
                     Client.Dict.Source = new Uri("..\\Logic\\Languages\\English.xaml",
                                   UriKind.Relative);
                     break;
