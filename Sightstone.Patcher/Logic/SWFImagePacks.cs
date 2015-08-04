@@ -74,11 +74,8 @@ namespace Sightstone.Patcher.Logic
                 {
                     binReader.BaseStream.Position = 6;
                     image.index = binReader.Read();
-                    if (binReader.ReadByte() == 0)
-                    {
-                        image.data = binReader.ReadBytes(Convert.ToInt32(binReader.BaseStream.Length - binReader.BaseStream.Position));
-                        break;
-                    }
+                    binReader.BaseStream.Position = 13;
+                    image.data = binReader.ReadBytes(Convert.ToInt32(binReader.BaseStream.Length - binReader.BaseStream.Position));
                 }
                 image.Type = "Lossless";
                 imageInfo.Add(image);
