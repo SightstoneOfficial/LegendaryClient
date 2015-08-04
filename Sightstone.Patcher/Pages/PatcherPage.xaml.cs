@@ -42,6 +42,11 @@ namespace Sightstone.Patcher.Pages
         public bool IsLogVisible;
         public bool DownloadStarted;
 
+        /// <summary>
+        ///     List all SWF image packs which were updated
+        /// </summary>
+        public List<updateSWF> SWFextract;
+
         public PatcherPage()
         {
             InitializeComponent();
@@ -260,7 +265,6 @@ namespace Sightstone.Patcher.Pages
                 }
                 else if (clientFiles.ToString().Contains("abilities"))
                 {
-
                     if (clientFiles.ToString().Contains("Passive"))
                     {
                         files.Add(new DownloadFile
@@ -302,16 +306,24 @@ namespace Sightstone.Patcher.Pages
                 }
                 else if (clientFiles.ToString().Contains("imagePacks"))
                 {
+                    if (SWFextract == null)
+                        SWFextract = new List<updateSWF>();
                     files.Add(new DownloadFile
                     {
                         DownloadUri = clientFiles,
                         OutputPath = new []
                         {
-                            Path.Combine(Client.ExecutingDirectory, "Assests", "swf", clientFiles.ToString()
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", clientFiles.ToString()
                             .Split(new[] { "/imagePacks" }, StringSplitOptions.None)[1])
                         },
                         OverrideFiles = true
                     });
+                    var item = new updateSWF()
+                    {
+                        savePath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", Path.GetFileNameWithoutExtension(clientFiles.ToString())),
+                        swfPath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", Path.GetFileName(clientFiles.ToString())),
+                    };
+                    SWFextract.Add(item);
                 }
 
             }
@@ -344,6 +356,13 @@ namespace Sightstone.Patcher.Pages
             using (var files = File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
             {
                 files.Write(encoding.GetBytes(latestAir), 0, encoding.GetBytes(latestAir).Length);
+            }
+            if (SWFextract != null)
+            {
+                foreach(var item in SWFextract)
+                {
+                    SWFImagePacks.SWFextract(item.swfPath, item.savePath);
+                }
             }
             //TODO: Converters
             PlayButton.IsEnabled = true;
@@ -662,4 +681,12 @@ namespace Sightstone.Patcher.Pages
         public List<News> news { get; set; }
         public List<Community> community { get; set; }
     }
+
+    public class updateSWF
+    {
+        public string savePath { get; set; }
+        public string swfPath { get; set; }
+    }
+
+   
 }

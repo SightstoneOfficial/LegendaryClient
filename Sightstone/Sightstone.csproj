@@ -43,7 +43,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -54,6 +54,7 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <LangVersion>6</LangVersion>
     <FileAlignment>512</FileAlignment>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -504,6 +505,10 @@
     <Compile Include="Logic\SQLite\Skins.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\UpdateData.cs" />
+    <Compile Include="Logic\SWF\Images.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\Lossless.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\JPEG.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\Symbols.cs" />
     <Compile Include="Logic\UpdateRegion\BaseUpdateRegion.cs" />
     <Compile Include="Logic\UpdateRegion\China.cs" />
     <Compile Include="Logic\UpdateRegion\Garena.cs" />

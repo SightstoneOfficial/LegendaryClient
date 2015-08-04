@@ -114,6 +114,7 @@
     <Compile Include="Logic\Appveyor.cs" />
     <Compile Include="Logic\Downloader.cs" />
     <Compile Include="Logic\SightstoneDownloadLogic.cs" />
+    <Compile Include="Logic\SWFImagePacks.cs" />
     <Compile Include="Logic\UriVerify.cs" />
     <Compile Include="SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
@@ -231,7 +232,12 @@
   <ItemGroup>
     <Resource Include="TopBar.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Sightstone\Sightstone.csproj">
+      <Project>{a6f20d1a-8523-42ef-bed7-90915047ab44}</Project>
+      <Name>Sightstone</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
