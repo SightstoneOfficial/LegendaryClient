@@ -5,6 +5,9 @@
     <!--For the copy paste-->
     <!--<system:String x:Key=""></system:String>-->
     
+    <!--Shop-->
+    <system:String x:Key="Refresh">Refresh</system:String>
+    
     <!--LeaverBuster-->
     <system:String x:Key="FailedJoinQueue">Could not join the queue</system:String>
     <system:String x:Key="LEAVER_BUSTER_TAINTED_WARNING"> - You have left a game in progress. Please go to the ingame page and finish your game before you queue again.</system:String>

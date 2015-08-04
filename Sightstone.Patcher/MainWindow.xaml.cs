@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Media.Animation;
 using Sightstone.Patcher.Logic;
@@ -22,7 +23,8 @@ namespace Sightstone.Patcher
         public MainWindow()
         {
             InitializeComponent();
-            this.Visibility = Visibility.Hidden;
+            InitializeLanguage();
+            Visibility = Visibility.Hidden;
             var page = new SplashPage();
             page.Show();
             Client.ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -31,10 +33,7 @@ namespace Sightstone.Patcher
             Player.Volume = Properties.Settings.Default.Volume / 100;
             Client.SoundPlayer = Player;
             var region = Properties.Settings.Default.RegionName;
-            if (!string.IsNullOrEmpty(region))
-                RegionLabel.Content = "Connected to: " + region;
-            else
-                RegionLabel.Content = "Not connected to any regions";
+            RegionLabel.Content = !string.IsNullOrEmpty(region) ? Client.GetDictText("ConnectedRegion").Replace("{REGION}", region) : Client.GetDictText("NoRegion");
             Client.RegionLabel = RegionLabel;
             Client.OverlayContainer = OverlayContainer;
             Client.OverlayGrid = OverlayGrid;
@@ -46,6 +45,21 @@ namespace Sightstone.Patcher
             var waitAnimation = new DoubleAnimation(1, TimeSpan.FromSeconds(0.5));
             waitAnimation.Completed += (o, e) => { Container.Content = patcherPage.Content; };
             Container.BeginAnimation(OpacityProperty, waitAnimation);
+        }
+        private static void InitializeLanguage()
+        {
+            switch (Thread.CurrentThread.CurrentCulture.ToString().Split('-')[0])
+            {
+                case "en":
+                    Client.Dict.Source = new Uri("..\\Logic\\Languages\\English.xaml",
+                                  UriKind.Relative);
+                    break;
+                default:
+                    Client.Dict.Source = new Uri("..\\Logic\\Languages\\English.xaml",
+                                      UriKind.Relative);
+                    break;
+            }
+            Application.Current.Resources.MergedDictionaries.Add(Client.Dict);
         }
 
 

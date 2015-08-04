@@ -20,29 +20,27 @@ namespace Sightstone.Windows
         public ShopPage()
         {
             InitializeComponent();
-            //Tard();
+            Tard();
         }
-        async Task Tard()
+
+        void Tard()
         {
-            while (true)
-            {
-                ShopBrowser.ExecuteJavascript(
-                    "document.getElementsByClassName('search_text').innerHTML = document.getElementsByClassName('search_text').innerHTML.replace('Bard', 'Tard');");
-                ShopBrowser.ExecuteJavascript(
-                    "document.getElementsByClassName('item_name').innerHTML = document.getElementsByClassName('item_name').innerHTML.replace('Bard', 'Tard');");
-                await Task.Delay(1000);
-                if (Client.CurrentPage.GetType() != typeof(ShopPage))
-                    break;
-            }
+            ShopBrowser.ExecuteJavascript(@"
+                function replaceScript() 
+                {
+                    var toReplace = 'bard';
+                    var replaceWith = 'tard';
+                    document.body.innerHTML = document.body.innerHTML.replace(toReplace, replaceWith);
+                }
+                replaceScript();");
         }
 
         public async void RefreshBrowser()
         {
             var uri = await UserClient.calls.GetStoreUrl();
-            ShopBrowser.Source = new System.Uri(uri);
+            ShopBrowser.Source = new Uri(uri);
             Debug.WriteLine(uri);
-            //Client.Log(await RiotCalls.GetStoreUrl());
-
+            Tard();
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
