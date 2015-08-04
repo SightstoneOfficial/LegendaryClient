@@ -22,8 +22,8 @@
     </Page.Resources>
 
     <Grid>
-        <Button x:Name="UnderButtonRight" Content="{DynamicResource Play}" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" Height="50" Click="Play_Click" Margin="0,5,1,0"  />
-        <Button x:Name="OverButtonLeft" Content="{DynamicResource ShowLogBox}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="50" Click="OverButtonLeft_OnClick" Margin="10,5,0,0"  />
+        <Button x:Name="PlayButton" Content="{DynamicResource Play}" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" Height="50" Click="Play_Click" Margin="0,5,1,0"  />
+        <Button x:Name="SwitchButton" Content="{DynamicResource ShowLogBox}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="50" Click="OverButtonLeft_OnClick" Margin="10,5,0,0"  />
         <!--This is the title grid, the bar that is at the top-->
         <ProgressBar x:Name="TotalBar" HorizontalAlignment="Center" Height="4" VerticalAlignment="Top" Width="1355" />
         <Grid Visibility="Hidden" x:Name="FinishedGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" >

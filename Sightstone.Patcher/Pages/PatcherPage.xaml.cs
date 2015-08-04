@@ -141,63 +141,84 @@ namespace Sightstone.Patcher.Pages
             var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
             var files = new List<DownloadFile>();
             var downloader = new Downloader();
+            var root = GetLolRootPath();
             switch (region.RegionType)
             {
-                //TODO: data, item, map, mastery
-
                 case RegionType.KR:
                 case RegionType.Riot:
+                    files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
                     {
-                        files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
-                        {
-                            DownloadUri = toDl,
-                            OutputPath = new [] {Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases",
+                        DownloadUri = toDl,
+                        OutputPath = new[]
+                            {
+                                Path.Combine(root, "RADS", "solutions", "lol_game_client_sln", "releases",
                                 LeagueDownloadLogic.GetLolClientSlnVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
-                                    StringSplitOptions.None)[1])} ,
-                            OverrideFiles = true
-                        }).ToList());
-                        foreach (var clientFiles in LeagueDownloadLogic.ClientGetUris(region))
-                        {
-                            //Install sound files
-                            if (clientFiles.ToString().Contains("sounds"))
-                            {
-                                files.Add(new DownloadFile
-                                {
-                                    DownloadUri = clientFiles,
-                                    OutputPath = new []{Path.Combine(Client.ExecutingDirectory,
+                                    StringSplitOptions.None)[1]),
+
+                                Path.Combine(root, "RADS", "projects", "lol_game_client", "releases",
+                                LeagueDownloadLogic.GetLolClientClientVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                    StringSplitOptions.None)[1])
+                            },
+                        OverrideFiles = true
+                    }).ToList());
+                    break;
+                case RegionType.PBE:
+                    files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
+                    {
+                        DownloadUri = toDl,
+                        OutputPath = new[] {Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases",
+                                LeagueDownloadLogic.GetLolClientClientVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                    StringSplitOptions.None)[1])},
+                        OverrideFiles = true
+                    }).ToList());
+                    break;
+                case RegionType.Garena:
+                    throw new NotImplementedException("Garena update logic has to be observed");
+            }
+
+            //TODO: data, item, map, mastery
+            foreach (var clientFiles in LeagueDownloadLogic.ClientGetUris(region))
+            {
+                //Install sound files
+                if (clientFiles.ToString().Contains("sounds"))
+                {
+                    files.Add(new DownloadFile
+                    {
+                        DownloadUri = clientFiles,
+                        OutputPath = new[]{Path.Combine(Client.ExecutingDirectory,
                                             clientFiles.ToString().Split(new[] { "/files" },
-                                            StringSplitOptions.None)[1].Replace("assets", "Assets"))} ,
-                                    OverrideFiles = true
-                                });
-                            }
-                            //Download images of champs
-                            else if (clientFiles.ToString().Contains("champions"))
-                            {
-                                if (!clientFiles.ToString().Contains("_Square_0"))
-                                {
-                                    files.Add(new DownloadFile
-                                        {
-                                            DownloadUri = clientFiles,
-                                            OutputPath =
-                                                new[]
-                                                {
+                                            StringSplitOptions.None)[1].Replace("assets", "Assets"))},
+                        OverrideFiles = true
+                    });
+                }
+                //Download images of champs
+                else if (clientFiles.ToString().Contains("champions"))
+                {
+                    if (!clientFiles.ToString().Contains("_Square_0"))
+                    {
+                        files.Add(new DownloadFile
+                        {
+                            DownloadUri = clientFiles,
+                            OutputPath =
+                                    new[]
+                                    {
                                                     Path.Combine(
                                                         Client.ExecutingDirectory,
                                                         clientFiles.ToString()
                                                             .Split(new[] { "/files" }, StringSplitOptions.None)[1]
                                                             .Replace("assets", "Assets"))
-                                                },
-                                            OverrideFiles = true
-                                        });
-                                }
-                                else
-                                {
-                                    files.Add(new DownloadFile
-                                        {
-                                            DownloadUri = clientFiles,
-                                            OutputPath =
-                                                new[]
-                                                {
+                                    },
+                            OverrideFiles = true
+                        });
+                    }
+                    else
+                    {
+                        files.Add(new DownloadFile
+                        {
+                            DownloadUri = clientFiles,
+                            OutputPath =
+                                    new[]
+                                    {
                                                     Path.Combine(
                                                         Client.ExecutingDirectory,
                                                         clientFiles.ToString()
@@ -205,45 +226,45 @@ namespace Sightstone.Patcher.Pages
                                                             .Replace("assets", "Assets")).Replace("/images", ""),
                                                     Path.Combine(
                                                         Client.ExecutingDirectory,
-                                                        clientFiles.ToString().Split(new[] { "/files" }, 
+                                                        clientFiles.ToString().Split(new[] { "/files" },
                                                         StringSplitOptions.None)[1].Replace("assets", "Assets")).
                                                         Replace("champions", "champion").Replace("/images", "")
 
-                                                },
-                                            OverrideFiles = true
-                                        });
-                                }
-                                //If it is a square save it in the champion folder as well
-                            }
-                            else if (clientFiles.ToString().Contains("images/runes"))
-                            {
-                                files.Add(new DownloadFile
-                                {
-                                    DownloadUri = clientFiles,
-                                    OutputPath =
-                                                new[]
-                                                {
+                                    },
+                            OverrideFiles = true
+                        });
+                    }
+                    //If it is a square save it in the champion folder as well
+                }
+                else if (clientFiles.ToString().Contains("images/runes"))
+                {
+                    files.Add(new DownloadFile
+                    {
+                        DownloadUri = clientFiles,
+                        OutputPath =
+                                    new[]
+                                    {
                                                     Path.Combine(
                                                         Client.ExecutingDirectory,
                                                         clientFiles.ToString()
                                                             .Split(new[] { "/files" }, StringSplitOptions.None)[1]
                                                             .Replace(@"assets/images/runes", @"Assets/rune"))
 
-                                                },
-                                    OverrideFiles = true
-                                });
-                            }
-                            else if (clientFiles.ToString().Contains("abilities"))
-                            {
+                                    },
+                        OverrideFiles = true
+                    });
+                }
+                else if (clientFiles.ToString().Contains("abilities"))
+                {
 
-                                if (clientFiles.ToString().Contains("Passive"))
-                                {
-                                    files.Add(new DownloadFile
+                    if (clientFiles.ToString().Contains("Passive"))
+                    {
+                        files.Add(new DownloadFile
+                        {
+                            DownloadUri = clientFiles,
+                            OutputPath =
+                                    new[]
                                     {
-                                        DownloadUri = clientFiles,
-                                        OutputPath =
-                                                new[]
-                                                {
                                                     Path.Combine(
                                                         Client.ExecutingDirectory,
                                                         clientFiles.ToString()
@@ -255,49 +276,30 @@ namespace Sightstone.Patcher.Pages
                                                             .Split(new[] { "/files" }, StringSplitOptions.None)[1]
                                                             .Replace(@"assets/images/abilities", @"Assets/passive"))
 
-                                                },
-                                        OverrideFiles = true
-                                    });
-                                }
-                                else
-                                {
-                                    files.Add(new DownloadFile
+                                    },
+                            OverrideFiles = true
+                        });
+                    }
+                    else
+                    {
+                        files.Add(new DownloadFile
+                        {
+                            DownloadUri = clientFiles,
+                            OutputPath =
+                                    new[]
                                     {
-                                        DownloadUri = clientFiles,
-                                        OutputPath =
-                                                new[]
-                                                {
                                                     Path.Combine(
                                                         Client.ExecutingDirectory,
                                                         clientFiles.ToString()
                                                             .Split(new[] { "/files" }, StringSplitOptions.None)[1]
                                                             .Replace(@"assets/images/abilities", @"Assets/spell"))
 
-                                                },
-                                        OverrideFiles = true
-                                    });
-                                }
-                            }
-
-                        }
-
-                    }
-                    break;
-                case RegionType.PBE:
-                    {
-                        files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
-                        {
-                            DownloadUri = toDl,
-                            OutputPath = new[] 
-                            {
-                                Path.Combine(Client.ExecutingDirectory, "PBE", "RADS", "projects", "lol_game_client", "releases",
-                                LeagueDownloadLogic.GetLolClientSlnVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
-                                    StringSplitOptions.None)[1])
-                            } ,
+                                    },
                             OverrideFiles = true
-                        }).ToList());
+                        });
                     }
-                    break;
+                }
+
             }
 
             downloader.DownloadMultipleFiles(files, TotalBar, DownloadCompleted);
@@ -305,6 +307,7 @@ namespace Sightstone.Patcher.Pages
 
         private void DownloadCompleted()
         {
+            PlayButton.IsEnabled = true;
             FinishedGrid.Visibility = Visibility.Visible;
         }
 
@@ -504,11 +507,11 @@ namespace Sightstone.Patcher.Pages
             {
                 LogGrid.Visibility = Visibility.Visible;
                 NewsGrid.Visibility = Visibility.Hidden;
-                OverButtonLeft.Content = Client.GetDictText("ShowNews");
+                SwitchButton.Content = Client.GetDictText("ShowNews");
             }
             else
             {
-                OverButtonLeft.Content = Client.GetDictText("ShowLogBox");
+                SwitchButton.Content = Client.GetDictText("ShowLogBox");
                 LogGrid.Visibility = Visibility.Hidden;
                 NewsGrid.Visibility = Visibility.Visible;
             }

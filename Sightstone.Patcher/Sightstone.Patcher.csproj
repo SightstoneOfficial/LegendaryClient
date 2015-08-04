@@ -114,6 +114,7 @@
     <Compile Include="Logic\Appveyor.cs" />
     <Compile Include="Logic\Downloader.cs" />
     <Compile Include="Logic\SightstoneDownloadLogic.cs" />
+    <Compile Include="Logic\UriVerify.cs" />
     <Compile Include="SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
     </Compile>

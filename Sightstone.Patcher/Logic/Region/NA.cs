@@ -6,31 +6,30 @@ namespace Sightstone.Patcher.Logic.Region
     // ReSharper disable once InconsistentNaming
     internal class NA : MainRegion
     {
-        public override string RegionName
-        {
-            get { return "NA"; }
-        }
+        public override string RegionName => "NA";
 
-        public override string[] Locals
-        {
-            get { return new[] { "en_US" }; }
-        }
+        public override string[] Locals => new[] { "en_US" };
 
-        public override RegionType RegionType
-        {
-            get
-            {
-                return RegionType.Riot;
-            }
-        }
+        public override RegionType RegionType => RegionType.Riot;
 
         public override Uri ClientUpdateUri
         {
             get
             {
-                var x = new WebClient().DownloadString(ReleaseListingUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None)[0];
-                return new Uri(
-                    $"http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{x}/packages/files/packagemanifest");
+                var x = new WebClient().DownloadString(ReleaseListingUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                return
+                    UriVerify.VerifyUri(
+                        new[]
+                        {
+                            new Uri(
+                                string.Format(
+                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
+                                    x[0])),
+                            new Uri(
+                                string.Format(
+                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
+                                    x[0]))
+                        });
             }
         }
 
@@ -49,6 +48,6 @@ namespace Sightstone.Patcher.Logic.Region
 
         public override Uri GameReleaseListingUri => new Uri("http://l3cdn.riotgames.com/releases/live/projects/lol_game_client/releases/releaselisting_" + RegionName);
 
-        public  Uri GameSlnReleaseListingUri => new Uri("http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_" + RegionName);
+        public override Uri GameSlnReleaseListingUri => new Uri("http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_" + RegionName);
     }
 }

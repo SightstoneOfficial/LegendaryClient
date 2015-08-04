@@ -24,7 +24,7 @@ namespace Sightstone.Patcher.Logic
         /// <summary>
         ///     Gets the Latest LeagueOfLegends lol_game_client_sln version
         /// </summary>
-        public static string[] GetLolClientSlnVersion(MainRegion Region)
+        public static string[] GetLolClientClientVersion(MainRegion Region)
         {
             //Get the GameClientSln version
             using (new WebClient())
@@ -34,6 +34,17 @@ namespace Sightstone.Patcher.Logic
 
             return ReleaseListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None).ToArray();
         }
+
+        public static string[] GetLolClientSlnVersion(MainRegion Region)
+        {
+            using (new WebClient())
+            {
+                ReleaseListing = new WebClient().DownloadString(Region.GameSlnReleaseListingUri);
+            }
+
+            return ReleaseListing.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToArray();
+        }
+
 
         public static string[] GetLolClientVersion(MainRegion Region)
         {
@@ -76,7 +87,7 @@ namespace Sightstone.Patcher.Logic
         /// </returns>
         public static string GetConfigurationManifest(MainRegion Region)
         {
-            string latestSlnVersion = GetLolClientSlnVersion(Region)[0];
+            string latestSlnVersion = GetLolClientClientVersion(Region)[0];
             //Get GameClient Language files
             using (new WebClient())
             {
@@ -91,7 +102,7 @@ namespace Sightstone.Patcher.Logic
         public static Uri[] GetUris(MainRegion Region)
         {
             string[] packagemanifest;
-            var versions = GetLolClientSlnVersion(Region);
+            var versions = GetLolClientClientVersion(Region);
             var notInstalled = versions.TakeWhile(version => version != GetLatestLCLOLVersion()).ToList();
             using (var client = new WebClient())
             {

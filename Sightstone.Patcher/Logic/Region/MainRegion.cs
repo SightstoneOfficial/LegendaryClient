@@ -21,6 +21,8 @@ namespace Sightstone.Patcher.Logic.Region
 
         public abstract Uri GameReleaseListingUri { get; }
 
+        public abstract Uri GameSlnReleaseListingUri { get; }
+
         public static MainRegion GetMainRegion(string Region)
         {
             Region = Region.ToUpper();
