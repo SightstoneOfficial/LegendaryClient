@@ -17,6 +17,7 @@ using System.Drawing.Imaging;
 using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -331,6 +332,19 @@ namespace Sightstone.Patcher.Pages
 
         private void DownloadCompleted()
         {
+
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version"));
+            }
+
+            var latestAirs = LeagueDownloadLogic.GetLolClientVersion(Client.Region);
+            var latestAir = UriVerify.VerifyUri(new[] { new Uri(latestAirs[0]), new Uri(latestAirs[1]) }).ToString();
+            var encoding = new ASCIIEncoding();
+            using (var files = File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
+            {
+                files.Write(encoding.GetBytes(latestAir), 0, encoding.GetBytes(latestAir).Length);
+            }
             //TODO: Converters
             PlayButton.IsEnabled = true;
             FinishedGrid.Visibility = Visibility.Visible;

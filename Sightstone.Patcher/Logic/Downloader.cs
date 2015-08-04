@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Windows.Controls;
 
 namespace Sightstone.Patcher.Logic
 {
@@ -57,24 +54,6 @@ namespace Sightstone.Patcher.Logic
                             _downloadedBytes = _downloadedBytes + change;
                             OnDownloadProgressChanged?.Invoke(_downloadedBytes, _bytesToDownload);
                             lastbytes = bytesIn;
-                            var totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
-                            //var percentage = bytesIn / totalBytes * 100;
-                            //outProgressBar.Value = int.Parse(Math.Truncate(percentage).ToString(CultureInfo.CurrentCulture));
-                            // ReSharper disable once CompareOfFloatsByEqualityOperator
-                            if (bytesIn != totalBytes)
-                                return;
-                            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
-                            {
-                                File.Delete(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version"));
-                            }
-
-                            var latestAirs = LeagueDownloadLogic.GetLolClientVersion(Client.Region);
-                            var latestAir = UriVerify.VerifyUri(new[] { new Uri(latestAirs[0]), new Uri(latestAirs[1]) }).ToString();
-                            var encoding = new ASCIIEncoding();
-                            using (var files = File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
-                            {
-                                files.Write(encoding.GetBytes(latestAir), 0, encoding.GetBytes(latestAir).Length);
-                            }
                         }));
                     };
                     var info = fileDlInfo;
