@@ -53,7 +53,7 @@ namespace Sightstone.Patcher.Pages
             {
                 File.Delete(Path.Combine(_executingDirectory, "SightstonePatcher.log"));
             }
-            LogTextBox("You must have The following license below to use Sightstone.Patcher");
+            LogTextBox(Client.GetDictText("LicenseBelow"));
             LogTextBox(Environment.NewLine);
             LogTextBox(@"Sightstone.Patcher, League of Legends Custom Patcher
     Copyright (C) 2015  eddy5641
@@ -321,7 +321,7 @@ namespace Sightstone.Patcher.Pages
                             {
                                 var item = new CurrentStatus
                                 {
-                                    StatusLabel = { Content = "LOLServers" },
+                                    StatusLabel = { Content = Client.GetDictText("RiotServers") },
                                     Tag = new Uri("https://na.leagueoflegends.com")
                                 };
                                 item.UpdateStatus(
@@ -335,7 +335,7 @@ namespace Sightstone.Patcher.Pages
                         {
                             var item = new CurrentStatus
                             {
-                                StatusLabel = { Content = "Sightstone website" },
+                                StatusLabel = { Content = Client.GetDictText("SightstoneWebsite") },
                                 Tag = new Uri("http://legendaryclient.net")
                             };
                             item.UpdateStatus(
@@ -455,27 +455,6 @@ namespace Sightstone.Patcher.Pages
         }
 
         /// <summary>
-        ///     Swiches the command
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Switch_Click(object sender, RoutedEventArgs e)
-        {
-            if (_isLogVisible)
-            {
-                _isLogVisible = false;
-                NewsGrid.Visibility = Visibility.Visible;
-                LogGrid.Visibility = Visibility.Hidden;
-            }
-            else if (_isLogVisible == false)
-            {
-                _isLogVisible = true;
-                NewsGrid.Visibility = Visibility.Hidden;
-                LogGrid.Visibility = Visibility.Visible;
-            }
-        }
-
-        /// <summary>
         ///     Starts Sightstone
         /// </summary>
         /// <param name="sender"></param>
@@ -483,19 +462,6 @@ namespace Sightstone.Patcher.Pages
         private void Play_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
-        }
-
-        /// <summary>
-        ///     Highlightes UnderButtons
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OverButtonRight_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var bc = new BrushConverter();
-            var brush = (Brush) bc.ConvertFrom("#41B1E1");
-            UnderButtonRight.Foreground = brush;
-            UnderButtonRight.Background = brush;
         }
 
         /// <summary>
@@ -538,11 +504,11 @@ namespace Sightstone.Patcher.Pages
             {
                 LogGrid.Visibility = Visibility.Visible;
                 NewsGrid.Visibility = Visibility.Hidden;
-                OverButtonLeft.Content = "Show News";
+                OverButtonLeft.Content = Client.GetDictText("ShowNews");
             }
             else
             {
-                OverButtonLeft.Content = "Show Log TextBox";
+                OverButtonLeft.Content = Client.GetDictText("ShowLogBox");
                 LogGrid.Visibility = Visibility.Hidden;
                 NewsGrid.Visibility = Visibility.Visible;
             }

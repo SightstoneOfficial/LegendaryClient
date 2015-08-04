@@ -21,7 +21,7 @@ namespace Sightstone.Patcher.Pages
         {
             InitializeComponent();
             if (newsettings)
-                SettingsLabel.Content = "Please configure your settings before using Sightstone.Patcher!";
+                SettingsLabel.Content = Client.GetDictText("ConfigSettings");
 
             Version.SelectedItem = Properties.Settings.Default.UseGithub ? Github : Appveyor;
 
@@ -212,10 +212,7 @@ namespace Sightstone.Patcher.Pages
 
             var region = Properties.Settings.Default.RegionName;
             Client.Region = MainRegion.GetMainRegion(region);
-            if (!string.IsNullOrEmpty(region))
-                Client.RegionLabel.Content = "Connected to: " + region;
-            else
-                Client.RegionLabel.Content = "Not connected to any regions";
+            Client.RegionLabel.Content = !string.IsNullOrEmpty(region) ? Client.GetDictText("ConnectedRegion").Replace("{REGION}", region) : Client.GetDictText("NoRegion");
         }
     }
 }

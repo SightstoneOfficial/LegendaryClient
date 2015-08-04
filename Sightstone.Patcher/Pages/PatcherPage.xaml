@@ -22,8 +22,8 @@
     </Page.Resources>
 
     <Grid>
-        <Button x:Name="UnderButtonRight" Content="Play" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" Height="50" Click="Play_Click" Margin="0,5,1,0"  />
-        <Button x:Name="OverButtonLeft" Content="Play" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="50" Click="Play_Click" Margin="10,5,0,0"  />
+        <Button x:Name="UnderButtonRight" Content="{DynamicResource Play}" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" Height="50" Click="Play_Click" Margin="0,5,1,0"  />
+        <Button x:Name="OverButtonLeft" Content="{DynamicResource ShowLogBox}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="50" Click="OverButtonLeft_OnClick" Margin="10,5,0,0"  />
         <!--This is the title grid, the bar that is at the top-->
         <ProgressBar x:Name="TotalBar" HorizontalAlignment="Center" Height="4" VerticalAlignment="Top" Width="1355" />
         <Grid Visibility="Hidden" x:Name="FinishedGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" >
@@ -49,7 +49,7 @@
             </ListView>
 
             <ListView x:Name="StatusView" SelectionChanged="OnSelectionChanged" HorizontalAlignment="Right" Height="175" VerticalAlignment="Bottom" Width="162" Margin="0,0,10,10"/>
-            <Button Click="Update_OnClick" Style="{DynamicResource HideSquare}" HorizontalAlignment="Right" Content="Update status" VerticalAlignment="Bottom" Margin="0,0,10,185" Height="35" Width="162"/>
+            <Button Click="Update_OnClick" Style="{DynamicResource HideSquare}" HorizontalAlignment="Right" Content="{DynamicResource UpdateStatus}" VerticalAlignment="Bottom" Margin="0,0,10,185" Height="35" Width="162"/>
             <awe:WebControl x:Name="WebBrower" Source="http://LegendaryClient.net" HorizontalAlignment="Left" Height="384" VerticalAlignment="Top" Width="980" Margin="10,10,0,0"/>
 
         </Grid>

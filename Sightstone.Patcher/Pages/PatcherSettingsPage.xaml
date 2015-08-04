@@ -24,43 +24,43 @@
             <TabControl HorizontalAlignment="Left" Height="632" VerticalAlignment="Top" Width="980" Margin="10,58,0,0">
                 <TabItem Header="Sightstone.Patcher">
                     <Grid Background="#FFE5E5E5">
-                        <Label Content="UpdateSettings" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                        <Label Content="{DynamicResource UpdateSettings}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                         <ComboBox x:Name="UpdateSettings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="415" Margin="260,10,0,0" SelectionChanged="Setting_SelectionChanged">
-                            <Label x:Name="OnlyLoL" Content="Update only League of Legends" Tag="OnlyLOL"/>
-                            <Label x:Name="Sightstone" Content="Update only what Sightstone Needs" Tag="Sightstone"/>
+                            <Label x:Name="OnlyLoL" Content="{DynamicResource OnlyLOL}" Tag="OnlyLOL"/>
+                            <Label x:Name="Sightstone" Content="{DynamicResource Sightstone}" Tag="Sightstone"/>
                         </ComboBox>
                         <Slider x:Name="PatcherVolume" Thumb.DragCompleted="PatcherVolume_DragCompleted"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,55,0,0" Value="100" Width="415"/>
-                        <Label Content="Patcher Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0"/>
-                        <CheckBox x:Name="LOLP2P" Content="Use P2P (League of Legends) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,96,0,0" Checked="LOLP2P_Checked" Unchecked="LOLP2P_Checked"/>
+                        <Label Content="{DynamicResource PatcherVolume}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0"/>
+                        <CheckBox x:Name="LOLP2P" Content="{DynamicResource UseP2PLOL}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,96,0,0" Checked="LOLP2P_Checked" Unchecked="LOLP2P_Checked"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,164,0,0" Height="5" Width="966" Background="WhiteSmoke"/>
-                        <Label Content="P2P" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,92,0,0"/>
-                        <Label Content="Always Update Sightstone.Patcher" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,133,0,0"/>
-                        <CheckBox x:Name="AlwaysUpdate" Content="Always Update Sightstone.Patcher whenever possible" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,137,0,0" Checked="AlwaysUpdate_Checked" Unchecked="AlwaysUpdate_Checked"/>
+                        <Label Content="{DynamicResource P2P}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,92,0,0"/>
+                        <Label Content="{DynamicResource AlwaysUpdatePatcher}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,133,0,0"/>
+                        <CheckBox x:Name="AlwaysUpdate" Content="{DynamicResource AlwaysUpdatePatcherNote}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="260,137,0,0" Checked="AlwaysUpdate_Checked" Unchecked="AlwaysUpdate_Checked"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,123,0,0" Height="5" Width="966" Background="WhiteSmoke"/>
 
-                        <CheckBox x:Name="LCP2P" Content="Use P2P (Sightstone) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="475,96,0,0" Checked="LCP2P_Checked" Unchecked="LCP2P_Checked"/>
-                        <CheckBox x:Name="LCPP2P" Content="Use P2P (Sightstone.Patcher) [DEV]" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="675,96,0,0" Checked="LCPP2P_Checked" Unchecked="LCPP2P_Checked"/>
+                        <CheckBox x:Name="LCP2P" Content="{DynamicResource UseP2PSS}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="475,96,0,0" Checked="LCP2P_Checked" Unchecked="LCP2P_Checked"/>
+                        <CheckBox x:Name="LCPP2P" Content="{DynamicResource UserP2PSS.P}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="675,96,0,0" Checked="LCPP2P_Checked" Unchecked="LCPP2P_Checked"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,82,0,0" Height="5" Width="966" Background="WhiteSmoke"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="5" Width="966" Background="WhiteSmoke"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="Sightstone">
                     <Grid Background="#FFE5E5E5">
-                        <Label Content="Version Select" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                        <Label Content="{DynamicResource VersionSelect}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                         <ComboBox x:Name="Version" HorizontalAlignment="Left" VerticalAlignment="Top" Width="415" Margin="173,10,0,0" SelectionChanged="Version_SelectionChanged">
-                            <Label x:Name="Github" Content="Use latest Github Version" Tag="Github"/>
+                            <Label x:Name="Github" Content="{DynamicResource UseGithub}" Tag="Github"/>
                             <Label x:Name="Appveyor" Content="Use latest Appveyor Version" Tag="Appveyor"/>
                         </ComboBox>
                         <Slider x:Name="LCVolume" Thumb.DragCompleted="Slider_DragCompleted"  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="173,55,0,0" Value="100" Width="415" />
-                        <Label Content="Sightstone Volume" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0"/>
-                        <Label Content="There are more settings than this. You must open LegenadryClient to configure these settings" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,93,0,0"/>
+                        <Label Content="{DynamicResource SSVolume}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,51,0,0"/>
+                        <Label Content="{DynamicResource MoreSettings}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,93,0,0"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="5" Width="966" Background="WhiteSmoke"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,82,0,0" Height="6" Width="966" Background="WhiteSmoke"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="League of Legends">
                     <Grid Background="#FFE5E5E5">
-                        <Label Content="Region Settings:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
+                        <Label Content="{DynamicResource RegionSettings}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="6" Width="966" Background="WhiteSmoke"/>
                         <ComboBox x:Name="Region" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="111,10,0,0" SelectionChanged="Region_SelectionChanged"/>
                         <ComboBox x:Name="RegionName" HorizontalAlignment="Left" VerticalAlignment="Top" Width="150" Margin="316,10,0,0" SelectionChanged="RegionName_SelectionChanged" Visibility="Hidden"/>
@@ -69,11 +69,13 @@
                 <!--Leave this one last-->
                 <TabItem Header="Language">
                     <Grid Background="#FFE5E5E5">
-                        <Label Content="English is the only supported language for Sightstone... so far" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,41,0,0" Height="6" Width="966" Background="WhiteSmoke"/>
-                        <Label Content="In game Language" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,52,0,0"/>
+                        <Label Content="{DynamicResource InGameLang}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,52,0,0"/>
+                        <Label Content="{DynamicResource PatcherLang}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"/>
                         <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="123,52,0,0"/>
                         <Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,83,0,0" Height="6" Width="966" Background="WhiteSmoke"/>
+                        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="123,52,0,0"/>
+                        <ComboBox HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Margin="123,10,0,0"/>
                     </Grid>
                 </TabItem>
             </TabControl>
