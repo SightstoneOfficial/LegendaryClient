@@ -14,6 +14,7 @@ using Sightstone.Patcher.Logic;
 using Sightstone.Patcher.PatcherElements;
 using Newtonsoft.Json;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
@@ -37,17 +38,17 @@ namespace Sightstone.Patcher.Pages
     public partial class PatcherPage
     {
         private readonly string _executingDirectory;
-        private bool _isLogVisible;
-        public bool downloadStarted;
+        public bool IsLogVisible;
+        public bool DownloadStarted;
 
         public PatcherPage()
         {
             InitializeComponent();
             _executingDirectory = Client.ExecutingDirectory;
-            _isLogVisible = false;
+            IsLogVisible = false;
 
             _executingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomainFirstChanceException;
             if (_executingDirectory != null &&
                 File.Exists(Path.Combine(_executingDirectory, "SightstonePatcher.log")))
             {
@@ -133,11 +134,14 @@ namespace Sightstone.Patcher.Pages
 
         private bool loaded;
 
+        /// <summary>
+        /// Download the needed files to run Sightstone
+        /// </summary>
         public void Download()
         {
-            if (string.IsNullOrWhiteSpace(Settings.Default.RegionName) || downloadStarted)
+            if (string.IsNullOrWhiteSpace(Settings.Default.RegionName) || DownloadStarted)
                 return;
-            downloadStarted = true;
+            DownloadStarted = true;
             var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
             var files = new List<DownloadFile>();
             var downloader = new Downloader();
@@ -175,8 +179,6 @@ namespace Sightstone.Patcher.Pages
                 case RegionType.Garena:
                     throw new NotImplementedException("Garena update logic has to be observed");
             }
-
-            //TODO: data, item, map, mastery
             foreach (var clientFiles in LeagueDownloadLogic.ClientGetUris(region))
             {
                 //Install sound files
@@ -185,9 +187,12 @@ namespace Sightstone.Patcher.Pages
                     files.Add(new DownloadFile
                     {
                         DownloadUri = clientFiles,
-                        OutputPath = new[]{Path.Combine(Client.ExecutingDirectory,
-                                            clientFiles.ToString().Split(new[] { "/files" },
-                                            StringSplitOptions.None)[1].Replace("assets", "Assets"))},
+                        OutputPath = new[]
+                        {
+                            Path.Combine(Client.ExecutingDirectory,
+                                clientFiles.ToString()
+                                .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                .Replace("assets", "Assets"))},
                         OverrideFiles = true
                     });
                 }
@@ -202,11 +207,10 @@ namespace Sightstone.Patcher.Pages
                             OutputPath =
                                     new[]
                                     {
-                                                    Path.Combine(
-                                                        Client.ExecutingDirectory,
-                                                        clientFiles.ToString()
-                                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
-                                                            .Replace("assets", "Assets"))
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace("assets", "Assets"))
                                     },
                             OverrideFiles = true
                         });
@@ -219,16 +223,16 @@ namespace Sightstone.Patcher.Pages
                             OutputPath =
                                     new[]
                                     {
-                                                    Path.Combine(
-                                                        Client.ExecutingDirectory,
-                                                        clientFiles.ToString()
-                                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
-                                                            .Replace("assets", "Assets")).Replace("/images", ""),
-                                                    Path.Combine(
-                                                        Client.ExecutingDirectory,
-                                                        clientFiles.ToString().Split(new[] { "/files" },
-                                                        StringSplitOptions.None)[1].Replace("assets", "Assets")).
-                                                        Replace("champions", "champion").Replace("/images", "")
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace("assets", "Assets")).Replace("/images", ""),
+                                        Path.Combine(Client.ExecutingDirectory, 
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" },StringSplitOptions.None)[1].
+                                            Replace("assets", "Assets"))
+                                            .Replace("champions", "champion").Replace("/images", "")
+
 
                                     },
                             OverrideFiles = true
@@ -244,11 +248,10 @@ namespace Sightstone.Patcher.Pages
                         OutputPath =
                                     new[]
                                     {
-                                                    Path.Combine(
-                                                        Client.ExecutingDirectory,
-                                                        clientFiles.ToString()
-                                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
-                                                            .Replace(@"assets/images/runes", @"Assets/rune"))
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace(@"assets/images/runes", @"Assets/rune"))
 
                                     },
                         OverrideFiles = true
@@ -265,16 +268,14 @@ namespace Sightstone.Patcher.Pages
                             OutputPath =
                                     new[]
                                     {
-                                                    Path.Combine(
-                                                        Client.ExecutingDirectory,
-                                                        clientFiles.ToString()
-                                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
-                                                            .Replace(@"assets/images/abilities", @"Assets/spell")),
-                                                    Path.Combine(
-                                                        Client.ExecutingDirectory,
-                                                        clientFiles.ToString()
-                                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
-                                                            .Replace(@"assets/images/abilities", @"Assets/passive"))
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace(@"assets/images/abilities", @"Assets/spell")),
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace(@"assets/images/abilities", @"Assets/passive"))
 
                                     },
                             OverrideFiles = true
@@ -288,9 +289,8 @@ namespace Sightstone.Patcher.Pages
                             OutputPath =
                                     new[]
                                     {
-                                                    Path.Combine(
-                                                        Client.ExecutingDirectory,
-                                                        clientFiles.ToString()
+                                        Path.Combine(Client.ExecutingDirectory,
+                                        clientFiles.ToString()
                                                             .Split(new[] { "/files" }, StringSplitOptions.None)[1]
                                                             .Replace(@"assets/images/abilities", @"Assets/spell"))
 
@@ -299,14 +299,39 @@ namespace Sightstone.Patcher.Pages
                         });
                     }
                 }
+                else if (clientFiles.ToString().Contains("imagePacks"))
+                {
+                    files.Add(new DownloadFile
+                    {
+                        DownloadUri = clientFiles,
+                        OutputPath = new []
+                        {
+                            Path.Combine(Client.ExecutingDirectory, "Assests", "swf", clientFiles.ToString()
+                            .Split(new[] { "/imagePacks" }, StringSplitOptions.None)[1])
+                        },
+                        OverrideFiles = true
+                    });
+                }
 
             }
+            downloader.OnFinishedDownloading += DownloadCompleted;
+            downloader.OnDownloadProgressChanged += DownloadChange;
+            downloader.DownloadMultipleFiles(files);
+            
+        }
 
-            downloader.DownloadMultipleFiles(files, TotalBar, DownloadCompleted);
+        private void DownloadChange(double downloaded, double toDownload)
+        {
+            Client.RunOnUIThread(() =>
+                {
+                    var percentage = downloaded / toDownload * 100;
+                    TotalBar.Value = int.Parse(Math.Truncate(percentage).ToString(CultureInfo.CurrentCulture));
+                });
         }
 
         private void DownloadCompleted()
         {
+            //TODO: Converters
             PlayButton.IsEnabled = true;
             FinishedGrid.Visibility = Visibility.Visible;
         }
@@ -462,7 +487,7 @@ namespace Sightstone.Patcher.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Play_Click(object sender, RoutedEventArgs e)
+        private void PlayClick(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
         }
@@ -472,7 +497,7 @@ namespace Sightstone.Patcher.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CurrentDomain_FirstChanceException(object sender, FirstChanceExceptionEventArgs e)
+        private void CurrentDomainFirstChanceException(object sender, FirstChanceExceptionEventArgs e)
         {
             //Disregard PVPNetSpam
             if (e.Exception.Message.Contains("too small for an int") ||
@@ -501,7 +526,7 @@ namespace Sightstone.Patcher.Pages
             Logbox.Text += s + Environment.NewLine;
         }
 
-        private void OverButtonLeft_OnClick(object sender, RoutedEventArgs e)
+        private void SwitchClick(object sender, RoutedEventArgs e)
         {
             if (NewsGrid.Visibility == Visibility.Visible)
             {

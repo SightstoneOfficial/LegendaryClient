@@ -66,7 +66,7 @@ namespace Sightstone.Patcher
         //Contains a progress for the future
         public void SlideGrid(object sender, RoutedEventArgs e)
         {
-            if (!patcherPage.downloadStarted)
+            if (!patcherPage.DownloadStarted)
                 patcherPage.Download();
             OverlayGrid.Visibility = OverlayGrid.Visibility == Visibility.Hidden
                 ? Visibility.Visible
