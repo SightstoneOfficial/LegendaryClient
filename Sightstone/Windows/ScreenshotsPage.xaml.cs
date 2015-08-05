@@ -40,7 +40,7 @@ namespace Sightstone.Windows
         }
 
         private string ScreenshotFolder;
-        private string[] Screenshots;
+        public string[] Screenshots;
         private UserClient user;
 
         public ScreenshotsPage()
@@ -52,7 +52,7 @@ namespace Sightstone.Windows
         private void DevButton_Click(object sender, RoutedEventArgs e)
         {
             if (!user.Dev) return;
-            Client.OverlayContainer.Content = new ScreenshotViewer();
+            //Client.OverlayContainer.Content = new ScreenshotViewer();
             Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
@@ -71,6 +71,8 @@ namespace Sightstone.Windows
             }
             else
             {
+                ScreenshotsPath.Text = "Your region is currently not supported.";
+                return;
                 // TODO : Add logic for non-Garena servers.
             }
             try
@@ -94,14 +96,10 @@ namespace Sightstone.Windows
             SSGrid.Children.Clear();
             foreach(var file in Screenshots)
             {
-                var image = new Image();
+                var image = new Screenshot(file, this);
                 image.Source = new BitmapImage(new Uri(file));
                 image.Stretch = Stretch.Uniform;
                 image.Margin = new Thickness(10, 10, 0, 0);
-                image.MouseDown += (s, e) =>
-                    {
-                        ViewScreenshot(file);
-                    };
                 SSGrid.Children.Add(image);
             }
         }
@@ -109,7 +107,7 @@ namespace Sightstone.Windows
         private void ViewScreenshot(string Path)
         {
             var ssviewer = new ScreenshotViewer(Screenshots.ToList(), Path);
-            Client.OverlayContainer = ssviewer;
+            Client.OverlayContainer.Content = ssviewer.Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
