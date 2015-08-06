@@ -2,6 +2,7 @@
 using Sightstone.Logic.SWF.SWFTypes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -29,10 +30,26 @@ namespace Sightstone.Patcher.Logic
 
             foreach (var item in imageInfo)
             {
-                if(item.Type == "JPEG")
+                if(item.type == "JPEG")
                     File.WriteAllBytes(Path.Combine(pathOut, item.name + ".jpg"), item.data);
-                else
-                    File.WriteAllBytes(Path.Combine(pathOut, item.name), item.data);
+                else if (item.type == "Lossless") //We have to create bitmap ourselves
+                {
+
+                    int[] bytesAsInts = item.data.Select(x => (int)x).ToArray();
+                    var bmp = new Bitmap(item.width, item.height);
+                    for(int y = 0; y < item.height; y++)
+                    {
+                        for(int x = 0; x < item.width; x++)
+                        {
+                            var color = Color.FromArgb(bytesAsInts[4 * (y * item.width + x)], 
+                                                       bytesAsInts[4 * (y * item.width + x) + 1], 
+                                                       bytesAsInts[4 * (y * item.width + x) + 2], 
+                                                       bytesAsInts[4 * (y * item.width + x) + 3]);
+                            bmp.SetPixel(x, y, color);
+                        }
+                    }
+                    bmp.Save(Path.Combine(pathOut, item.name) + ".bmp");
+                }
             }
         }
 
@@ -63,8 +80,8 @@ namespace Sightstone.Patcher.Logic
             }
             return dictionary;
         }
-
-        //TODO: need to extract them somehow
+        
+        //We have to create bitmap ourselves
         private static void getLossless(List<Images> imageInfo, IEnumerable<Lossless> lossless)
         {
             foreach (var item in lossless)
@@ -74,12 +91,27 @@ namespace Sightstone.Patcher.Logic
                 {
                     binReader.BaseStream.Position = 6;
                     image.index = binReader.Read();
-                    binReader.BaseStream.Position = 13;
-                    image.data = binReader.ReadBytes(Convert.ToInt32(binReader.BaseStream.Length - binReader.BaseStream.Position));
+                    binReader.BaseStream.Position = 9;
+                    image.width = ChangeEndianess(binReader.ReadBytes(2));
+                    image.height = ChangeEndianess(binReader.ReadBytes(2));
+                    var compressed = binReader.ReadBytes(Convert.ToInt32(binReader.BaseStream.Length - binReader.BaseStream.Position));
+                    var outBytes = Ionic.Zlib.ZlibStream.UncompressBuffer(compressed);
+                    image.type = "Lossless";
                 }
-                image.Type = "Lossless";
                 imageInfo.Add(image);
             }
+        }
+
+        //Apparently in SWF bytes are big-endian
+        private static ushort ChangeEndianess(byte[] source)
+        {
+            for (int i = 0; i < source.Length; i += 2)
+            {
+                byte b = source[i];
+                source[i] = source[i + 1];
+                source[i + 1] = b;
+            }
+            return BitConverter.ToUInt16(source,0);
         }
 
         private static void getJPEGs(List<Images> imageInfo, IEnumerable<JPEG> jpegs)
@@ -97,7 +129,7 @@ namespace Sightstone.Patcher.Logic
                         break;
                     }
                 }
-                image.Type = "JPEG";
+                image.type = "JPEG";
                 imageInfo.Add(image);
             }
         }

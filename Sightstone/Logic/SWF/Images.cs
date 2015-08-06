@@ -15,6 +15,10 @@ namespace Sightstone.Logic.SWF
 
         public byte[] data { set; get; }
 
-        public string Type { set; get; }
+        public string type { set; get; }
+
+        public ushort height { set; get; }
+
+        public ushort width { get; set; }
     }
 }
