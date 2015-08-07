@@ -85,13 +85,11 @@ namespace Sightstone.Logic.SQLite
 
         public string selectSoundPath { get; set; }
 
-        public string Lore { get; set; }
-
         public string ResourceType { get; set; }
 
-        public ArrayList Skins { get; set; }
+        public List<Skins> Skins { get; set; } = new List<Skins>();
 
-        public List<Spell> Spells { get; set; }
+        public List<Spell> Spells { get; set; } = new List<Spell>();
 
         public bool IsFavoUrite { get; set; }
         public bool IsFreeToPlay { get; set; }

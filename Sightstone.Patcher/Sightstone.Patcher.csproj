@@ -44,12 +44,46 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DispersiaRelease|x86'">
+    <OutputPath>bin\x86\DispersiaRelease\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Awesomium.Core">
       <HintPath>..\DLLS\Awesomium.Core.dll</HintPath>
     </Reference>
     <Reference Include="awesomium.windows.controls">
       <HintPath>..\DLLS\awesomium.windows.controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.9.6\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\DLLS\MahApps.Metro.dll</HintPath>
@@ -82,10 +116,17 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Logic\Appveyor.cs" />
+    <Compile Include="Logic\Downloader.cs" />
     <Compile Include="Logic\SightstoneDownloadLogic.cs" />
+    <Compile Include="Logic\SWFImagePacks.cs" />
+    <Compile Include="Logic\UriVerify.cs" />
     <Compile Include="SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>
     </Compile>
+    <Page Include="Logic\Languages\English.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -195,7 +236,12 @@
   <ItemGroup>
     <Resource Include="TopBar.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Sightstone\Sightstone.csproj">
+      <Project>{a6f20d1a-8523-42ef-bed7-90915047ab44}</Project>
+      <Name>Sightstone</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

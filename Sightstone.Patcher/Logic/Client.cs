@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
+using Sightstone.Patcher.Logic.Region;
 
 #endregion
 
@@ -15,6 +16,25 @@ namespace Sightstone.Patcher.Logic
 {
     internal class Client
     {
+        /// <summary>
+        /// Resource Text Dictionary
+        /// </summary>
+        internal static ResourceDictionary Dict = new ResourceDictionary();
+
+        /// <summary>
+        /// Get the text from the ResourceDictionary
+        /// </summary>
+        /// <param name="key">The key in the <see cref="Dict"/></param>
+        /// <returns>The <see cref="Dict"/> value for the key or the <see cref="key"/> if not found</returns>
+        public static string GetDictText(string key)
+        {
+            foreach (var keys in Dict.Keys.Cast<string>().Where(keys => keys == key))
+            {
+                return ((string)Dict[keys]).Replace("\n", Environment.NewLine);
+            }
+            return key;
+        }
+
         /// <summary>
         ///     So Sightstone.Patcher knows if it should patch League of Legends
         /// </summary>
@@ -61,6 +81,11 @@ namespace Sightstone.Patcher.Logic
         ///     Used to play sounds
         /// </summary>
         internal static MediaElement SoundPlayer;
+
+        /// <summary>
+        /// The region to patch to
+        /// </summary>
+        internal static MainRegion Region;
 
         internal static Type CurrentPage; //Stop changing to same page
         internal static List<Page> CachedPages = new List<Page>();

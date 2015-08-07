@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -13,10 +14,14 @@ using Sightstone.Patcher.Logic;
 using Sightstone.Patcher.PatcherElements;
 using Newtonsoft.Json;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 using Sightstone.Patcher.Logic.Region;
 using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
@@ -34,24 +39,30 @@ namespace Sightstone.Patcher.Pages
     public partial class PatcherPage
     {
         private readonly string _executingDirectory;
-        private bool _isLogVisible;
+        public bool IsLogVisible;
+        public bool DownloadStarted;
+
+        /// <summary>
+        ///     List all SWF image packs which were updated
+        /// </summary>
+        public List<updateSWF> SWFextract;
 
         public PatcherPage()
         {
             InitializeComponent();
             _executingDirectory = Client.ExecutingDirectory;
-            _isLogVisible = false;
+            IsLogVisible = false;
 
             _executingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomainFirstChanceException;
             if (_executingDirectory != null &&
                 File.Exists(Path.Combine(_executingDirectory, "SightstonePatcher.log")))
             {
                 File.Delete(Path.Combine(_executingDirectory, "SightstonePatcher.log"));
             }
-            LogTextBox("You must have The following license below to use Sightstone.Patcher");
+            LogTextBox(Client.GetDictText("LicenseBelow"));
             LogTextBox(Environment.NewLine);
-            LogTextBox(@"Sightstone.Patcher, League of Legendary Custom Patcher
+            LogTextBox(@"Sightstone.Patcher, League of Legends Custom Patcher
     Copyright (C) 2015  eddy5641
 
     This program is free software: you can redistribute it and/or modify
@@ -73,7 +84,6 @@ namespace Sightstone.Patcher.Pages
         {
             //Load server status
             Status();
-            Download();
             //Load Champions with this thread
             var x = new Thread(() =>
                 {
@@ -124,17 +134,239 @@ namespace Sightstone.Patcher.Pages
                     }
                 });
             x.Start();
+
+            Download();
         }
 
         private bool loaded;
 
-        private void Download()
+        /// <summary>
+        /// Download the needed files to run Sightstone
+        /// </summary>
+        public void Download()
         {
+            if (string.IsNullOrWhiteSpace(Settings.Default.RegionName) || DownloadStarted)
+                return;
+            DownloadStarted = true;
             var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
-            if (region.RegionType == RegionType.Riot)
+            var files = new List<DownloadFile>();
+            var downloader = new Downloader();
+            var root = GetLolRootPath();
+            switch (region.RegionType)
             {
-                //LeagueDownloadLogic
+                case RegionType.KR:
+                case RegionType.Riot:
+                    files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
+                    {
+                        DownloadUri = toDl,
+                        OutputPath = new[]
+                            {
+                                Path.Combine(root, "RADS", "solutions", "lol_game_client_sln", "releases",
+                                LeagueDownloadLogic.GetLolClientSlnVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                    StringSplitOptions.None)[1]),
+
+                                Path.Combine(root, "RADS", "projects", "lol_game_client", "releases",
+                                LeagueDownloadLogic.GetLolClientClientVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                    StringSplitOptions.None)[1])
+                            },
+                        OverrideFiles = true
+                    }).ToList());
+                    break;
+                case RegionType.PBE:
+                    files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
+                    {
+                        DownloadUri = toDl,
+                        OutputPath = new[] {Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases",
+                                LeagueDownloadLogic.GetLolClientClientVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                    StringSplitOptions.None)[1])},
+                        OverrideFiles = true
+                    }).ToList());
+                    break;
+                case RegionType.Garena:
+                    throw new NotImplementedException("Garena update logic has to be observed");
             }
+            foreach (var clientFiles in LeagueDownloadLogic.ClientGetUris(region))
+            {
+                //Install sound files
+                if (clientFiles.ToString().Contains("sounds"))
+                {
+                    files.Add(new DownloadFile
+                    {
+                        DownloadUri = clientFiles,
+                        OutputPath = new[]
+                        {
+                            Path.Combine(Client.ExecutingDirectory,
+                                clientFiles.ToString()
+                                .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                .Replace("assets", "Assets"))},
+                        OverrideFiles = true
+                    });
+                }
+                //Download images of champs
+                else if (clientFiles.ToString().Contains("champions"))
+                {
+                    if (!clientFiles.ToString().Contains("_Square_0"))
+                    {
+                        files.Add(new DownloadFile
+                        {
+                            DownloadUri = clientFiles,
+                            OutputPath =
+                                    new[]
+                                    {
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace("assets", "Assets"))
+                                    },
+                            OverrideFiles = true
+                        });
+                    }
+                    else
+                    {
+                        files.Add(new DownloadFile
+                        {
+                            DownloadUri = clientFiles,
+                            OutputPath =
+                                    new[]
+                                    {
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace("assets", "Assets")).Replace("/images", ""),
+                                        Path.Combine(Client.ExecutingDirectory, 
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" },StringSplitOptions.None)[1].
+                                            Replace("assets", "Assets"))
+                                            .Replace("champions", "champion").Replace("/images", "")
+
+
+                                    },
+                            OverrideFiles = true
+                        });
+                    }
+                    //If it is a square save it in the champion folder as well
+                }
+                else if (clientFiles.ToString().Contains("images/runes"))
+                {
+                    files.Add(new DownloadFile
+                    {
+                        DownloadUri = clientFiles,
+                        OutputPath =
+                                    new[]
+                                    {
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace(@"assets/images/runes", @"Assets/rune"))
+
+                                    },
+                        OverrideFiles = true
+                    });
+                }
+                else if (clientFiles.ToString().Contains("abilities"))
+                {
+                    if (clientFiles.ToString().Contains("Passive"))
+                    {
+                        files.Add(new DownloadFile
+                        {
+                            DownloadUri = clientFiles,
+                            OutputPath =
+                                    new[]
+                                    {
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace(@"assets/images/abilities", @"Assets/spell")),
+                                        Path.Combine(Client.ExecutingDirectory,
+                                            clientFiles.ToString()
+                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                            .Replace(@"assets/images/abilities", @"Assets/passive"))
+
+                                    },
+                            OverrideFiles = true
+                        });
+                    }
+                    else
+                    {
+                        files.Add(new DownloadFile
+                        {
+                            DownloadUri = clientFiles,
+                            OutputPath =
+                                    new[]
+                                    {
+                                        Path.Combine(Client.ExecutingDirectory,
+                                        clientFiles.ToString()
+                                                            .Split(new[] { "/files" }, StringSplitOptions.None)[1]
+                                                            .Replace(@"assets/images/abilities", @"Assets/spell"))
+
+                                    },
+                            OverrideFiles = true
+                        });
+                    }
+                }
+                else if (clientFiles.ToString().Contains("imagePacks"))
+                {
+                    if (SWFextract == null)
+                        SWFextract = new List<updateSWF>();
+                    files.Add(new DownloadFile
+                    {
+                        DownloadUri = clientFiles,
+                        OutputPath = new []
+                        {
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", clientFiles.ToString()
+                            .Split(new[] { "/imagePacks" }, StringSplitOptions.None)[1])
+                        },
+                        OverrideFiles = true
+                    });
+                    var item = new updateSWF()
+                    {
+                        savePath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", Path.GetFileNameWithoutExtension(clientFiles.ToString())),
+                        swfPath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", Path.GetFileName(clientFiles.ToString())),
+                    };
+                    SWFextract.Add(item);
+                }
+
+            }
+            downloader.OnFinishedDownloading += DownloadCompleted;
+            downloader.OnDownloadProgressChanged += DownloadChange;
+            downloader.DownloadMultipleFiles(files);
+            
+        }
+
+        private void DownloadChange(double downloaded, double toDownload)
+        {
+            Client.RunOnUIThread(() =>
+                {
+                    var percentage = downloaded / toDownload * 100;
+                    TotalBar.Value = int.Parse(Math.Truncate(percentage).ToString(CultureInfo.CurrentCulture));
+                });
+        }
+
+        private void DownloadCompleted()
+        {
+
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
+            {
+                File.Delete(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version"));
+            }
+
+            var latestAirs = LeagueDownloadLogic.GetLolClientVersion(Client.Region);
+            var latestAir = UriVerify.VerifyUri(new[] { new Uri(latestAirs[0]), new Uri(latestAirs[1]) }).ToString();
+            var encoding = new ASCIIEncoding();
+            using (var files = File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
+            {
+                files.Write(encoding.GetBytes(latestAir), 0, encoding.GetBytes(latestAir).Length);
+            }
+            if (SWFextract != null)
+            {
+                foreach(var item in SWFextract)
+                {
+                    SWFImagePacks.SWFextract(item.swfPath, item.savePath);
+                }
+            }
+            //TODO: Converters
+            PlayButton.IsEnabled = true;
+            FinishedGrid.Visibility = Visibility.Visible;
         }
 
         private void Status()
@@ -150,7 +382,7 @@ namespace Sightstone.Patcher.Pages
                             {
                                 var item = new CurrentStatus
                                 {
-                                    StatusLabel = { Content = "LOLServers" },
+                                    StatusLabel = { Content = Client.GetDictText("RiotServers") },
                                     Tag = new Uri("https://na.leagueoflegends.com")
                                 };
                                 item.UpdateStatus(
@@ -158,14 +390,14 @@ namespace Sightstone.Patcher.Pages
                                 item.MouseDown += (o, e) => Changed(o);
                                 StatusView.Items.Add(item);
                             });
-                        var request = WebRequest.Create("http://Sightstone.net");
+                        var request = WebRequest.Create("http://legendaryclient.net");
                         var response = (HttpWebResponse)request.GetResponse();
                         Client.RunOnUIThread(() =>
                         {
                             var item = new CurrentStatus
                             {
-                                StatusLabel = { Content = "Sightstone website" },
-                                Tag = new Uri("http://Sightstone.net")
+                                StatusLabel = { Content = Client.GetDictText("SightstoneWebsite") },
+                                Tag = new Uri("http://legendaryclient.net")
                             };
                             item.UpdateStatus(
                                 response.StatusCode != HttpStatusCode.OK
@@ -284,75 +516,13 @@ namespace Sightstone.Patcher.Pages
         }
 
         /// <summary>
-        ///     Swiches the command
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Switch_Click(object sender, RoutedEventArgs e)
-        {
-            if (_isLogVisible)
-            {
-                _isLogVisible = false;
-                NewsGrid.Visibility = Visibility.Visible;
-                LogGrid.Visibility = Visibility.Hidden;
-            }
-            else if (_isLogVisible == false)
-            {
-                _isLogVisible = true;
-                NewsGrid.Visibility = Visibility.Hidden;
-                LogGrid.Visibility = Visibility.Visible;
-            }
-        }
-
-        /// <summary>
         ///     Starts Sightstone
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Play_Click(object sender, RoutedEventArgs e)
+        private void PlayClick(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);
-        }
-
-        /// <summary>
-        ///     Highlights UnderButtons
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OverButtonLeft_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var bc = new BrushConverter();
-            var brush = (Brush) bc.ConvertFrom("#41B1E1");
-            UnderButtonLeft.Foreground = brush;
-            UnderButtonLeft.Background = brush;
-        }
-
-        /// <summary>
-        ///     Highlightes UnderButtons
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OverButtonRight_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var bc = new BrushConverter();
-            var brush = (Brush) bc.ConvertFrom("#41B1E1");
-            UnderButtonRight.Foreground = brush;
-            UnderButtonRight.Background = brush;
-        }
-
-        /// <summary>
-        ///     Makes the UnderButtons Return to normal
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ReturnButtonsToNumbers_MouseLeage(object sender, MouseEventArgs e)
-        {
-            var bc = new BrushConverter();
-            var brush = (Brush) bc.ConvertFrom("Transparent");
-            UnderButtonRight.Foreground = brush;
-            UnderButtonLeft.Foreground = brush;
-            UnderButtonRight.Background = brush;
-            UnderButtonLeft.Background = brush;
         }
 
         /// <summary>
@@ -360,7 +530,7 @@ namespace Sightstone.Patcher.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void CurrentDomain_FirstChanceException(object sender, FirstChanceExceptionEventArgs e)
+        private void CurrentDomainFirstChanceException(object sender, FirstChanceExceptionEventArgs e)
         {
             //Disregard PVPNetSpam
             if (e.Exception.Message.Contains("too small for an int") ||
@@ -389,22 +559,85 @@ namespace Sightstone.Patcher.Pages
             Logbox.Text += s + Environment.NewLine;
         }
 
-        private void OverButtonLeft_OnClick(object sender, RoutedEventArgs e)
+        private void SwitchClick(object sender, RoutedEventArgs e)
         {
             if (NewsGrid.Visibility == Visibility.Visible)
             {
                 LogGrid.Visibility = Visibility.Visible;
                 NewsGrid.Visibility = Visibility.Hidden;
-                OverButtonLeft.Content = "Show News";
+                SwitchButton.Content = Client.GetDictText("ShowNews");
             }
             else
             {
-                OverButtonLeft.Content = "Show Log TextBox";
+                SwitchButton.Content = Client.GetDictText("ShowLogBox");
                 LogGrid.Visibility = Visibility.Hidden;
                 NewsGrid.Visibility = Visibility.Visible;
             }
         }
+        private string GetLolRootPath()
+        {
+            var possiblePaths = new List<Tuple<string, string>>
+                {
+                    new Tuple<string, string>(
+                        @"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
+                    new Tuple<string, string>(
+                        @"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES",
+                        "Path"),
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\RIOT GAMES", "Path"),
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Wow6432Node\Riot Games", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\League Of Legends",
+                        "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends",
+                        "Path"),
+                };
+            foreach (var tuple in possiblePaths)
+            {
+                var path = tuple.Item1;
+                var valueName = tuple.Item2;
+                try
+                {
+                    var value = Registry.GetValue(path, valueName, string.Empty);
+                    if (value == null || value.ToString() == string.Empty) continue;
+                    var regKey = Registry.CurrentUser.CreateSubKey("Sightstone.Patcher");
+                    if (regKey == null) return value.ToString();
+                    regKey.SetValue(
+                        value.ToString().Contains("lol.exe") ? "GarenaLocation" : "LoLLocation",
+                        value.ToString());
+                    regKey.Close();
+                    return value.ToString();
+                }
+                catch
+                {
+                    //Ignored
+                }
+            }
+
+            var findLeagueDialog = new OpenFileDialog();
+
+            if (!Directory.Exists(Path.Combine("C:\\", "Riot Games", "League of Legends")))
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Program Files (x86)", "GarenaLoL", "GameData",
+                    "Apps", "LoL");
+            else
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Riot Games", "League of Legends");
+
+            findLeagueDialog.DefaultExt = ".exe";
+            findLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
+
+            var result = findLeagueDialog.ShowDialog();
+            if (result != true)
+                return string.Empty;
+
+            var key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
+            key?.SetValue("Path",
+                findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty));
+            
+            return findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty);
+        }
     }
+
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class Champion
     {
         public int id { get; set; }
@@ -415,12 +648,14 @@ namespace Sightstone.Patcher.Pages
         public bool rankedPlayEnabled { get; set; }
     }
 
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class Champions
     {
         public List<Champion> champions { get; set; }
     }
 
     //News
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class News
     {
         public string title { get; set; }
@@ -428,6 +663,7 @@ namespace Sightstone.Patcher.Pages
         public string date { get; set; }
     }
 
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class Community
     {
         public string title { get; set; }
@@ -437,6 +673,7 @@ namespace Sightstone.Patcher.Pages
         public string linkUrl { get; set; }
     }
 
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class Rootobject
     {
         public bool status { get; set; }
@@ -444,4 +681,12 @@ namespace Sightstone.Patcher.Pages
         public List<News> news { get; set; }
         public List<Community> community { get; set; }
     }
+
+    public class updateSWF
+    {
+        public string savePath { get; set; }
+        public string swfPath { get; set; }
+    }
+
+   
 }

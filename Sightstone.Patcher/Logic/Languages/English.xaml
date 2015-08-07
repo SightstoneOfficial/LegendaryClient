@@ -1,0 +1,38 @@
+﻿<!-- ReSharper disable InconsistentNaming -->
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:System="clr-namespace:System;assembly=mscorlib">
+    <!--For the copy paste-->
+    <!--<System:String x:Key=""></System:String>-->
+    <System:String x:Key="ConnectedRegion">Connected to: {REGION}</System:String>
+    <System:String x:Key="NoRegion">Not connected to any regions</System:String>
+    <System:String x:Key="ConfigSettings">Please configure your settings before using Sightstone.Patcher!</System:String>
+    <System:String x:Key="PatcherSettings">Patcher Settings</System:String>
+    <System:String x:Key="LicenseBelow">You must have The following license below to use Sightstone.Patcher</System:String>
+    <System:String x:Key="UpdateSettings">Update Settings</System:String>
+    <System:String x:Key="PatcherVolume">Patcher Volume</System:String>
+    <System:String x:Key="P2P">Peer to Peer</System:String>
+    <System:String x:Key="AlwaysUpdatePatcher">Always Update Sightstone.Patcher</System:String>
+    <System:String x:Key="AlwaysUpdatePatcherNote">Always Update Sightstone.Patcher whenever possible</System:String>
+    <System:String x:Key="OnlyLOL">Update only League of Legends</System:String>
+    <System:String x:Key="Sightstone">Update only what Sightstone Needs</System:String>
+    <System:String x:Key="UseP2PLOL">Use P2P (League of Legends) [DEV]</System:String>
+    <System:String x:Key="UseP2PSS">Use P2P (Sightstone) [DEV]</System:String>
+    <System:String x:Key="UserP2PSS.P">Use P2P (Sightstone.Patcher) [DEV]</System:String>
+    <System:String x:Key="VersionSelect">Version Select</System:String>
+    <System:String x:Key="UseGithub">Use latest Github Version</System:String>
+    <System:String x:Key="UseAppveyor">Use latest Appveyor Version</System:String>
+    <System:String x:Key="SSVolume">Sightstone Volume</System:String>
+    <System:String x:Key="MoreSettings">There are more settings than this. You must open Sightstone to configure these settings</System:String>
+    <System:String x:Key="RegionSettings">Region Settings:</System:String>
+    <System:String x:Key="InGameLang">In game Language</System:String>
+    <System:String x:Key="PatcherLang">Patcher Language</System:String>
+    <System:String x:Key="Play">Play</System:String>
+    <System:String x:Key="UpdateStatus">Update status</System:String>
+    <System:String x:Key="ShowLogBox">Show Log TextBox</System:String>
+    <System:String x:Key="ShowNews">Show News</System:String>
+    <System:String x:Key="RiotServers">Riot servers</System:String>
+    <System:String x:Key="SightstoneWebsite">Sightstone website</System:String>
+    <System:String x:Key="SightstoneAccServer">Sightstone Account Server</System:String>
+    <System:String x:Key="SightstoneReplayServer">Sightstone Replay server</System:String>
+</ResourceDictionary>

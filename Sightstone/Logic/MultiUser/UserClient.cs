@@ -55,8 +55,7 @@ namespace Sightstone.Logic.MultiUser
 
         public void SendAccept(bool accept)
         {
-            if (PlayerAccepedQueue != null)
-                PlayerAccepedQueue(accept);
+            PlayerAccepedQueue?.Invoke(accept);
         }
 
         internal string UID;
@@ -153,7 +152,7 @@ namespace Sightstone.Logic.MultiUser
             }
         }
 
-        internal void XmppConnection_OnMessage(object sender, agsXMPP.protocol.client.Message msg)
+        internal void XmppConnection_OnMessage(object sender, Message msg)
         {
             //This means that it is not for the user
             Client.Log(msg.InnerXml);
@@ -174,7 +173,7 @@ namespace Sightstone.Logic.MultiUser
                     }
                 }
             }
-            if (ChatAutoBlock.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock)
+            if (ChatAutoBlock != null && (ChatAutoBlock.Any(x => (msg.From.User + Region.RegionName).ToSHA1() == x.Split('#')[0]) && autoBlock))
                 return;
             if (msg.Body.ToLower().Contains("elo") && msg.Body.ToLower().Contains("boost"))
                 return;
@@ -324,7 +323,7 @@ namespace Sightstone.Logic.MultiUser
             {
                 case PresenceType.subscribe:
                 case PresenceType.subscribed:
-                    Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                    await Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                     {
                         FriendInvite pop = new FriendInvite(ChatSubjects.XMPP_SUBSCRIBE, pres, this)
                         {
@@ -343,10 +342,11 @@ namespace Sightstone.Logic.MultiUser
                 case PresenceType.unsubscribe:
                 case PresenceType.unsubscribed:
                     await Client.MainWin.Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
-                    {
-                        NotifyPlayerPopup notify = new NotifyPlayerPopup("Friends", string.Format("{0} is no longer your friend", pres.From.User));
-                        Client.NotificationGrid.Children.Add(notify);
-                    }));
+                        {
+                            NotifyPlayerPopup notify = new NotifyPlayerPopup(
+                                "Friends", string.Format("{0} is no longer your friend", pres.From.User));
+                            Client.NotificationGrid.Children.Add(notify);
+                        }));
                     Client.AllPlayers.Remove(pres.From.User);
                     break;
                 case PresenceType.available:

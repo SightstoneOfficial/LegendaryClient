@@ -22,20 +22,15 @@ namespace Sightstone.Logic.JSON
             var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(champJson);
             //Dictionary<string, object> deserializedJSON = JsonConvert.DeserializeObject<Dictionary<string, object>>(champJSON);
             var temp = deserializedJson["data"] as Dictionary<string, object>;
-            if (temp == null)
-                return;
 
-            var champData = temp[champ.name] as Dictionary<string, object>;
-            //Dictionary<string, object> champData = serializer.Deserialize<Dictionary<string, object>>(temp2);
+            var champData = temp?[champ.name] as Dictionary<string, object>;
             if (champData == null)
                 return;
-
-            champ.Lore = champData["lore"] as string;
+            
             champ.ResourceType = champData["partype"] as string;
-            champ.Skins = champData["skins"] as ArrayList;
             var spells = (ArrayList) champData["spells"];
             champ.Spells = new List<Spell>();
-
+            
             foreach (Dictionary<string, object> champSpells in spells)
             {
                 var newSpell = new Spell

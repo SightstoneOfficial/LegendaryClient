@@ -21,7 +21,7 @@ namespace Sightstone.Patcher.Pages
         {
             InitializeComponent();
             if (newsettings)
-                SettingsLabel.Content = "Please configure your settings before using Sightstone.Patcher!";
+                SettingsLabel.Content = Client.GetDictText("ConfigSettings");
 
             Version.SelectedItem = Properties.Settings.Default.UseGithub ? Github : Appveyor;
 
@@ -176,11 +176,15 @@ namespace Sightstone.Patcher.Pages
                 case "PBE":
                     RegionName.Items.Add("PBE");
                     RegionName.SelectedItem = "PBE";
+                    Properties.Settings.Default.RegionName = "PBE";
+                    RegionName_SelectionChanged(null, null);
                     RegionName.IsEnabled = false;
                     break;
                 case "Korea":
                     RegionName.Items.Add("KR");
                     RegionName.SelectedItem = "KR";
+                    Properties.Settings.Default.RegionName = "KR";
+                    RegionName_SelectionChanged(null, null);
                     RegionName.IsEnabled = false;
                     break;
                 case "Garena":
@@ -196,6 +200,7 @@ namespace Sightstone.Patcher.Pages
                     RegionName.Visibility = System.Windows.Visibility.Hidden;
                     break;
             }
+            Properties.Settings.Default.Save();
         }
 
         private void RegionName_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -206,10 +211,8 @@ namespace Sightstone.Patcher.Pages
             Properties.Settings.Default.Save();
 
             var region = Properties.Settings.Default.RegionName;
-            if (!string.IsNullOrEmpty(region))
-                Client.RegionLabel.Content = "Connected to: " + region;
-            else
-                Client.RegionLabel.Content = "Not connected to any regions";
+            Client.Region = MainRegion.GetMainRegion(region);
+            Client.RegionLabel.Content = !string.IsNullOrEmpty(region) ? Client.GetDictText("ConnectedRegion").Replace("{REGION}", region) : Client.GetDictText("NoRegion");
         }
     }
 }

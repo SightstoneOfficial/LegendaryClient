@@ -129,8 +129,6 @@ namespace Sightstone.Logic.MultiUser
                     ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
                 };
                 login.Add(lgn);
-
-                Client.Log(string.Format("found account: \"{0}\" on the region \"{1}\"", fileName, lgn.Region));
             }
             return login;
         }

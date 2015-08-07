@@ -46,6 +46,31 @@ Use these builds at your risk.
 
 https://ci.appveyor.com/project/EddyV/legendaryclient/build/artifacts
 
+Supported Languages
+===================
+![English](https://img.shields.io/badge/Languages-English-green.svg?style=flat-square)
+![French](https://img.shields.io/badge/Languages-French-red.svg?style=flat-square)
+![Spanish](https://img.shields.io/badge/Languages-Spanish-red.svg?style=flat-square)
+![Chinese](https://img.shields.io/badge/Languages-Chinese-red.svg?style=flat-square)
+![Japanese](https://img.shields.io/badge/Languages-Japanese-red.svg?style=flat-square)
+![Korean](https://img.shields.io/badge/Languages-Korean-red.svg?style=flat-square)
+![German](https://img.shields.io/badge/Languages-German-red.svg?style=flat-square)
+![Hungarian](https://img.shields.io/badge/Languages-Hungarian-red.svg?style=flat-square)
+![Georgian](https://img.shields.io/badge/Languages-Georgian-red.svg?style=flat-square)
+![Afrikaans](https://img.shields.io/badge/Languages-Afrikaans-red.svg?style=flat-square)
+![Arabic](https://img.shields.io/badge/Languages-Arabic-red.svg?style=flat-square)
+![Azeri](https://img.shields.io/badge/Languages-Azeri-red.svg?style=flat-square)
+![Belarusian](https://img.shields.io/badge/Languages-Belarusian-red.svg?style=flat-square)
+![Bulgarian](https://img.shields.io/badge/Languages-Bulgarian-red.svg?style=flat-square)
+![Bosnian](https://img.shields.io/badge/Languages-Bosnian-red.svg?style=flat-square)
+![Catalan](https://img.shields.io/badge/Languages-Catalan-red.svg?style=flat-square)
+![Czech](https://img.shields.io/badge/Languages-Czech-red.svg?style=flat-square)
+![Welsh](https://img.shields.io/badge/Languages-Welsh-red.svg?style=flat-square)
+![Danish](https://img.shields.io/badge/Languages-Danish-red.svg?style=flat-square)
+![Divehi](https://img.shields.io/badge/Languages-Divehi-red.svg?style=flat-square)
+![Greek](https://img.shields.io/badge/Languages-Greek-red.svg?style=flat-square)
+![Estonian](https://img.shields.io/badge/Languages-Estonian-red.svg?style=flat-square)
+
 Q&A
 ===
 Where is LegendaryClient?
@@ -163,15 +188,15 @@ Automatically blocks messages from elo boosters. No more spam
 License
 =======
 *Snowl's original license*
-Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com)
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
-
-2. Redistributions in binary form must reproduce the above copyright notice,
-this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+    Copyright (c) 2013-2014, Snowl (David Diaz - d@viddiaz.com)
+    All rights reserved.
+    
+    Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+    
+    1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+    
+    2. Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
     THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
     INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE

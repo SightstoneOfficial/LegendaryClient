@@ -9,8 +9,8 @@
     d:DesignWidth="1280">
 
     <Grid>
-        <Label Margin="0,10,266,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="Invite Friends" FontWeight="SemiBold" FontSize="22" />
-        <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Your Team" FontWeight="SemiBold" FontSize="22" />
+        <Label Margin="0,10,266,0" HorizontalAlignment="Right" VerticalAlignment="Top" Content="{DynamicResource InviteFriends}" FontWeight="SemiBold" FontSize="22" />
+        <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="{DynamicResource YourTeam}" FontWeight="SemiBold" FontSize="22" />
         <ListView x:Name="TeamListView" Margin="10,50,420,227" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -19,8 +19,8 @@
             </ListView.ItemsPanel>
         </ListView>
 
-        <Button x:Name="CancelGameButton" Width="138" Height="22" Margin="10,0,0,200" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Cancel" Click="Leave_Click" />
-        <Button x:Name="StartGameButton" Width="147" Height="22" Margin="0,0,420,200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Start Game" Click="StartGameButton_Click" />
+        <Button x:Name="CancelGameButton" Width="138" Height="22" Margin="10,0,0,200" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="{DynamicResource Cancel}" Click="Leave_Click" />
+        <Button x:Name="StartGameButton" Width="147" Height="22" Margin="0,0,420,200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{DynamicResource StartGame}" Click="StartGameButton_Click" />
 
         <ListView x:Name="InviteListView" Width="395" Margin="0,50,15,305" HorizontalAlignment="Right" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
@@ -30,9 +30,9 @@
             </ListView.ItemsPanel>
         </ListView>
         <Button x:Name="InviteButton" Width="395" Height="27" Margin="0,0,15,278"
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Invite Players" Click="Invite_Click" />
+                HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{DynamicResource InvitePlayers}" Click="Invite_Click" />
         <CheckBox x:Name="AutoAcceptCheckBox" Width="89" Margin="0,0,785,202" HorizontalAlignment="Right" VerticalAlignment="Bottom" Checked="AutoAcceptCheckBox_Checked" Unchecked="AutoAcceptCheckBox_Checked" >
-            <TextBlock Text="Auto Accept" Margin="0,-2,0,0"/>
+            <TextBlock Text="{DynamicResource AutoAccept}" Margin="0,-2,0,0"/>
         </CheckBox>
         <RichTextBox x:Name="ChatText" Height="155" Margin="10,0,420,40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}">
             <RichTextBox.Resources>
@@ -42,9 +42,9 @@
             </RichTextBox.Resources>
         </RichTextBox>
         <TextBox x:Name="ChatTextBox" Height="23" Margin="10,0,515,10" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" TextWrapping="Wrap" />
-        <Button x:Name="ChatButton" Width="90" Height="24" Margin="0,0,420,9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="Send" IsDefault="True" Click="ChatButton_Click" />
+        <Button x:Name="ChatButton" Width="90" Height="24" Margin="0,0,420,9" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{DynamicResource Send}" IsDefault="True" Click="ChatButton_Click" />
         <Rectangle x:Name="PingRectangle" Width="70" Height="25" Margin="0,18,13,0" HorizontalAlignment="Right" VerticalAlignment="Top" Fill="Red" Stroke="Black" />
-        <TextBlock x:Name="PingLabel" Width="68" Height="23" Margin="0,18,15,0" HorizontalAlignment="Right" VerticalAlignment="Top" TextWrapping="Wrap" Text="Pinging" Foreground="White" FontSize="16" TextAlignment="Center" RenderTransformOrigin="0.159,-0.961" />
+        <TextBlock x:Name="PingLabel" Width="68" Height="23" Margin="0,18,15,0" HorizontalAlignment="Right" VerticalAlignment="Top" TextWrapping="Wrap" Text="{DynamicResource Pinging}" Foreground="White" FontSize="16" TextAlignment="Center" RenderTransformOrigin="0.159,-0.961" />
         <ListView x:Name="FriendsOfFriendsView" Width="395" Height="263" Margin="0,0,15,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White" Background="#66505050" BorderBrush="{x:Null}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -52,7 +52,7 @@
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
         </ListView>
-        <Button x:Name="SelectChamp" Width="120" Height="22" Margin="0,0,572,200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="AutoSelect Champ" Click="SelectChamp_Click" />
-        <Button x:Name="InstaCall" Width="80" Height="22" Margin="0,0,697,200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="InstaCall" Click="InstaCall_Click" ToolTip="Type into chat then click this button to insta call that text" />
+        <Button x:Name="SelectChamp" Width="120" Height="22" Margin="0,0,572,200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{DynamicResource AutoSelectChamp}" Click="SelectChamp_Click" />
+        <Button x:Name="InstaCall" Width="80" Height="22" Margin="0,0,697,200" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="{DynamicResource InstaCall}" Click="InstaCall_Click" ToolTip="Type into chat then click this button to insta call that text" />
     </Grid>
 </Page>

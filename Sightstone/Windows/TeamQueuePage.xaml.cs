@@ -26,6 +26,7 @@ using agsXMPP;
 using agsXMPP.protocol.x.muc;
 using agsXMPP.protocol.client;
 using agsXMPP.Collections;
+using Sightstone.Logic.JSON;
 using Sightstone.Logic.MultiUser;
 
 namespace Sightstone.Windows
@@ -79,7 +80,7 @@ namespace Sightstone.Windows
 
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
-            Client.ReturnButton.Content = "Return to Lobby";
+            Client.ReturnButton.Content = Client.GetDictText("ReturnToLobby");
         }
 
         public async void LoadStats()
@@ -128,7 +129,7 @@ namespace Sightstone.Windows
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = pres.From.Resource + " joined the room." + Environment.NewLine;
+                tr.Text = Client.GetDictText("UserJoinRoomNotify").Replace("{USER}", pres.From.Resource) + Environment.NewLine;
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 ChatText.ScrollToEnd();
             }));
@@ -144,20 +145,20 @@ namespace Sightstone.Windows
 
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                if (msg.Body != "This room is not anonymous")
+                if (msg.Body == "This room is not anonymous") return;
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
-                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = msg.From.Resource + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
-                    tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    if (UserClient.Filter)
-                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
-                                  Environment.NewLine;
-                    else
-                        tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                    ChatText.ScrollToEnd();
-                }
+                    Text = msg.From.Resource + ": "
+                };
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+                tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
+                if (UserClient.Filter)
+                    tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "").Filter() +
+                              Environment.NewLine;
+                else
+                    tr.Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", "") + Environment.NewLine;
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                ChatText.ScrollToEnd();
             }));
         }
 
@@ -196,9 +197,10 @@ namespace Sightstone.Windows
 
                     Dispatcher.Invoke(() =>
                     {
-                        Client.inQueueTimer.Content = string.Format("In Queue {0:D2}:{1:D2}", time.Minutes, time.Seconds);
+                        Client.inQueueTimer.Content =
+                            $"{Client.GetDictText("InQueue")} {time.Minutes:D2}:{time.Seconds:D2}";
                     });
-                    setStartButtonText("Re-Click To Leave");
+                    setStartButtonText(Client.GetDictText("ReClickLeave"));
                 }
                 return;
             }
@@ -214,10 +216,10 @@ namespace Sightstone.Windows
                     double pingAverage = HighestPingTime(UserClient.Region.PingAddresses);
                     PingLabel.Text = Math.Round(pingAverage) + "ms";
                     if (pingAverage == 0)
-                        PingLabel.Text = "Timeout";
+                        PingLabel.Text = Client.GetDictText("Timeout");
 
                     if (pingAverage == -1)
-                        PingLabel.Text = "Ping not enabled for this region";
+                        PingLabel.Text = Client.GetDictText("PingNotEnabled");
 
                     if (pingAverage > 999 || pingAverage < 1)
                         brush = (Brush)bc.ConvertFrom("#FFFF6767");
@@ -231,13 +233,13 @@ namespace Sightstone.Windows
                 }
                 catch (NotImplementedException ex)
                 {
-                    PingLabel.Text = "Ping not enabled for this region";
+                    PingLabel.Text = Client.GetDictText("PingNotEnabled");
                     brush = (Brush)bc.ConvertFrom("#FFFF6767");
                     Client.Log(ex.Message);
                 }
                 catch (Exception ex)
                 {
-                    PingLabel.Text = "Error occured while pinging";
+                    PingLabel.Text = Client.GetDictText("PingError");
                     brush = (Brush)bc.ConvertFrom("#FFFF6767");
                     Client.Log(ex.Message);
                 }
@@ -477,15 +479,19 @@ namespace Sightstone.Windows
                     var priv = message.Body as InvitePrivileges;
                     if (priv.canInvite)
                     {
-                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "You may invite players to this game." + Environment.NewLine;
+                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                        {
+                            Text = Client.GetDictText("AllowInvites") + Environment.NewLine
+                        };
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                         InviteButton.IsEnabled = true;
                     }
                     else
                     {
-                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                        tr.Text = "You may no longer invite players to this game." + Environment.NewLine;
+                        var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                        {
+                            Text = Client.GetDictText("DisallowInvites") + Environment.NewLine
+                        };
                         tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                         InviteButton.IsEnabled = false;
                     }
@@ -493,7 +499,7 @@ namespace Sightstone.Windows
             }
             else if (message.Body is LcdsServiceProxyResponse)
             {
-                parseLcdsMessage(message.Body as LcdsServiceProxyResponse); //Don't look there, its ugly!!! :)))
+                parseLcdsMessage((LcdsServiceProxyResponse) message.Body); //Don't look there, its ugly!!! :)))
             }
         }
 
@@ -507,9 +513,8 @@ namespace Sightstone.Windows
                     var suggestedFriends = JsonConvert.DeserializeObject<SuggestedFriend[]>(ProxyResponse.Payload);
                     foreach (SuggestedFriend s in suggestedFriends)
                     {
-                        var invitePlayer = new SuggestedPlayerItem();
-                        invitePlayer.PlayerLabel.Content = s.summonerName;
-                        invitePlayer.InviteButton.Click += async (object obj, RoutedEventArgs e) =>
+                        var invitePlayer = new SuggestedPlayerItem {PlayerLabel = {Content = s.summonerName}};
+                        invitePlayer.InviteButton.Click += async (obj, e) =>
                         {
                             await UserClient.calls.InviteFriendOfFriend(s.summonerId, s.commonFriendId);
                             foreach (SuggestedPlayerItem item in FriendsOfFriendsView.Items)
@@ -517,15 +522,14 @@ namespace Sightstone.Windows
                                 if ((string)item.PlayerLabel.Content == s.summonerName)
                                 {
                                     item.InviteButton.IsEnabled = false;
-                                    item.InviteButton.Content = "Invited";
-                                    var t = new Timer();
-                                    t.AutoReset = false;
-                                    t.Elapsed += (object source, ElapsedEventArgs args) =>
+                                    item.InviteButton.Content = Client.GetDictText("Invited");
+                                    var t = new Timer {AutoReset = false};
+                                    t.Elapsed += (source, args) =>
                                     {
                                         Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
                                         {
                                             item.InviteButton.IsEnabled = true;
-                                            item.InviteButton.Content = "Invite";
+                                            item.InviteButton.Content = Client.GetDictText("Invite");
                                         }));
                                     };
                                     t.Interval = 5000;
@@ -615,16 +619,20 @@ namespace Sightstone.Windows
             {
                 if (!UserClient.Dev)
                 {
-                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                    tr.Text = "You are not a dev." + Environment.NewLine;
+                    var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                    {
+                        Text = Client.GetDictText("NotDev") + Environment.NewLine
+                    };
                     tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 }
                 ChatTextBox.Text = "";
             }
             else
             {
-                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-                tr.Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + ": ";
+                var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+                {
+                    Text = UserClient.LoginPacket.AllSummonerData.Summoner.Name + ": "
+                };
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
                 if (UserClient.Filter)
@@ -672,7 +680,7 @@ namespace Sightstone.Windows
             else
             {
                 UserClient.calls.PurgeFromQueues();
-                setStartButtonText("Start Game");
+                setStartButtonText(Client.GetDictText("StartGame"));
                 inQueue = false;
                 UserClient.GameStatus = "outOfGame";
                 UserClient.SetChatHover();
@@ -696,41 +704,40 @@ namespace Sightstone.Windows
                 Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
                 {
                     Client.HasPopped = false;
-                    var messageOver = new MessageOverlay();
-                    messageOver.MessageTitle.Content = "Could not join the queue";
+                    var messageOver = new MessageOverlay {MessageTitle = {Content = Client.GetDictText("FailedJoinQueue") }};
                     foreach (var item in result.PlayerJoinFailures)
                     {
-                        var x = (QueueDodger)item;
+                        var x = item;
                         TimeSpan time = TimeSpan.FromMilliseconds(x.PenaltyRemainingTime);
                         switch (x.ReasonFailed)
                         {
                             case "LEAVER_BUSTER_TAINTED_WARNING":
-                                messageOver.MessageTextBox.Text += " - You have left a game in progress. Please use the official client to remove the warning for now.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("LEAVER_BUSTER_TAINTED_WARNING");
                                 //Need to implement their new warning for leaving.
                                 break;
                             case "QUEUE_DODGER":
-                                messageOver.MessageTextBox.Text += " - " + x.Summoner.Name + " is unable to join the queue as they recently dodged a game." + Environment.NewLine;
-                                messageOver.MessageTextBox.Text += " - You have " + string.Format("{0:D2}m:{1:D2}s", time.Minutes, time.Seconds) + " remaining until you may queue again";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_DODGER").Replace("{USER}", x.Summoner.Name) + Environment.NewLine;
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_DODGER_TIME").Replace("{TIME}", $"{time.Minutes:D2}m:{time.Seconds:D2}s");
                                 break;
                             case "QUEUE_RESTRICTED":
-                                messageOver.MessageTextBox.Text += " - You are too far apart in ranked to queue together.";
-                                messageOver.MessageTextBox.Text += " - For instance, Silvers can only queue with Bronze, Silver, or Gold players.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_RESTRICTED");
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_RESTRICTED_NOTE");
                                 break;
                             case "RANKED_RESTRICTED":
-                                messageOver.MessageTextBox.Text += " - You are not currently able to queue for ranked for: " + x.PenaltyRemainingTime + " games. If this is inaccurate please report it as an issue on the github page. Thanks!";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("RANKED_RESTRICTED");
                                 break;
                             case "RANKED_MIN_LEVEL":
-                                messageOver.MessageTextBox.Text += " - Level 30 is required to played ranked games.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("RANKED_MIN_LEVEL");
                                 break;
                             case "QUEUE_PARTICIPANTS":
-                                messageOver.MessageTextBox.Text += " - Not enough players for this queue type.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("QUEUE_PARTICIPANTS");
                                 break;
                             case "LEAVER_BUSTED":
                                 var xm = (BustedLeaver)x;
                                     Client.Log("LeaverBuster, Access token is: " + xm.AccessToken);
                                     var message = new MessageOverlay
                                     {
-                                        MessageTitle = { Content = "LeaverBuster" },
+                                        MessageTitle = { Content = Client.GetDictText("LeaverBuster") },
                                         MessageTextBox = { Text = "" }
                                     };
                                     Timer t = new Timer { Interval = 1000 };
@@ -743,22 +750,19 @@ namespace Sightstone.Windows
                                             DispatcherPriority.Input, new ThreadStart(() =>
                                             {
                                                 //Can not bypass this sadly, it just relaunches
-                                                message.MessageTextBox.Text =
-                                                    @"Abandoning a match or being AFK results in a negative experience for your teammates, and is a punishable offense in League of Legends.
-You've been placed in a lower priority queue" + Environment.NewLine;
-                                                message.MessageTextBox.Text += "You have " +
-                                                                               string.Format(
-                                                                                   "{0:D2}m:{1:D2}s", timex.Minutes, timex.Seconds) +
-                                                                               " remaining until you may queue again" + Environment.NewLine;
+                                                message.MessageTextBox.Text = Client.GetDictText("LeaverBusterAbandonMatchNote") + Environment.NewLine;
+                                                message.MessageTextBox.Text += Client.GetDictText("QUEUE_DODGER_TIME").
+                                                Replace("{TIME}", $"{timex.Minutes:D2}m:{timex.Seconds:D2}s") + Environment.NewLine;
 
-                                                message.MessageTextBox.Text += "You can close this window and you will still be in queue";
+                                                message.MessageTextBox.Text += Client.GetDictText("CloseStillInQueue");
 
                                                 Client.OverlayContainer.Content = message.Content;
-                                                if (timeleft < 0)
+                                                if (!(timeleft < 0))
                                                 {
-                                                    t.Stop();
-                                                    Client.OverlayContainer.Visibility = Visibility.Hidden;
+                                                    return;
                                                 }
+                                                t.Stop();
+                                                Client.OverlayContainer.Visibility = Visibility.Hidden;
                                             }));
 
                                     };
@@ -773,10 +777,10 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                                 EnteredQueue(await UserClient.calls.AttachTeamToQueue(parameters, new AsObject { { "LEAVER_BUSTER_ACCESS_TOKEN", xm.AccessToken } }));
                                 break;
                             case "RANKED_NUM_CHAMPS":
-                                messageOver.MessageTextBox.Text += " - You require at least 16 owned champions to play a Normal Draft / Ranked game.";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("RANKED_NUM_CHAMPS");
                                 break;
                             default:
-                                messageOver.MessageTextBox.Text += "Please submit: - " + x.ReasonFailed + " - as an Issue on github explaining what it meant. Thanks!";
+                                messageOver.MessageTextBox.Text += Client.GetDictText("SubmitLeaverBusterUnknown").Replace("{REASON}", x.ReasonFailed);
                                 break;
                         }
                     }
@@ -786,7 +790,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
                 return;
             }
             UserClient.RiotConnection.MessageReceived += GotQueuePop;
-            setStartButtonText("Joining Queue");
+            setStartButtonText(Client.GetDictText("JoiningQueue"));
             startTime = 1;
             inQueue = true;
             UserClient.GameStatus = "inQueue";
@@ -802,7 +806,7 @@ You've been placed in a lower priority queue" + Environment.NewLine;
 
         private void AutoAcceptCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            UserClient.AutoAcceptQueue = (AutoAcceptCheckBox.IsChecked.HasValue) ? AutoAcceptCheckBox.IsChecked.Value : false;
+            UserClient.AutoAcceptQueue = AutoAcceptCheckBox.IsChecked ?? false;
         }
 
         private void SelectChamp_Click(object sender, RoutedEventArgs e)
@@ -813,8 +817,10 @@ You've been placed in a lower priority queue" + Environment.NewLine;
 
         internal void CreateText(string text, SolidColorBrush color)
         {
-            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd);
-            tr.Text = text + Environment.NewLine;
+            var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
+            {
+                Text = text + Environment.NewLine
+            };
             tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
         }
 
@@ -831,22 +837,20 @@ You've been placed in a lower priority queue" + Environment.NewLine;
         {
             if (ChatTextBox.Text == string.Empty)
             {
-                if (UserClient.InstaCall)
-                    CreateText("Insta call disabled.", Brushes.OrangeRed);
-                else
-                    CreateText("Type call in textbox first.", Brushes.OrangeRed);
+                CreateText(UserClient.InstaCall ? Client.GetDictText("InstaCallDisabled") : Client.GetDictText("InstaCallTypeCall"),
+                    Brushes.OrangeRed);
                 UserClient.InstaCall = false;
                 return;
             }
             UserClient.InstaCall = true;
             UserClient.CallString = ChatTextBox.Text;
-            CreateText("You will insta call: \"" + UserClient.CallString + "\" when you enter champ select", Brushes.OrangeRed);
+            CreateText(Client.GetDictText("InstaCallNotify").Replace("{CHAMP}", UserClient.CallString), Brushes.OrangeRed);
             ChatTextBox.Text = string.Empty;
         }
 
         public void VisualQueueLeave()
         {
-            setStartButtonText("Start Game");
+            setStartButtonText(Client.GetDictText("StartGame"));
             inQueue = false;
             UserClient.GameStatus = "outOfGame";
             UserClient.SetChatHover();

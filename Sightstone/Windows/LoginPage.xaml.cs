@@ -10,6 +10,7 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using SQLite;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -201,18 +202,6 @@ namespace Sightstone.Windows
 
             var FreeToPlay = FreeToPlayChampions.GetInstance();
 
-            foreach (champions c in Client.Champions)
-            {
-                var source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", c.iconPath),
-                    UriKind.Absolute);
-                c.icon = new BitmapImage(source);
-
-                if (FreeToPlay != null)
-                {
-                    c.IsFreeToPlay = FreeToPlay.IsFreeToPlay(c);
-                }
-                Champions.InsertExtraChampData(c);
-            }
 
             Client.ChampionSkins = (from s in Client.SQLiteDatabase.Table<championSkins>()
                                     orderby s.name
@@ -220,6 +209,52 @@ namespace Sightstone.Windows
             Client.ChampionAbilities = (from s in Client.SQLiteDatabase.Table<championAbilities>()
                                         orderby s.name
                                         select s).ToList();
+
+            foreach (var champ in Client.Champions)
+            {
+                var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.iconPath),
+                    UriKind.Absolute);
+                champ.icon = new BitmapImage(source);
+
+                if (FreeToPlay != null)
+                {
+                    champ.IsFreeToPlay = FreeToPlay.IsFreeToPlay(champ);
+                }
+
+                var c1 = champ;
+                foreach (var skins in Client.ChampionSkins.Where(skins => c1.id == skins.championId))
+                {
+                    var skin = new Skins
+                    {
+                        Id = skins.id,
+                        Name = skins.displayName,
+                        Num = skins.rank,
+                        PortraitPath = skins.portraitPath,
+                        IsBase = false,
+                        SplashPath = skins.splashPath
+                    };
+                    if (skins.isBase == 1)
+                    {
+                        skin.IsBase = true;
+                    }
+                    if (string.IsNullOrWhiteSpace(skin.Name))
+                        skin.Name = champ.displayName;
+                    champ.Skins.Add(skin);
+                }
+
+                foreach (var spell in Client.ChampionAbilities)
+                {
+                    if (spell.championId == champ.id)
+                    {
+                        var newSpell = new Spell();
+                        newSpell.Description = spell.description;
+                        newSpell.Tooltip = spell.effect;
+                        newSpell.ID = champ.displayName + spell.hotkey;
+                    }
+                }
+
+                Champions.InsertExtraChampData(champ);
+            }
 
             Client.SQLiteDatabase.Close();
             Client.Items = Items.PopulateItems();

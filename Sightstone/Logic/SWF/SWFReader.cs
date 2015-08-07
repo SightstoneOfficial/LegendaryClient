@@ -92,6 +92,15 @@ namespace Sightstone.Logic.SWF
                 case (int) TagCodes.End:
                     resTag = new End();
                     break;
+                case (int) TagCodes.DefineBitJPEG2:
+                    resTag = new JPEG(SWFBinary.ReadBytes(Convert.ToInt32(rh.TagLength + offset)));
+                    break;
+                case (int) TagCodes.DefineBitLossless:
+                    resTag = new Lossless(SWFBinary.ReadBytes(Convert.ToInt32(rh.TagLength + offset)));
+                    break;
+                case (int) TagCodes.Symbols:
+                    resTag = new Symbols(SWFBinary.ReadBytes(Convert.ToInt32(rh.TagLength + offset)));
+                    break;
                 default:
                     resTag = new Tag(SWFBinary.ReadBytes(Convert.ToInt32(rh.TagLength + offset)));
                     break;

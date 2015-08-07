@@ -59,9 +59,28 @@ namespace Sightstone
             PresentationTraceSources.DataBindingSource.Switch.Level = SourceLevels.Critical;
             PresentationTraceSources.ResourceDictionarySource.Switch.Level = SourceLevels.Critical;
             InitializeComponent();
-
+            InitializeLanguage();
             Initialize();
             InitializeGui();
+        }
+
+        /// <summary>
+        /// Adds the language file
+        /// </summary>
+        private static void InitializeLanguage()
+        {
+            switch (Thread.CurrentThread.CurrentCulture.ToString().Split('-')[0])
+            {
+                case "en":
+                    Client.Dict.Source = new Uri("..\\Logic\\Languages\\English.xaml",
+                                  UriKind.Relative);
+                    break;
+                default:
+                    Client.Dict.Source = new Uri("..\\Logic\\Languages\\English.xaml",
+                                      UriKind.Relative);
+                    break;
+            }
+            Application.Current.Resources.MergedDictionaries.Add(Client.Dict);
         }
 
         private void InitializeGui()
@@ -356,14 +375,14 @@ namespace Sightstone
             {
                 _warn = new Warning
                 {
-                    Header = { Content = "Logout while in Game" },
-                    MessageText = { Text = "Are You Sure You Want To Quit? This will result in a dodge." }
+                    Header = { Content = Client.GetDictText("LogoutWhileInGame") },
+                    MessageText = { Text = Client.GetDictText("LogoutWhileInGameNote") }
                 };
                 _warn.backtochampselect.Click += HideWarning;
                 _warn.AcceptButton.Click += Quit;
                 _warn.hide.Click += HideWarning;
-                _warn.backtochampselect.Content = "Return to Champ Select";
-                _warn.AcceptButton.Content = "Dodge game and logout";
+                _warn.backtochampselect.Content = Client.GetDictText("ReturnToChampSelect");
+                _warn.AcceptButton.Content = Client.GetDictText("DodgeGameAndLogout");
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
@@ -388,8 +407,8 @@ namespace Sightstone
             {
                 _warn = new Warning();
                 e.Cancel = true;
-                _warn.Header.Content = "Quit";
-                _warn.MessageText.Text = "Are You Sure You Want To Quit?";
+                _warn.Header.Content = Client.GetDictText("Quit");
+                _warn.MessageText.Text = Client.GetDictText("QuitNote");
                 _warn.backtochampselect.Click += HideWarning;
                 _warn.AcceptButton.Click += Quit;
                 _warn.hide.Click += HideWarning;
@@ -400,15 +419,15 @@ namespace Sightstone
             {
                 _warn = new Warning();
                 e.Cancel = true;
-                _warn.Header.Content = "Quit";
-                _warn.MessageText.Text = "Are You Sure You Want To Quit?";
+                _warn.Header.Content = Client.GetDictText("Quit");
+                _warn.MessageText.Text = Client.GetDictText("QuitNote");
                 _warn.backtochampselect.Click += HideWarning;
                 _warn.AcceptButton.Click += Quit;
                 _warn.hide.Click += HideWarning;
                 if (UserList.Users != null && UserList.Users.ContainsKey(Client.CurrentUser))
                 {
                     if ((UserList.Users[Client.CurrentServer])[Client.CurrentUser].curentlyRecording.Count > 0)
-                        _warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + _warn.MessageText.Text;
+                        _warn.MessageText.Text = Client.GetDictText("GameRecorderRunning") + _warn.MessageText.Text;
                 }
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
@@ -452,11 +471,11 @@ namespace Sightstone
             var pipeServer = new NamedPipeServerStream("SightstonePipe@191537514598135486vneaoifJidafd", PipeDirection.InOut, NumThreads);
             pipeServer.WaitForConnection();
             Client.SendPIPE = new StreamString(pipeServer);
-            Client.SendPIPE.WriteString("Logger started. All errors will be logged from now on");
+            Client.SendPIPE.WriteString(Client.GetDictText("DevWinLoggerStarted"));
             var assembly = Assembly.GetExecutingAssembly();
             var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             var version = fvi.FileVersion;
-            Client.SendPIPE.WriteString("Sightstone Version: " + version);
+            Client.SendPIPE.WriteString(Client.GetDictText("DevWinSighstoneVersion") + version);
 
             Client.SendPIPE.WriteString("AwaitStart");
 
@@ -490,7 +509,7 @@ namespace Sightstone
                                 Client.FullNotificationOverlayContainer.Content = messageOver.Content;
                                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
                             }
-                            Client.SendPIPE.WriteString("Overlay received!");
+                            Client.SendPIPE.WriteString(Client.GetDictText("DevWinOverlayReceived"));
                         }));
                 }
                 else if (x == "Server_STOPPED")

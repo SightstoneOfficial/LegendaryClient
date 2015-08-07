@@ -31,46 +31,46 @@
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Label x:Name="inQueueTimer" Content="00:00" FontWeight="Light" FontSize="15" Foreground="{StaticResource IdealForegroundColorBrush}" Visibility="Hidden"/>
-            <Button x:Name="ReturnToPage" Content="Return To Lobby" Click="SwichToTeamQueue_Click"/>
-            <Label x:Name="InfoLabel" Content="Not logged in" Opacity="0.50" Margin="0,3,0,0"/>
+            <Button x:Name="ReturnToPage" Content="{DynamicResource ReturnToLobby}" Click="SwichToTeamQueue_Click"/>
+            <Label x:Name="InfoLabel" Content="{DynamicResource NotLoggedIn}" Opacity="0.50" Margin="0,3,0,0"/>
 
-            <Button x:Name="PlayButton" Content="PLAY" Click="PlayButton_Click" Foreground="{StaticResource IdealForegroundColorBrush}" />
-            <Button x:Name="HomeButton" Click="HomeButton_Click" Padding="0">
+            <Button x:Name="PlayButton" ToolTip="{DynamicResource PlayButtonToolTip}" Content="PLAY" Click="PlayButton_Click" Foreground="{StaticResource IdealForegroundColorBrush}" />
+            <Button x:Name="HomeButton" ToolTip="{DynamicResource HomeButtonToolTip}" Click="HomeButton_Click" Padding="0">
                 <Viewbox Width="14" Height="14" Margin="-5,-5,2,0">
                     <Canvas Width="17" Height="17" >
                         <Path Data="M10,20V14H14V20H19V12H22L12,3L2,12H5V20H10Z" Fill="{StaticResource IdealForegroundColorBrush}" />
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button x:Name="ProfileButton" Click="ProfileButton_Click" MouseDoubleClick="ProfileButton_MouseDoubleClick">
+            <Button x:Name="ProfileButton" ToolTip="{DynamicResource ProfileButtonToolTip}" Click="ProfileButton_Click" MouseDoubleClick="ProfileButton_MouseDoubleClick">
                 <Viewbox Width="14" Height="14" Margin="-5,-5,2,0">
                     <Canvas Width="17" Height="17" >
                         <Path Data="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" Fill="{StaticResource IdealForegroundColorBrush}" />
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button x:Name="ShopButton" Click="ShopButton_Click">
+            <Button x:Name="ShopButton" ToolTip="{DynamicResource ShopButtonToolTip}" Click="ShopButton_Click">
                 <Viewbox Width="13" Height="12" Margin="-3,0,1,2">
                     <Canvas Width="18" Height="18" >
                         <Path Data="M17,18C15.89,18 15,18.89 15,20A2,2 0 0,0 17,22A2,2 0 0,0 19,20C19,18.89 18.1,18 17,18M1,2V4H3L6.6,11.59L5.24,14.04C5.09,14.32 5,14.65 5,15A2,2 0 0,0 7,17H19V15H7.42A0.25,0.25 0 0,1 7.17,14.75C7.17,14.7 7.18,14.66 7.2,14.63L8.1,13H15.55C16.3,13 16.96,12.58 17.3,11.97L20.88,5.5C20.95,5.34 21,5.17 21,5A1,1 0 0,0 20,4H5.21L4.27,2M7,18C5.89,18 5,18.89 5,20A2,2 0 0,0 7,22A2,2 0 0,0 9,20C9,18.89 8.1,18 7,18Z" Fill="{StaticResource IdealForegroundColorBrush}" />
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button x:Name="ReplayButton" Click="ReplayButton_Click">
+            <Button x:Name="ReplayButton" ToolTip="{DynamicResource ReplayButtonToolTip}" Click="ReplayButton_Click">
                 <Viewbox Width="14" Height="14" Margin="-5,-5,2,0">
                     <Canvas Width="17" Height="17" >
                         <Path Data="M18,16L14,12.8V16H6V8H14V11.2L18,8M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" Fill="{StaticResource IdealForegroundColorBrush}" />
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button x:Name="ScreenshotsButton" Click="ScreenshotsButton_Click">
+            <Button x:Name="ScreenshotsButton" ToolTip="{DynamicResource ScreenshotButtonToolTip}" Click="ScreenshotsButton_Click">
                 <Viewbox Width="14" Height="14" Margin="-5,-5,2,0">
                     <Canvas Width="17" Height="17" >
                         <Path Data="M8.5,12.5L11,15.5L14.5,11L19,17H5M23,18V6A2,2 0 0,0 21,4H3A2,2 0 0,0 1,6V18A2,2 0 0,0 3,20H21A2,2 0 0,0 23,18Z" Fill="{StaticResource IdealForegroundColorBrush}" />
                     </Canvas>
                 </Viewbox>
             </Button>
-            <Button x:Name="SettingsButton" Click="SettingsButton_Click">
+            <Button x:Name="SettingsButton" ToolTip="{DynamicResource SettingsButtonToolTip}"  Click="SettingsButton_Click">
                 <Viewbox Width="14" Height="12" Margin="-5,-3,0,2">
                     <Canvas Width="17" Height="17" >
                         <Path Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" Fill="{StaticResource IdealForegroundColorBrush}" />

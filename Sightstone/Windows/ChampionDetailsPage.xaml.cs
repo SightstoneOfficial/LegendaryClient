@@ -69,13 +69,12 @@ namespace Sightstone.Windows
             MovementSpeedLabel.Content = string.Format("Speed: {0}", champ.moveSpeed);
 
             if (champ.Skins != null)
-                foreach (Dictionary<string, object> skins in champ.Skins)
+                foreach (var skins in champ.Skins)
                 {
-                    int skin = Convert.ToInt32(skins["id"]);
+                    int skin = Convert.ToInt32(skins.Id);
                     var item = new ListViewItem();
                     var skinImage = new Image();
-                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
-                        championSkins.GetSkin(skin).portraitPath);
+                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skins.PortraitPath);
                     skinImage.Source = Client.GetImage(UriSource);
                     skinImage.Width = 96.25;
                     skinImage.Height = 175;
@@ -99,8 +98,8 @@ namespace Sightstone.Windows
             ChampionImage.Source =
                 Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.splashPath));
 
-            if (champ.Lore != null)
-                LoreText.Text = champ.Lore.Replace("<br>", Environment.NewLine);
+            if (champ.description != null)
+                LoreText.Text = champ.description;
 
             TipsText.Text = string.Format("Tips while playing {0}:{1}{2}{2}{2}Tips while playing aginst {0}:{3}",
                 champ.displayName, champ.tips.Replace("*", Environment.NewLine + "*"), Environment.NewLine,

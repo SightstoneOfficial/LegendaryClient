@@ -43,15 +43,18 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\Client\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <LangVersion>6</LangVersion>
+    <FileAlignment>512</FileAlignment>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -77,6 +80,49 @@
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>6</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>None</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'PubRelease|x86'">
+    <OutputPath>bin\x86\PubRelease\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DispersiaRelease|x86'">
+    <OutputPath>bin\x86\DispersiaRelease\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="agsXMPP, Version=1.3.1.0, Culture=neutral, PublicKeyToken=ff839b81f1debe86, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -456,9 +502,14 @@
     <Compile Include="Logic\SoundLogic\AmbientChampSelect.cs" />
     <Compile Include="Logic\SoundLogic\ChampSelectSound.cs" />
     <Compile Include="Logic\SoundLogic\SelectChampion.cs" />
-    <Compile Include="Logic\SQLite\invitationRequest.cs" />
+    <Compile Include="Logic\JSON\invitationRequest.cs" />
+    <Compile Include="Logic\SQLite\Skins.cs" />
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\UpdateData.cs" />
+    <Compile Include="Logic\SWF\Images.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\Lossless.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\JPEG.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\Symbols.cs" />
     <Compile Include="Logic\UpdateRegion\BaseUpdateRegion.cs" />
     <Compile Include="Logic\UpdateRegion\China.cs" />
     <Compile Include="Logic\UpdateRegion\Garena.cs" />
@@ -973,6 +1024,10 @@
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Logic\Languages\English.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

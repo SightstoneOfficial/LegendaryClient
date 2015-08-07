@@ -6,7 +6,7 @@ namespace Sightstone.Logic.SWF.SWFTypes
 {
     public class Tag
     {
-        private BytecodeHolder byteCode;
+        internal BytecodeHolder byteCode;
 
         public Tag(byte[] data)
         {
@@ -20,7 +20,7 @@ namespace Sightstone.Logic.SWF.SWFTypes
             byteCode = new BytecodeHolder(this);
         }
 
-        public byte[] Data { get; private set; }
+        public byte[] Data { get; internal set; }
 
         internal int TagCode { get; set; }
 
@@ -53,9 +53,9 @@ namespace Sightstone.Logic.SWF.SWFTypes
             return new bytecodeEnumerator(this);
         }
 
-        public class bytecodeEnumerator : IEnumerator
+        private class bytecodeEnumerator : IEnumerator
         {
-            private readonly Tag tag;
+            internal readonly Tag tag;
             private int index = -1;
 
             internal bytecodeEnumerator(Tag tag)
@@ -92,7 +92,7 @@ namespace Sightstone.Logic.SWF.SWFTypes
 
         public class BytecodeHolder
         {
-            private readonly Tag tag;
+            internal readonly Tag tag;
 
             internal BytecodeHolder(Tag t)
             {

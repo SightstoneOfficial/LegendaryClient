@@ -5,56 +5,47 @@ namespace Sightstone.Patcher.Logic.Region
 {
     class PBE : MainRegion
     {
-        public override string RegionName
-        {
-            get { return "PBE"; }
-        }
+        public override string RegionName => "PBE";
 
-        public override string[] Locals
-        {
-            get { return new[] { "en_US" }; }
-        }
+        public override string[] Locals => new[] { "en_US" };
 
-        public override RegionType RegionType
-        {
-            get
-            {
-                return RegionType.PBE;
-            }
-        }
+        public override RegionType RegionType => RegionType.PBE;
 
         public override Uri ClientUpdateUri
         {
             get
             {
-                var x = new WebClient().DownloadString(ReleaseListingUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None)[0];
-                return new Uri(string.Format("http://l3cdn.riotgames.com/releases/pbe/projects/lol_air_client/releases/{0}/packages/files/packagemanifest", x));
+                var x = new WebClient().DownloadString(ReleaseListingUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+                return
+                    UriVerify.VerifyUri(
+                        new[]
+                        {
+                            new Uri(
+                                string.Format(
+                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
+                                    x[0])),
+                            new Uri(
+                                string.Format(
+                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
+                                    x[0]))
+                        });
             }
         }
 
-        public override Uri ReleaseListingUri
-        {
-            get
-            {
-                //This isn't actually real I will try to find out what it is
-                return new Uri("http://l3cdn.riotgames.com/releases/pbe/projects/lol_air_client/releases/releaselisting_PBE");
-            }
-        }
+        public override Uri ReleaseListingUri => new Uri("http://l3cdn.riotgames.com/releases/pbe/projects/lol_air_client/releases/releaselisting_" + RegionName);
+
+        public override Uri GameClientReleaseListingUri => new Uri("http://l3cdn.riotgames.com/releases/pbe/projects/lol_game_client/releases/releaselisting_" + RegionName);
 
         public override Uri GameClientUpdateUri
         {
             get
             {
-                return new Uri("");
+                var x = new WebClient().DownloadString(GameClientReleaseListingUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                return new Uri(string.Format("http://l3cdn.riotgames.com/releases/pbe/projects/lol_game_client/releases/{0}/packages/files/packagemanifest", x));
             }
         }
 
-        public override Uri GameReleaseListingUri
-        {
-            get
-            {
-                return new Uri("");
-            }
-        }
+        public override Uri GameReleaseListingUri => new Uri("http://l3cdn.riotgames.com/releases/pbe/projects/lol_game_client/releases/releaselisting_" + RegionName);
+        public override Uri GameSlnReleaseListingUri => new Uri("http://l3cdn.riotgames.com/releases/pbe/solutions/lol_game_client_sln/releases/releaselisting_" + RegionName);
     }
 }
