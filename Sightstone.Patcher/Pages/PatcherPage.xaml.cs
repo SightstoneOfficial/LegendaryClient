@@ -133,7 +133,7 @@ namespace Sightstone.Patcher.Pages
             var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
             if (region.RegionType == RegionType.Riot)
             {
-                LeagueDownloadLogic
+                //LeagueDownloadLogic
             }
         }
 
