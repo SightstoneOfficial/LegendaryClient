@@ -60,25 +60,22 @@ namespace Sightstone.Windows
         {
             user = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             if(user.Garena)
-            {
                 ScreenshotFolder = Path.Combine(Client.Location, "screenshots");
-                if (!Directory.Exists(ScreenshotFolder))
-                {
-                    Directory.CreateDirectory(ScreenshotFolder);
-                }
-                Screenshots = Directory.GetFiles(ScreenshotFolder);
-                ScreenshotsPath.Text = ScreenshotFolder;
-                if(!user.Dev)
-                {
-                    DevButton.Visibility = Visibility.Hidden;
-                }
-            }
             else
+                ScreenshotFolder = Path.Combine(Client.RootLocation, "Screenshots");
+
+            if (!Directory.Exists(ScreenshotFolder))
             {
-                ScreenshotsPath.Text = "Your region is currently not supported.";
-                return;
-                // TODO : Add logic for non-Garena servers.
+                Directory.CreateDirectory(ScreenshotFolder);
             }
+
+            Screenshots = Directory.GetFiles(ScreenshotFolder);
+            ScreenshotsPath.Text = ScreenshotFolder;
+            if (!user.Dev)
+            {
+                DevButton.Visibility = Visibility.Hidden;
+            }
+
             try
             {
                 AddScreenshots();
