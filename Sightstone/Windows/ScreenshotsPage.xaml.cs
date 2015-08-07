@@ -62,6 +62,10 @@ namespace Sightstone.Windows
             if(user.Garena)
             {
                 ScreenshotFolder = Path.Combine(Client.Location, "screenshots");
+                if (!Directory.Exists(ScreenshotFolder))
+                {
+                    Directory.CreateDirectory(ScreenshotFolder);
+                }
                 Screenshots = Directory.GetFiles(ScreenshotFolder);
                 ScreenshotsPath.Text = ScreenshotFolder;
                 if(!user.Dev)
@@ -94,21 +98,14 @@ namespace Sightstone.Windows
         private void AddScreenshots()
         {
             SSGrid.Children.Clear();
-            foreach(var file in Screenshots)
+            foreach (var file in Screenshots)
             {
                 var image = new Screenshot(file, this);
-                image.Source = new BitmapImage(new Uri(file));
+                image.Source = Client.ImageSourceFromUri(new Uri(file));
                 image.Stretch = Stretch.Uniform;
                 image.Margin = new Thickness(10, 10, 0, 0);
                 SSGrid.Children.Add(image);
             }
-        }
-
-        private void ViewScreenshot(string Path)
-        {
-            var ssviewer = new ScreenshotViewer(Screenshots.ToList(), Path);
-            Client.OverlayContainer.Content = ssviewer.Content;
-            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         #region Control events

@@ -27,9 +27,9 @@ namespace Sightstone.Controls
 
         public void View()
         {
+            Client.ClearPage(typeof(ScreenshotViewer));
             var overlay = new ScreenshotViewer(this.ScreenshotPage.Screenshots.ToList(), Path);
-            Client.OverlayContainer.Content = overlay;
-            Client.OverlayContainer.Visibility = Visibility.Visible;
+            Client.SwitchPage(overlay);
         }
     }
 }
