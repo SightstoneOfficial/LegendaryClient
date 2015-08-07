@@ -22,6 +22,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 
 namespace Sightstone.Logic.MultiUser
@@ -463,6 +464,24 @@ namespace Sightstone.Logic.MultiUser
             var overlay = new MessageOverlay { MessageTitle = { Content = "Error" }, MessageTextBox = { Text = Message } };
             Client.OverlayContainer.Content = overlay.Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
+
+        internal static ImageSource ImageSourceFromUri(Uri source)
+        {
+            try
+            {
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = source;
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                return bitmap;
+            }
+            catch(FileNotFoundException e)
+            {
+                Uri oUri = new Uri("pack://application:,,,/Sightstone;component/NONE.png", UriKind.RelativeOrAbsolute);
+                return BitmapFrame.Create(oUri);
+            }
         }
         #region WPF Tab Change
 
