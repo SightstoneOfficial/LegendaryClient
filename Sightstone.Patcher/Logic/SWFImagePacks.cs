@@ -23,7 +23,7 @@ namespace Sightstone.Patcher.Logic
 
             getJPEGs(imageInfo, jpegs);
             getLossless(imageInfo, lossless);
-            var filenames = getFileNames(symbols);
+            var filenames = getFileNames(symbols, pathIn);
 
             imageInfo.ForEach(x => x.name = filenames[x.index]);
 
@@ -53,7 +53,7 @@ namespace Sightstone.Patcher.Logic
             }
         }
 
-        private static Dictionary<int, string> getFileNames(IEnumerable<Symbols> symbols)
+        private static Dictionary<int, string> getFileNames(IEnumerable<Symbols> symbols, string pathIn)
         {
             var dictionary = new Dictionary<int, string>();
             foreach (var item in symbols)
@@ -74,6 +74,7 @@ namespace Sightstone.Patcher.Logic
                             value.Add(charByte);
                         }
                         var fileName = Encoding.ASCII.GetString(value.ToArray());
+                        fileName.Replace(Path.GetFileNameWithoutExtension(pathIn) + "_Embeds__e_", string.Empty);
                         dictionary.Add(key, fileName);
                     }
                 }
