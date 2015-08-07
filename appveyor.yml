@@ -22,8 +22,8 @@ before_build:
 
 # sigh *zip*
 after_build:
-- 7z a LegendaryClient.zip LegendaryClient\bin\Release
-- move LegendaryClient\bin\Release\Client\LegendaryClient.exe LegendaryClient.exe
+- 7z a Sightstone.zip Sightstone\bin\Release
+- move Sightstone\bin\Release\Client\Sightstone.exe Sightstone.exe
 
 # define solution file
 build:
