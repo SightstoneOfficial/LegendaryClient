@@ -69,7 +69,12 @@ namespace Sightstone.Windows
         
         private void Delete()
         {
-            // TODO : Implement a user friendly screenshot deletion method
+            // TODO : Implement a user friendly screenshot deletion method.
+        }
+
+        private void Imgur()
+        {
+            // TODO : Implement imgur.com uploading.
         }
 
         private void Explore()
