@@ -371,10 +371,10 @@ namespace Sightstone.Windows
             QuickLoad = true;
 
             //Signal to the server we are in champion select
-            await RiotCalls.SetClientReceivedGameMessage(UserClient.GameID, "CHAMP_SELECT_CLIENT");
+            await UserClient.calls.SetClientReceivedGameMessage(UserClient.GameID, "CHAMP_SELECT_CLIENT");
             GameDTO latestDto =
                 await
-                    RiotCalls.GetLatestGameTimerState(UserClient.GameID, UserClient.ChampSelectDTO.GameState,
+                    UserClient.calls.GetLatestGameTimerState(UserClient.GameID, UserClient.ChampSelectDTO.GameState,
                         UserClient.ChampSelectDTO.PickTurn);
             //Find the game config for timers
             configType = UserClient.LoginPacket.GameTypeConfigs.Find(x => x.Id == latestDto.GameTypeConfigId);
@@ -407,7 +407,7 @@ namespace Sightstone.Windows
                 //Get the champions for the other team to ban & sort alpabetically
                 if (latestDto.GameState.ToUpper() == "PRE_CHAMP_SELECT")
                 {
-                    ChampionBanInfoDTO[] champsForBan = await RiotCalls.GetChampionsForBan();
+                    ChampionBanInfoDTO[] champsForBan = await UserClient.calls.GetChampionsForBan();
                     ChampionsForBan = new List<ChampionBanInfoDTO>(champsForBan);
                     ChampionsForBan.Sort(
                         (x, y) =>
@@ -628,7 +628,7 @@ namespace Sightstone.Windows
                     else if (champDto.GameState == "POST_CHAMP_SELECT")
                     {
                         //Post game has started. Allow trading
-                        CanTradeWith = await RiotCalls.GetPotentialTraders();
+                        CanTradeWith = await UserClient.calls.GetPotentialTraders();
                         HasLockedIn = true;
                         GameStatusLabel.Content = "All players have picked!";
                         if (configType != null)
@@ -701,7 +701,7 @@ namespace Sightstone.Windows
                                 try
                                 {
                                     AllPublicSummonerDataDTO summoner =
-                                        await RiotCalls.GetAllPublicSummonerDataByAccount(player.SummonerId);
+                                        await UserClient.calls.GetAllPublicSummonerDataByAccount(player.SummonerId);
                                     if (summoner.Summoner != null && !string.IsNullOrEmpty(summoner.Summoner.Name))
                                         control.PlayerName.Content = summoner.Summoner.Name;
                                     else
@@ -857,7 +857,7 @@ namespace Sightstone.Windows
                     {
                         PlatformGameLifecycleDTO n =
                             await
-                                RiotCalls.RetrieveInProgressSpectatorGameInfo(
+                                UserClient.calls.RetrieveInProgressSpectatorGameInfo(
                                     UserClient.LoginPacket.AllSummonerData.Summoner.Name);
                         if (n.GameName != null)
                         {
@@ -1256,7 +1256,7 @@ namespace Sightstone.Windows
         private async void TradeButton_Click(object sender, RoutedEventArgs e)
         {
             var p = (KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>)((Button)sender).Tag;
-            await RiotCalls.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
+            await UserClient.calls.AttemptTrade(p.Value.SummonerInternalName, p.Key.ChampionId);
 
             PlayerTradeControl.Visibility = Visibility.Visible;
             champions myChampion = champions.GetChampion((int)MyChampId);
@@ -1281,7 +1281,7 @@ namespace Sightstone.Windows
                 if (item.Tag == null)
                     return;
                 //SelectChampion.SelectChampion(selection.ChampionId)*/
-                await RiotCalls.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
+                await UserClient.calls.SelectChampion(SelectChampion.SelectChamp((int)item.Tag));
                 CanLockIn = true;
                 UserClient.ChampId = (int)item.Tag;
                 //TODO: Fix stupid animation glitch on left hand side
@@ -1312,7 +1312,7 @@ namespace Sightstone.Windows
             else if (item.Tag != null)
             {
                 SearchTextBox.Text = string.Empty;
-                await RiotCalls.BanChampion((int)item.Tag);
+                await UserClient.calls.BanChampion((int)item.Tag);
             }
         }
 
@@ -1331,7 +1331,7 @@ namespace Sightstone.Windows
                 int index = new Random().Next(0, Skins.Count);
                 int skinId = Skins[index];
                 championSkins skin = championSkins.GetSkin(skinId);
-                await RiotCalls.SelectChampionSkin(skin.championId, skin.id);
+                await UserClient.calls.SelectChampionSkin(skin.championId, skin.id);
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
                     Text = "Selected a random skin" + Environment.NewLine
@@ -1344,7 +1344,7 @@ namespace Sightstone.Windows
                 string[] splitItem = s.Split(':');
                 int championId = Convert.ToInt32(splitItem[1]);
                 champions champion = champions.GetChampion(championId);
-                await RiotCalls.SelectChampionSkin(championId, 0);
+                await UserClient.calls.SelectChampionSkin(championId, 0);
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
                     Text = "Selected Default " + champion.name + " as skin" + Environment.NewLine
@@ -1354,7 +1354,7 @@ namespace Sightstone.Windows
             else
             {
                 championSkins skin = championSkins.GetSkin((int)item.Tag);
-                await RiotCalls.SelectChampionSkin(skin.championId, skin.id);
+                await UserClient.calls.SelectChampionSkin(skin.championId, skin.id);
                 var tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
                     Text = "Selected " + skin.displayName + " as skin" + Environment.NewLine
@@ -1398,7 +1398,7 @@ namespace Sightstone.Windows
         private async void QuitCurrentGame()
         {
             Client.AmbientSoundPlayer.Stop();
-            await RiotCalls.QuitGame();
+            await UserClient.calls.QuitGame();
             UserClient.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
@@ -1411,7 +1411,7 @@ namespace Sightstone.Windows
 
         private async void InGame()
         {
-            await RiotCalls.QuitGame();
+            await UserClient.calls.QuitGame();
             UserClient.RiotConnection.MessageReceived -= ChampSelect_OnMessageReceived;
             Client.ClearPage(typeof(CustomGameLobbyPage));
             Client.ClearPage(typeof(CreateCustomGamePage));
@@ -1432,7 +1432,7 @@ namespace Sightstone.Windows
                 if (!CanLockIn)
                     return;
 
-                await RiotCalls.ChampionSelectCompleted();
+                await UserClient.calls.ChampionSelectCompleted();
                 HasLockedIn = true;
                 CanLockIn = false;
                 this.LockInButton.IsEnabled = false;
@@ -1440,7 +1440,7 @@ namespace Sightstone.Windows
             }
             else
             {
-                await RiotCalls.Roll();
+                await UserClient.calls.Roll();
                 HasLockedIn = true;
             }
         }
@@ -1502,7 +1502,7 @@ namespace Sightstone.Windows
                 bookDto.BookPages.Add(masteryPage);
             }
             if (hasChanged)
-                await RiotCalls.SaveMasteryBook(bookDto);
+                await UserClient.calls.SaveMasteryBook(bookDto);
         }
 
         private async void RuneComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1534,7 +1534,7 @@ namespace Sightstone.Windows
                 ChatText.ScrollToEnd();
             }
             if (hasChanged)
-                await RiotCalls.SelectDefaultSpellBookPage(selectedRunePage);
+                await UserClient.calls.SelectDefaultSpellBookPage(selectedRunePage);
         }
 
         private void ChatButton_Click(object sender, RoutedEventArgs e)
@@ -1609,7 +1609,7 @@ namespace Sightstone.Windows
                 }
 
 
-                if ((await RiotCalls.SaveSpellBook(UserClient.LoginPacket.AllSummonerData.SpellBook)).DefaultPage == null)
+                if ((await UserClient.calls.SaveSpellBook(UserClient.LoginPacket.AllSummonerData.SpellBook)).DefaultPage == null)
                 {
                     UserClient.LoginPacket.AllSummonerData.SpellBook = failsafe;
                     var pop = new NotifyPlayerPopup("Save failed", "Failed to use local rune page.")
