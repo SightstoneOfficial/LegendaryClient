@@ -32,10 +32,10 @@ build:
   verbosity: minimal
 
 artifacts:
-  - path: LegendaryClient.zip
-    name: LegendaryClient-Full
-  - path: LegendaryClient.exe
-    name: LegendaryClient-Executable
+  - path: Sightstone.zip
+    name: Sightstone-Full
+  - path: Sightstone.exe
+    name: Sightstone-Executable
 
 notifications:
   - provider: Webhook
