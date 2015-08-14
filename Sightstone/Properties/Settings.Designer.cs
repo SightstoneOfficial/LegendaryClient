@@ -429,5 +429,17 @@ namespace Sightstone.Properties {
                 this["LoginMusicVolume"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public double ChampSelectMusicVolume {
+            get {
+                return ((double)(this["ChampSelectMusicVolume"]));
+            }
+            set {
+                this["ChampSelectMusicVolume"] = value;
+            }
+        }
     }
 }
