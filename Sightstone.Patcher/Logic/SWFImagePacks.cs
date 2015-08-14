@@ -77,7 +77,7 @@ namespace Sightstone.Patcher.Logic
                         var fileName = Encoding.ASCII.GetString(value.ToArray());
                         fileName.Replace(Path.GetFileNameWithoutExtension(pathIn) + "_Embeds__e_", string.Empty);
                         if (dictionary.ContainsKey(key))
-                            dictionary.Remove(key);
+                            continue;
                         dictionary.Add(key, fileName);
                     }
                 }
