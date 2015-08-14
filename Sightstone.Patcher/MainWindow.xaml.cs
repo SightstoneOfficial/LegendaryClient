@@ -19,16 +19,16 @@ namespace Sightstone.Patcher
     /// </summary>
     public partial class MainWindow
     {
-        PatcherPage patcherPage = new PatcherPage();
+        PatcherPage patcherPage;
         public MainWindow()
         {
             InitializeComponent();
             InitializeLanguage();
+            Client.MainHolder = Container;
             Visibility = Visibility.Hidden;
             var page = new SplashPage();
             page.Show();
             Client.ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Client.MainHolder = Container;
             Client.Win = this;
             Player.Volume = Properties.Settings.Default.Volume / 100;
             Client.SoundPlayer = Player;
@@ -37,6 +37,7 @@ namespace Sightstone.Patcher
             Client.RegionLabel = RegionLabel;
             Client.OverlayContainer = OverlayContainer;
             Client.OverlayGrid = OverlayGrid;
+            patcherPage = new PatcherPage();
             OverlayContainer.Content = new PatcherSettingsPage(Properties.Settings.Default.FirstStart).Content;
             //It is easier to access the menu with this
 #if Debug
