@@ -1,4 +1,3 @@
-using Sightstone.Logic;
 using Sightstone.Logic.JSON;
 using Sightstone.Logic.Region;
 using Sightstone.Logic.SQLite;
@@ -10,10 +9,8 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using SQLite;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -26,7 +23,6 @@ using System.Web;
 using System.Web.Script.Serialization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -131,9 +127,15 @@ namespace Sightstone.Windows
                 }
                 SoundPlayer.Source = new System.Uri(Path.Combine(themeLocation, music[0]));
                 SoundPlayer.Play();
+                if (Settings.Default.LoginMusicVolume != -1)
+                {
+                    slider.Value = Settings.Default.LoginMusicVolume;
+                    SoundPlayer.Volume = Settings.Default.LoginMusicVolume / 100;
+                }
                 Sound.IsChecked = false;
             }
-            else Sound.IsChecked = true;
+            else
+                Sound.IsChecked = true;
 
             if (DateTime.Now.Month == 4 && DateTime.Now.Day == 1)
             {
@@ -1097,6 +1099,15 @@ namespace Sightstone.Windows
                 garenaLogin(region, new UserClient());
             else
                 Login(LoginUsernameBox.Text, LoginPasswordBox.Password, region, new UserClient());
+        }
+
+        private void slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if ((sender as Slider).IsInitialized)
+            {
+                SoundPlayer.Volume = e.NewValue / 100;
+                Settings.Default.LoginMusicVolume = e.NewValue;
+            }
         }
     }
 }

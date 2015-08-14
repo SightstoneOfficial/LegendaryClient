@@ -30,6 +30,14 @@
 
         </Grid>
 
+        <!-- Sound Control -->
+        <Grid HorizontalAlignment="Right" Height="42" Margin="0,0,85,28" VerticalAlignment="Bottom" Width="146">
+
+            <Slider x:Name="slider" Margin="0,12,18,9" Value="50" Minimum="0" Maximum="100" 
+                    SmallChange="1" LargeChange="10" HorizontalAlignment="Right" Width="100" ValueChanged="slider_ValueChanged"/>
+            <Image Source="/Sightstone;component/ui\img\icons\ic_volume_up_48px-128.png" Margin="0,11,118,9" HorizontalAlignment="Right" Width="20"/>
+        </Grid>
+
         <!-- Floating Action Button -->
         <Grid Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="ShowLogin_Click" IsDefault="False">
