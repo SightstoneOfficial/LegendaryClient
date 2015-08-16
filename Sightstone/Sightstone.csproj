@@ -1419,6 +1419,7 @@
     <Resource Include="ui\img\icons\Sightstone_black_s.png" />
     <Resource Include="ui\img\icons\sightstone_main_b.png" />
     <Resource Include="ui\img\icons\sightstone_main_w.png" />
+    <Resource Include="ui\img\icons\ic_volume_up_48px-128.png" />
     <Content Include="wLib.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

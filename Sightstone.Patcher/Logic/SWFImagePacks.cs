@@ -30,6 +30,8 @@ namespace Sightstone.Patcher.Logic
 
             foreach (var item in imageInfo)
             {
+                if (!Directory.Exists(pathOut))
+                    Directory.CreateDirectory(pathOut);
                 if(item.type == "JPEG")
                     File.WriteAllBytes(Path.Combine(pathOut, item.name + ".jpg"), item.data);
                 else if (item.type == "Lossless") //We have to create bitmap ourselves
@@ -63,8 +65,7 @@ namespace Sightstone.Patcher.Logic
                     binReader.BaseStream.Position = 8;
                     while (binReader.BaseStream.Position < binReader.BaseStream.Length)
                     {
-                        var key = binReader.ReadByte();
-                        binReader.ReadByte();
+                        var key = binReader.ReadUInt16();
                         var value = new List<Byte>();
                         while (true)
                         {
@@ -75,6 +76,8 @@ namespace Sightstone.Patcher.Logic
                         }
                         var fileName = Encoding.ASCII.GetString(value.ToArray());
                         fileName.Replace(Path.GetFileNameWithoutExtension(pathIn) + "_Embeds__e_", string.Empty);
+                        if (dictionary.ContainsKey(key))
+                            continue;
                         dictionary.Add(key, fileName);
                     }
                 }
@@ -91,12 +94,12 @@ namespace Sightstone.Patcher.Logic
                 using (var binReader = new BinaryReader(new MemoryStream(item.Data)))
                 {
                     binReader.BaseStream.Position = 6;
-                    image.index = binReader.Read();
+                    image.index = binReader.ReadUInt16();
                     binReader.BaseStream.Position = 9;
-                    image.width = ChangeEndianess(binReader.ReadBytes(2));
-                    image.height = ChangeEndianess(binReader.ReadBytes(2));
+                    image.width = binReader.ReadUInt16();
+                    image.height = binReader.ReadUInt16();
                     var compressed = binReader.ReadBytes(Convert.ToInt32(binReader.BaseStream.Length - binReader.BaseStream.Position));
-                    var outBytes = Ionic.Zlib.ZlibStream.UncompressBuffer(compressed);
+                    image.data = Ionic.Zlib.ZlibStream.UncompressBuffer(compressed);
                     image.type = "Lossless";
                 }
                 imageInfo.Add(image);
@@ -123,12 +126,8 @@ namespace Sightstone.Patcher.Logic
                 using (var binReader = new BinaryReader(new MemoryStream(item.Data)))
                 {
                     binReader.BaseStream.Position = 6;
-                    image.index = binReader.Read();
-                    if (binReader.ReadByte() == 0)
-                    {
-                        image.data = binReader.ReadBytes(Convert.ToInt32(binReader.BaseStream.Length - binReader.BaseStream.Position));
-                        break;
-                    }
+                    image.index = binReader.ReadUInt16();
+                    image.data = binReader.ReadBytes(Convert.ToInt32(binReader.BaseStream.Length - binReader.BaseStream.Position));
                 }
                 image.type = "JPEG";
                 imageInfo.Add(image);

@@ -98,6 +98,12 @@ If you still want to use this go to <a href="https://support.riotgames.com/hc/en
 
 What bugs are there
 
+Just like there are bugs with Sightstone there are with league
+
+Please remember that 
+
+![Rito Bug 5.15.0.333 Aug 11](http://i.imgur.com/TSAcozN.jpg)
+
 Read on to see the issues
 
 ---

@@ -23,7 +23,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
-
+using System.Windows.Threading;
+using System.Threading;
 
 namespace Sightstone.Logic.MultiUser
 {
@@ -276,21 +277,6 @@ namespace Sightstone.Logic.MultiUser
                                     CurrentGame.SummonerId + "\"";
             //*/
             p.Start();
-            var t = new Timer
-            {
-                Interval = 5000,
-            };
-            t.Elapsed += (o, m) =>
-            {
-                if (region.Garena)
-                    return;
-                GameScouter scouter = new GameScouter();
-                scouter.LoadScouter(sname);
-                scouter.Show();
-                scouter.Activate();
-                t.Stop();
-            };
-            t.Start();
         }
         private static void p_Exited(object sender, EventArgs e)
         {
@@ -602,14 +588,14 @@ namespace Sightstone.Logic.MultiUser
                     {
                         client.Headers.Add("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
                         client.Headers.Add("Content-Type", "text/html; charset=UTF-8");
-                        names = client.DownloadString("http://Sightstone.net/QueueName");
+                        names = client.DownloadString("http://legendaryclient.net/QueueName");
                     }
                     catch
                     {
                         //Try to download from Github
                         try
                         {
-                            names = client.DownloadString("https://raw.githubusercontent.com/Sightstone/Sightstone/gh-pages/QueueName");
+                            names = client.DownloadString("https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/gh-pages/QueueName");
                         }
                         catch { }
                     }

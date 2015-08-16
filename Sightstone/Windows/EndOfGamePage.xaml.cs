@@ -40,6 +40,7 @@ namespace Sightstone.Windows
         public EndOfGamePage(EndOfGameStats statistics)
         {
             InitializeComponent();
+            UserClient.RiotConnection.MessageReceived += RiotConnection_MessageReceived;
             RenderStats(statistics);
             Client.SwitchPage(Client.MainPage);
             Client.runonce = false;
@@ -49,7 +50,6 @@ namespace Sightstone.Windows
             newRoom = new MucManager(UserClient.XmppConnection);
             UserClient.XmppConnection.OnMessage += XmppConnection_OnMessage;
             UserClient.XmppConnection.OnPresence += XmppConnection_OnPresence;
-            UserClient.RiotConnection.MessageReceived += RiotConnection_MessageReceived;
             newRoom.AcceptDefaultConfiguration(new Jid(RoomJid));
             newRoom.JoinRoom(new Jid(RoomJid), UserClient.LoginPacket.AllSummonerData.Summoner.Name);
         }

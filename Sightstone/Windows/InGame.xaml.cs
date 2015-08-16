@@ -7,6 +7,7 @@ using Sightstone.Logic.Riot;
 using Sightstone.Logic.Riot.Platform;
 using RtmpSharp.Messaging;
 using Sightstone.Logic.MultiUser;
+using System;
 
 namespace Sightstone.Windows
 {
@@ -28,6 +29,7 @@ namespace Sightstone.Windows
                 if (lol.Length == 0)
                     Client.LaunchGame(UserClient.CurrentGame.ServerIp, UserClient.CurrentGame.ServerPort.ToString(), UserClient.CurrentGame.EncryptionKey,
                         UserClient.CurrentGame.SummonerId.ToString(), UserClient.CurrentGame.SummonerName, UserClient.Region);
+                StartGameScouter(UserClient.CurrentGame.SummonerName);
             }
 
             UserClient.RiotConnection.MessageReceived += Update_OnMessageReceived;
@@ -35,6 +37,28 @@ namespace Sightstone.Windows
             Client.CurrentPage = this;
             Client.ReturnButton.Visibility = Visibility.Visible;
             Client.ReturnButton.Content = "Return to Reconnect Page";
+        }
+
+        private void StartGameScouter(string summonerName)
+        {
+            var t = new System.Timers.Timer
+            {
+                Interval = 5000,
+            };
+            t.Elapsed += (o, m) =>
+            {
+                if (UserClient.Region.Garena)
+                    return;
+                Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
+                {
+                    GameScouter scouter = new GameScouter();
+                    scouter.LoadScouter(summonerName);
+                    scouter.Show();
+                    scouter.Activate();
+                    t.Stop();
+                }));
+            };
+            t.Start();
         }
 
         private void Update_OnMessageReceived(object sender, MessageReceivedEventArgs message)
@@ -61,6 +85,7 @@ namespace Sightstone.Windows
         {
             Client.LaunchGame(UserClient.CurrentGame.ServerIp, UserClient.CurrentGame.ServerPort.ToString(), UserClient.CurrentGame.EncryptionKey,
                         UserClient.CurrentGame.SummonerId.ToString(), UserClient.CurrentGame.SummonerName, UserClient.Region);
+            StartGameScouter(UserClient.CurrentGame.SummonerName);
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)

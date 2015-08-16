@@ -4,9 +4,13 @@
       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Background="{DynamicResource MaterialDesignPaper}"
       Title="PlayPage"
       mc:Ignorable="d" d:DesignHeight="672"
-      d:DesignWidth="1024">
+      d:DesignWidth="1024"
+      >
 
     <Grid>
 

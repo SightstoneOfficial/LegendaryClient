@@ -15,7 +15,7 @@ namespace Sightstone.Logic
             try
             {
                 WebClient client = new WebClient();
-                Stream stream = client.OpenRead("http://Sightstone.net/devs.txt");
+                Stream stream = client.OpenRead("http://legendaryclient.net/devs.txt");
                 StreamReader reader = new StreamReader(stream);
                 string content = reader.ReadToEnd();
                 var devs = content.Split('\n').ToList();

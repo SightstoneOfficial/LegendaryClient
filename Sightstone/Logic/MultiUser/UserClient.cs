@@ -164,7 +164,7 @@ namespace Sightstone.Logic.MultiUser
                 {
                     try
                     {
-                        var banned = client.DownloadString("http://Sightstone.net/Autoblock.txt");
+                        var banned = client.DownloadString("http://legendaryclient.net/Autoblock.txt");
                         ChatAutoBlock = banned.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
                     }
                     catch
