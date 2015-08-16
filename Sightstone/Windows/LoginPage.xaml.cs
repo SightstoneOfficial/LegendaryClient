@@ -43,6 +43,7 @@ using agsXMPP.protocol.iq.roster;
 using agsXMPP.protocol.client;
 using System.Security.Principal;
 using System.Security.Cryptography;
+using Microsoft.Win32;
 using Sightstone.Logic.MultiUser;
 
 namespace Sightstone.Windows
@@ -318,6 +319,104 @@ namespace Sightstone.Windows
                 RegionComboBox.SelectedValue = Settings.Default.Region;
 
             invisibleLoginCheckBox.IsChecked = Settings.Default.incognitoLogin;
+        }
+
+        private string GetLolRootPath(bool restart)
+        {
+            if (!restart)
+            {
+                switch (UpdateRegion)
+                {
+                    case "PBE":
+                        if (Settings.Default.PBELocation != string.Empty)
+                            return Settings.Default.PBELocation;
+                        break;
+                    case "Live":
+                        if (Settings.Default.LiveLocation != string.Empty)
+                            return Settings.Default.LiveLocation;
+                        break;
+                    case "Korea":
+                        if (Settings.Default.KRLocation != string.Empty)
+                            return Settings.Default.KRLocation;
+                        break;
+                    case "Garena":
+                        if (Settings.Default.GarenaLocation != string.Empty && Settings.Default.GarenaLocation.EndsWith("lol.exe"))
+                        {
+                            Settings.Default.GarenaLocation = Settings.Default.GarenaLocation.Replace("lol.exe", "");
+                            return Settings.Default.GarenaLocation;
+                        }
+                        if (Settings.Default.GarenaLocation != string.Empty)
+                            return Settings.Default.GarenaLocation;
+                        break;
+                }
+                var possiblePaths = new List<Tuple<string, string>>
+                {
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\SightstoneLol",
+                        "Path"),
+                    new Tuple<string, string>(
+                        @"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
+                    new Tuple<string, string>(
+                        @"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\Wow6432Node\RIOT GAMES",
+                        "Path"),
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\RIOT GAMES", "Path"),
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Wow6432Node\Riot Games", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Riot Games\League Of Legends", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games", "Path"),
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games\League Of Legends",
+                        "Path"),
+                    // Yes, a f*ckin whitespace after "Riot Games"..
+                    new Tuple<string, string>(@"HKEY_LOCAL_MACHINE\Software\Wow6432Node\Riot Games \League Of Legends",
+                        "Path"),
+                };
+                foreach (var tuple in possiblePaths)
+                {
+                    var path = tuple.Item1;
+                    var valueName = tuple.Item2;
+                    try
+                    {
+                        var value = Registry.GetValue(path, valueName, string.Empty);
+                        if (value == null || value.ToString() == string.Empty) continue;
+                        var regKey = Registry.CurrentUser.CreateSubKey("Sightstone");
+                        if (regKey == null) return value.ToString();
+                        regKey.SetValue(
+                            value.ToString().Contains("lol.exe") ? "GarenaLocation" : "LoLLocation",
+                            value.ToString());
+                        regKey.Close();
+                        return value.ToString();
+                    }
+                    catch (Exception e)
+                    {
+                        Client.Log(e);
+                    }
+                }
+            }
+
+            var findLeagueDialog = new OpenFileDialog();
+
+            if (!Directory.Exists(Path.Combine("C:\\", "Riot Games", "League of Legends")))
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Program Files (x86)", "GarenaLoL", "GameData",
+                    "Apps", "LoL");
+            else
+                findLeagueDialog.InitialDirectory = Path.Combine("C:\\", "Riot Games", "League of Legends");
+
+            findLeagueDialog.DefaultExt = ".exe";
+            findLeagueDialog.Filter = "League of Legends Launcher|lol.launcher*.exe|Garena Launcher|lol.exe";
+
+            var result = findLeagueDialog.ShowDialog();
+            if (result != true)
+                return string.Empty;
+
+            var key = Registry.CurrentUser.CreateSubKey("Software\\RIOT GAMES");
+            key?.SetValue("Path",
+                findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty));
+
+            if (restart)
+            {
+                MessageBox.Show("Saved value, please restart the client to login.", "press any key to restart");
+                Process.Start(Path.Combine(Client.ExecutingDirectory, "Client", "Sightstone.exe"));
+            }
+
+            return findLeagueDialog.FileName.Replace("lol.launcher.exe", string.Empty).Replace("lol.launcher.admin.exe", string.Empty);
         }
 
         private void LoginPic_MediaEnded(object sender, RoutedEventArgs e)

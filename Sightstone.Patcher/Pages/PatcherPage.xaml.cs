@@ -578,6 +578,8 @@ namespace Sightstone.Patcher.Pages
         {
             var possiblePaths = new List<Tuple<string, string>>
                 {
+                    new Tuple<string, string>(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\SightstoneLol",
+                        "Path"),
                     new Tuple<string, string>(
                         @"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\RIOT GAMES", "Path"),
                     new Tuple<string, string>(
@@ -612,6 +614,14 @@ namespace Sightstone.Patcher.Pages
                 {
                     //Ignored
                 }
+            }
+
+            if (MessageBox.Show("Do you have lol installed?", "League not found", MessageBoxButton.YesNo) ==
+                MessageBoxResult.No)
+            {
+                Registry.SetValue(@"HKEY_CURRENT_USER\Software\Classes\VirtualStore\MACHINE\SOFTWARE\SightstoneLol", 
+                    "Path", Path.Combine(Client.ExecutingDirectory, "LeagueClient"));
+                return Path.Combine(Client.ExecutingDirectory, "LeagueClient");
             }
 
             var findLeagueDialog = new OpenFileDialog();
