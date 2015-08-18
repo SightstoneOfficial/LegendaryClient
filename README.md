@@ -30,7 +30,7 @@ Donations
 
 Sandbox
 =======
-[![RitoWars](https://img.shields.io/badge/Sandbox-InDev-lightgrey.svg)](https://github.com/eddy5641/RitoWars)
+[![RitoWars](https://img.shields.io/badge/Sandbox-InDev-lightgrey.svg?style=flat-square)](https://github.com/eddy5641/RitoWars)
 Only a lot more to go
 
 How To Install
