@@ -21,7 +21,10 @@ using System.Text;
 using System.Threading;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using MediaToolkit;
+using MediaToolkit.Model;
 using Microsoft.Win32;
+using Sightstone.Logic.UpdateRegion;
 using Sightstone.Patcher.Logic.Region;
 using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
@@ -331,6 +334,106 @@ namespace Sightstone.Patcher.Pages
             downloader.OnDownloadProgressChanged += DownloadChange;
             downloader.DownloadMultipleFiles(files);
             
+        }
+
+        private void downloadTheme(string[] manifest)
+        {
+            try
+            {
+                string[] fileMetaData = manifest.Skip(1).ToArray();
+                var updateRegion = Logic.UpdateRegion.BaseUpdateRegion.GetUpdateRegion("Live");
+
+                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes")))
+                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes"));
+
+                foreach (string s in fileMetaData)
+                {
+                    if (string.IsNullOrEmpty(s))
+                        continue;
+
+                    string location = s.Split(',')[0];
+                    string savePlace = location.Split(new[] { "/files/" }, StringSplitOptions.None)[1];
+                    if (savePlace.Contains("theme.properties"))
+                    {
+                        using (var newClient = new WebClient())
+                        {
+                            LogTextBox("Checking Theme...");
+                            newClient.DownloadFile(updateRegion.BaseLink + location,
+                                Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties"));
+                        }
+                    }
+                }
+
+                if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties")))
+                    return;
+
+                string[] file =
+                    File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties"));
+                string theme = "";
+
+                foreach (string s in file)
+                    if (s.StartsWith("themeConfig="))
+                        theme = s.Split('=')[1].Split(',')[0];
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "themedata")))
+                    File.Delete(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "themedata"));
+                var themefile = File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "themedata"));
+                themefile.Write(Encoding.UTF8.GetBytes(theme), 0, Encoding.UTF8.GetBytes(theme).Count());
+                themefile.Close();
+
+                if (theme == "")
+                    return;
+
+                if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme)))
+                    Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme));
+                else
+                {
+                    
+                    return;
+                }
+
+                List<string> themeLink = fileMetaData.Where(
+                                   line => (line.Contains("loop") || line.Contains("Loop")) &&
+                                       line.Contains(theme)).ToList(); //loop is exacly the same as intro
+                themeLink = themeLink.Select(link => link.Split(',')[0]).ToList();
+
+                using (var newClient = new WebClient())
+                {
+                    foreach (var item in themeLink)
+                    {
+                        string fileName = item.Split('/').Last();
+                        LogTextBox("Downloading " + fileName + " from http://l3cdn.riotgames.com");
+                        newClient.DownloadFile(updateRegion.BaseLink + item,
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName));
+
+                    }
+                }
+                string[] flv = Directory.GetFiles(
+                    Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme), "*.flv");
+
+                foreach (var item in flv)
+                {
+                    var inputFile = new MediaFile
+                    {
+                        Filename =
+                        Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, item)
+                    };
+                    var outputFile = new MediaFile
+                    {
+                        Filename =
+                        Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, item).Replace(".flv", ".mp4")
+                    };
+
+                    using (var engine = new Engine())
+                    {
+                        engine.Convert(inputFile, outputFile);
+                    }
+
+                }
+                
+            }
+            catch
+            {
+            }
         }
 
         private void DownloadChange(double downloaded, double toDownload)

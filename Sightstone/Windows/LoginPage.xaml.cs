@@ -58,9 +58,37 @@ namespace Sightstone.Windows
         public LoginPage()
         {
             InitializeComponent();
-            Client.donepatch = true;
-            Client.patching = false;
-            Client.ClearPage(typeof(PatcherPage));
+            string lolRootPath = GetLolRootPath(false);
+            Client.Log("League of Legends is located at: " + lolRootPath);
+            //RADS\solutions\lol_game_client_sln\releases
+            string gameLocation = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
+                "releases");
+            string solutionListing = new RiotPatcher().GetListing("http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/releaselisting_NA");
+
+            string solutionVersion = solutionListing.Split(new[] { Environment.NewLine }, StringSplitOptions.None)[0];
+            Client.GameClientVersion = solutionVersion;
+            Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
+                            "releases", solutionVersion, "deploy");
+
+            Client.Theme = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "themedata"))[0];
+
+            if (File.Exists(Path.Combine(Settings.Default.GarenaLocation, "Air", "Lib", "ClientLibCommon.dat")))
+            {
+                File.Copy(Path.Combine(Settings.Default.GarenaLocation, "Air", "Lib", "ClientLibCommon.dat"),
+                          Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"), true);
+
+                Client.Log("Garena is Up-To-Date");
+                Client.GLocation = Path.Combine(lolRootPath, "Game");
+                Client.GRootLocation = lolRootPath;
+            }
+            if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
+            {
+                Client.Log("League of Legends is Up-To-Date");
+                Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
+                    "releases", solutionVersion, "deploy");
+                Client.RootLocation = lolRootPath;
+            }
+            
             Client.CurrentServer = "NA";
             Version.TextChanged += WaterTextbox_TextChanged;
             bool x = Settings.Default.DarkTheme;
@@ -327,7 +355,7 @@ namespace Sightstone.Windows
         {
             if (!restart)
             {
-                switch (UpdateRegion)
+                switch (RegionComboBox.SelectedValuePath)
                 {
                     case "PBE":
                         if (Settings.Default.PBELocation != string.Empty)

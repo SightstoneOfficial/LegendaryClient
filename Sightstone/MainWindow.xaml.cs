@@ -133,7 +133,7 @@ namespace Sightstone
             Client.NotificationOverlayContainer = NotificationOverlayContainer;
             Client.SoundPlayer = SoundPlayer;
             Client.AmbientSoundPlayer = ASoundPlayer;
-            Client.SwitchPage(new PatcherPage());
+            Client.SwitchPage(new LoginPage());
 
             if (!string.IsNullOrEmpty(Settings.Default.LoginPageImage) && Settings.Default.UseAsBackgroundImage)
             {

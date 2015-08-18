@@ -220,7 +220,9 @@ namespace Sightstone.Logic.MultiUser
         }
 
         internal static string Location;
+        internal static string GLocation;
         internal static string RootLocation;
+        internal static string GRootLocation;
 
         /// <summary>
         /// Gets where the lolclient is located

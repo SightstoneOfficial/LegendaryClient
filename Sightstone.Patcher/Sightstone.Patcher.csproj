@@ -88,6 +88,10 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\DLLS\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="MediaToolkit, Version=1.0.4.11, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MediaToolkit.1.0.4.11\lib\net40\MediaToolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -119,6 +123,12 @@
     <Compile Include="Logic\Downloader.cs" />
     <Compile Include="Logic\SightstoneDownloadLogic.cs" />
     <Compile Include="Logic\SWFImagePacks.cs" />
+    <Compile Include="Logic\UpdateRegion\BaseUpdateRegion.cs" />
+    <Compile Include="Logic\UpdateRegion\China.cs" />
+    <Compile Include="Logic\UpdateRegion\Garena.cs" />
+    <Compile Include="Logic\UpdateRegion\Korea.cs" />
+    <Compile Include="Logic\UpdateRegion\Live.cs" />
+    <Compile Include="Logic\UpdateRegion\PBE.cs" />
     <Compile Include="Logic\UriVerify.cs" />
     <Compile Include="SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>

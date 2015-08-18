@@ -712,9 +712,6 @@
     <Compile Include="Windows\StatusPage.xaml.cs">
       <DependentUpon>StatusPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Windows\PatcherPage.xaml.cs">
-      <DependentUpon>PatcherPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Windows\PlayPage.xaml.cs">
       <DependentUpon>PlayPage.xaml</DependentUpon>
     </Compile>
@@ -1206,12 +1203,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Windows\StatusPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Windows\PatcherPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <Generator>MSBuild:Compile</Generator>
