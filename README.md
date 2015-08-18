@@ -24,10 +24,14 @@ READ THE LICENSE AT THE BOTTOM OF THE PAGE BEFORE INSTALLING
 [![license](http://img.shields.io/:license-GPLv3-blue.svg?style=flat-square)](https://raw.githubusercontent.com/LegendaryClient/LegendaryClient/multiuser-client/LICENSES/LegendaryClient.LICENSE)
 [![Status](https://img.shields.io/badge/Sightstone-In%20Dev-lightgrey.svg?style=flat-square)](https://github.com/LegendaryClient/LegendaryClient)
 
-
 Donations
 =========
 <a href='https://pledgie.com/campaigns/27549'><img alt='Click here to lend your support to: LegendaryClient and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/27549.png?skin_name=chrome' border='0' ></a>
+
+Sandbox
+=======
+[![RitoWars](https://img.shields.io/badge/Sandbox-InDev-lightgrey.svg)](https://github.com/eddy5641/RitoWars)
+Only a lot more to go
 
 How To Install
 ==============
@@ -49,7 +53,7 @@ https://ci.appveyor.com/project/EddyV/legendaryclient/build/artifacts
 Supported Languages
 ===================
 ![English](https://img.shields.io/badge/Languages-English-green.svg?style=flat-square)
-![French](https://img.shields.io/badge/Languages-French-red.svg?style=flat-square)
+<!--![French](https://img.shields.io/badge/Languages-French-red.svg?style=flat-square)
 ![Spanish](https://img.shields.io/badge/Languages-Spanish-red.svg?style=flat-square)
 ![Chinese](https://img.shields.io/badge/Languages-Chinese-red.svg?style=flat-square)
 ![Japanese](https://img.shields.io/badge/Languages-Japanese-red.svg?style=flat-square)
@@ -69,7 +73,7 @@ Supported Languages
 ![Danish](https://img.shields.io/badge/Languages-Danish-red.svg?style=flat-square)
 ![Divehi](https://img.shields.io/badge/Languages-Divehi-red.svg?style=flat-square)
 ![Greek](https://img.shields.io/badge/Languages-Greek-red.svg?style=flat-square)
-![Estonian](https://img.shields.io/badge/Languages-Estonian-red.svg?style=flat-square)
+![Estonian](https://img.shields.io/badge/Languages-Estonian-red.svg?style=flat-square)-->
 
 Q&A
 ===
