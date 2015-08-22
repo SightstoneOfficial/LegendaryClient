@@ -199,6 +199,8 @@ namespace Sightstone.Windows.Profile
 
         private void SpectateButton_Click(object sender, RoutedEventArgs e)
         {
+            if (game == null) return;
+
             var ip = game.PlayerCredentials.ObserverServerIp;
             var key = game.PlayerCredentials.ObserverEncryptionKey;
             var gameId = game.PlayerCredentials.GameId;
