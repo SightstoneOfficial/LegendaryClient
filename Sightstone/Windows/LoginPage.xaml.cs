@@ -968,7 +968,17 @@ namespace Sightstone.Windows
             WindowsPrincipal winPrincipal = new WindowsPrincipal(winIdentity);
             if (!winPrincipal.IsInRole(WindowsBuiltInRole.Administrator))
             {
-                if (await ((MetroWindow)Application.Current.MainWindow).ShowMessageAsync("Insufficent Privledges.", "Press OK to restart as admin.") == MessageDialogResult.Affirmative)
+                var overlay = new MessageOverlay
+                {
+                    MessageTextBox =
+                    {
+                        Text = "Press OK to restart as admin."
+                    },
+                    MessageTitle = { Content = "Insufficent Privledges" }
+                };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+                overlay.AcceptButton.Click += (o,i) =>
                 {
                     var info = new ProcessStartInfo(Path.Combine(Client.ExecutingDirectory, "Client", "Sightstone.exe"))
                     {
@@ -977,7 +987,8 @@ namespace Sightstone.Windows
                     };
                     Process.Start(info);
                     Environment.Exit(0);
-                }
+                };
+                return;
             }
 
             LoggingInLabel.Content = "Waiting for user to launch League from garena";
