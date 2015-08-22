@@ -672,7 +672,7 @@ namespace Sightstone.Windows
             var plainTextbytes = Encoding.UTF8.GetBytes(login.AccountSummary.Username + ":" + login.Token);
             user.Instance.reconnectToken = Convert.ToBase64String(plainTextbytes);
 
-            var LoggedIn = await user.Instance.RiotConnection.LoginAsync(username, login.Token);
+            var LoggedIn = await user.Instance.RiotConnection.LoginAsync(username.ToLower(), login.Token);
             
             var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
 
