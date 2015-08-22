@@ -70,7 +70,8 @@ namespace Sightstone.Windows
             Client.Location = Path.Combine(lolRootPath, "RADS", "solutions", "lol_game_client_sln",
                             "releases", solutionVersion, "deploy");
 
-            Client.Theme = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "themedata"))[0];
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "themedata")))
+                Client.Theme = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "themedata"))[0];
 
             if (File.Exists(Path.Combine(Settings.Default.GarenaLocation, "Air", "Lib", "ClientLibCommon.dat")))
             {
@@ -134,10 +135,13 @@ namespace Sightstone.Windows
                     break;
             }
 
-            string themeLocation = Path.Combine(Client.ExecutingDirectory, "assets", "themes", Client.Theme);
+            string themeLocation = "";
+            if (!String.IsNullOrEmpty(Client.Theme))
+                themeLocation = Path.Combine(Client.ExecutingDirectory, "assets", "themes", Client.Theme);
+
             if (!Settings.Default.DisableLoginMusic)
             {
-                string[] music;
+                string[] music = null;
                 string soundpath = Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "sound_o_heaven.ogg");
                 if (DateTime.Now.Month == 4 && DateTime.Now.Day == 1)
                 {
@@ -152,10 +156,14 @@ namespace Sightstone.Windows
                 }
                 else
                 {
-                    music = Directory.GetFiles(themeLocation, "*.mp3");
+                    if (!String.IsNullOrEmpty(themeLocation))
+                        music = Directory.GetFiles(themeLocation, "*.mp3");
                 }
-                SoundPlayer.Source = new System.Uri(Path.Combine(themeLocation, music[0]));
-                SoundPlayer.Play();
+                if (music != null && music.Length > 0 && !String.IsNullOrEmpty(themeLocation))
+                {
+                    SoundPlayer.Source = new System.Uri(Path.Combine(themeLocation, music[0]));
+                    SoundPlayer.Play();
+                }
                 if (Settings.Default.LoginMusicVolume != -1)
                 {
                     slider.Value = Settings.Default.LoginMusicVolume;
@@ -175,7 +183,7 @@ namespace Sightstone.Windows
                     LoginImage.Source = new BitmapImage(new System.Uri(SkinPath, UriKind.Absolute));
                 }
             }
-            else if (Settings.Default.LoginPageImage == "")
+            else if (Settings.Default.LoginPageImage == "" && !String.IsNullOrEmpty(themeLocation))
             {
                 string[] videos = Directory.GetFiles(themeLocation, "*.mp4");
                 if (videos.Length > 0 && File.Exists(videos[0]))
