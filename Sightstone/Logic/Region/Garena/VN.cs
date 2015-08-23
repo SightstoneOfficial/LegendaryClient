@@ -12,12 +12,12 @@ namespace Sightstone.Logic.Region.Garena
 
         public override string Server
         {
-            get { return "prodvn.lol.garenanow.com"; }
+            get { return "prodvn1.lol.garenanow.com"; }
         }
 
         public override string LoginQueue
         {
-            get { return "https://lqvn.lol.garenanow.com/"; }
+            get { return "https://lqvn1.lol.garenanow.com/"; }
         }
 
         public override string Location
@@ -37,7 +37,7 @@ namespace Sightstone.Logic.Region.Garena
 
         public override string ChatName
         {
-            get { return "vn"; }
+            get { return "vn1"; }
         }
 
         public override System.Uri NewsAddress
@@ -61,12 +61,12 @@ namespace Sightstone.Logic.Region.Garena
 
         public override System.Uri SpectatorLink
         {
-            get { return new System.Uri("http://210.211.119.15:80/observer-mode/rest/"); }
+            get { return new System.Uri("http://125.212.222.163:80/observer-mode/rest/"); }
         }
 
         public override string SpectatorIpAddress
         {
-            get { return "210.211.119.15:80"; }
+            get { return "125.212.222.163:80"; }
             set { }
         }
     }
