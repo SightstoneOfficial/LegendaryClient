@@ -27,9 +27,9 @@ namespace Sightstone.Patcher.Logic
         public static string[] GetLolClientClientVersion(MainRegion Region)
         {
             //Get the GameClientSln version
-            using (new WebClient())
+            using (var client = new WebClient())
             {
-                ReleaseListing = new WebClient().DownloadString(Region.GameReleaseListingUri);
+                ReleaseListing = client.DownloadString(Region.GameReleaseListingUri);
             }
 
             return ReleaseListing.Split(new[] {Environment.NewLine}, StringSplitOptions.None).ToArray();
@@ -37,9 +37,9 @@ namespace Sightstone.Patcher.Logic
 
         public static string[] GetLolClientSlnVersion(MainRegion Region)
         {
-            using (new WebClient())
+            using (var client = new WebClient())
             {
-                ReleaseListing = new WebClient().DownloadString(Region.GameSlnReleaseListingUri);
+                ReleaseListing = client.DownloadString(Region.GameSlnReleaseListingUri);
             }
 
             return ReleaseListing.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToArray();
@@ -49,9 +49,9 @@ namespace Sightstone.Patcher.Logic
         public static string[] GetLolClientVersion(MainRegion Region)
         {
             //Get the GameClientSln version
-            using (new WebClient())
+            using (var client = new WebClient())
             {
-                ReleaseListing = new WebClient().DownloadString(Region.ReleaseListingUri);
+                ReleaseListing = client.DownloadString(Region.ReleaseListingUri);
             }
 
             return ReleaseListing.Split(new[] { Environment.NewLine }, StringSplitOptions.None).ToArray();
@@ -89,10 +89,10 @@ namespace Sightstone.Patcher.Logic
         {
             string latestSlnVersion = GetLolClientClientVersion(Region)[0];
             //Get GameClient Language files
-            using (new WebClient())
+            using (var client = new WebClient())
             {
                 SolutionManifest =
-                    new WebClient().DownloadString(
+                    client.DownloadString(
                         "http://l3cdn.riotgames.com/releases/live/solutions/lol_game_client_sln/releases/" +
                         latestSlnVersion + "/solutionmanifest");
             }

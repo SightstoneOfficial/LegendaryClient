@@ -92,6 +92,15 @@ namespace Sightstone.Patcher.Pages
                 {
                     using (var client = new WebClient())
                     {
+                        var latestAir =
+                            client.DownloadString(
+                                "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA").Split(
+                                new[] { Environment.NewLine }, StringSplitOptions.None)[0];
+                        var pkgManifest =
+                            client.DownloadString(
+                                string.Format(
+                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
+                                    latestAir)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                         var freeToPlayChamps = client.DownloadString(
                             "http://cdn.leagueoflegends.com/patcher/data/regions/na/champData/freeToPlayChamps.json");
                         var champsAsJson = JsonConvert.DeserializeObject<Champions>(freeToPlayChamps);
@@ -107,15 +116,6 @@ namespace Sightstone.Patcher.Pages
                             var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, object>>(champDataJson);
                             Client.RunAsyncOnUIThread(() => champItem.Tag = champsDataAsJson);
                             Client.RunAsyncOnUIThread(() => champItem.ChampName.Content = champsDataAsJson["key"]);
-                            var latestAir =
-                                client.DownloadString(
-                                    "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/releaselisting_NA").Split(
-                                    new[] { Environment.NewLine }, StringSplitOptions.None)[0];
-                            var pkgManifest =
-                                client.DownloadString(
-                                    string.Format(
-                                        "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
-                                        latestAir)).Split(new[] { Environment.NewLine }, StringSplitOptions.None);
                             foreach (var stream in from data in pkgManifest where data.Contains((string)champsDataAsJson["key"] + "_0.") select (HttpWebRequest)WebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream())
                             {
                                 var stream1 = stream;
