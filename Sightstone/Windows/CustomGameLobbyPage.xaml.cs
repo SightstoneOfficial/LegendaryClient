@@ -474,14 +474,17 @@ namespace Sightstone.Windows
                 DisplayName = champions.displayName
             };
 
-            List<ChampionSkinDTO> skinlist = (from Dictionary<string, object> skins in champions.Skins
-                                              select new ChampionSkinDTO
-                                              {
+            List<ChampionSkinDTO> skinlist = new List<ChampionSkinDTO>();
+            foreach(var skins in champions.Skins)
+            {
+                skinlist.Add(new ChampionSkinDTO {
                                                   ChampionId = champint,
-                                                  SkinId = Convert.ToInt32(skins["id"]),
-                                                  SkinIndex = Convert.ToInt32(skins["num"]),
+                                                  SkinId = skins.Id,
+                                                  SkinIndex = skins.Num,
                                                   StillObtainable = true
-                                              }).ToList();
+                                              });
+            }
+                                              
             champDTO.ChampionSkins = skinlist;
 
             var par = new BotParticipant
