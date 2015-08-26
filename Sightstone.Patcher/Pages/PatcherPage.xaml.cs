@@ -155,21 +155,24 @@ namespace Sightstone.Patcher.Pages
             var files = new List<DownloadFile>();
             var downloader = new Downloader();
             var root = GetLolRootPath();
+            var lolClientSlnVersion = LeagueDownloadLogic.GetLolClientSlnVersion(region)[0];
+            var lolClientVersion = LeagueDownloadLogic.GetLolClientClientVersion(region)[0];
             switch (region.RegionType)
             {
                 case RegionType.KR:
                 case RegionType.Riot:
-                    files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
+                    var uris = LeagueDownloadLogic.GetUris(region);
+                    files.AddRange(uris.Select(toDl => new DownloadFile
                     {
                         DownloadUri = toDl,
                         OutputPath = new[]
                             {
                                 Path.Combine(root, "RADS", "solutions", "lol_game_client_sln", "releases",
-                                LeagueDownloadLogic.GetLolClientSlnVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                lolClientSlnVersion, "deploy", toDl.ToString().Split(new[] { "/files" },
                                     StringSplitOptions.None)[1]),
 
                                 Path.Combine(root, "RADS", "projects", "lol_game_client", "releases",
-                                LeagueDownloadLogic.GetLolClientClientVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files" },
+                                lolClientVersion, "deploy", toDl.ToString().Split(new[] { "/files" },
                                     StringSplitOptions.None)[1])
                             },
                         OverrideFiles = true

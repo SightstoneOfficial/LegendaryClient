@@ -106,7 +106,7 @@ namespace Sightstone.Patcher.Logic
             var notInstalled = versions.TakeWhile(version => version != GetLatestLCLOLVersion()).ToList();
             using (var client = new WebClient())
             {
-                packagemanifest = client.DownloadString(Region.GameClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
+                packagemanifest = client.DownloadString(Region.GameClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToArray();
             }
             var resultUris = (from uris in packagemanifest from toInstall in notInstalled where uris.Contains(toInstall) select new Uri("http://l3cdn.riotgames.com/releases/live" + uris.Split(',')[0]));
             return resultUris.ToArray();
