@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
              mc:Ignorable="d"
              d:DesignHeight="80" d:DesignWidth="800">
-    <Grid RenderTransformOrigin="0.326,0.7">
+    <Grid RenderTransformOrigin="0.326,0.7" HorizontalAlignment="Stretch">
         <Polygon
             x:Name="Triangle"
             HorizontalAlignment="Left"
@@ -17,10 +18,9 @@
                 <SolidColorBrush Color="Black" Opacity="0.4" />
             </Polygon.Fill>
         </Polygon>
-        <Label x:Name="QueueLabel" Content="Normal Queues" HorizontalAlignment="Left" Margin="50,6,0,0" FontSize="28"
+        <Label x:Name="QueueLabel" Content="Normal Queues" HorizontalAlignment="Left" Margin="50,6,0,0" Foreground="{StaticResource MaterialDesignBody}" FontSize="28"
                FontWeight="SemiBold" VerticalAlignment="Top" />
-        <Label x:Name="AmountInQueueLabel" Content="People in queue: 0" HorizontalAlignment="Left" Margin="50,0,0,10"
+        <Label x:Name="AmountInQueueLabel" Content="People in queue: 0" HorizontalAlignment="Left" Margin="50,0,0,10" Foreground="{StaticResource MaterialDesignBody}"
                FontSize="18" FontWeight="ExtraLight" VerticalAlignment="Bottom" />
-
     </Grid>
 </UserControl>
