@@ -459,10 +459,17 @@ namespace Sightstone.Windows
                     deserializedJson = null;
                     return;
                 }
-
-                var rss = deserializedJson["rss"] as Dictionary<string, object>;
-                if (rss == null)
+                Dictionary<string, object> rss = null;
+                try
+                {
+                    rss = deserializedJson["rss"] as Dictionary<string, object>;
+                    if (rss == null)
+                        return;
+                }
+                catch
+                {
                     return;
+                }
 
                 var channel = rss["channel"] as Dictionary<string, object>;
                 if (channel != null)
