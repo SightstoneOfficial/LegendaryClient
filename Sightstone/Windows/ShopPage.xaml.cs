@@ -25,7 +25,9 @@ namespace Sightstone.Windows
 
         void Tard()
         {
-            ShopBrowser.ExecuteJavascript(@"
+            try
+            {
+                ShopBrowser.ExecuteJavascript(@"
                 function replaceScript() 
                 {
                     var toReplace = 'bard';
@@ -33,6 +35,8 @@ namespace Sightstone.Windows
                     document.body.innerHTML = document.body.innerHTML.replace(toReplace, replaceWith);
                 }
                 replaceScript();");
+            }
+            catch { }
         }
 
         public async void RefreshBrowser()
