@@ -255,14 +255,17 @@ namespace Sightstone.Logic.MultiUser
         /// </summary>
         internal static void LaunchGame(string ip, string port, string key, string sumId, string sname, BaseRegion region)
         {
-            string GameDirectory = Location;
+            var isGarena = (UserList.Users[CurrentServer])[CurrentUser].Garena;
+            string GameDirectory = isGarena ? GLocation : Location;
+            string StartFileName = Path.Combine(GameDirectory, "League of Legends.exe");
+            Log("LoL Exe Path : " + StartFileName);
 
             var p = new Process
             {
                 StartInfo =
                 {
                     WorkingDirectory = GameDirectory,
-                    FileName = Path.Combine(GameDirectory, "League of Legends.exe")
+                    FileName = StartFileName
                 }
             };
             p.Exited += p_Exited;
