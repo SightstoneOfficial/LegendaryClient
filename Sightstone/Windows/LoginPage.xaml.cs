@@ -79,7 +79,7 @@ namespace Sightstone.Windows
                           Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"), true);
 
                 Client.Log("Garena is Up-To-Date");
-                Client.GLocation = Path.Combine(lolRootPath, "Game");
+                Client.GLocation = Path.Combine(lolRootPath.Replace("lol.exe",""), "Game");
                 Client.GRootLocation = lolRootPath;
             }
             if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
