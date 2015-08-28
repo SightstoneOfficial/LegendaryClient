@@ -45,5 +45,8 @@ namespace Sightstone.Logic.Riot.Platform
 
         [SerializedName("summonerName")]
         public string SummonerName { get; set; }
+
+        [SerializedName("lastSelectedSkinIndex")]
+        public int LastSelectedSkinIndex { get; set; }
     }
 }

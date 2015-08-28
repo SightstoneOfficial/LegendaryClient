@@ -317,8 +317,12 @@ namespace Sightstone.Windows
             botPlayer.cmbSelectDificulty.Items.Add("Doom");
             botPlayer.cmbSelectDificulty.Items.Add("Intro");
             botPlayer.cmbSelectDificulty.SelectedIndex = BotPlayer.BotSkillLevel;
+            foreach (var skin in champ.Skins)
+                botPlayer.cmbSelectSkin.Items.Add(skin.Name);
             foreach (int bot in bots)
                 botPlayer.cmbSelectChamp.Items.Add(champions.GetChampion(bot).name);
+
+            botPlayer.cmbSelectSkin.SelectedIndex = BotPlayer.LastSelectedSkinIndex;
 
             botPlayer.cmbSelectChamp.Visibility = UserClient.isOwnerOfGame ? Visibility.Visible : Visibility.Hidden;
             botPlayer.cmbSelectChamp.SelectedItem = champ.name;
@@ -336,6 +340,12 @@ namespace Sightstone.Windows
                 champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
                 await UserClient.calls.RemoveBotChampion(champ.id, BotPlayer);
                 AddBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex);
+            };
+            botPlayer.cmbSelectSkin.SelectionChanged += async (a, b) =>
+            {
+                champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
+                await UserClient.calls.RemoveBotChampion(champ.id, BotPlayer);
+                AddBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex, botPlayer.cmbSelectSkin.SelectedIndex);
             };
 
             return botPlayer;
@@ -461,7 +471,7 @@ namespace Sightstone.Windows
             return bots[r];
         }
 
-        private static async void AddBot(int id, bool blueSide, int difficulty)
+        private static async void AddBot(int id, bool blueSide, int difficulty, int skinIndex = 0)
         {
             int champint = (id == 0 ? GetRandomChampInt() : id);
             champions champions = champions.GetChampion(champint);
@@ -484,7 +494,7 @@ namespace Sightstone.Windows
                                                   StillObtainable = true
                                               });
             }
-                                              
+
             champDTO.ChampionSkins = skinlist;
 
             var par = new BotParticipant
@@ -497,7 +507,8 @@ namespace Sightstone.Windows
                 Badges = 0,
                 TeamName = null,
                 Team = 0,
-                SummonerName = champions.displayName + " bot"
+                SummonerName = champions.displayName + " bot",
+                LastSelectedSkinIndex = skinIndex
             };
             if (blueSide)
             {

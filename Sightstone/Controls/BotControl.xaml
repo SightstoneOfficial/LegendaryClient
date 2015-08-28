@@ -11,7 +11,8 @@
         <Label x:Name="PlayerName" Content="Annie Bot" HorizontalAlignment="Left" Margin="42,0,0,0" FontSize="20" FontWeight="ExtraLight" VerticalAlignment="Top" Width="225" />
         <Button x:Name="BanButton" Content="X" HorizontalAlignment="Right" Margin="0,3,5,0" VerticalAlignment="Top" Width="25" Height="25" />
         <Label x:Name="OwnerLabel" Content="Owner" HorizontalAlignment="Right" Margin="0,0,5,0" FontSize="20" FontWeight="ExtraLight" VerticalAlignment="Top" Visibility="Hidden" />
-        <ComboBox x:Name="cmbSelectChamp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="165" Margin="10,37,0,0" />
-        <ComboBox x:Name="cmbSelectDificulty" HorizontalAlignment="Left" VerticalAlignment="Top" Width="117" Margin="178,37,0,0" />
+        <ComboBox x:Name="cmbSelectChamp" HorizontalAlignment="Left" VerticalAlignment="Top" Width="82" Margin="10,37,0,0" />
+        <ComboBox x:Name="cmbSelectDificulty" HorizontalAlignment="Left" VerticalAlignment="Top" Width="79" Margin="97,37,0,0" />
+        <ComboBox x:Name="cmbSelectSkin" HorizontalAlignment="Left" VerticalAlignment="Top" Width="109" Margin="181,37,0,0" />
     </Grid>
 </UserControl>
