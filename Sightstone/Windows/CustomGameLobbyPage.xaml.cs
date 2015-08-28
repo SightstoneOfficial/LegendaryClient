@@ -317,6 +317,7 @@ namespace Sightstone.Windows
             botPlayer.cmbSelectDificulty.Items.Add("Doom");
             botPlayer.cmbSelectDificulty.Items.Add("Intro");
             botPlayer.cmbSelectDificulty.SelectedIndex = BotPlayer.BotSkillLevel;
+            champ.Skins.Sort((x, y) => { return x.Num.CompareTo(y.Num); });
             foreach (var skin in champ.Skins)
                 botPlayer.cmbSelectSkin.Items.Add(skin.Name);
             foreach (int bot in bots)
@@ -339,7 +340,7 @@ namespace Sightstone.Windows
             {
                 champions c = champions.GetChampion((string)botPlayer.cmbSelectChamp.SelectedValue);
                 await UserClient.calls.RemoveBotChampion(champ.id, BotPlayer);
-                AddBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex);
+                AddBot(c.id, botPlayer.blueSide, botPlayer.cmbSelectDificulty.SelectedIndex, botPlayer.cmbSelectSkin.SelectedIndex);
             };
             botPlayer.cmbSelectSkin.SelectionChanged += async (a, b) =>
             {
