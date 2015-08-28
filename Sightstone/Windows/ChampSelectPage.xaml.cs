@@ -1032,6 +1032,11 @@ namespace Sightstone.Windows
                                                  where skin.Owned
                                                  select skin)
                 {
+                    if (championSkins.GetSkin(skin.SkinId) == null)
+                    {
+                        Client.Log("Could not find skin : " + skin.SkinId);
+                        continue;
+                    }
                     ListViewItem skinItem = new ListViewItem();
                     skinImage = new Image();
                     UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
