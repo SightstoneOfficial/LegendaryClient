@@ -140,6 +140,10 @@
       <HintPath>..\packages\Dragablz.0.0.2.120\lib\net45\Dragablz.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="IronPython, Version=2.7.5.0, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\IronPython.2.7.5\lib\Net45\IronPython.dll</HintPath>

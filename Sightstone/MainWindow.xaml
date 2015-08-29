@@ -3,6 +3,7 @@
                       xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
                       xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+                      xmlns:tb="http://www.hardcodet.net/taskbar"
                       x:Name="LegendaryWindow"
                       Title="Sightstone" Width="1200" Height="850" MinWidth="900" MinHeight="650"
                       SaveWindowPosition="True" TitleCaps="False"
@@ -12,7 +13,8 @@
                       EnableDWMDropShadow="True"
                       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                       Background="{DynamicResource MaterialDesignPaper}"
-                      FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto">
+                      FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+                      StateChanged="LegendaryWindow_StateChanged">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -129,6 +131,16 @@
                         VerticalAlignment="Stretch" Panel.ZIndex="1" />
 
         <ContentControl x:Name="Container" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-
+        <tb:TaskbarIcon x:Name="TrayIcon"
+                        Visibility="Visible"
+                        ToolTipText="Sightstone"
+                        TrayMouseDoubleClick="TrayIcon_FocusClient"
+                        IconSource="./Icon.ico">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu Style="{StaticResource MetroContextMenu}">
+                    <MenuItem x:Name="ShowHideClientMenuItem" Header="Hide" Click="ShowHideClientMenuItem_Click" />
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
     </Grid>
 </Controls:MetroWindow>

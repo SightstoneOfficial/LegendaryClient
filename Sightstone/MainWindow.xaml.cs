@@ -522,6 +522,30 @@ namespace Sightstone
                 }
             }
         }
+
+        private void TrayIcon_FocusClient(object sender, RoutedEventArgs e)
+        {
+            Client.FocusClient();
+        }
+
+        private void ShowHideClientMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Minimized)
+            {
+                Client.FocusClient();
+                ShowHideClientMenuItem.Header = "Hide";
+            }
+            else
+            {
+                this.WindowState = WindowState.Minimized;
+                ShowHideClientMenuItem.Header = "Show";
+            }
+        }
+
+        private void LegendaryWindow_StateChanged(object sender, EventArgs e)
+        {
+            ShowHideClientMenuItem.Header = this.WindowState == WindowState.Minimized ? "Show" : "Hide";
+        }
     }
 
     public class StreamString
