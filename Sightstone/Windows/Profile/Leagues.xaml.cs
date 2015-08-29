@@ -252,5 +252,16 @@ namespace Sightstone.Windows.Profile
                 }
             }));
         }
+
+        private async void ViewAggregatedStatsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(LeaguesListView.SelectedItem is LeagueItem)) return;
+            var player = LeaguesListView.SelectedItem as LeagueItem;
+            var summoner = await UserClient.calls.GetSummonerByName(player.PlayerLabel.Content.ToString());
+            var x = await UserClient.calls.GetAggregatedStats(summoner.AcctId, "CLASSIC", UserClient.LoginPacket.ClientSystemStates.currentSeason.ToString());
+            Client.OverlayContainer.Content =
+                new AggregatedStatsOverlay(x, summoner.AcctId == UserClient.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
+        }
     }
 }
