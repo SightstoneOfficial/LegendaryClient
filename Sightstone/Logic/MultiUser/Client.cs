@@ -291,7 +291,7 @@ namespace Sightstone.Logic.MultiUser
 
         internal static void LaunchSpectatorGame(string SpectatorServer, string Key, int GameId, string Platform)
         {
-            string GameDirectory = Location;
+            string GameDirectory = (UserList.Users[CurrentServer])[CurrentUser].Garena ? GLocation : Location;
 
             var p = new Process
             {
