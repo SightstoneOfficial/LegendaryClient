@@ -9,5 +9,7 @@
         {
             InitializeComponent();
         }
+
+        public int ChampionId = 0;
     }
 }

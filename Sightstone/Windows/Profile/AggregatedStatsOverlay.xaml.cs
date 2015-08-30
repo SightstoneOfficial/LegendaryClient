@@ -24,7 +24,7 @@ namespace Sightstone.Windows.Profile
         private readonly List<AggregatedChampion> championStats;
         private readonly bool isOwnPlayer;
 
-        public AggregatedStatsOverlay(AggregatedStats stats, bool isSelf)
+        public AggregatedStatsOverlay(AggregatedStats stats, bool isSelf, int autoDisplayChampionId = 0)
         {
             InitializeComponent();
             isOwnPlayer = isSelf;
@@ -34,6 +34,28 @@ namespace Sightstone.Windows.Profile
             selectedStats = allStats;
             HideGrid.Visibility = Visibility.Visible;
             DisplayStats();
+            if (autoDisplayChampionId != 0)
+            {
+                foreach (var item in ChampionsListView.Items)
+                {
+                    if (item is ListViewItem)
+                    {
+                        ListViewItem i = item as ListViewItem;
+                        var tempStats = (AggregatedChampion)i.Tag;
+                        if (tempStats.ChampionId == autoDisplayChampionId)
+                        {
+                            selectedStats = tempStats;
+                            if (!isOwnPlayer)
+                            {
+                                HideGrid.Visibility = Visibility.Hidden;
+                            }
+                            DisplayStats();
+                            ChampionsListView.SelectedIndex = ChampionsListView.Items.IndexOf(i);
+                            i.Focus();
+                        }
+                    }
+                }
+            }
         }
 
         private void DisplayStats()

@@ -83,10 +83,27 @@ namespace Sightstone.Windows.Profile
                     ProfileImage = {Source = champions.GetChampion(champion.id).icon},
                     Background = new SolidColorBrush(Color.FromArgb(102, 80, 80, 80)),
                     Height = 52,
-                    Width = 278
+                    Width = 278,
+                    ChampionId =  champion.id
+                };
+                player.ChatPlayerGrid.MouseLeftButtonDown += (sender, e) => 
+                {
+                    ShowAggregatedStatsOverlay(player.ChampionId);
+                };
+                player.ProfileImageContainer.MouseDoubleClick += (sender, e) =>
+                {
+                    ShowAggregatedStatsOverlay(player.ChampionId);
                 };
                 TopChampionsListView.Items.Add(player);
             }
+        }
+
+        private async void ShowAggregatedStatsOverlay(int championId = 0)
+        {
+            var x = await UserClient.calls.GetAggregatedStats(accId, "CLASSIC", UserClient.LoginPacket.ClientSystemStates.currentSeason.ToString());
+            Client.OverlayContainer.Content =
+                new AggregatedStatsOverlay(x, accId == UserClient.LoginPacket.AllSummonerData.Summoner.AcctId, championId).Content;
+            Client.OverlayContainer.Visibility = Visibility.Visible;
         }
 
         public void GotPlayerStats(PlayerLifetimeStats stats)

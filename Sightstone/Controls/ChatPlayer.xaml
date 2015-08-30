@@ -6,7 +6,7 @@
              mc:Ignorable="d"
              Height="60" Width="250"
              Foreground="{StaticResource MaterialDesignBody}">
-    <Grid>
+    <Grid x:Name="ChatPlayerGrid">
         <Rectangle Fill="#02000000" />
         <!-- Allow entire control to be hovered over -->
 
