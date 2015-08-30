@@ -141,7 +141,7 @@ namespace Sightstone.Windows.Profile
             }));
         }
 
-        private void GamesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void GamesListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (GamesListView.SelectedIndex == -1)
             {
@@ -150,15 +150,34 @@ namespace Sightstone.Windows.Profile
 
             var stats = gameStats[GamesListView.SelectedIndex];
             Browser.Focusable = false;
-            Browser.Source =
-                new System.Uri(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview", 
-                    UserClient.Region.InternalName,
-                    (int)Math.Round(stats.Game.GameId),
-                    stats.Game.UserId));
-            Client.Log(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview",
-                    UserClient.Region.InternalName,
-                    (int)Math.Round(stats.Game.GameId),
-                    stats.Game.UserId));
+
+            if (UserClient.Region.InternalName == "TW") //Match history for Garena TW
+            {
+                var summoner = await UserClient.calls.GetAllPublicSummonerDataByAccount(stats.Game.UserId);
+
+                //No need to load again/refresh the web page
+                if (Browser.Source != null && Browser.Source.AbsoluteUri == string.Format("http://lol.moa.tw/summoner/show/{0}",
+                        summoner.Summoner.Name.Replace(" ", "")))
+                    return;
+
+                Browser.Source =
+                    new System.Uri(string.Format("http://lol.moa.tw/summoner/show/{0}",
+                        summoner.Summoner.Name.Replace(" ","")));
+                Client.Log(string.Format("http://lol.moa.tw/summoner/show/{0}",
+                        summoner.Summoner.Name.Replace(" ", "")));
+            }
+            else
+            {
+                Browser.Source =
+                    new System.Uri(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview",
+                        UserClient.Region.InternalName,
+                        (int)Math.Round(stats.Game.GameId),
+                        stats.Game.UserId));
+                Client.Log(string.Format("http://matchhistory.na.leagueoflegends.com/en/#match-details/{0}/{1}/{2}?tab=overview",
+                        UserClient.Region.InternalName,
+                        (int)Math.Round(stats.Game.GameId),
+                        stats.Game.UserId));
+            }
         }
     }
 }
