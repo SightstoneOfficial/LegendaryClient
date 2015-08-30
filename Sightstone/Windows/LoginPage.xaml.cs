@@ -1025,6 +1025,7 @@ namespace Sightstone.Windows
                         s1 = s1.Substring(1);
                     }
                     Client.Log("Received token, it is: " + s1);
+					shouldExit = true;
                     user.Instance.Region = garenaregion;
                     Dispatcher.BeginInvoke(
                         DispatcherPriority.Input, new ThreadStart(() =>
