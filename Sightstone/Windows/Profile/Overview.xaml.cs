@@ -60,7 +60,7 @@ namespace Sightstone.Windows.Profile
         {
             ViewAggregatedStatsButton.IsEnabled = false;
             TopChampionsListView.Items.Clear();
-            if (!topChampions.Any())
+            if (topChampions == null || !topChampions.Any())
             {
                 return;
             }
@@ -98,9 +98,20 @@ namespace Sightstone.Windows.Profile
             }
         }
 
-        private async void ShowAggregatedStatsOverlay(int championId = 0)
+        private async System.Threading.Tasks.Task ShowAggregatedStatsOverlay(int championId = 0)
         {
             var x = await UserClient.calls.GetAggregatedStats(accId, "CLASSIC", UserClient.LoginPacket.ClientSystemStates.currentSeason.ToString());
+            if (x == null)
+            {
+                var overlay = new MessageOverlay
+                {
+                    MessageTextBox = { Text = "Error getting aggregated stats" },
+                    MessageTitle = { Content = "Error" }
+                };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+                return;
+            }
             Client.OverlayContainer.Content =
                 new AggregatedStatsOverlay(x, accId == UserClient.LoginPacket.AllSummonerData.Summoner.AcctId, championId).Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -174,10 +185,24 @@ namespace Sightstone.Windows.Profile
 
         private async void ViewAggregatedStatsButton_Click(object sender, RoutedEventArgs e)
         {
+            /*
             var x = await UserClient.calls.GetAggregatedStats(accId, "CLASSIC", UserClient.LoginPacket.ClientSystemStates.currentSeason.ToString());
-            Client.OverlayContainer.Content =
+            if (x == null)
+            {
+                var overlay = new MessageOverlay
+                {
+                    MessageTextBox = { Text = "Error getting aggregated stats" },
+                    MessageTitle = { Content = "Error" }
+                };
+                Client.OverlayContainer.Content = overlay.Content;
+                Client.OverlayContainer.Visibility = Visibility.Visible;
+                return;
+            }
+                Client.OverlayContainer.Content =
                 new AggregatedStatsOverlay(x, accId == UserClient.LoginPacket.AllSummonerData.Summoner.AcctId).Content;
             Client.OverlayContainer.Visibility = Visibility.Visible;
+            */
+            await ShowAggregatedStatsOverlay();
         }
     }
 }
