@@ -41,9 +41,7 @@ namespace Sightstone.Windows
                 InvitedPlayerListView.Items.Clear();
                 foreach (var chatPlayerPair in Client.AllPlayers.ToArray())
                 {
-                    if (chatPlayerPair.Value == null 
-                    || chatPlayerPair.Value.Level == 0
-                    || chatPlayerPair.Value.Username.ToLower() == Client.CurrentUser.ToLower())
+                    if (chatPlayerPair.Value.Level == 0)
                         continue;
 
                     var player = new ChatPlayer
