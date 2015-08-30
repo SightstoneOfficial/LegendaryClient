@@ -75,6 +75,8 @@ namespace Sightstone.Windows
             int i = 0;
             foreach (var x in Client.AllPlayers)
             {
+                if (x.Value == null || String.IsNullOrEmpty(x.Value.Username))
+                    continue;
                 var buddy = new JSObject();
                 buddy["name"] = new JSValue(x.Value.Username);
                 buddy["summonerId"] = new JSValue(x.Key.Replace("sum", ""));
