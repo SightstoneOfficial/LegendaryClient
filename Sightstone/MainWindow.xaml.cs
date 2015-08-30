@@ -546,6 +546,11 @@ namespace Sightstone
         {
             ShowHideClientMenuItem.Header = this.WindowState == WindowState.Minimized ? "Show" : "Hide";
         }
+
+        private void CloseCientMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Quit(null, null);
+        }
     }
 
     public class StreamString

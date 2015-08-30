@@ -139,6 +139,7 @@
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu Style="{StaticResource MetroContextMenu}">
                     <MenuItem x:Name="ShowHideClientMenuItem" Header="Hide" Click="ShowHideClientMenuItem_Click" />
+                    <MenuItem x:Name="CloseCientMenuItem" Header="Exit" Click="CloseCientMenuItem_Click" />
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
