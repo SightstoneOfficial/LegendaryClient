@@ -60,7 +60,7 @@ namespace Sightstone.Windows
         {
             user = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
             if(user.Garena)
-                ScreenshotFolder = Path.Combine(Client.Location, "screenshots");
+                ScreenshotFolder = Path.Combine(Client.GLocation, "screenshots");
             else
                 ScreenshotFolder = Path.Combine(Client.RootLocation, "Screenshots");
 
