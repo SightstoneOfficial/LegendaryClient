@@ -20,7 +20,8 @@ namespace Sightstone.Windows
         public ShopPage()
         {
             InitializeComponent();
-            Tard();
+            //Execute Javascript after document is ready
+            ShopBrowser.DocumentReady += (x,y) => Tard();
         }
 
         void Tard()
@@ -44,7 +45,6 @@ namespace Sightstone.Windows
             var uri = await UserClient.calls.GetStoreUrl();
             ShopBrowser.Source = new Uri(uri);
             Debug.WriteLine(uri);
-            Tard();
         }
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
