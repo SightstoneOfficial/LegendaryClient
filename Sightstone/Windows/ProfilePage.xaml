@@ -73,7 +73,7 @@
             </Grid>
 
         </Grid>
-        <dragablz:TabablzControl x:Name="TabContainer" BorderThickness="0" Background="{DynamicResource MaterialDesignPaper}" Margin="0,70,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabContainer_SelectionChanged" Grid.ColumnSpan="2">
+        <dragablz:TabablzControl x:Name="TabContainer" BorderThickness="0" Background="{DynamicResource MaterialDesignPaper}" Margin="0,69,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="TabContainer_SelectionChanged" Grid.ColumnSpan="2">
             <TabItem x:Name="InGameHeader" Header="Ingame" Visibility="Collapsed">
                 <Frame x:Name="InGameContainer" />
             </TabItem>

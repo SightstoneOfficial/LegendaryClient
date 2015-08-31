@@ -69,26 +69,19 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                     
-                        <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="8,6,8,8" Grid.Row="0" >
+                        <Grid VerticalAlignment="Top" HorizontalAlignment="Center" Margin="8,6,8,8" Grid.Row="0" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="0"/>
                         </Grid.ColumnDefinitions>
-                        
-                        <Label x:Name="RegionLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
-                            <Border CornerRadius="3,0,0,3" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0">
-                                <Label x:Name="RegionLabel" Padding="2,1" FontSize="12" Foreground="{StaticResource PrimaryHueLightBrush}" Content="REGION" VerticalContentAlignment="Center"/>
+                        <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,4,0">
+                            <Border CornerRadius="3" Background="Black" BorderThickness="0">
+                                <Label x:Name="LevelLabel" Padding="4,1" FontSize="12" Foreground="LightGray"  VerticalContentAlignment="Center" VerticalAlignment="Center">Level</Label>
                             </Border>
                         </Label>
-                        <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Margin="0,0,4,0">
-                            <Border CornerRadius="0,3,3,0" Background="Black" BorderThickness="0">
-                                <Label x:Name="LevelLabel" Padding="2,1" FontSize="12" Foreground="LightGray"  VerticalContentAlignment="Center" VerticalAlignment="Center">Level</Label>
-                            </Border>
-                        </Label>
-                        <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" Grid.Column="2" VerticalAlignment="Top" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Stretch" Padding="0">Username</Label>
-                        <Image x:Name="UsingLegendary" Grid.Column="3" HorizontalAlignment="Left" Height="20" VerticalAlignment="Center" Width="18" Visibility="Visible" Source="/Sightstone;component/Icon.ico"/>
+                        <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" Grid.Column="1" VerticalAlignment="Top" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Stretch" Padding="0">Username</Label>
+                        <Image x:Name="UsingLegendary" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Height="Auto" MaxHeight="18" Margin="4,0,0,0" Visibility="Visible" Source="/Sightstone;component/Icon.ico"/>
                     </Grid>
                         <Label x:Name="PlayerStatus" Foreground="{StaticResource MaterialDesignBody}" HorizontalContentAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1">this is my stupid long status</Label>
                         <Label x:Name="PlayerWins" HorizontalContentAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" Content="1000 Normal Wins" VerticalAlignment="Bottom" FontSize="15" FontWeight="SemiBold" Grid.Row="2" />

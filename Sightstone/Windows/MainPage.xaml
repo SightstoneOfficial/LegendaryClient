@@ -7,7 +7,6 @@
       xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
       xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-      Background="{DynamicResource MaterialDesignPaper}"
       Title="MainPage"
       mc:Ignorable="d" d:DesignHeight="768"
       d:DesignWidth="1280">
@@ -22,7 +21,7 @@
 
     <Grid>
 
-        <dragablz:TabablzControl BorderThickness="0" Background="{DynamicResource MaterialDesignPaper}">
+        <dragablz:TabablzControl BorderThickness="0">
             <TabItem Header="Home">
                 <Grid>
                     <Grid Height="90" HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="{StaticResource AccentColorBrush2}">
@@ -61,11 +60,7 @@
                                         <!-- CARD1 -->
                                         <Grid Margin="0,40,0,0">
                                             <ListView x:Name="NewsItemListView" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionChanged="NewsItemListView_SelectionChanged" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="Black">
-                                                <ListView.View>
-                                                    <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
-                                                        <GridViewColumn />
-                                                    </GridView>
-                                                </ListView.View>
+
                                             </ListView>
                                         </Grid>
 
@@ -112,32 +107,32 @@
                                                     <RowDefinition Height="*"/>
                                                     <RowDefinition Height="10"/>
                                                 </Grid.RowDefinitions>
-                                                <ListView x:Name="BlueListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}"  Style="{x:Null}" Grid.Row="2">
-                                                    <ListView.ItemsPanel>
+                                                <ItemsControl x:Name="BlueListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}"  Style="{x:Null}" Grid.Row="2">
+                                                    <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
-                                                            <WrapPanel />
+                                                            <StackPanel Orientation="Horizontal"/>
                                                         </ItemsPanelTemplate>
-                                                    </ListView.ItemsPanel>
-                                                    <ListView.ItemContainerStyle>
-                                                        <Style TargetType="ListViewItem">
-                                                            <Setter Property="Margin" Value="5" />
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemContainerStyle>
+                                                        <Style>
+                                                            <Setter Property="FrameworkElement.Margin" Value="10 5"/>
                                                         </Style>
-                                                    </ListView.ItemContainerStyle>
-                                                </ListView>
+                                                    </ItemsControl.ItemContainerStyle>
+                                                </ItemsControl>
                                                 <Label Background="{StaticResource MaterialDesignPaper}" Panel.ZIndex="2" Width="70" HorizontalContentAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" FontSize="20" VerticalAlignment="Center" Grid.Row="4">VS</Label>
                                                 <Rectangle Height="2" Margin="25,0" Fill="{StaticResource PrimaryHueMidBrush}" VerticalAlignment="Center" HorizontalAlignment="Stretch" Grid.Row="4"/>
-                                                <ListView x:Name="PurpleListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}" Grid.Row="6">
-                                                    <ListView.ItemsPanel>
+                                                <ItemsControl x:Name="PurpleListView" Height="70" HorizontalAlignment="Center" Width="Auto" VerticalAlignment="Bottom" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderBrush="{x:Null}" Background="{x:Null}" Grid.Row="6">
+                                                    <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
-                                                            <WrapPanel />
+                                                            <StackPanel Orientation="Horizontal"/>
                                                         </ItemsPanelTemplate>
-                                                    </ListView.ItemsPanel>
-                                                    <ListView.ItemContainerStyle>
-                                                        <Style TargetType="ListViewItem">
-                                                            <Setter Property="Margin" Value="5" />
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemContainerStyle>
+                                                        <Style>
+                                                            <Setter Property="FrameworkElement.Margin" Value="10 5"/>
                                                         </Style>
-                                                    </ListView.ItemContainerStyle>
-                                                </ListView>
+                                                    </ItemsControl.ItemContainerStyle>
+                                                </ItemsControl>
                                             </Grid>
                                         </Grid>
 
@@ -188,7 +183,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="About">
+            <TabItem Header="About" IsEnabled="False">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="180" />

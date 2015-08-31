@@ -1221,8 +1221,7 @@ namespace Sightstone.Windows
             //Has locked in
             if (player.PickMode == 2)
             {
-                const string UriSource = "/Sightstone;component/Locked.png";
-                control.LockedInIcon.Source = Client.GetImage(UriSource);
+                control.LockedInIcon.Visibility = Visibility.Visible;
             }
             //Make obvious whos pick turn it is
             if (player.PickTurn != LatestDto.PickTurn &&
@@ -1254,7 +1253,7 @@ namespace Sightstone.Windows
                 control.TeamRectangle.BorderBrush = brush;
                 control.TeamRectangle.Visibility = Visibility.Visible;
             }
-            control.LockedInIcon.Visibility = Visibility.Visible;
+            control.LockedInIcon.Visibility = Visibility.Hidden;
             control.TradeButton.Tag = new KeyValuePair<PlayerChampionSelectionDTO, PlayerParticipant>(selection, player);
             control.TradeButton.Click += TradeButton_Click;
             control.PlayerName.Content = player.SummonerName;

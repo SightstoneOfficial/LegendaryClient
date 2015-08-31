@@ -206,8 +206,6 @@ namespace Sightstone.Windows
                             player.ProfileImageContainer.Visibility = Visibility.Hidden;
                             player.LevelLabel.Visibility = Visibility.Hidden;
                             player.LevelLabelContainer.Visibility = Visibility.Hidden;
-                            player.RegionLabel.Visibility = Visibility.Hidden;
-                            player.RegionLabelContainer.Visibility = Visibility.Hidden;
                             player.PlayerInfoContainer.Margin = new Thickness(5, 5, 5, 5);
                             player.PlayerInfoContainer.HorizontalAlignment = HorizontalAlignment.Left;
                             playersListView.Items.Add(player);

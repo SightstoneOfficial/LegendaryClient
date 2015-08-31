@@ -21,25 +21,19 @@
             <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label x:Name="RegionLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0">
-                    <Border CornerRadius="3,0,0,3" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0">
-                        <Label x:Name="RegionLabel" Padding="2,1" FontSize="10" Foreground="{StaticResource PrimaryHueLightBrush}" Content="REGION" VerticalContentAlignment="Center"/>
-                    </Border>
-                </Label>
-                <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Margin="0,0,3,0">
-                    <Border CornerRadius="0,3,3,0" Background="Black" BorderThickness="0">
-                        <Label Padding="2,1" FontSize="10" Foreground="LightGray" x:Name="LevelLabel" VerticalContentAlignment="Center" Content="30" VerticalAlignment="Center">
+                <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,3,0">
+                    <Border CornerRadius="3" Background="Black" BorderThickness="0">
+                        <Label Padding="4,1" FontSize="10" Foreground="LightGray" x:Name="LevelLabel" VerticalContentAlignment="Center" Content="30" VerticalAlignment="Center">
                         </Label>
                     </Border>
                 </Label>
-                <Label x:Name="PlayerName" Content="mhn23" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Stretch" Padding="0" Grid.Column="2" />
+                <Label x:Name="PlayerName" Content="Username" VerticalAlignment="Center" FontWeight="SemiBold" HorizontalAlignment="Stretch" Padding="0" Grid.Column="1" />
             </Grid>
             
             
-            <Label x:Name="PlayerStatus" FontStyle="Italic" Content="Super Hot Fire" HorizontalAlignment="Stretch" Padding="0" VerticalAlignment="Bottom"/>
+            <Label x:Name="PlayerStatus" FontStyle="Italic" Content="Status" HorizontalAlignment="Stretch" Padding="0" VerticalAlignment="Bottom"/>
         </Grid>
 
         

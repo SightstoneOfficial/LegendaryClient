@@ -5,8 +5,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
-      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-      Background="{DynamicResource MaterialDesignPaper}"
       Title="PlayPage"
       mc:Ignorable="d" d:DesignHeight="672"
       d:DesignWidth="1024"
@@ -21,33 +19,42 @@
 
         <Grid Name="Titlebar" Grid.Row="0" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
-                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="CreateCustomGameButton" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Content="Create Custom Game" Click="CreateCustomGameButton_Click" />
+                <Button x:Name="JoinCustomGameButton" Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Content="Join Custom Games" Click="JoinCustomGameButton_Click" />
+                <Button x:Name="LeaveQueuesButton" Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Content="Leave Queues" Click="LeaveQueuesButton_Click" />
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="CreateFactionGameButton" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Grid.Column="0" Content="Create a Faction Game" Click="CreateFactionGameButton_Click" />
+                <Button x:Name="JoinFactionGameButton" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Grid.Column="1" Content="Join a Faction Game" Click="JoinFactionGameButton_Click" />
+            </Grid>
+
+            <Grid Grid.Column="3" Margin="5">
                 <CheckBox x:Name="AutoAcceptCheckBox" Grid.Column="0" HorizontalAlignment="Left"
                   VerticalAlignment="Center" Content="Auto Accept Queue" Checked="AutoAcceptCheckBox_Checked" />
             </Grid>
 
-            <Grid Grid.Column="3" Margin="5">
+            <Grid Grid.Column="4" Margin="8">
                 <Label x:Name="PingLabel"  HorizontalAlignment="Left" VerticalAlignment="Center" Content="Checking Ping" Margin="0,0,20,0" Foreground="{StaticResource PrimaryHueLightBrush}" />
-                <Ellipse Height="15" Width="15" x:Name="PingRectangle" HorizontalAlignment="Right"
-                   VerticalAlignment="Center" Fill="#FF9B9B9B" />
+                <Ellipse Height="15" Width="15" x:Name="PingRectangle" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#FF9B9B9B" />
             </Grid>
-
-            <UniformGrid Grid.Column="1" Rows="1" Margin="5">
-                <Button x:Name="CreateCustomGameButton" Content="Create Custom Game" Click="CreateCustomGameButton_Click" />
-                <Button x:Name="JoinCustomGameButton" Content="Join Custom Games" Click="JoinCustomGameButton_Click" />
-                <Button x:Name="LeaveQueuesButton" Content="Leave Queues" Click="LeaveQueuesButton_Click" />
-            </UniformGrid>
-
-            <UniformGrid Grid.Column="2" Rows="1" Margin="5">
-                <Button x:Name="CreateFactionGameButton" Content="Create a Faction Game" Click="CreateFactionGameButton_Click" />
-                <Button x:Name="JoinFactionGameButton" Content="Join a Faction Game" Click="JoinFactionGameButton_Click" />
-            </UniformGrid>
         </Grid>
         
         <!-- Ques -->
