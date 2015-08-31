@@ -53,7 +53,7 @@
                         <ColumnDefinition Width="250"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <TextBox x:Name="SearchTextBox" MaxLength="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Grid.Column="0" Foreground="{StaticResource MaterialDesignBody}" controls:TextBoxHelper.Watermark="Search" BorderThickness="0"/>
+                    <TextBox x:Name="SearchTextBox" MaxLength="16" wpf:TextField.Hint="Search..." wpf:TextField.HintOpacity="0.8" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="6,2,2,2" Grid.Column="0" Foreground="{StaticResource MaterialDesignBody}" controls:TextBoxHelper.Watermark="Search" BorderThickness="0"/>
                     <Button x:Name="SearchButton" Click="SearchButton_Click" Style="{StaticResource MaterialDesignFlatButton}" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Grid.Column="1" IsDefault="True">
                         <Border BorderThickness="1,0,0,0" BorderBrush="{StaticResource PrimaryHueDarkBrush}" Width="75" Height="17" VerticalAlignment="Center" HorizontalAlignment="Stretch">
                             <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">Search</TextBlock>

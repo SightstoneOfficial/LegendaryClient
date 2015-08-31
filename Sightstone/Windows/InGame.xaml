@@ -4,19 +4,33 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Sightstone.Controls"
+      xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
       Title="MainPage"
       mc:Ignorable="d" d:DesignHeight="768"
       d:DesignWidth="1280">
-    
-    <Grid>
-        <Border Margin="27,30,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" BorderThickness="1"
-                BorderBrush="Black" />
-        <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="InGame" FontSize="48" />
-        <Label Margin="10,84,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="You are currently InGame"
-               FontSize="48" />
-        <Button Width="308" Height="62" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Re-Connect"
-                FontSize="36" Click="Button_Click" />
-        <Button Name="QuitButton" Width="308" Height="62" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Quit game"
-        	FontSize="36" Click="QuitButton_Click" Margin="486,448,486,258" Visibility="Hidden"/>
+
+    <Grid Background="#B2000000">
+        <Grid Width="448" Height="200" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <wpf:Card UniformCornerRadius="3">
+                <Grid>
+                    <Button x:Name="Header" Height="40" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Top" Content="Game detected" FontSize="16"/>
+
+                    <TextBox x:Name="MessageText" Margin="8,48" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14" Foreground="Black" BorderBrush="{x:Null}" TextWrapping="Wrap">
+                        You are currently in a Gamesession
+                    </TextBox>
+                    <Button x:Name="hide" Height="37" Margin="703,10,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Content="X" FontSize="16" Foreground="Black" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Name="QuitButton" Click="QuitButton_Click" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="Quit" Grid.Column="0" />
+                        <Button Click="Button_Click" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="Reconnect" Grid.Column="1" Style="{DynamicResource MaterialDesignRaisedAccentButton}" />
+                    </Grid>
+
+                </Grid>
+            </wpf:Card>
+        </Grid>
+        
     </Grid>
 </Page>
