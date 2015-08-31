@@ -14,7 +14,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="482"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
@@ -23,9 +23,9 @@
         <Grid Grid.Row="0">
             <Button x:Name="DodgeButton" Style="{x:Null}" BorderThickness="0" Content="Press to dodge" Foreground="#70FF0000" FontSize="10" Background="#80931c1c" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="22" Click="DodgeButton_Click" Grid.ColumnSpan="3" VerticalContentAlignment="Center"/>
         </Grid>
-        
+
         <!-- Info -->
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" Margin="16">
             <Grid Height="40" Grid.Row="0" VerticalAlignment="Center" MaxWidth="400" Margin="0" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueLightBrush}">
                 <Label x:Name="GameStatusLabel" Content="Loading Champ Select" VerticalContentAlignment="Center" Padding="0" HorizontalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource PrimaryHueDarkBrush}" Panel.ZIndex="1" Margin="40,0,40,0" />
                 <Label x:Name="LobbyTimeLabel" Content="Inf." HorizontalAlignment="Right" VerticalAlignment="Center" Padding="0" FontSize="20" Foreground="{StaticResource PrimaryHueDarkBrush}" Panel.ZIndex="1" Margin="0,0,7,0"/>
@@ -52,13 +52,6 @@
                     </ItemsControl.ItemContainerStyle>
                 </ItemsControl>
                 <!-- Bans -->
-                <ListView x:Name="BlueBanListView" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="{x:Null}" Visibility="Visible" Grid.Column="1">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
             </Grid>
 
             <!-- Center Content -->
@@ -71,13 +64,17 @@
 
                 <!-- Search -->
                 <Grid Grid.Row="0" Background="{StaticResource PrimaryHueLightBrush}">
-                    <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" Height="25" Margin="0,0,90,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" Grid.Column="3" BorderThickness="0" Panel.ZIndex="1" controls:TextBoxHelper.Watermark="Search" />
+                    <TextBox x:Name="SearchTextBox" wpf:TextField.Hint="Search..." wpf:TextField.HintOpacity="1" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" Height="25" Margin="5,0,90,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" Grid.Column="3" BorderThickness="0" Panel.ZIndex="1" controls:TextBoxHelper.Watermark="Search" />
                     <ToggleButton Background="{DynamicResource AccentColorBrush}" x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="89" Margin="0" Checked="Switch_Click" Unchecked="Switch_Click" Height="26" Grid.Column="3" />
                 </Grid>
 
                 <!-- Champions + Info -->
                 <Grid Grid.Row="1">
-                    <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{StaticResource PrimaryHueLightBrush}" Grid.Column="3" BorderThickness="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25*"/>
+                        <ColumnDefinition Width="229*"/>
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="0,0,0.2,0.4" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{StaticResource PrimaryHueLightBrush}" BorderThickness="0" Grid.ColumnSpan="2">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel />
@@ -101,7 +98,7 @@
                         </ListView.ItemContainerStyle>
                     </ListView>
 
-                    <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Stretch" Background="#66505050" Visibility="Hidden" Grid.Column="3">
+                    <Grid x:Name="AfterChampionSelectGrid" HorizontalAlignment="Stretch" Margin="0,0,0.2,0.4" VerticalAlignment="Stretch" Background="#66505050" Visibility="Hidden" Grid.ColumnSpan="2">
                         <ListView x:Name="AbilityListView" HorizontalAlignment="Left" Width="400" Margin="0" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{x:Null}" BorderBrush="{x:Null}">
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -190,7 +187,7 @@
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
                             <Label Content="Wardskin" Grid.Row="0" Grid.ColumnSpan="3" Margin="0,0,0,6" Padding="0" Foreground="{StaticResource PrimaryHueMidBrush}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                            <Button Padding="0" Grid.Row="1" Margin="0,0,0,0" Height="Auto" Width="Auto" x:Name="WardSkinSelect" Click="SummonerSpell_Click" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <Button Padding="0" Grid.Row="1" Margin="0,0,0,0" Height="Auto" Width="Auto" x:Name="WardSkinSelect" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <Image VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Source="/Sightstone;component/NONE.png" />
                             </Button>
                         </Grid>
@@ -219,14 +216,6 @@
                         </Style>
                     </ItemsControl.ItemContainerStyle>
                 </ItemsControl>
-
-                <ListView x:Name="PurpleBanListView" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="{x:Null}" Visibility="Visible" Grid.Column="5">
-                    <ListView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel />
-                        </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                </ListView>
             </Grid>
         </Grid>
 
@@ -255,35 +244,78 @@
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             </Grid>
         </Grid>
-        
+
         <!-- Tradecontrol -->
         <Grid>
             <local:TradeControl x:Name="PlayerTradeControl" HorizontalAlignment="Left" Margin="144,85,0,0" Height="200" Width="300" Panel.ZIndex="1" VerticalAlignment="Top" Visibility="Hidden" Grid.ColumnSpan="3" />
         </Grid>
 
-        <!-- Chat -->
-        <Grid Grid.Row="3" Background="{StaticResource PrimaryHueDarkBrush}" Margin="8">
-            <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,573,0,40" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050" BorderBrush="{x:Null}" Grid.Column="3" BorderThickness="0">
-                <RichTextBox.Resources>
-                    <Style TargetType="{x:Type Paragraph}">
-                        <Setter Property="Margin" Value="0" />
-                    </Style>
-                </RichTextBox.Resources>
-            </RichTextBox>
-            <TextBox x:Name="ChatTextBox" Background="{StaticResource PrimaryHueLightBrush}" HorizontalAlignment="Stretch" Height="26" Margin="0,0,130,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Column="3" BorderThickness="0" />
-            <Button x:Name="ChatButton" Content="Send" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" Height="26" Grid.Column="3" BorderThickness="0"/>
-            <Grid Height="58" Margin="30,0,0,15"  Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="174">
-                <Slider x:Name="slider" Margin="0,20,18,9" Value="50" Minimum="0" Maximum="100" 
-        		    SmallChange="1" LargeChange="10" HorizontalAlignment="Right" Width="100" ValueChanged="slider_ValueChanged"/>
-                <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="MuteButton_Click" IsDefault="False" Height="40" Margin="0,10,129,8" Width="40" HorizontalAlignment="Left">
-                    <Viewbox Width="30" Height="30">
-                        <Canvas Width="24" Height="24" >
-                            <Path x:Name="muteButton" Data="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" Fill="{StaticResource IdealForegroundColorBrush}" />
-                        </Canvas>
-                    </Viewbox>
-                </Button>
+        <!-- Bans and Chat -->
+        <Grid Grid.Row="3" Margin="0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Width="255" Grid.Column="0" Margin="8,0">
+                <ItemsControl x:Name="BlueBanListView" HorizontalAlignment="Center" Margin="0" Width="Auto" Height="60" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="{x:Null}" Visibility="Visible" Grid.Column="1">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="FrameworkElement.Margin" Value="10 0"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
             </Grid>
+
+            <!-- Chat -->
+            <Grid Grid.Column="1" Background="{StaticResource PrimaryHueDarkBrush}">
+                <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,0,0,26" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" Background="Transparent" BorderThickness="0">
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0" />
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
+                <TextBox x:Name="ChatTextBox" Background="{StaticResource PrimaryHueLightBrush}" HorizontalAlignment="Stretch" Height="26" Margin="0,0,130,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Column="3" BorderThickness="0" />
+                <Button x:Name="ChatButton" Content="Send" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" Height="26" Grid.Column="3" BorderThickness="0"/>
+            </Grid>
+
+            <Grid Width="255" Grid.Column="2" Margin="8,0">
+                <ItemsControl x:Name="PurpleBanListView" HorizontalAlignment="Center" Margin="0" VerticalAlignment="Center" Width="Auto" Height="60" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="Transparent" BorderBrush="{x:Null}" Visibility="Visible" Grid.Column="5">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="FrameworkElement.Margin" Value="10 0"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </Grid>
+
         </Grid>
+
+        <!-- i dont know where to put this, wait for it to be in settings -->
+        <Grid Height="58" Margin="30,0,0,15"  Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Visibility="Hidden" Width="174">
+            <Slider x:Name="slider" Margin="0,20,18,9" Value="50" Minimum="0" Maximum="100" 
+        		    SmallChange="1" LargeChange="10" HorizontalAlignment="Right" Width="100" ValueChanged="slider_ValueChanged"/>
+            <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="MuteButton_Click" IsDefault="False" Height="40" Margin="0,10,129,8" Width="40" HorizontalAlignment="Left">
+                <Viewbox Width="30" Height="30">
+                    <Canvas Width="24" Height="24" >
+                        <Path x:Name="muteButton" Data="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" Fill="{StaticResource IdealForegroundColorBrush}" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
+        </Grid>
+
 
     </Grid>
 </Page>
