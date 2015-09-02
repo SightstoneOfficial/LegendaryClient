@@ -41,6 +41,7 @@ using System.Security.Principal;
 using System.Security.Cryptography;
 using Microsoft.Win32;
 using Sightstone.Logic.MultiUser;
+using System.ComponentModel;
 
 namespace Sightstone.Windows
 {
@@ -974,7 +975,7 @@ namespace Sightstone.Windows
                     {
                         Text = "Press OK to restart as admin."
                     },
-                    MessageTitle = { Content = "Insufficent Privledges" }
+                    MessageTitle = { Content = "Insufficient Privledges" }
                 };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
@@ -985,7 +986,23 @@ namespace Sightstone.Windows
                         UseShellExecute = true,
                         Verb = "runas"
                     };
-                    Process.Start(info);
+                    try
+                    {
+                        Process.Start(info);
+                    }
+                    catch (Win32Exception e) //User click "No" in UAC dialog or user does not have sufficient permission
+                    {
+                        overlay = new MessageOverlay
+                        {
+                            MessageTextBox =
+                            {
+                                Text = "Windows UAC denied Sightstone from restarting as admin."
+                            },
+                            MessageTitle = { Content = "Insufficient Permission" }
+                        };
+                        Client.OverlayContainer.Content = overlay.Content;
+                        Client.OverlayContainer.Visibility = Visibility.Visible;
+                    }
                     Environment.Exit(0);
                 };
                 return;
