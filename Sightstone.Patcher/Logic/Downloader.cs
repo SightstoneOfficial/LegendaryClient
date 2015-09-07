@@ -27,18 +27,27 @@ namespace Sightstone.Patcher.Logic
             _downloading = filesToDownlad;
             foreach (var fileDlInfo in filesToDownlad)
             {
-                foreach (var paths in fileDlInfo.OutputPath.Where(paths => !Directory.Exists(paths)))
-                    Directory.CreateDirectory(paths);
+                foreach (var paths in fileDlInfo.OutputPath.Where(paths => !Directory.Exists(Path.GetDirectoryName(paths))))
+                    Directory.CreateDirectory(Path.GetDirectoryName(paths));
 
                 var dlInfo = fileDlInfo;
                 foreach (var overwrite in fileDlInfo.OutputPath.Where(overwrite => File.Exists(overwrite) && dlInfo.OverrideFiles))
-                    File.Delete(overwrite);
+                {
+                    try
+                    {
+                        File.Delete(overwrite);
+                    }
+                    catch
+                    {
+                    }
+                }
 
                 var req = (HttpWebRequest)WebRequest.Create(fileDlInfo.DownloadUri);
                 req.Method = "HEAD";
                 using (var resp = (HttpWebResponse)req.GetResponse())
                 {
                     _bytesToDownload = _bytesToDownload + resp.ContentLength;
+                    resp.Close();
                 }
 
                 using (var client = new WebClient())

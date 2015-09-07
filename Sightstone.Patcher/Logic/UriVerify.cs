@@ -15,8 +15,8 @@ namespace Sightstone.Patcher.Logic
             {
                 var request = WebRequest.Create(toVerify);
                 request.Method = "HEAD";
-                var response = (HttpWebResponse)request.GetResponse();
-                return (response.StatusCode == HttpStatusCode.OK);
+                using (var response = (HttpWebResponse)request.GetResponse())
+                    return (response.StatusCode == HttpStatusCode.OK);
             }
             catch
             {
@@ -30,8 +30,8 @@ namespace Sightstone.Patcher.Logic
             {
                 var request = WebRequest.Create(toVerify[0]);
                 request.Method = "HEAD";
-                var response = (HttpWebResponse)request.GetResponse();
-                return response.StatusCode == HttpStatusCode.OK ? toVerify[0] : toVerify[1];
+                using (var response = (HttpWebResponse)request.GetResponse())
+                    return response.StatusCode == HttpStatusCode.OK ? toVerify[0] : toVerify[1];
             }
             catch
             {

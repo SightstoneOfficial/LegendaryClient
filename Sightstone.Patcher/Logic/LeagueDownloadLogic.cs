@@ -61,7 +61,9 @@ namespace Sightstone.Patcher.Logic
         {
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")))
             {
-                return File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version"))[0];
+                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version"));
+                if (version.Count() > 0)
+                    return version[0];
             }
             var encoding = new ASCIIEncoding();
             File.Create(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
@@ -72,7 +74,9 @@ namespace Sightstone.Patcher.Logic
         {
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version")))
             {
-                return File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version"))[0];
+                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version"));
+                if (version.Count() > 0)
+                    return version[0];
             }
             var encoding = new ASCIIEncoding();
             File.Create(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
@@ -103,7 +107,8 @@ namespace Sightstone.Patcher.Logic
         {
             string[] packagemanifest;
             var versions = GetLolClientClientVersion(Region);
-            var notInstalled = versions.TakeWhile(version => version != GetLatestLCLOLVersion()).ToList();
+            var localVersion = GetLatestLCLOLVersion();
+            var notInstalled = versions.TakeWhile(version => version != localVersion).ToList();
             using (var client = new WebClient())
             {
                 packagemanifest = client.DownloadString(Region.GameClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToArray();
@@ -116,7 +121,8 @@ namespace Sightstone.Patcher.Logic
         {
             string[] packagemanifest;
             var versions = GetLolClientVersion(Region);
-            var notInstalled = versions.TakeWhile(version => version != GetLatestLCClientVersion()).ToList();
+            var localVersion = GetLatestLCClientVersion();
+            var notInstalled = versions.TakeWhile(version => version != localVersion).ToList();
             using (var client = new WebClient())
             {
                 packagemanifest = client.DownloadString(Region.ClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
