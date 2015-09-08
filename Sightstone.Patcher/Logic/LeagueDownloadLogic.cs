@@ -59,27 +59,27 @@ namespace Sightstone.Patcher.Logic
 
         public static string GetLatestLCLOLVersion()
         {
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")))
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
             {
-                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version"));
+                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version"));
                 if (version.Count() > 0)
                     return version[0];
             }
             var encoding = new ASCIIEncoding();
-            File.Create(Path.Combine(Client.ExecutingDirectory, "LC_LOL.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
+            File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
             return "0.0.0.0";
         }
 
         public static string GetLatestLCClientVersion()
         {
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version")))
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLCLIENT.Version")))
             {
-                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version"));
+                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLCLIENT.Version"));
                 if (version.Count() > 0)
                     return version[0];
             }
             var encoding = new ASCIIEncoding();
-            File.Create(Path.Combine(Client.ExecutingDirectory, "LC_LOLCLIENT.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
+            File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLCLIENT.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
             return "0.0.0.0";
         }
 
@@ -120,6 +120,7 @@ namespace Sightstone.Patcher.Logic
         public static Uri[] ClientGetUris(MainRegion Region)
         {
             string[] packagemanifest;
+            Client.Region = Region;
             var versions = GetLolClientVersion(Region);
             var localVersion = GetLatestLCClientVersion();
             var notInstalled = versions.TakeWhile(version => version != localVersion).ToList();

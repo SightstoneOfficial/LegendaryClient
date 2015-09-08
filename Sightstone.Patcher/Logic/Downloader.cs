@@ -22,9 +22,9 @@ namespace Sightstone.Patcher.Logic
 
         private double _downloadedBytes;
         private double _bytesToDownload;
-        public void DownloadMultipleFiles(List<DownloadFile> filesToDownlad)
+        public async void DownloadMultipleFiles(List<DownloadFile> filesToDownlad)
         {
-            _downloading = filesToDownlad;
+            //_downloading = filesToDownlad;
             foreach (var fileDlInfo in filesToDownlad)
             {
                 foreach (var paths in fileDlInfo.OutputPath.Where(paths => !Directory.Exists(Path.GetDirectoryName(paths))))
@@ -52,7 +52,61 @@ namespace Sightstone.Patcher.Logic
 
                 using (var client = new WebClient())
                 {
-                    client.DownloadFileAsync(fileDlInfo.DownloadUri, fileDlInfo.OutputPath[0]);
+                    if (fileDlInfo.DownloadUri.ToString().EndsWith(".compressed"))
+                    {
+
+                        var info = fileDlInfo;
+                        var uncompressed = Ionic.Zlib.ZlibStream.UncompressBuffer(client.DownloadData(fileDlInfo.DownloadUri));
+                        try
+                        {
+                            foreach (var outputs in info.OutputPath)
+                                File.WriteAllBytes(outputs.Replace(".compressed", string.Empty), uncompressed);
+                        }
+                        catch
+                        {
+
+                        }
+                        //_downloading.Remove(info);
+                        _finished.Add(info);
+
+                        //if (_downloading.Count == 0 && _finished.Count != 0)
+                        //{
+                        //    OnFinishedDownloading?.Invoke();
+                        //}
+                    }
+                    else
+                    {
+                        var info = fileDlInfo;
+                        client.DownloadFile(fileDlInfo.DownloadUri, fileDlInfo.OutputPath[0]);
+                        _finished.Add(info);
+
+                        if (info.OutputPath.Count() != 1)
+                        {
+                            foreach (var outputs in info.OutputPath.Skip(1))
+                            {
+                                File.Copy(info.OutputPath[0], outputs, info.OverrideFiles);
+                            }
+                        }
+                            client.DownloadFileCompleted += (sender, e) =>
+                        {
+                            //_downloading.Remove(info);
+                            _finished.Add(info);
+
+                            if (info.OutputPath.Count() != 1)
+                            {
+                                foreach (var outputs in info.OutputPath.Skip(1))
+                                {
+                                    File.Copy(info.OutputPath[0], outputs, info.OverrideFiles);
+                                }
+                            }
+                            //
+                            //if (_downloading.Count == 0 && _finished.Count != 0)
+                            //{
+                            //    OnFinishedDownloading?.Invoke();
+                            //}
+                        };
+                    }
+
                     double lastbytes = 0;
                     client.DownloadProgressChanged += (sender, e) =>
                     {
@@ -65,26 +119,11 @@ namespace Sightstone.Patcher.Logic
                             lastbytes = bytesIn;
                         }));
                     };
-                    var info = fileDlInfo;
-                    client.DownloadFileCompleted += (sender, e) =>
-                    {
-                        _downloading.Remove(info);
-                        _finished.Add(info);
-
-                        if (info.OutputPath.Count() != 1)
-                        {
-                            foreach (var outputs in info.OutputPath.Skip(1))
-                            {
-                                File.Copy(info.OutputPath[0], outputs, info.OverrideFiles);
-                            }
-                        }
-
-                        if (_downloading.Count == 0 && _finished.Count != 0)
-                        {
-                            OnFinishedDownloading?.Invoke();
-                        }
-                    };
                 }
+            }
+            if (_finished.Count != 0)
+            {
+                OnFinishedDownloading?.Invoke();
             }
         }
     }

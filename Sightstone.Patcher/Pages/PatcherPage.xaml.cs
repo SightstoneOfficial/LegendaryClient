@@ -58,9 +58,9 @@ namespace Sightstone.Patcher.Pages
 
             _executingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            AppDomain.CurrentDomain.FirstChanceException += CurrentDomainFirstChanceException;
+            //AppDomain.CurrentDomain.FirstChanceException += CurrentDomainFirstChanceException;
             if (_executingDirectory != null &&
-                File.ReadAllText(Path.Combine(_executingDirectory, "SightstonePatcher.log")) != string.Empty)
+                File.Exists(Path.Combine(_executingDirectory, "SightstonePatcher.log")))
             {
                 File.Delete(Path.Combine(_executingDirectory, "SightstonePatcher.log"));
                 File.Create(Path.Combine(_executingDirectory, "SightstonePatcher.log"));
@@ -149,6 +149,8 @@ namespace Sightstone.Patcher.Pages
 
         private bool loaded;
 
+        public StreamWriter logFile { get; private set; }
+
         /// <summary>
         /// Download the needed files to run Sightstone
         /// </summary>
@@ -156,6 +158,8 @@ namespace Sightstone.Patcher.Pages
         {
             if (string.IsNullOrWhiteSpace(Settings.Default.RegionName) || DownloadStarted)
                 return;
+            if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData")))
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "PatchData");
             DownloadStarted = true;
             var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
             var files = new List<DownloadFile>();
@@ -463,11 +467,11 @@ namespace Sightstone.Patcher.Pages
             }
 
             var latestAirs = LeagueDownloadLogic.GetLolClientVersion(Client.Region);
-            var latestAir = UriVerify.VerifyUri(new[] { new Uri(latestAirs[0]), new Uri(latestAirs[1]) }).ToString();
+
             var encoding = new ASCIIEncoding();
             using (var files = File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
             {
-                files.Write(encoding.GetBytes(latestAir), 0, encoding.GetBytes(latestAir).Length);
+                files.Write(encoding.GetBytes(latestAirs[0]), 0, encoding.GetBytes(latestAirs[0]).Length);
             }
             if (SWFextract != null)
             {
@@ -663,10 +667,11 @@ namespace Sightstone.Patcher.Pages
         /// <param name="type"></param>
         public void Log(string lines, string type = "LOG")
         {
-            var file = new StreamWriter(Path.Combine(_executingDirectory, "SightstonePatcher.log"), true);
-            file.WriteLine("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),
+            if (logFile == null)
+                logFile = new StreamWriter(Path.Combine(_executingDirectory, "SightstonePatcher.log"), true);
+            logFile.WriteLine("({0} {1}) [{2}]: {3}", DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString(),
                 type, lines);
-            file.Close();
+            logFile.Close();
         }
 
         public void LogTextBox(string s)
