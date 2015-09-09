@@ -129,6 +129,7 @@
     <Compile Include="Logic\UpdateRegion\Korea.cs" />
     <Compile Include="Logic\UpdateRegion\Live.cs" />
     <Compile Include="Logic\UpdateRegion\PBE.cs" />
+    <Compile Include="Logic\UriAndSize.cs" />
     <Compile Include="Logic\UriVerify.cs" />
     <Compile Include="SplashPage.xaml.cs">
       <DependentUpon>SplashPage.xaml</DependentUpon>

@@ -28,7 +28,7 @@ namespace Sightstone.Patcher
             Visibility = Visibility.Hidden;
             var page = new SplashPage();
             page.Show();
-            Client.ExecutingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            Client.ExecutingDirectory = Directory.GetParent(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)).FullName;
             Client.Win = this;
             Player.Volume = Properties.Settings.Default.Volume / 100;
             Client.SoundPlayer = Player;

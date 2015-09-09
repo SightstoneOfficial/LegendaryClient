@@ -111,6 +111,9 @@ namespace Sightstone.Patcher.Logic
 
         internal static Label RegionLabel;
 
+        //TODO: Add ability to change number in settings
+        internal static int MaximumWebClient = 5;
+
         internal static void SwitchPage<T>(bool fade = false, params object[] args)
         {
             if (CurrentPage == typeof (T))

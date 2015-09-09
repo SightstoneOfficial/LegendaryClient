@@ -37,7 +37,6 @@ namespace Sightstone.Patcher.Logic
             {
                 return toVerify[1];
             }
-
         }
     }
 }

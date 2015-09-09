@@ -29,6 +29,7 @@ using Sightstone.Patcher.Logic.Region;
 using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
 using Sightstone.Patcher.Properties;
+using System.ComponentModel;
 
 #endregion
 
@@ -90,6 +91,7 @@ namespace Sightstone.Patcher.Pages
             //Load server status
             Status();
             //Load Champions with this thread
+            
             var x = new Thread(() =>
                 {
                     using (var client = new WebClient())
@@ -120,12 +122,11 @@ namespace Sightstone.Patcher.Pages
                             Client.RunAsyncOnUIThread(() => champItem.ChampName.Content = champsDataAsJson["key"]);
                             foreach (var stream in from data in pkgManifest where data.Contains((string)champsDataAsJson["key"] + "_0.") select (HttpWebRequest)WebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream())
                             {
-                                var stream1 = stream;
+                                MemoryStream stream1 = new MemoryStream();
+                                stream.CopyTo(stream1);
                                 Client.RunAsyncOnUIThread(() => champItem.Img.Source = ToWpfBitmap(Image.FromStream(stream1)));
                                 stream.Close();
                                 stream.Dispose();
-                                stream1.Close();
-                                stream1.Dispose();
                             }
 
                             Client.RunOnUIThread(() => champView.Items.Add(champItem));
@@ -143,11 +144,21 @@ namespace Sightstone.Patcher.Pages
                     }
                 });
             x.Start();
+            
+            downloadWorker = new BackgroundWorker();
 
+            downloadWorker.DoWork += Worker_DoWork;
+            downloadWorker.RunWorkerAsync();
+        }
+
+        private void Worker_DoWork(object sender, DoWorkEventArgs e)
+        {
             Download();
         }
 
         private bool loaded;
+        private BackgroundWorker downloadWorker;
+        private List<DownloadFile> files;
 
         public StreamWriter logFile { get; private set; }
 
@@ -159,78 +170,46 @@ namespace Sightstone.Patcher.Pages
             if (string.IsNullOrWhiteSpace(Settings.Default.RegionName) || DownloadStarted)
                 return;
             if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData")))
-                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "PatchData");
+                Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "PatchData"));
             DownloadStarted = true;
             var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
-            var files = new List<DownloadFile>();
+            files = new List<DownloadFile>();
             var downloader = new Downloader();
-            var root = GetLolRootPath();
-            var lolClientSlnVersion = LeagueDownloadLogic.GetLolClientSlnVersion(region)[0];
-            var lolClientVersion = LeagueDownloadLogic.GetLolClientClientVersion(region)[0];
-            switch (region.RegionType)
-            {
-                case RegionType.KR:
-                case RegionType.Riot:
-                    var uris = LeagueDownloadLogic.GetUris(region);
-                    files.AddRange(uris.Select(toDl => new DownloadFile
-                    {
-                        DownloadUri = toDl,
-                        OutputPath = new[]
-                            {
-                                Path.Combine(root, "RADS", "solutions", "lol_game_client_sln", "releases",
-                                lolClientSlnVersion, "deploy", toDl.ToString().Split(new[] { "/files/" },
-                                    StringSplitOptions.None)[1]),
+            
+            //AddGameClientUpdateFiles(region);
 
-                                Path.Combine(root, "RADS", "projects", "lol_game_client", "releases",
-                                lolClientVersion, "deploy", toDl.ToString().Split(new[] { "/files/" },
-                                    StringSplitOptions.None)[1])
-                            },
-                        OverrideFiles = true
-                    }).ToList());
-                    break;
-                case RegionType.PBE:
-                    files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
-                    {
-                        DownloadUri = toDl,
-                        OutputPath = new[] {Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases",
-                                LeagueDownloadLogic.GetLolClientClientVersion(region)[0], "deploy", toDl.ToString().Split(new[] { "/files/" },
-                                    StringSplitOptions.None)[1])},
-                        OverrideFiles = true
-                    }).ToList());
-                    break;
-                case RegionType.Garena:
-                    throw new NotImplementedException("Garena update logic has to be observed");
-            }
-            foreach ( var clientFiles in LeagueDownloadLogic.ClientGetUris(region))
+            foreach ( var clientFiles in LeagueDownloadLogic.AirGetUris(region))
             {
                 //Install sound files
-                if (clientFiles.ToString().Contains("sounds"))
+                if (clientFiles.uri.ToString().Contains("sounds"))
                 {
                     files.Add(new DownloadFile
                     {
-                        DownloadUri = clientFiles,
+                        DownloadUri = clientFiles.uri,
+                        FileSize = clientFiles.size,
                         OutputPath = new[]
                         {
                             Path.Combine(Client.ExecutingDirectory,
-                                clientFiles.ToString()
+                                clientFiles.uri.ToString()
                                 .Split(new[] { "/files/" }, StringSplitOptions.None)[1]
                                 .Replace("assets", "Assets"))},
                         OverrideFiles = true
                     });
                 }
                 //Download images of champs
-                else if (clientFiles.ToString().Contains("champions"))
+                else if (clientFiles.uri.ToString().Contains("champions"))
                 {
-                    if (!clientFiles.ToString().Contains("_Square_0"))
+                    if (!clientFiles.uri.ToString().Contains("_Square_0"))
                     {
                         files.Add(new DownloadFile
                         {
-                            DownloadUri = clientFiles,
+                            DownloadUri = clientFiles.uri,
+                            FileSize = clientFiles.size,
                             OutputPath =
                                     new[]
                                     {
                                         Path.Combine(Client.ExecutingDirectory,
-                                            clientFiles.ToString()
+                                            clientFiles.uri.ToString()
                                             .Split(new[] { "/files/" }, StringSplitOptions.None)[1]
                                             .Replace("assets", "Assets"))
                                     },
@@ -241,16 +220,17 @@ namespace Sightstone.Patcher.Pages
                     {
                         files.Add(new DownloadFile
                         {
-                            DownloadUri = clientFiles,
+                            DownloadUri = clientFiles.uri,
+                            FileSize = clientFiles.size,
                             OutputPath =
                                     new[]
                                     {
                                         Path.Combine(Client.ExecutingDirectory,
-                                            clientFiles.ToString()
+                                            clientFiles.uri.ToString()
                                             .Split(new[] { "/files/" }, StringSplitOptions.None)[1]
                                             .Replace("assets", "Assets")).Replace("/images", ""),
                                         Path.Combine(Client.ExecutingDirectory, 
-                                            clientFiles.ToString()
+                                            clientFiles.uri.ToString()
                                             .Split(new[] { "/files/" },StringSplitOptions.None)[1].
                                             Replace("assets", "Assets"))
                                             .Replace("champions", "champion").Replace("/images", "")
@@ -262,16 +242,17 @@ namespace Sightstone.Patcher.Pages
                     }
                     //If it is a square save it in the champion folder as well
                 }
-                else if (clientFiles.ToString().Contains("images/runes"))
+                else if (clientFiles.uri.ToString().Contains("images/runes"))
                 {
                     files.Add(new DownloadFile
                     {
-                        DownloadUri = clientFiles,
+                        DownloadUri = clientFiles.uri,
+                        FileSize = clientFiles.size,
                         OutputPath =
                                     new[]
                                     {
                                         Path.Combine(Client.ExecutingDirectory,
-                                            clientFiles.ToString()
+                                            clientFiles.uri.ToString()
                                             .Split(new[] { "/files/" }, StringSplitOptions.None)[1]
                                             .Replace(@"assets/images/runes", @"Assets/rune"))
 
@@ -279,22 +260,23 @@ namespace Sightstone.Patcher.Pages
                         OverrideFiles = true
                     });
                 }
-                else if (clientFiles.ToString().Contains("abilities"))
+                else if (clientFiles.uri.ToString().Contains("abilities"))
                 {
-                    if (clientFiles.ToString().Contains("Passive"))
+                    if (clientFiles.uri.ToString().Contains("Passive"))
                     {
                         files.Add(new DownloadFile
                         {
-                            DownloadUri = clientFiles,
+                            DownloadUri = clientFiles.uri,
+                            FileSize = clientFiles.size,
                             OutputPath =
                                     new[]
                                     {
                                         Path.Combine(Client.ExecutingDirectory,
-                                            clientFiles.ToString()
+                                            clientFiles.uri.ToString()
                                             .Split(new[] { "/files/" }, StringSplitOptions.None)[1]
                                             .Replace(@"assets/images/abilities", @"Assets/spell")),
                                         Path.Combine(Client.ExecutingDirectory,
-                                            clientFiles.ToString()
+                                            clientFiles.uri.ToString()
                                             .Split(new[] { "/files/" }, StringSplitOptions.None)[1]
                                             .Replace(@"assets/images/abilities", @"Assets/passive"))
 
@@ -306,12 +288,13 @@ namespace Sightstone.Patcher.Pages
                     {
                         files.Add(new DownloadFile
                         {
-                            DownloadUri = clientFiles,
+                            DownloadUri = clientFiles.uri,
+                            FileSize = clientFiles.size,
                             OutputPath =
                                     new[]
                                     {
                                         Path.Combine(Client.ExecutingDirectory,
-                                        clientFiles.ToString()
+                                        clientFiles.uri.ToString()
                                                             .Split(new[] { "/files/" }, StringSplitOptions.None)[1]
                                                             .Replace(@"assets/images/abilities", @"Assets/spell"))
 
@@ -320,24 +303,25 @@ namespace Sightstone.Patcher.Pages
                         });
                     }
                 }
-                else if (clientFiles.ToString().Contains("imagePacks"))
+                else if (clientFiles.uri.ToString().Contains("imagePacks"))
                 {
                     if (SWFextract == null)
                         SWFextract = new List<updateSWF>();
                     files.Add(new DownloadFile
                     {
-                        DownloadUri = clientFiles,
+                        DownloadUri = clientFiles.uri,
+                        FileSize = clientFiles.size,
                         OutputPath = new []
                         {
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", clientFiles.ToString()
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", clientFiles.uri.ToString()
                             .Split(new[] { "/imagePacks/" }, StringSplitOptions.None)[1])
                         },
                         OverrideFiles = true
                     });
                     var item = new updateSWF()
                     {
-                        savePath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", Path.GetFileNameWithoutExtension(clientFiles.ToString())),
-                        swfPath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", Path.GetFileName(clientFiles.ToString())),
+                        savePath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", Path.GetFileNameWithoutExtension(clientFiles.uri.ToString())),
+                        swfPath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", Path.GetFileName(clientFiles.uri.ToString())),
                     };
                     SWFextract.Add(item);
                 }
@@ -347,6 +331,49 @@ namespace Sightstone.Patcher.Pages
             downloader.OnDownloadProgressChanged += DownloadChange;
             downloader.DownloadMultipleFiles(files);
             
+        }
+
+        private void AddGameClientUpdateFiles(MainRegion region)
+        {
+            var root = GetLolRootPath();
+            var lolClientSlnVersion = LeagueDownloadLogic.GetLolClientSlnVersion(region)[0];
+            var lolClientVersion = LeagueDownloadLogic.GetLolClientClientVersion(region)[0];
+            switch (region.RegionType)
+            {
+                case RegionType.KR:
+                case RegionType.Riot:
+                    var uris = LeagueDownloadLogic.GetUris(region);
+                    files.AddRange(uris.Select(toDl => new DownloadFile
+                    {
+                        DownloadUri = toDl.uri,
+                        FileSize = toDl.size,
+                        OutputPath = new[]
+                            {
+                                Path.Combine(root, "RADS", "solutions", "lol_game_client_sln", "releases",
+                                lolClientSlnVersion, "deploy", toDl.uri.ToString().Split(new[] { "/files/" },
+                                    StringSplitOptions.None)[1]),
+
+                                Path.Combine(root, "RADS", "projects", "lol_game_client", "releases",
+                                lolClientVersion, "deploy", toDl.uri.ToString().Split(new[] { "/files/" },
+                                    StringSplitOptions.None)[1])
+                            },
+                        OverrideFiles = true
+                    }).ToList());
+                    break;
+                case RegionType.PBE:
+                    files.AddRange(LeagueDownloadLogic.GetUris(region).Select(toDl => new DownloadFile
+                    {
+                        DownloadUri = toDl.uri,
+                        FileSize = toDl.size,
+                        OutputPath = new[] {Path.Combine(Client.ExecutingDirectory, "RADS", "projects", "lol_game_client", "releases",
+                                LeagueDownloadLogic.GetLolClientClientVersion(region)[0], "deploy", toDl.uri.ToString().Split(new[] { "/files/" },
+                                    StringSplitOptions.None)[1])},
+                        OverrideFiles = true
+                    }).ToList());
+                    break;
+                case RegionType.Garena:
+                    throw new NotImplementedException("Garena update logic has to be observed");
+            }
         }
 
         private void downloadTheme(string[] manifest)
@@ -467,12 +494,9 @@ namespace Sightstone.Patcher.Pages
             }
 
             var latestAirs = LeagueDownloadLogic.GetLolClientVersion(Client.Region);
+            
+            File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version"), latestAirs[0]);
 
-            var encoding = new ASCIIEncoding();
-            using (var files = File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
-            {
-                files.Write(encoding.GetBytes(latestAirs[0]), 0, encoding.GetBytes(latestAirs[0]).Length);
-            }
             if (SWFextract != null)
             {
                 foreach(var item in SWFextract)
@@ -481,8 +505,12 @@ namespace Sightstone.Patcher.Pages
                 }
             }
             //TODO: Converters
-            PlayButton.IsEnabled = true;
-            FinishedGrid.Visibility = Visibility.Visible;
+            
+            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input, new Action(() =>
+            {
+                PlayButton.IsEnabled = true;
+                FinishedGrid.Visibility = Visibility.Visible;
+            }));
         }
 
         private void Status()

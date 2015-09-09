@@ -103,7 +103,7 @@ namespace Sightstone.Patcher.Logic
             return SolutionManifest;
         }
 
-        public static Uri[] GetUris(MainRegion Region)
+        public static UriAndSize[] GetUris(MainRegion Region)
         {
             string[] packagemanifest;
             var versions = GetLolClientClientVersion(Region);
@@ -113,11 +113,14 @@ namespace Sightstone.Patcher.Logic
             {
                 packagemanifest = client.DownloadString(Region.GameClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToArray();
             }
-            var resultUris = (from uris in packagemanifest from toInstall in notInstalled where uris.Contains(toInstall) select new Uri("http://l3cdn.riotgames.com/releases/live" + uris.Split(',')[0]));
+            var resultUris = (from uris in packagemanifest from toInstall in notInstalled
+                              where uris.Contains(toInstall) select new UriAndSize(
+                                  new Uri("http://l3cdn.riotgames.com/releases/live" + uris.Split(',')[0]), 
+                                  long.Parse(uris.Split(',')[3])));
             return resultUris.ToArray();
         }
 
-        public static Uri[] ClientGetUris(MainRegion Region)
+        public static UriAndSize[] AirGetUris(MainRegion Region)
         {
             string[] packagemanifest;
             Client.Region = Region;
@@ -126,9 +129,12 @@ namespace Sightstone.Patcher.Logic
             var notInstalled = versions.TakeWhile(version => version != localVersion).ToList();
             using (var client = new WebClient())
             {
-                packagemanifest = client.DownloadString(Region.ClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.None).Skip(1).ToArray();
+                packagemanifest = client.DownloadString(Region.ClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToArray();
             }
-            var resultUris = (from uris in packagemanifest from toInstall in notInstalled where uris.Contains(toInstall) select new Uri("http://l3cdn.riotgames.com/releases/live" + uris.Split(',')[0]));
+            var resultUris = (from uris in packagemanifest from toInstall in notInstalled
+                              where uris.Contains(toInstall) select new UriAndSize(
+                                  new Uri("http://l3cdn.riotgames.com/releases/live" + uris.Split(',')[0]), 
+                                  long.Parse(uris.Split(',')[3])));
             return resultUris.ToArray();
         }
 
