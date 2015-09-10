@@ -293,7 +293,7 @@ namespace Sightstone.Windows
                     }
                 }
 
-                Champions.InsertExtraChampData(champ);
+                //Champions.InsertExtraChampData(champ);
             }
 
             Client.SQLiteDatabase.Close();
