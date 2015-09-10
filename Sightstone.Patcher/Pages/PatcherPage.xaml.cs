@@ -684,7 +684,7 @@ namespace Sightstone.Patcher.Pages
         private void PlayClick(object sender, RoutedEventArgs e)
         {
             Process.Start("Sightstone.exe");
-            //Environment.Exit(0);
+            Environment.Exit(0);
         }
 
         /// <summary>
