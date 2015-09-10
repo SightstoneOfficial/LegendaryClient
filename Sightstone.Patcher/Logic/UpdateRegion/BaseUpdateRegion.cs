@@ -18,7 +18,7 @@ namespace Sightstone.Patcher.Logic.UpdateRegion
 
         public static BaseUpdateRegion GetUpdateRegion(string requestedRegion)
         {
-            Type t = Type.GetType("Sightstone.Logic.UpdateRegion." + requestedRegion);
+            Type t = Type.GetType("Sightstone.Patcher.Logic.UpdateRegion." + requestedRegion);
             return (BaseUpdateRegion)Activator.CreateInstance(t);
         }
     }

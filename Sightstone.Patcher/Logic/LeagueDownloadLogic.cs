@@ -70,16 +70,16 @@ namespace Sightstone.Patcher.Logic
             return "0.0.0.0";
         }
 
-        public static string GetLatestLCClientVersion()
+        public static string GetLocalAirVersion()
         {
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLCLIENT.Version")))
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLAir.Version")))
             {
-                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLCLIENT.Version"));
+                var version = File.ReadAllLines(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLAir.Version"));
                 if (version.Count() > 0)
                     return version[0];
             }
             var encoding = new ASCIIEncoding();
-            File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLCLIENT.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
+            File.Create(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLAir.Version")).Write(encoding.GetBytes("0.0.0.0"), 0, encoding.GetBytes("0.0.0.0").Length);
             return "0.0.0.0";
         }
 
@@ -125,13 +125,14 @@ namespace Sightstone.Patcher.Logic
             string[] packagemanifest;
             Client.Region = Region;
             var versions = GetLolClientVersion(Region);
-            var localVersion = GetLatestLCClientVersion();
+            var localVersion = GetLocalAirVersion();
             var notInstalled = versions.TakeWhile(version => version != localVersion).ToList();
             using (var client = new WebClient())
             {
                 packagemanifest = client.DownloadString(Region.ClientUpdateUri).Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Skip(1).ToArray();
             }
-            var resultUris = (from uris in packagemanifest from toInstall in notInstalled
+            var resultUris = 
+                (from uris in packagemanifest from toInstall in notInstalled
                               where uris.Contains(toInstall) select new UriAndSize(
                                   new Uri("http://l3cdn.riotgames.com/releases/live" + uris.Split(',')[0]), 
                                   long.Parse(uris.Split(',')[3])));

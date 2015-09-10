@@ -30,6 +30,8 @@ using Brush = System.Windows.Media.Brush;
 using Image = System.Drawing.Image;
 using Sightstone.Patcher.Properties;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Shell;
 
 #endregion
 
@@ -175,10 +177,16 @@ namespace Sightstone.Patcher.Pages
             var region = MainRegion.GetMainRegion(Settings.Default.RegionName);
             files = new List<DownloadFile>();
             var downloader = new Downloader();
-            
-            //AddGameClientUpdateFiles(region);
 
-            foreach ( var clientFiles in LeagueDownloadLogic.AirGetUris(region))
+            //AddGameClientUpdateFiles(region);
+            var manifest = LeagueDownloadLogic.AirGetUris(region);
+            if (manifest.Count() == 0)
+            {
+                DownloadCompleted(false);
+                return;
+            }
+            downloadTheme(manifest);
+            foreach ( var clientFiles in manifest)
             {
                 //Install sound files
                 if (clientFiles.uri.ToString().Contains("sounds"))
@@ -376,18 +384,19 @@ namespace Sightstone.Patcher.Pages
             }
         }
 
-        private void downloadTheme(string[] manifest)
+        private void downloadTheme(UriAndSize[] manifest)
         {
             try
             {
-                string[] fileMetaData = manifest.Skip(1).ToArray();
+                UriAndSize[] fileMetaData = manifest.Skip(1).ToArray();
                 var updateRegion = Logic.UpdateRegion.BaseUpdateRegion.GetUpdateRegion("Live");
 
                 if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes")))
                     Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes"));
 
-                foreach (string s in fileMetaData)
+                foreach (var uriAndSize in fileMetaData)
                 {
+                    var s = uriAndSize.uri.ToString();
                     if (string.IsNullOrEmpty(s))
                         continue;
 
@@ -398,7 +407,7 @@ namespace Sightstone.Patcher.Pages
                         using (var newClient = new WebClient())
                         {
                             LogTextBox("Checking Theme...");
-                            newClient.DownloadFile(updateRegion.BaseLink + location,
+                            newClient.DownloadFile(location,
                                 Path.Combine(Client.ExecutingDirectory, "Assets", "themes", "theme.properties"));
                         }
                     }
@@ -431,19 +440,21 @@ namespace Sightstone.Patcher.Pages
                     return;
                 }
 
-                List<string> themeLink = fileMetaData.Where(
-                                   line => (line.Contains("loop") || line.Contains("Loop")) &&
-                                       line.Contains(theme)).ToList(); //loop is exacly the same as intro
-                themeLink = themeLink.Select(link => link.Split(',')[0]).ToList();
+                List<UriAndSize> themeLink = fileMetaData.Where(
+                                   line => ((line.uri.AbsoluteUri.Contains("loop")) || 
+                                        line.uri.AbsoluteUri.Contains("Loop")) &&
+                                        line.uri.AbsoluteUri.Contains(theme)).ToList(); //loop is exacly the same as intro
 
                 using (var newClient = new WebClient())
                 {
                     foreach (var item in themeLink)
                     {
-                        string fileName = item.Split('/').Last();
+                        string fileName = item.uri.ToString().Split('/').Last();
+                        if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName)))
+                            if (new FileInfo(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName)).Length == item.size)
+                                continue;
                         LogTextBox("Downloading " + fileName + " from http://l3cdn.riotgames.com");
-                        newClient.DownloadFile(updateRegion.BaseLink + item,
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName));
+                        newClient.DownloadFile(item.uri, Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName));
 
                     }
                 }
@@ -467,9 +478,7 @@ namespace Sightstone.Patcher.Pages
                     {
                         engine.Convert(inputFile, outputFile);
                     }
-
                 }
-                
             }
             catch
             {
@@ -482,34 +491,38 @@ namespace Sightstone.Patcher.Pages
                 {
                     var percentage = downloaded / toDownload * 100;
                     TotalBar.Value = int.Parse(Math.Truncate(percentage).ToString(CultureInfo.CurrentCulture));
+                    Client.Win.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    Client.Win.TaskbarItemInfo.ProgressValue = percentage / 100;
                 });
         }
 
-        private void DownloadCompleted()
+        private void DownloadCompleted(bool updated)
         {
-
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version")))
+            if (updated)
             {
-                File.Delete(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version"));
-            }
-
-            var latestAirs = LeagueDownloadLogic.GetLolClientVersion(Client.Region);
-            
-            File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOL.Version"), latestAirs[0]);
-
-            if (SWFextract != null)
-            {
-                foreach(var item in SWFextract)
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLAir.Version")))
                 {
-                    SWFImagePacks.SWFextract(item.swfPath, item.savePath);
+                    File.Delete(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLAir.Version"));
                 }
+
+                var latestAirs = LeagueDownloadLogic.GetLolClientVersion(Client.Region);
+
+                File.WriteAllText(Path.Combine(Client.ExecutingDirectory, "PatchData", "LC_LOLAir.Version"), latestAirs[0]);
+
+                if (SWFextract != null)
+                {
+                    foreach (var item in SWFextract)
+                    {
+                        SWFImagePacks.SWFextract(item.swfPath, item.savePath);
+                    }
+                }
+                //TODO: Converters
             }
-            //TODO: Converters
-            
             Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input, new Action(() =>
             {
                 PlayButton.IsEnabled = true;
                 FinishedGrid.Visibility = Visibility.Visible;
+                Client.Win.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;
             }));
         }
 
@@ -537,6 +550,7 @@ namespace Sightstone.Patcher.Pages
                         var request = WebRequest.Create("http://legendaryclient.net");
                         using (var response = (HttpWebResponse)request.GetResponse())
                         {
+                            var statusCode = response.StatusCode;
                             Client.RunOnUIThread(() =>
                             {
                                 var item = new CurrentStatus
@@ -545,7 +559,7 @@ namespace Sightstone.Patcher.Pages
                                     Tag = new Uri("http://legendaryclient.net")
                                 };
                                 item.UpdateStatus(
-                                    response.StatusCode != HttpStatusCode.OK
+                                    statusCode != HttpStatusCode.OK
                                         ? PatcherElements.Status.Down
                                         : PatcherElements.Status.Up);
                                 item.MouseDown += (o, e) => Changed(o);
@@ -669,7 +683,8 @@ namespace Sightstone.Patcher.Pages
         /// <param name="e"></param>
         private void PlayClick(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
+            Process.Start("Sightstone.exe");
+            //Environment.Exit(0);
         }
 
         /// <summary>
@@ -704,7 +719,7 @@ namespace Sightstone.Patcher.Pages
 
         public void LogTextBox(string s)
         {
-            Logbox.Text += s + Environment.NewLine;
+            Dispatcher.BeginInvoke(new Action(() => Logbox.Text += s + Environment.NewLine));
         }
 
         private void SwitchClick(object sender, RoutedEventArgs e)

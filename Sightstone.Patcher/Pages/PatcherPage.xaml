@@ -22,7 +22,7 @@
     </Page.Resources>
 
     <Grid>
-        <Button x:Name="PlayButton" Content="{DynamicResource Play}" HorizontalAlignment="Right"  VerticalAlignment="Top" Width="100" Height="50" Click="PlayClick" Margin="0,5,1,0"  />
+        <Button x:Name="PlayButton" Content="{DynamicResource Play}" HorizontalAlignment="Right" IsEnabled="False" VerticalAlignment="Top" Width="100" Height="50" Click="PlayClick" Margin="0,5,1,0"  />
         <Button x:Name="SwitchButton" Content="{DynamicResource ShowLogBox}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="50" Click="SwitchClick" Margin="10,5,0,0"  />
         <!--This is the title grid, the bar that is at the top-->
         <ProgressBar x:Name="TotalBar" HorizontalAlignment="Center" Height="4" VerticalAlignment="Top" Width="1355" />
@@ -56,8 +56,6 @@
         <Grid Margin="0,155,0,0" x:Name="LogGrid" Visibility="Hidden">
             <TextBox x:Name="Logbox" HorizontalAlignment="Left" Height="550" TextWrapping="Wrap" Text=""
 				VerticalAlignment="Top" Width="1340" Margin="10,10,0,0" />
-
         </Grid>
     </Grid>
-
 </Page>

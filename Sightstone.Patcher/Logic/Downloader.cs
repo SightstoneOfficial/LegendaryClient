@@ -16,7 +16,7 @@ namespace Sightstone.Patcher.Logic
     {
         private readonly List<DownloadFile> _finished = new List<DownloadFile>();
 
-        public delegate void OnFinished();
+        public delegate void OnFinished(bool updated);
         public event OnFinished OnFinishedDownloading;
 
         public delegate void OnProgressChanged(double downloaded, double toDownload);
@@ -113,12 +113,9 @@ namespace Sightstone.Patcher.Logic
                     };
                 }
             }
-            if (_finished.Count != 0)
-            {
-                while (_webClientToCreate != Client.MaximumWebClient)
-                    await Task.Delay(10);
-                OnFinishedDownloading?.Invoke();
-            }
+            while (_webClientToCreate != Client.MaximumWebClient)
+                await Task.Delay(10);
+            OnFinishedDownloading?.Invoke(true);
         }
     }
 

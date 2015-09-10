@@ -18,7 +18,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Description="Sightstone Patcher" ProgressState="Normal"/>
+    </Window.TaskbarItemInfo>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Label x:Name="RegionLabel" Content="{DynamicResource ConnectedRegion}" FontWeight="Light" FontSize="15" />
