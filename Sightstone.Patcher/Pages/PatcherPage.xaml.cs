@@ -179,12 +179,38 @@ namespace Sightstone.Patcher.Pages
             var downloader = new Downloader();
 
             //AddGameClientUpdateFiles(region);
+
             var manifest = LeagueDownloadLogic.AirGetUris(region);
             if (manifest.Count() == 0)
             {
                 DownloadCompleted(false);
+                if (!File.Exists(Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")))
+                {
+                    using (var client = new WebClient())
+                    try
+                    {
+                        
+                            client.DownloadFile(
+                                "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/" +
+                                LeagueDownloadLogic.GetLolClientVersion(region)[0] +
+                                "/files/assets/data/gameStats/gameStats_en_US.sqlite",
+                                Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                    }
+                    catch
+                    {
+                            var location = client.DownloadString(string.Format(
+                                "http://l3cdn.riotgames.com/releases/live/projects/lol_air_client/releases/{0}/packages/files/packagemanifest",
+                                LeagueDownloadLogic.GetLolClientVersion(region)[0]))
+                                .Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+                                .First(x => x.Contains("gameStats_en_US.sqlite"))
+                                .Split(',')[0];
+                            client.DownloadFile("http://l3cdn.riotgames.com/releases/live" + location,
+                                Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
+                    }
+                }
                 return;
             }
+
             downloadTheme(manifest);
             foreach ( var clientFiles in manifest)
             {
@@ -205,6 +231,20 @@ namespace Sightstone.Patcher.Pages
                     });
                 }
                 //Download images of champs
+                else if (clientFiles.uri.ToString().Contains("gameStats_en_US.sqlite"))
+                {
+                    files.Add(new DownloadFile
+                    {
+                        DownloadUri = clientFiles.uri,
+                        FileSize = clientFiles.size,
+                        OutputPath =
+                                    new[]
+                                    {
+                                        Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite")
+                                    },
+                        OverrideFiles = true
+                    });
+                }
                 else if (clientFiles.uri.ToString().Contains("champions"))
                 {
                     if (!clientFiles.uri.ToString().Contains("_Square_0"))
@@ -237,7 +277,7 @@ namespace Sightstone.Patcher.Pages
                                             clientFiles.uri.ToString()
                                             .Split(new[] { "/files/" }, StringSplitOptions.None)[1]
                                             .Replace("assets", "Assets")).Replace("/images", ""),
-                                        Path.Combine(Client.ExecutingDirectory, 
+                                        Path.Combine(Client.ExecutingDirectory,
                                             clientFiles.uri.ToString()
                                             .Split(new[] { "/files/" },StringSplitOptions.None)[1].
                                             Replace("assets", "Assets"))
@@ -319,7 +359,7 @@ namespace Sightstone.Patcher.Pages
                     {
                         DownloadUri = clientFiles.uri,
                         FileSize = clientFiles.size,
-                        OutputPath = new []
+                        OutputPath = new[]
                         {
                             Path.Combine(Client.ExecutingDirectory, "Assets", "swf", clientFiles.uri.ToString()
                             .Split(new[] { "/imagePacks/" }, StringSplitOptions.None)[1])
