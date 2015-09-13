@@ -7,7 +7,7 @@ LegendaryClient
 [![Releases](https://img.shields.io/github/release/LegendaryClient/LegendaryClient.svg?style=flat-square)](https://github.com/eddy5641/LegendaryClient/releases)
 [![Join the chat at https://gitter.im/eddy5641/LegendaryClient](http://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-brightgreen.svg?style=flat-square)](https://gitter.im/LegendaryClient/LegendaryClient?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Download the lastest version here: https://ci.appveyor.com/project/EddyV/legendaryclient/build/3.0.1.284/artifacts
+Download the lastest version here: https://ci.appveyor.com/project/EddyV/legendaryclient/build/artifacts
 
     Making a switch from jabber-net to agsxmpp so if you do use the latest version IT MAY NOT WORK
 
