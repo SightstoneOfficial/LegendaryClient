@@ -5,6 +5,7 @@ using SharpCompress.Reader;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -182,11 +183,11 @@ A code signing license (So you know that you are using LegendaryClient)
                     val = Path.Combine(Client.RootLocation, "Game", "Config", "game.cfg").LeagueSettingsReader();
                 }
                 if (val.Any(x => x.Key == "MusicVolume"))
-                    MusicVolumeSlider.Value = (Convert.ToInt32(val["MusicVolume"]) * 100);
+                    MusicVolumeSlider.Value = (double.Parse(val["MusicVolume"], CultureInfo.InvariantCulture));
                 if (val.Any(x => x.Key == "VoiceVolume"))
-                    VoiceVolumeSlider.Value = (Convert.ToInt32(val["VoiceVolume"]) * 100);
+                    VoiceVolumeSlider.Value = (double.Parse(val["VoiceVolume"], CultureInfo.InvariantCulture));
                 if (val.Any(x => x.Key == "AnnouncerVolume"))
-                    AnnouncerVolumeSlider.Value = (Convert.ToInt32(val["AnnouncerVolume"]) * 100);
+                    AnnouncerVolumeSlider.Value = (double.Parse(val["AnnouncerVolume"], CultureInfo.InvariantCulture));
             }
             catch (Exception e)
             {
