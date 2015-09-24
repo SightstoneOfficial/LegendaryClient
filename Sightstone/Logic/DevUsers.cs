@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sightstone.Logic.MultiUser;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,10 +15,13 @@ namespace Sightstone.Logic
         {
             try
             {
-                var content = Client.DownloadString("http://legendaryclient.net/devs.txt");
-                var devs = content.Split('\n').ToList();
-                devs.RemoveAll(x => x.StartsWith("#"));
-                return devs;
+                using (WebClient client = new WebClient())
+                {
+                    var content = client.DownloadString("http://legendaryclient.net/devs.txt");
+                    var devs = content.Split('\n').ToList();
+                    devs.RemoveAll(x => x.StartsWith("#"));
+                    return devs;
+                }
             }
             catch
             {

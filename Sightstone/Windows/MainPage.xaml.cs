@@ -193,7 +193,7 @@ namespace Sightstone.Windows
                 Sha1 sha1 = new Sha1();
                 if (!CheckedDev)
                 {
-                    if (DevUsers.getDevelopers().Contains(sha1.EncodeString(playerData.Summoner.Name + " " + UserClient.Region.RegionName)))
+                    if (DevUsers.getDevelopers().Contains(sha1.Hash(playerData.Summoner.Name + " " + UserClient.Region.RegionName)))
                     {
                         UserClient.Dev = true;
                     }
