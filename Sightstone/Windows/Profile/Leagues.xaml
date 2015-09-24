@@ -1,0 +1,81 @@
+﻿<Page x:Class="Sightstone.Windows.Profile.Leagues"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+      Title="Leagues"
+      mc:Ignorable="d" 
+      d:DesignHeight="548"
+      d:DesignWidth="1280" 
+      Foreground="{StaticResource MaterialDesignBody}"
+      Background="{StaticResource MaterialDesignPaper}">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="300"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0">
+            <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Rank" FontSize="16"/>
+            <Label Margin="60,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Δ" FontSize="16"/>
+            <Label Margin="110,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Name" FontSize="16"/>
+            <Label Margin="440,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Emblems" FontSize="16"/>
+            <Label Margin="610,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Wins" FontSize="16"/>
+            <Label Margin="710,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="LP/Series" FontSize="16"/>
+        </Grid>
+        
+        <Grid Grid.Column="1">
+            <!-- Tier Info -->
+            <Grid VerticalAlignment="Top" Margin="5">
+                <wpf:Card UniformCornerRadius="3">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Tier + Tiername -->
+                        <Label x:Name="CurrentLeagueLabel" Margin="8,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Tier" Foreground="{StaticResource MaterialDesignBody}" FontSize="35" Padding="0" />
+                        <Label x:Name="CurrentLeagueNameLabel" Margin="8,0,8,5" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Tiername" Foreground="{StaticResource MaterialDesignBody}" FontSize="18" Padding="0"/>
+
+                        <!-- Tier Up/Down Buttons -->
+                        <Grid HorizontalAlignment="Right" Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Button x:Name="UpTierButton" Grid.Row="0" Margin="5,5,5,2.5" HorizontalAlignment="Right" VerticalAlignment="Top" Content="é" FontFamily="Wingdings" FontWeight="ExtraLight" Click="UpTierButton_Click" />
+                            <Button x:Name="DownTierButton" Grid.Row="1" Margin="5,2.5,5,5" HorizontalAlignment="Right" VerticalAlignment="Top" Content="ê" FontWeight="ExtraLight" FontFamily="Wingdings" Click="DownTierButton_Click" />
+                        </Grid>
+                    </Grid>
+                </wpf:Card> 
+            </Grid>
+
+
+            <Label x:Name="PlayerLabel" Margin="0,100,5,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Username" Foreground="{StaticResource MaterialDesignBody}" FontSize="24"/>
+            <ListView x:Name="TopChampionsListView" Height="300" Margin="10,150,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" BorderBrush="{x:Null}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+            <Button x:Name="ViewAggregatedStatsButton" Margin="10"
+                HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="View Player Stats" Click="ViewAggregatedStatsButton_Click" />
+        </Grid>
+
+        
+
+        <ListView x:Name="LeaguesListView" Margin="10,50,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" BorderBrush="{x:Null}" SelectionChanged="LeaguesListView_SelectionChanged">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        
+
+    </Grid>
+</Page>

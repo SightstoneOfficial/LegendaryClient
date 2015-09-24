@@ -1,0 +1,85 @@
+﻿<Page
+    x:Class="Sightstone.Windows.StatusPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    Title="StatusPage"
+    Width="1252.6"
+    mc:Ignorable="d" d:DesignHeight="40">
+
+    <Grid x:Name="BackBar" Background="{StaticResource PrimaryHueMidBrush}">
+        <ListView x:Name="ChatListView" Margin="1,0,374,0"
+                  HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                  Background="{x:Null}"
+                  Foreground="{x:Null}" BorderBrush="{x:Null}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ChatListView_ItemClicked" />
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <Grid Width="135" Margin="0,0,115,0" HorizontalAlignment="Right"
+              ScrollViewer.VerticalScrollBarVisibility="Disabled" Background="#4C000000" Visibility="Collapsed">
+            <Label x:Name="StatusLabel" Margin="0,0,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Content="In Game" FontWeight="ExtraLight" FontSize="16" />
+            <Button Width="25" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{x:Null}"
+                    Content="X" Foreground="Black" />
+            <Button Width="25" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{x:Null}"
+                    Content="←" Foreground="Black" />
+        </Grid>
+        <Button x:Name="PluginButton" Width="50" Margin="0,4,170,4" HorizontalAlignment="Right"
+                VerticalAlignment="Stretch" Style="{x:Null}" Visibility="Hidden">
+            <StackPanel>
+                <Image Source="/Sightstone;component/ui/img/bar/plugin.png" Stretch="None" />
+            </StackPanel>
+        </Button>
+        <TextBox x:Name="DevCommand" Width="254" Height="32"
+                 Margin="0,0,115,4" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                 TextWrapping="Wrap" controls:TextBoxHelper.Watermark="Enter Dev Command here" FontSize="20"
+                 Visibility="Hidden" />
+
+        <Grid Width="Auto" HorizontalAlignment="Right" Margin="4">
+            <Border Padding="0" Margin="0" CornerRadius="3" BorderThickness="1" BorderBrush="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <StackPanel Background="{StaticResource PrimaryHueLightBrush}" Orientation="Horizontal">
+                    <Button x:Name="ChatButton" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="ChatButton_Click" Style="{StaticResource MaterialDesignFlatButton}" MinWidth="75">
+                        <Viewbox Width="24" Height="24">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M16,13C15.71,13 15.38,13 15.03,13.05C16.19,13.89 17,15 17,16.5V19H23V16.5C23,14.17 18.33,13 16,13M8,13C5.67,13 1,14.17 1,16.5V19H15V16.5C15,14.17 10.33,13 8,13M8,11A3,3 0 0,0 11,8A3,3 0 0,0 8,5A3,3 0 0,0 5,8A3,3 0 0,0 8,11M16,11A3,3 0 0,0 19,8A3,3 0 0,0 16,5A3,3 0 0,0 13,8A3,3 0 0,0 16,11Z" Fill="{StaticResource PrimaryHueDarkBrush}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+                    <Button x:Name="NotificationButton" VerticalAlignment="Stretch" HorizontalAlignment="Center" Padding="0" BorderThickness="10,0" Margin="1,0" BorderBrush="{StaticResource PrimaryHueMidBrush}" Click="NotificationButton_Click" Style="{StaticResource MaterialDesignFlatButton}" MinWidth="75">
+
+
+
+                        <Border BorderThickness="1,0" BorderBrush="{StaticResource PrimaryHueDarkBrush}" Width="75" Height="24" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                            <Viewbox Width="24" Height="24">
+                                <Canvas Width="24" Height="24">
+                                    <Path Data="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" Fill="{StaticResource PrimaryHueDarkBrush}" />
+                                </Canvas>
+                            </Viewbox>
+                        </Border>
+
+
+                        
+                    </Button>
+                    <Button x:Name="JoinChat" VerticalAlignment="Stretch" HorizontalAlignment="Center" Click="JoinChatButton_Click" Style="{StaticResource MaterialDesignFlatButton}" MinWidth="75">
+                        <Viewbox Width="24" Height="24">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M17,12V3A1,1 0 0,0 16,2H3A1,1 0 0,0 2,3V17L6,13H16A1,1 0 0,0 17,12M21,6H19V15H6V17A1,1 0 0,0 7,18H18L22,22V7A1,1 0 0,0 21,6Z" Fill="{StaticResource PrimaryHueDarkBrush}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

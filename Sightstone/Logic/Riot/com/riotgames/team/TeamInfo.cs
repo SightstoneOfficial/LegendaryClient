@@ -1,0 +1,28 @@
+﻿using System;
+using RtmpSharp.IO;
+
+namespace Sightstone.Logic.Riot.Team
+{
+    [Serializable]
+    [SerializedName("com.riotgames.team.TeamInfo")]
+    public class TeamInfo
+    {
+        [SerializedName("secondsUntilEligibleForDeletion")]
+        public double SecondsUntilEligibleForDeletion { get; set; }
+
+        [SerializedName("memberStatusString")]
+        public String MemberStatusString { get; set; }
+
+        [SerializedName("tag")]
+        public String Tag { get; set; }
+
+        [SerializedName("name")]
+        public String Name { get; set; }
+
+        [SerializedName("memberStatus")]
+        public String MemberStatus { get; set; }
+
+        [SerializedName("teamId")]
+        public TeamId TeamId { get; set; }
+    }
+}

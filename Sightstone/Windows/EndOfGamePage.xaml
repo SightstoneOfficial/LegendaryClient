@@ -1,0 +1,95 @@
+﻿<Page x:Class="Sightstone.Windows.EndOfGamePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      Title="EndOfGamePage"
+      mc:Ignorable="d" d:DesignHeight="768"
+      d:DesignWidth="1280">
+
+    <Grid Background="#B2000000">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="309*" />
+            <ColumnDefinition Width="331*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.ColumnSpan="2" Margin="20,20,20,20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+              Background="#FF2B2B2B">
+            <Image x:Name="SkinImage" Margin="0,0,0,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                   Opacity="0.3" Stretch="UniformToFill" />
+            <Label x:Name="GameResultLabel" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   FontSize="40" FontWeight="ExtraLight" Content="Defeat" Foreground="White" />
+            <Label x:Name="TimeLabel" Margin="10,65,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   FontSize="18"
+                   FontWeight="ExtraLight" Content="20:00" Foreground="White" />
+            <Label x:Name="ModeLabel" Margin="10,95,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   FontSize="18"
+                   FontWeight="ExtraLight" Content="NORMAL" Foreground="White" />
+            <Label x:Name="TypeLabel" Margin="10,120,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   FontWeight="ExtraLight" Content="RANKED SOLO 5x5" Foreground="White" />
+
+            <Button x:Name="CloseButton" Width="30" Height="30" Margin="0,5,5,0" HorizontalAlignment="Right"
+                    VerticalAlignment="Top" Panel.ZIndex="4" Content="X" Click="CloseButton_Click" />
+            <Label x:Name="GainedIP" Margin="10,160,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="+100 IP"
+                   FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" />
+            <Label x:Name="TotalIP" Margin="10,180,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="100 IP Total"
+                   FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+            <TabControl Width="920" Margin="315,0,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TabItem Header="Overview" Foreground="White">
+                    <Grid>
+                        <ListView x:Name="PlayersListView" Margin="10,0,10,10"
+                                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
+                                  Background="#66505050"
+                                  BorderBrush="{x:Null}">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                        </ListView>
+                    </Grid>
+                </TabItem>
+
+                <TabItem Header="Grid" />
+
+            </TabControl>
+            <Label x:Name="TotalXP" Margin="10,240,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="1000 XP Total"
+                   FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+            <Label x:Name="GainedXP" Margin="10,218,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                   Content="+50 XP"
+                   FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" />
+            <Button Content="History online" HorizontalAlignment="Right" Margin="0,5,55,0" VerticalAlignment="Top" Width="141" Click="OnlineHistory_Click"/>
+            <Grid x:Name="ChampionMasteryGrid" HorizontalAlignment="Left" Height="120" Visibility="Hidden" VerticalAlignment="Top" Width="136" Margin="179,151,0,0">
+                <Label Content="A+" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="40" Foreground="YellowGreen"/>
+                <Label x:Name="NextLvlChampionXP" Margin="10,70,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                	Content="1000 to Next Lvl"
+                	FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+                <Label x:Name="GainedChampionXP" Margin="10,50,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"
+                	Content="+50 CP"
+                	FontSize="16" FontWeight="ExtraLight" Foreground="LightGreen" />
+                <Label x:Name="TotalChampionXP" Margin="10,89,0,-9" HorizontalAlignment="Left" VerticalAlignment="Top"
+                	Content="1000 CP Total"
+                	FontSize="16" FontWeight="ExtraLight" Foreground="White" />
+            </Grid>
+        </Grid>
+
+        <RichTextBox x:Name="ChatText" Width="300" Margin="30,305,0,65" HorizontalAlignment="Left"
+                     VerticalAlignment="Stretch" IsReadOnly="True" Foreground="White" Background="#CC505050"
+                     BorderBrush="{x:Null}">
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+        <TextBox x:Name="ChatTextBox" Width="200" Height="23" Margin="30,0,0,30" HorizontalAlignment="Left"
+                 VerticalAlignment="Bottom" TextWrapping="Wrap" />
+        <Button x:Name="ChatButton" Width="90" Height="26" Margin="240,0,0,30"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Send" IsDefault="True"
+                Click="ChatButton_Click" />
+
+    </Grid>
+</Page>

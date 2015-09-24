@@ -6,42 +6,42 @@ using System.Threading.Tasks;
 // astralfoxy:complete/threading/taskcallbackmanager.cs
 namespace Complete.Threading
 {
-    class TaskCallbackManager<K, V>
+    class TaskCallbackManager
     {
-        readonly ConcurrentDictionary<K, TaskCompletionSource<V>> callbacks;
+        readonly ConcurrentDictionary<int, TaskCompletionSource<object>> callbacks;
 
         public TaskCallbackManager()
         {
-            callbacks = new ConcurrentDictionary<K, TaskCompletionSource<V>>();
+            callbacks = new ConcurrentDictionary<int, TaskCompletionSource<object>>();
         }
 
-        public Task<V> Create(K key)
+        public Task<object> Create(int key)
         {
-            var taskCompletionSource = callbacks.GetOrAdd(key, k => new TaskCompletionSource<V>());
+            var taskCompletionSource = callbacks.GetOrAdd(key, k => new TaskCompletionSource<object>());
             return taskCompletionSource.Task;
         }
 
-        public bool Remove(K key)
+        public bool Remove(int key)
         {
-            TaskCompletionSource<V> callback;
+            TaskCompletionSource<object> callback;
             return callbacks.TryRemove(key, out callback);
         }
 
-        public void SetResult(K key, V result)
+        public void SetResult(int key, object result)
         {
-            TaskCompletionSource<V> callback;
+            TaskCompletionSource<object> callback;
             if (callbacks.TryRemove(key, out callback))
                 callback.TrySetResult(result);
         }
 
-        public void SetException(K key, Exception exception)
+        public void SetException(int key, Exception exception)
         {
-            TaskCompletionSource<V> callback;
+            TaskCompletionSource<object> callback;
             if (callbacks.TryRemove(key, out callback))
                 callback.TrySetException(exception);
         }
 
-        public void SetResultForAll(V result)
+        public void SetResultForAll(object result)
         {
             var callbacks = this.callbacks.Select(x => x.Value).ToArray();
             this.callbacks.Clear();

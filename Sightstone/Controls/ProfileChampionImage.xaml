@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Sightstone.Controls.ProfileChampionImage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             Height="84" Width="96">
+    
+    <Grid>
+        <Rectangle Fill="#02000000" Width="96" Height="84" />
+        <Image x:Name="ChampImage" HorizontalAlignment="Center" Height="64" Margin="0,0,0,0" VerticalAlignment="Top"
+               Width="64" />
+        <Label x:Name="FreeToPlayLabel" Content="Free" HorizontalAlignment="Center" Margin="-20.5,32,0,0"
+               VerticalAlignment="Top" Foreground="White" Background="#4C0C0C0C" FontWeight="SemiBold" FontSize="16"
+               Visibility="Hidden">
+            <Label.Effect>
+                <DropShadowEffect ShadowDepth="2" BlurRadius="1" />
+            </Label.Effect>
+        </Label>
+        <Label x:Name="ChampName" Content="Heimerdinger" HorizontalAlignment="Center" Margin="0,0,0,0"
+               VerticalAlignment="Bottom" Foreground="White" />
+        <Image x:Name="FavoriteImage" HorizontalAlignment="Left" Height="16" Margin="18,2,0,0" VerticalAlignment="Top"
+               Width="16" Source="/Sightstone;component/star.png" Visibility="Hidden" />
+    </Grid>
+</UserControl>

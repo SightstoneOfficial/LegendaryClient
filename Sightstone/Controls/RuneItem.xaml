@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Sightstone.Controls.RuneItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="50" d:DesignWidth="50">
+    
+    <Grid>
+        <Image x:Name="RuneImage" HorizontalAlignment="Left" Height="50" Margin="0,0,0,0" VerticalAlignment="Top"
+               Width="50" />
+        <Label x:Name="RuneName" Content="" HorizontalAlignment="Left" Margin="69,0,-127,0" VerticalAlignment="Top"
+               Width="250" Foreground="White" />
+        <Label x:Name="RuneEffect" Content="" HorizontalAlignment="Left" Margin="69,26,-127,0" VerticalAlignment="Top"
+               Width="250" Foreground="White" />
+        <Label x:Name="RuneCount" Content="" HorizontalAlignment="Left" Margin="50,0,-20,0" VerticalAlignment="Top"
+               Width="20" Foreground="White" />
+    </Grid>
+</UserControl>

@@ -1,0 +1,61 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Awe="http://schemas.awesomium.com/winfx"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    x:Class="Sightstone.Patcher.Pages.PatcherPage"
+    Mc:Ignorable="d"
+    Height="760" Width="1355"
+    Title="PatcherPage">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary
+                        Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Button x:Name="PlayButton" Content="{DynamicResource Play}" HorizontalAlignment="Right" IsEnabled="False" VerticalAlignment="Top" Width="100" Height="50" Click="PlayClick" Margin="0,5,1,0"  />
+        <Button x:Name="SwitchButton" Content="{DynamicResource ShowLogBox}" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="100" Height="50" Click="SwitchClick" Margin="10,5,0,0"  />
+        <!--This is the title grid, the bar that is at the top-->
+        <ProgressBar x:Name="TotalBar" HorizontalAlignment="Center" Height="4" VerticalAlignment="Top" Width="1355" />
+        <Grid Visibility="Hidden" x:Name="FinishedGrid" Margin="180,0" Height="150" VerticalAlignment="Top" HorizontalAlignment="Center" >
+            <Image HorizontalAlignment="Left" Height="150" VerticalAlignment="Top" Width="1000"
+				Source="/Sightstone.Patcher;component/TopBar.Png" />
+            <Label Content="Finished" HorizontalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top" Width="995" FontSize="100" VerticalContentAlignment="Top" FontFamily="/Sightstone.Patcher;component/#Lobster 1.3" Margin="0,-20,0,0"/>
+        </Grid>
+
+        <Grid Margin="0,105,0,0" x:Name="NewsGrid" Visibility="Visible">
+            <ListBox x:Name="NewsBox"  HorizontalAlignment="Left" Height="394" Margin="995,0,0,0" VerticalAlignment="Top" Width="350" SelectionChanged="OnSelectionChanged" />
+            <ListView x:Name="champView" HorizontalAlignment="Left" Height="210" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="1168" 
+                      ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="OnSelectionChanged">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+
+            <ListView x:Name="StatusView" SelectionChanged="OnSelectionChanged" HorizontalAlignment="Right" Height="175" VerticalAlignment="Bottom" Width="162" Margin="0,0,10,10"/>
+            <Button Click="Update_OnClick" Style="{DynamicResource HideSquare}" HorizontalAlignment="Right" Content="{DynamicResource UpdateStatus}" VerticalAlignment="Bottom" Margin="0,0,10,185" Height="35" Width="162"/>
+            <Awe:WebControl x:Name="WebBrower" Source="http://LegendaryClient.net" HorizontalAlignment="Left" Height="384" VerticalAlignment="Top" Width="980" Margin="10,10,0,0"/>
+
+        </Grid>
+        <Grid Margin="0,155,0,0" x:Name="LogGrid" Visibility="Hidden">
+            <TextBox x:Name="Logbox" HorizontalAlignment="Left" Height="550" TextWrapping="Wrap" Text=""
+				VerticalAlignment="Top" Width="1340" Margin="10,10,0,0" />
+        </Grid>
+    </Grid>
+</Page>

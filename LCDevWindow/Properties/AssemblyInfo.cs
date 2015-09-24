@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyTitle("LCDevWindow")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("LegendaryClient")]
+[assembly: AssemblyCompany("Sightstone")]
 [assembly: AssemblyProduct("LCDevWindow")]
 [assembly: AssemblyCopyright("Copyright © eddy5641 (And Github collabs) 2015")]
 [assembly: AssemblyTrademark("")]

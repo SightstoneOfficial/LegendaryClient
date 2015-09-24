@@ -131,14 +131,6 @@ namespace Complete
             return call(instance, arguments);
         }
 
-
-
-
-
-
-
-
-
         private static Expression[] GetMethodCallArgsExpressions(ParameterInfo[] parameters, ParameterExpression args)
         {
             return Enumerable.Range(0, parameters.Length).Select(i =>

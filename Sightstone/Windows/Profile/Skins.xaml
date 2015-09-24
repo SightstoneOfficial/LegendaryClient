@@ -1,0 +1,54 @@
+﻿<Page 
+    x:Class="Sightstone.Windows.Profile.Skins"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    Title="Skins"
+    mc:Ignorable="d" 
+    d:DesignHeight="768"
+    d:DesignWidth="1280"
+    Background="{StaticResource MaterialDesignPaper}">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueLightBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+                
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,28,0" Foreground="{StaticResource MaterialDesignBody}">Filters:</TextBlock>
+            <CheckBox x:Name="LimitedSkinCheckBox" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="1" Checked="LimitedSkinCheckBox_Checked" Content="Limited" Foreground="{StaticResource MaterialDesignBody}" Unchecked="LimitedSkinCheckBox_Checked"/>
+            <TextBlock Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,5,0" Foreground="{StaticResource MaterialDesignBody}">Name:</TextBlock>
+            <TextBox Grid.Column="3" x:Name="SearchTextBox" Margin="5,0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" TextChanged="SearchTextBox_TextChanged" TextWrapping="Wrap"/>
+        </Grid>
+        
+        <Grid Grid.Row="1" Margin="0,5,0,0">
+            <!-- Scrollviewer to horizontal scroll -->
+            <ScrollViewer x:Name="SkinsScroller" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <ListView x:Name="SkinSelectListView" Margin="5,0,5,0" Background="Transparent" HorizontalAlignment="Stretch" BorderBrush="{x:Null}" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="Margin" Value="0,0,0,10"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows="2" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Visible" />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </ScrollViewer>
+        </Grid>
+    </Grid>
+</Page>

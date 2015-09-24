@@ -1,0 +1,53 @@
+﻿<Page x:Class="Sightstone.Windows.Profile.Overview"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      Title="Overview"
+      mc:Ignorable="d" d:DesignHeight="548"
+      d:DesignWidth="1280">
+
+    <Grid>
+        <ListView x:Name="KudosListView" Width="280"
+                  Height="Auto" Margin="10,40,10,0" HorizontalAlignment="Right"
+                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
+                  Background="#66505050" BorderBrush="{x:Null}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+        <Label x:Name="TopChampionsLabel" Margin="0,265,10,0" HorizontalAlignment="Right"
+               VerticalAlignment="Top" Content="Top Champions (0 Ranked Games)" FontSize="18" FontWeight="ExtraLight"
+               Foreground="White" />
+        <ListView x:Name="TopChampionsListView" Width="280"
+                  Height="Auto" Margin="10,300,10,0" HorizontalAlignment="Right"
+                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
+                  Background="#66505050" BorderBrush="{x:Null}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+
+        <Button x:Name="ViewAggregatedStatsButton" Width="280" Height="50" Margin="0,480,10,0"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Content="View Champion Stats" FontSize="25"
+                FontWeight="ExtraLight"
+                Click="ViewAggregatedStatsButton_Click" />
+
+        <ComboBox x:Name="StatsComboBox" Width="300" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="StatsComboBox_SelectionChanged" />
+        <ListView x:Name="StatsListView" Margin="10,40,300,10"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                  VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  Foreground="White" Background="#66505050"
+                  BorderBrush="{x:Null}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+    </Grid>
+</Page>
