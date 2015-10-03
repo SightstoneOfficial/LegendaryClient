@@ -22,22 +22,29 @@ namespace Sightstone.Patcher.Logic
         public delegate void OnProgressChanged(double downloaded, double toDownload);
         public event OnProgressChanged OnDownloadProgressChanged;
 
-        private long _downloadedBytes = 0;
+        private long _downloadedBytes;
         private long _bytesToDownload;
 
         private volatile int _webClientToCreate;
         public async void DownloadMultipleFiles(List<DownloadFile> filesToDownlad)
         {
             _webClientToCreate = Client.MaximumWebClient;
-            //_downloading = filesToDownlad;
             _bytesToDownload = filesToDownlad.Sum(x => x.FileSize);
-            foreach (var fileDlInfo in filesToDownlad)
-            {
-                foreach (var paths in fileDlInfo.OutputPath.Where(paths => !Directory.Exists(Path.GetDirectoryName(paths))))
+            var degreeOfParallelism = 1;
+            if (Environment.ProcessorCount >= 8)
+                degreeOfParallelism = 4;
+            else if (Environment.ProcessorCount >= 4)
+                degreeOfParallelism = 2;
+            Parallel.ForEach(filesToDownlad, 
+                new ParallelOptions { MaxDegreeOfParallelism = degreeOfParallelism },
+                async fileDlInfo => {
+
+                foreach (
+                    var paths in fileDlInfo.OutputPath.Where(paths => !Directory.Exists(Path.GetDirectoryName(paths))))
                     Directory.CreateDirectory(Path.GetDirectoryName(paths));
 
                 var dlInfo = fileDlInfo;
-                
+
                 if (File.Exists(dlInfo.OutputPath[0]))
                 {
                     if (new FileInfo(dlInfo.OutputPath[0]).Length == dlInfo.FileSize)
@@ -49,7 +56,7 @@ namespace Sightstone.Patcher.Logic
                             OnDownloadProgressChanged?.Invoke(_downloadedBytes, _bytesToDownload);
                         }));
                     }
-                    continue;
+                    return;
                 }
 
                 using (var client = new WebClient())
@@ -62,7 +69,6 @@ namespace Sightstone.Patcher.Logic
 
                     if (fileDlInfo.DownloadUri.ToString().EndsWith(".compressed"))
                     {
-
                         var info = fileDlInfo;
                         client.DownloadDataCompleted += (sender, e) =>
                         {
@@ -77,7 +83,7 @@ namespace Sightstone.Patcher.Logic
                             {
                             }
                             _finished.Add(info);
-                            ((WebClient)sender).Dispose();
+                            ((WebClient) sender).Dispose();
                         };
                         client.DownloadDataAsync(fileDlInfo.DownloadUri);
                     }
@@ -112,7 +118,7 @@ namespace Sightstone.Patcher.Logic
                         }));
                     };
                 }
-            }
+            });
             while (_webClientToCreate != Client.MaximumWebClient)
                 await Task.Delay(10);
             OnFinishedDownloading?.Invoke(true);
