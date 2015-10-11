@@ -30,14 +30,8 @@ namespace Sightstone.Patcher.Logic
         {
             _webClientToCreate = Client.MaximumWebClient;
             _bytesToDownload = filesToDownlad.Sum(x => x.FileSize);
-            var degreeOfParallelism = 1;
-            if (Environment.ProcessorCount >= 8)
-                degreeOfParallelism = 4;
-            else if (Environment.ProcessorCount >= 4)
-                degreeOfParallelism = 2;
-            Parallel.ForEach(filesToDownlad, 
-                new ParallelOptions { MaxDegreeOfParallelism = degreeOfParallelism },
-                async fileDlInfo => {
+            foreach (var fileDlInfo in filesToDownlad)
+                {
 
                 foreach (
                     var paths in fileDlInfo.OutputPath.Where(paths => !Directory.Exists(Path.GetDirectoryName(paths))))
@@ -55,8 +49,9 @@ namespace Sightstone.Patcher.Logic
                             _downloadedBytes = _downloadedBytes + change;
                             OnDownloadProgressChanged?.Invoke(_downloadedBytes, _bytesToDownload);
                         }));
+                        continue;
                     }
-                    return;
+                    
                 }
 
                 using (var client = new WebClient())
@@ -118,7 +113,7 @@ namespace Sightstone.Patcher.Logic
                         }));
                     };
                 }
-            });
+            };
             while (_webClientToCreate != Client.MaximumWebClient)
                 await Task.Delay(10);
             OnFinishedDownloading?.Invoke(true);

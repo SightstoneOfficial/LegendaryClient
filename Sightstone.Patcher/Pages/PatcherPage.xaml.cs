@@ -247,7 +247,7 @@ namespace Sightstone.Patcher.Pages
                 }
                 else if (clientFiles.uri.ToString().Contains("champions"))
                 {
-                    if (!clientFiles.uri.ToString().Contains("_Square_0"))
+                    if (!clientFiles.uri.ToString().Contains("_Square_0") && !clientFiles.uri.ToString().Contains("_square_0"))
                     {
                         files.Add(new DownloadFile
                         {
