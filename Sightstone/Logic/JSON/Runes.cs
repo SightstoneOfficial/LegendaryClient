@@ -10,12 +10,10 @@ namespace Sightstone.Logic.JSON
 {
     public static class Runes
     {
-        public static List<runes> PopulateRunes()
+        public static List<runes> PopulateRunes(string runeJson)
         {
             var runeList = new List<runes>();
-
-            var runeJson =
-                File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "rune.json"));
+            
             var serializer = new JavaScriptSerializer();
             var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(runeJson);
             var runeData = deserializedJson["data"] as Dictionary<string, object>;

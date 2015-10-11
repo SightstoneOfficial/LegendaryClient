@@ -57,6 +57,36 @@ namespace Sightstone.Logic.MultiUser
             return key;
         }
 
+        internal static Uri GetIconUri(int iconId)
+        {
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", iconId + ".png")))
+            {
+                return
+                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", iconId + ".png"),
+                        UriKind.Absolute);
+            }
+            else if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", iconId + ".jpg")))
+            {
+                return
+                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", iconId + ".png"),
+                        UriKind.Absolute);
+            }
+            else if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_buddyIcons",
+                        "ImagePack_buddyIcons_Embeds__e_profileIcon" + iconId + ".jpg")))
+            {
+                return
+                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_buddyIcons",
+                        "ImagePack_buddyIcons_Embeds__e_profileIcon" + iconId + ".jpg"),
+                        UriKind.Absolute);
+            }
+            else
+            {
+                Client.Log("Cannot find icon number" + iconId, "WARN");
+                return 
+                    new System.Uri("/Sightstone;component/NONE.png", UriKind.RelativeOrAbsolute);
+            }
+        }
+
 
         #endregion Language
 
