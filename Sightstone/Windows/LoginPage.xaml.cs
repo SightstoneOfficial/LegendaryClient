@@ -53,7 +53,7 @@ namespace Sightstone.Windows
         private bool shouldExit;
         private bool authed;
         bool switchpage;
-        Dictionary<string, LoginData> dataLogin = new Dictionary<string,LoginData>();
+        Dictionary<string, LoginData> dataLogin = new Dictionary<string, LoginData>();
         private bool saveuser;
 
         public LoginPage()
@@ -80,7 +80,7 @@ namespace Sightstone.Windows
                           Path.Combine(Client.ExecutingDirectory, "ClientLibCommon.dat"), true);
 
                 Client.Log("Garena is Up-To-Date");
-                Client.GLocation = Path.Combine(lolRootPath.Replace("lol.exe",""), "Game");
+                Client.GLocation = Path.Combine(lolRootPath.Replace("lol.exe", ""), "Game");
                 Client.GRootLocation = lolRootPath;
             }
             if (Directory.Exists(Path.Combine(gameLocation, solutionVersion)))
@@ -90,7 +90,7 @@ namespace Sightstone.Windows
                     "releases", solutionVersion, "deploy");
                 Client.RootLocation = lolRootPath;
             }
-            
+
             Client.CurrentServer = "NA";
             Version.TextChanged += WaterTextbox_TextChanged;
             bool x = Settings.Default.DarkTheme;
@@ -254,7 +254,8 @@ namespace Sightstone.Windows
             {
                 var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.iconPath),
                     UriKind.Absolute);
-                champ.icon = new BitmapImage(source);
+                if (File.Exists(source.ToString()))
+                    champ.icon = new BitmapImage(source);
 
                 if (FreeToPlay != null)
                 {
@@ -297,9 +298,9 @@ namespace Sightstone.Windows
             }
 
             Client.SQLiteDatabase.Close();
-            Client.Items = Items.PopulateItems();
-            Client.Masteries = Masteries.PopulateMasteries();
-            Client.Runes = Runes.PopulateRunes();
+
+            Client.Masteries = Masteries.PopulateMasteries(new WebClient().DownloadString("http://ddragon.leagueoflegends.com/cdn/5.19.1/data/en_US/mastery.json"));
+            Client.Runes = Runes.PopulateRunes(new WebClient().DownloadString("http://ddragon.leagueoflegends.com/cdn/5.19.1/data/en_US/rune.json"));
             //BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(user.Instance.UpdateRegion);
             BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion("Live");
             var patcher = new RiotPatcher();
@@ -322,10 +323,10 @@ namespace Sightstone.Windows
                                         where abcTag.Name.Contains("riotgames/platform/gameclient/application/Version")
                                         select Encoding.Default.GetString(abcTag.ABCData)
                                             into str
-                                            select str.Split((char)6)
+                                        select str.Split((char)6)
                                                 into firstSplit
 
-                                                select firstSplit[0].Split((char)18))
+                                        select firstSplit[0].Split((char)18))
 
 
                 if (secondSplit.Count() > 1)
@@ -660,12 +661,12 @@ namespace Sightstone.Windows
                 return;
             }
             user.Instance.PlayerSession = login;
-            
+
             var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
             var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
             var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
-            Task<bool>[] taskArray = { user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
-                                                 user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+            Task<bool>[] taskArray = { user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1),
+                                                 user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2),
                                                  user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
 
             await Task.WhenAll(taskArray);
@@ -674,7 +675,7 @@ namespace Sightstone.Windows
             user.Instance.reconnectToken = Convert.ToBase64String(plainTextbytes);
 
             var LoggedIn = await user.Instance.RiotConnection.LoginAsync(username.ToLower(), login.Token);
-            
+
             var packetx = await user.Instance.calls.GetLoginDataPacketForUser();
 
             if (packetx == null || packetx.AllSummonerData == null)
@@ -709,7 +710,7 @@ namespace Sightstone.Windows
         private async void DoGetOnLoginPacket(string username, string pass, BaseRegion selectedRegion, LoginDataPacket packetx, Deletable<UserClient> user)
         {
             //TODO: Finish this so all calls are used
-            
+
             user.Instance.Queues = await user.Instance.calls.GetAvailableQueues();
             user.Instance.PlayerChampions = await user.Instance.calls.GetAvailableChampions();
             //var runes = await RiotCalls.GetSummonerRuneInventory(packetx.AllSummonerData.Summoner.AcctId);
@@ -738,7 +739,7 @@ namespace Sightstone.Windows
             {
                 dataLogin.Add(packetx.AllSummonerData.Summoner.InternalName + ":" + selectedRegion, new LoginData
                 {
-                    Pass = pass, 
+                    Pass = pass,
                     Region = selectedRegion,
                     ShowType = ShowType.chat,
                     Status = "Using Sightstone",
@@ -756,7 +757,7 @@ namespace Sightstone.Windows
 
         private void GotLoginPacket(LoginDataPacket packet, string username, string pass, BaseRegion selectedRegion, Deletable<UserClient> user)
         {
-            
+
             user.Instance.LoginPacket = packet;
             Client.CurrentServer = selectedRegion.Server + ":" + packet.AllSummonerData.Summoner.InternalName;
             UserList.Users.Add(selectedRegion.Server + ":" + packet.AllSummonerData.Summoner.InternalName, new Dictionary<string, UserClient> { { packet.AllSummonerData.Summoner.InternalName, user.Instance } });
@@ -784,7 +785,7 @@ namespace Sightstone.Windows
             user.Instance.IsLoggedIn = true;
 
 
-            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async() =>
+            Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(async () =>
             {
                 //MessageBox.Show("Do not play ANY games. I am not sure if they will work ~eddy", "XMPP", MessageBoxButton.OK, MessageBoxImage.Warning);
                 Client.StatusContainer.Visibility = Visibility.Visible;
@@ -843,14 +844,14 @@ namespace Sightstone.Windows
                     user.Instance.XmppConnection.Open(user.Instance.UID, "AIR_" + gas);
                     user.Instance.userpass = new KeyValuePair<string, string>(user.Instance.UID, "AIR_" + gas);
                 }
-                
+
                 Client.Log("Connected to " + user.Instance.Region.RegionName + " and logged in as " +
                            user.Instance.LoginPacket.AllSummonerData.Summoner.Name);
-                
+
                 PlatformGameLifecycleDTO data = (PlatformGameLifecycleDTO)user.Instance.LoginPacket.ReconnectInfo;
                 Client.CurrentUser = packet.AllSummonerData.Summoner.InternalName;
                 Client.MainPage = new MainPage();
-                    
+
                 if (data != null && data.Game != null)
                 {
                     Client.Log(data.PlayerCredentials.ChampionId.ToString(CultureInfo.InvariantCulture));
@@ -858,7 +859,7 @@ namespace Sightstone.Windows
                     user.Instance.GameType = data.Game.GameType;
                     if (switchpage)
                         Client.SwitchPage(new InGame());
-                }                    
+                }
                 else if (switchpage)
                 {
                     while (!Client.ready)
@@ -873,8 +874,8 @@ namespace Sightstone.Windows
                 var sum = dataLogin[packet.AllSummonerData.Summoner.InternalName + ":" + selectedRegion];
                 user.Instance.presenceStatus = sum.ShowType;
                 user.Instance.XmppConnection.Send(sum.ShowType == ShowType.NONE
-                    ? new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.invisible}
-                    : new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.available});
+                    ? new Presence(sum.ShowType, user.Instance.GetPresence(), 0) { Type = PresenceType.invisible }
+                    : new Presence(sum.ShowType, user.Instance.GetPresence(), 0) { Type = PresenceType.available });
                 UserAccount acc = new UserAccount
                 {
                     PlayerName = { Content = packet.AllSummonerData.Summoner.InternalName },
@@ -892,8 +893,8 @@ namespace Sightstone.Windows
                 {
                     user.Instance.presenceStatus = lgndata.Value.ShowType;
                     user.Instance.XmppConnection.Send(lgndata.Value.ShowType == ShowType.NONE
-                        ? new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.invisible}
-                        : new Presence(sum.ShowType, user.Instance.GetPresence(), 0) {Type = PresenceType.available});
+                        ? new Presence(sum.ShowType, user.Instance.GetPresence(), 0) { Type = PresenceType.invisible }
+                        : new Presence(sum.ShowType, user.Instance.GetPresence(), 0) { Type = PresenceType.available });
                 }
                 switch (user.Instance.presenceStatus)
                 {
@@ -979,7 +980,7 @@ namespace Sightstone.Windows
                 };
                 Client.OverlayContainer.Content = overlay.Content;
                 Client.OverlayContainer.Visibility = Visibility.Visible;
-                overlay.AcceptButton.Click += (o,i) =>
+                overlay.AcceptButton.Click += (o, i) =>
                 {
                     var info = new ProcessStartInfo(Path.Combine(Client.ExecutingDirectory, "Client", "Sightstone.exe"))
                     {
@@ -1042,7 +1043,7 @@ namespace Sightstone.Windows
                         s1 = s1.Substring(1);
                     }
                     Client.Log("Received token, it is: " + s1);
-					shouldExit = true;
+                    shouldExit = true;
                     user.Instance.Region = garenaregion;
                     Dispatcher.BeginInvoke(
                         DispatcherPriority.Input, new ThreadStart(() =>
@@ -1078,8 +1079,8 @@ namespace Sightstone.Windows
                     var str1 = string.Format("gn-{0}", login.AccountSummary.AccountId);
                     var str2 = string.Format("cn-{0}", login.AccountSummary.AccountId);
                     var str3 = string.Format("bc-{0}", login.AccountSummary.AccountId);
-                    Task<bool>[] taskArray = { user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1), 
-                                                 user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2), 
+                    Task<bool>[] taskArray = { user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str1, str1),
+                                                 user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", str2, str2),
                                                  user.Instance.RiotConnection.SubscribeAsync("my-rtmps", "messagingDestination", "bc", str3) };
 
                     await Task.WhenAll(taskArray);
@@ -1192,25 +1193,28 @@ namespace Sightstone.Windows
 
         private void MouseGrid_Loaded(object sender, RoutedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new ThreadStart(() => {
+            Dispatcher.BeginInvoke(new ThreadStart(() =>
+            {
                 AutoLoginCheckBox.IsChecked = Settings.Default.AutoLogin;
             }), DispatcherPriority.Input);
 
-            System.Timers.Timer timer = new System.Timers.Timer {Interval = 3000};
+            System.Timers.Timer timer = new System.Timers.Timer { Interval = 3000 };
 
             timer.Elapsed += (s, a) =>
             {
                 timer.Stop();
 
                 bool autoLogin = false;
-                Dispatcher.Invoke(() => {
+                Dispatcher.Invoke(() =>
+                {
                     autoLogin = (bool)AutoLoginCheckBox.IsChecked;
                 });
 
                 if (autoLogin)
                 {
                     Client.Log("Auto login");
-                    Dispatcher.BeginInvoke(new ThreadStart(() => {
+                    Dispatcher.BeginInvoke(new ThreadStart(() =>
+                    {
                         LoginButton_Click(1, null);
                     }), DispatcherPriority.Input);
                 }
@@ -1241,7 +1245,7 @@ namespace Sightstone.Windows
 #endif
                 dataLogin.Add(acc.SumName + ":" + acc.Region, acc);
                 if (acc.Region.Garena)
-                    garenaLogin(acc.Region, new UserClient{Garena = true});
+                    garenaLogin(acc.Region, new UserClient { Garena = true });
                 else
                     Login(acc.User, acc.Pass, acc.Region, new UserClient());
             }
@@ -1272,8 +1276,9 @@ namespace Sightstone.Windows
             {
                 SoundPlayer.Volume = e.NewValue / 100;
                 Settings.Default.LoginMusicVolume = e.NewValue;
+                Settings.Default.Save();
                 lastVolume = e.OldValue / 100;
-                if(e.NewValue == 0)
+                if (e.NewValue == 0)
                 {
                     //Change to muted icon
                     muteButton.Data = Geometry.Parse("M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z");
@@ -1290,9 +1295,9 @@ namespace Sightstone.Windows
         {
             if ((sender as Button).IsInitialized)
             {
-                if(SoundPlayer.Volume == 0)
+                if (SoundPlayer.Volume == 0)
                 {
-                    if(lastVolume != 0)
+                    if (lastVolume != 0)
                     {
                         SoundPlayer.Volume = lastVolume;
                         slider.Value = lastVolume * 100;

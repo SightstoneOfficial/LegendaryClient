@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using agsXMPP;
 using agsXMPP.protocol.client;
 using Sightstone.Logic.MultiUser;
+using System.Windows.Media.Imaging;
 
 namespace Sightstone.Windows
 {
@@ -140,9 +141,7 @@ namespace Sightstone.Windows
                             bc = new BrushConverter();
                             brush = (Brush)bc.ConvertFrom("#FFFFFFFF");
                             player.PlayerStatus.Foreground = brush;
-                            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                                chatPlayerPair.Value.ProfileIcon + ".png");
-                            player.ProfileImage.Source = Client.GetImage(UriSource);
+                            player.ProfileImage.Source = new BitmapImage(Client.GetIconUri(chatPlayerPair.Value.ProfileIcon));
 
                             if (chatPlayerPair.Value.GameStatus != "outOfGame")
                             {
