@@ -283,7 +283,7 @@ namespace Sightstone.Windows
                     Content = player.SummonerName
                 }
             };
-            var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", player.ProfileIconId + ".png"), UriKind.RelativeOrAbsolute);
+            var UriSource = Client.GetIconUri(player.ProfileIconId);
             lobbyPlayer.ProfileImage.Source = new BitmapImage(UriSource);
             if (IsOwner)
                 lobbyPlayer.OwnerLabel.Visibility = Visibility.Visible;

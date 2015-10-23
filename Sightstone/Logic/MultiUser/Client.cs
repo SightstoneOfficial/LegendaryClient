@@ -25,6 +25,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Threading;
+using Sightstone.Logic.PlayerSpell;
 
 namespace Sightstone.Logic.MultiUser
 {
@@ -42,6 +43,33 @@ namespace Sightstone.Logic.MultiUser
         /// The language ResourceDictionary
         /// </summary>
         public static ResourceDictionary Dict = new ResourceDictionary();
+
+        /// <summary>
+        /// Check paths for spell icon
+        /// </summary>
+        /// <param name="spell"></param>
+        /// <returns></returns>
+        internal static Uri GetSpellIconUri(NameToImage spell)
+        {
+            if(File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spell + ".png")))
+            {
+                return new Uri(Path.Combine(ExecutingDirectory, "Assets", "spell", "Summoner" + spell + ".png"),
+                        UriKind.Absolute);
+            }
+            else if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_spells",
+                "ImagePack_spells_Embeds__e_Spell_Summoner" + spell + ".bmp")))
+            {
+                return new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_spells",
+                    "ImagePack_spells_Embeds__e_Spell_Summoner" + spell + ".bmp"), 
+                    UriKind.Absolute);
+            }
+            else
+            {
+                Client.Log("Cannot find spell: " + spell.ToString(), "WARN");
+                return
+                    new Uri("/Sightstone;component/NONE.png", UriKind.RelativeOrAbsolute);
+            }
+        }
 
         /// <summary>
         /// Get the text from the ResourceDictionary

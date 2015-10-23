@@ -100,7 +100,7 @@ namespace Sightstone.Windows.Profile
                     var championSkin = championSkins.GetSkin(skin.SkinId);
                     var UriSource =
                         new System.Uri(
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions",
                                 championSkins.GetSkin(skin.SkinId).portraitPath), UriKind.Absolute);
                     skinImage.SkinImage.Source = new BitmapImage(UriSource);
                     if (!skin.StillObtainable)

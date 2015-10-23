@@ -35,8 +35,8 @@ namespace Sightstone.Logic.JSON
                         var imageData = singularMasteryData["image"] as Dictionary<string, object>;
                         if (imageData != null)
                         {
-                            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "mastery",
-                                (string) imageData["full"]);
+                            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_masteryIcons",
+                                "ImagePack_masteryIcons_Embeds__e_" + ((string)imageData["full"]).Replace(".png", ".bmp"));
                             newMastery.icon = Client.GetImage(UriSource);
                         }
                     }

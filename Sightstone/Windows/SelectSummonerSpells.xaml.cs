@@ -37,9 +37,7 @@ namespace Sightstone.Windows
                     Width = 64,
                     Margin = new Thickness(5, 5, 5, 5)
                 };
-                var UriSource =
-                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spell + ".png"),
-                        UriKind.Absolute);
+                var UriSource = Client.GetSpellIconUri(spell);
                 champImage.Source = new BitmapImage(UriSource);
                 champImage.Tag = (int) spell;
                 SummonerSpellListView.Items.Add(champImage);
@@ -54,10 +52,7 @@ namespace Sightstone.Windows
             var item = (Image) SummonerSpellListView.SelectedItem;
             int spellId = Convert.ToInt32(item.Tag);
             var spellName = (NameToImage) spellId;
-            var UriSource =
-                new System.Uri(
-                    Path.Combine(Client.ExecutingDirectory, "Assets", "spell", "Summoner" + spellName + ".png"),
-                    UriKind.Absolute);
+            var UriSource = Client.GetSpellIconUri(spellName);
             if (SelectedSpell1 == 0)
             {
                 SummonerSpell1.Source = new BitmapImage(UriSource);

@@ -254,7 +254,7 @@ namespace Sightstone.Windows
             {
                 var source = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.iconPath),
                     UriKind.Absolute);
-                if (File.Exists(source.ToString()))
+                if (File.Exists(source.AbsolutePath))
                     champ.icon = new BitmapImage(source);
 
                 if (FreeToPlay != null)
