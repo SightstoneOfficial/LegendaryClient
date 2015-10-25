@@ -88,6 +88,10 @@
     <Reference Include="MahApps.Metro">
       <HintPath>..\DLLS\MahApps.Metro.dll</HintPath>
     </Reference>
+    <Reference Include="MaterialDesignThemes.Wpf, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.1.1.1-ci283\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MediaToolkit, Version=1.0.4.11, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MediaToolkit.1.0.4.11\lib\net40\MediaToolkit.dll</HintPath>
       <Private>True</Private>
