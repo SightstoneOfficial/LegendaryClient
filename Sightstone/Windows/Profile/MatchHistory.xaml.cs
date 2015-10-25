@@ -236,10 +236,10 @@ namespace Sightstone.Windows.Profile
 
                     if (((string) item.Key).StartsWith("Item"))
                     {
-                        var UriSource =
-                            new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", item.Value + ".png"),
-                                UriKind.Absolute);
-                        if (!File.Exists(UriSource.AbsolutePath))
+                        var UriSource = Directory.GetFiles(
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items"),
+                            "ImagePack_items_Embeds__e_" + item.Value.ToString() + "_*");
+                        if (UriSource.Count() == 0)
                         {
                             continue;
                         }
@@ -248,7 +248,7 @@ namespace Sightstone.Windows.Profile
                         {
                             Width = 58,
                             Height = 58,
-                            Source = new BitmapImage(UriSource),
+                            Source = new BitmapImage(new Uri(UriSource.First())),
                             Tag = item
                         };
                         img.MouseMove += img_MouseMove;
@@ -289,6 +289,9 @@ namespace Sightstone.Windows.Profile
 
         private void img_MouseMove(object sender, MouseEventArgs e)
         {
+            //TODO: add item info
+            return;
+
             var item = (Image) sender;
             var playerItem = (ProfilePage.KeyValueItem) item.Tag;
             if (this.playerItem == null)

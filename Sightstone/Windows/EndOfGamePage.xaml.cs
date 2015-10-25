@@ -170,20 +170,9 @@ namespace Sightstone.Windows
                 playerStats.ChampImage.Source = champ.icon;
                 playerStats.ChampLabel.Content = champ.name;
                 playerStats.PlayerLabel.Content = summary.SummonerName;
-                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id))))
-                {
-                    var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell1Id)), UriKind.Absolute);
-                    playerStats.Spell1Image.Source = new BitmapImage(UriSource);
-                }
-                else
-                    Client.Log(SummonerSpell.GetSpellImageName((int)summary.Spell1Id) + " is missing");
-                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id))))
-                {
-                    var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "spell", SummonerSpell.GetSpellImageName((int)summary.Spell2Id)), UriKind.Absolute);
-                    playerStats.Spell2Image.Source = new BitmapImage(UriSource);
-                }
-                else
-                    Client.Log(SummonerSpell.GetSpellImageName((int)summary.Spell2Id) + " is missing");
+                playerStats.Spell1Image.Source = new BitmapImage(Client.GetSpellIconUri((NameToImage)(int)summary.Spell1Id));
+                playerStats.Spell2Image.Source = new BitmapImage(Client.GetSpellIconUri((NameToImage)(int)summary.Spell2Id));
+
                 double championsKilled = 0;
                 double assists = 0;
                 double deaths = 0;
@@ -223,10 +212,13 @@ namespace Sightstone.Windows
                     if (stat.StatTypeName.StartsWith("ITEM") && Math.Abs(stat.Value) > 0)
                     {
                         var item = new Image();
-                        if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png")))
+
+                        var UriSource = Directory.GetFiles(
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items"),
+                            "ImagePack_items_Embeds__e_" + stat.Value + "_*");
+                        if (UriSource.Count() > 0)
                         {
-                            var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", stat.Value + ".png"), UriKind.Absolute);
-                            item.Source = new BitmapImage(UriSource);
+                            item.Source = new BitmapImage(new System.Uri(UriSource.First()));
                         }
                         else
                             Client.Log(stat.Value + ".png is missing");
@@ -273,7 +265,7 @@ namespace Sightstone.Windows
                     return;
 
                 var skinSource =
-                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath),
+                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "items", "champions", skin.splashPath),
                         UriKind.Absolute);
                 SkinImage.Source = new BitmapImage(skinSource);
             }

@@ -141,9 +141,9 @@ namespace Sightstone
 
             if (!string.IsNullOrEmpty(Settings.Default.LoginPageImage) && Settings.Default.UseAsBackgroundImage)
             {
-                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Settings.Default.LoginPageImage.Replace("\r\n", ""))))
+                if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions", Settings.Default.LoginPageImage.Replace("\r\n", ""))))
                     Client.BackgroundImage.Source =
-                        new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", Settings.Default.LoginPageImage), UriKind.Absolute));
+                        new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions", Settings.Default.LoginPageImage), UriKind.Absolute));
             }
 
             // screen resolution fix: because MainWindow height is bigger than some screen height
@@ -308,11 +308,8 @@ namespace Sightstone
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!Client.patching)
-            {
-                var settingsPage = new SettingsPage();
-                Client.SwitchPage(settingsPage);
-            }
+            var settingsPage = new SettingsPage();
+            Client.SwitchPage(settingsPage);
         }
 
         private void PluginsButton_Click(object sender, RoutedEventArgs e)
@@ -359,7 +356,7 @@ namespace Sightstone
         public void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
             Settings.Default.AutoLogin = false;
-            if (UserList.Users.Count > 0 && !String.IsNullOrWhiteSpace(Client.CurrentUser))
+            if (UserList.Users.Count == 0 && !String.IsNullOrWhiteSpace(Client.CurrentUser))
                 return;
             if (Client.CurrentUser == string.Empty)
                 return;
