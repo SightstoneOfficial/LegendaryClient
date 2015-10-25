@@ -67,10 +67,13 @@ namespace Sightstone
         private async void LoadStats(string user)
         {
             PlatformGameLifecycleDTO n = await UserClient.calls.RetrieveInProgressSpectatorGameInfo(user);
-            if (n.GameName != null)
+            if (n != null)
             {
-                LoadPar(new List<Participant>(n.Game.TeamOne.ToArray()), n, BlueTeam);
-                LoadPar(new List<Participant>(n.Game.TeamTwo.ToArray()), n, PurpleTeam);
+                if (n.GameName != null)
+                {
+                    LoadPar(new List<Participant>(n.Game.TeamOne.ToArray()), n, BlueTeam);
+                    LoadPar(new List<Participant>(n.Game.TeamTwo.ToArray()), n, PurpleTeam);
+                }
             }
             else
             {
@@ -149,7 +152,7 @@ namespace Sightstone
                         {
                             PublicSummoner summoner = await UserClient.calls.GetSummonerByName(championSelect.SummonerInternalName.Replace("summoner", string.Empty));
                             if(File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png")))
-                                control.ProfileIcon.Source = Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", summoner.ProfileIconId.ToString() + ".png"));
+                                control.ProfileIcon.Source = new BitmapImage(Client.GetIconUri(summoner.ProfileIconId));
                             RecentGames result = await UserClient.calls.GetRecentGames(summoner.AcctId);
                             result.GameStatistics.Sort((s1, s2) => s2.CreateDate.CompareTo(s1.CreateDate));
                             foreach (PlayerGameStats game in result.GameStatistics)

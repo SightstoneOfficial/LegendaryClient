@@ -16,6 +16,7 @@ using agsXMPP.protocol.x.muc;
 using agsXMPP.Collections;
 using Sightstone.Logic.Riot.Platform;
 using Sightstone.Logic.MultiUser;
+using System.Windows.Media.Imaging;
 
 namespace Sightstone.Controls
 {
@@ -162,9 +163,7 @@ namespace Sightstone.Controls
                         pres.Status = "<profileIcon>3</profileIcon>";
                     ProfileIcon = Regex.Split(pres.Status, "<profileIcon>")[1].Split(new[] { "</profileIcon>" }, StringSplitOptions.None)[0].ToInt();
                     
-                    var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                        ProfileIcon + ".png");
-                    x.SIcon.Source = Client.GetImage(UriSource);
+                    x.SIcon.Source = new BitmapImage(Client.GetIconUri(ProfileIcon));
                     if (!exists)
                     {
                         ParticipantList.Items.Add(x);

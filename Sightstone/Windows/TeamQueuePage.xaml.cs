@@ -28,6 +28,7 @@ using agsXMPP.protocol.client;
 using agsXMPP.Collections;
 using Sightstone.Logic.JSON;
 using Sightstone.Logic.MultiUser;
+using System.Windows.Media.Imaging;
 
 namespace Sightstone.Windows
 {
@@ -387,10 +388,8 @@ namespace Sightstone.Windows
 
                         //Populate the ProfileIcon
                         int ProfileIconID = Summoner.ProfileIconId;
-                        string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                            ProfileIconID + ".png");
 
-                        TeamPlayer.ProfileIcon.Source = Client.GetImage(UriSource);
+                        TeamPlayer.ProfileIcon.Source = new BitmapImage(Client.GetIconUri(ProfileIconID));
 
                         //Make it so you cant kick yourself
                         if (stats.SummonerName == UserClient.LoginPacket.AllSummonerData.Summoner.Name)

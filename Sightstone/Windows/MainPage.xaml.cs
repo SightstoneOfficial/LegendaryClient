@@ -667,7 +667,7 @@ namespace Sightstone.Windows
                                             var cropRect = new Rectangle(new Point(100, 0), new Size(100, 560));
                                             var src =
                                                 System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory,
-                                                    "Assets",
+                                                    "Assets", "images", 
                                                     "champions", champions.GetChampion(championId).portraitPath)) as Bitmap;
                                             var target = new Bitmap(cropRect.Width, cropRect.Height);
 

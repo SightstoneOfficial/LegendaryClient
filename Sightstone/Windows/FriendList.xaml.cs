@@ -325,10 +325,9 @@ namespace Sightstone.Windows
                     : Visibility.Hidden;
 
                 //PlayerItem.Dev.Visibility = playerItem.IsLegendaryDev ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
-                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                    playerItem.ProfileIcon + ".png");
-                PlayerItem.ProfileImage.Source = Client.GetImage(UriSource);
-                PlayerItem.BlurBackground.Source = Client.GetImage(UriSource);
+                var UriSource = Client.GetIconUri(playerItem.ProfileIcon);
+                PlayerItem.ProfileImage.Source = new BitmapImage(UriSource);
+                PlayerItem.BlurBackground.Source = new BitmapImage(UriSource);
                 if (playerItem.Status != null)
                 {
                 }

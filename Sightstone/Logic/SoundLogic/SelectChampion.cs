@@ -9,8 +9,9 @@ namespace Sightstone.Logic.SoundLogic
     {
         public static int SelectChamp(int champ)
         {
+            var locale = (UserList.Users[Client.CurrentServer])[Client.CurrentUser].Region.Locale;
             Client.SoundPlayer.Source =
-                new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", "champions", champions.GetChampion(champ).name + ".mp3"));
+                new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "sounds", locale, "champions", champions.GetChampion(champ).name + ".mp3"));
             Client.SoundPlayer.Play();
 
 

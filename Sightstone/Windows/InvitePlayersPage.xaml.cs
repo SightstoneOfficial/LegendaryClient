@@ -9,6 +9,7 @@ using System.Threading;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Timer = System.Timers.Timer;
 
@@ -55,9 +56,7 @@ namespace Sightstone.Windows
                     player.PlayerStatus.Content = playerItem.Status;
                     player.PlayerId.Content = playerItem.Id;
                     player.LevelLabel.Content = chatPlayerPair.Value.Level;
-                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon",
-                        chatPlayerPair.Value.ProfileIcon + ".png");
-                    player.ProfileImage.Source = Client.GetImage(UriSource);
+                    player.ProfileImage.Source = new BitmapImage(Client.GetIconUri(chatPlayerPair.Value.ProfileIcon));
 
                     //Show available players
                     if (chatPlayerPair.Value.GameStatus != "outOfGame")

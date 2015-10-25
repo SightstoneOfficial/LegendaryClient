@@ -11,6 +11,7 @@ using Sightstone.Windows;
 using Sightstone.Logic.Riot.Team;
 using agsXMPP.protocol.client;
 using Sightstone.Logic.MultiUser;
+using System.Windows.Media.Imaging;
 
 #endregion
 
@@ -102,9 +103,8 @@ namespace Sightstone.Controls
                     #endregion Parse Popup
                 }
             }
-
-            var UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", _profileIconId + ".png");
-            ProfileImage.Source = Client.GetImage(UriSource);
+            
+            ProfileImage.Source = new BitmapImage(Client.GetIconUri(_profileIconId));
 
             if (name == "RANKED_TEAM_UPDATE")
             {

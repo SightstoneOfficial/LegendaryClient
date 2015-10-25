@@ -13,6 +13,7 @@ using Sightstone.Logic.Riot;
 using Sightstone.Logic.Riot.Platform;
 using Sightstone.Logic.Riot.Team;
 using Sightstone.Logic.MultiUser;
+using System.Windows.Media.Imaging;
 
 namespace Sightstone.Windows
 {
@@ -91,8 +92,7 @@ namespace Sightstone.Windows
 
 
             int profileIconId = summoner.ProfileIconId;
-            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png");
-            ProfileImage.Source = Client.GetImage(UriSource);
+            ProfileImage.Source = new BitmapImage(Client.GetIconUri(profileIconId));
 
             PlatformGameLifecycleDTO n = await UserClient.calls.RetrieveInProgressSpectatorGameInfo(s);
             if (n != null && n.GameName != null)

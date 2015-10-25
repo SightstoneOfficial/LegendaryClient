@@ -974,9 +974,9 @@ namespace Sightstone.Windows
             //Render default skin
             var defaultSkinItem = new ListViewItem();
             var skinImage = new Image();
-            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champion.portraitPath)))
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions", champion.portraitPath)))
             {
-                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champion.portraitPath);
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions", champion.portraitPath);
                 skinImage.Source = Client.GetImage(UriSource);
                 skinImage.Width = 191;
                 skinImage.Stretch = Stretch.UniformToFill;
@@ -1040,7 +1040,7 @@ namespace Sightstone.Windows
                     }
                     ListViewItem skinItem = new ListViewItem();
                     skinImage = new Image();
-                    UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                    UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions",
                         championSkins.GetSkin(skin.SkinId).portraitPath);
                     skinImage.Source = Client.GetImage(UriSource);
                     skinImage.Width = 191;
@@ -1298,7 +1298,7 @@ namespace Sightstone.Windows
                 };
                 fadingAnimation.Completed += (eSender, eArgs) =>
                 {
-                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions", 
                         champions.GetChampion((int)item.Tag).splashPath);
                     BackgroundSplash.Source = Client.GetImage(UriSource);
                     fadingAnimation = new DoubleAnimation

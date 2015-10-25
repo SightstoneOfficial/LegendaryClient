@@ -37,7 +37,7 @@ namespace Sightstone.Windows
 
             championSkins skin = championSkins.GetSkin(skinId);
             SkinName.Content = skin.displayName;
-            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skin.splashPath);
+            string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions", skin.splashPath);
             ChampionImage.Source = Client.GetImage(UriSource);
         }
 
@@ -74,7 +74,7 @@ namespace Sightstone.Windows
                     int skin = Convert.ToInt32(skins.Id);
                     var item = new ListViewItem();
                     var skinImage = new Image();
-                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions", skins.PortraitPath);
+                    string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions", skins.PortraitPath);
                     skinImage.Source = Client.GetImage(UriSource);
                     skinImage.Width = 96.25;
                     skinImage.Height = 175;
@@ -96,7 +96,7 @@ namespace Sightstone.Windows
                     AbilityListView.Items.Add(detailAbility);
 
             ChampionImage.Source =
-                Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "champions", champ.splashPath));
+                Client.GetImage(Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions", champ.splashPath));
 
             if (champ.description != null)
                 LoreText.Text = champ.description;
@@ -125,7 +125,7 @@ namespace Sightstone.Windows
             };
             fadingAnimation.Completed += (eSender, eArgs) =>
             {
-                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "champions",
+                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "images", "champions",
                     skin.splashPath);
                 ChampionImage.Source = Client.GetImage(UriSource);
                 fadingAnimation = new DoubleAnimation
