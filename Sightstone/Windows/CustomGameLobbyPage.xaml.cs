@@ -224,7 +224,7 @@ namespace Sightstone.Windows
 
         void XmppConnection_OnMessage(object sender, Message msg)
         {
-            if (roomJid.Bare.Contains(msg.From.User))
+            if (msg.From.Resource == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
                 return;
 
             if (msg.From.Resource == UserClient.LoginPacket.AllSummonerData.Summoner.Name)

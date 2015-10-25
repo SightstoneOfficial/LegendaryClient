@@ -314,7 +314,7 @@ namespace Sightstone.Logic.MultiUser
             Client.Log("Pres Type: " + pres.Type);
             Client.Log("Other stuff: " + pres.InnerXml);
             //*/
-            if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.AcctId.ToString()))
+            if (pres.From.User.Contains(LoginPacket.AllSummonerData.Summoner.SumId.ToString()))
                 return;
             if (pres.From.Bare.Contains("@sec.pvp.net") || pres.From.Bare.Contains("@lvl.pvp.net") || pres.From.Bare.Contains("@conference.pvp.net"))
                 return;

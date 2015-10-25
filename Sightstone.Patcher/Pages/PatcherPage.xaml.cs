@@ -732,7 +732,9 @@ namespace Sightstone.Patcher.Pages
         /// <param name="e"></param>
         private void PlayClick(object sender, RoutedEventArgs e)
         {
+#if !DEBUG
             Process.Start("Sightstone.exe");
+#endif
             Environment.Exit(0);
         }
 

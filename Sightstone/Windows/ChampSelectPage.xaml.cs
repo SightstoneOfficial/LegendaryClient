@@ -1571,7 +1571,7 @@ namespace Sightstone.Windows
                     tr.Text = ChatTextBox.Text + Environment.NewLine;
 
                 tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
-                UserClient.XmppConnection.Send(new Message(jid, MessageType.chat, ChatTextBox.Text));
+                UserClient.XmppConnection.Send(new Message(jid, MessageType.groupchat, ChatTextBox.Text));
                 ChatTextBox.Text = "";
                 ChatText.ScrollToEnd();
             }

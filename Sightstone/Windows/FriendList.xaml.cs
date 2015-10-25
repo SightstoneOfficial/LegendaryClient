@@ -247,6 +247,8 @@ namespace Sightstone.Windows
 
         private void PlayersListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (selection == null)
+                return;
             if (selection.AddedItems.Count <= 0)
                 return;
 
