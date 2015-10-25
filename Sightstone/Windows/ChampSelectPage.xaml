@@ -64,7 +64,7 @@
 
                 <!-- Search -->
                 <Grid Grid.Row="0" Background="{StaticResource PrimaryHueLightBrush}">
-                    <TextBox x:Name="SearchTextBox" wpf:TextField.Hint="Search..." wpf:TextField.HintOpacity="1" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" Height="25" Margin="5,0,90,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" Grid.Column="3" BorderThickness="0" Panel.ZIndex="1" controls:TextBoxHelper.Watermark="Search" />
+                    <TextBox x:Name="SearchTextBox" wpf:TextFieldAssist.Hint="Search..." wpf:TextFieldAssist.HintOpacity="1" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" Height="25" Margin="5,0,90,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" Grid.Column="3" BorderThickness="0" Panel.ZIndex="1" controls:TextBoxHelper.Watermark="Search" />
                     <ToggleButton Background="{DynamicResource AccentColorBrush}" x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="89" Margin="0" Checked="Switch_Click" Unchecked="Switch_Click" Height="26" Grid.Column="3" />
                 </Grid>
 
