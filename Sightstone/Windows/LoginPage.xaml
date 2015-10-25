@@ -105,8 +105,19 @@
 
                         <!-- Content -->
                         <Grid Margin="0,48,0,48">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
                             <!-- Region and Server -->
-                            <Grid Margin="50,8,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <Grid Grid.Row="0" Margin="50,8,8,8" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="10"/>
@@ -117,41 +128,51 @@
                             </Grid>
 
                             <!-- Username -->
-                            <Grid Margin="10,58,8,0" Height="60" Width="330" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <Grid Grid.Row="1" Margin="10,8,8,0" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
                                 <Image Source="/Sightstone;component/ui\img\icons\ic_account_circle_black_36dp.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
                                 <TextBox x:Name="LoginUsernameBox" controls:TextBoxHelper.Watermark="Username" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
-                                <CheckBox x:Name="RememberUsernameCheckbox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Username" IsChecked="True" Grid.Column="1"/>
+                                <CheckBox Margin="0,8" Grid.Row="1" x:Name="RememberUsernameCheckbox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Username" IsChecked="True" Grid.Column="1"/>
                             </Grid>
 
                             <!-- Password -->
-                            <Grid Margin="10,141,8,0" Height="60" Width="330" HorizontalAlignment="Right" VerticalAlignment="Top">
+                            <Grid Grid.Row="2" Margin="10,8,8,4" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="40"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
                                 <Image Source="/Sightstone;component/ui\img\icons\ic_vpn_key_36pt.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
                                 <PasswordBox x:Name="LoginPasswordBox" controls:TextBoxHelper.Watermark="Password" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
-                                <CheckBox x:Name="RememberPasswordCheckbox"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Password" Grid.Column="1"/>
+                                <CheckBox Margin="0,8" Grid.Row="1" x:Name="RememberPasswordCheckbox"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Password" Grid.Column="1"/>
                             </Grid>
 
-                            <CheckBox x:Name="AutoLoginCheckBox" Margin="50,229,0,0" HorizontalAlignment="Left"
+                            <CheckBox Grid.Row="3" x:Name="AutoLoginCheckBox" Margin="50,8,8,4" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Auto-Login" Checked="AutoLoginCheckBox_CheckChanged" Unchecked="AutoLoginCheckBox_CheckChanged" />
-                            <CheckBox x:Name="invisibleLoginCheckBox" Margin="50,206,0,0" HorizontalAlignment="Left"
+                            <CheckBox Grid.Row="4" x:Name="invisibleLoginCheckBox" Margin="50,4,8,4" HorizontalAlignment="Left"
                           VerticalAlignment="Top" Content="Sign-in invisible" />
 
-                            <Grid Margin="50,30,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Bottom">
-                                <TextBox x:Name="Version" controls:TextBoxHelper.Watermark="Client Version Override" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontSize="16" Height="35"/>
-                            </Grid>
-                            <CheckBox x:Name="Sound" Margin="50,0,0,103" HorizontalAlignment="Left"
+                            
+                            <CheckBox Grid.Row="5" x:Name="Sound" Margin="50,4,8,4" HorizontalAlignment="Left"
                           VerticalAlignment="Bottom" Click="DisableSound_Click" Content="Disable Login Music"
                           IsChecked="False" />
-                            <CheckBox x:Name="Video" Margin="0,0,140,80" HorizontalAlignment="Right"
+                            <CheckBox Grid.Row="6" x:Name="Video" Margin="50,4,8,8" HorizontalAlignment="Left"
                           VerticalAlignment="Bottom" Click="DisableVideo_Click" Content="Disable Menu Animations"
                           IsChecked="False" />
+                            
+                            <Grid Grid.Row="7" Margin="50,8,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBox x:Name="Version" controls:TextBoxHelper.Watermark="Client Version Override" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontSize="16" Height="35"/>
+                            </Grid>
                         </Grid>
 
                         <!-- Bottom Footer / Button / Whatever you want -->
@@ -179,7 +200,7 @@
         <TextBox x:Name="ErrorTextBox" Width="350" Height="20" Margin="20,0,0,15"
                  HorizontalAlignment="Left" VerticalAlignment="Bottom" Panel.ZIndex="-1" Text="Error"
                  TextWrapping="NoWrap" IsReadOnly="True"
-                 FontSize="12" FontWeight="999" Foreground="#FFFF7373" Background="#7F000000"
+                 FontSize="12" Foreground="#FFFF7373" Background="#7F000000"
                  BorderBrush="{x:Null}" Visibility="Hidden">
             <TextBox.Effect>
                 <DropShadowEffect ShadowDepth="3" />

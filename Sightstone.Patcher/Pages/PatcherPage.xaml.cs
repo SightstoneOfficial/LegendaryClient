@@ -141,7 +141,7 @@ namespace Sightstone.Patcher.Pages
                                 stream.Dispose();
                             }
 
-                            Client.RunOnUIThread(() => champView.Items.Add(champItem));
+                            Client.RunOnUIThread(() => champView.Children.Add(champItem));
                         }
                         Client.RunOnUIThread(() =>
                         {

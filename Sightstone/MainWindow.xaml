@@ -32,11 +32,11 @@
 
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Label x:Name="inQueueTimer" Content="00:00" FontWeight="Light" FontSize="15" Foreground="{StaticResource IdealForegroundColorBrush}" Visibility="Hidden"/>
+            <Label x:Name="inQueueTimer" Content="00:00" FontSize="13" Foreground="{StaticResource IdealForegroundColorBrush}" Visibility="Hidden"/>
             <Button x:Name="ReturnToPage" Content="{DynamicResource ReturnToLobby}" Click="SwichToTeamQueue_Click"/>
-            <Label x:Name="InfoLabel" Content="{DynamicResource NotLoggedIn}" Opacity="0.50" Margin="0,3,0,0"/>
+            <Label x:Name="InfoLabel" Content="{DynamicResource NotLoggedIn}" Foreground="{StaticResource IdealForegroundColorBrush}" Margin="-4,0" Opacity="0.5" FontSize="13"/>
 
-            <Button x:Name="PlayButton" ToolTip="{DynamicResource PlayButtonToolTip}" Content="PLAY" Click="PlayButton_Click" Foreground="{StaticResource IdealForegroundColorBrush}" />
+            <Button x:Name="PlayButton" ToolTip="{DynamicResource PlayButtonToolTip}" Content="PLAY" Click="PlayButton_Click" Foreground="{StaticResource IdealForegroundColorBrush}" FontSize="13" />
             <Button x:Name="HomeButton" ToolTip="{DynamicResource HomeButtonToolTip}" Click="HomeButton_Click" Padding="0">
                 <Viewbox Width="14" Height="14" Margin="-5,-5,2,0">
                     <Canvas Width="17" Height="17" >

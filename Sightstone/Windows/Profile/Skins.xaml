@@ -28,7 +28,7 @@
             <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,28,0" Foreground="{StaticResource MaterialDesignBody}">Filters:</TextBlock>
             <CheckBox x:Name="LimitedSkinCheckBox" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="1" Checked="LimitedSkinCheckBox_Checked" Content="Limited" Foreground="{StaticResource MaterialDesignBody}" Unchecked="LimitedSkinCheckBox_Checked"/>
             <TextBlock Grid.Column="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,5,0" Foreground="{StaticResource MaterialDesignBody}">Name:</TextBlock>
-            <TextBox Grid.Column="3" x:Name="SearchTextBox" Margin="5,0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" TextChanged="SearchTextBox_TextChanged" TextWrapping="Wrap"/>
+            <TextBox Grid.Column="3" x:Name="SearchTextBox" Margin="5,2,5,0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" TextChanged="SearchTextBox_TextChanged" TextWrapping="Wrap"/>
         </Grid>
         
         <Grid Grid.Row="1" Margin="0,5,0,0">

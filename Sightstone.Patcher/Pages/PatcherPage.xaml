@@ -76,20 +76,8 @@
                                     </Grid>
 
                                     <!-- CARD1 -->
-                                    <Grid Margin="0,40,0,0">
-                                        <ListView x:Name="champView" Grid.Row="1" HorizontalAlignment="Center" Background="Transparent" BorderThickness="0" Height="210" Margin="0,20,0,0" VerticalAlignment="Bottom" 
-                      ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="OnSelectionChanged">
-                                            <ListView.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <WrapPanel />
-                                                </ItemsPanelTemplate>
-                                            </ListView.ItemsPanel>
-                                            <ListView.ItemContainerStyle>
-                                                <Style TargetType="ListViewItem">
-                                                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                                </Style>
-                                            </ListView.ItemContainerStyle>
-                                        </ListView>
+                                    <Grid Margin="0,41,0,0">
+                                        <UniformGrid x:Name="champView" Grid.Row="1" HorizontalAlignment="Stretch" Background="Transparent" Rows="5" Columns="2" Margin="16,8" VerticalAlignment="Stretch"/>
                                     </Grid>
 
                                 </Grid>

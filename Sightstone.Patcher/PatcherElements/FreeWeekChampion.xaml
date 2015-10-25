@@ -4,12 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             d:DesignHeight="350" d:DesignWidth="200">
-    <Grid>
-        <Image x:Name="Img" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-        <Label x:Name="ChampName" Content="Yasuo" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" 
-               Background="#7F41B1E1" FontSize="9" />
-
-
+             d:DesignHeight="50"
+             Background="{StaticResource MaterialDesignPaper}">
+    
+    <Grid HorizontalAlignment="Stretch" Width="Auto">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0">
+            <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Margin="5" Panel.ZIndex="10" Padding="0" Width="40" Height="40" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <Viewbox Width="40" Height="40">
+                    <Image Margin="-10" x:Name="Img" Stretch="UniformToFill" Source="/Sightstone;component/NONE.png"/>
+                </Viewbox>
+            </Button>
+        </Grid>
+        <Label Grid.Column="1" x:Name="ChampName" Content="Yasuo" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" FontSize="12" />
     </Grid>
 </UserControl>
