@@ -4,10 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="25" d:DesignWidth="300">
-    <Grid>
-        <Label x:Name="StatusLabel" Content="Sightstone.net status" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Ellipse x:Name="StatusEllipse" Fill="#FFD21414" HorizontalAlignment="Right" Height="20" VerticalAlignment="Center" Width="20" Margin="0,2,5,3" Stroke="#FFCFCFCF"/>
-
+             d:DesignHeight="25">
+    <Grid Width="Auto" HorizontalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" x:Name="StatusLabel" Content="Sightstone.net status" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="11" Height="Auto" Foreground="{StaticResource MaterialDesignBody}"/>
+        <Ellipse Grid.Column="1" x:Name="StatusEllipse" Fill="#FFD21414" HorizontalAlignment="Right" Height="15" VerticalAlignment="Center" Width="15" Margin="5"/>
     </Grid>
 </UserControl>
