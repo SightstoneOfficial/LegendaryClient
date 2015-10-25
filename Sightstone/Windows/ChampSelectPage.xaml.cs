@@ -30,6 +30,7 @@ using agsXMPP.protocol.x.muc;
 using agsXMPP;
 using agsXMPP.Collections;
 using Sightstone.Logic.MultiUser;
+using System.Windows.Media.Imaging;
 
 namespace Sightstone.Windows
 {
@@ -1200,22 +1201,18 @@ namespace Sightstone.Windows
             //Render summoner spells
             if (selection.Spell1Id != 0)
             {
-                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                    SummonerSpell.GetSpellImageName((int)selection.Spell1Id));
-                control.SummonerSpell1.Source = Client.GetImage(UriSource);
-                UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                    SummonerSpell.GetSpellImageName((int)selection.Spell2Id));
-                control.SummonerSpell2.Source = Client.GetImage(UriSource);
+                var UriSource = Client.GetSpellIconUri((NameToImage)(int)selection.Spell1Id);
+                control.SummonerSpell1.Source = new BitmapImage(UriSource);
+                UriSource = Client.GetSpellIconUri((NameToImage)(int)selection.Spell2Id);
+                control.SummonerSpell2.Source = new BitmapImage(UriSource);
             }
             //Set our summoner spells in client
             if (player.SummonerName == UserClient.LoginPacket.AllSummonerData.Summoner.Name)
             {
-                string UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                    SummonerSpell.GetSpellImageName((int)selection.Spell1Id));
-                SummonerSpell1Image.Source = Client.GetImage(UriSource);
-                UriSource = Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                    SummonerSpell.GetSpellImageName((int)selection.Spell2Id));
-                SummonerSpell2Image.Source = Client.GetImage(UriSource);
+                var UriSource = Client.GetSpellIconUri((NameToImage)(int)selection.Spell1Id);
+                SummonerSpell1Image.Source = new BitmapImage(UriSource);
+                UriSource = Client.GetSpellIconUri((NameToImage)(int)selection.Spell2Id);
+                SummonerSpell2Image.Source = new BitmapImage(UriSource);
                 MyChampId = selection.ChampionId;
             }
             //Has locked in

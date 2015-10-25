@@ -130,7 +130,7 @@ namespace Sightstone.Windows
         {
             Dispatcher.BeginInvoke(DispatcherPriority.Input, new ThreadStart(() =>
             {
-                if (result.Name == null)
+                if (result == null)
                 {
                     NameInvalidLabel.Visibility = Visibility.Visible;
                     NameInvalidLabel.Content = "Name is already taken!";

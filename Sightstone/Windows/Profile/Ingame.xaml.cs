@@ -72,17 +72,9 @@ namespace Sightstone.Windows.Profile
                         control.sumName = participant.SummonerInternalName;
                         control.champID = championSelect.ChampionId;
                         control.ChampionImage.Source = champions.GetChampion(championSelect.ChampionId).icon;
-                        var UriSource =
-                            new System.Uri(
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                                    SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell1Id))),
-                                UriKind.Absolute);
+                        var UriSource = Client.GetSpellIconUri((NameToImage)championSelect.Spell1Id);
                         control.SummonerSpell1.Source = new BitmapImage(UriSource);
-                        UriSource =
-                            new System.Uri(
-                                Path.Combine(Client.ExecutingDirectory, "Assets", "spell",
-                                    SummonerSpell.GetSpellImageName(Convert.ToInt32(championSelect.Spell2Id))),
-                                UriKind.Absolute);
+                        UriSource = Client.GetSpellIconUri((NameToImage)championSelect.Spell2Id);
                         control.SummonerSpell2.Source = new BitmapImage(UriSource);
 
                         var m = new Image();
@@ -92,10 +84,10 @@ namespace Sightstone.Windows.Profile
                         m.Opacity = 0.50;
                         m.HorizontalAlignment = HorizontalAlignment.Left;
                         m.VerticalAlignment = VerticalAlignment.Stretch;
-                        m.Margin = new Thickness(y++*100, 0, 0, 0);
+                        m.Margin = new Thickness(y++ * 100, 0, 0, 0);
                         var cropRect = new Rectangle(new Point(100, 0), new Size(100, 560));
                         var src =
-                            System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets",
+                            System.Drawing.Image.FromFile(Path.Combine(Client.ExecutingDirectory, "Assets", "images",
                                 "champions", champions.GetChampion(championSelect.ChampionId).portraitPath)) as
                                 Bitmap;
                         var target = new Bitmap(cropRect.Width, cropRect.Height);
