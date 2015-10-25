@@ -44,6 +44,16 @@ namespace Sightstone.Patcher.Pages
     /// </summary>
     public partial class PatcherPage
     {
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scrollviewer = sender as ScrollViewer;
+            if (e.Delta > 0)
+                scrollviewer.LineLeft();
+            else
+                scrollviewer.LineRight();
+            e.Handled = true;
+        }
+
         private readonly string _executingDirectory;
         public bool IsLogVisible;
         public bool DownloadStarted;
@@ -639,8 +649,7 @@ namespace Sightstone.Patcher.Pages
                                         TimeLabel = { Content = n1.date },
                                         ContentBox = { Visibility = Visibility.Hidden },
                                         Height = 26,
-                                        Tag = new Uri(n1.url.Replace(@"\/", @"/")),
-                                        Width = 300
+                                        Tag = new Uri(n1.url.Replace(@"\/", @"/"))
                                     };
                                     item.MouseDown += (o, e) => Changed(o);
                                     NewsBox.Items.Add(item);
@@ -651,7 +660,7 @@ namespace Sightstone.Patcher.Pages
                             var x1 = x;
                             Client.RunOnUIThread(() =>
                             {
-                                var item = new NewsItem { TitleLabel = { Content = x1.title }, Width = 300 };
+                                var item = new NewsItem { TitleLabel = { Content = x1.title } };
                                 item.ContentBox.AppendText(x1.promoText);
                                 item.TimeLabel.Visibility = Visibility.Hidden;
                                 item.Tag = new Dictionary<string, object>
