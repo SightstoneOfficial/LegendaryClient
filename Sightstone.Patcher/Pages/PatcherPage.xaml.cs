@@ -132,7 +132,7 @@ namespace Sightstone.Patcher.Pages
                             var champsDataAsJson = JsonConvert.DeserializeObject<Dictionary<String, object>>(champDataJson);
                             Client.RunAsyncOnUIThread(() => champItem.Tag = champsDataAsJson);
                             Client.RunAsyncOnUIThread(() => champItem.ChampName.Content = champsDataAsJson["key"]);
-                            foreach (var stream in from data in pkgManifest where data.Contains((string)champsDataAsJson["key"] + "_0.") select (HttpWebRequest)WebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream())
+                            foreach (var stream in from data in pkgManifest where data.Contains((string)champsDataAsJson["key"] + "_Square_0.") || data.Contains((string)champsDataAsJson["key"] + "_square_0.") select (HttpWebRequest)WebRequest.Create("http://l3cdn.riotgames.com/releases/live" + data.Split(',')[0]) into httpWebRequest select (HttpWebResponse)httpWebRequest.GetResponse() into httpWebReponse select httpWebReponse.GetResponseStream())
                             {
                                 MemoryStream stream1 = new MemoryStream();
                                 stream.CopyTo(stream1);
