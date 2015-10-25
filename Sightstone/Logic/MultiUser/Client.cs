@@ -96,7 +96,7 @@ namespace Sightstone.Logic.MultiUser
             else if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", iconId + ".jpg")))
             {
                 return
-                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", iconId + ".png"),
+                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", iconId + ".jpg"),
                         UriKind.Absolute);
             }
             else if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_buddyIcons",
@@ -105,6 +105,14 @@ namespace Sightstone.Logic.MultiUser
                 return
                     new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_buddyIcons",
                         "ImagePack_buddyIcons_Embeds__e_profileIcon" + iconId + ".jpg"),
+                        UriKind.Absolute);
+            }
+            else if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_buddyIcons",
+            "ImagePack_buddyIcons_Embeds__e_profileIconTencent" + iconId + ".jpg")))
+            {
+                return
+                    new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_buddyIcons",
+                        "ImagePack_buddyIcons_Embeds__e_profileIconTencent" + iconId + ".jpg"),
                         UriKind.Absolute);
             }
             else
