@@ -20,7 +20,7 @@ namespace Sightstone.Windows.Profile
     /// </summary>
     public partial class Runes
     {
-        private LargeChatPlayer playerItem;
+        private LargeRuneMastery playerItem;
         private SpellBookPageDTO selectedBook;
 
         public List<SummonerRune> runes =
@@ -284,7 +284,7 @@ namespace Sightstone.Windows.Profile
             var playerItem = (runes) ((RuneItem) sender).Tag;
             if (this.playerItem == null)
             {
-                this.playerItem = new LargeChatPlayer();
+                this.playerItem = new LargeRuneMastery();
                 Client.MainGrid.Children.Add(this.playerItem);
 
                 Panel.SetZIndex(this.playerItem, 4);
@@ -294,9 +294,7 @@ namespace Sightstone.Windows.Profile
                 this.playerItem.PlayerName.Content = playerItem.name;
 
                 this.playerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                this.playerItem.Width = this.playerItem.PlayerName.DesiredSize.Width > 250
-                    ? this.playerItem.PlayerName.DesiredSize.Width
-                    : 250;
+
                 this.playerItem.PlayerLeague.Content = playerItem.id;
                 this.playerItem.UsingLegendary.Visibility = Visibility.Hidden;
 

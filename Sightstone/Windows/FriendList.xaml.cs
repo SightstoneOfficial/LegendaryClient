@@ -135,7 +135,7 @@ namespace Sightstone.Windows
                         player.PlayerStatus.Content = chatPlayerPair.Value.Status;
                         player.PlayerStatus.Foreground = brush;
 
-                        if (chatPlayerPair.Value.IsOnline && g.GroupName == chatPlayerPair.Value.Group)
+                        if (chatPlayerPair.Value.IsOnline && g.groupName == chatPlayerPair.Value.Group)
                         {
                             player.Width = 250;
                             bc = new BrushConverter();
@@ -195,7 +195,7 @@ namespace Sightstone.Windows
                             playersListView.Items.Add(player);
                             players++;
                         }
-                        else if (!chatPlayerPair.Value.IsOnline && g.GroupName == "Offline")
+                        else if (!chatPlayerPair.Value.IsOnline && g.groupName == "Offline")
                         {
                             player.Width = 250;
                             player.Height = 30;
@@ -215,17 +215,20 @@ namespace Sightstone.Windows
                     {
                         Width = 230,
                         PlayersLabel = { Content = players },
-                        NameLabel = { Content = g.GroupName }
+                        NameLabel = { Content = g.groupName },
+                        summonerNameLabel = { Content = g.playerName },
+                        regionLabel = { Content = g.region }
                     };
                     groupControl.GroupListView.Children.Add(playersListView);
-                    if (g.IsOpen)
+                    if (g.isOpen)
                     {
                         groupControl.ExpandLabel.Content = "-";
                         groupControl.GroupListView.Visibility = Visibility.Visible;
                     }
-                    if (!string.IsNullOrEmpty(g.GroupName))
+                    if (!string.IsNullOrEmpty(g.groupName))
                         ChatListView.Children.Add(groupControl);
-                    else Client.Log("Removed a group");
+                    else
+                        Client.Log("Removed a group");
                 }
                 #endregion
 

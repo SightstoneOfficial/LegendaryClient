@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="Sightstone.Controls.LargeRuneMastery"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             mc:Ignorable="d"
+             d:DesignHeight="156" Width="500">
+
+    <Grid MinWidth="360" Height="156">
+        <wpf:Card Margin="2" UniformCornerRadius="3" HorizontalAlignment="Stretch">
+            <Grid>
+
+                <Grid Margin="0" Width="95" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                    <Border BorderThickness="0">
+                        <Grid>
+                            <Grid.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=clipMask}" Stretch="None" />
+                            </Grid.OpacityMask>
+                            <Border x:Name="clipMask" Background="Gray"/>
+                            <Image Name="BlurBackground" VerticalAlignment="Center" HorizontalAlignment="Center" Stretch="UniformToFill" Margin="-15">
+                                <Image.BitmapEffect>
+                                    <BlurBitmapEffect Radius="15" KernelType="Gaussian" />
+                                </Image.BitmapEffect>
+                            </Image>
+                        </Grid>
+                    </Border>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Button Grid.Row="0" x:Name="ProfileImageContainer" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Width="60" Height="60" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Viewbox Width="60" Height="60">
+                                <Image x:Name="ProfileImage" Margin="-4" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Sightstone;component/NONE.png"/>
+                            </Viewbox>
+                        </Button>
+                        <Grid VerticalAlignment="Top" Grid.Row="1" HorizontalAlignment="Center" Margin="2,5,2,0">
+                            <Label x:Name="PlayerLeagueContainer" Padding="0">
+                                <Border CornerRadius="3" Background="Black" BorderThickness="0">
+                                    <Label  x:Name="PlayerLeague" Padding="2,1" FontSize="14" Foreground="LightGray" Content="Diamond IV"/>
+                                </Border>
+                            </Label>
+                        </Grid>
+                    </Grid>
+
+                </Grid>
+
+                <Grid Margin="95,0,0,0" HorizontalAlignment="Stretch">
+
+                    <!-- Username -->
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch" Margin="0,0" >
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+
+                    </Grid>
+
+
+                    <!-- Tags -->
+                    <Grid VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid VerticalAlignment="Top" HorizontalAlignment="Center" Margin="8,6,8,8" Grid.Row="0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="0"/>
+                            </Grid.ColumnDefinitions>
+                            <Label x:Name="LevelLabelContainer" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Margin="0,0,4,0">
+                                <Border CornerRadius="3" Background="Black" BorderThickness="0">
+                                    <Label x:Name="LevelLabel" Padding="4,1" FontSize="12" Foreground="LightGray"  VerticalContentAlignment="Center" VerticalAlignment="Center">Level</Label>
+                                </Border>
+                            </Label>
+                            <Label x:Name="PlayerName" Foreground="{StaticResource PrimaryHueMidBrush}" Grid.Column="1" VerticalAlignment="Top" FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Stretch" Padding="0">Username</Label>
+                            <Image x:Name="UsingLegendary" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="Auto" Height="Auto" MaxHeight="18" Margin="4,0,0,0" Visibility="Visible" Source="/Sightstone;component/Icon.ico"/>
+                        </Grid>
+                        <Label x:Name="PlayerStatus" Foreground="{StaticResource MaterialDesignBody}" HorizontalContentAlignment="Center"  HorizontalAlignment="Stretch" VerticalAlignment="Center" Grid.Row="1">this is my stupid long status</Label>
+                        <Label x:Name="PlayerWins" HorizontalContentAlignment="Center" Foreground="{StaticResource PrimaryHueMidBrush}" Content="1000 Normal Wins" VerticalAlignment="Bottom" FontSize="15" FontWeight="SemiBold" Grid.Row="2" />
+                    </Grid>
+                    <Label HorizontalAlignment="Stretch" Margin="0,100,0,0" VerticalAlignment="Top" Foreground="Green" Height="28">
+                    </Label>
+
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Bottom">
+                        <Border BorderThickness="0,1,0,0" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
+                    </Grid>
+
+                </Grid>
+            </Grid>
+        </wpf:Card>
+    </Grid>
+</UserControl>

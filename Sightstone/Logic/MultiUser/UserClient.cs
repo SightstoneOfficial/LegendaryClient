@@ -231,73 +231,6 @@ namespace Sightstone.Logic.MultiUser
 
         internal bool autoBlock = true;
 
-
-        internal void ChatClientConnect(object sender)
-        {
-            Client.loadedGroups = false;
-            Client.Groups.Add(new Group(LoginPacket.AllSummonerData.Summoner.InternalName));
-
-            //Get all groups
-            var manager = sender as RosterManager;
-            if (manager != null)
-            {
-                string ParseString = manager.ToString();
-                var stringHackOne = new List<string>(ParseString.Split(new[] { "@pvp.net=" }, StringSplitOptions.None));
-                stringHackOne.RemoveAt(0);
-                foreach (
-                    string Parse in
-                        stringHackOne.Select(stringHack => Regex.Split(stringHack, @"</item>,"))
-                            .Select(StringHackTwo => StringHackTwo[0]))
-                {
-                    string temp;
-                    if (!Parse.Contains("</item>"))
-                        temp = Parse + "</item>";
-                    else
-                        temp = Parse;
-                    var xmlDocument = new XmlDocument();
-                    xmlDocument.LoadXml(temp);
-                    string PlayerJson = JsonConvert.SerializeXmlNode(xmlDocument).Replace("#", "").Replace("@", "");
-                    try
-                    {
-                        if (PlayerJson.Contains(":{\"priority\":"))
-                        {
-                            RootObject root = JsonConvert.DeserializeObject<RootObject>(PlayerJson);
-
-                            if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
-                                PlayerNote.Add(root.item.name, root.item.note);
-                            if (root.item.group.text == "**Default")
-                                root.item.group.text = LoginPacket.AllSummonerData.Summoner.InternalName;
-                            if (root.item.group.text != "**Default" && Client.Groups.Find(e => e.GroupName == root.item.group.text) == null && root.item.group.text != null)
-                                Client.Groups.Add(new Group(root.item.group.text));
-                        }
-                        else
-                        {
-                            RootObject2 root = JsonConvert.DeserializeObject<RootObject2>(PlayerJson);
-
-                            if (!string.IsNullOrEmpty(root.item.name) && !string.IsNullOrEmpty(root.item.note))
-                                PlayerNote.Add(root.item.name, root.item.note);
-
-                            if (root.item.group == "**Default")
-                                root.item.group = LoginPacket.AllSummonerData.Summoner.InternalName;
-
-                            if (root.item.group != "**Default" && Client.Groups.Find(e => e.GroupName == root.item.group) == null && root.item.group != null)
-                                Client.Groups.Add(new Group(root.item.group));
-                        }
-                    }
-                    catch
-                    {
-                        Client.Log("Can't load friends", "ERROR");
-                    }
-                }
-            }
-
-            Client.Groups.Add(new Group("Offline"));
-            SetChatHover();
-            Client.ready = true;
-            XmppConnection.OnRosterEnd -= ChatClientConnect; //only update groups on Client.Login
-        }
-
-
         internal async Task<string> GetUserFromJid(string Jid)
         {
             if (Jid.Contains("@"))
@@ -484,7 +417,10 @@ namespace Sightstone.Logic.MultiUser
             var player = new ChatPlayerItem
             {
                 Id = ri.Jid.User,
-                Group = "Online"
+                Group = "Online",
+                multiClientSummonerName = LoginPacket.AllSummonerData.Summoner.Name,
+                multiClientRegion = Region.RegionName,
+                Username = ri.Name
             };
             //using (XmlReader reader = XmlReader.Create(new StringReader(ri.OuterXml)))
             using (XmlReader reader = XmlReader.Create(new StringReader(ri.ToString())))
@@ -502,12 +438,11 @@ namespace Sightstone.Logic.MultiUser
                             if (TempGroup != "**Default")
                                 player.Group = TempGroup;
                             else
-                                player.Group = LoginPacket.AllSummonerData.Summoner.InternalName;
+                                player.Group = "Default";
                             break;
                     }
                 }
             }
-            player.Username = ri.Name;
             Client.AllPlayers.Add(ri.Jid.User, player);
         }
 
@@ -1005,6 +940,38 @@ namespace Sightstone.Logic.MultiUser
             SetChatHover();
         }
 
+
+        internal void XmppConnection_OnRosterEnd(object sender)
+        {
+            foreach (var item in Client.AllPlayers)
+            {
+                if (!Client.Groups.Exists(x =>
+                    x.playerName == item.Value.multiClientSummonerName &&
+                    x.region == item.Value.multiClientRegion &&
+                    x.groupName == item.Value.Group))
+                {
+                    var group = new Group()
+                    {
+                        playerName = item.Value.multiClientSummonerName,
+                        region = item.Value.multiClientRegion,
+                        groupName = item.Value.Group
+                    };
+                    Client.Groups.Add(group);
+                }
+            }
+
+            Client.Groups.Add(new Group()
+            {
+                groupName = "Offline",
+                region = Region.RegionName,
+                playerName = LoginPacket.AllSummonerData.Summoner.Name
+            });
+            Client.loadedGroups = true;
+
+            SetChatHover();
+            Client.ready = true;
+        }
+
         public string[] ChatAutoBlock { get; set; }
     }
 
@@ -1052,6 +1019,10 @@ namespace Sightstone.Logic.MultiUser
         public string RawPresence { get; set; }
 
         public bool IsLegendaryDev { get; set; }
+
+        public string multiClientRegion { get; set; }
+
+        public string multiClientSummonerName { get; set; }
     }
 
     public class AllMessageInfo
@@ -1065,14 +1036,13 @@ namespace Sightstone.Logic.MultiUser
 
     public class Group
     {
-        public Group(string s)
-        {
-            GroupName = s;
-        }
+        public string region { get; set; }
 
-        public string GroupName { get; set; }
+        public string playerName { get; set; }
 
-        public bool IsOpen { get; set; }
+        public string groupName { get; set; }
+
+        public bool isOpen { get; set; }
     }
 
     public class Groups

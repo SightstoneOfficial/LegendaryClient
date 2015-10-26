@@ -822,9 +822,12 @@ namespace Sightstone.Windows
                         }));
                     };
                 }
+                Client.ready = false;
+                Client.loadedGroups = false;
                 user.Instance.RostManager = new RosterManager(user.Instance.XmppConnection);
                 user.Instance.XmppConnection.OnRosterItem += user.Instance.RostManager_OnRosterItem;
-                user.Instance.XmppConnection.OnRosterEnd += user.Instance.ChatClientConnect;
+
+                user.Instance.XmppConnection.OnRosterEnd += user.Instance.XmppConnection_OnRosterEnd;
                 user.Instance.PresManager = new PresenceManager(user.Instance.XmppConnection);
                 user.Instance.XmppConnection.OnPresence += user.Instance.XmppConnection_OnPresence;
                 user.Instance.XmppConnection.OnMessage += Client.statusPage.XmppConnection_OnMessage;
@@ -882,8 +885,7 @@ namespace Sightstone.Windows
                     StatusColour = { Fill = System.Windows.Media.Brushes.Green },
                     ProfileImage =
                     {
-                        Source = new BitmapImage(new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", sum.SumIcon + ".png"),
-                            UriKind.Absolute))
+                        Source = new BitmapImage(Client.GetIconUri(sum.SumIcon))
                     },
                     RegionLabel = { Content = sum.Region.RegionName },
                     LevelLabel = { Content = packet.AllSummonerData.SummonerLevel.Level },

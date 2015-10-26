@@ -22,15 +22,15 @@ namespace Sightstone.Controls
             {
                 ExpandLabel.Content = "-";
                 GroupListView.Visibility = Visibility.Visible;
-                foreach (var g in Client.Groups.Where(g => g.GroupName == (string) NameLabel.Content))
-                    g.IsOpen = true;
+                foreach (var g in Client.Groups.Where(g => g.groupName == (string) NameLabel.Content))
+                    g.isOpen = true;
             }
             else
             {
                 ExpandLabel.Content = "+";
                 GroupListView.Visibility = Visibility.Collapsed;
-                foreach (var g in Client.Groups.Where(g => g.GroupName == (string) NameLabel.Content))
-                    g.IsOpen = false;
+                foreach (var g in Client.Groups.Where(g => g.groupName == (string) NameLabel.Content))
+                    g.isOpen = false;
             }
         }
     }

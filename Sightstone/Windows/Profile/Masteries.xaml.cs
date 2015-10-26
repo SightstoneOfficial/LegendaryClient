@@ -21,7 +21,7 @@ namespace Sightstone.Windows.Profile
     {
         private int _defenseUsedPoints;
         private int _offenseUsedPoints;
-        private LargeChatPlayer _playerItem;
+        private LargeRuneMastery _playerItem;
         private MasteryBookPageDTO _selectedBook;
         private int _usedPoints;
         private int _utilityUsedPoints;
@@ -282,7 +282,7 @@ namespace Sightstone.Windows.Profile
             var playerItem = (masteries) item.Tag;
             if (_playerItem == null)
             {
-                _playerItem = new LargeChatPlayer();
+                _playerItem = new LargeRuneMastery();
                 Client.MainGrid.Children.Add(_playerItem);
 
                 Panel.SetZIndex(_playerItem, 4);
@@ -292,9 +292,6 @@ namespace Sightstone.Windows.Profile
                 _playerItem.PlayerName.Content = playerItem.name;
 
                 _playerItem.PlayerName.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                _playerItem.Width = _playerItem.PlayerName.DesiredSize.Width > 250
-                    ? _playerItem.PlayerName.DesiredSize.Width
-                    : 250;
 
                 _playerItem.PlayerWins.Content = "Requires " + playerItem.treeRow*4 + " points in " + playerItem.tree;
 
