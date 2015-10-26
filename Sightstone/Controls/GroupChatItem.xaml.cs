@@ -71,7 +71,7 @@ namespace Sightstone.Controls
                 {
                     Text = msg.From.Resource + ": "
                 };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("AccentColorBrush"));
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("SecondaryAccentBrush"));
 
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {

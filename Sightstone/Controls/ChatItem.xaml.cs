@@ -98,7 +98,7 @@ namespace Sightstone.Controls
                             if (tempItem.Messages[i].name == tempItem.Username)
                             {
                                 tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Username + ": ";
-                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("AccentColorBrush"));
+                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("SecondaryAccentBrush"));
                             }
                             else
                             {
@@ -112,7 +112,7 @@ namespace Sightstone.Controls
                         if (tempItem.Messages[i].name == tempItem.Username)
                         {
                             tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Username + ": ";
-                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("AccentColorBrush"));
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("SecondaryAccentBrush"));
                         }
                         else
                         {
