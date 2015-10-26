@@ -166,6 +166,10 @@
       <HintPath>..\packages\MaterialDesignColors.1.1.1\lib\net45\MaterialDesignColors.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MaterialDesignThemes.MahApps, Version=0.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.MahApps.0.0.2\lib\net45\MaterialDesignThemes.MahApps.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MaterialDesignThemes.Wpf, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.1.1.1-ci283\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
       <Private>True</Private>

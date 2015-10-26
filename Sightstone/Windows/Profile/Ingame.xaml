@@ -7,7 +7,7 @@
       mc:Ignorable="d" d:DesignHeight="548"
       d:DesignWidth="1280">
 
-    <Grid Width="1000" Margin="0,0,10,10">
+    <Grid>
 
         <Grid x:Name="ImageGrid" Background="Black" >
         </Grid>

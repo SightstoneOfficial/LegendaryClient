@@ -71,13 +71,13 @@ namespace Sightstone.Controls
                 {
                     Text = msg.From.Resource + ": "
                 };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("AccentColorBrush"));
 
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
                     Text = msg.Body.Replace("<![CDATA[", "").Replace("]]>", string.Empty) + Environment.NewLine
                 };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("MaterialDesignBody"));
 
                 ChatText.ScrollToEnd();
             }));
@@ -120,7 +120,7 @@ namespace Sightstone.Controls
                             {
                                 Text = user + " left the room." + Environment.NewLine
                             };
-                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("PrimaryHueMidBrush"));
                            
                         }
                         catch (Exception e)
@@ -171,7 +171,7 @@ namespace Sightstone.Controls
                         {
                             Text = user + " joined the room." + Environment.NewLine
                         };
-                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                        tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("PrimaryHueMidBrush"));
                     }
 
                     ParticipantList.Items.Refresh();
@@ -209,13 +209,13 @@ namespace Sightstone.Controls
             {
                 Text = userClient.LoginPacket.AllSummonerData.Summoner.Name + ": "
             };
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("PrimaryHueMidBrush"));
 
             tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
             {
                 Text = ChatTextBox.Text + Environment.NewLine
             };
-            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("MaterialDesignBody"));
 
             userClient.XmppConnection.Send(new Message(new Jid(roomName), MessageType.groupchat, ChatTextBox.Text));
             ChatTextBox.Text = string.Empty;

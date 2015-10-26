@@ -98,12 +98,12 @@ namespace Sightstone.Controls
                             if (tempItem.Messages[i].name == tempItem.Username)
                             {
                                 tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Username + ": ";
-                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("AccentColorBrush"));
                             }
                             else
                             {
                                 tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Messages[i].name + ": ";
-                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("PrimaryHueMidBrush"));
                             }
                         }
                     }
@@ -112,19 +112,19 @@ namespace Sightstone.Controls
                         if (tempItem.Messages[i].name == tempItem.Username)
                         {
                             tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Username + ": ";
-                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Turquoise);
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("AccentColorBrush"));
                         }
                         else
                         {
                             tr.Text = tempItem.Messages[i].time.ToString("[HH:mm] ") + tempItem.Messages[i].name + ": ";
-                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                            tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("PrimaryHueMidBrush"));
                         }
                     }
                     tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                     {
                         Text = tempItem.Messages[i].message + Environment.NewLine
                     };
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("MaterialDesignBody"));
                 }
             ChatText.ScrollToEnd();
         }
@@ -144,14 +144,14 @@ namespace Sightstone.Controls
             {
                 {
                     tr.Text = DateTime.Now.ToString("[HH:mm] ") + user.LoginPacket.AllSummonerData.Summoner.Name + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("PrimaryHueMidBrush"));
                 }
 
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
                     Text = ChatTextBox.Text + Environment.NewLine
                 };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("MaterialDesignBody"));
             }
             else
             {
@@ -160,14 +160,14 @@ namespace Sightstone.Controls
                     Settings.Default.AlwaysChatTimestamp)
                 {
                     tr.Text = DateTime.Now.ToString("[HH:mm] ") + user.LoginPacket.AllSummonerData.Summoner.Name + ": ";
-                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Yellow);
+                    tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("PrimaryHueMidBrush"));
                 }
 
                 tr = new TextRange(ChatText.Document.ContentEnd, ChatText.Document.ContentEnd)
                 {
                     Text = ChatTextBox.Text + Environment.NewLine
                 };
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.White);
+                tr.ApplyPropertyValue(TextElement.ForegroundProperty, FindResource("MaterialDesignBody"));
             }
 
 

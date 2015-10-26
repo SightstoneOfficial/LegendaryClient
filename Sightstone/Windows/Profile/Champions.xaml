@@ -8,22 +8,40 @@
       d:DesignWidth="1280">
 
     <Grid>
-        <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Search"
-               FontWeight="ExtraLight" FontSize="22" Foreground="White" />
-        <TextBox x:Name="SearchTextBox" Height="23" Margin="100,20,250,0" HorizontalAlignment="Stretch"
-                 VerticalAlignment="Top" TextWrapping="Wrap" TextChanged="SearchTextBox_TextChanged" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <ListView x:Name="ChampionSelectListView" Margin="10,50,10,10" HorizontalAlignment="Stretch"
+        <Grid Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueLightBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,28,0" Foreground="{StaticResource MaterialDesignBody}">Filters:</TextBlock>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,0,5,0" Foreground="{StaticResource MaterialDesignBody}">Name:</TextBlock>
+            <TextBox Grid.Column="2" x:Name="SearchTextBox" Margin="5,2,5,0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" TextChanged="SearchTextBox_TextChanged" TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,5,0" Foreground="{StaticResource MaterialDesignBody}">Availability:</TextBlock>
+            <ComboBox  Grid.Column="4" x:Name="FilterComboBox" Margin="5,2,5,0" HorizontalAlignment="Stretch"
+                  VerticalAlignment="Center" SelectedIndex="0" ItemsSource="{DynamicResource ChampionComboBoxFilters}"
+                  SelectionChanged="FilterComboBox_SelectionChanged" Foreground="{StaticResource MaterialDesignBody}"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <ListView Padding="30" x:Name="ChampionSelectListView" Margin="0" HorizontalAlignment="Stretch"
                   VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  Background="#66505050" BorderBrush="{x:Null}" MouseDoubleClick="ChampionSelectListView_MouseDoubleClick">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
-        <ComboBox x:Name="FilterComboBox" Width="230" Margin="0,20,10,0" HorizontalAlignment="Right"
-                  VerticalAlignment="Top" SelectedIndex="0" ItemsSource="{DynamicResource ChampionComboBoxFilters}"
-                  SelectionChanged="FilterComboBox_SelectionChanged" />
+                  Background="Transparent" BorderBrush="{x:Null}" MouseDoubleClick="ChampionSelectListView_MouseDoubleClick">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </Grid>
     </Grid>
 </Page>

@@ -5,11 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="64" d:DesignWidth="64">
+    
     <Grid>
-        <Image x:Name="ChampImage" HorizontalAlignment="Left" Height="64" Margin="0,0,0,0" VerticalAlignment="Top"
-               Width="64" />
-        <Label x:Name="FreeToPlayLabel" Content="Free" HorizontalAlignment="Left" Margin="0,32,0,0"
-               VerticalAlignment="Top" Foreground="White" Background="#4C0C0C0C" FontWeight="SemiBold" FontSize="16"
+        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Panel.ZIndex="10" Padding="0" Width="50" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Viewbox Width="50" Height="50">
+                <Image Margin="-10" x:Name="ChampImage" Stretch="UniformToFill" Source="/Sightstone;component/NONE.png"/>
+            </Viewbox>
+        </Button>
+        <Label x:Name="FreeToPlayLabel" Content="FREE" HorizontalAlignment="Center" Margin="6"
+               VerticalAlignment="Bottom" Panel.ZIndex="100" Padding="0" Foreground="White" FontWeight="SemiBold" FontSize="14"
                Visibility="Hidden">
             <Label.Effect>
                 <DropShadowEffect ShadowDepth="2" BlurRadius="1" />
