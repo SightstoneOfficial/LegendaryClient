@@ -116,7 +116,7 @@
 
         <!--This is the title grid, the bar that is at the top-->
         <ProgressBar x:Name="TotalBar" HorizontalAlignment="Stretch" Margin="0,70,0,0" Height="3" VerticalAlignment="Top" />
-        <Grid Visibility="Visible" x:Name="FinishedGrid" Height="70" VerticalAlignment="Top" HorizontalAlignment="Center" >
+        <Grid Visibility="Hidden" x:Name="FinishedGrid" Height="70" VerticalAlignment="Top" HorizontalAlignment="Center" >
             <Label Content="Ready" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="28" Foreground="{StaticResource IdealForegroundColorBrush}" VerticalContentAlignment="Center" />
         </Grid>
 
