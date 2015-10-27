@@ -4,19 +4,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             MinHeight="60" d:DesignWidth="250">
-    <Grid x:Name="GroupGrid" MouseDown="GroupGrid_MouseDown">
-        <Label x:Name="ExpandLabel" Content="+" HorizontalAlignment="Left" FontSize="16" Margin="0,29,0,0" Height="31" VerticalAlignment="Top" />
-        <Label x:Name="NameLabel" Content="GroupName" HorizontalAlignment="Center" Margin="78,29,78,0" FontSize="16"
-               FontWeight="ExtraLight" Height="31" VerticalAlignment="Top" />
-        <Label x:Name="PlayersLabel" Content="5" HorizontalAlignment="Right" FontSize="16"
-               FontWeight="ExtraLight" Margin="0,29,0,0" Height="31" VerticalAlignment="Top" />
-        <Grid x:Name="GroupListView" HorizontalAlignment="Stretch" Margin="-5,60,0,0" VerticalAlignment="Stretch"
-              Visibility="Collapsed" />
-        <Label x:Name="regionLabel" Content="Region" HorizontalAlignment="Left" VerticalAlignment="Top"
-               FontWeight="ExtraLight" FontSize="16"/>
+             Height="Auto" d:DesignWidth="250">
+    
+    <Grid x:Name="GroupGrid" MouseDown="GroupGrid_MouseDown" Margin="0,0,0,6">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Label x:Name="summonerNameLabel" Content="Summoner" HorizontalAlignment="Center" VerticalAlignment="Top"
-               FontWeight="ExtraLight" FontSize="16"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Grid.Column="1" Width="Auto" Height="Auto" Margin="0,2" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Border CornerRadius="3" Background="Black" BorderThickness="0">
+                        <Label x:Name="regionLabel" Padding="4,1,4,2" FontSize="9" Foreground="LightGray"  VerticalContentAlignment="Center" VerticalAlignment="Center" Content="REGION"/>
+                    </Border>
+                </Grid>
+                <Label Grid.Column="2" Padding="0" x:Name="summonerNameLabel" Grid.Row="0" Content="Username" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" Margin="4,2,2,2" Foreground="{StaticResource IdealForegroundColorBrush}" />
+            </Grid>
+
+            <Label x:Name="ExpandLabel" Grid.Row="1" Padding="0" Content="+" HorizontalAlignment="Left" FontSize="14" Margin="2"  VerticalAlignment="Bottom" Foreground="{StaticResource IdealForegroundColorBrush}" />
+            <Label x:Name="NameLabel" Grid.Row="1" Padding="0" Content="Groupname" HorizontalAlignment="Center" Margin="2" FontSize="14" VerticalAlignment="Bottom" Foreground="{StaticResource IdealForegroundColorBrush}" />
+            <Label x:Name="PlayersLabel" Grid.Row="1" Padding="0" Content="0" HorizontalAlignment="Right" FontSize="14" Margin="2" VerticalAlignment="Bottom" Foreground="{StaticResource IdealForegroundColorBrush}" />
+        </Grid>
+        
+        <Grid Grid.Row="1" x:Name="GroupListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="Collapsed" Margin="0,6" />
     </Grid>
 </UserControl>
