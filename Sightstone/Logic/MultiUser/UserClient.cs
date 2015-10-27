@@ -954,7 +954,8 @@ namespace Sightstone.Logic.MultiUser
                     {
                         playerName = item.Value.multiClientSummonerName,
                         region = item.Value.multiClientRegion,
-                        groupName = item.Value.Group
+                        groupName = item.Value.Group,
+                        isOpen = true
                     };
                     Client.Groups.Add(group);
                 }
@@ -964,7 +965,8 @@ namespace Sightstone.Logic.MultiUser
             {
                 groupName = "Offline",
                 region = Region.RegionName,
-                playerName = LoginPacket.AllSummonerData.Summoner.Name
+                playerName = LoginPacket.AllSummonerData.Summoner.Name,
+                isOpen = false
             });
             Client.loadedGroups = true;
 
