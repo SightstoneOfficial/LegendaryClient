@@ -299,6 +299,7 @@ namespace Sightstone.Windows
 
             Client.SQLiteDatabase.Close();
 
+            Client.Items = ParseItems.PopulateItems();
             Client.Masteries = Masteries.PopulateMasteries(new WebClient().DownloadString("http://ddragon.leagueoflegends.com/cdn/5.19.1/data/en_US/mastery.json"));
             Client.Runes = Runes.PopulateRunes(new WebClient().DownloadString("http://ddragon.leagueoflegends.com/cdn/5.19.1/data/en_US/rune.json"));
             //BaseUpdateRegion updateRegion = BaseUpdateRegion.GetUpdateRegion(user.Instance.UpdateRegion);

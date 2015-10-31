@@ -8,5 +8,6 @@
         DefineBitJPEG2 = 21,
         DefineBitLossless = 36,
         Symbols = 76,
+        Binary = 87,
     }
 }

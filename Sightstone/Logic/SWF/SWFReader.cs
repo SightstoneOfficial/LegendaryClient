@@ -101,6 +101,9 @@ namespace Sightstone.Logic.SWF
                 case (int) TagCodes.Symbols:
                     resTag = new Symbols(SWFBinary.ReadBytes(Convert.ToInt32(rh.TagLength + offset)));
                     break;
+                case (int) TagCodes.Binary:
+                    resTag = new Binary(SWFBinary.ReadBytes(Convert.ToInt32(rh.TagLength + offset)));
+                    break;
                 default:
                     resTag = new Tag(SWFBinary.ReadBytes(Convert.ToInt32(rh.TagLength + offset)));
                     break;

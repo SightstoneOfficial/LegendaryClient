@@ -350,6 +350,7 @@
     <Compile Include="Logic\JSON\ChampionMastery.cs" />
     <Compile Include="Logic\JSON\FreeToPlayChampions.cs" />
     <Compile Include="Logic\JSON\LeaguePromote.cs" />
+    <Compile Include="Logic\JSON\Object\Items.cs" />
     <Compile Include="Logic\JSON\PromoteItem.cs" />
     <Compile Include="Logic\MultiUser\Client.cs" />
     <Compile Include="Logic\MultiUser\Deletable.cs" />
@@ -519,6 +520,7 @@
     <Compile Include="Logic\SQLite\Spell.cs" />
     <Compile Include="Logic\SQLite\UpdateData.cs" />
     <Compile Include="Logic\SWF\Images.cs" />
+    <Compile Include="Logic\SWF\SWFTypes\Binary.cs" />
     <Compile Include="Logic\SWF\SWFTypes\Lossless.cs" />
     <Compile Include="Logic\SWF\SWFTypes\JPEG.cs" />
     <Compile Include="Logic\SWF\SWFTypes\Symbols.cs" />
@@ -588,7 +590,7 @@
     </Compile>
     <Compile Include="Logic\ChatPrefixes.cs" />
     <Compile Include="Logic\ChatSubjects.cs" />
-    <Compile Include="Logic\JSON\Items.cs" />
+    <Compile Include="Logic\JSON\ParseItems.cs" />
     <Compile Include="Logic\JSON\Masteries.cs" />
     <Compile Include="Logic\JSON\Runes.cs" />
     <Compile Include="Logic\Maps\Map1.cs" />

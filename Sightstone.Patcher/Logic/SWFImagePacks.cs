@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Sightstone.Patcher.Logic
 {
-    class SWFImagePacks
+    static class SWFImagePacks
     {
         public static void SWFextract(string pathIn, string pathOut)
         {
@@ -17,10 +17,11 @@ namespace Sightstone.Patcher.Logic
             var jpegs = reader.Tags.OfType<JPEG>();
             var lossless = reader.Tags.OfType<Lossless>();
             var symbols = reader.Tags.OfType<Symbols>();
+            var binary = reader.Tags.OfType<Binary>();
             var imageInfo = new List<Images>();
             var losslessInfo = new List<Images>();
-
-
+            if (binary.Count() > 0)
+                getBinary(binary, pathOut);
             getJPEGs(imageInfo, jpegs);
             getLossless(imageInfo, lossless);
             var filenames = getFileNames(symbols, pathIn);
@@ -32,25 +33,40 @@ namespace Sightstone.Patcher.Logic
             {
                 if (!Directory.Exists(pathOut))
                     Directory.CreateDirectory(pathOut);
-                if(item.type == "JPEG")
+                if (item.type == "JPEG")
                     File.WriteAllBytes(Path.Combine(pathOut, item.name + ".jpg"), item.data);
                 else if (item.type == "Lossless") //We have to create bitmap ourselves
                 {
 
                     int[] bytesAsInts = item.data.Select(x => (int)x).ToArray();
                     var bmp = new Bitmap(item.width, item.height);
-                    for(int y = 0; y < item.height; y++)
+                    for (int y = 0; y < item.height; y++)
                     {
-                        for(int x = 0; x < item.width; x++)
+                        for (int x = 0; x < item.width; x++)
                         {
-                            var color = Color.FromArgb(bytesAsInts[4 * (y * item.width + x)], 
-                                                       bytesAsInts[4 * (y * item.width + x) + 1], 
-                                                       bytesAsInts[4 * (y * item.width + x) + 2], 
+                            var color = Color.FromArgb(bytesAsInts[4 * (y * item.width + x)],
+                                                       bytesAsInts[4 * (y * item.width + x) + 1],
+                                                       bytesAsInts[4 * (y * item.width + x) + 2],
                                                        bytesAsInts[4 * (y * item.width + x) + 3]);
                             bmp.SetPixel(x, y, color);
                         }
                     }
                     bmp.Save(Path.Combine(pathOut, item.name) + ".bmp");
+                }
+            }
+        }
+
+        private static void getBinary(IEnumerable<Binary> binary, string pathOut)
+        {
+            foreach (var item in binary)
+            {
+
+                using (var binReader = new BinaryReader(new MemoryStream(item.Data)))
+                {
+                    binReader.BaseStream.Position = 12;
+                    var bytes = binReader.ReadBytes(Convert.ToInt32(binReader.BaseStream.Length - binReader.BaseStream.Position));
+
+                    File.WriteAllBytes(pathOut, bytes);
                 }
             }
         }
@@ -84,7 +100,7 @@ namespace Sightstone.Patcher.Logic
             }
             return dictionary;
         }
-        
+
         //We have to create bitmap ourselves
         private static void getLossless(List<Images> imageInfo, IEnumerable<Lossless> lossless)
         {
@@ -104,18 +120,6 @@ namespace Sightstone.Patcher.Logic
                 }
                 imageInfo.Add(image);
             }
-        }
-
-        //Apparently in SWF bytes are big-endian
-        private static ushort ChangeEndianess(byte[] source)
-        {
-            for (int i = 0; i < source.Length; i += 2)
-            {
-                byte b = source[i];
-                source[i] = source[i + 1];
-                source[i + 1] = b;
-            }
-            return BitConverter.ToUInt16(source,0);
         }
 
         private static void getJPEGs(List<Images> imageInfo, IEnumerable<JPEG> jpegs)

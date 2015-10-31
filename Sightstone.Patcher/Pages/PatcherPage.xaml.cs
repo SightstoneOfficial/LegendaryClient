@@ -218,6 +218,7 @@ namespace Sightstone.Patcher.Pages
                                 Path.Combine(Client.ExecutingDirectory, "gameStats_en_US.sqlite"));
                     }
                 }
+                
                 return;
             }
 
@@ -383,7 +384,28 @@ namespace Sightstone.Patcher.Pages
                     };
                     SWFextract.Add(item);
                 }
-
+                else if (clientFiles.uri.ToString().Contains("ItemDataPack.swf")) 
+                {
+                    if (SWFextract == null)
+                        SWFextract = new List<updateSWF>();
+                    files.Add(new DownloadFile
+                    {
+                        DownloadUri = clientFiles.uri,
+                        FileSize = clientFiles.size,
+                        OutputPath = new[]
+                        {
+                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ItemDataPack.swf")
+                        },
+                        OverrideFiles = true
+                    });
+                    
+                    var item = new updateSWF()
+                    {
+                        savePath = Path.Combine(Client.ExecutingDirectory, "items.json"),
+                        swfPath = Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ItemDataPack.swf"),
+                    };
+                    SWFextract.Add(item);
+                }
             }
             downloader.OnFinishedDownloading += DownloadCompleted;
             downloader.OnDownloadProgressChanged += DownloadChange;
