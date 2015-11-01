@@ -32,7 +32,7 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Grid Name="Titlebar" Grid.Row="0" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
+            <Grid Name="Titlebar" Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueMidBrush}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="*"></ColumnDefinition>
@@ -40,12 +40,13 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Grid.Column="0" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="30,0,0,0" Padding="0" Foreground="{StaticResource IdealForegroundColorBrush}">Sightstone Patcher</Label>
-                <Button x:Name="PlayButton" Grid.Column="3" Foreground="{StaticResource IdealForegroundColorBrush}" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="{DynamicResource Play}" Click="PlayClick"/>
+                <Button x:Name="PlayButton" Grid.Column="3" Foreground="{StaticResource IdealForegroundColorBrush}" IsEnabled="False" Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right" Content="{DynamicResource Play}" Click="PlayClick"/>
                 <Button x:Name="SwitchButton" Content="{DynamicResource ShowLogBox}" Click="SwitchClick" Grid.Column="2" Foreground="{StaticResource IdealForegroundColorBrush}" Margin="0,0,30,0" VerticalAlignment="Center" HorizontalAlignment="Right"/>
             </Grid>
 
             <Grid Grid.Row="1" x:Name="NewsGrid" Visibility="Visible" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <ScrollViewer Name="MainPageScroller" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,0" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <ProgressBar x:Name="TotalBar" HorizontalAlignment="Stretch" Margin="0" VerticalAlignment="Top" BorderThickness="0" BorderBrush="{x:Null}" />
+                <ScrollViewer Name="MainPageScroller" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Disabled" Margin="0" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                     <Grid>
                         <!-- Card 1 -->
                         <Grid Width="450" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="30,30,30,30">
@@ -54,7 +55,7 @@
                                     <!-- Top Header / Button / Whatever you want -->
                                     <Grid VerticalAlignment="Top" Height="41">
                                         <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{StaticResource MaterialDesignFlatButton}">News</Button>
-                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" />
                                     </Grid>
 
                                     <!-- CARD1 -->
@@ -72,12 +73,12 @@
                                     <!-- Top Header / Button / Whatever you want -->
                                     <Grid VerticalAlignment="Top" Height="41">
                                         <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{StaticResource MaterialDesignFlatButton}">Free Champion Rotation</Button>
-                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" />
                                     </Grid>
 
                                     <!-- CARD1 -->
                                     <Grid Margin="0,41,0,0">
-                                        <UniformGrid x:Name="champView" Grid.Row="1" HorizontalAlignment="Stretch" Background="Transparent" Rows="5" Columns="2" Margin="16,8" VerticalAlignment="Stretch"/>
+                                        <UniformGrid x:Name="champView" Grid.Row="1" HorizontalAlignment="Stretch" Background="Transparent" Rows="5" Columns="2" Margin="16,8" VerticalAlignment="Stretch" />
                                     </Grid>
 
                                 </Grid>
@@ -90,17 +91,17 @@
                                     <!-- Top Header / Button / Whatever you want -->
                                     <Grid VerticalAlignment="Top" Height="41">
                                         <Button Height="40" VerticalAlignment="Top" FontSize="14" Style="{StaticResource MaterialDesignFlatButton}">Server Status</Button>
-                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
+                                        <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}" />
                                     </Grid>
 
                                     <!-- CARD1 -->
                                     <Grid Margin="0,41,0,0">
                                         <Grid>
                                             <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="40"/>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="40" />
                                             </Grid.RowDefinitions>
-                                            <Button Grid.Row="1" Height="40" Click="Update_OnClick" HorizontalAlignment="Stretch" Content="{DynamicResource UpdateStatus}" VerticalAlignment="Center"/>
+                                            <Button Grid.Row="1" Height="40" Click="Update_OnClick" HorizontalAlignment="Stretch" Content="{DynamicResource UpdateStatus}" VerticalAlignment="Center" />
                                             <ListView Grid.Row="0" BorderThickness="0" Background="{StaticResource MaterialDesignPaper}" x:Name="StatusView" SelectionChanged="OnSelectionChanged" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                                         </Grid>
                                     </Grid>
@@ -110,12 +111,10 @@
                         </Grid>
                     </Grid>
                 </ScrollViewer>
-
             </Grid>
         </Grid>
 
         <!--This is the title grid, the bar that is at the top-->
-        <ProgressBar x:Name="TotalBar" HorizontalAlignment="Stretch" Margin="0,70,0,0" Height="3" VerticalAlignment="Top" />
         <Grid Visibility="Hidden" x:Name="FinishedGrid" Height="70" VerticalAlignment="Top" HorizontalAlignment="Center" >
             <Label Content="Ready" HorizontalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="28" Foreground="{StaticResource IdealForegroundColorBrush}" VerticalContentAlignment="Center" />
         </Grid>

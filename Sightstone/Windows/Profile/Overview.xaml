@@ -5,49 +5,82 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       Title="Overview"
       mc:Ignorable="d" d:DesignHeight="548"
-      d:DesignWidth="1280">
+      d:DesignWidth="1280"
+      Background="{StaticResource MaterialDesignPaper}">
 
     <Grid>
-        <ListView x:Name="KudosListView" Width="280"
-                  Height="Auto" Margin="10,40,10,0" HorizontalAlignment="Right"
-                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
-                  Background="#66505050" BorderBrush="{x:Null}">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
-        <Label x:Name="TopChampionsLabel" Margin="0,265,10,0" HorizontalAlignment="Right"
-               VerticalAlignment="Top" Content="Top Champions (0 Ranked Games)" FontSize="18" FontWeight="ExtraLight"
-               Foreground="White" />
-        <ListView x:Name="TopChampionsListView" Width="280"
-                  Height="Auto" Margin="10,300,10,0" HorizontalAlignment="Right"
-                  VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="White"
-                  Background="#66505050" BorderBrush="{x:Null}">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
-        <Button x:Name="ViewAggregatedStatsButton" Width="280" Height="50" Margin="0,480,10,0"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Content="View Champion Stats" FontSize="25"
-                FontWeight="ExtraLight"
-                Click="ViewAggregatedStatsButton_Click" />
+        <!-- Menubar -->
+        <Grid Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueLightBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,28,0" Foreground="{StaticResource MaterialDesignBody}">Filters:</TextBlock>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,5,0" Foreground="{StaticResource MaterialDesignBody}">Quegroup:</TextBlock>
+            <ComboBox Grid.Column="2" x:Name="StatsComboBox" Margin="5,2,5,0" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" SelectionChanged="StatsComboBox_SelectionChanged"/>
+        </Grid>
+    
+        <!-- Content -->
+        <Grid Grid.Row="1" Margin="30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="300"/>
+            </Grid.ColumnDefinitions>
 
-        <ComboBox x:Name="StatsComboBox" Width="300" Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" SelectionChanged="StatsComboBox_SelectionChanged" />
-        <ListView x:Name="StatsListView" Margin="10,40,300,10"
-                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                  VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  Foreground="White" Background="#66505050"
-                  BorderBrush="{x:Null}">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
+            <Grid Grid.Column="0">
+                <ListView x:Name="StatsListView" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" VerticalContentAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="{StaticResource MaterialDesignBody}" Background="Transparent" BorderThickness="0">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="30,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ListView Grid.Row="0" x:Name="KudosListView" Height="Auto" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="{StaticResource MaterialDesignBody}" Background="Transparent" BorderBrush="{x:Null}" BorderThickness="0">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+
+                <Grid Grid.Row="1" Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" x:Name="TopChampionsLabel" Margin="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Top Champions (0 Ranked Games)" FontSize="16" Foreground="{StaticResource MaterialDesignBody}" />
+                    <ListView x:Name="TopChampionsListView" Grid.Row="1" Height="Auto" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Foreground="{StaticResource MaterialDesignBody}" BorderThickness="0" Background="Transparent">
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel />
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                    </ListView>
+                </Grid>
+
+                <Button Grid.Row="2" x:Name="ViewAggregatedStatsButton" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Content="View Champion Stats" Click="ViewAggregatedStatsButton_Click" />
+            </Grid>
+
+
+
+        </Grid>
     </Grid>
 </Page>

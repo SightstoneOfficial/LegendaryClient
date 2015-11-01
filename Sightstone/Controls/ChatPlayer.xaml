@@ -4,16 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
-             Height="60" Width="250"
+             Height="60" Width="Auto" HorizontalAlignment="Stretch"
              Foreground="{StaticResource MaterialDesignBody}">
     
-    <Grid x:Name="ChatPlayerGrid">
+    <Grid x:Name="ChatPlayerGrid" HorizontalAlignment="Stretch" Width="Auto">
         <!-- Rectangle Allow entire control to be hovered over -->
-        <Rectangle Fill="#02000000" />
+        <Rectangle Fill="#00000000" HorizontalAlignment="Stretch" Width="Auto"/>
 
         <Button x:Name="ProfileImageContainer" Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Width="44" Height="44" Margin="8" Padding="0" HorizontalAlignment="Left" VerticalAlignment="Center">
             <Viewbox Width="44" Height="44">
-                <Image x:Name="ProfileImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-3" Source="/Sightstone;component/NONE.png"/>
+                <Image x:Name="ProfileImage" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="-5" Source="/Sightstone;component/NONE.png"/>
             </Viewbox>
         </Button>
 
@@ -35,6 +35,6 @@
             <Label x:Name="PlayerStatus" FontStyle="Italic" Content="Status" HorizontalAlignment="Stretch" Foreground="{StaticResource IdealForegroundColorBrush}" Padding="0" VerticalAlignment="Bottom"/>
         </Grid>
 
-        <Label x:Name="PlayerId" Content="41284010" HorizontalAlignment="Left" Margin="188,0,0,0" VerticalAlignment="Top" Foreground="White" Visibility="Hidden" />
+        <Label x:Name="PlayerId" Content="41284010" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Foreground="White" Visibility="Hidden" />
     </Grid>
 </UserControl>

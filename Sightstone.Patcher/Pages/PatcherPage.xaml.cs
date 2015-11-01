@@ -592,6 +592,7 @@ namespace Sightstone.Patcher.Pages
             }
             Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Input, new Action(() =>
             {
+                TotalBar.Value = 100;
                 PlayButton.IsEnabled = true;
                 FinishedGrid.Visibility = Visibility.Visible;
                 Client.Win.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Indeterminate;

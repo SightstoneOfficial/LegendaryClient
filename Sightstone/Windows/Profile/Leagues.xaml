@@ -10,72 +10,100 @@
       d:DesignWidth="1280" 
       Foreground="{StaticResource MaterialDesignBody}"
       Background="{StaticResource MaterialDesignPaper}">
-
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="300"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        
-        <Grid Grid.Column="0">
-            <Label Margin="10,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Rank" FontSize="16"/>
-            <Label Margin="60,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Δ" FontSize="16"/>
-            <Label Margin="110,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Name" FontSize="16"/>
-            <Label Margin="440,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Emblems" FontSize="16"/>
-            <Label Margin="610,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Wins" FontSize="16"/>
-            <Label Margin="710,10,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="LP/Series" FontSize="16"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Background="{StaticResource PrimaryHueLightBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBlock Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,28,0" Foreground="{StaticResource MaterialDesignBody}">Devision:</TextBlock>
+            <Grid Grid.Column="1" Margin="10,0,28,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="CurrentLeagueLabel" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Padding="1" Foreground="{StaticResource MaterialDesignBody}">Tier</Label>
+                <Label x:Name="CurrentLeagueNameLabel" Margin="3,0,0,0" Grid.Column="1" Padding="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="{StaticResource MaterialDesignBody}">(Tiername)</Label>
+            </Grid>
+            <Button x:Name="UpTierButton" Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Left" VerticalAlignment="Center" Click="UpTierButton_Click">
+                <Viewbox Width="16" Height="16">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M13,20H11V8L5.5,13.5L4.08,12.08L12,4.16L19.92,12.08L18.5,13.5L13,8V20Z" Fill="Black" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
+            <Button x:Name="DownTierButton" Grid.Column="3" Style="{StaticResource MaterialDesignFlatButton}" Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Click="DownTierButton_Click">
+                <Viewbox Width="16" Height="16">
+                    <Canvas Width="24" Height="24">
+                        <Path Data="M11,4H13V16L18.5,10.5L19.92,11.92L12,19.84L4.08,11.92L5.5,10.5L11,16V4Z" Fill="Black" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
         </Grid>
         
-        <Grid Grid.Column="1">
-            <!-- Tier Info -->
-            <Grid VerticalAlignment="Top" Margin="5">
-                <wpf:Card UniformCornerRadius="3">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1" Margin="30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <!-- League List -->
+            <Grid Grid.Column="0" Margin="0,0,30,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-                        <!-- Tier + Tiername -->
-                        <Label x:Name="CurrentLeagueLabel" Margin="8,0" HorizontalAlignment="Left" VerticalAlignment="Top" Content="Tier" Foreground="{StaticResource MaterialDesignBody}" FontSize="35" Padding="0" />
-                        <Label x:Name="CurrentLeagueNameLabel" Margin="8,0,8,5" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Tiername" Foreground="{StaticResource MaterialDesignBody}" FontSize="18" Padding="0"/>
+                <Grid Grid.Row="0" Height="Auto" VerticalAlignment="Top" Margin="0">
+                    <Label Margin="10,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Rank" FontSize="16" />
+                    <Label Margin="60,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Δ" FontSize="16" />
+                    <Label Margin="110,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Name" FontSize="16" />
+                    <Label Margin="440,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Emblems" FontSize="16" />
+                    <Label Margin="610,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Wins" FontSize="16" />
+                    <Label Margin="710,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center" Content="LP/Series" FontSize="16" />
+                </Grid>
 
-                        <!-- Tier Up/Down Buttons -->
-                        <Grid HorizontalAlignment="Right" Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Button x:Name="UpTierButton" Grid.Row="0" Margin="5,5,5,2.5" HorizontalAlignment="Right" VerticalAlignment="Top" Content="é" FontFamily="Wingdings" FontWeight="ExtraLight" Click="UpTierButton_Click" />
-                            <Button x:Name="DownTierButton" Grid.Row="1" Margin="5,2.5,5,5" HorizontalAlignment="Right" VerticalAlignment="Top" Content="ê" FontWeight="ExtraLight" FontFamily="Wingdings" Click="DownTierButton_Click" />
-                        </Grid>
-                    </Grid>
-                </wpf:Card> 
+                <ListView x:Name="LeaguesListView" Grid.Row="1" Margin="0" Background="Transparent" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" BorderBrush="{x:Null}" SelectionChanged="LeaguesListView_SelectionChanged">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
             </Grid>
 
+            
 
-            <Label x:Name="PlayerLabel" Margin="0,100,5,0" HorizontalAlignment="Center" VerticalAlignment="Top" Content="Username" Foreground="{StaticResource MaterialDesignBody}" FontSize="24"/>
-            <ListView x:Name="TopChampionsListView" Height="300" Margin="10,150,10,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="#66505050" BorderBrush="{x:Null}">
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-            </ListView>
-            <Button x:Name="ViewAggregatedStatsButton" Margin="10"
-                HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Content="View Player Stats" Click="ViewAggregatedStatsButton_Click" />
+            <!-- Player Info -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Button x:Name="ViewAggregatedStatsButton" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MaterialDesignFlatButton}" Click="ViewAggregatedStatsButton_Click">
+                    <Label x:Name="PlayerLabel" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Username" FontSize="16" />
+                </Button>
+                <ItemsControl x:Name="TopChampionsListView" Grid.Row="1" Height="Auto" Padding="0" Margin="0" HorizontalAlignment="Stretch" Width="Auto" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{StaticResource MaterialDesignPaper}" BorderBrush="{x:Null}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+
+            
         </Grid>
-
-        
-
-        <ListView x:Name="LeaguesListView" Margin="10,50,10,10" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" HorizontalAlignment="Stretch" BorderBrush="{x:Null}" SelectionChanged="LeaguesListView_SelectionChanged">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-        </ListView>
-        
-
     </Grid>
 </Page>

@@ -63,18 +63,24 @@
                 </Grid.RowDefinitions>
 
                 <!-- Search -->
-                <Grid Grid.Row="0" Background="{StaticResource PrimaryHueLightBrush}">
-                    <TextBox x:Name="SearchTextBox" wpf:TextFieldAssist.Hint="Search..." wpf:TextFieldAssist.HintOpacity="1" Foreground="{StaticResource MaterialDesignBody}" HorizontalAlignment="Stretch" Height="25" Margin="5,0,90,0" TextWrapping="Wrap" VerticalAlignment="Top" TextChanged="SearchTextBox_TextChanged" Grid.Column="3" BorderThickness="0" Panel.ZIndex="1" controls:TextBoxHelper.Watermark="Search" />
-                    <ToggleButton Background="{DynamicResource AccentColorBrush}" x:Name="Switch" Content="Skins" HorizontalAlignment="Right" VerticalAlignment="Top" Width="89" Margin="0" Checked="Switch_Click" Unchecked="Switch_Click" Height="26" Grid.Column="3" />
+                <Grid Grid.Row="0" Height="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{StaticResource PrimaryHueLightBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="SearchTextBox" TextChanged="SearchTextBox_TextChanged" VerticalContentAlignment="Center" wpf:TextFieldAssist.Hint="Search..." wpf:TextFieldAssist.HintOpacity="0.8" Background="Transparent" Margin="8,8,0,8" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" BorderThickness="0"/>
+                    <Button x:Name="Switch" Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right" Content="Champions" VerticalAlignment="Center" Margin="0" Click="Switch_Click" Grid.Column="1" />
+
                 </Grid>
 
                 <!-- Champions + Info -->
-                <Grid Grid.Row="1">
+                <Grid Grid.Row="1" Margin="0,0,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="25*"/>
                         <ColumnDefinition Width="229*"/>
                     </Grid.ColumnDefinitions>
-                    <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="0,0,0.2,0.4" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{StaticResource PrimaryHueLightBrush}" BorderThickness="0" Grid.ColumnSpan="2">
+                    <ListView x:Name="ChampionSelectListView" HorizontalAlignment="Stretch" Margin="0,0,0.2,0.4" VerticalAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{StaticResource MaterialDesignPaper}" BorderThickness="0" Grid.ColumnSpan="2">
                         <ListView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel />
@@ -122,7 +128,7 @@
                 </Grid>
 
                 <!-- User Controls -->
-                <Grid Grid.Column="3" Grid.Row="2" Margin="0,8,0,0" Height="90">
+                <Grid Grid.Column="3" Grid.Row="2" Margin="0,8,0,98" Height="90">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition MinWidth="200" Width="*"/>
                         <ColumnDefinition Width="Auto"/>
@@ -131,7 +137,7 @@
                     </Grid.ColumnDefinitions>
 
                     <!-- Mastery and Runes -->
-                    <Grid Grid.Column="0" Background="{StaticResource PrimaryHueLightBrush}">
+                    <Grid Grid.Column="0" Background="{StaticResource PrimaryHueLightBrush}" >
                         <Grid Margin="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -153,7 +159,7 @@
                             <ComboBox Grid.Row="1" x:Name="LocalRuneComboBox" Grid.Column="1" VerticalAlignment="Stretch" SelectionChanged="LocalRuneComboBox_SelectionChanged" Margin="4,0,0,0" HorizontalAlignment="Stretch" ToolTip="First select rune page to be replaced with local one" />
                             <Button Grid.Row="1" Grid.Column="3" x:Name="EditRunesButton" Padding="3,0" Content="Runes" HorizontalAlignment="Stretch" Click="EditRunesButton_Click" VerticalAlignment="Center" />
 
-                            <ComboBox Grid.Row="3" Grid.ColumnSpan="2"  x:Name="MasteryComboBox" HorizontalAlignment="Stretch" SelectionChanged="MasteryComboBox_SelectionChanged" VerticalAlignment="Stretch"/>
+                            <ComboBox Grid.Row="3" Grid.ColumnSpan="2" x:Name="MasteryComboBox" HorizontalAlignment="Stretch" SelectionChanged="MasteryComboBox_SelectionChanged" VerticalAlignment="Stretch"/>
                             <Button Grid.Row="3" Grid.Column="3" x:Name="EditMasteriesButton" Content="Masteries" HorizontalAlignment="Stretch" Click="EditMasteriesButton_Click" VerticalAlignment="Center" Padding="3,0" />
 
                         </Grid>
@@ -274,7 +280,7 @@
             </Grid>
 
             <!-- Chat -->
-            <Grid Grid.Column="1" Background="{StaticResource PrimaryHueDarkBrush}">
+            <Grid Grid.Column="1" Background="{StaticResource PrimaryHueDarkBrush}" Margin="0,-98,0,0">
                 <RichTextBox x:Name="ChatText" HorizontalAlignment="Stretch" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,0,0,26" VerticalAlignment="Stretch" IsReadOnly="True" Foreground="{StaticResource PrimaryHueDarkForegroundBrush}" Background="Transparent" BorderThickness="0">
                     <RichTextBox.Resources>
                         <Style TargetType="{x:Type Paragraph}">
@@ -282,8 +288,22 @@
                         </Style>
                     </RichTextBox.Resources>
                 </RichTextBox>
-                <TextBox x:Name="ChatTextBox" Background="{StaticResource PrimaryHueLightBrush}" HorizontalAlignment="Stretch" Height="26" Margin="0,0,130,0" TextWrapping="Wrap" VerticalAlignment="Bottom" Grid.Column="3" BorderThickness="0" />
-                <Button x:Name="ChatButton" Content="Send" Margin="0" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="130" IsDefault="True" Click="ChatButton_Click" Height="26" Grid.Column="3" BorderThickness="0"/>
+
+                <Grid Height="Auto" MinHeight="40" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Background="{StaticResource PrimaryHueLightBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="ChatTextBox" VerticalContentAlignment="Center" wpf:TextFieldAssist.Hint="Message..." wpf:TextFieldAssist.HintOpacity="0.8" Background="Transparent" Margin="8,8,0,8" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" BorderThickness="0"/>
+                    <Button x:Name="ChatButton" Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="8,4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Click="ChatButton_Click" IsDefault="True">
+                        <Viewbox Width="20" Height="20" Opacity="0.8">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M2,21L23,12L2,3V10L17,12L2,14V21Z" Fill="{StaticResource MaterialDesignBody}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+                </Grid>
             </Grid>
 
             <Grid Width="255" Grid.Column="2" Margin="8,0">

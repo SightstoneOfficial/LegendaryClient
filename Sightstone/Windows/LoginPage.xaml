@@ -69,7 +69,7 @@
 
 
         <!-- Accounts -->
-        <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="10,10,10,75" Height="590">
+        <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,10,10,75" Height="Auto" Width="Auto">
             <ListView x:Name="UserListView" Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <ListView.Resources>
                     <Style TargetType="ListViewItem">

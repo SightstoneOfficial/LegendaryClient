@@ -955,7 +955,7 @@ namespace Sightstone.Windows
 
             LockInButton.Content = "Locked In";
 
-            Switch.IsChecked = true;
+            Switch.IsEnabled = false;
 
             ChangeSelectedChampionSkins(selection.ChampionId);
         }
@@ -1579,20 +1579,17 @@ namespace Sightstone.Windows
 
         private void Switch_Click(object sender, RoutedEventArgs e)
         {
-            if (!Switch.IsChecked.HasValue)
-                return;
-
-            if ((bool)Switch.IsChecked)
+            if (ChampionSelectListView.IsVisible)
             {
-                Switch.Content = "Champions";
                 ChampionSelectListView.Visibility = Visibility.Hidden;
                 AfterChampionSelectGrid.Visibility = Visibility.Visible;
+                Switch.Content = "Skins";
             }
             else
             {
-                Switch.Content = "Skins";
-                ChampionSelectListView.Visibility = Visibility.Visible;
                 AfterChampionSelectGrid.Visibility = Visibility.Hidden;
+                ChampionSelectListView.Visibility = Visibility.Visible;
+                Switch.Content = "Champions";
             }
         }
 

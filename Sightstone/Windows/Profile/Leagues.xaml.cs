@@ -82,7 +82,7 @@ namespace Sightstone.Windows.Profile
                 }
 
                 CurrentLeagueLabel.Content = leagues.Tier + " " + selectedRank;
-                CurrentLeagueNameLabel.Content = leagues.Name;
+                CurrentLeagueNameLabel.Content = "(" + leagues.Name + ")";
                 var players =
                     leagues.Entries.OrderBy(o => o.LeaguePoints).Where(item => item.Rank == selectedRank).ToList();
                 players.Reverse();
@@ -238,14 +238,12 @@ namespace Sightstone.Windows.Profile
                     }
 
                     var champion = champions.GetChampion(Convert.ToInt32(info.ChampionId));
-                    var player = new ChatPlayer
+                    var player = new ProfileTopChampion
                     {
-                        LevelLabel = {Visibility = Visibility.Hidden},
-                        PlayerName = {Content = champion.displayName},
-                        PlayerStatus = {Content = info.TotalSessionsPlayed + " games played"},
-                        ProfileImage = {Source = champions.GetChampion(champion.id).icon},
-                        Background = new SolidColorBrush(Color.FromArgb(102, 80, 80, 80)),
-                        Width = 270
+                        ChampionName = { Content = champion.displayName, Foreground = FindResource("MaterialDesignBody") as SolidColorBrush, },
+                        GamesCounter = { Content = info.TotalSessionsPlayed + " games played", Foreground = FindResource("MaterialDesignBody") as SolidColorBrush },
+                        ChampionImage = { Source = champions.GetChampion(champion.id).icon },
+                        Width = TopChampionsListView.ActualWidth,
                     };
 
                     TopChampionsListView.Items.Add(player);
