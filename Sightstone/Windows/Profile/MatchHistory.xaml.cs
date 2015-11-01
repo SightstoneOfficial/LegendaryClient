@@ -310,9 +310,7 @@ namespace Sightstone.Windows.Profile
                 parsedDescription = Regex.Replace(parsedDescription, "<.*?>", string.Empty);
                 this.playerItem.PlayerStatus.Content = parsedDescription;
 
-                var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items", "ImagePack_items_Embeds__e_" + Item.iconPath),
-                    UriKind.RelativeOrAbsolute);
-                this.playerItem.ProfileImage.Source = new BitmapImage(UriSource);
+                this.playerItem.ProfileImage.Source = Client.GetItemIcon(Item.id);
 
                 this.playerItem.HorizontalAlignment = HorizontalAlignment.Left;
                 this.playerItem.VerticalAlignment = VerticalAlignment.Top;
