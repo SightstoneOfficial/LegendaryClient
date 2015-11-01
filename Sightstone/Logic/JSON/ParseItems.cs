@@ -41,7 +41,7 @@ namespace Sightstone.Logic.JSON
                     newItem.sellprice = goldData.sell;
                 }
 
-                newItem.iconPath = item.icon.Replace(".dds", ".bmp");
+                newItem.iconPath = item.icon.Replace(".dds", ".bmp").Replace(".DDS", ".bmp");
 
                 itemList.Add(newItem);
             }

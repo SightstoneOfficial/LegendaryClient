@@ -212,16 +212,9 @@ namespace Sightstone.Windows
                     if (stat.StatTypeName.StartsWith("ITEM") && Math.Abs(stat.Value) > 0)
                     {
                         var item = new Image();
+                        item.Source = Client.GetItemIcon(stat.Value.ToInt());
+                        
 
-                        var UriSource = Directory.GetFiles(
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items"),
-                            "ImagePack_items_Embeds__e_" + stat.Value + "_*");
-                        if (UriSource.Count() > 0)
-                        {
-                            item.Source = new BitmapImage(new System.Uri(UriSource.First()));
-                        }
-                        else
-                            Client.Log(stat.Value + ".png is missing");
                         playerStats.ItemsListView.Items.Add(item);
                     }
                     switch (stat.StatTypeName)

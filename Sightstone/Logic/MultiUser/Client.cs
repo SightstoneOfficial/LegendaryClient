@@ -258,6 +258,31 @@ namespace Sightstone.Logic.MultiUser
                 return Convert.ToBase64String(hash);
             }
         }
+
+        internal static BitmapImage GetItemIcon(int id)
+        {
+            var iconFileName = items.GetItem(id).iconPath;
+            if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items",
+                "ImagePack_items_Embeds__e_" + iconFileName)))
+            {
+                var uri = new Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items",
+                "ImagePack_items_Embeds__e_" + iconFileName));
+                return new BitmapImage(uri);
+            }
+            else
+            {
+                var files = Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items"), "*" + id + "_*");
+
+                if (files.Count() > 0)
+                {
+                    return new BitmapImage(new Uri(files.First()));
+                }
+                else
+                {
+                    return new BitmapImage(new Uri("/Sightstone;component/NONE.png", UriKind.RelativeOrAbsolute));
+                }
+            }
+        }
         #endregion account
 
         #region lolClient
@@ -735,12 +760,12 @@ namespace Sightstone.Logic.MultiUser
         }
         public static BitmapImage GetImage(string address)
         {
-            var UriSource = new System.Uri(address, UriKind.RelativeOrAbsolute);
+            var UriSource = new Uri(address, UriKind.RelativeOrAbsolute);
             if (File.Exists(address) || address.StartsWith("/Sightstone;component"))
                 return new BitmapImage(UriSource);
 
             Client.Log("Cannot find " + address, "WARN");
-            UriSource = new System.Uri("/Sightstone;component/NONE.png", UriKind.RelativeOrAbsolute);
+            UriSource = new Uri("/Sightstone;component/NONE.png", UriKind.RelativeOrAbsolute);
 
             return new BitmapImage(UriSource);
         }

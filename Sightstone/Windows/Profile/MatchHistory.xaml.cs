@@ -27,7 +27,7 @@ namespace Sightstone.Windows.Profile
     public partial class MatchHistory
     {
         //private string _matchLinkOnline;
-        private LargeChatPlayer playerItem;
+        private LargeRuneMastery playerItem;
         //private static readonly ILog Log = LogManager.GetLogger(typeof (MatchHistory));
         private readonly List<MatchStats> gameStats = new List<MatchStats>();
         static UserClient UserClient = (UserList.Users[Client.CurrentServer])[Client.CurrentUser];
@@ -236,19 +236,11 @@ namespace Sightstone.Windows.Profile
 
                     if (((string) item.Key).StartsWith("Item"))
                     {
-                        var UriSource = Directory.GetFiles(
-                            Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items"),
-                            "ImagePack_items_Embeds__e_" + item.Value.ToString() + "_*");
-                        if (UriSource.Count() == 0)
-                        {
-                            continue;
-                        }
-
                         img = new Image
                         {
                             Width = 58,
                             Height = 58,
-                            Source = new BitmapImage(new Uri(UriSource.First())),
+                            Source = Client.GetItemIcon(item.Value.ToInt()),
                             Tag = item
                         };
                         img.MouseMove += img_MouseMove;
@@ -290,14 +282,14 @@ namespace Sightstone.Windows.Profile
         private void img_MouseMove(object sender, MouseEventArgs e)
         {
             //TODO: add item info
-            return;
+            //return;
 
             var item = (Image) sender;
             var playerItem = (ProfilePage.KeyValueItem) item.Tag;
             if (this.playerItem == null)
             {
                 var Item = items.GetItem(Convert.ToInt32(playerItem.Value));
-                this.playerItem = new LargeChatPlayer();
+                this.playerItem = new LargeRuneMastery();
                 Client.MainGrid.Children.Add(this.playerItem);
 
 
@@ -318,7 +310,7 @@ namespace Sightstone.Windows.Profile
                 parsedDescription = Regex.Replace(parsedDescription, "<.*?>", string.Empty);
                 this.playerItem.PlayerStatus.Content = parsedDescription;
 
-                var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "item", Item.id + ".png"),
+                var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "swf", "ImagePack_items", "ImagePack_items_Embeds__e_" + Item.iconPath),
                     UriKind.RelativeOrAbsolute);
                 this.playerItem.ProfileImage.Source = new BitmapImage(UriSource);
 
