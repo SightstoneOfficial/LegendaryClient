@@ -483,7 +483,9 @@ namespace Sightstone.Windows
             }
             else
             {
-                SoundPlayer.Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp3"));
+                SoundPlayer.Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets",
+                    "themes", Client.Theme, "LoginScreenLoop.mp3"));
+                SoundPlayer.Volume = slider.Value/100;
                 SoundPlayer.Play();
                 Sound.IsChecked = false;
                 playingSound = true;
@@ -512,7 +514,8 @@ namespace Sightstone.Windows
                 }
                 else
                 {
-                    LoginPic.Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Client", "Login.mp4"));
+                    LoginPic.Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets",
+                        "themes", Client.Theme, "login-loop.mp4"));
                     LoginPic.LoadedBehavior = MediaState.Manual;
                     LoginPic.MediaEnded += LoginPic_MediaEnded;
                     LoginPic.Play();
@@ -963,7 +966,7 @@ namespace Sightstone.Windows
 
         private Vector moveOffset;
         private Point _currentLocation;
-        private double lastVolume;
+        private double _lastVolume;
 
         private async Task garenaLogin(BaseRegion garenaregion, Deletable<UserClient> user)
         {
@@ -1280,7 +1283,7 @@ namespace Sightstone.Windows
                 SoundPlayer.Volume = e.NewValue / 100;
                 Settings.Default.LoginMusicVolume = e.NewValue;
                 Settings.Default.Save();
-                lastVolume = e.OldValue / 100;
+                _lastVolume = e.OldValue / 100;
                 if (e.NewValue == 0)
                 {
                     //Change to muted icon
@@ -1300,10 +1303,10 @@ namespace Sightstone.Windows
             {
                 if (SoundPlayer.Volume == 0)
                 {
-                    if (lastVolume != 0)
+                    if (_lastVolume != 0)
                     {
-                        SoundPlayer.Volume = lastVolume;
-                        slider.Value = lastVolume * 100;
+                        SoundPlayer.Volume = _lastVolume;
+                        slider.Value = _lastVolume * 100;
                     }
                     else
                     {

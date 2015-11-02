@@ -506,9 +506,8 @@ namespace Sightstone.Patcher.Pages
 
                 if (!Directory.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme)))
                     Directory.CreateDirectory(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme));
-                else
+                else if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, "converted")))
                 {
-                    
                     return;
                 }
 
@@ -524,7 +523,7 @@ namespace Sightstone.Patcher.Pages
                         string fileName = item.uri.ToString().Split('/').Last();
                         if (File.Exists(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName)))
                             if (new FileInfo(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName)).Length == item.size)
-                                continue;
+                                continue; //Skip if already downloaded
                         LogTextBox("Downloading " + fileName + " from http://l3cdn.riotgames.com");
                         newClient.DownloadFile(item.uri, Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, fileName));
 
@@ -551,6 +550,7 @@ namespace Sightstone.Patcher.Pages
                         engine.Convert(inputFile, outputFile);
                     }
                 }
+                File.Create(Path.Combine(Client.ExecutingDirectory, "Assets", "themes", theme, "converted"));
             }
             catch
             {
