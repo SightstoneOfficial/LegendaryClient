@@ -303,7 +303,7 @@ namespace Sightstone.Windows
         {
             var botPlayer = new BotControl();
             champions champ = champions.GetChampion(BotPlayer.SummonerInternalName.Split('_')[1]);
-            var Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", champ.name + ".png"));
+            var Source = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "champion", champ.name + "_Square_0.png"));
 
             botPlayer.Width = 400;
             botPlayer.Margin = new Thickness(0, 0, 0, 5);
