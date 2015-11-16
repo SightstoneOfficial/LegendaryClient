@@ -188,7 +188,7 @@ namespace Sightstone.Patcher.Pages
             files = new List<DownloadFile>();
             var downloader = new Downloader();
 
-            //AddGameClientUpdateFiles(region);
+            AddGameClientUpdateFiles(region);
 
             var manifest = LeagueDownloadLogic.AirGetUris(region);
             if (manifest.Count() == 0)
