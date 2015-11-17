@@ -2,12 +2,11 @@
 using Sightstone.Logic.Region;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace Sightstone.Logic.MultiUser
 {
@@ -28,6 +27,7 @@ namespace Sightstone.Logic.MultiUser
             {
                 return;
             }
+            //TODO: Switch to json or sqlite table
             var filename = Path.Combine(region.InternalName, EncryptDes(region.InternalName + ":" + internalname, encrypt, encrypt).Replace("/", "Rito"));
             if (File.Exists(Path.Combine(Client.ExecutingDirectory, "LCUsers", "AccountVersion")))
             {
@@ -108,28 +108,28 @@ namespace Sightstone.Logic.MultiUser
             var login = new List<LoginData>();
             if (!VerifyEncrypt(encrypt)) 
                 return login;
-            foreach (var files in Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCUsers"), "*", SearchOption.AllDirectories))
-            {
-                Client.Log("Found file: " + Path.GetFileName(files));
-                var fileName = Path.GetFileName(files);
-                if (fileName == null || fileName == "AccountVersion" || fileName == "encrypt")
-                    continue;
-                var text = File.ReadAllLines(files);
-                var region = BaseRegion.GetRegion(text[2]);
-                fileName = fileName.TrimStart(region.InternalName.ToCharArray());
-                fileName = DecryptDes(fileName.Replace("Rito", "/"), encrypt, encrypt).Split(':')[1];
-                var lgn = new LoginData
+            Parallel.ForEach(Directory.GetFiles(Path.Combine(Client.ExecutingDirectory, "LCUsers"), "*", SearchOption.AllDirectories), files =>
                 {
-                    SumName = fileName,
-                    User = DecryptDes(text[0], encrypt, fileName),
-                    Pass = DecryptDes(text[1], encrypt, fileName),
-                    Region = region,
-                    Status = text[3],
-                    SumIcon = text[4].ToInt(),
-                    ShowType = (ShowType)Enum.Parse(typeof(ShowType), text[5])
-                };
-                login.Add(lgn);
-            }
+                    Client.Log("Found file: " + Path.GetFileName(files));
+                    var fileName = Path.GetFileName(files);
+                    if (fileName == null || fileName == "AccountVersion" || fileName == "encrypt")
+                        return;
+                    var text = File.ReadAllLines(files);
+                    var region = BaseRegion.GetRegion(text[2]);
+                    fileName = fileName.TrimStart(region.InternalName.ToCharArray());
+                    fileName = DecryptDes(fileName.Replace("Rito", "/"), encrypt, encrypt).Split(':')[1];
+                    var lgn = new LoginData
+                    {
+                        SumName = fileName,
+                        User = DecryptDes(text[0], encrypt, fileName),
+                        Pass = DecryptDes(text[1], encrypt, fileName),
+                        Region = region,
+                        Status = text[3],
+                        SumIcon = text[4].ToInt(),
+                        ShowType = (ShowType) Enum.Parse(typeof (ShowType), text[5])
+                    };
+                    login.Add(lgn);
+                });
             return login;
         }
 

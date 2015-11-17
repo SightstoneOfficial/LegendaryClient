@@ -1,11 +1,8 @@
-﻿using LCLog;
-using Sightstone.Controls;
+﻿using Sightstone.Controls;
 using Sightstone.Logic.JSON;
 using Sightstone.Logic.Region;
 using Sightstone.Logic.Replays;
 using Sightstone.Windows;
-using MahApps.Metro;
-using MahApps.Metro.Controls;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
