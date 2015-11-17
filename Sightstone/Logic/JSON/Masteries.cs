@@ -11,12 +11,10 @@ namespace Sightstone.Logic.JSON
 {
     public static class Masteries
     {
-        public static List<masteries> PopulateMasteries()
+        public static List<masteries> PopulateMasteries(string masteryJson)
         {
             var masteryList = new List<masteries>();
-
-            string masteryJson =
-                File.ReadAllText(Path.Combine(Client.ExecutingDirectory, "Assets", "data", "en_US", "mastery.json"));
+            
             var serializer = new JavaScriptSerializer();
             var deserializedJson = serializer.Deserialize<Dictionary<string, object>>(masteryJson);
             var masteryData = deserializedJson["data"] as Dictionary<string, object>;

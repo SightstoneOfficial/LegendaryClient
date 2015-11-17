@@ -250,9 +250,8 @@ namespace Sightstone.Windows
 
                 Client.InfoLabel.Content = "IP: " + UserClient.LoginPacket.IpBalance + " ∙ RP: " + UserClient.LoginPacket.RpBalance;
                 int profileIconId = UserClient.LoginPacket.AllSummonerData.Summoner.ProfileIconId;
-                var UriSource =
-                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", profileIconId + ".png"),
-                    UriKind.RelativeOrAbsolute);
+
+                var UriSource = Client.GetIconUri(profileIconId);
                 try
                 {
                     ProfileImage.Source = new BitmapImage(UriSource);

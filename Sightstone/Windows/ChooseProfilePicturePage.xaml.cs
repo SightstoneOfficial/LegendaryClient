@@ -34,10 +34,8 @@ namespace Sightstone.Windows
                     Width = 64,
                     Margin = new Thickness(5, 5, 5, 5)
                 };
-                var UriSource =
-                    new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", ic.IconId + ".png"),
-                        UriKind.Absolute);
-                champImage.Source = new BitmapImage(UriSource);
+                
+                champImage.Source = new BitmapImage(Client.GetIconUri(ic.IconId.ToInt()));
                 champImage.Tag = ic.IconId;
                 SummonerIconListView.Items.Add(champImage);
             }
@@ -49,9 +47,7 @@ namespace Sightstone.Windows
                     Width = 64,
                     Margin = new Thickness(5, 5, 5, 5)
                 };
-                var UriSource = new System.Uri(Path.Combine(Client.ExecutingDirectory, "Assets", "profileicon", i + ".png"),
-                    UriKind.Absolute);
-                champImage.Source = new BitmapImage(UriSource);
+                champImage.Source = new BitmapImage(Client.GetIconUri(i));
                 champImage.Tag = i;
                 SummonerIconListView.Items.Add(champImage);
             }
