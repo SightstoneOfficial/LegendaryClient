@@ -37,7 +37,7 @@ namespace RtmpSharp.Net
         // by default, accept all certificates
         readonly Uri uri;
         readonly ObjectEncoding objectEncoding;
-        readonly TaskCallbackManager<int, object> callbackManager;
+        readonly TaskCallbackManager callbackManager;
         readonly SerializationContext serializationContext;
         readonly RemoteCertificateValidationCallback certificateValidator = (sender, certificate, chain, errors) => true;
         RtmpPacketWriter writer;
@@ -62,7 +62,7 @@ namespace RtmpSharp.Net
 
             this.uri = uri;
             this.serializationContext = serializationContext;
-            callbackManager = new TaskCallbackManager<int, object>();
+            callbackManager = new TaskCallbackManager();
         }
 
         public RtmpClient(Uri uri, SerializationContext serializationContext, ObjectEncoding objectEncoding) : this(uri, serializationContext)

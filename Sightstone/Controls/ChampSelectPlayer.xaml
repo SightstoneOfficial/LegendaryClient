@@ -1,0 +1,91 @@
+﻿<UserControl x:Name="ChampPlayer"
+             x:Class="Sightstone.Controls.ChampSelectPlayer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             mc:Ignorable="d"
+             Height="90" Width="255"
+             MouseDown="ChampPlayer_MouseOver" MouseLeave="ChampPlayer_MouseLeave">
+
+    <Grid Height="90" Width="255">
+        <Border Background="{StaticResource PrimaryHueLightBrush}" CornerRadius="0" Height="90" Width="255">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Visibility="Hidden" Margin="-8,-8,0,-8" Height="Auto" HorizontalAlignment="Left" x:Name="TeamRectangle" BorderBrush="Violet" Width="4" CornerRadius="3,0,0,3" BorderThickness="4" Panel.ZIndex="50"/>
+
+                <!-- Pic -->
+
+                <Grid Margin="0" Width="95" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+                    <Border BorderThickness="0">
+                        <Grid>
+                            <Grid.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=clipMask}" Stretch="None" />
+                            </Grid.OpacityMask>
+                            <Border x:Name="clipMask" CornerRadius="0" Background="Gray" VerticalAlignment="Stretch" />
+                            <Image Name="SummonerSpell1" VerticalAlignment="Top" HorizontalAlignment="Center" Source="/Sightstone;component/NONE.png" Height="45.3" Stretch="UniformToFill" Margin="0"/>
+                            <Image Name="SummonerSpell2" VerticalAlignment="Bottom" HorizontalAlignment="Center" Source="/Sightstone;component/NONE.png" Height="45.3" Stretch="UniformToFill" Margin="0"/>
+                        </Grid>
+                    </Border>
+                    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Width="60" Height="60" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Viewbox Width="60" Height="60">
+                                <Image x:Name="ChampionImage" Margin="-8" Stretch="UniformToFill" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Sightstone;component/NONE.png"/>
+                            </Viewbox>
+                        </Button>
+                    </Grid>
+
+                </Grid>
+
+                <!-- Info -->
+                <Grid Grid.Column="1" VerticalAlignment="Center" Margin="8,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Label x:Name="PlayerName" Grid.Row="0" Content="Username" HorizontalAlignment="Stretch" Padding="0" Margin="0" VerticalAlignment="Top" FontSize="14" Foreground="{StaticResource PrimaryHueMidBrush}" />
+                    
+                    <Grid Grid.Row="1" Margin="0,4,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Border CornerRadius="3" Grid.Column="0" Background="{StaticResource PrimaryHueDarkBrush}" BorderThickness="0" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,4,0">
+                            <Label x:Name="PlayerTier" Padding="4,1" FontSize="11" Foreground="{StaticResource PrimaryHueLightBrush}" VerticalAlignment="Center" Content="TIER DEVISION"/>
+                        </Border>
+
+                        <Button x:Name="TradeButton" Grid.Column="1" HorizontalAlignment="Center" Margin="4,0" VerticalAlignment="Top" Style="{StaticResource MaterialDesignFlatButton}" Width="20" Height="20" Padding="0" Visibility="Visible">
+                            <Viewbox Width="18" Height="18">
+                                <Canvas Width="22" Height="22">
+                                    <Path Data="M21,9L17,5V8H10V10H17V13M7,11L3,15L7,19V16H14V14H7V11Z" Fill="{StaticResource PrimaryHueDarkBrush}" />
+                                </Canvas>
+                            </Viewbox>
+                        </Button>
+                        <Viewbox x:Name="LockedInIcon" Visibility="Visible"  HorizontalAlignment="Center" Grid.Column="2" Height="18" Margin="4,0,0,0" VerticalAlignment="Center" Width="18">
+                            <Canvas Width="26" Height="26">
+                                <Path  Data="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" Fill="{StaticResource PrimaryHueDarkBrush}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Grid>
+                    
+                    <UniformGrid Rows="1" HorizontalAlignment="Left" Visibility="Collapsed" VerticalAlignment="Center" Grid.Row="0">
+                        <Image x:Name="SummonerSpell12" Height="24" Source="/Sightstone;component/NONE.png" Margin="0" HorizontalAlignment="Left" Width="24" />
+                        <Image x:Name="SummonerSpell22" Height="24" Source="/Sightstone;component/NONE.png" Margin="4,0,0,0" HorizontalAlignment="Left" Width="24" />
+                    </UniformGrid>
+                </Grid>
+
+                <Grid Grid.Column="2">
+                    
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

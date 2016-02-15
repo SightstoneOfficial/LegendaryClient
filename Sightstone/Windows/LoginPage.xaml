@@ -1,0 +1,213 @@
+﻿<Page
+    x:Class="Sightstone.Windows.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+    Title="LoginPage"
+    mc:Ignorable="d" d:DesignHeight="672"
+    d:DesignWidth="1024"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    Background="{DynamicResource MaterialDesignPaper}">
+
+    <Grid x:Name="MouseGrid" Margin="0" Background="Black" Loaded="MouseGrid_Loaded">
+
+        <!-- Background Image -->
+        <Grid>
+            <Image x:Name="LoginImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-2"
+                   Stretch="UniformToFill" />
+            <!--<Image x:Name="Current" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="UniformToFill" Source="/Sightstone;component/cs_bg_champions.png"/>-->
+            <MediaElement x:Name="LoginPic" Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Panel.ZIndex="-1" Margin="-15">
+                <MediaElement.Effect>
+                    <BlurEffect Radius="50" KernelType="Gaussian"></BlurEffect>
+                </MediaElement.Effect>
+                <MediaElement.Clip>
+                    <RectangleGeometry Rect="15,15,5000,2500"/>
+                </MediaElement.Clip>
+            </MediaElement>
+
+        </Grid>
+
+        <!-- Sound Control -->
+        <Grid Height="58" Margin="30,0,0,15" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="174">
+            <Slider x:Name="slider" Margin="0,20,18,9" Value="50" Minimum="0" Maximum="100" 
+                    SmallChange="1" LargeChange="10" HorizontalAlignment="Right" Width="100" ValueChanged="slider_ValueChanged"/>
+            <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="MuteButton_Click" IsDefault="False" Height="40" Margin="0,10,129,8" Width="40" HorizontalAlignment="Left">
+                <Viewbox Width="30" Height="30">
+                    <Canvas Width="24" Height="24" >
+                        <Path x:Name="muteButton" Data="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" Fill="{StaticResource IdealForegroundColorBrush}" />
+                    </Canvas>
+                </Viewbox>
+            </Button>
+        </Grid>
+
+        <!-- Floating Action Button -->
+        <Grid Panel.ZIndex="10" Margin="30" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <Button Style="{StaticResource MaterialDesignFloatingActionDarkButton}" Click="ShowLogin_Click" IsDefault="False">
+                <Viewbox Width="24" Height="24">
+                    <Label FontWeight="SemiBold">+</Label>
+                </Viewbox>
+            </Button>
+        </Grid>
+
+        <!-- Encrypt Box -->
+        <Grid x:Name="EncryptBox" VerticalAlignment="Center" HorizontalAlignment="Center" Panel.ZIndex="500">
+            <wpf:Card UniformCornerRadius="3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <PasswordBox x:Name="Encrypt" HorizontalAlignment="Center" VerticalAlignment="Center" MinWidth="300" Grid.Column="0" controls:TextBoxHelper.Watermark="Enter your Encryptionkey here" BorderThickness="0"/>
+                    <Button x:Name="EncryptCheck" Click="Button_Click" Content="Unlock" HorizontalAlignment="Center" VerticalAlignment="Center" Height="27" Grid.Column="1"/>
+                </Grid>
+            </wpf:Card>
+        </Grid>
+
+
+
+        <!-- Accounts -->
+        <Grid Panel.ZIndex="10" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,10,10,75" Height="Auto" Width="Auto">
+            <ListView x:Name="UserListView" Style="{x:Null}" Background="{x:Null}" Padding="0" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Margin" Value="2" />
+                    </Style>
+                </ListView.Resources>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+                            RelativeSource={RelativeSource AncestorType=ScrollContentPresenter}}"
+                            ItemWidth="{Binding (ListView.View).ItemWidth, 
+                            RelativeSource={RelativeSource AncestorType=ListView}}"
+                            MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+                            ItemHeight="{Binding (ListView.View).ItemHeight, 
+                            RelativeSource={RelativeSource AncestorType=ListView}}" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+
+        </Grid>
+
+        <!-- Card Template Start -->
+        <Grid x:Name="LoginGrid" Panel.ZIndex="1000" Visibility="Hidden">
+            <!-- Visibility="Hidden"-->
+            <Grid Height="500" x:Name="HideGrid" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="30">
+                <wpf:Card UniformCornerRadius="3">
+                    <Grid>
+                        <!-- Top Header / Button / Whatever you want -->
+                        <Grid VerticalAlignment="Top" Height="41">
+                            <Button Height="40" VerticalAlignment="Top" Style="{DynamicResource MaterialDesignFlatButton}" VerticalContentAlignment="Center" FontSize="14" Content="Sightstone"/>
+                            <Border BorderThickness="0,0,0,1" BorderBrush="{StaticResource PrimaryHueLightBrush}"/>
+                        </Grid>
+
+                        <!-- Content -->
+                        <Grid Margin="0,48,0,48">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Region and Server -->
+                            <Grid Grid.Row="0" Margin="50,8,8,8" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ComboBox x:Name="RegionComboBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{DynamicResource LiveRegions}" SelectedIndex="3" Grid.Column="0" />
+                                <ComboBox x:Name="UpdateRegionComboBox" HorizontalAlignment="Stretch" VerticalAlignment="Top" ItemsSource="{DynamicResource UpdateRegions}" SelectionChanged="UpdateRegionComboBox_SelectionChanged" Grid.Column="2"/>
+                            </Grid>
+
+                            <!-- Username -->
+                            <Grid Grid.Row="1" Margin="10,8,8,0" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Image Source="/Sightstone;component/ui\img\icons\ic_account_circle_black_36dp.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
+                                <TextBox x:Name="LoginUsernameBox" controls:TextBoxHelper.Watermark="Username" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
+                                <CheckBox Margin="0,8" Grid.Row="1" x:Name="RememberUsernameCheckbox" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Username" IsChecked="True" Grid.Column="1"/>
+                            </Grid>
+
+                            <!-- Password -->
+                            <Grid Grid.Row="2" Margin="10,8,8,4" Height="Auto" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="40"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Image Source="/Sightstone;component/ui\img\icons\ic_vpn_key_36pt.png" Margin="4" Height="27" Grid.Column="0" VerticalAlignment="Top"></Image>
+                                <PasswordBox x:Name="LoginPasswordBox" controls:TextBoxHelper.Watermark="Password" HorizontalAlignment="Stretch" VerticalAlignment="Top" FontSize="16" Height="35" Grid.Column="1"/>
+                                <CheckBox Margin="0,8" Grid.Row="1" x:Name="RememberPasswordCheckbox"  HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Remember Password" Grid.Column="1"/>
+                            </Grid>
+
+                            <CheckBox Grid.Row="3" x:Name="AutoLoginCheckBox" Margin="50,8,8,4" HorizontalAlignment="Left"
+                          VerticalAlignment="Top" Content="Auto-Login" Checked="AutoLoginCheckBox_CheckChanged" Unchecked="AutoLoginCheckBox_CheckChanged" />
+                            <CheckBox Grid.Row="4" x:Name="invisibleLoginCheckBox" Margin="50,4,8,4" HorizontalAlignment="Left"
+                          VerticalAlignment="Top" Content="Sign-in invisible" />
+
+                            
+                            <CheckBox Grid.Row="5" x:Name="Sound" Margin="50,4,8,4" HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom" Click="DisableSound_Click" Content="Disable Login Music"
+                          IsChecked="False" />
+                            <CheckBox Grid.Row="6" x:Name="Video" Margin="50,4,8,8" HorizontalAlignment="Left"
+                          VerticalAlignment="Bottom" Click="DisableVideo_Click" Content="Disable Menu Animations"
+                          IsChecked="False" />
+                            
+                            <Grid Grid.Row="7" Margin="50,8,8,0" Height="35" Width="290" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                                <TextBox x:Name="Version" controls:TextBoxHelper.Watermark="Client Version Override" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" FontSize="16" Height="35"/>
+                            </Grid>
+                        </Grid>
+
+                        <!-- Bottom Footer / Button / Whatever you want -->
+                        <Grid VerticalAlignment="Bottom">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button x:Name="AddAccountButton" Content="Add Account"  Click="AddAccountButton_Click" IsDefault="True" Height="40" Style="{StaticResource MaterialDesignRaisedAccentButton}" HorizontalAlignment="Stretch" Grid.Column="0" Panel.ZIndex="3"/>
+                            <Button x:Name="LoginButton" Click="LoginButton_Click" IsDefault="True" Height="40" HorizontalAlignment="Stretch" Grid.Column="1" Panel.ZIndex="3">Login</Button>
+                        </Grid>
+                    </Grid>
+                </wpf:Card>
+            </Grid>
+
+        </Grid>
+
+        <controls:ProgressRing x:Name="LoggingInProgressRing" Margin="0,0,0,100" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="True" Visibility="Collapsed">
+        </controls:ProgressRing>
+
+        <Label x:Name="LoggingInLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Signing in"
+               FontSize="36" FontWeight="ExtraLight" Foreground="White" Visibility="Hidden">
+        </Label>
+
+        <TextBox x:Name="ErrorTextBox" Width="350" Height="20" Margin="20,0,0,15"
+                 HorizontalAlignment="Left" VerticalAlignment="Bottom" Panel.ZIndex="-1" Text="Error"
+                 TextWrapping="NoWrap" IsReadOnly="True"
+                 FontSize="12" Foreground="#FFFF7373" Background="#7F000000"
+                 BorderBrush="{x:Null}" Visibility="Hidden">
+            <TextBox.Effect>
+                <DropShadowEffect ShadowDepth="3" />
+            </TextBox.Effect>
+        </TextBox>
+        <MediaElement x:Name="SoundPlayer" Width="100" Height="100" Margin="924,572,0,0"
+                      HorizontalAlignment="Left" VerticalAlignment="Top" LoadedBehavior="Manual"
+                      UnloadedBehavior="Stop" Visibility="Hidden" />
+    </Grid>
+</Page>

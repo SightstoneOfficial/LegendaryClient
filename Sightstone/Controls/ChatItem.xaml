@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="Sightstone.Controls.ChatItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Sightstone.Controls"
+             Width="275"
+             Height="350" mc:Ignorable="d">
+
+    <Grid local:AccessKeyScoper.IsAccessKeyScope="True">
+        <wpf:Card VerticalAlignment="Stretch" Background="{StaticResource PrimaryHueLightBrush}" HorizontalAlignment="Stretch" UniformCornerRadius="3">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Label x:Name="PlayerLabelName" Margin="8,10" HorizontalAlignment="Left" VerticalAlignment="Center" Content="Eddy5641" Padding="0" Foreground="{StaticResource MaterialDesignBody}" FontSize="16" />
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <RichTextBox x:Name="ChatText" Margin="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsReadOnly="True" Background="{StaticResource MaterialDesignPaper}" Foreground="{StaticResource MaterialDesignBody}" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{x:Null}" BorderThickness="0" Padding="0,3,0,3" Panel.ZIndex="1" >
+                        <FlowDocument LineHeight="2" />
+                    </RichTextBox>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Name="ChatTextBox" VerticalContentAlignment="Center" wpf:TextFieldAssist.Hint="Message..." wpf:TextFieldAssist.HintOpacity="0.8" Background="Transparent" Margin="8,8,0,8" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" BorderThickness="0"/>
+                    <Button x:Name="SendButton" Style="{StaticResource MaterialDesignFlatButton}" Padding="0" Margin="8,4" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SendButton_Click" IsDefault="True">
+                        <Viewbox Width="20" Height="20" Opacity="0.8">
+                            <Canvas Width="24" Height="24">
+                                <Path Data="M2,21L23,12L2,3V10L17,12L2,14V21Z" Fill="{StaticResource MaterialDesignBody}" />
+                            </Canvas>
+                        </Viewbox>
+                    </Button>
+                </Grid>
+
+
+
+                
+       
+        
+
+        
+            </Grid>
+        </wpf:Card>
+    </Grid>
+</UserControl>

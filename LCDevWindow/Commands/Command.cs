@@ -1,4 +1,4 @@
-﻿using LCDevWindow.Commands.LegendaryClient;
+﻿using LCDevWindow.Commands.Sightstone;
 using System;
 using System.Collections.Generic;
 
@@ -18,7 +18,7 @@ namespace LCDevWindow.Commands
 
             if (t != null)
                 return (Command)Activator.CreateInstance(t);
-            t = Type.GetType("LCDevWindow.Commands.LegendaryClient." + command);
+            t = Type.GetType("LCDevWindow.Commands.Sightstone." + command);
 
             if (t != null)
                 return (LCCommand)Activator.CreateInstance(t);

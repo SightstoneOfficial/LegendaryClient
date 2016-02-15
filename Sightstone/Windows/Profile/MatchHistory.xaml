@@ -1,0 +1,136 @@
+﻿<Page x:Class="Sightstone.Windows.Profile.MatchHistory"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="548"
+      d:DesignWidth="1280"
+	  Title="MatchHistory"
+      Background="{StaticResource MaterialDesignPaper}">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Style x:Key="NoListViewHeader" TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+        </ResourceDictionary>
+    </Page.Resources>
+
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="270"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Game Overview -->
+        <Grid Grid.Column="0">
+            <ListView x:Name="GamesListView" HorizontalAlignment="Stretch" Margin="-10,0" Padding="0" VerticalAlignment="Stretch" Background="{StaticResource PrimaryHueLightBrush}" SelectionChanged="GamesListView_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Disabled" BorderThickness="0">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListViewItem}">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
+        </Grid>
+        
+        <!-- Game Info -->
+        <Grid Grid.Column="1" Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Teams -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <ListView Grid.Column="0" x:Name="BlueListView" HorizontalAlignment="Right" BorderThickness="0" Margin="0" VerticalAlignment="Center" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" Height="60" Width="Auto" Background="Transparent">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+                <Label Content="VS" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0" Padding="0" FontSize="45" Foreground="{StaticResource MaterialDesignBody}" Height="60" />
+                <ListView x:Name="PurpleListView" Grid.Column="2" HorizontalAlignment="Left" BorderThickness="0" Margin="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled" VerticalAlignment="Center" Background="Transparent" Height="60" Width="Auto">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </Grid>
+
+            <!-- Items bought -->
+            <Grid Grid.Row="1">
+                <ListView x:Name="ItemsListView" HorizontalAlignment="Center" BorderThickness="0" Height="60" Margin="8" VerticalAlignment="Center" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Width="Auto" Background="Transparent">
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                </ListView>
+            </Grid>
+
+            <!-- Info -->
+            <Grid Grid.Row="2" Margin="0">
+                <ListView x:Name="GameStatsListView" HorizontalAlignment="Stretch" Margin="0" Width="Auto" Height="Auto" BorderThickness="0" VerticalAlignment="Stretch" Background="{StaticResource PrimaryHueLightBrush}">
+                    <ListView.View>
+                        <GridView ColumnHeaderContainerStyle="{StaticResource NoListViewHeader}">
+                            <GridViewColumn x:Name="GameKeyHeader" Header="Key" DisplayMemberBinding="{Binding Key}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Key}" Foreground="{StaticResource MaterialDesignBody}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn x:Name="GameValueHeader" Header="Value" DisplayMemberBinding="{Binding Value}">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Value}" Foreground="{StaticResource MaterialDesignBody}"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            
+            <!-- Record Info -->
+            <Grid Grid.Row="3" Margin="0,8,0,0" HorizontalAlignment="Right" VerticalAlignment="Bottom" ZIndex="99" Width="Auto">
+                <Ellipse x:Name="gameRecordedEllipse" Fill="#CCCD1A1A" HorizontalAlignment="Left" VerticalAlignment="Center" Width="16" Height="16" RenderTransformOrigin="0.5,0.5" Margin="0">
+                    <Ellipse.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform ScaleY="-1" ScaleX="-1"/>
+                            <SkewTransform/>
+                            <RotateTransform/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <Label x:Name="ReplayLabel" Content="Click to watch recorded Replay" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20,4,0,4" Padding="0" Foreground="{StaticResource MaterialDesignBody}" />
+                <Grid x:Name="ClickGrid" MouseDown="ClickGrid_OnMouseDown"/>
+            </Grid>
+
+
+        </Grid>
+    </Grid>
+</Page>

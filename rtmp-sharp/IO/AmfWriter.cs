@@ -64,12 +64,12 @@ namespace RtmpSharp.IO
         {
             var smallIntTypes = new[]
             {
-                typeof(SByte),
-                typeof(Byte),
-                typeof(Int16),
-                typeof(UInt16),
-                typeof(Int32),
-                typeof(UInt32)
+                typeof(sbyte),
+                typeof(byte),
+                typeof(short),
+                typeof(ushort),
+                typeof(int),
+                typeof(uint)
             };
             
             var bigOrFloatingTypes = new[]
