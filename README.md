@@ -1,3 +1,6 @@
+#Status update
+LegendaryClient is being replaced by Sightstone. Please check out <a href="https://github.com/SightstoneOfficial/Sightstone.AspNet"> this project</a> instead.
+
 LegendaryClient
 ===============
 ###Current Status: 
