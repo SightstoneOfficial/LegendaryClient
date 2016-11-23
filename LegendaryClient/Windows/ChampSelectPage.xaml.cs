@@ -1368,21 +1368,21 @@ namespace LegendaryClient.Windows
                 Warning Warn = new Warning();
                 Warn.Header.Content = "Dodge Game";
                 Warn.MessageText.Text = "Are You Sure You Want To Dodge? You will still have to spend the time penalty";
-                Warn.backtochampselect.Click += (o, m) =>
+                Warn.ReturnButton.Click += (o, m) =>
                 {
                     Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 };
-                Warn.AcceptButton.Click += (o, m) =>
+                Warn.ExitButton.Click += (o, m) =>
                 {
                     QuitCurrentGame();
                     Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 };
-                Warn.hide.Click += (o, m) =>
+                Warn.HideButton.Click += (o, m) =>
                 {
                     Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
                 };
-                Warn.backtochampselect.Content = "Return to Champ Select";
-                Warn.AcceptButton.Content = "Dodge game";
+                Warn.ReturnButton.Content = "Return to Champ Select";
+                Warn.ExitButton.Content = "Dodge game";
                 Client.FullNotificationOverlayContainer.Content = Warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }

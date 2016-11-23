@@ -31,7 +31,7 @@
         <Label x:Name="TotalProgressLabel" Margin="10,0,0,40" HorizontalAlignment="Left" VerticalAlignment="Bottom"
                Content="0%" />
         <ProgressBar x:Name="TotalProgessBar" Height="30" Margin="10,0,10,10" HorizontalAlignment="Stretch"
-                     VerticalAlignment="Bottom" Style="{x:Null}" Foreground="#FF9C9C9C" />
+                     VerticalAlignment="Bottom" Style="{x:Null}" Foreground="#FF9C9C9C" ValueChanged="TotalProgessBar_OnValueChanged"/>
         <Label x:Name="CurrentStatusLabel" Margin="0,0,10,100" HorizontalAlignment="Right"
                VerticalAlignment="Bottom" Content="Checking for updates..." />
         <TextBox x:Name="PatchTextBox" Margin="10,60,10,163" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

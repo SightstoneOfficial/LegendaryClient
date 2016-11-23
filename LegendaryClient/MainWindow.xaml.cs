@@ -340,11 +340,11 @@ namespace LegendaryClient
             else if (Settings.Default.warnClose && Client.IsInGame)
             {
                 _warn = new Warning {Header = {Content = "Logout while in Game"}, MessageText = {Text = "Are You Sure You Want To Quit? This will result in a dodge."}};
-                _warn.backtochampselect.Click += HideWarning;
-                _warn.AcceptButton.Click += Quit;
-                _warn.hide.Click += HideWarning;
-                _warn.backtochampselect.Content = "Return to Champ Select";
-                _warn.AcceptButton.Content = "Dodge game and logout";
+                _warn.ReturnButton.Click += HideButtonWarning;
+                _warn.ExitButton.Click += Quit;
+                _warn.HideButton.Click += HideButtonWarning;
+                _warn.ReturnButton.Content = "Return to Champ Select";
+                _warn.ExitButton.Content = "Dodge game and logout";
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
                 Client.FullNotificationOverlayContainer.Visibility = Visibility.Visible;
             }
@@ -360,9 +360,9 @@ namespace LegendaryClient
                 e.Cancel = true;
                 _warn.Header.Content = "Quit";
                 _warn.MessageText.Text = "Are You Sure You Want To Quit?";
-                _warn.backtochampselect.Click += HideWarning;
-                _warn.AcceptButton.Click += Quit;
-                _warn.hide.Click += HideWarning;
+                _warn.ReturnButton.Click += HideButtonWarning;
+                _warn.ExitButton.Click += Quit;
+                _warn.HideButton.Click += HideButtonWarning;
                 if (Client.curentlyRecording.Count > 0)
                     _warn.MessageText.Text = "Game recorder is still running.\nIf you exit now then the replay won't be playable.\n" + _warn.MessageText.Text;
                 Client.FullNotificationOverlayContainer.Content = _warn.Content;
@@ -391,7 +391,7 @@ namespace LegendaryClient
             Environment.Exit(0);
         }
 
-        private void HideWarning(object sender, RoutedEventArgs e)
+        private void HideButtonWarning(object sender, RoutedEventArgs e)
         {
             Client.FullNotificationOverlayContainer.Visibility = Visibility.Hidden;
         }
