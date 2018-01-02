@@ -8,7 +8,7 @@ using System.IO;
 namespace LCLog
 {
     /// <summary>
-    ///     Worlds most basic logger for LegendaryClient
+    ///     Worlds most basic logger for Sightstone
     /// </summary>
     public class WriteToLog
     {

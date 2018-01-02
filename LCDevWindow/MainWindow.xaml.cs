@@ -1,5 +1,5 @@
 ﻿using LCDevWindow.Commands;
-using LCDevWindow.Commands.LegendaryClient;
+using LCDevWindow.Commands.Sightstone;
 using System;
 using System.Globalization;
 using System.IO;
@@ -30,11 +30,11 @@ namespace LCDevWindow
             InitializeComponent();
             Main.win = this;
             //191537514598135486vneaoifjidafd are just random chars, they will match up to the one in LC
-            Log("LegendaryClient Logger. Starting Pipe, please wait.", Brushes.Brown);
-            Main.inPipeClient = new NamedPipeClientStream(".", "LegendaryClientPipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
+            Log("Sightstone Logger. Starting Pipe, please wait.", Brushes.Brown);
+            Main.inPipeClient = new NamedPipeClientStream(".", "SightstonePipe@191537514598135486vneaoifjidafd", PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.Impersonation);
             Main.inPipeClient.Connect();
             Main.inPipeStream = new StreamString(Main.inPipeClient);
-            Log("Pipe to LegendaryClient Created! Logging has started", Brushes.Green);
+            Log("Pipe to Sightstone Created! Logging has started", Brushes.Green);
             var xls = new Thread(() =>
                 {
                     while (_pipe)
@@ -45,7 +45,7 @@ namespace LCDevWindow
                         {
                             case "191537514598135486vneaoifjidafd":
                                 _pipe = false;
-                                Log("LegendaryClient has closed and the pipe has been shut down!", Brushes.Red);
+                                Log("Sightstone has closed and the pipe has been shut down!", Brushes.Red);
                                 Log("This window will now close in 30 seconds, do \"-abortShutdown\" to stop the shutdown", Brushes.Red);
                                 _shutdown.Interval = 1000;
                                 _shutdownint = 0;
@@ -65,7 +65,7 @@ namespace LCDevWindow
                             case "AwaitStart":
 
                                 StartPipe();
-                                Log("Starting another pipe to LegendaryClient for sending data", Brushes.Blue);
+                                Log("Starting another pipe to Sightstone for sending data", Brushes.Blue);
                                 break;
                             default:
                                 if (!x.ToLower().Contains("exception"))
@@ -94,7 +94,7 @@ namespace LCDevWindow
         private static void ServerThread(object data)
         {
             var pipeServer =
-                new NamedPipeServerStream("LegendaryClientPipe@191537514598135486vneaoifjidafdOUTPUT", PipeDirection.InOut, NumThreads);
+                new NamedPipeServerStream("SightstonePipe@191537514598135486vneaoifjidafdOUTPUT", PipeDirection.InOut, NumThreads);
             //var threadId = Thread.CurrentThread.ManagedThreadId;
             pipeServer.WaitForConnection();
             try
@@ -139,9 +139,9 @@ namespace LCDevWindow
                     var xm = tempsplit[1].Replace(")", "").Split(',');
 
                     var splittwo = xm.ToList();
-                    if (!x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient") && x.GetType().ToString().Contains("LCDevWindow.Commands"))
+                    if (!x.GetType().ToString().Contains("LCDevWindow.Commands.Sightstone") && x.GetType().ToString().Contains("LCDevWindow.Commands"))
                         ((Command)x).ActivateCommand(splittwo.ToArray());
-                    else if (x.GetType().ToString().Contains("LCDevWindow.Commands.LegendaryClient"))
+                    else if (x.GetType().ToString().Contains("LCDevWindow.Commands.Sightstone"))
                         ((LCCommand)x).ActivateCommand(splittwo.ToArray());
                 }
                 else

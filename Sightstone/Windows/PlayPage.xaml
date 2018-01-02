@@ -1,0 +1,74 @@
+﻿<Page x:Class="Sightstone.Windows.PlayPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:wpf="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
+      Title="PlayPage"
+      mc:Ignorable="d" d:DesignHeight="672"
+      d:DesignWidth="1024"
+      >
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="Titlebar" Grid.Row="0" Height="70" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="CreateCustomGameButton" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Content="Create Custom Game" Click="CreateCustomGameButton_Click" />
+                <Button x:Name="JoinCustomGameButton" Grid.Column="1" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Content="Join Custom Games" Click="JoinCustomGameButton_Click" />
+                <Button x:Name="LeaveQueuesButton" Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Content="Leave Queues" Click="LeaveQueuesButton_Click" />
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="CreateFactionGameButton" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Grid.Column="0" Content="Create a Faction Game" Click="CreateFactionGameButton_Click" />
+                <Button x:Name="JoinFactionGameButton" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{StaticResource PrimaryHueLightBrush}" Grid.Column="1" Content="Join a Faction Game" Click="JoinFactionGameButton_Click" />
+            </Grid>
+
+            <Grid Grid.Column="3" Margin="5">
+                <CheckBox x:Name="AutoAcceptCheckBox" Grid.Column="0" HorizontalAlignment="Left"
+                  VerticalAlignment="Center" Content="Auto Accept Queue" Checked="AutoAcceptCheckBox_Checked" />
+            </Grid>
+
+            <Grid Grid.Column="4" Margin="8">
+                <Label x:Name="PingLabel"  HorizontalAlignment="Left" VerticalAlignment="Center" Content="Checking Ping" Margin="0,0,20,0" Foreground="{StaticResource PrimaryHueLightBrush}" />
+                <Ellipse Height="15" Width="15" x:Name="PingRectangle" HorizontalAlignment="Right" VerticalAlignment="Center" Fill="#FF9B9B9B" />
+            </Grid>
+        </Grid>
+        
+        <!-- Ques -->
+        <Grid Margin="8" Grid.Row="1">
+            
+            <Controls:ProgressRing x:Name="WaitingForQueues" HorizontalAlignment="Center" VerticalAlignment="Center" IsActive="True" Visibility="Hidden">
+                <Controls:ProgressRing.Effect>
+                    <DropShadowEffect />
+                </Controls:ProgressRing.Effect>
+            </Controls:ProgressRing>
+
+            <ListBox x:Name="QueueListView" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" />
+        </Grid>
+
+        
+    </Grid>
+</Page>
