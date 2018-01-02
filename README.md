@@ -1,6 +1,4 @@
-Sightstone
-==========
-#####LegendaryClient Revised
+# LegendaryClient
 
 Beautiful, fully-featured League of Legends client.
 
